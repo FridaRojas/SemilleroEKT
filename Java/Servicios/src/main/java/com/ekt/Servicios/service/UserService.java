@@ -1,6 +1,5 @@
 package com.ekt.Servicios.service;
 
-import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
