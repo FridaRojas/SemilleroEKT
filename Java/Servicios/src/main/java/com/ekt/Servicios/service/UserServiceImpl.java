@@ -27,17 +27,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> findById(int id) {
+    public Optional<User> findById(String id) {
         return Optional.empty();
     }
 
     @Override
     public User save(User user) {
-        return null;
+        return userRepository.save(user);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         userRepository.deleteById(id);
     }
 }

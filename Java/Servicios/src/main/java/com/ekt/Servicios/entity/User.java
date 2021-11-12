@@ -6,166 +6,52 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Arrays;
 
-@Document
+@Document("Usuarios")
 public class User {
-    /**
-     *
-     */
-
-    private static final long serialVersionUID=1L;
 
     @Id
-    private int idUser;
-    @Field
-    private String mail;
-    @Field
-    private String name;
-    @Field
-    private String password;
-    @Field
+    private String id;
+    private String correo;
     private String fechaInicio;
-    @Field
     private String fechaTermino;
-    @Field
-    private String phone;
-    @Field
-    private boolean status;
-    @Field
-    private String idInmediateSuperior;
-    @Field
-    private Rol[] rols;
+    private String idUsuario;
+    private String nombre;
+    private String password;
+    private Rol[] roles;
+    private String telefono;
+    private String idSuperiorInmediato;
+    private String status;
 
+    public String getID() { return id; }
+    public void setID(String value) { this.id = value; }
 
-    //constructor sin campos
-    public User() {
-    }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String value) { this.correo = value; }
 
-    //constructor todos los campos
-    public User(int idUser, String mail, String name, String password,
-                String fechaInicio, String fechaTermino, String phone,
-                boolean status, String idInmediateSuperior, Rol[] rols) {
-        this.idUser = idUser;
-        this.mail = mail;
-        this.name = name;
-        this.password = password;
-        this.fechaInicio = fechaInicio;
-        this.fechaTermino = fechaTermino;
-        this.phone = phone;
-        this.status = status;
-        this.idInmediateSuperior = idInmediateSuperior;
-        this.rols = rols;
-    }
+    public String getFechaInicio() { return fechaInicio; }
+    public void setFechaInicio(String value) { this.fechaInicio = value; }
 
-    //constructor todos los campos excepto id
+    public String getFechaTermino() { return fechaTermino; }
+    public void setFechaTermino(String value) { this.fechaTermino = value; }
 
+    public String getIDUsuario() { return idUsuario; }
+    public void setIDUsuario(String value) { this.idUsuario = value; }
 
-    public User(String mail, String name, String password, String fechaInicio,
-                String fechaTermino, String phone, boolean status,
-                String idInmediateSuperior, Rol[] rols) {
-        this.mail = mail;
-        this.name = name;
-        this.password = password;
-        this.fechaInicio = fechaInicio;
-        this.fechaTermino = fechaTermino;
-        this.phone = phone;
-        this.status = status;
-        this.idInmediateSuperior = idInmediateSuperior;
-        this.rols = rols;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String value) { this.nombre = value; }
 
-    public int getIdUser() {
-        return idUser;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String value) { this.password = value; }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
+    public Rol[] getRoles() { return roles; }
+    public void setRoles(Rol[] value) { this.roles = value; }
 
-    public String getMail() {
-        return mail;
-    }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String value) { this.telefono = value; }
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
+    public String getIDSuperiorInmediato() { return idSuperiorInmediato; }
+    public void setIDSuperiorInmediato(String value) { this.idSuperiorInmediato = value; }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public String getFechaTermino() {
-        return fechaTermino;
-    }
-
-    public void setFechaTermino(String fechaTermino) {
-        this.fechaTermino = fechaTermino;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getIdInmediateSuperior() {
-        return idInmediateSuperior;
-    }
-
-    public void setIdInmediateSuperior(String idInmediateSuperior) {
-        this.idInmediateSuperior = idInmediateSuperior;
-    }
-
-    public Rol[] getRols() {
-        return rols;
-    }
-
-    public void setRols(Rol[] rols) {
-        this.rols = rols;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id='" + idUser + '\'' +
-                ", correo='" + mail + '\'' +
-                ", nombre='" + name + '\'' +
-                ", contraseña='" + password + '\'' +
-                ", fechaInicio='" + fechaInicio + '\'' +
-                ", fechaTermino='" + fechaTermino + '\'' +
-                ", telefono='" + phone + '\'' +
-                ", status=" + status +
-                ", id del superior inmediato='" + idInmediateSuperior + '\'' +
-                ", roles=" + Arrays.toString(rols) +
-                '}';
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String value) { this.status = value; }
 }
