@@ -17,14 +17,14 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    @PostMapping("/crear")
-    public User crear(@Validated @RequestBody User user){
+    @PostMapping("/create")
+    public User create(@Validated @RequestBody User user){
 
         return userService.save(user);
     }
 
-    @GetMapping("/buscar/{id}")
-    public Optional<User> buscar(@PathVariable String id){
+    @GetMapping("/find/{id}")
+    public Optional<User> findById(@PathVariable String id){
         return userService.findById(id);
 
     }
@@ -40,4 +40,24 @@ public class UserController {
         userService.deleteById(id);
     }
 
+    @PutMapping("/update/{id}")
+    public String update(@RequestBody User userUpdate, @PathVariable String id){
+        Optional<User> user = userService.findById(id);
+        if(!user.isPresent()) {
+            return "Not Found";
+        }else {
+            user.get().setCorreo(userUpdate.getCorreo());
+            user.get().setFechaInicio(userUpdate.getFechaInicio());
+            user.get().setFechaTermino(userUpdate.getFechaTermino());
+            user.get().setNombre(userUpdate.getNombre());
+            user.get().setPassword(userUpdate.getPassword());
+            user.get().setRoles(userUpdate.getRoles());
+            user.get().setTelefono(userUpdate.getTelefono());
+            user.get().setIDSuperiorInmediato(userUpdate.getIDSuperiorInmediato());
+            user.get().setStatus(userUpdate.getStatus());
+            userService.save(user.get());
+            return "OK";
+        }
+
+    }
 }
