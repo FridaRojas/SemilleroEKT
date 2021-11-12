@@ -12,7 +12,7 @@ public interface GroupService {
 
     public Page<Group> findAll(Pageable pageable);
 
-    public Optional<Group> findById(int id);
+    public Optional<Group> findById(String id);
 
     public Group save(Group group);
 
