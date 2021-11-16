@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -13,7 +15,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
-
 
     @Override
     public Iterable<User> findAll() {
@@ -41,7 +42,12 @@ public class UserServiceImpl implements UserService{
         return  userRepository.findByIdPassoword(id,password);
     }
 
-
+    @Override
+    public Iterable<User> findUserByBossId(String id){
+        Iterable<User> users;
+        users = userRepository.findByBossId(id);
+        return users;
+    }
 
     @Override
     public User save(User user) {

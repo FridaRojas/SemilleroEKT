@@ -70,8 +70,14 @@ public class UserController {
             userService.save(user.get());
             return "OK";
         }
-
     }
+
+    /*
+    @GetMapping("/findByBossId/{id}")
+    public void findByBossId(@PathVariable String id){
+        userService.findUserByBossId(id);
+    }
+    */
 
     @GetMapping("/existUser/{correo}")
     public boolean existUser(@PathVariable String correo){
