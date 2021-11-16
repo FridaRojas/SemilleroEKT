@@ -37,9 +37,10 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(String id) {groupRepository.deleteById(id);
 
     }
+
 
 
 }
