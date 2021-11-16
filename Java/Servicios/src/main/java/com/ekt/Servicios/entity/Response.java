@@ -8,6 +8,13 @@ public class Response {
     String msj;
     Object data;
 
+    public Response(HttpStatus status, String msj, Object data) {
+        this.status = status;
+        this.msj = msj;
+        this.data = data;
+    }
+
+    public Response(){};
 
     public HttpStatus getStatus() {
         return status;

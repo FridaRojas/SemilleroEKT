@@ -31,27 +31,18 @@ public class UserController {
 
     @GetMapping("/validate")
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
-        Response res = new Response();
+
         if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null){
             System.out.println("Error en las llaves");
-            res.setStatus(HttpStatus.NOT_ACCEPTABLE);
-            res.setMsj("Error en las llaves");
-            res.setData("");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(res);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
             Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
             if (user.isPresent()){
                 System.out.println("Usuario encontrado");
-                res.setStatus(HttpStatus.NOT_ACCEPTABLE);
-                res.setMsj("Usuario encontrado");
-                res.setData(user.get());
-                return ResponseEntity.ok(res);
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE,"Usuario encontrado",user.get()));
             }else{
             System.out.println("Usuario no encontrado");
-            res.setStatus(HttpStatus.BAD_REQUEST);
-            res.setMsj("Usuario no encontrado");
-            res.setData("");
-            return ResponseEntity.ok(res);}
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
         }
     }
 
