@@ -48,8 +48,23 @@ public class UserController {
     }
 
     @DeleteMapping(value="/delete/{id}")
-    public void delete(@PathVariable String id){
-        userService.deleteById(id);
+    public ResponseEntity<?> delete(@PathVariable String id){
+        try{
+            User u = userService.findById(id).get();
+            if(u!=null){
+                if(u.getStatus().equals("true")){
+                    u.setStatus("false");
+                    userService.save(u);
+                    return ResponseEntity.ok().build();
+                }
+                return ResponseEntity.badRequest().build();
+            }
+        }catch(Exception e){
+            System.err.println("Error e");
+            return ResponseEntity.notFound().build();
+        }
+        //userService.deleteById(id);
+        //return return ResponseEntity.badRequest().build();;
     }
 
     /*
