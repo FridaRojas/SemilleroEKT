@@ -14,6 +14,7 @@ public interface UserService {
 
     Optional<User> findById(String id);
 
+    Optional<User> findUsersByCorreo(String correo);
     Optional<User> userValidate(String id, String password);
 
 

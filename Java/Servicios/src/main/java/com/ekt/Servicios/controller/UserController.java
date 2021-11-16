@@ -72,4 +72,18 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/existUser/{correo}")
+    public boolean existUser(@PathVariable String correo){
+        boolean retorno;
+        if(userService.findUsersByCorreo(correo).isPresent()){
+            retorno=true;
+        }else{
+            retorno=false;
+        }
+
+        return retorno;
+
+    }
+
 }
