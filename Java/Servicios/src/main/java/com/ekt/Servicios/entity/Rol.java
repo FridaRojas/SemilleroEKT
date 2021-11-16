@@ -1,6 +1,5 @@
 package com.ekt.Servicios.entity;
 
-
 public class Rol {
     private String nombre;
     private String idGrupo;
