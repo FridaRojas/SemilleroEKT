@@ -3,13 +3,11 @@ package com.ekt.Servicios.controller;
 
 
 import com.ekt.Servicios.entity.User;
-import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -55,4 +53,18 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/existUser/{correo}")
+    public boolean existUser(@PathVariable String correo){
+        boolean retorno;
+        if(userService.findUsersByCorreo(correo).isPresent()){
+            retorno=true;
+        }else{
+            retorno=false;
+        }
+
+        return retorno;
+
+    }
+
 }

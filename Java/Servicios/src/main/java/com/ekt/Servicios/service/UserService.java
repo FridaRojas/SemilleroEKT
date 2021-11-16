@@ -13,9 +13,13 @@ public interface UserService {
 
     Optional<User> findById(String id);
 
+    Optional<User> findUsersByCorreo(String correo);
+
      User save(User user);
 
      void deleteById(String id);
+
+
 
 
 }
