@@ -14,7 +14,7 @@ public interface UserService {
 
     Optional<User> findById(String id);
 
-    ResponseEntity<?> userValidate(String id, String password);
+    Optional<User> userValidate(String id, String password);
 
 
      User save(User user);

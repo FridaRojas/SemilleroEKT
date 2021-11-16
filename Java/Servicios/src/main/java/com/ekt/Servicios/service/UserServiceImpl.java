@@ -5,11 +5,7 @@ import com.ekt.Servicios.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 
@@ -35,17 +31,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ResponseEntity<?> userValidate(String id, String password){
+    public Optional<User> userValidate(String id, String password){
 
-        Optional<User> user= userRepository.findById(id);
-        if (user!= null){
-            if (user.get().getPassword().equals(password)){
-                return ResponseEntity.ok(user);
-            }
-        }
-        return ResponseEntity.notFound().build();
-
-
+        return  userRepository.findByIdPassoword(id,password);
     }
 
 
