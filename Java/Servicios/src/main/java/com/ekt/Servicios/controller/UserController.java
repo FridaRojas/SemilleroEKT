@@ -21,14 +21,12 @@ public class UserController {
 
     @PostMapping("/create")
     public User create(@Validated @RequestBody User user){
-
         return userService.save(user);
     }
 
     @GetMapping("/find/{id}")
     public Optional<User> findById(@PathVariable String id){
         return userService.findById(id);
-
     }
 
     @GetMapping("/validate")
@@ -82,10 +80,7 @@ public class UserController {
             user.get().setFechaTermino(userUpdate.getFechaTermino());
             user.get().setNombre(userUpdate.getNombre());
             user.get().setPassword(userUpdate.getPassword());
-            user.get().setRoles(userUpdate.getRoles());
             user.get().setTelefono(userUpdate.getTelefono());
-            user.get().setIDSuperiorInmediato(userUpdate.getIDSuperiorInmediato());
-            user.get().setStatus(userUpdate.getStatus());
             userService.save(user.get());
             return "OK";
         }
@@ -100,15 +95,7 @@ public class UserController {
 
     @GetMapping("/existUser/{correo}")
     public boolean existUser(@PathVariable String correo){
-        boolean retorno;
-        if(userService.findUsersByCorreo(correo).isPresent()){
-            retorno=true;
-        }else{
-            retorno=false;
-        }
-
-        return retorno;
-
+        return userService.findUsersByCorreo(correo).isPresent();
     }
 
 }
