@@ -16,7 +16,7 @@ public interface UserService {
 
     Optional<User> findUsersByCorreo(String correo);
     Optional<User> userValidate(String id, String password);
-
+    User updateIdPadre(User userUpdate,String idPadre);
 
      User save(User user);
 

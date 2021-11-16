@@ -49,6 +49,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User updateIdPadre(User userUpdate, String idPadre){
+        userUpdate.setIDSuperiorInmediato(idPadre);
+        save(userUpdate);
+        return  userUpdate;
+    }
+
+    @Override
     public void deleteById(String id) {
         userRepository.deleteById(id);
     }
