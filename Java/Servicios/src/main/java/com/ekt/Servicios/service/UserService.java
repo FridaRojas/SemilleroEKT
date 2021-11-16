@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public interface UserService {
@@ -16,6 +17,7 @@ public interface UserService {
 
     Optional<User> findUsersByCorreo(String correo);
     Optional<User> userValidate(String id, String password);
+    Iterable<User> findUserByBossId(String id);
     User updateIdPadre(User userUpdate,String idPadre);
 
      User save(User user);
