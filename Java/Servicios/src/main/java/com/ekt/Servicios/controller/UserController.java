@@ -5,6 +5,7 @@ package com.ekt.Servicios.controller;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,12 @@ public class UserController {
     public Optional<User> findById(@PathVariable String id){
         return userService.findById(id);
 
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> userValidate(@RequestBody User usuario){
+        System.out.println("------"+usuario.getID()+"    "+usuario.getPassword());
+            return userService.userValidate(usuario.getID(),usuario.getPassword());
     }
 
     @DeleteMapping(value="/delete/{id}")
