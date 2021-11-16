@@ -14,13 +14,13 @@ public class User {
     private String correo;
     private String fechaInicio;
     private String fechaTermino;
-    private String idUsuario;
+    private String numeroEmpleado;
     private String nombre;
     private String password;
     private Rol[] roles;
     private String telefono;
     private String idSuperiorInmediato;
-    private String status;
+    private String statusActivo;
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -34,8 +34,8 @@ public class User {
     public String getFechaTermino() { return fechaTermino; }
     public void setFechaTermino(String value) { this.fechaTermino = value; }
 
-    public String getIDUsuario() { return idUsuario; }
-    public void setIDUsuario(String value) { this.idUsuario = value; }
+    public String getNumeroEmpleado() { return numeroEmpleado; }
+    public void setNumeroEmpleado(String value) { this.numeroEmpleado = value; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String value) { this.nombre = value; }
@@ -52,6 +52,6 @@ public class User {
     public String getIDSuperiorInmediato() { return idSuperiorInmediato; }
     public void setIDSuperiorInmediato(String value) { this.idSuperiorInmediato = value; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String value) { this.status = value; }
+    public String getStatusActivo() { return statusActivo; }
+    public void setStatusActivo(String value) { this.statusActivo = value; }
 }
