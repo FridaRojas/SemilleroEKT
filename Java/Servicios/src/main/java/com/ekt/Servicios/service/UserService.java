@@ -16,7 +16,7 @@ public interface UserService {
     Optional<User> findById(String id);
 
     Optional<User> findUsersByCorreo(String correo);
-    Optional<User> userValidate(String id, String password);
+    Optional<User> userValidate(String correo, String password);
     Iterable<User> findUserByBossId(String id);
     User updateIdPadre(User userUpdate,String idPadre);
 
