@@ -47,6 +47,15 @@ public class UserController {
         userService.deleteById(id);
     }
 
+    /*
+    @PutMapping("/updateIdPadre/{idPadre}")
+    public String updateIdPadre(@RequestBody User userUpdate, @PathVariable String idPadre){
+        System.out.println("idPadre:"+idPadre);
+        userService.updateIdPadre(userUpdate,idPadre);
+        return "Ok";
+    }
+*/
+
     @PutMapping("/update/{id}")
     public String update(@RequestBody User userUpdate, @PathVariable String id){
         Optional<User> user = userService.findById(id);

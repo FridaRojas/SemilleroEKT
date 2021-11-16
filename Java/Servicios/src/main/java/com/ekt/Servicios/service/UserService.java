@@ -18,6 +18,7 @@ public interface UserService {
     Optional<User> findUsersByCorreo(String correo);
     Optional<User> userValidate(String id, String password);
     Iterable<User> findUserByBossId(String id);
+    User updateIdPadre(User userUpdate,String idPadre);
 
      User save(User user);
 
