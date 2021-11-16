@@ -47,19 +47,19 @@ public class UserController {
         try{
             User u = userService.findById(id).get();
             if(u!=null){
-                if(u.getStatus().equals("true")){
-                    u.setStatus("false");
+                if(u.getStatusActivo().equals("true")){
+                    u.setStatusActivo("false");
                     userService.save(u);
                     return ResponseEntity.ok().build();
                 }
                 return ResponseEntity.badRequest().build();
             }
         }catch(Exception e){
-            System.err.println("Error e");
+            System.err.println("Error: "+e);
             return ResponseEntity.notFound().build();
         }
         //userService.deleteById(id);
-        //return return ResponseEntity.badRequest().build();;
+        return ResponseEntity.badRequest().build();
     }
 
     /*
