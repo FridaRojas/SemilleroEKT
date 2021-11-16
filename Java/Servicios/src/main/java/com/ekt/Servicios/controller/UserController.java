@@ -1,5 +1,8 @@
 package com.ekt.Servicios.controller;
 
+
+
+import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +31,18 @@ public class UserController {
 
     @GetMapping("/validate")
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
-        if (infAcceso.getPassword()==null || infAcceso.getID()==null){
+
+        if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null){
             System.out.println("Error en las llaves");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            Optional<User> user=userService.userValidate(infAcceso.getID(),infAcceso.getPassword());
+            Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
             if (user.isPresent()){
                 System.out.println("Usuario encontrado");
-                return ResponseEntity.ok(user.get());
-            }
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE,"Usuario encontrado",user.get()));
+            }else{
             System.out.println("Usuario no encontrado");
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
         }
     }
 

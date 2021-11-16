@@ -37,9 +37,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> userValidate(String id, String password){
+    public Optional<User> userValidate(String correo, String password){
 
-        return  userRepository.findByIdPassoword(id,password);
+        return  userRepository.findByCorreoPassoword(correo,password);
     }
 
     @Override

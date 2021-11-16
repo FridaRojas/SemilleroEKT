@@ -14,8 +14,8 @@ public interface UserRepository extends MongoRepository<User,String> {
     @Query("{ 'correo' : ?0 }")
     Optional<User> findUsersByCorreo(String name);
 
-    @Query("{'_id': ?0,'password': ?1 }")
-    Optional<User> findByIdPassoword (String id,String passwoprd);
+    @Query("{'correo': ?0,'password': ?1 }")
+    Optional<User> findByCorreoPassoword (String correo,String passwoprd);
 
     @Query("{ 'idSuperiorInmediato' : ?0}")
     Iterable<User> findByBossId(String id);
