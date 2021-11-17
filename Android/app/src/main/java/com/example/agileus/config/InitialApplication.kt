@@ -1,12 +1,12 @@
 package com.example.agileus.config
 
 import android.app.Application
-import com.example.agileus.webservices.ConversationApi
+import com.example.agileus.webservices.apis.ConversationApi
 
 class InitialApplication : Application() {
 
     companion object{
-        lateinit var webServiceGlobal:ConversationApi
+        lateinit var webServiceGlobal: ConversationApi
     }
     override fun onCreate() {
         super.onCreate()
