@@ -1,22 +1,28 @@
 package com.ekt.Servicios.service;
 
-import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public interface UserService {
-    public Iterable<User> findAll();
+     Iterable<User> findAll();
 
-    public Page<User> findAll(Pageable pageable);
+     Page<User> findAll(Pageable pageable);
 
-    public Optional<User> findById(int id);
+    Optional<User> findById(String id);
 
-    public User save(User user);
+    Optional<User> findUsersByCorreo(String correo);
+    Optional<User> userValidate(String correo, String password);
+    Iterable<User> findUserByBossId(String id);
+    User updateIdPadre(User userUpdate,String idPadre);
 
-    public void deleteById(int id);
+     User save(User user);
+
+     void deleteById(String id);
 
 
 }

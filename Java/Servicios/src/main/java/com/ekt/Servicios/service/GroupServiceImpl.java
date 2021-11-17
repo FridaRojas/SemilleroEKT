@@ -27,8 +27,8 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public Optional<Group> findById(int id) {
-        return Optional.empty();
+    public Optional<Group> findById(String id) {
+        return groupRepository.findById(id);
     }
 
     @Override
@@ -37,9 +37,10 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(String id) {groupRepository.deleteById(id);
 
     }
+
 
 
 }

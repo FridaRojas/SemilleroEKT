@@ -7,67 +7,21 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Arrays;
 
-@Document
+@Document ("group")
 public class Group {
-    /**
-     *
-     */
 
-    private static final long serialVersionUID=1L;
+        @Id
+        private String id;
+        private String name;
+        private User[] users;
 
-    @Id
-    private int idGroup;
-    @Field
-    private String name;
-    @Field
-    private User[] users;
+        public String getID() { return id; }
+        public void setID(String value) { this.id = value; }
 
-    public Group() {
-    }
+        public String getName() { return name; }
+        public void setName(String value) { this.name = value; }
 
-    public Group(int idGroup, String name, User[] users) {
-        this.idGroup = idGroup;
-        this.name = name;
-        this.users = users;
-    }
+        public User[] getUsers() { return users; }
+        public void setUsers(User[] value) { this.users = value; }
 
-    public Group(String name, User[] users) {
-        this.name = name;
-        this.users = users;
-    }
-
-    public int getIdGroup() {
-        return idGroup;
-    }
-
-    public void setIdGroup(int idGroup) {
-        this.idGroup = idGroup;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User[] getUsers() {
-        return users;
-    }
-
-
-    public void setUsers(User[] users) {
-        this.users = users;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Gropo{" +
-                "id='" + idGroup + '\'' +
-                ", nombre='" + name + '\'' +
-                ", usuarios=" + Arrays.toString(users) +
-                '}';
-    }
 }
