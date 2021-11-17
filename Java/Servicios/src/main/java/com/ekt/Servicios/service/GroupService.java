@@ -8,13 +8,13 @@ import java.util.Optional;
 
 
 public interface GroupService {
-    public Iterable<Group> findAll();
+    Iterable<Group> findAll();
 
-    public Page<Group> findAll(Pageable pageable);
+    Page<Group> findAll(Pageable pageable);
 
-    public Optional<Group> findById(int id);
+    Optional<Group> findById(String id);
 
-    public Group save(Group group);
+    Group save(Group group);
 
-    public void deleteById(int id);
+    void deleteById(String id);
 }
