@@ -19,6 +19,7 @@
         app:menu="@menu/bottom_nav_menu" />
 
     <TextView
+        android:id="@+id/txt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Algo Cool!!!"
@@ -26,7 +27,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Escribir algo para probar mi rama!"
+        android:textSize="40dp"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/txt1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+
 
     <fragment
         android:id="@+id/nav_host_fragment_activity_home"
