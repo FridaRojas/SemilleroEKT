@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/breen/Desktop/SemilleroEKT/Android/app/src/main/res/drawable/rounded_button.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Desktop/SemilleroEKT/Android/app/src/main/res/layout/activity_home.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/breen/Desktop/SemilleroEKT/Android/app/src/main/res/layout/conversation_emisor_item.xml" value="0.1490036231884058" />
+        <entry key="..\:/Users/breen/Desktop/SemilleroEKT/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/breen/Desktop/SemilleroEKT/Android/app/src/main/res/layout/fragment_home.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/breen/Desktop/SemilleroEKT/Android/app/src/main/res/layout/fragment_notifications.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/breen/Desktop/SemilleroEKT/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.259375" />
         <entry key="..\:/Users/delan/Desktop/AgileUs/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.12771739130434784" />
         <entry key="..\:/Users/delan/Desktop/AgileUs/semilleroekt/Android/app/src/main/res/layout/conversation_emisor_item.xml" value="0.1838768115942029" />
         <entry key="..\:/Users/delan/Desktop/AgileUs/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.12771739130434784" />

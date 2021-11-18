@@ -1,7 +1,5 @@
 package com.example.agileus.config
 
-import com.example.agileus.utils.Constantes.URL_BASE
-import com.example.agileus.webservices.ConversationApi
 import com.example.agileus.webservices.apis.ConversationApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
