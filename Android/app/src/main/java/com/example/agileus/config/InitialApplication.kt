@@ -8,6 +8,7 @@ class InitialApplication : Application() {
     companion object{
         lateinit var webServiceGlobal: ConversationApi
     }
+
     override fun onCreate() {
         super.onCreate()
 
