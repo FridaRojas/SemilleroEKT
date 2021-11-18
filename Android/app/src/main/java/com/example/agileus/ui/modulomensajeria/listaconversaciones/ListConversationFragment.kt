@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulomensajeria.listacontactos
+package com.example.agileus.ui.modulomensajeria.listaconversaciones
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,13 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment() {
+class ListConversationFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeViewModel: ListConversationViewModel
+
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -25,13 +23,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-
+            ViewModelProvider(this).get(ListConversationViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
 
         return root
     }
@@ -40,13 +35,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        homeViewModel.devuelveLista()
 
-        homeViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.recyclerConversacion.adapter = it
-            binding.recyclerConversacion.layoutManager = LinearLayoutManager(activity)
-
-        })
 
     }
 
