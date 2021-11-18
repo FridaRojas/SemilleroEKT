@@ -4,13 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.ekt.Servicios.repository.MensajesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ekt.Servicios.entity.Mensajes;
 import com.ekt.Servicios.service.MensajesService;
@@ -20,6 +18,7 @@ import com.ekt.Servicios.service.MensajesService;
 public class MensajesController {
 	@Autowired
 	private MensajesService mensajesService;
+
 	
 	@SuppressWarnings("deprecation")
 	@PostMapping("crearMensaje")
@@ -42,4 +41,12 @@ public class MensajesController {
 		
         return ResponseEntity.status(HttpStatus.CREATED).body(mensajesService.crearMensaje(mensajes));
     }
+	//ver conversacion
+
+	@GetMapping("/verConversacion/{idConversacion}")
+	public ResponseEntity<?> verConversacion(@PathVariable (value = "idConversacion") String idConversacion){
+		Iterable<Mensajes> iter =mensajesService.verConversacion (idConversacion);
+
+		return ResponseEntity.ok(iter.iterator());
+	}
 }

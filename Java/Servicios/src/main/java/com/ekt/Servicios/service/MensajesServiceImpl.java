@@ -15,4 +15,12 @@ public class MensajesServiceImpl implements MensajesService{
 	public Mensajes crearMensaje(Mensajes mensajes) {
 		return mensajesRepository.insert(mensajes);
 	}
+
+	@Override
+	public Iterable<Mensajes> verConversacion(String idConversacion) {
+
+		return mensajesRepository.findByIdConversacion(idConversacion);
+	}
+
+
 }

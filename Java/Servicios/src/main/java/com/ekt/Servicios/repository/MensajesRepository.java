@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface MensajesRepository extends MongoRepository<Mensajes, String> {
 
-    @Query("'idConversacion' : ?0")
+    @Query("{'idConversacion' : ?0}")
     Iterable<Mensajes> findByIdConversacion (String idConversacion);
 }
