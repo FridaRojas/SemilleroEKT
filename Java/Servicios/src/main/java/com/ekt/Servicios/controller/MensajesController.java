@@ -14,6 +14,7 @@ import com.ekt.Servicios.controller.config.validator.ValidarMensajeImpl;
 import com.ekt.Servicios.entity.Mensajes;
 import com.ekt.Servicios.service.MensajesService;
 import com.ekt.Servicios.util.exceptions.ApiUnprocessableEntity;
+import com.google.common.base.Optional;
 
 @RestController
 @RequestMapping("/api/mensajes/")
@@ -26,6 +27,21 @@ public class MensajesController {
 
 	@PostMapping("crearMensaje")
 	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity{
+		
+		//mensajes.setIDConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
+		String idConv1 = mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor();
+		String idConv2 = mensajes.getIDReceptor()+"_"+mensajes.getIDEmisor();
+		
+		Optional<Mensajes> opt = mensajesService.existeConversacion(idConv1);
+		Optional<Mensajes> opt2 = mensajesService.existeConversacion(idConv2);
+		
+		if(opt != null) {
+			System.out.println("El verdadero idConversacion es: "+idConv1);
+		}else if(opt2 != null){
+			System.out.println("El verdadero idConversacion es: "+idConv2);
+		}else {
+			System.out.println("Ni uno, ni otro");
+		}
 		
 		this.validarMensajeImpl.validator(mensajes);
 		
@@ -42,9 +58,7 @@ public class MensajesController {
 		
 		mensajes.setVisible(true);
 		
-		mensajes.setIDConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
-		
-		mensajesService.crearMensaje(mensajes);
+		//mensajesService.crearMensaje(mensajes);
 		
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
