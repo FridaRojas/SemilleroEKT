@@ -1,5 +1,7 @@
 package com.ekt.Servicios.service;
 
-public interface MensajesService {
+import com.ekt.Servicios.entity.Mensajes;
 
+public interface MensajesService {
+	Mensajes crearMensaje(Mensajes mensajes); 
 }
