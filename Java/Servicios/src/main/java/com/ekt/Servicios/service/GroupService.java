@@ -17,4 +17,6 @@ public interface GroupService {
     Group save(Group group);
 
     void deleteById(String id);
+
+    public Optional<Group> userInGroup(String id, String user);
 }

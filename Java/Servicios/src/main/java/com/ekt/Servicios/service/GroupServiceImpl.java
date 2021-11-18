@@ -1,6 +1,7 @@
 package com.ekt.Servicios.service;
 
 import com.ekt.Servicios.entity.Group;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,11 @@ public class GroupServiceImpl implements GroupService{
     @Override
     public void deleteById(String id) {groupRepository.deleteById(id);
 
+    }
+
+    @Override
+    public Optional<Group> userInGroup(String id, String user){
+        return  groupRepository.findByIdUser(id,user);
     }
 
 
