@@ -1,17 +1,13 @@
-package com.example.agileus.ui.home
+package com.example.agileus.ui.modulomensajeria.listacontactos
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.FragmentHomeBinding
-import com.example.agileus.ui.MainActivity
 
 
 class HomeFragment : Fragment() {
