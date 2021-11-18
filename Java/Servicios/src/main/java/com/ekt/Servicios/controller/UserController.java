@@ -32,14 +32,18 @@ public class UserController {
     @GetMapping("/validate")
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
 
-        if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null){
+        if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
             Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
             if (user.isPresent()){
                 System.out.println("Usuario encontrado");
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE,"Usuario encontrado",user.get()));
+                //actualizar token
+                user.get().setToken(infAcceso.getToken());
+                userService.save(user.get());
+
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user.get()));
             }else{
             System.out.println("Usuario no encontrado");
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
