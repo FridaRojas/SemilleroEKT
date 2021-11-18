@@ -21,8 +21,6 @@ class HomeViewModel : ViewModel() {
 
     init {
         lista = ConversationDao()
-
-
     }
 
     fun devuelveLista(){
@@ -46,8 +44,6 @@ class HomeViewModel : ViewModel() {
 
 
     }
-
-
 
 
 

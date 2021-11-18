@@ -9,6 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.agileus.databinding.FragmentNotificationsBinding
+import com.github.mikephil.charting.data.LineData
+
+import com.github.mikephil.charting.data.LineDataSet
+
+import android.R
+import android.R.attr
+
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import android.R.attr.y
+
+
+
 
 
 class NotificationsFragment : Fragment() {
@@ -16,8 +29,6 @@ class NotificationsFragment : Fragment() {
     private lateinit var notificationsViewModel: NotificationsViewModel
     private var _binding: FragmentNotificationsBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,6 +47,32 @@ class NotificationsFragment : Fragment() {
             textView.text = it
         })
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val lineChart: LineChart
+        val lineDataSet: LineDataSet
+
+// Enlazamos al XML
+        lineChart = binding.lineChart
+        //view.findViewById(R.id.lineChart)
+
+// Creamos un set de datos
+        val lineEntries = ArrayList<Entry>()
+        for (i in 0..10) {
+            var y = ((Math.random() * 8).toInt() + 1).toFloat()
+            lineEntries.add(Entry(i.toFloat(), attr.y.toFloat()))
+        }
+// Unimos los datos al data set
+        lineDataSet = LineDataSet(lineEntries, "Platzi")
+
+// Asociamos al gráfico
+        val lineData = LineData()
+        lineData.addDataSet(lineDataSet)
+        lineChart.data = lineData
+
     }
 
     override fun onDestroyView() {
