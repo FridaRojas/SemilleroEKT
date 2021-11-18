@@ -1,4 +1,4 @@
-package com.example.agileus.ui.dashboard
+package com.example.agileus.ui.modulotareas.listatareas
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

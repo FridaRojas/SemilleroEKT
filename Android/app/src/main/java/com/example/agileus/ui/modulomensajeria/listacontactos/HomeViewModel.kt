@@ -1,4 +1,4 @@
-package com.example.agileus.ui.home
+package com.example.agileus.ui.modulomensajeria.listacontactos
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -21,8 +21,6 @@ class HomeViewModel : ViewModel() {
 
     init {
         lista = ConversationDao()
-
-
     }
 
     fun devuelveLista(){
