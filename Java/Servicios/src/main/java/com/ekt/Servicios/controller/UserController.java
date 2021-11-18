@@ -24,6 +24,9 @@ public class UserController {
         return userService.save(user);
     }
 
+    @GetMapping("/findAll")
+    public Iterable<User> findAll(){return userService.findAll();}
+
     @GetMapping("/find/{id}")
     public Optional<User> findById(@PathVariable String id){
         return userService.findById(id);
