@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "Comunicado_Bckgrnd.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Comunicado_Bckgrnd@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Comunicado_Bckgrnd@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

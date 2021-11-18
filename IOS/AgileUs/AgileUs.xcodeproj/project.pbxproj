@@ -23,6 +23,7 @@
 		D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */; };
 		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
 		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
+		D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDE7482747174E00197CB1 /* CampoTexto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportesScreen.swift; sourceTree = "<group>"; };
 		D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TareasScreen.swift; sourceTree = "<group>"; };
 		D4E69CB12746CCEF002121E4 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		D4EDE7482747174E00197CB1 /* CampoTexto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampoTexto.swift; sourceTree = "<group>"; };
 		D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,7 +111,6 @@
 				4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */,
 				6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -138,6 +139,7 @@
 		D4E69C762746BD81002121E4 /* AgileUs */ = {
 			isa = PBXGroup;
 			children = (
+				D4EDE7472747067E00197CB1 /* Extensions */,
 				D4E69CB02746CCCE002121E4 /* Login */,
 				D4E69CA92746C25E002121E4 /* Tareas */,
 				D4E69CA82746C256002121E4 /* Reportes */,
@@ -200,6 +202,14 @@
 				D4E69CB12746CCEF002121E4 /* LoginScreen.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		D4EDE7472747067E00197CB1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D4EDE7482747174E00197CB1 /* CampoTexto.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		DD4994C3FA25C34E3D104F72 /* Frameworks */ = {
@@ -458,6 +468,7 @@
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
+				D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

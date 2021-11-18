@@ -35,19 +35,48 @@
             </objects>
             <point key="canvasLocation" x="886.95652173913049" y="41.517857142857139"/>
         </scene>
-        <!--View Controller-->
+        <!--Login Screen-->
         <scene sceneID="xyP-Kg-WF5">
             <objects>
-                <viewController id="njg-x3-P2J" sceneMemberID="viewController">
+                <viewController id="njg-x3-P2J" customClass="LoginScreen" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ynp-EM-fZb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Login_Bckgrnd" translatesAutoresizingMaskIntoConstraints="NO" id="mZf-aQ-tPe">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bKq-di-vZX">
+                                <rect key="frame" x="45" y="278" width="330" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BqX-Ew-mKb">
+                                <rect key="frame" x="45" y="387" width="330" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6we-CF-xX6">
+                                <rect key="frame" x="130" y="494" width="155" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="">
+                                    <backgroundConfiguration key="background" image="iniciar_sesion_btn"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="iniciarSesion:" destination="njg-x3-P2J" eventType="touchUpInside" id="NWJ-UR-cXf"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="dvm-v9-8Mb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="qSr-fF-6NL"/>
                     <connections>
-                        <segue destination="bS3-wo-jyG" kind="show" id="CTn-di-tSd"/>
+                        <segue destination="bS3-wo-jyG" kind="show" identifier="Login_To_Home" id="CTn-di-tSd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A0l-SS-DDg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -77,6 +106,12 @@
                     <view key="view" contentMode="scaleToFill" id="7M1-2a-tv1">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Mis_Chats_Bckgrnd" translatesAutoresizingMaskIntoConstraints="NO" id="yHK-mV-DmF">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="gt2-Yf-Tt1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -84,7 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="La4-qR-MwO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2457" y="467"/>
+            <point key="canvasLocation" x="2456.521739130435" y="466.74107142857139"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="GDP-cr-IJo">
@@ -142,6 +177,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Login_Bckgrnd" width="124" height="262"/>
+        <image name="Mis_Chats_Bckgrnd" width="125" height="238"/>
+        <image name="iniciar_sesion_btn" width="97" height="17"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

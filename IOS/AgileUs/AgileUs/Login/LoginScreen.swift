@@ -11,8 +11,17 @@ class LoginScreen: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //self.navigationController?.isNavigationBarHidden = true
 
+        
+        //navigationController?.setNavigationBarHidden(false, animated: false)
+        //navigationController?.setN
         // Do any additional setup after loading the view.
+    }
+    @IBAction func iniciarSesion(_ sender: UIButton) {
+        
+        self.performSegue(withIdentifier: "Login_To_Home", sender: self)
     }
     
 

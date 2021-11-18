@@ -7,10 +7,14 @@
 
 import UIKit
 
+var id_usuario = String()
+var servidor = String()
+var nombre_usuario = String()
+
+var inicio_sesion = Bool()
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
