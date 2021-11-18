@@ -21,6 +21,9 @@ public class User {
     private String telefono;
     private String idSuperiorInmediato;
     private String statusActivo;
+    private String curp;
+    private String rfc;
+    private String token;
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -39,6 +42,15 @@ public class User {
 
     public String getNombre() { return nombre; }
     public void setNombre(String value) { this.nombre = value; }
+
+    public String getCurp() { return curp; }
+    public void setCurp(String value) { this.curp = value; }
+
+    public String getRfc() { return rfc; }
+    public void setRfc(String value) { this.rfc = value; }
+
+    public String getToken() { return token; }
+    public void setToken(String value) { this.token = value; }
 
     public String getPassword() { return password; }
     public void setPassword(String value) { this.password = value; }
