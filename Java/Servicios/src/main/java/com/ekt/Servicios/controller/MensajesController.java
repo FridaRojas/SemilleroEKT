@@ -10,19 +10,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ekt.Servicios.controller.config.validator.ValidarMensajeImpl;
 import com.ekt.Servicios.entity.Mensajes;
 import com.ekt.Servicios.service.MensajesService;
+import com.ekt.Servicios.util.exceptions.ApiUnprocessableEntity;
 
 @RestController
 @RequestMapping("/api/mensajes/")
 public class MensajesController {
 	@Autowired
 	private MensajesService mensajesService;
-
 	
-	@SuppressWarnings("deprecation")
+	@Autowired
+	private ValidarMensajeImpl validarMensajeImpl;
+
 	@PostMapping("crearMensaje")
-	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes){
+	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity{
+		
+		this.validarMensajeImpl.validator(mensajes);
 		
 		//Status-fecha Creado
 		mensajes.setStatusCreado(true);
@@ -39,7 +44,9 @@ public class MensajesController {
 		
 		mensajes.setIDConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
 		
-        return ResponseEntity.status(HttpStatus.CREATED).body(mensajesService.crearMensaje(mensajes));
+		mensajesService.crearMensaje(mensajes);
+		
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 	//ver conversacion
 
