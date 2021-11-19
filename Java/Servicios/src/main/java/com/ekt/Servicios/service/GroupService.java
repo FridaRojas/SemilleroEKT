@@ -20,4 +20,8 @@ public interface GroupService {
     Group saveUser( String idUser, String idGrupo, String idSuperior,String nombreRol);
 
     void deleteById(String id);
+
+    void deleteUserFromGroup( String idUser, String idGroup);
+
+    public Optional<Group> userInGroup(String id, String user);
 }
