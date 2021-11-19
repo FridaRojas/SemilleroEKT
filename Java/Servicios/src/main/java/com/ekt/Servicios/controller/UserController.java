@@ -2,6 +2,7 @@ package com.ekt.Servicios.controller;
 
 
 
+import com.ekt.Servicios.entity.BodyUpdateBoss;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.UserService;
@@ -73,38 +74,69 @@ public class UserController {
         return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"error desconocido",""));
     }
 
-    /*
-    @PutMapping("/updateIdPadre/{idPadre}")
-    public String updateIdPadre(@RequestBody User userUpdate, @PathVariable String idPadre){
-        System.out.println("idPadre:"+idPadre);
-        userService.updateIdPadre(userUpdate,idPadre);
-        return "Ok";
-    }
-*/
-
-    @PutMapping("/update/{id}")
-    public String update(@RequestBody User userUpdate, @PathVariable String id){
-        Optional<User> user = userService.findById(id);
-        if(!user.isPresent()) {
-            return "Not Found";
-        }else {
-            user.get().setCorreo(userUpdate.getCorreo());
-            user.get().setFechaInicio(userUpdate.getFechaInicio());
-            user.get().setFechaTermino(userUpdate.getFechaTermino());
-            user.get().setNombre(userUpdate.getNombre());
-            user.get().setPassword(userUpdate.getPassword());
-            user.get().setTelefono(userUpdate.getTelefono());
-            userService.save(user.get());
-            return "OK";
+    @PutMapping("/updateIdBoss")
+    public ResponseEntity<?> updateIdBoss(@RequestBody BodyUpdateBoss updateBoss){
+        String[] idUser = updateBoss.getIDUser();
+        String[] idBoss = updateBoss.getIDBoss();
+        try {
+            for (int i = 0; i < idUser.length; i++) {
+                userService.updateIdBoss(userService.findById(idUser[i]).get(), idBoss[i]);
+            }
+            return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
+        }catch (Exception e){
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Error desconocido",""));
         }
     }
 
-    /*
-    @GetMapping("/findByBossId/{id}")
-    public void findByBossId(@PathVariable String id){
-        userService.findUserByBossId(id);
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@RequestBody User userUpdate, @PathVariable String id){
+        try {
+            Optional<User> user = userService.findById(id);
+            if(!user.isPresent()) {
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
+            }else {
+                user.get().setCorreo(userUpdate.getCorreo());
+                user.get().setFechaInicio(userUpdate.getFechaInicio());
+                user.get().setFechaTermino(userUpdate.getFechaTermino());
+                user.get().setNombre(userUpdate.getNombre());
+                user.get().setPassword(userUpdate.getPassword());
+                user.get().setTelefono(userUpdate.getTelefono());
+                user.get().setCurp(userUpdate.getCurp());
+                user.get().setRFC(userUpdate.getRFC());
+                userService.save(user.get());
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario actualizado", user.get()));
+            }
+        }catch (Exception e){
+            System.out.println("No se puede actualizar el usuario: " + e);
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, e.toString(), ""));
+        }
+
     }
-    */
+
+    @PutMapping("/updateRol/{idUser,idGrupo,idSuperior,nombreRol}")
+    public ResponseEntity<?> updateRol(@PathVariable String idUser, String idGrupo, String idSuperior,String nombreRol){
+        try {
+            Optional<User> user = userService.findById(idUser);
+            if (idSuperior != null) {
+                user.get().setIDSuperiorInmediato(idSuperior);
+            }
+            if (nombreRol != null) {
+                user.get().setNombreRol(nombreRol);
+            }
+            userService.save(user.get());
+            return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
+        }catch (Exception e){
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se pudo actualizar el usuario", ""));
+        }
+    }
+
+    @GetMapping("/findByBossId/{id}")
+    public Iterable<User> findByBossId(@PathVariable String id){
+        Iterable<User> users = userService.findUserByBossId(id);
+        return users;
+    }
+
 
     @GetMapping("/existUser/{correo}")
     public boolean existUser(@PathVariable String correo){

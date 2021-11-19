@@ -51,10 +51,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateIdPadre(User userUpdate, String idPadre){
-        userUpdate.setIDSuperiorInmediato(idPadre);
+    public User updateIdBoss(User userUpdate, String idBoss){
+        userUpdate.setIDSuperiorInmediato(idBoss);
         save(userUpdate);
-        return  userUpdate;
+        return userUpdate;
     }
 
     @Override

@@ -1,14 +1,15 @@
 package com.ekt.Servicios.controller;
 
 
+import com.ekt.Servicios.entity.BodyUpdateBoss;
 import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,7 @@ public class GroupController {
     public Response findUserInGroup(@RequestBody String json){
         try {
             String idGroup="",idUser ="";
-            JsonObject jsn = new JsonObject(json);
+            JSONObject jsn = new JSONObject(json);
 
             idGroup=jsn.get("idGroup").toString();
             idUser=jsn.get("idUser").toString();
@@ -107,5 +108,16 @@ public class GroupController {
 
         return null;
     }
+    /*
+    @PutMapping("/updateIdBoss")
+    public String updateIdBoss(@RequestBody BodyUpdateBoss updateBoss){
+        String[] idUser = updateBoss.getIDUser();
+        String[] idBoss = updateBoss.getIDBoss();
+        for(int i = 0; i < idUser.length; i++){
+            userService.updateIdBoss(userService.findById(idUser[i]).get(),idBoss[i]);
+        }
+        return "Ok";
+    }
+     */
 
 }
