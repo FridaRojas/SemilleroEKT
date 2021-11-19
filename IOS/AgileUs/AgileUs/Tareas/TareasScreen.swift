@@ -11,10 +11,16 @@ class TareasScreen: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        self.navigationController?.navigationBar.topItem?.title = "hola"
 
-        // Do any additional setup after loading the view.
+        
     }
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        
+    }
 
     /*
     // MARK: - Navigation

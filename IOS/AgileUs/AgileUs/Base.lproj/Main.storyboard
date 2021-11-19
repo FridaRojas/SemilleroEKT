@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="etT-s0-VoZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="etT-s0-VoZ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -42,19 +42,27 @@
                     <view key="view" contentMode="scaleToFill" id="Ynp-EM-fZb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BD7-iZ-duC">
+                                <rect key="frame" x="122" y="380" width="171" height="136"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <segue destination="bS3-wo-jyG" kind="show" id="max-hV-2IE"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="dvm-v9-8Mb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="qSr-fF-6NL"/>
-                    <connections>
-                        <segue destination="bS3-wo-jyG" kind="show" id="CTn-di-tSd"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A0l-SS-DDg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1676.8115942028987" y="41.517857142857139"/>
         </scene>
-        <!--Item 2-->
+        <!--Tareas_2-->
         <scene sceneID="kxU-t7-os2">
             <objects>
                 <viewController id="He9-Ti-izS" customClass="TareasScreen" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
@@ -64,11 +72,14 @@
                         <viewLayoutGuide key="safeArea" id="Nxh-Ue-bao"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="Aqw-K5-oAL"/>
+                    <tabBarItem key="tabBarItem" title="Item" id="5bQ-bo-eWy"/>
+                    <navigationItem key="navigationItem" title="Tareas_2" largeTitleDisplayMode="always" id="Iy7-w9-iaC">
+                        <barButtonItem key="backBarButtonItem" title="atras" id="K7t-nN-1Ne"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qy3-nT-dvq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3197" y="467"/>
+            <point key="canvasLocation" x="3304" y="467"/>
         </scene>
         <!--Item 1-->
         <scene sceneID="2zx-pR-dO6">
@@ -98,8 +109,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="Srt-5x-2vk" kind="relationship" relationship="viewControllers" id="2Ed-ip-3QO"/>
-                        <segue destination="He9-Ti-izS" kind="relationship" relationship="viewControllers" id="aUh-lB-AwV"/>
                         <segue destination="MVx-7u-DgW" kind="relationship" relationship="viewControllers" id="gA6-tf-IQ3"/>
+                        <segue destination="He9-Ti-izS" kind="relationship" relationship="viewControllers" id="dLZ-U5-Qls"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEV-Kx-CJu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -120,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wuc-5e-uJg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3926" y="467"/>
+            <point key="canvasLocation" x="4343" y="467"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MDH-8O-GZq">
