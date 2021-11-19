@@ -65,7 +65,7 @@ public class MensajesController {
 				
 				mensajesService.crearMensaje(mensajes);
 				
-				return ResponseEntity.status(HttpStatus.CREATED).body(mensajes);
+				return ResponseEntity.status(HttpStatus.CREATED).build();
 				
 			}
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
@@ -81,6 +81,20 @@ public class MensajesController {
 
 		return ResponseEntity.ok(iter.iterator());
 	}
+
+	//eliminar mensaje(cambiar estado)
+	@PutMapping("/{id}")
+	public ResponseEntity<?> validarMensaje(@RequestBody Mensajes mensajes, @PathVariable(value = "id" )String id){
+		Optional<Mensajes> opt = mensajesService.actualizarVisible(id);
+ 		//this.validarMensajeImpl.validarStatus(mensajes);
+		if(opt.isPresent()){
+			return ResponseEntity.notFound().build();
+		}
+		opt.get().setVisible(mensajes.getVisible());
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+
+	}
+
 
 
 }

@@ -9,4 +9,5 @@ import com.ekt.Servicios.util.exceptions.ApiUnprocessableEntity;
 @Service
 public interface ValidarMensaje {
 	void validator(Mensajes request) throws ApiUnprocessableEntity;
+	void validarStatus(Mensajes request)throws ApiUnprocessableEntity;
 }
