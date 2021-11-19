@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.ekt.Servicios.entity.Mensajes;
 import com.ekt.Servicios.repository.MensajesRepository;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 @Service
 public class MensajesServiceImpl implements MensajesService{
@@ -24,9 +25,8 @@ public class MensajesServiceImpl implements MensajesService{
 	}
 
 	@Override
-	public Optional<Mensajes> existeConversacion(String idConversacion) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<Mensajes> actualizarVisible(String id) {
+		return mensajesRepository.findById(id);
 	}
 
 

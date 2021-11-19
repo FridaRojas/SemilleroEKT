@@ -1,6 +1,7 @@
 package com.ekt.Servicios.controller;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,20 @@ public class MensajesController {
 
 		return ResponseEntity.ok(iter.iterator());
 	}
+
+	//eliminar mensaje(cambiar estado)
+	@PutMapping("/{id}")
+	public ResponseEntity<?> validarMensaje(@RequestBody Mensajes mensajes, @PathVariable(value = "id" )String id){
+		Optional<Mensajes> opt = mensajesService.actualizarVisible(id);
+ 		this.validarMensajeImpl.validarStatus(mensajes);
+		if(opt.isPresent()){
+			return ResponseEntity.notFound().build();
+		}
+		opt.get().setVisible(mensajes.getVisible());
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+
+	}
+
 
 
 }

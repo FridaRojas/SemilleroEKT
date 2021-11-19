@@ -42,8 +42,14 @@ public class ValidarMensajeImpl implements ValidarMensaje{
 			this.message("La fecha de creacion no tiene el formato correcto");
 		}
 	}
-	
-	private void message(String message) throws ApiUnprocessableEntity {
+
+	@Override
+	public void validarStatus(Mensajes mensajes) throws ApiUnprocessableEntity {
+		if ( mensajes.getVisible()== true){
+			this.message("Este campo solo puede ser actualizado a falso");
+		}
+	}
+		private void message(String message) throws ApiUnprocessableEntity {
 		throw new ApiUnprocessableEntity(message);
 	}
 }
