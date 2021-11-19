@@ -3,13 +3,16 @@ package com.example.agileus.webservices.dao
 
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.Conversation
+//import com.example.agileus.models.Conversation
 import com.example.agileus.providers.ConversationProviderListener
 import retrofit2.Response
 
 
 class ConversationDao() {
 
-    suspend fun  recuperarPublicaciones(): ArrayList<Conversation> {
+        fun  recuperarPublicaciones(): ArrayList<Conversation> {
+
+
         val callRespuesta = InitialApplication.webServiceGlobal.getConversationOnetoOne()
         var ResponseDos:Response<ArrayList<Conversation>> = callRespuesta.execute()
 
@@ -20,6 +23,8 @@ class ConversationDao() {
         return lista
 
     }
+
+
 }
 
      /*
