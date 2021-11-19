@@ -20,4 +20,6 @@ public interface UserRepository extends MongoRepository<User,String> {
     @Query("{ 'idSuperiorInmediato' : ?0}")
     Iterable<User> findByBossId(String id);
 
+    @Query("{'numeroEmpleado' : ?0}")
+    Optional<User> validarUsuario(String numeroEmpleado);
 }

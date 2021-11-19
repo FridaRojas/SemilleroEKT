@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ekt.Servicios.entity.Mensajes;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.MensajesRepository;
 import com.google.common.base.Optional;
 
@@ -22,12 +23,4 @@ public class MensajesServiceImpl implements MensajesService{
 
 		return mensajesRepository.findByIdConversacion(idConversacion);
 	}
-
-	@Override
-	public Optional<Mensajes> existeConversacion(String idConversacion) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 }
