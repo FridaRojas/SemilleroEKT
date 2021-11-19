@@ -21,5 +21,5 @@ public interface UserRepository extends MongoRepository<User,String> {
     Iterable<User> findByBossId(String id);
 
     @Query("{'_id' : ?0}")
-    Optional<User> validarUsuario(String _id);
+    Optional<User> validarUsuario(String _id); 
 }
