@@ -6,5 +6,6 @@ object Constantes {
     val URL_BUZON_2=""
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
+    val id = "id40"
 
 }
