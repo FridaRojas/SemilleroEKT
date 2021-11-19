@@ -7,4 +7,6 @@
     <string name="title_mensajes">Mensajes</string>
     <string name="title_tareas">Tareas</string>
     <string name="title_reportes">Reportes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
