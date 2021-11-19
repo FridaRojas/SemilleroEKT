@@ -13,13 +13,11 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
-import com.example.agileus.databinding.ReporteTareasFragmentBinding
 
-class ReporteTareasFragment : Fragment() {
+class ReporteMensajesFragment : Fragment() {
 
-
-    private lateinit var reporteTareasViewModel: ReporteTareasViewModel
-    private var _binding: ReporteTareasFragmentBinding? = null
+    private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
+    private var _binding: ReporteMensajesFragmentBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,18 +29,20 @@ class ReporteTareasFragment : Fragment() {
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        reporteTareasViewModel =
-            ViewModelProvider(this).get(ReporteTareasViewModel::class.java)
+        reporteMensajesViewModel =
+            ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
 
-        _binding = ReporteTareasFragmentBinding.inflate(inflater, container, false)
+        _binding = ReporteMensajesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textNotifications
-        reporteTareasViewModel.text.observe(viewLifecycleOwner, Observer {
+        reporteMensajesViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
@@ -52,14 +52,13 @@ class ReporteTareasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-        binding.btnReportesMensajes.setOnClickListener {
-            
-            val action = ReporteTareasFragmentDirections.actionReporteTareasFragmentToReporteMensajesFragment()
-            val extras = FragmentNavigatorExtras(binding.btnReportesTareas to "report_slide")
+        binding.btnReportesTareas.setOnClickListener {
+            val action = ReporteMensajesFragmentDirections.actionReporteMensajesFragmentToReporteTareasFragment()
+            val extras = FragmentNavigatorExtras(binding.btnReportesMensajes to "report_slide")
             findNavController().navigate(action,  extras)
         }
 
+        //setBarChart()
     }
 
 }

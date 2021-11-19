@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ReporteTareasViewModel : ViewModel() {
+class ReporteMensajesViewModel : ViewModel() {
+
     private val _text = MutableLiveData<String>().apply {
-        value = "This is Tareas reportes Fragment"
+        value = "This is notifications Fragment"
     }
     val text: LiveData<String> = _text
 }
