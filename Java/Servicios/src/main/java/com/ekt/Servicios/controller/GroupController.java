@@ -1,7 +1,9 @@
 package com.ekt.Servicios.controller;
 
 
+import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,6 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.save(group));
     }
 
-
     @GetMapping("/buscar/{id}")
     public Optional<Group> buscar(@PathVariable String id){
         return groupService.findById(id);
@@ -30,10 +31,13 @@ public class GroupController {
 
     @DeleteMapping(value="/delete/{id}")
     public void delete(@PathVariable String id){
-
-
         System.out.println(id);
         groupService.deleteById(id);
+    }
+
+    @DeleteMapping("/deleteUserFromGruop")
+    public void deleteUserFromgroup(@RequestBody BodyAddUserGroup body){
+        groupService.deleteUserFromGroup(body.getIDUsuario(), body.getIDGrupo());
     }
 
 
