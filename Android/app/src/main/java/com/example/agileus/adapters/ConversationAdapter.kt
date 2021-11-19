@@ -13,7 +13,6 @@ class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
 
 
-
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
@@ -34,6 +33,10 @@ class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
+
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val msgEmisor: TextView
@@ -41,11 +44,17 @@ class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
         init {
             // Define click listener for the ViewHolder's View.
             msgEmisor = view.findViewById(R.id.msgEmisor)
+
         }
 
         fun enlazarItem(conversacion:Conversation){
 
+
             msgEmisor.text = conversacion.texto
+
+
+
+
 
         }
     }

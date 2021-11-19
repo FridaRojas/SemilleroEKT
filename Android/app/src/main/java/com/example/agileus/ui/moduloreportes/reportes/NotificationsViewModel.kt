@@ -1,4 +1,4 @@
-package com.example.agileus.ui.notifications
+package com.example.agileus.ui.moduloreportes.reportes
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

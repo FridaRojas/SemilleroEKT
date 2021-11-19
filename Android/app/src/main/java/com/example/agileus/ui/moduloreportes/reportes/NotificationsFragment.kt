@@ -1,4 +1,4 @@
-package com.example.agileus.ui.notifications
+package com.example.agileus.ui.moduloreportes.reportes
 
 import android.os.Bundle
 import android.view.LayoutInflater
