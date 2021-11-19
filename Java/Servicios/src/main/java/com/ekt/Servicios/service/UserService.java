@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public interface UserService {
-     Iterable<User> findAll();
 
-     Page<User> findAll(Pageable pageable);
+     Iterable<User> findAll();
 
      Optional<User> findById(String id);
 

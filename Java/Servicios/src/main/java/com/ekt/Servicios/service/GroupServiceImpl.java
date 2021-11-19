@@ -71,6 +71,11 @@ public class GroupServiceImpl implements GroupService{
         groupRepository.save(group.get());
     }
 
+    @Override
+    public Optional<Group> userInGroup(String id, String user){
+        return  groupRepository.findByIdUser(id,user);
+    }
+
 
 
 }

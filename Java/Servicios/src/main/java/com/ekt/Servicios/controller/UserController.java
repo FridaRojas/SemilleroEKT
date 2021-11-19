@@ -24,6 +24,9 @@ public class UserController {
         return userService.save(user);
     }
 
+    @GetMapping("/findAll")
+    public Iterable<User> findAll(){return userService.findAll();}
+
     @GetMapping("/find/{id}")
     public Optional<User> findById(@PathVariable String id){
         return userService.findById(id);
@@ -32,14 +35,18 @@ public class UserController {
     @GetMapping("/validate")
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
 
-        if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null){
+        if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
             Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
             if (user.isPresent()){
                 System.out.println("Usuario encontrado");
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE,"Usuario encontrado",user.get()));
+                //actualizar token
+                user.get().setToken(infAcceso.getToken());
+                userService.save(user.get());
+
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user.get()));
             }else{
             System.out.println("Usuario no encontrado");
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
@@ -49,21 +56,21 @@ public class UserController {
     @DeleteMapping(value="/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable String id){
         try{
-            User u = userService.findById(id).get();
-            if(u!=null){
+            if(userService.findById(id).isPresent()){
+                User u = userService.findById(id).get();
                 if(u.getStatusActivo().equals("true")){
                     u.setStatusActivo("false");
                     userService.save(u);
-                    return ResponseEntity.ok().build();
+                    return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario eliminado correctamente",""));
                 }
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
             }
         }catch(Exception e){
             System.err.println("Error: "+e);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Usuario no encontrado",""));
         }
         //userService.deleteById(id);
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"error desconocido",""));
     }
 
     /*
