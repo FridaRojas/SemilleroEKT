@@ -4,10 +4,10 @@ package com.ekt.Servicios.controller;
 import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.Response;
-import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
-import org.json.JSONArray;
+
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,12 +34,30 @@ public class GroupController {
 
     @PutMapping("/saveUserGrup")
     public ResponseEntity<?> addUserGrup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.saveUser(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol()));
+
+        if(bodyAddUserGroup.getIDUsuario()==null || bodyAddUserGroup.getIDGrupo()==null || bodyAddUserGroup.getIDSuperior()==null||bodyAddUserGroup.getNombreRol()==null){
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error  en las llaves",""));
+        }else{
+            Group group= groupService.saveUser(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
+            if (group==null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al realizar en la operacion,parametro no valido",""));
+            }else{
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED,"El usuario se añadio correctamente",group));
+            }
+        }
     }
 
     @GetMapping("/buscar/{id}")
-    public Optional<Group> buscar(@PathVariable String id){
-        return groupService.findById(id);
+    public ResponseEntity<?> buscar(@PathVariable String id){
+
+        if (groupService.findById(id).isPresent()){
+            return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo encontrado",groupService.findById(id)));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error grupo no existente",""));
+        }
+
+
+        //return groupService.findById(id);
     }
 
     @DeleteMapping(value="/delete/{id}")
@@ -57,7 +75,7 @@ public class GroupController {
     public Response findUserInGroup(@RequestBody String json){
         try {
             String idGroup="",idUser ="";
-            JsonObject jsn = new JsonObject(json);
+            JSONObject jsn = new JSONObject(json);
 
             idGroup=jsn.get("idGroup").toString();
             idUser=jsn.get("idUser").toString();
