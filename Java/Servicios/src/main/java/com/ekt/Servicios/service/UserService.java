@@ -14,7 +14,7 @@ public interface UserService {
 
      Optional<User> userValidate(String id, String password);
     Iterable<User> findUserByBossId(String id);
-    User updateIdPadre(User userUpdate,String idPadre);
+    User updateIdBoss(User userUpdate,String idBoss);
 
      User save(User user);
 
