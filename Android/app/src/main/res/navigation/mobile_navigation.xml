@@ -17,4 +17,15 @@
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.agileus.ui.moduloreportes.reportes.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_reportes"
+        android:name="com.example.agileus.ui.moduloreportes.reportes.TareasFragment"
+        android:label="tareas_fragment"
+        tools:layout="@layout/tareas_fragment" />
 </navigation>
