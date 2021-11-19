@@ -20,8 +20,19 @@ public class UserController {
     public UserService userService;
 
     @PostMapping("/create")
-    public User create(@Validated @RequestBody User user){
-        return userService.save(user);
+    public ResponseEntity create(@Validated @RequestBody User user){
+        if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
+            System.out.println("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+        }else{
+            User us= userService.save(user);
+            if (us!=null){
+                System.out.println("Usuario Guardado");
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Guardado",us));
+            }else {
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+            }
+        }
     }
 
     @GetMapping("/findAll")
@@ -106,9 +117,20 @@ public class UserController {
     }
     */
 
-    @GetMapping("/existUser/{correo}")
-    public boolean existUser(@PathVariable String correo){
-        return userService.findUsersByCorreo(correo).isPresent();
+    @GetMapping("/existUser")
+    public ResponseEntity existUser(@RequestBody User user){
+        if (user.getCorreo()==null || user.getCurp()==null || user.getRFC()==null || user.getNumeroEmpleado()==null){
+            System.out.println("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+        }else{
+            Optional<User> us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(),user.getRFC(),user.getNumeroEmpleado());
+            if (us.isPresent()){
+                System.out.println("El usuario existe");
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"El usuario existe",us.get()));
+            }else {
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+            }
+        }
     }
 
 

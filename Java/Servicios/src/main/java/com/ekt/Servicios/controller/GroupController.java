@@ -7,7 +7,6 @@ import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,21 +42,46 @@ public class GroupController {
     }
 
     @DeleteMapping(value="/delete/{id}")
-    public void delete(@PathVariable String id){
-        System.out.println(id);
-        groupService.deleteById(id);
+    public ResponseEntity<Response> delete(@PathVariable String id){
+        if (id==null){
+            System.out.println("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+        }else{
+            Optional<Group> grupo= groupService.findById(id);
+            if (grupo.isPresent()){
+                groupService.deleteById(id);
+                System.out.println("Grupo eliminado");
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo eliminado",grupo.get()));
+            }else {
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo no encontrado",""));
+            }
+        }
     }
 
     @DeleteMapping("/deleteUserFromGruop")
-    public void deleteUserFromgroup(@RequestBody BodyAddUserGroup body){
-        groupService.deleteUserFromGroup(body.getIDUsuario(), body.getIDGrupo());
+    public ResponseEntity deleteUserFromgroup(@RequestBody BodyAddUserGroup body){
+        if (body.getIDGrupo()==null || body.getIDUsuario()==null){
+            System.out.println("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+        }else{
+            Optional<Group> grupo= groupService.userInGroup(body.getIDGrupo(),body.getIDUsuario());
+
+            if (grupo.isPresent()){
+                groupService.deleteUserFromGroup(body.getIDUsuario(), body.getIDGrupo());
+                System.out.println("Usuario eliminado del grupo");
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario eliminado del grupo",grupo.get()));
+            }else {
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo o usuario no encontrado",""));
+            }
+        }
+
     }
 
     @GetMapping("/findUserInGroup")
     public Response findUserInGroup(@RequestBody String json){
         try {
             String idGroup="",idUser ="";
-            JsonObject jsn = new JsonObject(json);
+            JSONObject jsn = new JSONObject(json);
 
             idGroup=jsn.get("idGroup").toString();
             idUser=jsn.get("idUser").toString();
