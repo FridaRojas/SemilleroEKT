@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ekt.Servicios.entity.Mensajes;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.MensajesRepository;
 
 import java.util.Optional;
@@ -28,6 +29,5 @@ public class MensajesServiceImpl implements MensajesService{
 	public Optional<Mensajes> actualizarVisible(String id) {
 		return mensajesRepository.findById(id);
 	}
-
 
 }

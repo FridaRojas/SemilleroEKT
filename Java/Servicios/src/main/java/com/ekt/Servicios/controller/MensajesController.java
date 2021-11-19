@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ekt.Servicios.controller.config.validator.ValidarMensajeImpl;
 import com.ekt.Servicios.entity.Mensajes;
+import com.ekt.Servicios.entity.User;
+import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.MensajesService;
 import com.ekt.Servicios.util.exceptions.ApiUnprocessableEntity;
+
 
 @RestController
 @RequestMapping("/api/mensajes/")
@@ -21,39 +24,54 @@ public class MensajesController {
 	
 	@Autowired
 	private ValidarMensajeImpl validarMensajeImpl;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@PostMapping("crearMensaje")
 	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity{
 		
-		Iterable<Mensajes> opt = mensajesService.verConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
-		Iterable<Mensajes> opt2 = mensajesService.verConversacion(mensajes.getIDReceptor()+"_"+mensajes.getIDEmisor());
+		Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
+		Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
 		
-		if(opt.toString().length() > 3) {
-			mensajes.setIDConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
-		} else if(opt2.toString().length() > 3) {
-			mensajes.setIDConversacion(mensajes.getIDReceptor()+"_"+mensajes.getIDEmisor());
-		} else {
-			mensajes.setIDConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
-		}
-		
-		this.validarMensajeImpl.validator(mensajes);
-		
-		//Status-fecha Creado
-		mensajes.setStatusCreado(true);
-		
-		//Status-fecha Enviado
-		mensajes.setFechaEnviado(new Date());
-		mensajes.setStatusEnviado(true);
-		
-		//Status-fecha Leido
-		mensajes.setStatusLeido(false);
-		mensajes.setFechaLeido(new Date(0));
-		
-		mensajes.setVisible(true);
-		
-		mensajesService.crearMensaje(mensajes);
-		
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+		if(emisor.isPresent()) {
+			if(receptor.isPresent()) {
+				
+				Iterable<Mensajes> opt = mensajesService.verConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
+				Iterable<Mensajes> opt2 = mensajesService.verConversacion(mensajes.getIDReceptor()+"_"+mensajes.getIDEmisor());
+				
+				if(opt.toString().length() > 3) { 
+					mensajes.setIDConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
+				} else if(opt2.toString().length() > 3) {
+					mensajes.setIDConversacion(mensajes.getIDReceptor()+"_"+mensajes.getIDEmisor());
+				} else {
+					mensajes.setIDConversacion(mensajes.getIDEmisor()+"_"+mensajes.getIDReceptor());
+				}
+				
+				this.validarMensajeImpl.validator(mensajes);
+				
+				//Status-fecha Creado
+				mensajes.setStatusCreado(true);
+				
+				//Status-fecha Enviado
+				mensajes.setFechaEnviado(new Date());
+				mensajes.setStatusEnviado(true);
+				
+				//Status-fecha Leido
+				mensajes.setStatusLeido(false);
+				mensajes.setFechaLeido(new Date(0));
+				
+				mensajes.setVisible(true);
+				
+				mensajesService.crearMensaje(mensajes);
+				
+				return ResponseEntity.status(HttpStatus.CREATED).build();
+				
+			}
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
+		}else {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(emisor.get());
+		} 
     }
 	
 	//ver conversacion
@@ -68,7 +86,7 @@ public class MensajesController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> validarMensaje(@RequestBody Mensajes mensajes, @PathVariable(value = "id" )String id){
 		Optional<Mensajes> opt = mensajesService.actualizarVisible(id);
- 		this.validarMensajeImpl.validarStatus(mensajes);
+ 		//this.validarMensajeImpl.validarStatus(mensajes);
 		if(opt.isPresent()){
 			return ResponseEntity.notFound().build();
 		}
