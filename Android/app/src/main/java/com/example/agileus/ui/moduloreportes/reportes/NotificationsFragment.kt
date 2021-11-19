@@ -49,32 +49,6 @@ class NotificationsFragment : Fragment() {
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val lineChart: LineChart
-        val lineDataSet: LineDataSet
-
-// Enlazamos al XML
-        lineChart = binding.lineChart
-        //view.findViewById(R.id.lineChart)
-
-// Creamos un set de datos
-        val lineEntries = ArrayList<Entry>()
-        for (i in 0..10) {
-            var y = ((Math.random() * 8).toInt() + 1).toFloat()
-            lineEntries.add(Entry(i.toFloat(), attr.y.toFloat()))
-        }
-// Unimos los datos al data set
-        lineDataSet = LineDataSet(lineEntries, "Platzi")
-
-// Asociamos al gráfico
-        val lineData = LineData()
-        lineData.addDataSet(lineDataSet)
-        lineChart.data = lineData
-
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
