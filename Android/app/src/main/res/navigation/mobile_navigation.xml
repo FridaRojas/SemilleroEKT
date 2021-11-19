@@ -31,4 +31,6 @@
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
             app:destination="@id/buzonDetallesFragment" />
     </fragment>
+
+
 </navigation>
