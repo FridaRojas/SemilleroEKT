@@ -1,6 +1,5 @@
 package com.example.agileus.config
 
-
 import com.example.agileus.webservices.apis.ConversationApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
