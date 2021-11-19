@@ -1,6 +1,7 @@
 package com.ekt.Servicios.service;
 
 import com.ekt.Servicios.entity.Group;
+import com.ekt.Servicios.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +16,8 @@ public interface GroupService {
     Optional<Group> findById(String id);
 
     Group save(Group group);
+
+    Group saveUser( String idUser, String idGrupo, String idSuperior,String nombreRol);
 
     void deleteById(String id);
 }

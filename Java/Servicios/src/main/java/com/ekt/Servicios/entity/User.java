@@ -17,13 +17,15 @@ public class User {
     private String numeroEmpleado;
     private String nombre;
     private String password;
-    private Rol[] roles;
+    private String nombreRol;
+    private String idGrupo;
+    private Object[] opcionales;
+    private String token;
     private String telefono;
     private String idSuperiorInmediato;
     private String statusActivo;
     private String curp;
     private String rfc;
-    private String token;
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -43,20 +45,20 @@ public class User {
     public String getNombre() { return nombre; }
     public void setNombre(String value) { this.nombre = value; }
 
-    public String getCurp() { return curp; }
-    public void setCurp(String value) { this.curp = value; }
-
-    public String getRfc() { return rfc; }
-    public void setRfc(String value) { this.rfc = value; }
-
-    public String getToken() { return token; }
-    public void setToken(String value) { this.token = value; }
-
     public String getPassword() { return password; }
     public void setPassword(String value) { this.password = value; }
 
-    public Rol[] getRoles() { return roles; }
-    public void setRoles(Rol[] value) { this.roles = value; }
+    public String getNombreRol() { return nombreRol; }
+    public void setNombreRol(String value) { this.nombreRol = value; }
+
+    public String getIDGrupo() { return idGrupo; }
+    public void setIDGrupo(String value) { this.idGrupo = value; }
+
+    public Object[] getOpcionales() { return opcionales; }
+    public void setOpcionales(Object[] value) { this.opcionales = value; }
+
+    public String getToken() { return token; }
+    public void setToken(String value) { this.token = value; }
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String value) { this.telefono = value; }
@@ -66,4 +68,10 @@ public class User {
 
     public String getStatusActivo() { return statusActivo; }
     public void setStatusActivo(String value) { this.statusActivo = value; }
+
+    public String getCurp() { return curp; }
+    public void setCurp(String value) { this.curp = value; }
+
+    public String getRFC() { return rfc; }
+    public void setRFC(String value) { this.rfc = value; }
 }

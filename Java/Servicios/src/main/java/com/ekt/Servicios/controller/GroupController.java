@@ -1,6 +1,7 @@
 package com.ekt.Servicios.controller;
 
 
+import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/group/")
+@RequestMapping("/api/group")
 public class GroupController {
     @Autowired
     public GroupService groupService;
@@ -22,6 +23,11 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.save(group));
     }
 
+
+    @PutMapping("/saveUserGrup")
+    public ResponseEntity<?> addUserGrup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
+        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.saveUser(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol()));
+    }
 
     @GetMapping("/buscar/{id}")
     public Optional<Group> buscar(@PathVariable String id){
