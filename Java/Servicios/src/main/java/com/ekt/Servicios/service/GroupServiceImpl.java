@@ -30,6 +30,8 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public Optional<Group> findById(String id) {
+
+
         return groupRepository.findById(id);
     }
 
@@ -41,39 +43,40 @@ public class GroupServiceImpl implements GroupService{
     @Override
     public Group saveUser( String idUser, String idGrupo, String idSuperior,String nombreRol){
 
-//queda pendiente validacionde existencia y mandar a llamar la actualizacion de roles en coleccion de usuarios
+        Group  resGroup = null;
 
-        //buscar el grupo
+        //validar que los ids existen
         Optional<Group> group = findById(idGrupo);
-
-        //verificar que el usuario no existe en ningun grupo
-
-
-        //busca usuario y actualizo informacion
         Optional<User> user = userService.findById(idUser);
-        System.out.println("correo:"+user.get().getCorreo());
+        Optional<User> superior = userService.findById(idSuperior);
 
-        //actualizar informacion usuario
-        user.get().setIDSuperiorInmediato(idSuperior);
+        if(group.isPresent() && user.isPresent() && superior.isPresent()){
+            //verificar que el usuario no existe en ningun grupo
+            if( !userInGroup(idGrupo,idUser).isPresent()){
+                //actualizar informacion usuario
+                user.get().setIDSuperiorInmediato(idSuperior);
+                user.get().setNombreRol(nombreRol);
+                user.get().setIDGrupo(idGrupo);
 
+                //añadir el usuario al grupo
+                User[] lista = new User[group.get().getUsers().length+1];
 
-        user.get().setNombreRol(nombreRol);
-        user.get().setIDGrupo(idGrupo);
+                for(int i=0;i<group.get().getUsers().length;i++){
+                    lista[i]=group.get().getUsers()[i];
+                }
 
-        //añadir el usuario al grupo
-
-        System.out.println("leng"+group.get().getUsers().length);
-        User[] lista = new User[group.get().getUsers().length+1];
-
-        for(int i=0;i<group.get().getUsers().length;i++){
-            lista[i]=group.get().getUsers()[i];
+                lista[lista.length-1]=user.get();
+                group.get().setUsers(lista);
+                resGroup=groupRepository.save(group.get());
+            }else{
+                System.out.println("error el usuario ya existe en el grupo");
+                resGroup=null;
+            }
+        }else{
+            System.out.println("algun parametro no existe");
+            resGroup=null;
         }
-
-         lista[lista.length-1]=user.get();
-
-        group.get().setUsers(lista);
-
-        return  groupRepository.save(group.get());
+        return  resGroup;
     }
 
     @Override
