@@ -7,6 +7,7 @@ import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,16 +22,38 @@ public class UserController {
     public UserService userService;
 
     @PostMapping("/create")
-    public User create(@Validated @RequestBody User user){
-        return userService.save(user);
+    public ResponseEntity create(@Validated @RequestBody User user){
+        if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
+            System.out.println("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+        }else{
+            User us= userService.save(user);
+            if (us!=null){
+                System.out.println("Usuario Guardado");
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Guardado",us));
+            }else {
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+            }
+        }
     }
 
     @GetMapping("/findAll")
-    public Iterable<User> findAll(){return userService.findAll();}
+    public ResponseEntity<?> findAll(){
+    if (userService.findAll()!=null){
+        return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Lista de usuarios encontrada",userService.findAll()));
+    }else{
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error al buscar los datos",""));
+    }
+    }
 
     @GetMapping("/find/{id}")
-    public Optional<User> findById(@PathVariable String id){
-        return userService.findById(id);
+    public ResponseEntity<?> findById(@PathVariable String id){
+        //return userService.findById(id);
+        if(userService.findById(id).isPresent()){
+            return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",userService.findById(id)));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",""));
+        }
     }
 
     @GetMapping("/validate")
@@ -138,9 +161,20 @@ public class UserController {
     }
 
 
-    @GetMapping("/existUser/{correo}")
-    public boolean existUser(@PathVariable String correo){
-        return userService.findUsersByCorreo(correo).isPresent();
+    @GetMapping("/existUser")
+    public ResponseEntity existUser(@RequestBody User user){
+        if (user.getCorreo()==null || user.getCurp()==null || user.getRFC()==null || user.getNumeroEmpleado()==null){
+            System.out.println("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+        }else{
+            Optional<User> us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(),user.getRFC(),user.getNumeroEmpleado());
+            if (us.isPresent()){
+                System.out.println("El usuario existe");
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"El usuario existe",us.get()));
+            }else {
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+            }
+        }
     }
 
 
