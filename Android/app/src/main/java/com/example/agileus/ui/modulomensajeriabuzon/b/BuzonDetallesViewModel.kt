@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.Models.Buzon
 import com.example.agileus.adapters.BuzonAdapter
-import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
-import com.example.agileus.webservices.dao.BuzonDao
+import com.example.agileus.webservices.dao.ProviderBuzon
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,12 +15,12 @@ import kotlinx.coroutines.withContext
 class BuzonDetallesViewModel : ViewModel() {
 
     var adaptador = MutableLiveData<BuzonAdapter>()
-    var lista : BuzonDao
+    var lista : ProviderBuzon
     lateinit var listaConsumida:ArrayList<Buzon>
 
 
     init {
-        lista = BuzonDao()
+        lista = ProviderBuzon()
     }
 
    fun devuelvebuzon(){
