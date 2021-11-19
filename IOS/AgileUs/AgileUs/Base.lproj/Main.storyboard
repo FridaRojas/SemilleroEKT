@@ -35,19 +35,50 @@
             </objects>
             <point key="canvasLocation" x="886.95652173913049" y="41.517857142857139"/>
         </scene>
-        <!--View Controller-->
+        <!--Login Screen-->
         <scene sceneID="xyP-Kg-WF5">
             <objects>
-                <viewController id="njg-x3-P2J" sceneMemberID="viewController">
+                <viewController id="njg-x3-P2J" customClass="LoginScreen" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ynp-EM-fZb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="login_bckgrnd" translatesAutoresizingMaskIntoConstraints="NO" id="lM7-5T-Wyz">
+                                <rect key="frame" x="0.0" y="0.0" width="394" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wVN-9f-UtT">
+                                <rect key="frame" x="43" y="285" width="327" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3iD-Eq-3jX">
+                                <rect key="frame" x="43" y="385" width="327" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGy-v9-8eA">
+                                <rect key="frame" x="154" y="466" width="134" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="">
+                                    <backgroundConfiguration key="background" image="iniciar_sesion_btn"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="iniciarSesion:" destination="njg-x3-P2J" eventType="touchUpInside" id="lAO-jb-bV6"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="dvm-v9-8Mb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="qSr-fF-6NL"/>
                     <connections>
-                        <segue destination="bS3-wo-jyG" kind="show" id="CTn-di-tSd"/>
+                        <outlet property="txtPassword" destination="3iD-Eq-3jX" id="iXN-1B-DEn"/>
+                        <outlet property="txtUser" destination="wVN-9f-UtT" id="dim-57-qB8"/>
+                        <segue destination="bS3-wo-jyG" kind="show" identifier="Login_To_Home" id="CTn-di-tSd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A0l-SS-DDg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -142,6 +173,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="iniciar_sesion_btn" width="291" height="52"/>
+        <image name="login_bckgrnd" width="373" height="787"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
