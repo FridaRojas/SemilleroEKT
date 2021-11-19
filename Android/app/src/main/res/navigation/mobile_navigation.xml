@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/buzonDetallesFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -22,4 +22,9 @@
         android:name="com.example.agileus.ui.moduloreportes.reportes.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/buzonDetallesFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
+        android:label="buzon_detalles_fragment"
+        tools:layout="@layout/buzon_detalles_fragment" />
 </navigation>
