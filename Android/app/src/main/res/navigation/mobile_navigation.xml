@@ -16,7 +16,21 @@
         android:name="com.example.agileus.ui.modulotareas.listatareas.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+
     <fragment
+        android:id="@+id/buzonDetallesFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
+        android:label="buzon_detalles_fragment"
+        tools:layout="@layout/buzon_detalles_fragment" />
+    <fragment
+        android:id="@+id/buzonFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
+        android:label="fragment_buzon"
+        tools:layout="@layout/fragment_buzon" >
+        <action
+            android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
+            app:destination="@id/buzonDetallesFragment" />
+    </fragment>
         android:id="@+id/reporteMensajesFragment"
         android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragment"
         android:label="reporte_mensajes_fragment"
