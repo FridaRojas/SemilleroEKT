@@ -46,7 +46,6 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.recyclerListaTareas.adapter = it
             binding.recyclerListaTareas.layoutManager = LinearLayoutManager(activity)
-
         })
 
     }
