@@ -2,6 +2,7 @@ package com.ekt.Servicios.controller;
 
 
 
+import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.BodyUpdateBoss;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
@@ -137,20 +138,31 @@ public class UserController {
 
     }
 
-    @PutMapping("/updateRol/{idUser,idGrupo,idSuperior,nombreRol}")
-    public ResponseEntity<?> updateRol(@PathVariable String idUser, String idGrupo, String idSuperior,String nombreRol){
+    @PutMapping("/updateRol")
+    public ResponseEntity<?> updateRol(@RequestBody BodyAddUserGroup bodyGroup){
+        boolean bandera = false;
         try {
-            Optional<User> user = userService.findById(idUser);
-            if (idSuperior != null) {
-                user.get().setIDSuperiorInmediato(idSuperior);
+            Optional<User> user = userService.findById(bodyGroup.getIDUsuario());
+            if (bodyGroup.getIDSuperior() != null && !bodyGroup.getIDGrupo().equals(user.get().getIDGrupo())) {
+                user.get().setIDSuperiorInmediato(bodyGroup.getIDSuperior());
+                bandera = true;
             }
-            if (nombreRol != null) {
-                user.get().setNombreRol(nombreRol);
+            if(bodyGroup.getIDGrupo() != null && !bodyGroup.getIDGrupo().equals(user.get().getIDGrupo())){
+                user.get().setIDGrupo(bodyGroup.getIDGrupo());
+                bandera = true;
             }
-            userService.save(user.get());
-            return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
+            if (bodyGroup.getNombreRol() != null && !bodyGroup.getNombreRol().equals(user.get().getNombreRol())) {
+                user.get().setNombreRol(bodyGroup.getNombreRol());
+                bandera = true;
+            }
+            if(bandera) {
+                userService.save(user.get());
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
+            }else{
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "No se aceptan los cambios", ""));
+            }
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se pudo actualizar el usuario", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
         }
     }
 
