@@ -83,16 +83,20 @@ public class MensajesController {
 	}
 
 	//eliminar mensaje(cambiar estado)
-	@PutMapping("/{id}")
-	public ResponseEntity<?> validarMensaje(@RequestBody Mensajes mensajes, @PathVariable(value = "id" )String id){
-		Optional<Mensajes> opt = mensajesService.actualizarVisible(id);
- 		//this.validarMensajeImpl.validarStatus(mensajes);
-		if(opt.isPresent()){
+	@PutMapping("eliminarMensaje/{idMensaje}")
+	public ResponseEntity<?> borrarMensaje(@PathVariable(value = "idMensaje" )String idMensaje){
+		
+		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(idMensaje);
+		
+		if(!mensaje.isPresent()){
 			return ResponseEntity.notFound().build();
 		}
-		opt.get().setVisible(mensajes.getVisible());
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-
+		
+		mensaje.get().setVisible(false);
+		
+		mensajesService.save(mensaje.get());
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
 
 

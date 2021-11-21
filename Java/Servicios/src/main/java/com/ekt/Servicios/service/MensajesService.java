@@ -9,4 +9,6 @@ public interface MensajesService {
 	Iterable<Mensajes>verConversacion(String idConversacion);
 	Optional<Mensajes> actualizarVisible(String id);
 
+	Optional<Mensajes> buscarMensaje(String idMensaje);
+	Mensajes save(Mensajes mensaje);
 }

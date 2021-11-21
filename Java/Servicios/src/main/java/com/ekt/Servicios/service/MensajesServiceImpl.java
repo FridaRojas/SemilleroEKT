@@ -30,4 +30,16 @@ public class MensajesServiceImpl implements MensajesService{
 		return mensajesRepository.findById(id);
 	}
 
+	@Override
+	public Optional<Mensajes> buscarMensaje(String idMensaje) {
+		Optional<Mensajes> buscarMensaje = mensajesRepository.buscarMensaje(idMensaje);
+		
+		return buscarMensaje;
+	}
+
+	@Override
+	public Mensajes save(Mensajes mensaje) {
+		return mensajesRepository.save(mensaje);
+	}
+
 }
