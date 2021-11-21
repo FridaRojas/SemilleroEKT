@@ -142,6 +142,31 @@ public class MensajesController {
 		return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId)); // 8
 	}
 
+	@PutMapping("actualizarLeido")
+	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) throws ResultadoNoEncontrado{
+		//Buscamos el mensaje
+		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(mensajes.getID());
+		
+		//Validamos que exista
+		validarMensajeImpl.validarOptionalMensajes(mensaje, "Mensaje");
+		
+		if(mensaje.get().isStatusLeido()) {
+			return ResponseEntity.status(HttpStatus.OK).body("El status ya es verdadero");
+		} else {
+			//Si existe:
+			//actualizamos la fecha actual a la fecha entrante
+			mensaje.get().setFechaLeido(mensajes.getFechaLeido());
+			
+			//actualizamos el statusLeido actual al entrante
+			mensaje.get().setStatusLeido(true);
+			
+			//guardamos cambios
+			mensajesService.save(mensaje.get());
+			
+			return ResponseEntity.status(HttpStatus.OK).body("Actualizado");
+		}
+	}
+	
 	public List<User> listaConversacion(String miId) {
 		List<User> listaConversacion = new ArrayList<>();
 

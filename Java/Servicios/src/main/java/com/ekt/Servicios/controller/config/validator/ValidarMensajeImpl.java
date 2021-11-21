@@ -63,6 +63,13 @@ public class ValidarMensajeImpl implements ValidarMensaje {
 		}
 	}
 	
+	@Override
+	public void validarOptionalMensajes(Optional<Mensajes> validar, String mensaje) throws ResultadoNoEncontrado {
+		if(!validar.isPresent()) {
+			this.mensajeNoEncontrado("El"+mensaje+" no fue encontrado");
+		}
+	}
+	
 	private void message(String message) throws ApiUnprocessableEntity {
 		throw new ApiUnprocessableEntity(message);
 	}
@@ -70,4 +77,6 @@ public class ValidarMensajeImpl implements ValidarMensaje {
 	private void mensajeNoEncontrado(String mensaje) throws ResultadoNoEncontrado{
 		throw new ResultadoNoEncontrado(mensaje);
 	}
+
+	
 }
