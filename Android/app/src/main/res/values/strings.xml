@@ -9,4 +9,20 @@
     <string name="title_reportes">Reportes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="crear_tarea">Crear Tarea</string>
+    <string name="fecha_de_vencimiento">Fecha de Vencimiento</string>
+    <string name="fecha_de_inicio">Fecha de Inicio</string>
+    <string name="nombre_de_la_tarea">Nombre de la tarea</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="prioridad">Prioridad</string>
+    <string name="persona_asignada">Persona Asignada</string>
+
+    //Array spin prioridad tarea
+    <string-array name="prioridad_array">
+        <item>Baja</item>
+        <item>Media</item>
+        <item>Alta</item>
+    </string-array>
+
+
 </resources>
