@@ -16,6 +16,7 @@ import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.MensajesService;
 import com.ekt.Servicios.util.exceptions.ApiUnprocessableEntity;
+import com.ekt.Servicios.util.exceptions.ResultadoNoEncontrado;
 
 @RestController
 @RequestMapping("/api/mensajes/")
@@ -30,13 +31,16 @@ public class MensajesController {
 	private UserRepository userRepository;
 
 	@PostMapping("crearMensaje")
-	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity {
+	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity, ResultadoNoEncontrado {
 
 		this.validarMensajeImpl.validator(mensajes);
 		
 		Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
 		Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
 
+		this.validarMensajeImpl.validarOptional(emisor,"emisor");
+		this.validarMensajeImpl.validarOptional(receptor,"receptor");
+		
 		List<User> listaConversacion = listaConversacion(emisor.get().getID());
 
 		boolean existeEnLista = false;
@@ -52,21 +56,25 @@ public class MensajesController {
 			if (emisor.isPresent()) {
 				if (receptor.isPresent()) {
 					
-					Iterable<Mensajes> opt = mensajesService
+					List<Mensajes> conversacionForma1 = new ArrayList<>();
+					List<Mensajes> conversacionForma2 = new ArrayList<>();
+					
+					Iterable<Mensajes> conversacionIterable1 = mensajesService
 							.verConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-					Iterable<Mensajes> opt2 = mensajesService
+					conversacionIterable1.forEach(conversacionForma1::add);
+					
+					Iterable<Mensajes> conversacionIterable2 = mensajesService
 							.verConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
-
-					if (opt.toString().length() > 3) {
+					conversacionIterable2.forEach(conversacionForma2::add);
+					
+					if(conversacionForma1.size()>0) {
 						mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-					} else if (opt2.toString().length() > 3) {
+					}else if(conversacionForma2.size()>0) {
 						mensajes.setIDConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
-					} else {
+					}else {
 						mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
 					}
-
 					
-
 					// Status-fecha Creado
 					mensajes.setStatusCreado(true);
 
@@ -84,7 +92,7 @@ public class MensajesController {
 
 					mensajesService.crearMensaje(mensajes);
 
-					return ResponseEntity.status(HttpStatus.CREATED).build();
+					return ResponseEntity.status(HttpStatus.CREATED).body("{'Mensaje':'Creado'}");
 
 				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
@@ -139,7 +147,6 @@ public class MensajesController {
 
 		// 1.- Validar que yo exista
 		Optional<User> existo = userRepository.validarUsuario(miId);
-		//existo.ifPresent(listaConversacion::add);
 
 		// 2.- Buscar a mi jefe
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
