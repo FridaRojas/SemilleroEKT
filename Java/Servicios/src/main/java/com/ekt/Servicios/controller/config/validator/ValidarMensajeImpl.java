@@ -70,6 +70,13 @@ public class ValidarMensajeImpl implements ValidarMensaje {
 		}
 	}
 	
+	@Override
+	public void validarIterableUser(Iterable<User> validar, String mensaje) throws ResultadoNoEncontrado {
+		if(!validar.iterator().hasNext()) {
+			this.mensajeNoEncontrado("La lista de "+mensaje+" esta vacia");
+		}
+	}
+	
 	private void message(String message) throws ApiUnprocessableEntity {
 		throw new ApiUnprocessableEntity(message);
 	}
@@ -77,6 +84,4 @@ public class ValidarMensajeImpl implements ValidarMensaje {
 	private void mensajeNoEncontrado(String mensaje) throws ResultadoNoEncontrado{
 		throw new ResultadoNoEncontrado(mensaje);
 	}
-
-	
 }

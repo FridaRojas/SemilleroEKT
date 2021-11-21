@@ -15,5 +15,6 @@ public interface ValidarMensaje {
 	void validator(Mensajes request) throws ApiUnprocessableEntity;
 	void validarStatus(Mensajes request)throws ApiUnprocessableEntity;
 	void validarOptional(Optional<User> validar, String mensaje) throws ResultadoNoEncontrado;
+	void validarIterableUser(Iterable<User> validar, String mensaje) throws ResultadoNoEncontrado;
 	void validarOptionalMensajes(Optional<Mensajes> validar, String mensaje) throws ResultadoNoEncontrado;
 }

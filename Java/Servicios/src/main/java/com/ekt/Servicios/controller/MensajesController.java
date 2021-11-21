@@ -129,7 +129,7 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaContactos/{miId}")
-	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) { // 618d9c26beec342d91d747d6
+	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) throws ResultadoNoEncontrado { // 618d9c26beec342d91d747d6
 		// Existo existo
 		// return ResponseEntity.status(HttpStatus.OK).body(existo.get()); //1
 		// Jefe
@@ -167,22 +167,26 @@ public class MensajesController {
 		}
 	}
 	
-	public List<User> listaConversacion(String miId) {
+	public List<User> listaConversacion(String miId) throws ResultadoNoEncontrado {
 		List<User> listaConversacion = new ArrayList<>();
 
 		// 1.- Validar que yo exista
 		Optional<User> existo = userRepository.validarUsuario(miId);
-
+		this.validarMensajeImpl.validarOptional(existo,"emisor");
+		
 		// 2.- Buscar a mi jefe
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
+		this.validarMensajeImpl.validarOptional(jefe,"jefe");
 		jefe.ifPresent(listaConversacion::add);
 
 		// 3.- Buscar Hijos de jefe (hermanos)
 		Iterable<User> hermanos = userRepository.findByBossId(existo.get().getIDSuperiorInmediato());
+		this.validarMensajeImpl.validarIterableUser(hermanos, "hermanos");
 		hermanos.forEach(listaConversacion::add);
 
 		// 4.- Buscar a mis hijos
 		Iterable<User> misHijos = userRepository.findByBossId(existo.get().getID());
+		this.validarMensajeImpl.validarIterableUser(misHijos, "hijos");
 		misHijos.forEach(listaConversacion::add);
 
 		return listaConversacion;
