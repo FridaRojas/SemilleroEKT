@@ -14,17 +14,17 @@ public class ValidarMensajeImpl implements ValidarMensaje{
 			this.message("El id del emisor es obligatorio");
 		}
 		
-		/*if(request.getIDEmisor().length() < 3) {
-			this.message("El id del emisor es muy corto, debe tener almenos 3 caracteres");
-		}*/
+		if(request.getIDEmisor().length() < 24) {
+			this.message("El id del emisor es muy corto, debe tener almenos 24 caracteres");
+		}
 		
 		if(request.getIDReceptor() == null || request.getIDReceptor().isEmpty()) {
 			this.message("El id del receptor es obligatorio");
 		}
 		
-		/*if(request.getIDReceptor().length() < 3) {
-			this.message("El id del receptor es muy corto, debe tener almenos 3 caracteres");
-		}*/
+		if(request.getIDReceptor().length() < 24) {
+			this.message("El id del receptor es muy corto, debe tener almenos 24 caracteres");
+		}
 		
 		if(request.getTexto() == null || request.getTexto().isEmpty()) {
 			this.message("El texto del mensaje es obligatorio");

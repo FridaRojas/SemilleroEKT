@@ -32,6 +32,8 @@ public class MensajesController {
 	@PostMapping("crearMensaje")
 	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity {
 
+		this.validarMensajeImpl.validator(mensajes);
+		
 		Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
 		Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
 
@@ -63,7 +65,7 @@ public class MensajesController {
 						mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
 					}
 
-					this.validarMensajeImpl.validator(mensajes);
+					
 
 					// Status-fecha Creado
 					mensajes.setStatusCreado(true);
