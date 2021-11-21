@@ -111,7 +111,7 @@ public class MensajesController {
 		return ResponseEntity.ok(iter.iterator());
 	}
 
-	// eliminar mensaje(cambiar estado)
+	// eliminar mensaje(cambiar estado) ?
 	@PutMapping("eliminarMensaje/{idMensaje}")
 	public ResponseEntity<?> borrarMensaje(@PathVariable(value = "idMensaje") String idMensaje) {
 
@@ -128,7 +128,7 @@ public class MensajesController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
 
-	@GetMapping("listaConversacion/{miId}")
+	@GetMapping("listaContactos/{miId}")
 	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) { // 618d9c26beec342d91d747d6
 		// Existo existo
 		// return ResponseEntity.status(HttpStatus.OK).body(existo.get()); //1
