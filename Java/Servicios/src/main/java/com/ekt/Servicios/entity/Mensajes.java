@@ -17,6 +17,8 @@ public class Mensajes {
     private String texto;
     private boolean visible;
     
+    private String nombreConversacionReceptor;
+    
     private Date fechaCreacion;
     private boolean statusCreado;
     
@@ -80,4 +82,11 @@ public class Mensajes {
 
     public boolean getVisible() { return visible; }
     public void setVisible(boolean value) { this.visible = value; }
+    
+	public String getNombreConversacionReceptor() {
+		return nombreConversacionReceptor;
+	}
+	public void setNombreConversacionReceptor(String nombreConversacionReceptor) {
+		this.nombreConversacionReceptor = nombreConversacionReceptor;
+	}
 }

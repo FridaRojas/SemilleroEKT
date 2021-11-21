@@ -63,6 +63,8 @@ public class MensajesController {
 				
 				mensajes.setVisible(true);
 				
+				mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
+				
 				mensajesService.crearMensaje(mensajes);
 				
 				return ResponseEntity.status(HttpStatus.CREATED).build();
