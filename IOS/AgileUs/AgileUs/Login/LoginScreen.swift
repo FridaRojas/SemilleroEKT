@@ -29,8 +29,8 @@ class LoginScreen: UIViewController {
         
         //Send JSON
         
-        /*
-        let server = "http://10.97.4.238:3041/api/user/validate"
+        
+        let serverLogin = server+"user/validate"
         
         self.performSegue(withIdentifier: "Login_To_Home", sender: self)
         let user = User(correo: "13@gmail.com", password: "123", token: "wefwfefwf121221fwe")
@@ -41,7 +41,7 @@ class LoginScreen: UIViewController {
             return
         }
         
-        let url = URL(string: server)!
+        let url = URL(string: serverLogin)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -63,9 +63,9 @@ class LoginScreen: UIViewController {
                 print ("got data: \(dataString)")
             }
         }
-        task.resume()*/
+        task.resume()
         
-        self.performSegue(withIdentifier: "Login_To_Home", sender: self)
+        //self.performSegue(withIdentifier: "Login_To_Home", sender: self)
         
     }
     
