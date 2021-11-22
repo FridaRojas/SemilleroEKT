@@ -49,8 +49,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateIdBoss(User userUpdate, String idBoss){
+    public User updateIdBoss(String idUser, String idBoss){
+        //re
+        User userUpdate = userRepository.findById(idUser).get();
         userUpdate.setIDSuperiorInmediato(idBoss);
+
         save(userUpdate);
         return userUpdate;
     }
@@ -61,6 +64,13 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(id);
     }
 
+    @Override
+    public void reasignaSuperiores(String[] idUsuarios, String[] idSuperiores) {
+
+        for(int i=0 ; i<idUsuarios.length ; i++){
+            updateIdBoss(idUsuarios[i],idSuperiores[i]);
+        }
+    }
 
 
 }

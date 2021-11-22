@@ -108,11 +108,11 @@ public class UserController {
 
     @PutMapping("/updateIdBoss")
     public ResponseEntity<?> updateIdBoss(@RequestBody BodyUpdateBoss updateBoss){
-        String[] idUser = updateBoss.getIDUser();
-        String[] idBoss = updateBoss.getIDBoss();
+        String[] idUser = updateBoss.getIDUsuarios();
+        String[] idBoss = updateBoss.getIDSuperiores();
         try {
             for (int i = 0; i < idUser.length; i++) {
-                userService.updateIdBoss(userService.findById(idUser[i]).get(), idBoss[i]);
+                userService.updateIdBoss(idUser[i], idBoss[i]);
             }
             return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
         }catch (Exception e){
@@ -211,5 +211,23 @@ public class UserController {
         }
     }
 
+    @PutMapping("/reasigna")
+    public ResponseEntity reasigna(@RequestBody BodyUpdateBoss body){
 
+        if (body.getIDUsuarios() == null || body.getIDSuperiores()==null){
+            System.out.println("Error en las llaves");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+        }else {
+            String[] Usuarios = body.getIDUsuarios();
+            String[] Superiores = body.getIDSuperiores();
+
+            for (int i=0 ; i<Usuarios.length ; i++){
+                System.out.println("Empleado:"+Usuarios[i]+"  Superior:"+Superiores[i]);
+            }
+            userService.reasignaSuperiores(Usuarios, Superiores);
+            return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Superiores Modificados",""));
+
+        }
+
+    }
 }
