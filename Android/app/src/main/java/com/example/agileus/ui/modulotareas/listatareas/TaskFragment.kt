@@ -5,20 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentDashboardBinding
-import com.example.agileus.databinding.FragmentTasksBinding
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.MainActivity
-import com.example.agileus.ui.modulotareas.principalTareas.TaskFragment
 
 
-class DashboardFragment : Fragment() {
+class TaskFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -47,7 +42,7 @@ class DashboardFragment : Fragment() {
 
         //Mostrar Fragments de acuerdo al estado
         val transaction = (activity as HomeActivity).supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.contenedorTareas, TaskFragment())
+        transaction.replace(R.id.contenedorTareas, TaskListFragment())
         transaction.commit()
 
         //Btn Crear tareas

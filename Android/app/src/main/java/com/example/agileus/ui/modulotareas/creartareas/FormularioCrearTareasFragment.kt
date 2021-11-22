@@ -1,6 +1,5 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFinFecha
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtInicioFecha
-import com.example.agileus.ui.modulotareas.listatareas.DashboardViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
 
 private const val ARG_PARAM1 = "param1"
@@ -23,7 +20,6 @@ private const val ARG_PARAM1 = "param1"
 
 class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
-    private lateinit var crearTareasViewModel: DashboardViewModel
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!

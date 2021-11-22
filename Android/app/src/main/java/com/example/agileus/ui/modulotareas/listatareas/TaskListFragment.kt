@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulotareas.principalTareas
+package com.example.agileus.ui.modulotareas.listatareas
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,14 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.agileus.R
-import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentTasksBinding
-import com.example.agileus.ui.modulotareas.listatareas.DashboardViewModel
 
-class TaskFragment : Fragment() {
+class TaskListFragment : Fragment() {
 
     private lateinit var taskViewModel: TaskViewModel
 
