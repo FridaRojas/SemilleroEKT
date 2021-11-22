@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface GroupRepository extends MongoRepository<Group,String> {
 
-    @Query("{'id': ?0, 'users.id': ?1}")
+    @Query("{'id': ?0, 'usuarios.id': ?1}")
     Optional<Group> findByIdUser (String id, String user);
 
 }
