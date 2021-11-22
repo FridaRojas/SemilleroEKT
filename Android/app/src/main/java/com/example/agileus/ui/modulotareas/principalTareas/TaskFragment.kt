@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
@@ -27,6 +28,9 @@ class TaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        taskViewModel =
+            ViewModelProvider(this).get(TaskViewModel::class.java)
+
         _binding = FragmentTasksBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,14 +38,14 @@ class TaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         //RecyclerListaTareas
         taskViewModel.devuelveLista()
 
         taskViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.recyclerListaTareas.adapter = it
-            binding.recyclerListaTareas.layoutManager = LinearLayoutManager(activity)
+            binding.recyclerTareasStatus.adapter = it
+            binding.recyclerTareasStatus.layoutManager = LinearLayoutManager(activity)
         })
+
+
     }
 }
