@@ -45,7 +45,20 @@ class AsignarTareaViewController: UIViewController {
         descriptionText.initStyle(placeholder: "Descripcion")
         addTaskBtn.initStyle(text: "Asignar Tarea")
     }
-
+    
+    @IBAction func addTask(_ sender: Any) {
+        let data = [
+            "nombre": "Nombre Prueba",
+            "personaAsignada": "Persona Prueba",
+            "prioridad": "Prioridad Prueba",
+            "fechaInicio": "Fecha Inicio Prueba",
+            "fechaFin": "Fecha Fin Prueba",
+            "descripcion": "Descripcion",
+            "archivo": "Archivo Prueba"
+        ]
+        Api.shared.createTask(data: data)
+    }
+    
 }
 
 
