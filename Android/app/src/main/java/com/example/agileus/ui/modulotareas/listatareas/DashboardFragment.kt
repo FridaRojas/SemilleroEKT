@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.R
+import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentDashboardBinding
 
 
@@ -17,6 +19,7 @@ class DashboardFragment : Fragment() {
     private var _binding: FragmentDashboardBinding? = null
 
     private val binding get() = _binding!!
+    var listStatus = listOf("Pendientes", "Completadas", "Asignadas")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,19 +30,25 @@ class DashboardFragment : Fragment() {
             ViewModelProvider(this).get(DashboardViewModel::class.java)
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-//        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-//          //  textView.text = it
-//        })
-        return root
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Recycler Status
+        var adaptadorStatus = StatusTasksAdapter(listStatus)
+        binding.recyclerStatusTareas.adapter = adaptadorStatus
+        binding.recyclerStatusTareas.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL ,false)
+        }
 
+        binding.btnCrearTarea.setOnClickListener {
+            it.findNavController().navigate(R.id.formularioCrearTareasFragment)
+        }
+
+        //RecyclerListaTareas
         dashboardViewModel.devuelveLista()
 
         dashboardViewModel.adaptador.observe(viewLifecycleOwner,{
@@ -48,12 +57,6 @@ class DashboardFragment : Fragment() {
         })
 
 
-        binding.botonFlotante.setOnClickListener {
-
-            val action = DashboardFragmentDirections.actionNavigationDashboardToFormularioCrearTareasFragment()
-            findNavController().navigate(action)
-
-        }
 
     }
 

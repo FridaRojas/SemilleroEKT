@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:background="@drawable/rounded_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:elevation="0dp"
+    app:cardCornerRadius="@dimen/cornerRadiusCard"
+    android:layout_margin="@dimen/paddingGeneral">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtNombreTarea"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nombre de la Tarea" />
+        <TextView
+            android:id="@+id/txtNombreTarea"
+            style="@style/titleCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de la Tarea"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:id="@+id/txtPersonaAsignada"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Persona asignada" />
+        <TextView
+            android:id="@+id/txtPersonaAsignada"
+            style="@style/textCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Persona asignada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNombreTarea"/>
 
-    <TextView
-        android:id="@+id/txtFecha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Fecha" />
+        <TextView
+            android:id="@+id/txtFecha"
+            android:layout_marginTop="15dp"
+            style="@style/textCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtPersonaAsignada"/>
 
+        <ImageView
+            android:id="@+id/iconoAbrirDetallesTarea"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:src="@drawable/iconodetalles"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulotareas.listatareas
+package com.example.agileus.ui.modulotareas.principalTareas
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -12,8 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DashboardViewModel : ViewModel() {
-
+class TaskViewModel : ViewModel() {
     var adaptador = MutableLiveData<TasksAdapter>()
     lateinit var lista: TasksDao
     // lateinit var lista: ConversationDao
@@ -49,7 +48,4 @@ class DashboardViewModel : ViewModel() {
 
 
     }
-
-
-
 }

@@ -14,7 +14,6 @@ import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFinFecha
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtInicioFecha
-import com.example.agileus.ui.modulotareas.listatareas.DashboardFragmentDirections
 import com.example.agileus.ui.modulotareas.listatareas.DashboardViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
 
@@ -84,9 +83,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
                         "Descripcion: $descripcion ",
 
                     Toast.LENGTH_LONG).show()
-
-                val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
-                findNavController().navigate(action)
 
             }
 
