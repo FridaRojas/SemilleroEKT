@@ -92,7 +92,7 @@ public class MensajesController {
 
 					mensajesService.crearMensaje(mensajes);
 
-					return ResponseEntity.status(HttpStatus.CREATED).body("{'Mensaje':'Creado'}");
+					return ResponseEntity.status(HttpStatus.CREATED).body("Mensaje creado");
 
 				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
