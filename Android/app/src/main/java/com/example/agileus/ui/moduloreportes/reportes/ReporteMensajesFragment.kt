@@ -14,6 +14,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
+import com.example.agileus.ui.MainActivity
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -59,11 +60,19 @@ class ReporteMensajesFragment : Fragment() {
             textView.text = it
         })
         return root
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
+        binding.btnFiltroReportes.setOnClickListener {
+            val newFragment = AddAccDialog(this)
+            newFragment.show((activity as MainActivity).supportFragmentManager, "Filtro de Reportes")
+        }
+         */
 
         binding.btnReportesTareas.setOnClickListener {
             val action = ReporteMensajesFragmentDirections.actionReporteMensajesFragmentToReporteTareasFragment()
@@ -74,7 +83,6 @@ class ReporteMensajesFragment : Fragment() {
         pieChart = binding.pieChart
 
         initPieChart()
-
         setDataToPieChart()
     }
 
@@ -109,7 +117,7 @@ class ReporteMensajesFragment : Fragment() {
         val colors: ArrayList<Int> = ArrayList()
         colors.add(resources.getColor(R.color.colorPrimary))
         colors.add(resources.getColor(R.color.colorSecondary))
-        colors.add(Color.parseColor("#f6E2E0"))
+        colors.add(resources.getColor(R.color.colorGray))
 
         val dataSet = PieDataSet(dataEntries, "")
         val data = PieData(dataSet)
