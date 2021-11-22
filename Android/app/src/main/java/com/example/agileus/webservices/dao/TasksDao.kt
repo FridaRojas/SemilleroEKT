@@ -16,7 +16,16 @@ class TasksDao {
             lista = ResponseDos.body()!!
         }
         return lista
+    }
+
+    fun postTasks(t:Tasks){
 
     }
+
+
+
+
+
+
 
 }

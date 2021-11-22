@@ -1,34 +1,35 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
+import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFinFecha
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtInicioFecha
-import com.example.agileus.ui.modulotareas.listatareas.DashboardFragmentDirections
 import com.example.agileus.ui.modulotareas.listatareas.DashboardViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
 
 private const val ARG_PARAM1 = "param1"
 
-
-
 class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
-    private lateinit var crearTareasViewModel: DashboardViewModel
+    private lateinit var asignarTareaViewModel: CrearTareasViewModel
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
     private var param1: String? = null
+
+    //lateinit var tarea: Tasks
 
     var fechaInicio    : String = ""
     var fechaFin       : String = ""
@@ -47,6 +48,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
         savedInstanceState: Bundle?
     ): View? {
 
+        asignarTareaViewModel =
+            ViewModelProvider(this).get(CrearTareasViewModel::class.java)
+
         _binding = FragmentFormularioCrearTareasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -55,43 +59,55 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setUpUiTareas()
+        var tarea: Tasks
+        setUpUiAsignarTareas()
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
-
             if(fechaInicio=="" || fechaFin=="" ||
                 binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
                 binding.edtDescripcion.text.toString().isNullOrEmpty()
                     ){
-
                 Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
-
             }else{
 
                 val titulo      = binding.edtAgregaTitulo.text
                 val descripcion = binding.edtDescripcion.text
                 val mPrioridad  = binding.spinPrioridad.selectedItem
 
-                Toast.makeText(activity as HomeActivity,
+                //
 
-                    "Datos POST = " +
+                Toast.makeText(activity as HomeActivity,
+                    "Datos to POST = " +
                         "Titulo: $titulo, " +
                         "Prioridad: $mPrioridad, " +
                         "Fecha inicio: $fechaInicio, " +
                         "Fecha fin: $fechaFin, "+
                         "Descripcion: $descripcion ",
-
                     Toast.LENGTH_LONG).show()
+
+                tarea = Tasks(
+                    "GRUPOID1",
+                    "EMIS1",
+                    "Raul",
+                    "RECEPT1",
+                    "Carlos",
+                    fechaInicio,
+                    fechaFin,
+                    titulo.toString(),
+                    "EWREWF2323",
+                    descripcion.toString(),
+                    mPrioridad.toString(),
+                    false,
+                    "2014-01-01"
+                )
+
+                asignarTareaViewModel.postTarea(tarea)
 
                 val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
                 findNavController().navigate(action)
 
             }
-
-
-
         }
         /* Boton Crear tarea  */
 
@@ -113,10 +129,18 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
             }
     }
 
-    fun crearTarea(){
-        // POST
-    }
-    fun setUpUiTareas(){
+
+    fun setUpUiAsignarTareas(){
+        //Recuperar id grupo
+        // SPINER CON OBJETO CONSUMIDO API RETROFIT
+
+        /*val spinListaPersonasAdapter = vista.findViewById<Spinner>(R.id.spinPersonaAsignada)
+
+        val spinListaAsignarAdapter = ArrayAdapter<Int>((activity as HomeActivity), android.R.layout.simple_spinner_item, listaF)
+        spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinListaPersonasAdapter.adapter = spinListaAsignarAdapter*/
+
+
         // SPINER CON RECURSO XML
         val spinPrioridadAdapter = ArrayAdapter.createFromResource(activity as HomeActivity, R.array.prioridad_array, android.R.layout.simple_spinner_item)
         spinPrioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -143,5 +167,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
         Toast.makeText(activity as HomeActivity, "$fechaFin", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }
