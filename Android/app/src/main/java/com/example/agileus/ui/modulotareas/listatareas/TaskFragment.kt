@@ -18,7 +18,6 @@ import com.example.agileus.ui.HomeActivity
 
 class TaskFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
     private var _binding: FragmentDashboardBinding? = null
 
     private val binding get() = _binding!!
