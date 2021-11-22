@@ -6,6 +6,7 @@ import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.BodyUpdateBoss;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
+import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,18 +25,23 @@ public class UserController {
     @Autowired
     public UserService userService;
 
+    @Autowired
+    public UserRepository userRepository;
+
     @PostMapping("/create")
     public ResponseEntity<?> create(@Validated @RequestBody User user){
         if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            User us= userService.save(user);
-            if (us!=null){
-                System.out.println("Usuario Guardado");
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Guardado",us));
+            Optional<User> us= userRepository.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
+
+            if (us.isPresent()){
+                return ResponseEntity.ok(new Response(HttpStatus.CONFLICT,"Usuario existente",""));
             }else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+                userService.save(user);
+                System.out.println("Usuario Creado");
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Creado",user));
             }
         }
     }
