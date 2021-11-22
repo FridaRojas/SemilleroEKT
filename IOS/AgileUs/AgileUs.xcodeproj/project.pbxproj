@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
+		49257000274C17E50014A8B4 /* Funciones_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */; };
+		49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49257001274C18120014A8B4 /* Adaptador_Modals.swift */; };
+		49257006274C1A0F0014A8B4 /* FiltroModal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */; };
+		49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49257005274C1A0F0014A8B4 /* FiltroModalController.swift */; };
+		4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49257009274C1AF20014A8B4 /* ListaGrafica.swift */; };
+		4925700C274C1AF20014A8B4 /* ListaGrafica.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4925700A274C1AF20014A8B4 /* ListaGrafica.xib */; };
 		5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */; };
 		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
@@ -43,6 +49,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Generales.swift; sourceTree = "<group>"; };
+		49257001274C18120014A8B4 /* Adaptador_Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adaptador_Modals.swift; sourceTree = "<group>"; };
+		49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FiltroModal.storyboard; sourceTree = "<group>"; };
+		49257005274C1A0F0014A8B4 /* FiltroModalController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltroModalController.swift; sourceTree = "<group>"; };
+		49257009274C1AF20014A8B4 /* ListaGrafica.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListaGrafica.swift; sourceTree = "<group>"; };
+		4925700A274C1AF20014A8B4 /* ListaGrafica.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListaGrafica.xib; sourceTree = "<group>"; };
 		4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs_AgileUsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.release.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -99,6 +111,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49256FFE274C17D00014A8B4 /* Extensiones */ = {
+			isa = PBXGroup;
+			children = (
+				49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */,
+			);
+			path = Extensiones;
+			sourceTree = "<group>";
+		};
+		49257003274C197E0014A8B4 /* modals */ = {
+			isa = PBXGroup;
+			children = (
+				49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */,
+				49257005274C1A0F0014A8B4 /* FiltroModalController.swift */,
+				49257001274C18120014A8B4 /* Adaptador_Modals.swift */,
+			);
+			path = modals;
+			sourceTree = "<group>";
+		};
+		49257008274C1AD40014A8B4 /* listagrafica */ = {
+			isa = PBXGroup;
+			children = (
+				49257009274C1AF20014A8B4 /* ListaGrafica.swift */,
+				4925700A274C1AF20014A8B4 /* ListaGrafica.xib */,
+			);
+			path = listagrafica;
+			sourceTree = "<group>";
+		};
 		52D2981BB9146F534D2E2D08 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -109,7 +148,6 @@
 				4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */,
 				6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -138,6 +176,7 @@
 		D4E69C762746BD81002121E4 /* AgileUs */ = {
 			isa = PBXGroup;
 			children = (
+				49256FFE274C17D00014A8B4 /* Extensiones */,
 				D4E69CB02746CCCE002121E4 /* Login */,
 				D4E69CA92746C25E002121E4 /* Tareas */,
 				D4E69CA82746C256002121E4 /* Reportes */,
@@ -181,6 +220,8 @@
 		D4E69CA82746C256002121E4 /* Reportes */ = {
 			isa = PBXGroup;
 			children = (
+				49257008274C1AD40014A8B4 /* listagrafica */,
+				49257003274C197E0014A8B4 /* modals */,
 				D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */,
 			);
 			path = Reportes;
@@ -321,8 +362,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4925700C274C1AF20014A8B4 /* ListaGrafica.xib in Resources */,
 				D4E69C842746BD83002121E4 /* LaunchScreen.storyboard in Resources */,
 				D4E69C812746BD83002121E4 /* Assets.xcassets in Resources */,
+				49257006274C1A0F0014A8B4 /* FiltroModal.storyboard in Resources */,
 				D4E69C7F2746BD81002121E4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,11 +494,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */,
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
+				49257000274C17E50014A8B4 /* Funciones_Generales.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
+				4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */,
+				49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
 			);
@@ -637,6 +684,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AD358MVNJ9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AgileUs/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -665,6 +713,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AD358MVNJ9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AgileUs/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
