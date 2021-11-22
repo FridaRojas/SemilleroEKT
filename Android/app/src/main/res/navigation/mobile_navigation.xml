@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -16,7 +16,6 @@
         android:name="com.example.agileus.ui.modulotareas.listatareas.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
-
 
     <fragment
         android:id="@+id/buzonDetallesFragment"
@@ -32,4 +31,23 @@
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
             app:destination="@id/buzonDetallesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/reporteMensajesFragment"
+        android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragment"
+        android:label="reporte_mensajes_fragment"
+        tools:layout="@layout/reporte_mensajes_fragment" >
+        <action
+            android:id="@+id/action_reporteMensajesFragment_to_reporteTareasFragment"
+            app:destination="@id/reporteTareasFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reporteTareasFragment"
+        android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteTareasFragment"
+        android:label="reporte_tareas_fragment"
+        tools:layout="@layout/reporte_tareas_fragment" >
+        <action
+            android:id="@+id/action_reporteTareasFragment_to_reporteMensajesFragment"
+            app:destination="@id/reporteMensajesFragment" />
+    </fragment>
+
 </navigation>
