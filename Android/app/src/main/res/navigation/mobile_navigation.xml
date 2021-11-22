@@ -15,7 +15,11 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.agileus.ui.modulotareas.listatareas.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_formularioCrearTareasFragment"
+            app:destination="@id/formularioCrearTareasFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/buzonDetallesFragment"
@@ -48,6 +52,15 @@
         <action
             android:id="@+id/action_reporteTareasFragment_to_reporteMensajesFragment"
             app:destination="@id/reporteMensajesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formularioCrearTareasFragment"
+        android:name="com.example.agileus.ui.modulotareas.creartareas.FormularioCrearTareasFragment"
+        android:label="Asignar Tarea"
+        >
+        <action
+            android:id="@+id/action_formularioCrearTareasFragment_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
     </fragment>
 
 </navigation>
