@@ -59,14 +59,14 @@ public class GroupServiceImpl implements GroupService{
                 user.get().setIDGrupo(idGrupo);
 
                 //añadir el usuario al grupo
-                User[] lista = new User[group.get().getUsers().length+1];
+                User[] lista = new User[group.get().getUsuarios().length+1];
 
-                for(int i=0;i<group.get().getUsers().length;i++){
-                    lista[i]=group.get().getUsers()[i];
+                for(int i=0;i<group.get().getUsuarios().length;i++){
+                    lista[i]=group.get().getUsuarios()[i];
                 }
 
                 lista[lista.length-1]=user.get();
-                group.get().setUsers(lista);
+                group.get().setUsuarios(lista);
                 resGroup=groupRepository.save(group.get());
             }else{
                 System.out.println("error el usuario ya existe en el grupo");
@@ -92,17 +92,17 @@ public class GroupServiceImpl implements GroupService{
 
         //obtiene la lista de usuarios que tiene el grupo
 
-        User[] lista = group.get().getUsers();
-        User[] lista2 = new User[group.get().getUsers().length-1];
+        User[] lista = group.get().getUsuarios();
+        User[] lista2 = new User[group.get().getUsuarios().length-1];
 
-        for(int i=0;i<group.get().getUsers().length;i++){
+        for(int i=0;i<group.get().getUsuarios().length;i++){
             //si el idUsuario que manda no es igual, lo copia
             if (! idUser.equals(lista[i].getID())){
                 lista2[i]=lista[i];
             }
         }
 
-        group.get().setUsers(lista2);
+        group.get().setUsuarios(lista2);
 
         groupRepository.save(group.get());
     }
