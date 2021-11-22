@@ -13,12 +13,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DashboardViewModel : ViewModel() {
-
     var adaptador = MutableLiveData<TasksAdapter>()
-    lateinit var lista: TasksDao
-    // lateinit var lista: ConversationDao
+    var lista: TasksDao
 
-    //Cambiar el tipo de ArrayList a Tarea
     lateinit var listaConsumida: ArrayList<Tasks>
 
     //Lista de Estados Recycler
