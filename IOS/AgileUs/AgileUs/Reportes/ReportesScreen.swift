@@ -8,7 +8,7 @@
 import UIKit
 import Charts
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // elementos
     @IBOutlet weak var optionstAB: UISegmentedControl!
@@ -43,7 +43,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var cont = 0
     
     // modal
-    let adaptador = Adaptador_Models()
+    let adaptador = Adaptador_Modals()
     
     override func viewDidLoad() {
         super.viewDidLoad()
