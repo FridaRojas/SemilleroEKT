@@ -10,10 +10,12 @@ import com.ekt.Servicios.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -23,7 +25,7 @@ public class UserController {
     public UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity create(@Validated @RequestBody User user){
+    public ResponseEntity<?> create(@Validated @RequestBody User user){
         if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
@@ -143,23 +145,27 @@ public class UserController {
         boolean bandera = false;
         try {
             Optional<User> user = userService.findById(bodyGroup.getIDUsuario());
-            if (bodyGroup.getIDSuperior() != null && !bodyGroup.getIDGrupo().equals(user.get().getIDGrupo())) {
-                user.get().setIDSuperiorInmediato(bodyGroup.getIDSuperior());
-                bandera = true;
-            }
-            if(bodyGroup.getIDGrupo() != null && !bodyGroup.getIDGrupo().equals(user.get().getIDGrupo())){
-                user.get().setIDGrupo(bodyGroup.getIDGrupo());
-                bandera = true;
-            }
-            if (bodyGroup.getNombreRol() != null && !bodyGroup.getNombreRol().equals(user.get().getNombreRol())) {
-                user.get().setNombreRol(bodyGroup.getNombreRol());
-                bandera = true;
-            }
-            if(bandera) {
-                userService.save(user.get());
-                return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
+            if(user.isPresent()) {
+                if (bodyGroup.getIDSuperior() != null && !bodyGroup.getIDSuperior().equals(user.get().getIDSuperiorInmediato())) {
+                    user.get().setIDSuperiorInmediato(bodyGroup.getIDSuperior());
+                    bandera = true;
+                }
+                if (bodyGroup.getIDGrupo() != null && !bodyGroup.getIDGrupo().equals(user.get().getIDGrupo())) {
+                    user.get().setIDGrupo(bodyGroup.getIDGrupo());
+                    bandera = true;
+                }
+                if (bodyGroup.getNombreRol() != null && !bodyGroup.getNombreRol().equals(user.get().getNombreRol())) {
+                    user.get().setNombreRol(bodyGroup.getNombreRol());
+                    bandera = true;
+                }
+                if (bandera) {
+                    userService.save(user.get());
+                    return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
+                } else {
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "No se aceptan los cambios", ""));
+                }
             }else{
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "No se aceptan los cambios", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró usuario", ""));
             }
         }catch (Exception e){
             return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
@@ -167,14 +173,24 @@ public class UserController {
     }
 
     @GetMapping("/findByBossId/{id}")
-    public Iterable<User> findByBossId(@PathVariable String id){
-        Iterable<User> users = userService.findUserByBossId(id);
-        return users;
+    public ResponseEntity<?> findByBossId(@PathVariable String id){
+        try {
+            Iterable<User> users = userService.findUserByBossId(id);
+            System.out.println(((Collection<User>) users).size());
+            if(((Collection<User>) users).size()>0) {
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuarios encontrados", users));
+            }
+            else {
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontraron usuarios", ""));
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Error desconocido", ""));
+        }
     }
 
 
     @GetMapping("/existUser")
-    public ResponseEntity existUser(@RequestBody User user){
+    public ResponseEntity<?> existUser(@RequestBody User user){
         if (user.getCorreo()==null || user.getCurp()==null || user.getRFC()==null || user.getNumeroEmpleado()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
