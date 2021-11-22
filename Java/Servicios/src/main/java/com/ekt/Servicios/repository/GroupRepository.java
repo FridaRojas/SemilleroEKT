@@ -14,6 +14,9 @@ import java.util.Optional;
 public interface GroupRepository extends MongoRepository<Group,String> {
 
     @Query("{'id': ?0, 'usuarios.id': ?1}")
-    Optional<Group> findByIdUser (String id, String user);
+    Optional<Group> buscarUsuarioEnGrupo (String id, String user);
+
+    @Query("{nombre:?0}")
+    Optional<Group> buscarPorNombre (String nombre);
 
 }

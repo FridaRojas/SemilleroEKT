@@ -9,19 +9,22 @@ import java.util.Optional;
 
 
 public interface GroupService {
-    Iterable<Group> findAll();
+    Iterable<Group> buscarTodo();
 
-    Page<Group> findAll(Pageable pageable);
+    Page<Group> buscarTodo(Pageable pageable);
 
-    Optional<Group> findById(String id);
+    Optional<Group> buscarPorId(String id);
 
-    Group save(Group group);
+    Group guardar(Group group);
 
-    Group saveUser( String idUser, String idGrupo, String idSuperior,String nombreRol);
+    Group guardarUsuario( String idUser, String idGrupo, String idSuperior,String nombreRol);
 
-    void deleteById(String id);
+    void borrarPorId(String id);
 
-    void deleteUserFromGroup( String idUser, String idGroup);
+    void borrarUsuarioDeGrupo( String idUser, String idGroup);
 
-    public Optional<Group> userInGroup(String id, String user);
+    Optional<Group> buscarUsuarioEnGrupo(String id, String user);
+
+    Optional<Group> buscarPorNombre(String nombre);
+
 }

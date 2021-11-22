@@ -1,10 +1,11 @@
 package com.ekt.Servicios.controller;
 
 
-import com.ekt.Servicios.entity.BodyUpdateBoss;
+
 import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.Response;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
 
@@ -16,10 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/group")
+@RequestMapping("/api/grupo")
 public class GroupController {
     @Autowired
     public GroupService groupService;
@@ -29,18 +31,18 @@ public class GroupController {
 
     @PostMapping()
     public ResponseEntity<?> save(@RequestBody Group group){
-        Group obj= groupService.save(group);
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.save(group));
+        Group obj= groupService.guardar(group);
+        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
     }
 
 
-    @PutMapping("/saveUserGrup")
+    @PutMapping("/guardarGrupo")
     public ResponseEntity<?> addUserGrup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
 
         if(bodyAddUserGroup.getIDUsuario()==null || bodyAddUserGroup.getIDGrupo()==null || bodyAddUserGroup.getIDSuperior()==null||bodyAddUserGroup.getNombreRol()==null){
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error  en las llaves",""));
         }else{
-            Group group= groupService.saveUser(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
+            Group group= groupService.guardarUsuario(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
             if (group==null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al realizar en la operacion,parametro no valido",""));
             }else{
@@ -52,8 +54,8 @@ public class GroupController {
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
 
-        if (groupService.findById(id).isPresent()){
-            return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo encontrado",groupService.findById(id)));
+        if (groupService.buscarPorId(id).isPresent()){
+            return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo encontrado",groupService.buscarPorId(id)));
         }else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error grupo no existente",""));
         }
@@ -62,15 +64,15 @@ public class GroupController {
         //return groupService.findById(id);
     }
 
-    @DeleteMapping(value="/delete/{id}")
+    @DeleteMapping(value="/borrar/{id}")
     public ResponseEntity<Response> delete(@PathVariable String id){
         if (id==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            Optional<Group> grupo= groupService.findById(id);
+            Optional<Group> grupo= groupService.buscarPorId(id);
             if (grupo.isPresent()){
-                groupService.deleteById(id);
+                groupService.borrarPorId(id);
                 System.out.println("Grupo eliminado");
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo eliminado",grupo.get()));
             }else {
@@ -79,16 +81,16 @@ public class GroupController {
         }
     }
 
-    @DeleteMapping("/deleteUserFromGruop")
+    @DeleteMapping("/borrarUsuarioDeGrupo")
     public ResponseEntity deleteUserFromgroup(@RequestBody BodyAddUserGroup body){
         if (body.getIDGrupo()==null || body.getIDUsuario()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            Optional<Group> grupo= groupService.userInGroup(body.getIDGrupo(),body.getIDUsuario());
+            Optional<Group> grupo= groupService.buscarUsuarioEnGrupo(body.getIDGrupo(),body.getIDUsuario());
 
             if (grupo.isPresent()){
-                groupService.deleteUserFromGroup(body.getIDUsuario(), body.getIDGrupo());
+                groupService.borrarUsuarioDeGrupo(body.getIDUsuario(), body.getIDGrupo());
                 System.out.println("Usuario eliminado del grupo");
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario eliminado del grupo",grupo.get()));
             }else {
@@ -98,8 +100,8 @@ public class GroupController {
 
     }
 
-    @GetMapping("/findUserInGroup")
-    public Response findUserInGroup(@RequestBody String json){
+    @GetMapping("/buscarUsuarioEnGrupo")
+    public Response buscarUsuarioEnGrupo(@RequestBody String json){
         try {
             String idGroup="",idUser ="";
             JSONObject jsn = new JSONObject(json);
@@ -110,7 +112,7 @@ public class GroupController {
 
 
             //verifica que exista el grupo
-            if (groupService.findById(idGroup).isPresent()) {
+            if (groupService.buscarPorId(idGroup).isPresent()) {
                 //traza
                 System.out.println("Grupo existe");
 
@@ -120,9 +122,7 @@ public class GroupController {
                     System.out.println("Usuario existe");
 
                     Optional<Group> optGroup;
-                    optGroup= groupService.userInGroup(idGroup, idUser);
-
-
+                    optGroup= groupService.buscarUsuarioEnGrupo(idGroup, idUser);
 
                     if (optGroup.isPresent()){
                         Group group = optGroup.get();
@@ -145,12 +145,8 @@ public class GroupController {
 
         }catch (Exception e){
             System.out.println("Exception: "+e);
+            return new Response(HttpStatus.NOT_FOUND,"Error en la consulta","");
         }
-
-
-
-
-        return null;
     }
     /*
     @PutMapping("/updateIdBoss")
@@ -163,5 +159,42 @@ public class GroupController {
         return "Ok";
     }
      */
+
+    @GetMapping("/buscarPorNombre/{nombre}")
+    public Response buscarPorNombre(@PathVariable String nombre){
+        try {
+            if (groupService.buscarPorNombre(nombre).isPresent()){
+                return new Response(HttpStatus.OK,"Grupo encontrado",groupService.buscarPorNombre(nombre).get());
+            }else{
+                return new Response(HttpStatus.BAD_REQUEST,"Nombre no encontrado","");
+            }
+        }catch (Exception e){
+            System.err.println("Excepcion: "+e);
+            return new Response(HttpStatus.NOT_FOUND,"Error en la consulta","");
+        }
+    }
+
+    @PostMapping("/crearGrupo/{nombre}")
+    public Response crearGrupo(@PathVariable String nombre){
+        try {
+            nombre=nombre.toUpperCase();
+            if (!groupService.buscarPorNombre(nombre).isPresent()){
+                Group group=new Group();
+
+                group.setNombre(nombre);
+                group.setUsuarios(new User[0]);
+                groupService.guardar(group);
+                return new Response(HttpStatus.OK,"Grupo "+nombre+" creado","");
+            }else {
+                return new Response(HttpStatus.BAD_REQUEST,"Grupo "+nombre+" ya existe","");
+            }
+        }catch (Exception e){
+            System.err.println("Exception: "+e);
+            return new Response(HttpStatus.NOT_FOUND,"Error en la consulta: "+e,"" );
+        }
+        //return new Response();
+    }
+
+
 
 }

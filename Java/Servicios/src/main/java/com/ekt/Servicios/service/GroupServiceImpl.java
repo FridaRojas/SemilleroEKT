@@ -19,40 +19,40 @@ public class GroupServiceImpl implements GroupService{
     private UserService userService ;
 
     @Override
-    public Iterable<Group> findAll() {
+    public Iterable<Group> buscarTodo() {
         return null;
     }
 
     @Override
-    public Page<Group> findAll(Pageable pageable) {
+    public Page<Group> buscarTodo(Pageable pageable) {
         return null;
     }
 
     @Override
-    public Optional<Group> findById(String id) {
+    public Optional<Group> buscarPorId(String id) {
 
 
         return groupRepository.findById(id);
     }
 
     @Override
-    public Group save(Group group) {
+    public Group guardar(Group group) {
         return groupRepository.save(group);
     }
 
     @Override
-    public Group saveUser( String idUser, String idGrupo, String idSuperior,String nombreRol){
+    public Group guardarUsuario( String idUser, String idGrupo, String idSuperior,String nombreRol){
 
         Group  resGroup = null;
 
         //validar que los ids existen
-        Optional<Group> group = findById(idGrupo);
+        Optional<Group> group = buscarPorId(idGrupo);
         Optional<User> user = userService.findById(idUser);
         Optional<User> superior = userService.findById(idSuperior);
 
         if(group.isPresent() && user.isPresent() && superior.isPresent()){
             //verificar que el usuario no existe en ningun grupo
-            if( !userInGroup(idGrupo,idUser).isPresent()){
+            if( !buscarUsuarioEnGrupo(idGrupo,idUser).isPresent()){
                 //actualizar informacion usuario
                 user.get().setIDSuperiorInmediato(idSuperior);
                 user.get().setNombreRol(nombreRol);
@@ -80,15 +80,15 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public void deleteById(String id) {groupRepository.deleteById(id);
+    public void borrarPorId(String id) {groupRepository.deleteById(id);
 
     }
     @Override
-    public void deleteUserFromGroup( String idUser, String idGroup){
+    public void borrarUsuarioDeGrupo( String idUser, String idGroup){
         System.out.println("idUser:"+idUser+" idGroup:"+idGroup);
 
         //buscar el grupo
-        Optional<Group> group = findById(idGroup);
+        Optional<Group> group = buscarPorId(idGroup);
 
         //obtiene la lista de usuarios que tiene el grupo
 
@@ -108,10 +108,15 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public Optional<Group> userInGroup(String id, String user){
-        return  groupRepository.findByIdUser(id,user);
+    public Optional<Group> buscarUsuarioEnGrupo(String id, String user){
+        return  groupRepository.buscarUsuarioEnGrupo(id,user);
     }
 
+
+    @Override
+    public Optional<Group> buscarPorNombre(String nombre) {
+        return groupRepository.buscarPorNombre(nombre);
+    }
 
 
 }
