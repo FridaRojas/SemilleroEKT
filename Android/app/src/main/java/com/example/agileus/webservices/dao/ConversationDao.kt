@@ -10,7 +10,7 @@ import retrofit2.Response
 class ConversationDao() {
 
     suspend fun  recuperarPublicaciones(): ArrayList<Conversation> {
-        val callRespuesta = InitialApplication.webServiceGlobal.getConversationOnetoOne()
+        val callRespuesta = InitialApplication.webServiceConversation.getConversationOnetoOne()
         var ResponseDos:Response<ArrayList<Conversation>> = callRespuesta.execute()
 
         var lista = ArrayList<Conversation>()
@@ -36,7 +36,7 @@ class ConversationDao() {
                         //listaConsumida.forEach {
                           //  var id = it.id
                           //  var fecha = it.fecha
-                          //  Log.i("Mensaje","El id es: $id. la Fecha es: $fecha")
+                          //  Log.i("Message","El id es: $id. la Fecha es: $fecha")
 
                             //Toast.makeText(applicationContext,"El id es: $id. la Fecha es: $fecha", Toast.LENGTH_SHORT).show()
                        // }

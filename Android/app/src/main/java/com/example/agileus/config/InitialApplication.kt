@@ -2,18 +2,19 @@ package com.example.agileus.config
 
 import android.app.Application
 import com.example.agileus.webservices.apis.ConversationApi
+import com.example.agileus.webservices.apis.MessageApi
 
 class InitialApplication : Application() {
 
     companion object{
-        lateinit var webServiceGlobal: ConversationApi
+        lateinit var webServiceConversation: ConversationApi
+        lateinit var webServiceMessage:MessageApi
     }
 
     override fun onCreate() {
         super.onCreate()
-
         //Este objeto ya puede ser accedido en cualquier parte dela app
-        webServiceGlobal = ConfigRetrofit().obtenerConfiguracionRetofit()
+        webServiceConversation = ConfigRetrofit().obtenerConfiguracionRetofit()
+        webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
     }
-
 }

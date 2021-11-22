@@ -10,7 +10,7 @@ import com.example.agileus.models.Conversation
 import com.example.agileus.utils.Constantes
 
 
-class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
+class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
 
 
@@ -40,6 +40,13 @@ class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+
+    fun update(filtrado: List<Conversation>) {
+        var array:ArrayList<Conversation> = ArrayList(filtrado)
+        dataSet = array
+        this.notifyDataSetChanged()
+    }
+
 
     override fun getItemViewType(position: Int): Int {
         val usuario=dataSet[position]
