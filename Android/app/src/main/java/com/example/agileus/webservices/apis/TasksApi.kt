@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface TasksApi {
 
     //todo Falta editar el EndPoint para obtener las tareas
-    @GET("tareas/getTareas")
+    @GET("tareas/obtenerTareas")
     fun getTasks(): Call<ArrayList<Tasks>>
 
 
@@ -18,7 +18,7 @@ interface TasksApi {
     //@GET( )
     //fun getListaPersonasGrupo() : Call<ArrayList<PersonasGrupo>>
 
-    @POST("tareas/addTarea")
+    @POST("tareas/agregarTarea")
     fun insertarTarea(@Body t:Tasks): Call<Tasks>
 
 

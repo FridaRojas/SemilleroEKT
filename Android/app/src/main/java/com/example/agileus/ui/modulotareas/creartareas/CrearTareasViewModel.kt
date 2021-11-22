@@ -1,10 +1,8 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
 import com.example.agileus.webservices.dao.TasksDao
@@ -22,17 +20,14 @@ class CrearTareasViewModel: ViewModel() {
     }
 
     fun  postTarea(t:Tasks){
-
         try {
             viewModelScope.launch {
                 postTarea.postTasks(t)
             }
-
         }
         catch (ex: Exception) {
             Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
         }
-
     }
 
 
