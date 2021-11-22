@@ -15,7 +15,7 @@ class ConfigRetrofit {
 
     //todo Falta editar el url para las tareas
     val URL_BASE_TAREAS =
-        "10.97.1.64:2021/api/"
+        "http://10.97.7.144:2021/api/"
 
     fun obtenerConfiguracionRetofit(): ConversationApi {
         var mRetrofit = Retrofit.Builder()
@@ -28,7 +28,7 @@ class ConfigRetrofit {
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE)
+            .baseUrl(URL_BASE_TAREAS)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
