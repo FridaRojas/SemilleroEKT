@@ -31,7 +31,7 @@ class TasksDao {
 
                     val nuevaTarea: Tasks = response.body()!!
                     var mensaje= "Tarea creada por el emisor: ${nuevaTarea.nombreEmisor}"
-                    mensaje+= " Title ${nuevaTarea.titulo}"
+                    mensaje+= " Titulo ${nuevaTarea.titulo}"
                     mensaje+= " Asignada a: ${nuevaTarea.nombreReceptor}"
                     mensaje+= " Descripcion:  ${nuevaTarea.descripcion}"
                     Log.d("Mensaje", mensaje.toString())

@@ -149,13 +149,13 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
         val fecha=binding.edtFechaInicio
         fecha.setText("$anio-${mes+1}-$dia")
         fechaInicio = fecha.text.toString()
-        Toast.makeText(activity as HomeActivity, "$fechaInicio", Toast.LENGTH_SHORT).show()
+
     }
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
         val fecha=binding.edtFechaFin
         fecha.setText("$anio-${mes+1}-$dia")
         fechaFin = fecha.text.toString()
-        Toast.makeText(activity as HomeActivity, "$fechaFin", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onDestroyView() {
