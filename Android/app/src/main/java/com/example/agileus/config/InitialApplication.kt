@@ -9,6 +9,7 @@ class InitialApplication : Application() {
     companion object {
         lateinit var webServiceGlobal: ConversationApi
         lateinit var webServiceGlobalTasks: TasksApi
+        lateinit var webServiceGlobalTasks2: TasksApi
     }
 
     override fun onCreate() {
@@ -17,6 +18,7 @@ class InitialApplication : Application() {
         //Este objeto ya puede ser accedido en cualquier parte de la app
         webServiceGlobal = ConfigRetrofit().obtenerConfiguracionRetofit()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
+        webServiceGlobalTasks2 = ConfigRetrofit().obtenerConfiguracionRetofitTasks2()
     }
 
 }

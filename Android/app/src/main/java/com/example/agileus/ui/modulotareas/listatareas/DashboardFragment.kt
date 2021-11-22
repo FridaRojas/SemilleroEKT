@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDashboardBinding
 
 
@@ -50,8 +52,9 @@ class DashboardFragment : Fragment() {
 
         binding.botonFlotante.setOnClickListener {
 
-            val action = DashboardFragmentDirections.actionNavigationDashboardToFormularioCrearTareasFragment()
-            findNavController().navigate(action)
+            it.findNavController().navigate(R.id.formularioCrearTareasFragment)
+            //val action = DashboardFragmentDirections.actionNavigationDashboardToFormularioCrearTareasFragment()
+            //findNavController().navigate(action)
 
         }
 

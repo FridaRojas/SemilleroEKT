@@ -18,12 +18,14 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:hint="@string/nombre_de_la_tarea">
             <!--      EDIT TEXT      -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_agrega_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 >
@@ -77,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:drawableEnd="@drawable/iconocalendario"
             android:focusable="false"
             android:text="@string/fecha_de_inicio"
 
@@ -86,6 +89,7 @@
             android:id="@+id/edt_fecha_fin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/iconocalendario"
             android:clickable="true"
             android:focusable="false"
             android:text="@string/fecha_de_vencimiento"

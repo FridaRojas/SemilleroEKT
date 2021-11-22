@@ -1,8 +1,7 @@
 package com.example.agileus.webservices.apis
 
-import com.example.agileus.models.Conversation
+
 import com.example.agileus.models.Tasks
-import com.example.agileus.webservices.dao.TasksDao
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,7 +18,7 @@ interface TasksApi {
     //@GET( )
     //fun getListaPersonasGrupo() : Call<ArrayList<PersonasGrupo>>
 
-    @POST("addTarea")
+    @POST("tareas/addTarea")
     fun insertarTarea(@Body t:Tasks): Call<Tasks>
 
 
