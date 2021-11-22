@@ -17,3 +17,4 @@ data class Tasks(
     @SerializedName("leido") var leido: Boolean,
     @SerializedName("createdDate") var createdDate: String
 )
+

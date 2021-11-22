@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+
 import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentDashboardBinding
 import com.example.agileus.ui.HomeActivity
@@ -15,6 +18,7 @@ import com.example.agileus.ui.HomeActivity
 
 class TaskFragment : Fragment() {
 
+    private lateinit var dashboardViewModel: DashboardViewModel
     private var _binding: FragmentDashboardBinding? = null
 
     private val binding get() = _binding!!
