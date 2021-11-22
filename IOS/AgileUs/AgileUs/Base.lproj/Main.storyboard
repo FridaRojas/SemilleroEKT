@@ -168,29 +168,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tcd-lE-45K">
-                                <rect key="frame" x="35" y="418" width="344" height="192"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v5K-5n-CAK">
+                                <rect key="frame" x="35" y="418" width="344" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="bDy-NQ-kgt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eBv-Ne-bZX">
+                                <rect key="frame" x="35" y="488" width="344" height="149"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2Oc-9G-4S3">
-                                <rect key="frame" x="35" y="640" width="344" height="40"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="agv-Gz-gSn">
+                                <rect key="frame" x="35" y="667" width="344" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="gXl-Fm-Sxw"/>
+                                    <constraint firstAttribute="height" constant="40" id="3h9-Yc-0JV"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CeY-uq-lZC">
-                                <rect key="frame" x="35" y="730" width="344" height="65"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S97-oz-ml5">
+                                <rect key="frame" x="35" y="752" width="344" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="65" id="5hs-ig-DOp"/>
+                                    <constraint firstAttribute="height" constant="60" id="t2O-3L-YCR"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Crear Tarea" titleAlignment="center">
+                                <buttonConfiguration key="configuration" style="filled" title="Button">
                                     <color key="baseBackgroundColor" red="0.48235297199999999" green="0.7254902124" blue="0.44705885649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
                             </button>
@@ -198,36 +206,40 @@
                         <viewLayoutGuide key="safeArea" id="JCF-ec-Ehd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="2Oc-9G-4S3" secondAttribute="trailing" constant="35" id="5yM-Wr-aEr"/>
                             <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="Is0-Ev-GrI" secondAttribute="trailing" constant="35" id="8QB-vH-AYr"/>
                             <constraint firstItem="Is0-Ev-GrI" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="9E0-ue-mcH"/>
-                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="CeY-uq-lZC" secondAttribute="trailing" constant="35" id="9bN-gt-Esv"/>
+                            <constraint firstItem="agv-Gz-gSn" firstAttribute="top" secondItem="eBv-Ne-bZX" secondAttribute="bottom" constant="30" id="CJm-S0-0if"/>
                             <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="aLI-uG-Sfy" secondAttribute="trailing" constant="35" id="CLI-Xe-YAe"/>
                             <constraint firstItem="aLI-uG-Sfy" firstAttribute="top" secondItem="CJc-wd-xL3" secondAttribute="bottom" constant="30" id="Ccn-HK-F4m"/>
+                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="eBv-Ne-bZX" secondAttribute="trailing" constant="35" id="Cpn-y9-StV"/>
                             <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="AFV-dh-tSM" secondAttribute="trailing" constant="35" id="DDC-rP-sK5"/>
-                            <constraint firstItem="2Oc-9G-4S3" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="Dda-z6-6jQ"/>
                             <constraint firstItem="CJc-wd-xL3" firstAttribute="top" secondItem="Is0-Ev-GrI" secondAttribute="bottom" constant="30" id="G0j-cR-b2i"/>
-                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="Tcd-lE-45K" secondAttribute="trailing" constant="35" id="MH7-Zp-HBN"/>
-                            <constraint firstItem="CeY-uq-lZC" firstAttribute="top" secondItem="2Oc-9G-4S3" secondAttribute="bottom" constant="50" id="RGT-Zl-LZ5"/>
-                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="bottom" secondItem="2Oc-9G-4S3" secondAttribute="bottom" constant="182" id="Tf3-GN-16Z"/>
+                            <constraint firstItem="S97-oz-ml5" firstAttribute="top" secondItem="agv-Gz-gSn" secondAttribute="bottom" constant="45" id="Gsl-bq-K6A"/>
+                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="S97-oz-ml5" secondAttribute="trailing" constant="35" id="Ktk-l9-1AE"/>
+                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="bottom" secondItem="S97-oz-ml5" secondAttribute="bottom" constant="50" id="NHj-Bc-MCH"/>
+                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="v5K-5n-CAK" secondAttribute="trailing" constant="35" id="TLv-6w-dqV"/>
+                            <constraint firstItem="S97-oz-ml5" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="TMZ-qZ-hLv"/>
+                            <constraint firstItem="v5K-5n-CAK" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="US0-DV-E1r"/>
+                            <constraint firstItem="v5K-5n-CAK" firstAttribute="top" secondItem="AFV-dh-tSM" secondAttribute="bottom" constant="30" id="UiX-3C-0qh"/>
                             <constraint firstItem="CJc-wd-xL3" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="XU4-Nt-0Ge"/>
                             <constraint firstItem="AFV-dh-tSM" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="YZY-SJ-Dgd"/>
                             <constraint firstItem="AFV-dh-tSM" firstAttribute="top" secondItem="aLI-uG-Sfy" secondAttribute="bottom" constant="30" id="Ygo-gV-ihb"/>
+                            <constraint firstItem="eBv-Ne-bZX" firstAttribute="top" secondItem="v5K-5n-CAK" secondAttribute="bottom" constant="30" id="dB4-qO-QZA"/>
                             <constraint firstItem="Is0-Ev-GrI" firstAttribute="top" secondItem="JCF-ec-Ehd" secondAttribute="top" constant="50" id="el8-2J-NWY"/>
-                            <constraint firstItem="2Oc-9G-4S3" firstAttribute="top" secondItem="Tcd-lE-45K" secondAttribute="bottom" constant="30" id="gdK-y5-GWx"/>
-                            <constraint firstItem="Tcd-lE-45K" firstAttribute="top" secondItem="AFV-dh-tSM" secondAttribute="bottom" constant="30" id="iIw-7y-ix1"/>
                             <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="CJc-wd-xL3" secondAttribute="trailing" constant="35" id="lva-rQ-MIg"/>
-                            <constraint firstItem="CeY-uq-lZC" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="m8K-kz-h8M"/>
-                            <constraint firstItem="Tcd-lE-45K" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="tZD-yl-aZZ"/>
+                            <constraint firstItem="JCF-ec-Ehd" firstAttribute="trailing" secondItem="agv-Gz-gSn" secondAttribute="trailing" constant="35" id="pFR-bq-0d8"/>
+                            <constraint firstItem="agv-Gz-gSn" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="sEO-Ya-B3M"/>
                             <constraint firstItem="aLI-uG-Sfy" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="vIt-py-iQ8"/>
+                            <constraint firstItem="eBv-Ne-bZX" firstAttribute="leading" secondItem="JCF-ec-Ehd" secondAttribute="leading" constant="35" id="zMQ-la-Xxp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Asignar Tarea" largeTitleDisplayMode="always" id="MR3-SS-k5a"/>
                     <connections>
-                        <outlet property="addTask" destination="CeY-uq-lZC" id="x6a-V4-TuK"/>
+                        <outlet property="addTaskBtn" destination="S97-oz-ml5" id="nmp-us-xgq"/>
+                        <outlet property="dateEndField" destination="v5K-5n-CAK" id="qQX-Dj-1Hx"/>
                         <outlet property="dateStartField" destination="AFV-dh-tSM" id="WjI-FS-7t7"/>
-                        <outlet property="descriptionText" destination="Tcd-lE-45K" id="8Jx-JZ-ytG"/>
-                        <outlet property="fileField" destination="2Oc-9G-4S3" id="D3R-ZO-Ymt"/>
+                        <outlet property="descriptionText" destination="eBv-Ne-bZX" id="F77-Co-SD4"/>
+                        <outlet property="fileField" destination="agv-Gz-gSn" id="H0T-T8-Pki"/>
                         <outlet property="nameTaskField" destination="Is0-Ev-GrI" id="GJF-Bv-gHz"/>
                         <outlet property="personSelectField" destination="CJc-wd-xL3" id="zWg-fq-Wsg"/>
                         <outlet property="priortyField" destination="aLI-uG-Sfy" id="vXg-ks-nRD"/>

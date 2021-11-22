@@ -15,7 +15,8 @@ class AsignarTareaViewController: UIViewController {
     @IBOutlet weak var dateStartField: UITextField!
     @IBOutlet weak var fileField: UITextField!
     @IBOutlet weak var descriptionText: UITextView!
-    @IBOutlet weak var addTask: UIButton!
+    @IBOutlet weak var dateEndField: UITextField!
+    @IBOutlet weak var addTaskBtn: UIButton!
     
     
     override func viewDidLoad() {
@@ -39,9 +40,10 @@ class AsignarTareaViewController: UIViewController {
         personSelectField.initStyle(placeholder: "Persona Asignada")
         priortyField.initStyle(placeholder: "Prioridad")
         dateStartField.initStyle(placeholder: "Fecha Inicio")
+        dateEndField.initStyle(placeholder: "Fecha Fin")
         fileField.initStyle(placeholder: "Archivo Adjunto")
         descriptionText.initStyle(placeholder: "Descripcion")
-        addTask.initStyle(text: "Asignar Tarea")
+        addTaskBtn.initStyle(text: "Asignar Tarea")
     }
 
 }
