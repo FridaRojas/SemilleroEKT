@@ -24,9 +24,9 @@ class TasksAdapter(private val dataSet: ArrayList<Tasks>) :
         }
 
         fun enlazarItem(task: Tasks) {
-//            nombreTarea.text = task.titulo
-//            personaAsignada.text = task.nombreReceptor
-//            fecha.text = task.fechaFin
+            nombreTarea.text = task.titulo
+            personaAsignada.text = task.nombreReceptor
+            fecha.text = task.fechaFin
         }
     }
 

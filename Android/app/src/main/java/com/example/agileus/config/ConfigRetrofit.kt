@@ -28,7 +28,7 @@ class ConfigRetrofit {
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE)
+            .baseUrl(URL_BASE_TAREAS)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

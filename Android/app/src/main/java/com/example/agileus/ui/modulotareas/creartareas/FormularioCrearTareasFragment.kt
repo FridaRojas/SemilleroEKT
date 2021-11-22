@@ -14,6 +14,7 @@ import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFinFecha
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtInicioFecha
+import com.example.agileus.ui.modulotareas.listatareas.DashboardViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
 
 private const val ARG_PARAM1 = "param1"
@@ -96,8 +97,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
                 asignarTareaViewModel.postTarea(tarea)
 
-                //val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
-                //findNavController().navigate(action)
 
             }
         }
