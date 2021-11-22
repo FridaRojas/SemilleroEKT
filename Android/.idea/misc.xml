@@ -3,12 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/iconofiltrar.xml" value="0.2703125" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/rounded_bg.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/rounded_rm.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.16" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.18125" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/fragment_notifications.xml" value="0.17300724637681159" />
-        <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.4" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/rounded_corners.xml" value="0.18125" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.4" />
