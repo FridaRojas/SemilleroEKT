@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.ui.MainActivity
+import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -61,18 +62,15 @@ class ReporteMensajesFragment : Fragment() {
         })
         return root
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
         binding.btnFiltroReportes.setOnClickListener {
-            val newFragment = AddAccDialog(this)
-            newFragment.show((activity as MainActivity).supportFragmentManager, "Filtro de Reportes")
+            val newFragment = FiltroReportesDialog()
+            newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }
-         */
 
         binding.btnReportesTareas.setOnClickListener {
             val action = ReporteMensajesFragmentDirections.actionReporteMensajesFragmentToReporteTareasFragment()
