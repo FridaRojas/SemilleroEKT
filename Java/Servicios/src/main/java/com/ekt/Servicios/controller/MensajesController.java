@@ -3,6 +3,7 @@ package com.ekt.Servicios.controller;
 import java.util.*;
 
 import com.ekt.Servicios.entity.Conversacion;
+import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.repository.MensajesRepository;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
@@ -244,6 +245,16 @@ public class MensajesController {
 				//mensajesList.add(idConversacion);
 		}
 		return lConversacion;
+	}
+
+	@PutMapping("/eliminarConversacion/{idConversacion}")
+	public  ResponseEntity<?>cambiarStatusConversacion(@PathVariable(value= "idConversacion")String idConversacion){
+		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+		for (Mensajes msg: iter) {
+				msg.setConversacionVisible(false);
+				mensajesService.save(msg);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.CREATED,"",iter.iterator()));
 	}
 	//@GetMapping("listaMensajes/{idEmisor}")
 	//public ResponseEntity<?> listarMensajes()

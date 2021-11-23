@@ -12,6 +12,7 @@ public class Mensajes {
 	private String id;
 	
     private String idConversacion;
+	private boolean conversacionVisible;
     private String idEmisor;
     private String idReceptor;
     private String texto;
@@ -103,5 +104,13 @@ public class Mensajes {
 	}
 	public void setNombreConversacionReceptor(String nombreConversacionReceptor) {
 		this.nombreConversacionReceptor = nombreConversacionReceptor;
+	}
+
+	public boolean isConversacionVisible() {
+		return conversacionVisible;
+	}
+
+	public void setConversacionVisible(boolean conversacionVisible) {
+		this.conversacionVisible = conversacionVisible;
 	}
 }
