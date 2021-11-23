@@ -12,6 +12,7 @@ import com.example.agileus.Models.Buzon
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
 import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.control
 import com.example.demoroom.dialogos.DialogoSenderBroadcast
+import com.example.demoroom.dialogos.DialogoSenderUser
 
 
 class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
@@ -36,12 +37,7 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        binding.progress.visibility = View.INVISIBLE
-        binding.espera.visibility = View.INVISIBLE
-
-        binding.fab.visibility = View.VISIBLE
-        binding.recyclerBuzon.visibility=View.VISIBLE
+            binding.vista2.visibility=View.INVISIBLE
 
         if (control == 1) {
             binding.fab.visibility = View.VISIBLE
@@ -77,16 +73,19 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
 
         override fun mensajeBroadcasting(buzon: Buzon) {
 
+
             Handler().postDelayed({
-                binding.progress.visibility = View.VISIBLE
-                binding.espera.visibility = View.VISIBLE
-                binding.fab.visibility = View.GONE
+                binding.vista1.visibility= View.INVISIBLE
+                binding.vista2.visibility = View.VISIBLE
+                binding.fab.visibility = View.INVISIBLE
             }, 5)
               ////////////////
             Handler().postDelayed({
                 Toast.makeText(context, " Mensaje enviado a ${buzon.receiverId}", Toast.LENGTH_SHORT).show()
-                binding.progress.visibility = View.GONE
-                binding.espera.visibility = View.GONE
+                binding.vista2.visibility = View.INVISIBLE
+                binding.vista1.visibility= View.VISIBLE
+                binding.fab.visibility = View.VISIBLE
   }, 4000)
+
         }
     }

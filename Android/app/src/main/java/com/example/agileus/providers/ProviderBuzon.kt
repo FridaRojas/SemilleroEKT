@@ -19,6 +19,5 @@ import retrofit2.Response
         }
         return listaconsumida
     }
-
 }
 
