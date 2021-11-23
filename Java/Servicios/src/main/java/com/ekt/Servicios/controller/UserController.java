@@ -90,12 +90,14 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable String id){
         try{
             if(userService.findById(id).isPresent()){
-                User u = userService.findById(id).get();
-                if(u.getStatusActivo().equals("true")){
-                    u.setStatusActivo("false");
-                    userService.save(u);
+                User usr = userService.findById(id).get();
+                if(usr.getStatusActivo().equals("true")){
+                    usr.setStatusActivo("false");
+                    userService.save(usr);
                     return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario eliminado correctamente",""));
                 }
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
+            }else{
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
             }
         }catch(Exception e){
@@ -103,7 +105,7 @@ public class UserController {
             return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Usuario no encontrado",""));
         }
         //userService.deleteById(id);
-        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"error desconocido",""));
+
     }
 
     @PutMapping("/updateIdBoss")

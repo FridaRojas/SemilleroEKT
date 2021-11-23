@@ -13,10 +13,12 @@ import com.ekt.Servicios.service.UserService;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -109,8 +111,6 @@ public class GroupController {
             idGroup=jsn.get("idGroup").toString();
             idUser=jsn.get("idUser").toString();
 
-
-
             //verifica que exista el grupo
             if (groupService.buscarPorId(idGroup).isPresent()) {
                 //traza
@@ -140,8 +140,6 @@ public class GroupController {
             }else{
                 return new Response(HttpStatus.NOT_FOUND,"El grupo no existe","");
             }
-
-
 
         }catch (Exception e){
             System.out.println("Exception: "+e);
@@ -194,6 +192,54 @@ public class GroupController {
         }
         //return new Response();
     }
+
+    @GetMapping("/buscarTodo")
+    public Response buscarTodo(){
+        try {
+            Iterable<Group> grupos = groupService.buscarTodo();
+            return new Response(HttpStatus.OK,"Grupos existentes",grupos);
+        }catch (Exception e){
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta","");
+        }
+    }
+
+
+    /**
+     *
+     * @param json
+     * Recibe dos parametros "pagina" y "tamaño"
+     * pagina: es la pagina a mostrar
+     * tamaño: es la cantidad de objetos por pagina
+     * @return
+     *
+     */
+    @GetMapping("/buscarTodoPags")
+    public Response buscarTodoPageable(@RequestBody String json){
+        try {
+            int pagina=-1,tamaño =-1;
+            JSONObject jsn = new JSONObject(json);
+
+            if (jsn.get("pagina") == null || jsn.get("tamaño")==null ){
+                return new Response(HttpStatus.BAD_REQUEST,"Faltan datos","");
+            }
+
+            pagina= (int) jsn.get("pagina");
+            tamaño= (int) jsn.get("tamaño");
+
+            if (pagina <0 || tamaño < 1){
+                return new Response(HttpStatus.BAD_REQUEST,"Datos incorrectos","");
+            }
+
+            Iterable<Group> grupos = groupService.buscarTodo(PageRequest.of(pagina, tamaño));
+            return new Response(HttpStatus.OK,"Grupos existentes",grupos);
+
+        }catch (Exception e){
+            System.err.println("Exception: "+e);
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta","");
+        }
+    }
+
+
 
 
 
