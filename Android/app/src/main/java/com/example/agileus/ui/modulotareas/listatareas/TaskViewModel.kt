@@ -38,14 +38,11 @@ class TaskViewModel : ViewModel() {
                             TasksAdapter(listaConsumida as ArrayList<Tasks>)
                     }
                 }
-
             }
-
-
         } catch (ex: Exception) {
             Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
         }
-
-
     }
+
+
 }

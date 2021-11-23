@@ -23,7 +23,7 @@ class EdtFecha (val listenerFormularioCrear: DialogosFormularioCrearTareasListen
 
         val picker      = DatePickerDialog(activity as Context,this, anio,mes,dia )
 
-        picker.datePicker.minDate = calendar.timeInMillis   // validacion de minima fecha es hoy
+        picker.datePicker.minDate = calendar.timeInMillis   // validacion de minima fecha
         return picker
     }
 

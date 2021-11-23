@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
+import com.example.agileus.models.PersonasGrupo
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
@@ -17,23 +20,36 @@ import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCre
 
 private const val ARG_PARAM1 = "param1"
 
+
 class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener {
 
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: String) =
+            FormularioCrearTareasFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                }
+            }
+    }
+
     private lateinit var asignarTareaViewModel: CrearTareasViewModel
+    lateinit var listaPersonas: ArrayList<PersonasGrupo>
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
     private var param1: String? = null
 
+    var idGrupo         : String = "GRUPOID1"
     var fechaInicio     : String = ""
     var fechaFin        : String = ""
 
-    var anioInicio      : Int = 0
-    var anioFin         : Int = 0
-    var mesInicio       : Int = 0
-    var mesFin          : Int = 0
-    var diaInicio       : Int = 0
-    var diaFin          : Int = 0
+    var anioInicio      : Int? = null
+    var anioFin         : Int? = null
+    var mesInicio       : Int? = null
+    var mesFin          : Int? = null
+    var diaInicio       : Int? = null
+    var diaFin          : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +76,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         setUpUiAsignarTareas()
 
         /* Boton Crear tarea  */
@@ -73,23 +90,23 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
 
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
-                if(anioInicio<=anioFin){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
-                if(mesInicio+1<=mesFin+1){                      // es un mes menor o igual del mismo año
-                        if (mesInicio+1==mesFin+1){             // si mes inicio es igual a mes fin del mismo año
-                            if (diaInicio<=diaFin){             // es un dia menor o igual del mismo mes
+                if(anioInicio!!<=anioFin!!){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
+                if(mesInicio!!+1<=mesFin!!+1){                      // Es un mes menor o igual del mismo año
+                        if (mesInicio!!+1==mesFin!!+1){             // Si mes inicio es igual a mes fin del mismo año
+                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
                                 // OPERACION INSERTAR
                                 operacionIsert()
                             }else{
                                     Toast.makeText( context,
-                                    "El dia de Vencimiento no puede ser anterior al dia de inicio",
+                                    "Fecha de inicio no puede ser mayor a fecha fin",
                                     Toast.LENGTH_SHORT).show()
                                 }
-                        }else if(mesInicio<mesFin){             // mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE)
+                        }else if(mesInicio!!<mesFin!!){             // Mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE)
                             // NO IMPORTA EL DIA
                             // OPERACION INSERTAR
                             operacionIsert()
                         }
-                    }else if(mesInicio>mesFin){                 // mesInicio es superior a mes fin pero de año fin superior
+                    }else if(mesInicio!!>mesFin!!){                 // Mes de inicio es superior a mes fin pero de año fin superior
                         // NO IMPORTA EL DIA
                         // 28/05/2022  inicio
                         // 05/03/2024  fin
@@ -98,7 +115,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
                     }
                 }else{
                     Toast.makeText( context,
-                        "El año de Vencimiento no puede ser anterior al año de inicio",
+                        "Fecha de inicio no puede ser mayor a fecha fin",
                         Toast.LENGTH_SHORT).show()
                 }
             }
@@ -114,26 +131,38 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String) =
-            FormularioCrearTareasFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                }
-            }
-    }
-
-
+    // *** FUNCIONES ***
     fun setUpUiAsignarTareas(){
-        //Recuperar id grupo
-        // SPINER CON OBJETO CONSUMIDO API RETROFIT
 
-        /*val spinListaPersonasAdapter = vista.findViewById<Spinner>(R.id.spinPersonaAsignada)
+        // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
 
-        val spinListaAsignarAdapter = ArrayAdapter<Int>((activity as HomeActivity), android.R.layout.simple_spinner_item, listaF)
-        spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinListaPersonasAdapter.adapter = spinListaAsignarAdapter*/
+        val inflater                = requireActivity().layoutInflater;
+        val vista                   = inflater.inflate(R.layout.activity_home, null)
+        val spinListaPersonasAdapter = vista.findViewById<Spinner>(R.id.spinPersonaAsignada)
+
+        asignarTareaViewModel.devuelvePersonasGrupo(idGrupo)
+        asignarTareaViewModel.personasGrupoLista.observe(viewLifecycleOwner , {
+            if(it.isNotEmpty()){
+
+                listaPersonas = it as ArrayList<PersonasGrupo>
+
+                val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity), android.R.layout.simple_spinner_item, listaPersonas)
+                spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                //spinListaPersonasAdapter.adaptadorSpinPersonas = spinListaAsignarAdapter
+
+            }else{
+                Toast.makeText(activity , "No se encontraron personas", Toast.LENGTH_LONG).show()
+            }
+
+
+        })
+
+
+
+        // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
+
+
+
 
 
         // SPINER CON RECURSO XML
@@ -142,7 +171,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         binding.spinPrioridad.adapter=spinPrioridadAdapter
         // SPINER CON RECURSO XML
     }
-
     fun operacionIsert(){
         val tarea: Tasks
         val titulo      = binding.edtAgregaTitulo.text
@@ -159,31 +187,31 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
             Toast.LENGTH_LONG).show()*/
 
         tarea = Tasks(
-            "GRUPOID1",
+            idGrupo,                // id_grupo
             "EMIS1",
             "Raul",
             "RECEPT1",
             "Carlos",
-            fechaInicio,            //Fecha Inicio
-            fechaFin,               //Fecha Fin
-            titulo.toString(),      //Titulo
+            fechaInicio,            // Fecha Inicio
+            fechaFin,               // Fecha Fin
+            titulo.toString(),      // Titulo
             "EWREWF2323",
-            descripcion.toString(), //Descripcion
-            mPrioridad.toString(),  //Prioridad
-            false,             //Leido
+            descripcion.toString(), // Descripcion
+            mPrioridad.toString().lowercase(),  // Prioridad
+            "pendiente",
+            false,             // Leido
             "2014-01-01"
         )
         asignarTareaViewModel.postTarea(tarea)
-        Toast.makeText(activity as HomeActivity, "La tarea se creo correctamente", Toast.LENGTH_SHORT).show()
-
+        Toast.makeText(activity as HomeActivity, "Tarea creada con exito", Toast.LENGTH_SHORT).show()
     }
-
-
     fun abrirDialogoFecha(view: View, b:Int) {
         val newFragment = EdtFecha(this, b)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
+    // *** FUNCIONES ***
 
+    // *** INTERFACES ***
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
         anioInicio  = anio
         mesInicio   = mes
@@ -202,10 +230,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         fechaFin = fecha.text.toString()
 
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
+    // *** INTERFACES ***
 }

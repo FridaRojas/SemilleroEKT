@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.models.PersonasGrupos
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.creartareas.FormularioCrearTareasFragment
@@ -25,8 +26,19 @@ class TasksDao {
         return lista
     }
 
-        fun postTasks(t:Tasks){
 
+    fun getPersonsGroup(id_grupo:String): ArrayList<PersonasGrupos>{
+        val callRespuesta = InitialApplication.webServiceGlobalTasks.getListaPersonasGrupo(id_grupo)
+        val Response: Response<ArrayList<PersonasGrupos>> = callRespuesta.execute()
+
+        var listaPersons = ArrayList<PersonasGrupos>()
+        if (Response.isSuccessful) {
+            listaPersons = Response.body()!!
+        }
+        return listaPersons
+    }
+
+        fun postTasks(t:Tasks){
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
 
         callInserta.enqueue(object : Callback<Tasks> {
