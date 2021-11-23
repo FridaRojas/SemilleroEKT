@@ -266,7 +266,7 @@
 		99984C09A7033D4A68DCD90442DCA1BE /* ContactMessageSizeCalculator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContactMessageSizeCalculator.swift; path = Sources/Layout/ContactMessageSizeCalculator.swift; sourceTree = "<group>"; };
 		9CF67DF79C30384412A5B7493BB74C40 /* MessageKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MessageKit-Info.plist"; sourceTree = "<group>"; };
 		9D422A807EF7E1F7E4250E2BF46F9ACE /* Pods-AgileUsTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AgileUsTests-dummy.m"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E53F54C8C48CC93979C3B71FE80F363 /* AvatarPosition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AvatarPosition.swift; path = Sources/Models/AvatarPosition.swift; sourceTree = "<group>"; };
 		A0C67AD4B2AEC4E60C02F56962AD920A /* Pods-AgileUs-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AgileUs-dummy.m"; sourceTree = "<group>"; };
 		A2EA259E20ADB631EBA89FC625D52D10 /* MessageContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MessageContainerView.swift; path = Sources/Views/MessageContainerView.swift; sourceTree = "<group>"; };
@@ -300,7 +300,7 @@
 		C3D5A57EF329161BDA4E649D48A7C129 /* MessagesLayoutDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MessagesLayoutDelegate.swift; path = Sources/Protocols/MessagesLayoutDelegate.swift; sourceTree = "<group>"; };
 		C56BECD5425D9BE759FCA4B2B33C082E /* LinkItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LinkItem.swift; path = Sources/Protocols/LinkItem.swift; sourceTree = "<group>"; };
 		C5A4CC741B831EF62B75DB182727A5B8 /* BubbleCircle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BubbleCircle.swift; path = Sources/Views/BubbleCircle.swift; sourceTree = "<group>"; };
-		C5B82DF3B1FD1A08992C3DCAC7C25EC2 /* Pods-AgileUs */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-AgileUs"; path = Pods_AgileUs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5B82DF3B1FD1A08992C3DCAC7C25EC2 /* Pods_AgileUs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E9F2AC6719D65ECC92230C704609EC /* AutocompleteSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AutocompleteSession.swift; path = Sources/Plugins/AutocompleteManager/Models/AutocompleteSession.swift; sourceTree = "<group>"; };
 		C810EBA1C58B39E4223DF0EFECF39D14 /* AudioMessageCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioMessageCell.swift; path = Sources/Views/Cells/AudioMessageCell.swift; sourceTree = "<group>"; };
 		CA88E44D220933034318D782FE12E0D3 /* InputStackView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InputStackView.swift; path = Sources/Views/InputStackView.swift; sourceTree = "<group>"; };
@@ -475,7 +475,6 @@
 				613FFA46BC4D4EEB0D84B3957D20EA95 /* Resources */,
 				1D26B628272340B0DACD37EA0B9C2711 /* Support Files */,
 			);
-			name = MessageKit;
 			path = MessageKit;
 			sourceTree = "<group>";
 		};
@@ -595,7 +594,6 @@
 				B509E1F5EA750C2BCA408D8B00BBF26E /* Core */,
 				BE16C54698ACFC7788389AA980D81786 /* Support Files */,
 			);
-			name = InputBarAccessoryView;
 			path = InputBarAccessoryView;
 			sourceTree = "<group>";
 		};
@@ -647,7 +645,7 @@
 			children = (
 				B81513B0B3333500DFFB1B1B179FB571 /* InputBarAccessoryView */,
 				15A68A8F33BD9EB9AFD02465B0418BCF /* MessageKit */,
-				C5B82DF3B1FD1A08992C3DCAC7C25EC2 /* Pods-AgileUs */,
+				C5B82DF3B1FD1A08992C3DCAC7C25EC2 /* Pods_AgileUs.framework */,
 				B58658607D3AB6F03250CFF47D5DF96B /* Pods-AgileUs-AgileUsUITests */,
 				387E65971B474DED7ECB39B82ECF7FD0 /* Pods-AgileUsTests */,
 			);
@@ -756,7 +754,7 @@
 			);
 			name = "Pods-AgileUs";
 			productName = Pods_AgileUs;
-			productReference = C5B82DF3B1FD1A08992C3DCAC7C25EC2 /* Pods-AgileUs */;
+			productReference = C5B82DF3B1FD1A08992C3DCAC7C25EC2 /* Pods_AgileUs.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		C8C39DD486923E3933801D232041B590 /* InputBarAccessoryView */ = {
