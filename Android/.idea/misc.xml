@@ -4,28 +4,6 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_formulario_crear_tareas.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/ic_reportes.xml" value="0.15" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconoagregar.xml" value="0.2712820512820513" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconobroadcast.xml" value="0.15" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconobuscar.xml" value="0.15" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconocalendario.xml" value="0.15" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconodetalles.xml" value="0.15" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconofiltrar.xml" value="0.15" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconomensajes.xml" value="0.15" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/activity_main.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/conversation_emisor_item.xml" value="0.15307971014492755" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/conversation_receptor_item.xml" value="0.15307971014492755" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_buzon.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.264" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_home.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_tasks.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/item_buzon.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/status_task_item.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/task_item.xml" value="0.4" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.259375" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/rounded_bg.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/rounded_rm.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.16" />
@@ -35,6 +13,38 @@
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/rounded_corners.xml" value="0.18125" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.4" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/ic_reportes.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconoagregar.xml" value="0.2712820512820513" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconobroadcast.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconobuscar.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconocalendario.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconodetalles.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconofiltrar.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconomensajes.xml" value="0.15" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconoreportes.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/iconotareas.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/rounded_bg.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/rounded_rm.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/activity_main.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/conversation_emisor_item.xml" value="0.15307971014492755" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/conversation_receptor_item.xml" value="0.15307971014492755" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_buzon.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.264" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_formulario_crear_tareas.xml" value="0.264" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_home.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/fragment_tasks.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/item_buzon.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/status_task_item.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/task_item.xml" value="0.4" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.259375" />
         <entry key="..\:/Users/deivi/Desktop/Semillero EKT - Android/semilleroekt/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.33666969972702454" />
         <entry key="..\:/Users/deivi/Desktop/Semillero EKT - Android/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/deivi/Desktop/Semillero EKT - Android/semilleroekt/Android/app/src/main/res/layout/task_item.xml" value="0.25" />
