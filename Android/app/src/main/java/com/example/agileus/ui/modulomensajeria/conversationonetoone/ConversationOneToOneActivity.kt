@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ActivityConversationOneToOneBinding
+import com.example.agileus.models.Message
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -25,7 +26,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-/*
+
         conversationviewModel = ViewModelProvider(this).get()
         conversationviewModel.devuelveLista()
 
@@ -45,11 +46,15 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             val currentLocalTime = calendar.time
             val formatt: DateFormat = SimpleDateFormat("ZZZZZ", Locale.getDefault())
             val localTime: String = formatt.format(currentLocalTime)
-           // conversationviewModel.mandarMensaje(binding.etMensaje.text.toString(),"${fech}" )
 
-            Toast.makeText(applicationContext, "$date$localTime", Toast.LENGTH_LONG).show()
+            var mensaje = Message("618e8743c613329636a769aa","618d9c26beec342d91d747d6","${binding.etMensaje.text.toString()}","$date$localTime")
+            conversationviewModel.mandarMensaje(mensaje)
+
+          //  Toast.makeText(applicationContext, "$date$localTime", Toast.LENGTH_LONG).show()
         }
- */
+
+
+
     }
 
 

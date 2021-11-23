@@ -4,12 +4,13 @@ package com.example.agileus.webservices.dao
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.Contacts
+import com.example.agileus.models.Conversation
 import retrofit2.Response
 
 
 class ConversationDao() {
 
-   /* suspend fun  recuperarPublicaciones(): ArrayList<Conversation> {
+   suspend fun  recuperarPublicaciones(): ArrayList<Conversation> {
         val callRespuesta = InitialApplication.webServiceConversation.getConversationOnetoOne()
         var ResponseDos:Response<ArrayList<Conversation>> = callRespuesta.execute()
 
@@ -20,8 +21,8 @@ class ConversationDao() {
         return lista
 
     }
-}
-*/
+
+
    suspend fun  recuperarListadeContactos(): ArrayList<Contacts> {
        val callRespuesta = InitialApplication.webServiceListContacts.getListContacts()
        var ResponseDos:Response<ArrayList<Contacts>> = callRespuesta.execute()
@@ -37,6 +38,8 @@ class ConversationDao() {
        return lista
 
    }
+
+}
 
 
 
@@ -80,4 +83,4 @@ class ConversationDao() {
         })
     }
 */
-}
+

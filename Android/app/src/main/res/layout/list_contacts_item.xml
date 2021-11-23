@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:elevation="20dp"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
 
         <TextView
             android:id="@+id/txtNameContact"
@@ -15,8 +21,19 @@
             android:text="Nombre del contacto"
             android:textSize="24sp"
             android:textColor="@color/black"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:padding="4dp"/>
 
+        <TextView
+            android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aqui va el ultimo mensaje"
+            android:textSize="20sp"
+            android:padding="4dp"
+            android:textColor="@color/colorGray"
+
+            />
 
     </LinearLayout>
 

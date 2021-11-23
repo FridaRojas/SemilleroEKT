@@ -18,6 +18,10 @@ class ListContactsViewModel : ViewModel() {
     lateinit var lista : ConversationDao
     lateinit var listaConsumida:ArrayList<Contacts>
 
+    init {
+        lista = ConversationDao()
+    }
+
     fun devuelveLista(){
         try {
             viewModelScope.launch {

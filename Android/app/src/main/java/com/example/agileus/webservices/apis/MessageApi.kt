@@ -10,5 +10,4 @@ interface MessageApi {
     @POST("mensajes/crearMensaje")
     fun mandarMensaje(@Body body:Message):Call<Message>
 
-
 }

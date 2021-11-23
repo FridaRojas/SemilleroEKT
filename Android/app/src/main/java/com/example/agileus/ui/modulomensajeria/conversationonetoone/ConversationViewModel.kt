@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ConversationAdapter
 import com.example.agileus.models.Conversation
+import com.example.agileus.models.Message
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.webservices.dao.ConversationDao
 import com.example.agileus.webservices.dao.MessageDao
@@ -17,14 +18,15 @@ class ConversationViewModel:ViewModel() {
 
     var adaptador = MutableLiveData<ConversationAdapter>()
     lateinit var lista : ConversationDao
-    lateinit var peticionMensaje:MessageDao
+    lateinit var message:MessageDao
     lateinit var listaConsumida:ArrayList<Conversation>
 
 
     init {
         lista = ConversationDao()
+        message = MessageDao()
     }
-/*
+
     fun devuelveLista(){
         try {
             viewModelScope.launch {
@@ -48,28 +50,20 @@ class ConversationViewModel:ViewModel() {
     }
 
 
-    fun mandarMensaje(mensaje:String, fecha:String){
+    fun mandarMensaje(mensaje: Message){
         try {
 
-            //var menssage=Message("11","12",mensaje, fecha)
-
             viewModelScope.launch {
-             // peticionMensaje.insertarPublicacion(mensaje,fecha)
+                message.insertarMensajes(mensaje)
                 listaConsumida = withContext(Dispatchers.IO){
                     lista.recuperarPublicaciones()
                 }
                 adaptador.value!!.update(listaConsumida)
             }
-
-
         }catch (ex:Exception){
             Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
 
-
-
     }
-
-    */
 
 }
