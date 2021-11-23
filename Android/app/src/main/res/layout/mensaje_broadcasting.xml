@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/comunicado_bckgrnd"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    >
+
+    <EditText
+        android:background="#F5F5F5"
+        android:id="@+id/Asunto"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Asunto" />
+
+    <EditText
+        android:background="#F5F5F5"
+
+        android:id="@+id/Mensajes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:hint="Mensaje"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        >
+        <TextView
+            android:background="#F5F5F5"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:id="@+id/Destinatario"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/destinatario"
+            android:hint="@string/destinatario"/>
+     <TextView
+
+        android:textSize="16dp"
+         android:background="#F5F5F5"
+         android:id="@+id/Responsable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:textAlignment="textStart"
+        android:hint="Destinatario"
+        />
+    </LinearLayout>
+
+</LinearLayout>
