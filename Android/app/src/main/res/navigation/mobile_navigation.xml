@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/buzonFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.agileus.ui.modulotareas.listatareas.DashboardFragment"
+        android:name="com.example.agileus.ui.modulotareas.listatareas.TaskFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -21,11 +21,6 @@
             app:destination="@id/formularioCrearTareasFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/buzonDetallesFragment"
-        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
-        android:label="buzon_detalles_fragment"
-        tools:layout="@layout/buzon_detalles_fragment" />
     <fragment
         android:id="@+id/buzonFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
@@ -35,6 +30,12 @@
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
             app:destination="@id/buzonDetallesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/buzonDetallesFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
+        android:label="buzon_detalles_fragment"
+        tools:layout="@layout/buzon_detalles_fragment" />
+
     <fragment
         android:id="@+id/reporteMensajesFragment"
         android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragment"

@@ -13,11 +13,11 @@ import com.example.agileus.R
 
 import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentDashboardBinding
+import com.example.agileus.ui.HomeActivity
 
 
-class DashboardFragment : Fragment() {
+class TaskFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
     private var _binding: FragmentDashboardBinding? = null
 
     private val binding get() = _binding!!
@@ -28,9 +28,6 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
-
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,20 +43,15 @@ class DashboardFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL ,false)
         }
 
+        //Mostrar Fragments de acuerdo al estado
+        val transaction = (activity as HomeActivity).supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.contenedorTareas, TaskListFragment())
+        transaction.commit()
+
+        //Btn Crear tareas
         binding.btnCrearTarea.setOnClickListener {
             it.findNavController().navigate(R.id.formularioCrearTareasFragment)
         }
-
-        //RecyclerListaTareas
-        dashboardViewModel.devuelveLista()
-
-        dashboardViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.recyclerListaTareas.adapter = it
-            binding.recyclerListaTareas.layoutManager = LinearLayoutManager(activity)
-        })
-
-
-
 
     }
 
