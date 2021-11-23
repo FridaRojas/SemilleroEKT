@@ -17,9 +17,12 @@ public interface GroupService {
 
     Group guardar(Group group);
 
-    Group guardarUsuario( String idUser, String idGrupo, String idSuperior,String nombreRol);
+    Group guardarUsuario(String idUser, String idGrupo, String idSuperior,String nombreRol);
 
+    boolean actualizaUsuario(User usuario);
+    Group actualizaNombre(String idGrupo, String nombreGrupo);
     void borrarPorId(String id);
+
 
     void borrarUsuarioDeGrupo( String idUser, String idGroup);
 

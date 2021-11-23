@@ -1,23 +1,16 @@
 package com.ekt.Servicios.controller;
 
-
-
 import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
-
-
 import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -35,15 +28,14 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
     }
 
-
-    @PutMapping("/guardarGrupo")
-    public ResponseEntity<?> addUserGrup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
-
+    @PutMapping("/agregarUsuario")
+    public ResponseEntity<?> addUserGroup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
         if(bodyAddUserGroup.getIDUsuario()==null || bodyAddUserGroup.getIDGrupo()==null || bodyAddUserGroup.getIDSuperior()==null||bodyAddUserGroup.getNombreRol()==null){
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error  en las llaves",""));
         }else{
             Group group= groupService.guardarUsuario(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
-            if (group==null){
+            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIDUsuario()).get(), bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
+            if (group==null && user==null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al realizar en la operacion,parametro no valido",""));
             }else{
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED,"El usuario se añadio correctamente",group));
@@ -53,7 +45,6 @@ public class GroupController {
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
-
         if (groupService.buscarPorId(id).isPresent()){
             return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo encontrado",groupService.buscarPorId(id)));
         }else{
@@ -105,7 +96,6 @@ public class GroupController {
         try {
             String idGroup="",idUser ="";
             JSONObject jsn = new JSONObject(json);
-
             idGroup=jsn.get("idGroup").toString();
             idUser=jsn.get("idUser").toString();
 
@@ -196,5 +186,17 @@ public class GroupController {
     }
 
 
+    @PutMapping("/actualizaNombre")
+    public ResponseEntity<?> actualizaNombre(@RequestBody Group grupo){
+        try {
+            if(groupService.buscarPorId(grupo.getId()).isPresent() && grupo.getNombre()!=null){
+                return ResponseEntity.ok(new Response(HttpStatus.OK,"Grupo actualizado correctamente", groupService.actualizaNombre(grupo.getId(), grupo.getNombre())));
+            }else{
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Grupo no encontrado", ""));
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error desconocido", ""));
+        }
+    }
 
 }
