@@ -3,8 +3,6 @@ package com.ekt.Servicios.service;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,9 +25,9 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(id);
     }
     @Override
-    public Optional<User> findUsersByCorreo(String correo){
+    public Optional<User> findUsersByUniqueData(String correo, String curp, String rfc, String empleado){
 
-        return userRepository.findUsersByCorreo(correo);
+        return userRepository.findUsersByUniqueData(correo, curp,rfc,empleado);
     }
 
     @Override
@@ -51,10 +49,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateIdPadre(User userUpdate, String idPadre){
-        userUpdate.setIDSuperiorInmediato(idPadre);
+    public User updateIdBoss(User userUpdate, String idBoss){
+        userUpdate.setIDSuperiorInmediato(idBoss);
         save(userUpdate);
-        return  userUpdate;
+        return userUpdate;
     }
 
     @Override
