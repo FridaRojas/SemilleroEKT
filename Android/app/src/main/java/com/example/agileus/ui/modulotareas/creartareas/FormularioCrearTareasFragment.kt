@@ -13,13 +13,12 @@ import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.modulotareas.dialogostareas.EdtFinFecha
-import com.example.agileus.ui.modulotareas.dialogostareas.EdtInicioFecha
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
+import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 
 private const val ARG_PARAM1 = "param1"
 
-class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
+class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener {
 
     private lateinit var asignarTareaViewModel: CrearTareasViewModel
 
@@ -62,8 +61,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var tarea: Tasks
-
         setUpUiAsignarTareas()
 
         /* Boton Crear tarea  */
@@ -76,41 +73,33 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
                 Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
 
             }else{
-
-                if(anioInicio<=anioFin && mesInicio<=mesFin && diaInicio<=diaFin){
-
-                    val titulo      = binding.edtAgregaTitulo.text
-                    val descripcion = binding.edtDescripcion.text
-                    val mPrioridad  = binding.spinPrioridad.selectedItem
-
-                    Toast.makeText(activity as HomeActivity,
-                        "Datos to POST = " +
-                            "Titulo: $titulo, " +
-                            "Prioridad: $mPrioridad, " +
-                            "Fecha inicio: $fechaInicio, " +
-                            "Fecha fin: $fechaFin, "+
-                            "Descripcion: $descripcion ",
-                        Toast.LENGTH_LONG).show()
-
-                    tarea = Tasks(
-                        "GRUPOID1",
-                        "EMIS1",
-                        "Raul",
-                        "RECEPT1",
-                        "Carlos",
-                        fechaInicio,            //Fecha Inicio
-                        fechaFin,               //Fecha Fin
-                        titulo.toString(),      //Titulo
-                        "EWREWF2323",
-                        descripcion.toString(), //Descripcion
-                        mPrioridad.toString(),  //Prioridad
-                        false,             //Leido
-                        "2014-01-01"
-                    )
-                    asignarTareaViewModel.postTarea(tarea)
+                // VALIDAR INICIO Y FIN FECHAS
+                if(anioInicio<=anioFin){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
+                if(mesInicio+1<=mesFin+1){                      // es un mes menor o igual del mismo año
+                        if (mesInicio+1==mesFin+1){             // si mes inicio es igual a mes fin del mismo año
+                            if (diaInicio<=diaFin){             // es un dia menor o igual del mismo mes
+                                // OPERACION INSERTAR
+                                operacionIsert()
+                            }else{
+                                    Toast.makeText( context,
+                                    "El dia de Vencimiento no puede ser anterior al dia de inicio",
+                                    Toast.LENGTH_SHORT).show()
+                                }
+                        }else if(mesInicio<mesFin){             // mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE)
+                            // NO IMPORTA EL DIA
+                            // OPERACION INSERTAR
+                            operacionIsert()
+                        }
+                    }else if(mesInicio>mesFin){                 // mesInicio es superior a mes fin pero de año fin superior
+                        // NO IMPORTA EL DIA
+                        // 28/05/2022  inicio
+                        // 05/03/2024  fin
+                        // OPERACION INSERTAR
+                        operacionIsert()
+                    }
                 }else{
-                    Toast.makeText(FormularioCrearTareasFragment as HomeActivity,
-                        "La fecha de Vencimiento no puede ser anterior a la fecha de inicio",
+                    Toast.makeText( context,
+                        "El año de Vencimiento no puede ser anterior al año de inicio",
                         Toast.LENGTH_SHORT).show()
                 }
             }
@@ -118,11 +107,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
         /* Boton Crear tarea  */
 
         binding.edtFechaInicio.setOnClickListener {
-            abrirDialogoFechaInicio(view,1)
+            abrirDialogoFecha(view,1)
         }
         binding.edtFechaFin.setOnClickListener {
-            abrirDialogoFechaInicio(view,2)
-            //abrirDialogoFechaFin(view)
+            abrirDialogoFecha(view,2)
+
         }
     }
 
@@ -154,12 +143,44 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
         binding.spinPrioridad.adapter=spinPrioridadAdapter
         // SPINER CON RECURSO XML
     }
-    fun abrirDialogoFechaInicio(view: View, b:Int) {
-        val newFragment = EdtInicioFecha(this, b)
-        newFragment.show(parentFragmentManager, "Edt fecha")
+
+    fun operacionIsert(){
+        val tarea: Tasks
+        val titulo      = binding.edtAgregaTitulo.text
+        val descripcion = binding.edtDescripcion.text
+        val mPrioridad  = binding.spinPrioridad.selectedItem
+
+        /*Toast.makeText(activity as HomeActivity,
+            "Datos to POST = " +
+                "Titulo: $titulo, " +
+                "Prioridad: $mPrioridad, " +
+                "Fecha inicio: $fechaInicio, " +
+                "Fecha fin: $fechaFin, "+
+                "Descripcion: $descripcion ",
+            Toast.LENGTH_LONG).show()*/
+
+        tarea = Tasks(
+            "GRUPOID1",
+            "EMIS1",
+            "Raul",
+            "RECEPT1",
+            "Carlos",
+            fechaInicio,            //Fecha Inicio
+            fechaFin,               //Fecha Fin
+            titulo.toString(),      //Titulo
+            "EWREWF2323",
+            descripcion.toString(), //Descripcion
+            mPrioridad.toString(),  //Prioridad
+            false,             //Leido
+            "2014-01-01"
+        )
+        asignarTareaViewModel.postTarea(tarea)
+
     }
-    fun abrirDialogoFechaFin(view: View) {
-        val newFragment = EdtFinFecha(this)
+
+
+    fun abrirDialogoFecha(view: View, b:Int) {
+        val newFragment = EdtFecha(this, b)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
 

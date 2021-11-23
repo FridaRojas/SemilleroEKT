@@ -6,10 +6,10 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 import java.util.*
 
-class EdtInicioFecha (val listener: DialogosTareasListener, b:Int) : DialogFragment(),
+class EdtFecha (val listenerFormularioCrear: DialogosFormularioCrearTareasListener, b:Int) : DialogFragment(),
     DatePickerDialog.OnDateSetListener{
 
     var bandera = b
@@ -29,9 +29,9 @@ class EdtInicioFecha (val listener: DialogosTareasListener, b:Int) : DialogFragm
 
     override fun onDateSet(p0: DatePicker?, anio: Int, mes: Int, dia: Int) {
         if(bandera==1){
-            listener.onDateInicioSelected(anio, mes, dia)
+            listenerFormularioCrear.onDateInicioSelected(anio, mes, dia)
         }else if(bandera==2){
-            listener.onDateFinSelected(anio, mes, dia)
+            listenerFormularioCrear.onDateFinSelected(anio, mes, dia)
         }
     }
 }
