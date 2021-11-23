@@ -1,7 +1,6 @@
 package com.example.agileus.webservices.dao
 
 import android.widget.Toast
-import com.example.agileus.config.InitialApplication.Companion.webServiceMessage
 import com.example.agileus.models.Conversation
 import com.example.agileus.models.Message
 import retrofit2.Call

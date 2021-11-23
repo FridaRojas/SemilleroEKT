@@ -25,7 +25,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+/*
         conversationviewModel = ViewModelProvider(this).get()
         conversationviewModel.devuelveLista()
 
@@ -49,6 +49,8 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
             Toast.makeText(applicationContext, "$date$localTime", Toast.LENGTH_LONG).show()
         }
-
+ */
     }
+
+
 }

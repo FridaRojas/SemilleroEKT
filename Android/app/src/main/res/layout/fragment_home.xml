@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/paddingGeneral"
-    tools:context=".ui.modulomensajeria.listaconversaciones.ListConversationFragment">
-
+    tools:context=".ui.modulomensajeria.listaconversations.ListConversationFragment">
 
     <EditText
-        android:id="@+id/et_search"
+        android:id="@+id/et_search_conversation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:shadowColor="#403434"
@@ -20,11 +19,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </EditText>
+
     <ImageView
         android:id="@+id/imgBroadcast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/et_search"
+        app:layout_constraintStart_toEndOf="@id/et_search_conversation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/iconobroadcast"/>
@@ -35,10 +35,10 @@
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/et_search"/>
+    app:layout_constraintTop_toBottomOf="@id/et_search_conversation"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAgregarCuenta"
+        android:id="@+id/btnListContacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

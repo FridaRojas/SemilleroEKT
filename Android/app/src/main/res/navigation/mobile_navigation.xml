@@ -7,9 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.agileus.ui.modulomensajeria.listaconversaciones.ListConversationFragment"
+        android:name="com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragment"
         android:label="@string/title_mensajes"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_listContactsFragment"
+            app:destination="@id/listContactsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +26,9 @@
         android:name="com.example.agileus.ui.moduloreportes.reportes.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/listContactsFragment"
+        android:name="com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragment"
+        android:label="list_contacts_fragment"
+        tools:layout="@layout/list_contacts_fragment" />
 </navigation>

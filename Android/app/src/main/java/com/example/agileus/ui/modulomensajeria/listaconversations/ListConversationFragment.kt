@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulomensajeria.listaconversaciones
+package com.example.agileus.ui.modulomensajeria.listaconversations
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
+import com.example.agileus.R
 import com.example.agileus.databinding.FragmentHomeBinding
 
 
@@ -34,9 +35,9 @@ class ListConversationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-
+        binding.btnListContacts.setOnClickListener {
+            findNavController().navigate(R.id.listContactsFragment)
+        }
     }
 
     override fun onDestroyView() {

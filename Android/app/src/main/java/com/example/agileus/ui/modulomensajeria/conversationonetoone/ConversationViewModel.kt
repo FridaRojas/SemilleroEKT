@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ConversationAdapter
 import com.example.agileus.models.Conversation
-import com.example.agileus.models.Message
-import com.example.agileus.ui.modulomensajeria.listaconversaciones.ListConversationViewModel
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.webservices.dao.ConversationDao
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +24,7 @@ class ConversationViewModel:ViewModel() {
     init {
         lista = ConversationDao()
     }
-
+/*
     fun devuelveLista(){
         try {
             viewModelScope.launch {
@@ -70,4 +69,7 @@ class ConversationViewModel:ViewModel() {
 
 
     }
+
+    */
+
 }
