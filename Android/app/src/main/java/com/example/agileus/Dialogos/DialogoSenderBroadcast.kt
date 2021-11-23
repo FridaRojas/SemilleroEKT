@@ -3,16 +3,15 @@ package com.example.demoroom.dialogos
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.Models.Buzon
 import com.example.agileus.R
 import com.example.agileus.ui.modulomensajeriabuzon.b.BroadcasterListener
+import com.google.android.material.textfield.TextInputLayout
 
-class DialogoSenderBroadcast(val listener: BroadcasterListener, val destinatario: String) : DialogFragment() {
+class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -21,26 +20,27 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener, val destinatario
             val inflater            = requireActivity().layoutInflater
             val vista               = inflater.inflate(R.layout.mensaje_broadcasting, null)
 
-            val Asunto        = vista.findViewById<EditText>(R.id.Asunto)
-            val Mensaje         = vista.findViewById<EditText>(R.id.Mensajes)
+            val Asunto          = vista.findViewById<TextInputLayout>(R.id.Asunto)
+            val Mensaje         = vista.findViewById<TextInputLayout>(R.id.Mensajes)
 
-            val Destinatario =vista.findViewById<TextView>(R.id.Responsable)
-            Destinatario.setText(destinatario)
+            val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")///lista a consumir
+
+            val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+            val Destinatario =vista.findViewById<AutoCompleteTextView>(R.id.Responsable)
+            Destinatario.setAdapter(adapter)
 
             builder.setView(vista)
-
-
                 .setPositiveButton(
                     "Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
-                        if(Asunto.text.toString().isEmpty() || Mensaje.text.toString().isEmpty() ) {
+                        if(Asunto.toString().isEmpty() || Mensaje.toString().isEmpty() ) {
                             Toast.makeText(activity,
                                 "",
                                 Toast.LENGTH_LONG
                             ).show()
                         }else{
                         listener.mensajeBroadcasting(
-                                Buzon("Broadcast",destinatario,Asunto.text.toString(),Mensaje.text.toString())
+                                Buzon("Broadcast",Destinatario.text.toString(),Asunto.toString(),Mensaje.toString())
                         )
                         }
                     })

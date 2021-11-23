@@ -5,7 +5,6 @@ import com.example.agileus.providers.BuzonProviderListener
 import retrofit2.Response
 
  class ProviderBuzon(): BuzonProviderListener {
-
      suspend fun recuperarbuzon(lista:ArrayList<Buzon>):ArrayList<Buzon> {
        var extra= DaoBuzon(this)
         val callRespuesta = InitialApplication.webServiceGlobal.getmensajesbuzon()
