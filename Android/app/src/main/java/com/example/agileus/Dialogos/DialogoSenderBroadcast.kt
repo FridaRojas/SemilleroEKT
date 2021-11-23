@@ -3,6 +3,8 @@ package com.example.demoroom.dialogos
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -23,6 +25,10 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
             val Asunto          = vista.findViewById<TextInputLayout>(R.id.Asunto)
             val Mensaje         = vista.findViewById<TextInputLayout>(R.id.Mensajes)
 
+        //    val progreso =vista.findViewById<ProgressBar>(R.id.progress)
+
+       //     progreso.visibility = View.INVISIBLE
+
             val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")///lista a consumir
 
             val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
@@ -39,9 +45,13 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
                                 Toast.LENGTH_LONG
                             ).show()
                         }else{
-                        listener.mensajeBroadcasting(
-                                Buzon("Broadcast",Destinatario.text.toString(),Asunto.toString(),Mensaje.toString())
-                        )
+                                listener.mensajeBroadcasting(
+                                    Buzon("Broadcast",Destinatario.text.toString(),Asunto.toString(),Mensaje.toString())
+                                )
+
+
+
+
                         }
                     })
                 .setNegativeButton("Cancelar",

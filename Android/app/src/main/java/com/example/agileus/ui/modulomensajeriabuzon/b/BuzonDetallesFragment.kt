@@ -1,6 +1,7 @@
 package com.example.agileus.ui.modulomensajeriabuzon.b
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +36,13 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        binding.progress.visibility = View.INVISIBLE
+        binding.espera.visibility = View.INVISIBLE
+
+        binding.fab.visibility = View.VISIBLE
+        binding.recyclerBuzon.visibility=View.VISIBLE
+
         if (control == 1) {
             binding.fab.visibility = View.VISIBLE
             binding.fab.setOnClickListener {
@@ -51,7 +59,9 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
             }
         }
 
-       viewModel.devuelvebuzon()
+
+
+        viewModel.devuelvebuzon()
 
             viewModel.adaptador.observe(viewLifecycleOwner, {
                 binding.recyclerBuzon.adapter = it
@@ -66,7 +76,17 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
         }
 
         override fun mensajeBroadcasting(buzon: Buzon) {
-            Toast.makeText(context, " Mensaje enviado a ${buzon.receiverId}", Toast.LENGTH_SHORT)
-                .show()
+
+            Handler().postDelayed({
+                binding.progress.visibility = View.VISIBLE
+                binding.espera.visibility = View.VISIBLE
+                binding.fab.visibility = View.GONE
+            }, 5)
+              ////////////////
+            Handler().postDelayed({
+                Toast.makeText(context, " Mensaje enviado a ${buzon.receiverId}", Toast.LENGTH_SHORT).show()
+                binding.progress.visibility = View.GONE
+                binding.espera.visibility = View.GONE
+  }, 4000)
         }
     }

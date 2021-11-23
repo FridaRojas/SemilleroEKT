@@ -11,6 +11,5 @@ interface ConversationApi {
     @GET("conversacion/getOne2/id2_id40")
  //   @GET("servicio.json?alt=media&token=e3076cf4-2c04-4609-ab51-8d3cbffdc6d8")
     fun getConversationOnetoOne(): Call<ArrayList<Conversation>>
-    @GET("servicio.json?alt=media&token=e3076cf4-2c04-4609-ab51-8d3cbffdc6d8")
-    fun getmensajesbuzon(): Call<ArrayList<Buzon>>
+
 }
