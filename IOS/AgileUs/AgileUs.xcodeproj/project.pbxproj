@@ -24,6 +24,10 @@
 		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
 		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
 		D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDE7482747174E00197CB1 /* CampoTexto.swift */; };
+		DF5BAE23274DAD370080C589 /* chat_funciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5BAE22274DAD370080C589 /* chat_funciones.swift */; };
+		DFC33DD4274C54FF00E8DB7D /* lista_chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC33DD2274C54FF00E8DB7D /* lista_chats.swift */; };
+		DFC33DD5274C54FF00E8DB7D /* lista_chats.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFC33DD3274C54FF00E8DB7D /* lista_chats.xib */; };
+		DFC33DD8274C5C0600E8DB7D /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC33DD7274C5C0600E8DB7D /* ChatViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +74,10 @@
 		D4E69CB12746CCEF002121E4 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		D4EDE7482747174E00197CB1 /* CampoTexto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampoTexto.swift; sourceTree = "<group>"; };
 		D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DF5BAE22274DAD370080C589 /* chat_funciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat_funciones.swift; sourceTree = "<group>"; };
+		DFC33DD2274C54FF00E8DB7D /* lista_chats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lista_chats.swift; sourceTree = "<group>"; };
+		DFC33DD3274C54FF00E8DB7D /* lista_chats.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = lista_chats.xib; sourceTree = "<group>"; };
+		DFC33DD7274C5C0600E8DB7D /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,6 +183,9 @@
 		D4E69CA72746C24E002121E4 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
+				DF5BAE21274DAD140080C589 /* Funciones_chat */,
+				DFC33DD6274C5BAD00E8DB7D /* Chat_controller */,
+				DFC33DD1274C54A300E8DB7D /* Tablas */,
 				D4E69CAA2746C288002121E4 /* ChatsScreen.swift */,
 			);
 			path = Chats;
@@ -220,6 +231,31 @@
 				C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DF5BAE21274DAD140080C589 /* Funciones_chat */ = {
+			isa = PBXGroup;
+			children = (
+				DF5BAE22274DAD370080C589 /* chat_funciones.swift */,
+			);
+			path = Funciones_chat;
+			sourceTree = "<group>";
+		};
+		DFC33DD1274C54A300E8DB7D /* Tablas */ = {
+			isa = PBXGroup;
+			children = (
+				DFC33DD2274C54FF00E8DB7D /* lista_chats.swift */,
+				DFC33DD3274C54FF00E8DB7D /* lista_chats.xib */,
+			);
+			path = Tablas;
+			sourceTree = "<group>";
+		};
+		DFC33DD6274C5BAD00E8DB7D /* Chat_controller */ = {
+			isa = PBXGroup;
+			children = (
+				DFC33DD7274C5C0600E8DB7D /* ChatViewController.swift */,
+			);
+			path = Chat_controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -334,6 +370,7 @@
 				D4E69C842746BD83002121E4 /* LaunchScreen.storyboard in Resources */,
 				D4E69C812746BD83002121E4 /* Assets.xcassets in Resources */,
 				D4E69C7F2746BD81002121E4 /* Main.storyboard in Resources */,
+				DFC33DD5274C54FF00E8DB7D /* lista_chats.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,12 +499,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
+				DF5BAE23274DAD370080C589 /* chat_funciones.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
+				DFC33DD4274C54FF00E8DB7D /* lista_chats.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
+				DFC33DD8274C5C0600E8DB7D /* ChatViewController.swift in Sources */,
 				D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

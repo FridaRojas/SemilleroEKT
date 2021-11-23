@@ -8,9 +8,8 @@
 import UIKit
 
 var id_usuario = String()
-var servidor = String()
+var servidor = "http://10.97.0.147:3040/api/"
 var nombre_usuario = String()
-
 var inicio_sesion = Bool()
 
 @main
