@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AsignarTareaViewController: UIViewController {
+class AsignarTareaViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var nameTaskField: UITextField!
     @IBOutlet weak var personSelectField: UITextField!
@@ -21,7 +21,7 @@ class AsignarTareaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        descriptionText.delegate = self
         navbarConfig()
         viewStyleConfig()
         inputStyleConfig()
@@ -37,26 +37,52 @@ class AsignarTareaViewController: UIViewController {
     
     func inputStyleConfig() {
         nameTaskField.initStyle(placeholder: "Nombre de la Tarea")
-        personSelectField.initStyle(placeholder: "Persona Asignada")
-        priortyField.initStyle(placeholder: "Prioridad")
-        dateStartField.initStyle(placeholder: "Fecha Inicio")
-        dateEndField.initStyle(placeholder: "Fecha Fin")
-        fileField.initStyle(placeholder: "Archivo Adjunto")
+        personSelectField.initStyle(placeholder: "Persona Asignada", imageName: "arrowIcon")
+        priortyField.initStyle(placeholder: "Prioridad", imageName: "arrowIcon")
+        dateStartField.initStyle(placeholder: "Fecha Inicio", imageName: "calendarIcon")
+        dateEndField.initStyle(placeholder: "Fecha Fin", imageName: "calendarIcon")
+        fileField.initStyle(placeholder: "Archivo Adjunto", imageName: "fileIcon")
         descriptionText.initStyle(placeholder: "Descripcion")
         addTaskBtn.initStyle(text: "Asignar Tarea")
     }
     
     @IBAction func addTask(_ sender: Any) {
         let data = [
-            "nombre": "Nombre Prueba",
-            "personaAsignada": "Persona Prueba",
-            "prioridad": "Prioridad Prueba",
-            "fechaInicio": "Fecha Inicio Prueba",
-            "fechaFin": "Fecha Fin Prueba",
-            "descripcion": "Descripcion",
-            "archivo": "Archivo Prueba"
+            "id_grupo": "GRUPOID1",
+            "id_emisor": "EMIS1",
+            "nombre_emisor": "JOSE",
+            "id_receptor": "RECEPT1",
+            "nombre_receptor": "FERNANDO",
+            "fecha_ini": dateEndField.text!,
+            "fecha_fin": dateEndField.text!,
+            "titulo": nameTaskField.text!,
+            "descripcion": descriptionText.text!,
+            "prioridad": priortyField.text!,
+            "createdDate": "2014-01-01T23:28:56.782Z",
+            "estatus": "pendiente"
         ]
-        Api.shared.createTask(data: data)
+        
+        Api.shared.createTask(data: data) {
+            (task) in
+            print(task)
+            DispatchQueue.main.async {
+                self.altertaMensaje(title: "Exito", message: "Se asigno la tarea correctamente", confirmationMessage: "Ok", popView: true)
+            }
+        } failure: { error in
+            print(error)
+            DispatchQueue.main.async {
+                self.altertaMensaje(title: "Error", message: "Hubo un problema, intentelo mas tarde", confirmationMessage: "Ok")
+            }
+        }
+        
+        
+    }
+    
+    public func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor(red: 137/255, green: 139/255, blue: 140/255, alpha: 1) {
+             textView.text = nil
+             textView.textColor = UIColor.black
+         }
     }
     
 }

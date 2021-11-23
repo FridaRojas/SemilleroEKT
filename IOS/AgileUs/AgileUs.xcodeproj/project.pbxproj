@@ -10,6 +10,7 @@
 		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
 		5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */; };
 		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
+		C9275E2A274D44B20093A4D0 /* Ext_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9275E29274D44B10093A4D0 /* Ext_Generales.swift */; };
 		C946D0AE274BF05400543CB8 /* AsignarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0AD274BF05400543CB8 /* AsignarTareaViewController.swift */; };
 		C946D0B1274BF8AF00543CB8 /* Ext_UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0B0274BF8AF00543CB8 /* Ext_UITextField.swift */; };
 		C946D0B3274C1A0100543CB8 /* Ext_UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0B2274C1A0100543CB8 /* Ext_UITextView.swift */; };
@@ -55,6 +56,7 @@
 		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
 		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9275E29274D44B10093A4D0 /* Ext_Generales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_Generales.swift; sourceTree = "<group>"; };
 		C946D0AD274BF05400543CB8 /* AsignarTareaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsignarTareaViewController.swift; sourceTree = "<group>"; };
 		C946D0B0274BF8AF00543CB8 /* Ext_UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_UITextField.swift; sourceTree = "<group>"; };
 		C946D0B2274C1A0100543CB8 /* Ext_UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_UITextView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				C946D0B0274BF8AF00543CB8 /* Ext_UITextField.swift */,
 				C946D0B2274C1A0100543CB8 /* Ext_UITextView.swift */,
 				C97774A4274C1FED001671E5 /* Ext_Button.swift */,
+				C9275E29274D44B10093A4D0 /* Ext_Generales.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
 				C97774A8274C38DA001671E5 /* Api.swift in Sources */,
+				C9275E2A274D44B20093A4D0 /* Ext_Generales.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				C97774A5274C1FED001671E5 /* Ext_Button.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
@@ -680,6 +684,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 68VX4UY2JW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AgileUs/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -708,6 +713,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 68VX4UY2JW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AgileUs/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
