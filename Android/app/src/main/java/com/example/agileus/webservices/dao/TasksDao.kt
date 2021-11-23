@@ -1,11 +1,16 @@
 package com.example.agileus.webservices.dao
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.Tasks
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulotareas.creartareas.FormularioCrearTareasFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.coroutineContext
 
 class TasksDao {
 
@@ -30,11 +35,13 @@ class TasksDao {
                 if(response.isSuccessful){
 
                     val nuevaTarea: Tasks = response.body()!!
-                    var mensaje= "Tarea creada por el emisor: ${nuevaTarea.nombreEmisor}"
-                    mensaje+= " Title ${nuevaTarea.titulo}"
-                    mensaje+= " Asignada a: ${nuevaTarea.nombreReceptor}"
-                    mensaje+= " Descripcion:  ${nuevaTarea.descripcion}"
-                    Log.d("Mensaje", mensaje.toString())
+                    var mensaje= "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
+                    mensaje+= ", Titulo:${nuevaTarea.titulo}"
+                    mensaje+= ", Asignada a:${nuevaTarea.nombreReceptor}"
+                    mensaje+= ", Descripcion:${nuevaTarea.descripcion}"
+                    mensaje+= ", Fecha inicio:${nuevaTarea.fechaInicio}"
+                    mensaje+= ", Fecha fin:${nuevaTarea.fechaFin}"
+                    Log.d("Mensaje", mensaje)
 
                 }else{
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
