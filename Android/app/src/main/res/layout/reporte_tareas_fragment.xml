@@ -4,56 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#E8E1E1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.moduloreportes.reportes.ReporteTareasFragment">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
         android:orientation="horizontal"
+        android:backgroundTint="@color/colorBackground"
+        android:background="@drawable/rounded_rm"
         >
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReportesMensajes"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:backgroundTint="@color/colorBackground"
-            android:background="@drawable/rounded_rm"
-            >
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnReportesMensajes"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mensajes"
-                app:cornerRadius="16dp"
-                android:textColor="@color/black"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnReportesTareas"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tareas"
-                app:cornerRadius="16dp"
-                android:transitionName="report_slide"
-                />
-        </LinearLayout>
-
-
+            android:text="Mensajes"
+            app:cornerRadius="16dp"
+            android:textColor="@color/black"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReportesTareas"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tareas"
+            app:cornerRadius="16dp"
+            android:transitionName="report_slide"
+            />
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/text_notifications"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_marginTop="32dp"
+        android:layout_width="362dp"
+        android:layout_height="238dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerLista"
+        android:layout_marginTop="20dp"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp" />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

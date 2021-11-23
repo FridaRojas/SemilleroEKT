@@ -1,28 +1,28 @@
 package com.example.agileus.ui.moduloreportes.reportes
-
-import androidx.lifecycle.ViewModelProvider
+import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
-import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
 
 class ReporteTareasFragment : Fragment() {
 
-
     private lateinit var reporteTareasViewModel: ReporteTareasViewModel
     private var _binding: ReporteTareasFragmentBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private lateinit var pieChart: PieChart
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,25 +41,89 @@ class ReporteTareasFragment : Fragment() {
         _binding = ReporteTareasFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        reporteTareasViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        pieChart = binding.pieChart
+
+        initPieChart()
+
+        setDataToPieChart()
+
+        reporteTareasViewModel.devuelvelistaReporte(1)
+
+        reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
+            binding.RecyclerLista.adapter = it
+            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
+
+        })
 
 
         binding.btnReportesMensajes.setOnClickListener {
-            
             val action = ReporteTareasFragmentDirections.actionReporteTareasFragmentToReporteMensajesFragment()
             val extras = FragmentNavigatorExtras(binding.btnReportesTareas to "report_slide")
             findNavController().navigate(action,  extras)
         }
 
     }
+
+
+    private fun initPieChart() {
+        pieChart.setUsePercentValues(false)
+        //hollow pie chart
+        pieChart.isDrawHoleEnabled = false
+        pieChart.setTouchEnabled(false)
+        pieChart.setDrawEntryLabels(false)
+        //adding padding
+        pieChart.setExtraOffsets(20f, 0f, 20f, 20f)
+        pieChart.setUsePercentValues(false)
+        pieChart.isRotationEnabled = false
+        pieChart.setDrawEntryLabels(false)
+        //pieChart.legend.isEnabled.
+        //pieChart.legend.orientation = Legend.LegendOrientation.VERTICAL
+        //pieChart.setDrawSliceText(false);
+        pieChart.legend.isWordWrapEnabled = true
+        pieChart.getLegend().setEnabled(false)
+
+    }
+
+    private fun setDataToPieChart() {
+        pieChart.setUsePercentValues(false)
+        val dataEntries = ArrayList<PieEntry>()
+        dataEntries.add(PieEntry(72f, "Android"))
+        dataEntries.add(PieEntry(26f, "Ios"))
+        dataEntries.add(PieEntry(2f, "Other"))
+
+        val colors: ArrayList<Int> = ArrayList()
+        colors.add(resources.getColor(R.color.colorPrimary))//"#4DD0E1"
+        colors.add(resources.getColor(R.color.colorSecondary))//"#FFF176"
+        colors.add(Color.parseColor("#FFF176"))//"#FF8A65"
+
+        val dataSet = PieDataSet(dataEntries, "")
+        val data = PieData(dataSet)
+
+        // In Percentage
+        data.setValueFormatter(PercentFormatter())
+        dataSet.colors = colors
+        pieChart.data = data
+        data.setValueTextSize(0f)
+        pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+
+        //create hole in center
+        pieChart.holeRadius = 58f
+        pieChart.transparentCircleRadius = 61f
+        pieChart.isDrawHoleEnabled = true
+        pieChart.setHoleColor(Color.TRANSPARENT)
+
+        //add text in center
+        pieChart.setDrawCenterText(false);
+
+        pieChart.invalidate()
+
+    }
+
 
 }

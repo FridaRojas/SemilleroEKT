@@ -10,3 +10,4 @@ object Constantes {
     var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
 
 }
+

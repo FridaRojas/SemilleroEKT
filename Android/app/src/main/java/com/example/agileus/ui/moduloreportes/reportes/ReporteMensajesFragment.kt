@@ -1,17 +1,16 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.transition.TransitionInflater
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import com.example.agileus.R
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 
 class ReporteMensajesFragment : Fragment() {
