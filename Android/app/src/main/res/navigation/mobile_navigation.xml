@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/buzonFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -22,15 +22,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/buzonDetallesFragment"
-        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
-        android:label="buzon_detalles_fragment"
-        tools:layout="@layout/buzon_detalles_fragment" >
-        <action
-            android:id="@+id/action_buzonDetallesFragment_to_detalleNivelAltoFragment2"
-            app:destination="@id/detalleNivelAltoFragment2" />
-    </fragment>
-    <fragment
         android:id="@+id/buzonFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
         android:label="fragment_buzon"
@@ -39,6 +30,12 @@
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
             app:destination="@id/buzonDetallesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/buzonDetallesFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
+        android:label="buzon_detalles_fragment"
+        tools:layout="@layout/buzon_detalles_fragment" />
+
     <fragment
         android:id="@+id/reporteMensajesFragment"
         android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragment"
@@ -66,10 +63,5 @@
             android:id="@+id/action_formularioCrearTareasFragment_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />
     </fragment>
-    <fragment
-        android:id="@+id/detalleNivelAltoFragment2"
-        android:name="com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragment"
-        android:label="fragment_detalle_nivel_alto"
-        tools:layout="@layout/fragment_detalle_nivel_alto" />
 
 </navigation>

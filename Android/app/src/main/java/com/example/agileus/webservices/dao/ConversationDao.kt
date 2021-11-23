@@ -3,8 +3,6 @@ package com.example.agileus.webservices.dao
 
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.Conversation
-//import com.example.agileus.models.Conversation
-import com.example.agileus.providers.ConversationProviderListener
 import retrofit2.Response
 
 
