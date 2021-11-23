@@ -34,9 +34,9 @@ public class ValidarMensajeImpl implements ValidarMensaje {
 			this.message("El texto del mensaje es obligatorio");
 		}
 
-		if (request.getTexto().length() < 1) {
+		/*if (request.getTexto().length() < 1) {
 			this.message("El texto es muy corto, debe tener almenos 1 caracter");
-		}
+		}*/
 
 		if (request.getFechaCreacion() == null) {
 			this.message("La fecha de creacion es necesaria");

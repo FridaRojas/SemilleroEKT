@@ -66,6 +66,14 @@ public class MensajesController {
 			if (emisor.isPresent()) {
 				if (receptor.isPresent()) {
 					
+					if(mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("http://"))) {
+						mensajes.setRutaDocumento("");
+						mensajes.setStatusRutaDocumento(false);
+					} else {
+						mensajes.setTexto("Documento");
+						mensajes.setStatusRutaDocumento(true);
+					}
+					
 					List<Mensajes> conversacionForma1 = new ArrayList<>();
 					List<Mensajes> conversacionForma2 = new ArrayList<>();
 					
@@ -102,7 +110,7 @@ public class MensajesController {
 
 					//mensajesService.crearMensaje(mensajes);
 
-					return ResponseEntity.status(HttpStatus.CREATED).body( mensajesService.crearMensaje(mensajes).getIDConversacion());
+					return ResponseEntity.status(HttpStatus.CREATED).body(mensajesService.crearMensaje(mensajes).getIDConversacion());
 
 				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());

@@ -17,6 +17,9 @@ public class Mensajes {
     private String texto;
     private boolean visible;
     
+    private String rutaDocumento;
+    private boolean statusRutaDocumento;
+    
     private String nombreConversacionReceptor;
     
     private Date fechaCreacion;
@@ -28,7 +31,19 @@ public class Mensajes {
     private Date fechaLeido;
     private boolean statusLeido;
 
-    public String getID() { return id; }
+    public String getRutaDocumento() {
+		return rutaDocumento;
+	}
+	public void setRutaDocumento(String rutaDocumento) {
+		this.rutaDocumento = rutaDocumento;
+	}
+	public boolean isStatusRutaDocumento() {
+		return statusRutaDocumento;
+	}
+	public void setStatusRutaDocumento(boolean statusRutaDocumento) {
+		this.statusRutaDocumento = statusRutaDocumento;
+	}
+	public String getID() { return id; }
     public void setID(String value) { this.id = value; }
     
 	public boolean isStatusCreado() {
