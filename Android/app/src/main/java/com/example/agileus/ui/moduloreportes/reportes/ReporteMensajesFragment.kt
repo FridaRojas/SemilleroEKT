@@ -25,9 +25,6 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.components.LegendEntry
 
-
-
-
 class ReporteMensajesFragment : Fragment() {
 
     private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
@@ -104,7 +101,6 @@ class ReporteMensajesFragment : Fragment() {
         pieChart.setDrawSliceText(false)
     }
 
-
     private fun setDataToPieChart() {
         pieChart.setUsePercentValues(true)
         val dataEntries = ArrayList<PieEntry>()
@@ -135,7 +131,6 @@ class ReporteMensajesFragment : Fragment() {
         pieChart.isDrawHoleEnabled = true
         pieChart.setHoleColor(Color.TRANSPARENT)
 
-
         //add text in center
         pieChart.setDrawCenterText(false);
 
@@ -143,14 +138,8 @@ class ReporteMensajesFragment : Fragment() {
 
     }
 
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
-
-
 }
