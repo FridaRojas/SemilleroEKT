@@ -1,5 +1,6 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,8 +27,15 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
     private val binding get() = _binding!!
     private var param1: String? = null
 
-    var fechaInicio    : String = ""
-    var fechaFin       : String = ""
+    var fechaInicio     : String = ""
+    var fechaFin        : String = ""
+
+    var anioInicio      : Int = 0
+    var anioFin         : Int = 0
+    var mesInicio       : Int = 0
+    var mesFin          : Int = 0
+    var diaInicio       : Int = 0
+    var diaFin          : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,59 +61,68 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         var tarea: Tasks
+
         setUpUiAsignarTareas()
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
+
             if(fechaInicio=="" || fechaFin=="" ||
                 binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
-                binding.edtDescripcion.text.toString().isNullOrEmpty()
-                    ){
+                binding.edtDescripcion.text.toString().isNullOrEmpty()){
+
                 Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
+
             }else{
 
-                val titulo      = binding.edtAgregaTitulo.text
-                val descripcion = binding.edtDescripcion.text
-                val mPrioridad  = binding.spinPrioridad.selectedItem
+                if(anioInicio<=anioFin && mesInicio<=mesFin && diaInicio<=diaFin){
 
-                Toast.makeText(activity as HomeActivity,
-                    "Datos to POST = " +
-                        "Titulo: $titulo, " +
-                        "Prioridad: $mPrioridad, " +
-                        "Fecha inicio: $fechaInicio, " +
-                        "Fecha fin: $fechaFin, "+
-                        "Descripcion: $descripcion ",
-                    Toast.LENGTH_LONG).show()
+                    val titulo      = binding.edtAgregaTitulo.text
+                    val descripcion = binding.edtDescripcion.text
+                    val mPrioridad  = binding.spinPrioridad.selectedItem
 
-                tarea = Tasks(
-                    "GRUPOID1",
-                    "EMIS1",
-                    "Raul",
-                    "RECEPT1",
-                    "Carlos",
-                    fechaInicio,            //Fecha Inicio
-                    fechaFin,               //Fecha Fin
-                    titulo.toString(),      //Titulo
-                    "EWREWF2323",
-                    descripcion.toString(), //Descripcion
-                    mPrioridad.toString(),  //Prioridad
-                    false,             //Leido
-                    "2014-01-01"
-                )
+                    Toast.makeText(activity as HomeActivity,
+                        "Datos to POST = " +
+                            "Titulo: $titulo, " +
+                            "Prioridad: $mPrioridad, " +
+                            "Fecha inicio: $fechaInicio, " +
+                            "Fecha fin: $fechaFin, "+
+                            "Descripcion: $descripcion ",
+                        Toast.LENGTH_LONG).show()
 
-                asignarTareaViewModel.postTarea(tarea)
-
-
+                    tarea = Tasks(
+                        "GRUPOID1",
+                        "EMIS1",
+                        "Raul",
+                        "RECEPT1",
+                        "Carlos",
+                        fechaInicio,            //Fecha Inicio
+                        fechaFin,               //Fecha Fin
+                        titulo.toString(),      //Titulo
+                        "EWREWF2323",
+                        descripcion.toString(), //Descripcion
+                        mPrioridad.toString(),  //Prioridad
+                        false,             //Leido
+                        "2014-01-01"
+                    )
+                    asignarTareaViewModel.postTarea(tarea)
+                }else{
+                    Toast.makeText(FormularioCrearTareasFragment as HomeActivity,
+                        "La fecha de Vencimiento no puede ser anterior a la fecha de inicio",
+                        Toast.LENGTH_SHORT).show()
+                }
             }
         }
         /* Boton Crear tarea  */
 
         binding.edtFechaInicio.setOnClickListener {
-            abrirDialogoFechaInicio(view)
+            abrirDialogoFechaInicio(view,1)
         }
         binding.edtFechaFin.setOnClickListener {
-            abrirDialogoFechaFin(view)
+            abrirDialogoFechaInicio(view,2)
+            //abrirDialogoFechaFin(view)
         }
     }
 
@@ -137,21 +154,28 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
         binding.spinPrioridad.adapter=spinPrioridadAdapter
         // SPINER CON RECURSO XML
     }
-    fun abrirDialogoFechaInicio(view: View) {
-        val newFragment = EdtInicioFecha(this)
+    fun abrirDialogoFechaInicio(view: View, b:Int) {
+        val newFragment = EdtInicioFecha(this, b)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
     fun abrirDialogoFechaFin(view: View) {
         val newFragment = EdtFinFecha(this)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
+
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
+        anioInicio  = anio
+        mesInicio   = mes
+        diaInicio   = dia
         val fecha=binding.edtFechaInicio
         fecha.setText("$anio-${mes+1}-$dia")
         fechaInicio = fecha.text.toString()
 
     }
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
+        anioFin = anio
+        mesFin  = mes
+        diaFin  = dia
         val fecha=binding.edtFechaFin
         fecha.setText("$anio-${mes+1}-$dia")
         fechaFin = fecha.text.toString()

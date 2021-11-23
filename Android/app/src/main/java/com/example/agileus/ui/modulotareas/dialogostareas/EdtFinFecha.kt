@@ -17,8 +17,9 @@ class EdtFinFecha (val listener: DialogosTareasListener) : DialogFragment(), Dat
         val mes = calendar.get(Calendar.MONTH)
         val dia = calendar.get(Calendar.DAY_OF_MONTH)
 
-
-        return DatePickerDialog(activity as Context,this, anio,mes,dia )
+        val picker = DatePickerDialog(activity as Context,this, anio,mes,dia )
+        picker.datePicker.minDate = calendar.timeInMillis // validacion de minima fecha es hoy
+        return picker
     }
 
     override fun onDateSet(p0: DatePicker?, anio: Int, mes: Int, dia: Int) {
