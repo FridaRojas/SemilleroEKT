@@ -63,7 +63,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/validate")
+    @PostMapping("/validate")
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
         if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
             System.out.println("Error en las llaves");
@@ -71,13 +71,13 @@ public class UserController {
         }else{
             Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
             if (user.isPresent()){
-                System.out.println("Usuario encontrado");
+                System.out.println("Login: Usuario encontrado");
                 //actualizar token
                 user.get().setToken(infAcceso.getToken());
                 userService.save(user.get());
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user.get()));
             }else{
-            System.out.println("Usuario no encontrado");
+            System.out.println("Login: Usuario no encontrado");
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
         }
     }
@@ -86,12 +86,14 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable String id){
         try{
             if(userService.findById(id).isPresent()){
-                User u = userService.findById(id).get();
-                if(u.getStatusActivo().equals("true")){
-                    u.setStatusActivo("false");
-                    userService.save(u);
+                User usr = userService.findById(id).get();
+                if(usr.getStatusActivo().equals("true")){
+                    usr.setStatusActivo("false");
+                    userService.save(usr);
                     return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario eliminado correctamente",""));
                 }
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
+            }else{
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
             }
         }catch(Exception e){
@@ -99,7 +101,7 @@ public class UserController {
             return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Usuario no encontrado",""));
         }
         //userService.deleteById(id);
-        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"error desconocido",""));
+
     }
 
     @PutMapping("/updateIdBoss")

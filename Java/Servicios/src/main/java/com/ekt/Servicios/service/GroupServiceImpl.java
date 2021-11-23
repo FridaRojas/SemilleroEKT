@@ -20,12 +20,22 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public Iterable<Group> buscarTodo() {
-        return null;
+        try {
+            return groupRepository.findAll();
+        }catch (Exception e){
+            System.err.println("Excepcion: "+e);
+            return null;
+        }
     }
 
     @Override
     public Page<Group> buscarTodo(Pageable pageable) {
-        return null;
+        try {
+            return groupRepository.findAll(pageable);
+        }catch (Exception e){
+            System.err.println("Excepcion: "+e);
+            return null;
+        }
     }
 
     @Override
