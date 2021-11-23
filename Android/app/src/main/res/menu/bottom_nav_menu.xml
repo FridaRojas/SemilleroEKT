@@ -12,8 +12,9 @@
         android:title="@string/title_tareas" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/reporteMensajesFragment"
         android:icon="@drawable/iconoreportes"
         android:title="@string/title_reportes" />
+
 
 </menu>

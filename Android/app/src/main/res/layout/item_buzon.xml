@@ -8,9 +8,12 @@
 
     android:orientation="vertical"
     android:padding="4dp"
+
+    android:background="@drawable/cliente_backgroud"
     android:layout_marginTop="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    android:backgroundTint="#FFFFFF">
 
 
 
@@ -105,8 +108,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"
-        android:layout_height="10dp"
-        android:background="@color/purple_700"/>
+        android:layout_height="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

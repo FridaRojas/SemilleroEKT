@@ -1,9 +1,11 @@
 package com.example.agileus.ui.modulomensajeria.listacontactos
 
 import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
 import com.example.agileus.adapters.ConversationAdapter
 import com.example.agileus.models.Conversation
@@ -12,7 +14,6 @@ import com.example.agileus.webservices.dao.ConversationDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.lifecycle.viewModelScope
 
 
 class HomeViewModel : ViewModel() {
