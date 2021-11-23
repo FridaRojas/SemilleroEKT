@@ -16,9 +16,7 @@ import kotlinx.coroutines.withContext
 class TaskViewModel() : ViewModel() {
     var adaptador = MutableLiveData<TasksAdapter>()
     lateinit var lista: TasksDao
-    // lateinit var lista: ConversationDao
 
-    //Cambiar el tipo de ArrayList a Tarea
     lateinit var listaConsumida: ArrayList<Tasks>
 
     //Lista de Estados Recycler
@@ -39,7 +37,6 @@ class TaskViewModel() : ViewModel() {
                             TasksAdapter(listaConsumida as ArrayList<Tasks>, listener)
                     }
                 }
-
             }
 
 

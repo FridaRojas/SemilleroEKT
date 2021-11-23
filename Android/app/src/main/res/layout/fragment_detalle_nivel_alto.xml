@@ -15,7 +15,7 @@
             android:id="@+id/txtNombreTareaD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:text="Nombre de la Tarea"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
