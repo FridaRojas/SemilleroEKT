@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.Contacts
 import com.example.agileus.models.Conversation
+import com.example.agileus.providers.ConversationProviderListener
 import retrofit2.Response
 
 
@@ -41,8 +42,6 @@ class ConversationDao() {
 
 }
 
-
-
      /*
         callRespuesta.enqueue(object: Callback<ArrayList<Conversation>> {
             override fun onResponse(
@@ -57,7 +56,7 @@ class ConversationDao() {
                         //listaConsumida.forEach {
                           //  var id = it.id
                           //  var fecha = it.fecha
-                          //  Log.i("Message","El id es: $id. la Fecha es: $fecha")
+                          //  Log.i("Mensaje","El id es: $id. la Fecha es: $fecha")
 
                             //Toast.makeText(applicationContext,"El id es: $id. la Fecha es: $fecha", Toast.LENGTH_SHORT).show()
                        // }
@@ -82,5 +81,5 @@ class ConversationDao() {
 
         })
     }
-*/
 
+}*/

@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulomensajeria.listaconversations
+package com.example.agileus.ui.modulomensajeria.listacontactos
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,6 +28,7 @@ class ListConversationFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
 
         return root
     }

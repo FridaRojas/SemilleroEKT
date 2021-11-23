@@ -1,6 +1,7 @@
-package com.example.agileus.ui.modulomensajeria.conversationonetoone
+package com.example.agileus.ui.modulomensajeria.listacontactos
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,7 +32,7 @@ class ConversationViewModel:ViewModel() {
         try {
             viewModelScope.launch {
                 listaConsumida =  withContext(Dispatchers.IO) {
-                    lista.recuperarPublicaciones()
+                lista.recuperarPublicaciones()
                 }
                 if (listaConsumida != null){
                     if(listaConsumida.isNotEmpty()){

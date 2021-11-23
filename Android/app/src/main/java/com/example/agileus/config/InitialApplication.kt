@@ -8,8 +8,11 @@ class InitialApplication : Application() {
 
     companion object{
         lateinit var webServiceConversation: ConversationApi
-       lateinit var webServiceMessage:MessageApi
+        lateinit var webServiceMessage:MessageApi
         lateinit var webServiceListContacts:ConversationApi
+
+        lateinit var webServiceGlobalTasks: TasksApi
+
     }
 
     override fun onCreate() {
@@ -18,5 +21,10 @@ class InitialApplication : Application() {
        webServiceConversation = ConfigRetrofit().obtenerConfiguracionRetofit()
        webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
         webServiceListContacts = ConfigRetrofit().obtenerConfiguracionRetofitListaDeContactos()
+
+        //Este objeto ya puede ser accedido en cualquier parte de la app
+         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
+
     }
+
 }
