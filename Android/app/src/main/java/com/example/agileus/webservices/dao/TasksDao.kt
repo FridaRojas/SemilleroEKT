@@ -43,7 +43,6 @@ class TasksDao {
                     mensaje+= ", Fecha fin:${nuevaTarea.fechaFin}"
                     Log.d("Mensaje", mensaje)
 
-
                 }else{
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
                 }

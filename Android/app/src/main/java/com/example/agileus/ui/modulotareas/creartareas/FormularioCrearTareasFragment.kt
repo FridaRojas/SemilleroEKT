@@ -174,6 +174,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
             "2014-01-01"
         )
         asignarTareaViewModel.postTarea(tarea)
+        Toast.makeText(activity as HomeActivity, "La tarea se creo correctamente", Toast.LENGTH_SHORT).show()
 
     }
 
