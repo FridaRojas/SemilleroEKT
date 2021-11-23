@@ -16,6 +16,7 @@
     <string name="descripcion">Descripcion</string>
     <string name="prioridad">Prioridad</string>
     <string name="persona_asignada">Persona Asignada</string>
+    <string name="BtnCambiarEstadoDialogo">Cambiar estado</string>
 
     //Array spin prioridad tarea
     <string-array name="prioridad_array">

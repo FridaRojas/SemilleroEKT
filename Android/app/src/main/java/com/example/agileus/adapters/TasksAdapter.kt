@@ -1,33 +1,56 @@
 package com.example.agileus.adapters
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Tasks
+import com.example.agileus.ui.MainActivity
+import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
 
 
-class TasksAdapter(private val dataSet: ArrayList<Tasks>) :
+class TasksAdapter(private val dataSet: ArrayList<Tasks>, val listener: DialogosTareasListener) :
     RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, val listener: DialogosTareasListener) :
+        RecyclerView.ViewHolder(view) {
         var nombreTarea: TextView
         var personaAsignada: TextView
         var fecha: TextView
+        var btnAbrirDetallesTarea: ImageView
+        var nivelUsuario: String = "Alto"
 
         init {
             // Define click listener for the ViewHolder's View.
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
             personaAsignada = view.findViewById(R.id.txtPersonaAsignada)
             fecha = view.findViewById(R.id.txtFecha)
+            btnAbrirDetallesTarea = view.findViewById(R.id.iconoAbrirDetallesTarea)
         }
 
         fun enlazarItem(task: Tasks) {
             nombreTarea.text = task.titulo
             personaAsignada.text = task.nombreReceptor
             fecha.text = task.fechaFin
+
+            btnAbrirDetallesTarea.setOnClickListener {
+                if (nivelUsuario.equals("Alto") || nivelUsuario.equals("Medio")) {
+                    Toast.makeText(itemView.context, "Abrimos Fragment", Toast.LENGTH_SHORT).show()
+                    it.findNavController().navigate(R.id.detalleNivelAltoFragment2)
+                } else {
+                    Toast.makeText(itemView.context, "Abrimos Dialogo", Toast.LENGTH_SHORT).show()
+                    listener.abreDialogoNivelBajo()
+                }
+            }
         }
+
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -36,7 +59,7 @@ class TasksAdapter(private val dataSet: ArrayList<Tasks>) :
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.task_item, viewGroup, false)
 
-        return ViewHolder(view)
+        return ViewHolder(view, listener)
     }
 
     // Replace the contents of a view (invoked by the layout manager)

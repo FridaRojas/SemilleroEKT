@@ -19,7 +19,6 @@ import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListene
 private const val ARG_PARAM1 = "param1"
 
 
-
 class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
     private lateinit var asignarTareaViewModel: CrearTareasViewModel
@@ -28,8 +27,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
     private val binding get() = _binding!!
     private var param1: String? = null
 
-    var fechaInicio    : String = ""
-    var fechaFin       : String = ""
+    var fechaInicio: String = ""
+    var fechaFin: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,25 +59,31 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
-            if(fechaInicio=="" || fechaFin=="" ||
-                binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
+            if (fechaInicio == "" || fechaFin == "" ||
+                binding.edtAgregaTitulo.text.toString().isNullOrEmpty() ||
                 binding.edtDescripcion.text.toString().isNullOrEmpty()
-                    ){
-                Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
-            }else{
+            ) {
+                Toast.makeText(
+                    activity as HomeActivity,
+                    "Faltan datos por agregar",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
 
-                val titulo      = binding.edtAgregaTitulo.text
+                val titulo = binding.edtAgregaTitulo.text
                 val descripcion = binding.edtDescripcion.text
-                val mPrioridad  = binding.spinPrioridad.selectedItem
+                val mPrioridad = binding.spinPrioridad.selectedItem
 
-                Toast.makeText(activity as HomeActivity,
+                Toast.makeText(
+                    activity as HomeActivity,
                     "Datos to POST = " +
-                        "Titulo: $titulo, " +
-                        "Prioridad: $mPrioridad, " +
-                        "Fecha inicio: $fechaInicio, " +
-                        "Fecha fin: $fechaFin, "+
-                        "Descripcion: $descripcion ",
-                    Toast.LENGTH_LONG).show()
+                            "Titulo: $titulo, " +
+                            "Prioridad: $mPrioridad, " +
+                            "Fecha inicio: $fechaInicio, " +
+                            "Fecha fin: $fechaFin, " +
+                            "Descripcion: $descripcion ",
+                    Toast.LENGTH_LONG
+                ).show()
 
                 tarea = Tasks(
                     "GRUPOID1",
@@ -122,7 +127,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
     }
 
 
-    fun setUpUiAsignarTareas(){
+    fun setUpUiAsignarTareas() {
         //Recuperar id grupo
         // SPINER CON OBJETO CONSUMIDO API RETROFIT
 
@@ -134,30 +139,42 @@ class FormularioCrearTareasFragment : Fragment(), DialogosTareasListener {
 
 
         // SPINER CON RECURSO XML
-        val spinPrioridadAdapter = ArrayAdapter.createFromResource(activity as HomeActivity, R.array.prioridad_array, android.R.layout.simple_spinner_item)
+        val spinPrioridadAdapter = ArrayAdapter.createFromResource(
+            activity as HomeActivity,
+            R.array.prioridad_array,
+            android.R.layout.simple_spinner_item
+        )
         spinPrioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinPrioridad.adapter=spinPrioridadAdapter
+        binding.spinPrioridad.adapter = spinPrioridadAdapter
         // SPINER CON RECURSO XML
     }
+
     fun abrirDialogoFechaInicio(view: View) {
         val newFragment = EdtInicioFecha(this)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
+
     fun abrirDialogoFechaFin(view: View) {
         val newFragment = EdtFinFecha(this)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
+
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
-        val fecha=binding.edtFechaInicio
-        fecha.setText("$anio-${mes+1}-$dia")
+        val fecha = binding.edtFechaInicio
+        fecha.setText("$anio-${mes + 1}-$dia")
         fechaInicio = fecha.text.toString()
         Toast.makeText(activity as HomeActivity, "$fechaInicio", Toast.LENGTH_SHORT).show()
     }
+
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
-        val fecha=binding.edtFechaFin
-        fecha.setText("$anio-${mes+1}-$dia")
+        val fecha = binding.edtFechaFin
+        fecha.setText("$anio-${mes + 1}-$dia")
         fechaFin = fecha.text.toString()
         Toast.makeText(activity as HomeActivity, "$fechaFin", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun abreDialogoNivelBajo() {
+        TODO("Not yet implemented")
     }
 
     override fun onDestroyView() {

@@ -7,12 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TaskViewModel : ViewModel() {
+class TaskViewModel() : ViewModel() {
     var adaptador = MutableLiveData<TasksAdapter>()
     lateinit var lista: TasksDao
     // lateinit var lista: ConversationDao
@@ -26,7 +27,7 @@ class TaskViewModel : ViewModel() {
         lista = TasksDao()
     }
 
-    fun devuelveLista() {
+    fun devuelveLista(listener: DialogosTareasListener) {
         try {
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO) {
@@ -35,7 +36,7 @@ class TaskViewModel : ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(listaConsumida as ArrayList<Tasks>)
+                            TasksAdapter(listaConsumida as ArrayList<Tasks>, listener)
                     }
                 }
 

@@ -25,7 +25,11 @@
         android:id="@+id/buzonDetallesFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
         android:label="buzon_detalles_fragment"
-        tools:layout="@layout/buzon_detalles_fragment" />
+        tools:layout="@layout/buzon_detalles_fragment" >
+        <action
+            android:id="@+id/action_buzonDetallesFragment_to_detalleNivelAltoFragment2"
+            app:destination="@id/detalleNivelAltoFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/buzonFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
@@ -62,5 +66,10 @@
             android:id="@+id/action_formularioCrearTareasFragment_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />
     </fragment>
+    <fragment
+        android:id="@+id/detalleNivelAltoFragment2"
+        android:name="com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragment"
+        android:label="fragment_detalle_nivel_alto"
+        tools:layout="@layout/fragment_detalle_nivel_alto" />
 
 </navigation>

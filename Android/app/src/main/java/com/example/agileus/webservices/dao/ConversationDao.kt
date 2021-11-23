@@ -12,7 +12,6 @@ class ConversationDao() {
 
         fun  recuperarPublicaciones(): ArrayList<Conversation> {
 
-
         val callRespuesta = InitialApplication.webServiceGlobal.getConversationOnetoOne()
         var ResponseDos:Response<ArrayList<Conversation>> = callRespuesta.execute()
 
