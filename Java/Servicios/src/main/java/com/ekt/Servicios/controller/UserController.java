@@ -65,7 +65,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/validate")
+    @PostMapping("/validate")
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
 
         if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
@@ -74,14 +74,14 @@ public class UserController {
         }else{
             Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
             if (user.isPresent()){
-                System.out.println("Usuario encontrado");
+                System.out.println("Login: Usuario encontrado");
                 //actualizar token
                 user.get().setToken(infAcceso.getToken());
                 userService.save(user.get());
 
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user.get()));
             }else{
-            System.out.println("Usuario no encontrado");
+            System.out.println("Login: Usuario no encontrado");
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
         }
     }
