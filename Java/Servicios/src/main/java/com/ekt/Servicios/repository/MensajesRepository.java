@@ -2,6 +2,7 @@ package com.ekt.Servicios.repository;
 
 import com.ekt.Servicios.entity.Mensajes;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -14,5 +15,8 @@ public interface MensajesRepository extends MongoRepository<Mensajes, String> {
     
     @Query("{'_id' : ?0}")
     Optional<Mensajes> buscarMensaje (String idMensaje);
+
+    @Query("{'idConversacion' : ?0}")
+    List<Mensajes>listarConversaciones(String idConversacion);
     
 }

@@ -1,11 +1,15 @@
 package com.ekt.Servicios.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import com.ekt.Servicios.entity.Conversacion;
+import com.ekt.Servicios.repository.MensajesRepository;
+import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,12 @@ public class MensajesController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private MensajesRepository mensajesRepository;
+
+	@Autowired
+	MongoTemplate monogoTemplate;
 
 	@PostMapping("crearMensaje")
 	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity, ResultadoNoEncontrado {
@@ -90,9 +100,9 @@ public class MensajesController {
 
 					mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
 
-					mensajesService.crearMensaje(mensajes);
+					//mensajesService.crearMensaje(mensajes);
 
-					return ResponseEntity.status(HttpStatus.CREATED).body("Mensaje creado");
+					return ResponseEntity.status(HttpStatus.CREATED).body( mensajesService.crearMensaje(mensajes).getIDConversacion());
 
 				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
@@ -173,7 +183,7 @@ public class MensajesController {
 		// 1.- Validar que yo exista
 		Optional<User> existo = userRepository.validarUsuario(miId);
 		this.validarMensajeImpl.validarOptional(existo,"emisor");
-		
+		//existo.ifPresent(listaConversacion::add);
 		// 2.- Buscar a mi jefe
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
 		this.validarMensajeImpl.validarOptional(jefe,"jefe");
@@ -191,4 +201,42 @@ public class MensajesController {
 
 		return listaConversacion;
 	}
+
+	@GetMapping("/listarConversaciones")
+	public List<Conversacion> listarConversaciones(){
+		List<String> mensajesList = new ArrayList<>();
+		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
+		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion",String.class);
+		MongoCursor mongoCursor = distinctIterable.iterator();
+		List<Conversacion> lConversacion = new ArrayList<>();
+		while(mongoCursor.hasNext()){
+
+				Conversacion mConv = new Conversacion() ;
+			//if(.equals(id)){
+				String idConversacion = (String) mongoCursor.next();
+				mConv.setIdConversacion(idConversacion);
+				Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+				Iterator <Mensajes> cursor = iter.iterator();
+				while(cursor.hasNext()){
+					Mensajes mensajes = cursor.next();
+					//if(mensajes.getIDEmisor()!= mensajes.getIDEmisor()){
+
+							mConv.setIdReceptor(mensajes.getIDReceptor());
+							mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
+							mConv.setIdConversacion(mensajes.getIDConversacion());
+
+						//mConv.setIdReceptor(mensajes.getIDReceptor());
+						//mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
+						//mConv.setIdConversacion(mensajes.getIDConversacion());
+
+					//}
+					break;
+				}
+				lConversacion.add(mConv);
+				//mensajesList.add(idConversacion);
+		}
+		return lConversacion;
+	}
+	//@GetMapping("listaMensajes/{idEmisor}")
+	//public ResponseEntity<?> listarMensajes()
 }

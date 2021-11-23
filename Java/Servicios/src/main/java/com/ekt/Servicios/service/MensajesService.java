@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface MensajesService {
 
 	Mensajes crearMensaje(Mensajes mensajes);
-	Iterable<Mensajes>verConversacion(String idConversacion);
+	Iterable<Mensajes> verConversacion(String idConversacion);
 	Optional<Mensajes> actualizarVisible(String id);
 
 	Optional<Mensajes> buscarMensaje(String idMensaje);
