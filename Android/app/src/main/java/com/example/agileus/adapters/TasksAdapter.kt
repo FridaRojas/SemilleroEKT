@@ -5,14 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.DataTask
 import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
-import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
 
@@ -64,9 +62,7 @@ class TasksAdapter(
                         )
                     it.findNavController().navigate(action)
                 } else if (nivelUsuario.equals("Bajo")) {
-                    action =
-                        TaskFragmentDirections.actionNavigationDashboardToDialogoNivelBajo(dataTask)
-                    listener.abreDialogo()
+                    listener.abreDialogo(dataTask)
                 }
             }
         }

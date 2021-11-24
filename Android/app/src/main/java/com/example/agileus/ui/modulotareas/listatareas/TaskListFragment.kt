@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.FragmentTasksBinding
+import com.example.agileus.models.DataTask
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
-import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
 class TaskListFragment : Fragment(), TaskListListener {
@@ -50,8 +48,8 @@ class TaskListFragment : Fragment(), TaskListListener {
     }
 
 
-    override fun abreDialogo() {
-        val newFragment = DialogoNivelBajo(this)
+    override fun abreDialogo(dataTask: DataTask) {
+        val newFragment = DialogoNivelBajo(this, dataTask)
         newFragment.show((activity as HomeActivity).supportFragmentManager, "missiles")
     }
 

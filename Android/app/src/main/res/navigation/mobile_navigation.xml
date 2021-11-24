@@ -22,9 +22,6 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_detalleNivelAltoFragment"
             app:destination="@id/detalleNivelAltoFragment" />
-        <action
-            android:id="@+id/action_navigation_dashboard_to_dialogoNivelBajo"
-            app:destination="@id/dialogoNivelBajo" />
     </fragment>
 
     <fragment
@@ -74,14 +71,6 @@
         android:name="com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragment"
         android:label="fragment_detalle_nivel_alto"
         tools:layout="@layout/fragment_detalle_nivel_alto">
-        <argument
-            android:name="tareas"
-            app:argType="com.example.agileus.models.DataTask" />
-    </fragment>
-    <fragment
-        android:id="@+id/dialogoNivelBajo"
-        android:name="com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo"
-        android:label="DialogoNivelBajo" >
         <argument
             android:name="tareas"
             app:argType="com.example.agileus.models.DataTask" />
