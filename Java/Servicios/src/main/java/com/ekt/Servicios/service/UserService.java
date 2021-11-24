@@ -22,7 +22,12 @@ public interface UserService {
 
      void reasignaSuperiores(String[] idUsuarios, String[] idSuperiores);
 
+     User actualizaRol(User usuario, String idSuperior, String idGrupo, String nombreRol);
+     User actualizaUsuario(User usuario);
 
-
+     boolean buscaCorreoUsuario(String correo);
+     boolean buscaCURPUsuario(String curp);
+     boolean buscaRFCUsuario(String rfc);
+     boolean buscaNoEmpleadoUsuario(String noEmpleado);
 
 }

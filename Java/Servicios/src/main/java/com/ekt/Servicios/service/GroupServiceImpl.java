@@ -20,12 +20,22 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public Iterable<Group> buscarTodo() {
-        return null;
+        try {
+            return groupRepository.findAll();
+        }catch (Exception e){
+            System.err.println("Excepcion: "+e);
+            return null;
+        }
     }
 
     @Override
     public Page<Group> buscarTodo(Pageable pageable) {
-        return null;
+        try {
+            return groupRepository.findAll(pageable);
+        }catch (Exception e){
+            System.err.println("Excepcion: "+e);
+            return null;
+        }
     }
 
     @Override
@@ -118,5 +128,39 @@ public class GroupServiceImpl implements GroupService{
         return groupRepository.buscarPorNombre(nombre);
     }
 
+    @Override
+    public Group actualizaNombre(String idGrupo, String nombreGrupo){
+        Optional<Group> grupo = groupRepository.findById(idGrupo);
+        grupo.get().setNombre(nombreGrupo);
+        return groupRepository.save(grupo.get());
+    }
+
+    @Override
+    public boolean actualizaUsuario(User usuario){
+        Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(usuario.getIDGrupo(),usuario.getID());
+        User []usuarios = grupo.get().getUsuarios();
+        boolean bandera = false;
+        for(User user:usuarios){
+            if(user.getID().equals(usuario.getID())){
+                user.setCorreo(usuario.getCorreo());
+                user.setFechaInicio(usuario.getFechaInicio());
+                user.setFechaTermino(usuario.getFechaTermino());
+                user.setNombre(usuario.getNombre());
+                user.setPassword(usuario.getPassword());
+                user.setRFC(usuario.getRFC());
+                user.setCurp(usuario.getCurp());
+                user.setNumeroEmpleado(user.getNumeroEmpleado());
+                user.setTelefono(usuario.getTelefono());
+                bandera = true;
+            }
+        }
+        if(bandera){
+            grupo.get().setUsuarios(usuarios);
+            groupRepository.save(grupo.get());
+            return true;
+        }else {
+            return false;
+        }
+    }
 
 }

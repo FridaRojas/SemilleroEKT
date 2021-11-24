@@ -1,22 +1,19 @@
 package com.ekt.Servicios.controller;
 
-
-
 import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
-
-
 import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -35,15 +32,14 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
     }
 
-
-    @PutMapping("/guardarGrupo")
-    public ResponseEntity<?> addUserGrup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
-
+    @PutMapping("/agregarUsuario")
+    public ResponseEntity<?> addUserGroup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
         if(bodyAddUserGroup.getIDUsuario()==null || bodyAddUserGroup.getIDGrupo()==null || bodyAddUserGroup.getIDSuperior()==null||bodyAddUserGroup.getNombreRol()==null){
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error  en las llaves",""));
         }else{
             Group group= groupService.guardarUsuario(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
-            if (group==null){
+            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIDUsuario()).get(), bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
+            if (group==null && user==null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al realizar en la operacion,parametro no valido",""));
             }else{
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED,"El usuario se añadio correctamente",group));
@@ -53,7 +49,6 @@ public class GroupController {
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
-
         if (groupService.buscarPorId(id).isPresent()){
             return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo encontrado",groupService.buscarPorId(id)));
         }else{
@@ -105,11 +100,8 @@ public class GroupController {
         try {
             String idGroup="",idUser ="";
             JSONObject jsn = new JSONObject(json);
-
             idGroup=jsn.get("idGroup").toString();
             idUser=jsn.get("idUser").toString();
-
-
 
             //verifica que exista el grupo
             if (groupService.buscarPorId(idGroup).isPresent()) {
@@ -140,8 +132,6 @@ public class GroupController {
             }else{
                 return new Response(HttpStatus.NOT_FOUND,"El grupo no existe","");
             }
-
-
 
         }catch (Exception e){
             System.out.println("Exception: "+e);
@@ -195,6 +185,66 @@ public class GroupController {
         //return new Response();
     }
 
+    @GetMapping("/buscarTodo")
+    public Response buscarTodo(){
+        try {
+            Iterable<Group> grupos = groupService.buscarTodo();
+            return new Response(HttpStatus.OK,"Grupos existentes",grupos);
+        }catch (Exception e){
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta","");
+        }
+    }
 
+
+    /**
+     *
+     * @param json
+     * Recibe dos parametros "pagina" y "tamaño"
+     * pagina: es la pagina a mostrar
+     * tamaño: es la cantidad de objetos por pagina
+     * @return
+     *
+     */
+    @GetMapping("/buscarTodoPags")
+    public Response buscarTodoPageable(@RequestBody String json){
+        try {
+            int pagina=-1,tamaño =-1;
+            JSONObject jsn = new JSONObject(json);
+
+            if (jsn.get("pagina") == null || jsn.get("tamaño")==null ){
+                return new Response(HttpStatus.BAD_REQUEST,"Faltan datos","");
+            }
+
+            pagina= (int) jsn.get("pagina");
+            tamaño= (int) jsn.get("tamaño");
+
+            if (pagina <0 || tamaño < 1){
+                return new Response(HttpStatus.BAD_REQUEST,"Datos incorrectos","");
+            }
+
+            Iterable<Group> grupos = groupService.buscarTodo(PageRequest.of(pagina, tamaño));
+            return new Response(HttpStatus.OK,"Grupos existentes",grupos);
+
+        }catch (Exception e){
+            System.err.println("Exception: "+e);
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta","");
+        }
+    }
+
+
+
+
+    @PutMapping("/actualizaNombre")
+    public ResponseEntity<?> actualizaNombre(@RequestBody Group grupo){
+        try {
+            if(groupService.buscarPorId(grupo.getId()).isPresent() && grupo.getNombre()!=null){
+                return ResponseEntity.ok(new Response(HttpStatus.OK,"Grupo actualizado correctamente", groupService.actualizaNombre(grupo.getId(), grupo.getNombre())));
+            }else{
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Grupo no encontrado", ""));
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error desconocido", ""));
+        }
+    }
 
 }

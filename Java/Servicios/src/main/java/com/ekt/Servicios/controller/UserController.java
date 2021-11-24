@@ -1,23 +1,19 @@
 package com.ekt.Servicios.controller;
 
-
-
 import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.BodyUpdateBoss;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
+import com.ekt.Servicios.service.GroupServiceImpl;
 import com.ekt.Servicios.service.UserService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 import java.util.Optional;
 
@@ -26,6 +22,9 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     public UserService userService;
+
+    @Autowired
+    public GroupServiceImpl groupService;
 
     @Autowired
     public UserRepository userRepository;
@@ -76,7 +75,7 @@ public class UserController {
         }else{
             Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
             if (user.isPresent()){
-                System.out.println("Usuario encontrado");
+                System.out.println("Login: Usuario encontrado");
                 //actualizar token
                 user.get().setToken(infAcceso.getToken());
                 userService.save(user.get());
@@ -94,7 +93,7 @@ public class UserController {
 
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
             }else{
-            System.out.println("Usuario no encontrado");
+            System.out.println("Login: Usuario no encontrado");
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
         }
     }
@@ -103,12 +102,14 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable String id){
         try{
             if(userService.findById(id).isPresent()){
-                User u = userService.findById(id).get();
-                if(u.getStatusActivo().equals("true")){
-                    u.setStatusActivo("false");
-                    userService.save(u);
+                User usr = userService.findById(id).get();
+                if(usr.getStatusActivo().equals("true")){
+                    usr.setStatusActivo("false");
+                    userService.save(usr);
                     return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario eliminado correctamente",""));
                 }
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
+            }else{
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
             }
         }catch(Exception e){
@@ -116,7 +117,7 @@ public class UserController {
             return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Usuario no encontrado",""));
         }
         //userService.deleteById(id);
-        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"error desconocido",""));
+
     }
 
     @PutMapping("/updateIdBoss")
@@ -133,52 +134,60 @@ public class UserController {
         }
     }
 
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody User userUpdate, @PathVariable String id){
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody User userUpdate){
         try {
-            Optional<User> user = userService.findById(id);
+            Optional<User> user = userService.findById(userUpdate.getID());
             if(!user.isPresent()) {
                 return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
             }else {
-                user.get().setCorreo(userUpdate.getCorreo());
-                user.get().setFechaInicio(userUpdate.getFechaInicio());
-                user.get().setFechaTermino(userUpdate.getFechaTermino());
-                user.get().setNombre(userUpdate.getNombre());
-                user.get().setPassword(userUpdate.getPassword());
-                user.get().setTelefono(userUpdate.getTelefono());
-                user.get().setCurp(userUpdate.getCurp());
-                user.get().setRFC(userUpdate.getRFC());
-                userService.save(user.get());
-                return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario actualizado", user.get()));
+                if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(user.get().getCorreo())){
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", ""));
+                }else if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(user.get().getCurp())){
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", ""));
+                }else if(!user.get().getRFC().equals(userUpdate.getRFC()) && userService.buscaRFCUsuario(user.get().getRFC())){
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "RFC no válido", ""));
+                }else if(!user.get().getNumeroEmpleado().equals(userUpdate.getNumeroEmpleado()) && userService.buscaNoEmpleadoUsuario(user.get().getNumeroEmpleado())){
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
+                }else{
+                    groupService.actualizaUsuario(userUpdate);
+                    return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario actualizado correctamente", userService.actualizaUsuario(userUpdate)));
+                }
             }
         }catch (Exception e){
-            System.out.println("No se puede actualizar el usuario: " + e);
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, e.toString(), ""));
         }
-
     }
 
     @PutMapping("/updateRol")
     public ResponseEntity<?> updateRol(@RequestBody BodyAddUserGroup bodyGroup){
         boolean bandera = false;
+        String idSuperior;
+        String idGrupo;
+        String nombreRol;
         try {
             Optional<User> user = userService.findById(bodyGroup.getIDUsuario());
             if(user.isPresent()) {
                 if (bodyGroup.getIDSuperior() != null && !bodyGroup.getIDSuperior().equals(user.get().getIDSuperiorInmediato())) {
-                    user.get().setIDSuperiorInmediato(bodyGroup.getIDSuperior());
+                    idSuperior = bodyGroup.getIDSuperior();
                     bandera = true;
+                }else{
+                    idSuperior = user.get().getIDSuperiorInmediato();
                 }
                 if (bodyGroup.getIDGrupo() != null && !bodyGroup.getIDGrupo().equals(user.get().getIDGrupo())) {
-                    user.get().setIDGrupo(bodyGroup.getIDGrupo());
+                    idGrupo = bodyGroup.getIDGrupo();
                     bandera = true;
+                }else{
+                    idGrupo = user.get().getIDGrupo();
                 }
                 if (bodyGroup.getNombreRol() != null && !bodyGroup.getNombreRol().equals(user.get().getNombreRol())) {
-                    user.get().setNombreRol(bodyGroup.getNombreRol());
+                    nombreRol = bodyGroup.getNombreRol();
                     bandera = true;
+                }else{
+                    nombreRol = user.get().getNombreRol();
                 }
                 if (bandera) {
-                    userService.save(user.get());
+                    userService.actualizaRol(user.get(), idSuperior, idGrupo, nombreRol);
                     return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
                 } else {
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "No se aceptan los cambios", ""));
@@ -206,7 +215,6 @@ public class UserController {
             return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Error desconocido", ""));
         }
     }
-
 
     @GetMapping("/existUser")
     public ResponseEntity<?> existUser(@RequestBody User user){
