@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -11,7 +12,7 @@
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="estiloMenuLateral.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
@@ -23,7 +24,7 @@
     <nav id="sidebar">
         <div class="sidebar-header" >
             <svg class="bi me-2" width="16" height="16" >
-                <img src="../assets/419-4190296_hojas-verde-png-sin-fondo.png", height="60", width="35">
+                <img src="/assets/419-4190296_hojas-verde-png-sin-fondo.png"  height="60"  width="35">
             </svg>
 
             <h3>Agile Us</h3>
