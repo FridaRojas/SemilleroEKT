@@ -14,6 +14,12 @@ public class ConfigPag {
              return "elementos/menuLateral";
         }
 
+    @GetMapping("/inicioUsuarios")
+    public String inicioUsuarios() {
+        //return "paginas/organigrama/InicioOrganigrama";
+        return "paginas/usuarios/InicioUsuarios";
+    }
+
 
 
 
