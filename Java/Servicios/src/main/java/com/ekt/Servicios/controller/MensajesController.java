@@ -51,20 +51,71 @@ public class MensajesController {
 		Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
 
 		this.validarMensajeImpl.validarOptional(emisor, "emisor");
-		this.validarMensajeImpl.validarOptional(receptor, "receptor");
+		// this.validarMensajeImpl.validarOptional(receptor, "receptor");
 
 		List<User> listaConversacion = listaConversacion(emisor.get().getID());
 
-		boolean existeEnLista = false;
+		List<Conversacion> listaGrupo = grupos(mensajes.getIDEmisor());
 
-		for (User contactos : listaConversacion) {
+		// Banderas para saber si se encontraron en alguna lista
+		boolean existeEnListaGrupo = false;
+		boolean existeEnListaUsuario = false;
 
-			if (contactos.getID().equals(receptor.get().getID())) {
-				existeEnLista = true;
+		Conversacion cuerpoConversacion = new Conversacion();
+		// Comparar receptor en lista de grupos
+		for (Conversacion conversacion : listaGrupo) {
+			if (conversacion.getIdConversacion().equals(mensajes.getIDReceptor())) {
+				existeEnListaGrupo = true;
+				cuerpoConversacion.setIdConversacion(conversacion.getIdConversacion());
+				cuerpoConversacion.setIdReceptor(conversacion.getIdReceptor());
+				cuerpoConversacion.setNombreConversacionRecepto(conversacion.getNombreConversacionRecepto());
 			}
 		}
 
-		if (existeEnLista) {
+		if (existeEnListaGrupo) {
+			if (emisor.isPresent()) {
+				if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("http://"))) {
+					mensajes.setRutaDocumento("");
+					mensajes.setStatusRutaDocumento(false);
+				} else {
+					mensajes.setTexto("Documento");
+					mensajes.setStatusRutaDocumento(true);
+				}
+
+				mensajes.setIDConversacion(mensajes.getIDReceptor());
+
+				// Status-fecha Creado
+				mensajes.setStatusCreado(true);
+
+				// Status-fecha Enviado
+				mensajes.setFechaEnviado(new Date());
+				mensajes.setStatusEnviado(true);
+
+				// Status-fecha Leido
+				mensajes.setStatusLeido(false);
+				mensajes.setFechaLeido(new Date(0));
+
+				mensajes.setVisible(true);
+
+				mensajes.setNombreConversacionReceptor(cuerpoConversacion.getNombreConversacionRecepto());
+
+				mensajes.setConversacionVisible(true);
+
+				mensajesService.crearMensaje(mensajes);
+
+				return ResponseEntity.status(HttpStatus.CREATED).body(
+						new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
+			}
+		}
+
+		// Comparar receptor en lista de contactos
+		for (User contactos : listaConversacion) {
+			if (contactos.getID().equals(receptor.get().getID())) {
+				existeEnListaUsuario = true;
+			}
+		}
+
+		if (existeEnListaUsuario) {
 			if (emisor.isPresent()) {
 				if (receptor.isPresent()) {
 
@@ -254,73 +305,96 @@ public class MensajesController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.CREATED, "", iter.iterator()));
 	}
-	// @GetMapping("listaMensajes/{idEmisor}")
-	// public ResponseEntity<?> listarMensajes()
 
-	@PostMapping("mensajeGrupo")
-	public ResponseEntity<?> crearMensajeGrupo(@RequestBody Mensajes mensaje) {
+	@GetMapping("listaGrupos/{miId}")
+	public ResponseEntity<?> listaGrupos(@PathVariable(value = "miId") String miId) {
 
-		Optional<User> existo = userRepository.validarUsuario(mensaje.getIDEmisor());
+		List<Conversacion> grupos = grupos(miId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(grupos);
+	}
+
+	@GetMapping("listaPersonasGrupo/{idGrupo}")
+	public ResponseEntity<?> listaDePersonasEnGrupo(@PathVariable(value = "idGrupo") String idGrupo) {
+		List<User> usuarios = new ArrayList<>();
+
+		String[] lenguajesComoArreglo = idGrupo.split("-");
+
+		for (String idUsuario : lenguajesComoArreglo) {
+
+			Optional<User> usuario = userRepository.validarUsuario(idUsuario);
+			usuario.ifPresent(usuarios::add);
+
+		}
+
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarios);
+	}
+
+	public List<Conversacion> grupos(String miId) {
+
+		List<Conversacion> grupos = new ArrayList<>();
+
+		Optional<User> existo = userRepository.validarUsuario(miId);
 
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
 
-		/*if (jefe.isPresent()) {
-			return ResponseEntity.status(HttpStatus.CREATED).body(jefe);
-		}*/
+		// Crear lista padre
+		if (jefe.isPresent()) {
+			List<User> listaPadre = new ArrayList<>();
 
-		StringBuilder idGrupo = buscarPersonasGrupo(mensaje.getIDEmisor());
+			StringBuilder idConversacionPadre = new StringBuilder();
 
-		if (idGrupo.length() < 1) {
-			return ResponseEntity.status(HttpStatus.CREATED).body("No se puede xd");
+			Conversacion conversacion = new Conversacion();
+
+			Iterable<User> misHermanos = userRepository.findByBossId(jefe.get().getID());
+			misHermanos.forEach(listaPadre::add);
+
+			if (listaPadre.size() < 2) {
+				idConversacionPadre.append("");
+			} else {
+				idConversacionPadre.append(jefe.get().getID());
+
+				for (User hijos : listaPadre) {
+					idConversacionPadre.append("-" + hijos.getID());
+				}
+			}
+
+			conversacion.setIdConversacion(idConversacionPadre.toString());
+			conversacion.setIdReceptor(idConversacionPadre.toString());
+			conversacion.setNombreConversacionRecepto(
+					"Chat Padre " + jefe.get().getNombreRol() + " " + jefe.get().getNombre());
+
+			grupos.add(conversacion);
 		}
 
-		mensaje.setIDConversacion(idGrupo.toString());
-		mensaje.setIDEmisor(mensaje.getIDEmisor());
-		mensaje.setIDReceptor(idGrupo.toString());
-		mensaje.setTexto(mensaje.getTexto());
-		mensaje.setVisible(true);
-
-		// Validar
-		mensaje.setStatusRutaDocumento(false);
-		// mezclar "Chat" + puestoJefe + nombreJefe
-		
-		/*if(jefe.isPresent()) {
-			mensaje.setNombreConversacionReceptor("Chat "+jefe.get());
-		}*/
-		
-		
-		mensaje.setFechaCreacion(mensaje.getFechaCreacion());
-		mensaje.setStatusCreado(true);
-		mensaje.setFechaEnviado(new Date());
-		mensaje.setStatusEnviado(true);
-		mensaje.setFechaLeido(new Date(0));
-		mensaje.setStatusLeido(false);
-
-		// mensajesService.crearMensaje(mensaje);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(mensaje);
-		// return
-		// ResponseEntity.status(HttpStatus.CREATED).body(mensajesService.crearMensaje(mensaje));
-	}
-
-	public StringBuilder buscarPersonasGrupo(String miId) {
-
-		StringBuilder respuesta = new StringBuilder();
 		List<User> listaHijos = new ArrayList<>();
 
 		Iterable<User> misHijos = userRepository.findByBossId(miId);
 		misHijos.forEach(listaHijos::add);
 
-		if (listaHijos.size() < 2) {
-			respuesta.append("");
-		} else {
-			respuesta.append(miId);
+		if (listaHijos.size() > 1) {
+			StringBuilder idMiConversacion = new StringBuilder();
 
-			for (User hijos : misHijos) {
-				respuesta.append("-" + hijos.getID());
+			Conversacion miConversacion = new Conversacion();
+
+			if (listaHijos.size() < 2) {
+				idMiConversacion.append("");
+			} else {
+				idMiConversacion.append(miId);
+
+				for (User hijos : listaHijos) {
+					idMiConversacion.append("-" + hijos.getID());
+				}
 			}
+
+			miConversacion.setIdConversacion(idMiConversacion.toString());
+			miConversacion.setIdReceptor(idMiConversacion.toString());
+			miConversacion.setNombreConversacionRecepto(
+					"Chat Mio " + existo.get().getNombreRol() + " " + existo.get().getNombre());
+
+			grupos.add(miConversacion);
 		}
 
-		return respuesta;
+		return grupos;
 	}
 }
