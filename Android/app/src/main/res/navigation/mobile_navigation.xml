@@ -72,8 +72,8 @@
         android:label="fragment_detalle_nivel_alto"
         tools:layout="@layout/fragment_detalle_nivel_alto">
         <argument
-            android:name="tarea"
-            app:argType="com.example.agileus.models.Tasks" />
+            android:name="tareas"
+            app:argType="com.example.agileus.models.DataTask" />
     </fragment>
 
 </navigation>

@@ -39,7 +39,7 @@ class TaskListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //RecyclerListaTareas
-        taskViewModel.devuelveLista()
+        taskViewModel.devolverListaPorStatus()
         taskViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerTareasStatus.adapter = it
             binding.recyclerTareasStatus.layoutManager = LinearLayoutManager(activity)

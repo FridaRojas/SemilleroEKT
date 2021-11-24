@@ -1,6 +1,7 @@
 package com.example.agileus.webservices.apis
 
 
+import com.example.agileus.models.TaskList
 import com.example.agileus.models.Tasks
 import retrofit2.Call
 import retrofit2.http.Body
@@ -20,11 +21,7 @@ interface TasksApi {
 
     //Obtener lista por id, status
     @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
-    fun getTasksByStatus(@Path("datos") datos:String) : Call<ArrayList<Tasks>>?
-
-    //@GET("user/findAll")
-    //fun getTasksByStatus() : Call<ArrayList<Tasks>>?
-
+    fun getTasksByStatus(@Path("datos") datos:String) : Call<TaskList>?
 
     //Obtener una lista de personas en un grupo
     //@GET( )

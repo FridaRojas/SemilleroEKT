@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class TaskList(
     @SerializedName("estatus") var estatus: String,
     @SerializedName("mensaje") var mensaje: String,
-    @SerializedName("data") var data:DataTask
+    @SerializedName("data") var data:ArrayList<DataTask>
 )
 

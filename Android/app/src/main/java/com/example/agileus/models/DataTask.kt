@@ -1,6 +1,7 @@
 package com.example.agileus.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.util.*
 
 data class DataTask(
@@ -21,4 +22,4 @@ data class DataTask(
     @SerializedName("fechaLeido") var fechaLeido: Date,
     @SerializedName("createdDate") var createdDate: Date,
     @SerializedName("observaciones") var observaciones: String,
-    )
+    ) : Serializable

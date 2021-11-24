@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
+import com.example.agileus.models.DataTask
 import com.example.agileus.models.Tasks
-import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,12 +19,14 @@ class TaskViewModel() : ViewModel() {
 
     //Lista de Estados Recycler
     lateinit var listaConsumida : ArrayList<Tasks>
+    lateinit var listaTask:ArrayList<DataTask>
 
     //Cambiar el tipo de ArrayList a Tarea
     init {
         lista = TasksDao()
     }
 
+    /*
     fun devuelveLista() {
         try {
             viewModelScope.launch {
@@ -38,25 +39,21 @@ class TaskViewModel() : ViewModel() {
                             TasksAdapter(listaConsumida)
                     }
                 }
-
             }
-
-
         } catch (ex: Exception) {
             Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
         }
-
-    }
+    }*/
 
     fun devolverListaPorStatus(){
             viewModelScope.launch {
-                listaConsumida = withContext(Dispatchers.IO){
-                    lista.getTasksByStatus("ASDASDSAD", "Enviado")
+                listaTask = withContext(Dispatchers.IO){
+                    lista.getTasksByStatus("RECEPT1", "Pendiente")
                 }
-                if (listaConsumida != null) {
-                    if (listaConsumida.isNotEmpty()) {
+                if (listaTask != null) {
+                    if (listaTask.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(lista as ArrayList<Tasks>)
+                            TasksAdapter(listaTask)
                     }
                 }
             }
