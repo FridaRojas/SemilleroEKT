@@ -110,7 +110,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         }
         binding.edtFechaFin.setOnClickListener {
             abrirDialogoFecha(view,2)
-
         }
     }
 

@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.models.DataTask
 import com.example.agileus.models.Tasks
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,7 +47,7 @@ class TaskViewModel() : ViewModel() {
         }
     }*/
 
-    fun devolverListaPorStatus(){
+    fun devolverListaPorStatus(listener: TaskListListener){
             viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
                     lista.getTasksByStatus("RECEPT1", "Pendiente")
@@ -53,7 +55,7 @@ class TaskViewModel() : ViewModel() {
                 if (listaTask != null) {
                     if (listaTask.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(listaTask)
+                            TasksAdapter(listaTask, listener)
                     }
                 }
             }

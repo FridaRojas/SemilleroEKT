@@ -12,15 +12,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.DataTask
 import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
 
-class TasksAdapter(private val dataSet: ArrayList<DataTask>) :
+class TasksAdapter(
+    private val dataSet: ArrayList<DataTask>,
+    private var listener: TaskListListener
+) :
     RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.task_item, viewGroup, false)
-        return ViewHolder(view)
+        return ViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -29,13 +34,14 @@ class TasksAdapter(private val dataSet: ArrayList<DataTask>) :
 
     override fun getItemCount() = dataSet.size
 
-    class ViewHolder(view: View) :
+    class ViewHolder(view: View, private var listener: TaskListListener) :
         RecyclerView.ViewHolder(view) {
+        lateinit var action: NavDirections
         var nombreTarea: TextView
         var personaAsignada: TextView
         var fecha: TextView
         var btnAbrirDetallesTarea: ImageView
-        var nivelUsuario: String = "Alto"
+        var nivelUsuario: String = "Bajo"
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
@@ -52,12 +58,15 @@ class TasksAdapter(private val dataSet: ArrayList<DataTask>) :
 
             btnAbrirDetallesTarea.setOnClickListener {
                 if (nivelUsuario.equals("Alto") || nivelUsuario.equals("Medio")) {
-                    Toast.makeText(itemView.context, "Abrimos Fragment", Toast.LENGTH_SHORT).show()
-                    var action: NavDirections
-                    action = TaskFragmentDirections.actionNavigationDashboardToDetalleNivelAltoFragment(dataTask)
+                    action =
+                        TaskFragmentDirections.actionNavigationDashboardToDetalleNivelAltoFragment(
+                            dataTask
+                        )
                     it.findNavController().navigate(action)
-                } else {
-                    Toast.makeText(itemView.context, "Abrimos Dialogo", Toast.LENGTH_SHORT).show()
+                } else if (nivelUsuario.equals("Bajo")) {
+                    action =
+                        TaskFragmentDirections.actionNavigationDashboardToDialogoNivelBajo(dataTask)
+                    listener.abreDialogo()
                 }
             }
         }

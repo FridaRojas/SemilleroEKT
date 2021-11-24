@@ -12,8 +12,10 @@ import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
-class TaskListFragment : Fragment() {
+class TaskListFragment : Fragment(), TaskListListener {
 
     private lateinit var taskViewModel: TaskViewModel
 
@@ -39,12 +41,19 @@ class TaskListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //RecyclerListaTareas
-        taskViewModel.devolverListaPorStatus()
+        taskViewModel.devolverListaPorStatus(this)
         taskViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerTareasStatus.adapter = it
             binding.recyclerTareasStatus.layoutManager = LinearLayoutManager(activity)
         })
 
     }
+
+
+    override fun abreDialogo() {
+        val newFragment = DialogoNivelBajo(this)
+        newFragment.show((activity as HomeActivity).supportFragmentManager, "missiles")
+    }
+
 
 }
