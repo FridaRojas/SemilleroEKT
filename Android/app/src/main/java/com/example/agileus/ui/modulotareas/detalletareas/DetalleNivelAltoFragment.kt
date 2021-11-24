@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
@@ -45,6 +46,26 @@ class DetalleNivelAltoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val args: DetalleNivelAltoFragmentArgs by navArgs()
+
+        var nombreTarea = args.tarea.titulo
+        var nombrePersona = args.tarea.nombreReceptor
+        var prioridad = args.tarea.prioridad
+        //    var estatus = args.tarea.estatus
+        var descripcion = args.tarea.descripcion
+        var fechaInicio = args.tarea.fechaInicio
+        var fechaFin = args.tarea.fechaFin
+        //var observaciones = args.tarea.observaciones
+
+        with(binding) {
+            txtNombreTareaD.text = nombreTarea
+            txtNombrePersonaD.text = nombrePersona
+            txtPrioridadD.text = prioridad
+            txtDescripcionD.text = descripcion
+            txtFechaInicioD.text = fechaInicio
+            txtFechaFinD.text = fechaFin
+        }
 
 
     }

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class TaskViewModel() : ViewModel() {
         lista = TasksDao()
     }
 
-    fun devuelveLista(listener: DialogosTareasListener) {
+    fun devuelveLista(listener: DialogosFormularioCrearTareasListener) {
         try {
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO) {

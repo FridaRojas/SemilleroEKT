@@ -7,18 +7,23 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
+import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 
 
-class TasksAdapter(private val dataSet: ArrayList<Tasks>, val listener: DialogosTareasListener) :
+class TasksAdapter(
+    private val dataSet: ArrayList<Tasks>,
+    val listener: DialogosFormularioCrearTareasListener
+) :
     RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
-    class ViewHolder(view: View, val listener: DialogosTareasListener) :
+    class ViewHolder(view: View, val listener: DialogosFormularioCrearTareasListener) :
         RecyclerView.ViewHolder(view) {
         var nombreTarea: TextView
         var personaAsignada: TextView
@@ -42,10 +47,13 @@ class TasksAdapter(private val dataSet: ArrayList<Tasks>, val listener: Dialogos
             btnAbrirDetallesTarea.setOnClickListener {
                 if (nivelUsuario.equals("Alto") || nivelUsuario.equals("Medio")) {
                     Toast.makeText(itemView.context, "Abrimos Fragment", Toast.LENGTH_SHORT).show()
-                    it.findNavController().navigate(R.id.detalleNivelAltoFragment2)
+                    var action: NavDirections
+                    action =
+                        TaskFragmentDirections.actionNavigationDashboardToDetalleNivelAltoFragment(
+                        task)
+                    it.findNavController().navigate(action)
                 } else {
                     Toast.makeText(itemView.context, "Abrimos Dialogo", Toast.LENGTH_SHORT).show()
-                    listener.abreDialogoNivelBajo()
                 }
             }
         }

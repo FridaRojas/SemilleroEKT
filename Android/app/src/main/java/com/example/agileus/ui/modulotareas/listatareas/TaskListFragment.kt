@@ -11,9 +11,9 @@ import com.example.agileus.databinding.FragmentTasksBinding
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 
-class TaskListFragment() : Fragment(), DialogosTareasListener {
+class TaskListFragment() : Fragment(), DialogosFormularioCrearTareasListener {
 
     private lateinit var taskViewModel: TaskViewModel
 
@@ -55,8 +55,4 @@ class TaskListFragment() : Fragment(), DialogosTareasListener {
         TODO("Not yet implemented")
     }
 
-    override fun abreDialogoNivelBajo() {
-        val newFragment = DialogoNivelBajo()
-        newFragment.show((activity as HomeActivity).supportFragmentManager, "Custom")
-    }
 }
