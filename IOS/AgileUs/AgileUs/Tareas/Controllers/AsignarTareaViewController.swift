@@ -47,22 +47,10 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func addTask(_ sender: Any) {
-        let data = [
-            "id_grupo": "GRUPOID1",
-            "id_emisor": "EMIS1",
-            "nombre_emisor": "JOSE",
-            "id_receptor": "RECEPT1",
-            "nombre_receptor": "FERNANDO",
-            "fecha_ini": dateEndField.text!,
-            "fecha_fin": dateEndField.text!,
-            "titulo": nameTaskField.text!,
-            "descripcion": descriptionText.text!,
-            "prioridad": priortyField.text!,
-            "createdDate": "2014-01-01T23:28:56.782Z",
-            "estatus": "pendiente"
-        ]
         
-        Api.shared.createTask(data: data) {
+        let task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", id_receptor: "RECEPT1", nombre_receptor: "FERNANDO", fecha_ini: dateEndField.text!, fecha_fin: dateEndField.text!, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: "2014-01-01T23:28:56.782Z", estatus: "pendiente")
+        
+        Api.shared.createTask(task: task) {
             (task) in
             print(task)
             DispatchQueue.main.async {

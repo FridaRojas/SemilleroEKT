@@ -11,25 +11,24 @@ final class Api {
     
     static let shared = Api()
     
-    let url = "http://10.97.5.172:2021/api/tareas"
+    let url = "http://10.97.0.165:2021/api/tareas"
     let rangeStatusCode200 = 200...299
     let rangeStatusCode400 = 400...499
     let rangeStatusCode500 = 500...599
     
-    func createTask(data: Dictionary<String, String>, success: @escaping (_ task: String) -> (), failure: @escaping (_ error: String) -> ()){
+    func createTask(task: Task, success: @escaping (_ task: String) -> (), failure: @escaping (_ error: String) -> ()){
        
         let session = URLSession.shared
         let url = URL(string: "\(url)/agregarTarea")!
         var request = URLRequest(url: url)
-        var test = "";
         
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let jsonData = try! JSONSerialization.data(withJSONObject: data, options: [])
+        let dataToJson = try! JSONEncoder().encode(task)
         
         
-        let task = session.uploadTask(with: request, from: jsonData) {
+        let task = session.uploadTask(with: request, from: dataToJson) {
             (data, response, error) in
             
             if let httpResponse = response as? HTTPURLResponse,
@@ -57,4 +56,8 @@ final class Api {
         task.resume()
     }
     
+    func editTask(id: String) {
+        
+    }
+        
 }
