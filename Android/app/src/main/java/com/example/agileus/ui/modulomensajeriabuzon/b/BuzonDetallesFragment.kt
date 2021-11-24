@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.Models.Buzon
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
+import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.USERTYPE
 import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.control
 import com.example.demoroom.dialogos.DialogoSenderBroadcast
 import com.example.demoroom.dialogos.DialogoSenderUser
@@ -37,6 +38,7 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        USERTYPE="Broadcast"
             binding.vista2.visibility=View.INVISIBLE
 
         if (control == 1) {
@@ -81,7 +83,7 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
             }, 5)
               ////////////////
             Handler().postDelayed({
-                Toast.makeText(context, " Mensaje enviado a ${buzon.receiverId}", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, " Mensaje enviado a ${buzon.receiverId}", Toast.LENGTH_SHORT).show()
                 binding.vista2.visibility = View.INVISIBLE
                 binding.vista1.visibility= View.VISIBLE
                 binding.fab.visibility = View.VISIBLE

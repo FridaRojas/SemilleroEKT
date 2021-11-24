@@ -33,10 +33,6 @@ class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val msgEmisor: TextView

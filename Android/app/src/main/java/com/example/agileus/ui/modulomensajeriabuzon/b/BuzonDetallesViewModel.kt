@@ -14,34 +14,52 @@ import kotlinx.coroutines.withContext
 
 class BuzonDetallesViewModel : ViewModel() {
 
+    lateinit var listafiltrada: ArrayList<Buzon>
     var adaptador = MutableLiveData<BuzonAdapter>()
-    var lista : ProviderBuzon
-    lateinit var listaConsumida:ArrayList<Buzon>
+    var lista: ProviderBuzon
+    lateinit var listaConsumida: ArrayList<Buzon>
 
 
     init {
         lista = ProviderBuzon()
     }
 
-   fun devuelvebuzon(){
-       listaConsumida= ArrayList()
-       Log.i("tamaño","${listaConsumida.size}")
+    fun devuelvebuzon() {
+        listaConsumida = ArrayList()
+        Log.i("tamaño", "${listaConsumida.size}")
         try {
             viewModelScope.launch {
-                listaConsumida =  withContext(Dispatchers.IO) {
+                listaConsumida = withContext(Dispatchers.IO) {
                     lista.recuperarbuzon(listaConsumida)
                 }
-                    if(listaConsumida.isNotEmpty()){
-                        adaptador.value = BuzonAdapter(listaConsumida,1)
+
+                if (listaConsumida.isNotEmpty()) {
+                    listafiltrada = ArrayList()
+
+
+                    if (BuzonFragment.control == 1) {
+                        for (i in 0 until listaConsumida.size) {
+                            if (listaConsumida[i].receiverId == "Broadcast") {
+                                listafiltrada.add(listaConsumida[i])
+                            }
+                        }
                     }
+
+                    if (BuzonFragment.control == 2) {
+                        for (i in 0 until listaConsumida.size) {
+                            if (listaConsumida[i].SenderId == "Broadcast") {
+                                listafiltrada.add(listaConsumida[i])
+                            }
+                        }
+                    }
+                    adaptador.value = BuzonAdapter(listafiltrada, BuzonFragment.control)
                 }
+            }
 
-
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
         }
     }
 
-
-    }
+}
 

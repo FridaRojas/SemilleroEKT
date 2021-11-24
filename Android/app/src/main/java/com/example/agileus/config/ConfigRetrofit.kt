@@ -39,7 +39,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitBuzon(): BuzonApi {
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE1)
+            .baseUrl(URL_BASE2)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

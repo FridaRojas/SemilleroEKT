@@ -14,15 +14,12 @@ class BuzonFragment : Fragment() {
 
 companion object{
     var control=1
+    var USERTYPE=""
 }
 
     private var _binding: FragmentBuzonBinding? = null
     private val binding get() = _binding!!
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

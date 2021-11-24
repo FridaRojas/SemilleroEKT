@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.Models.Buzon
 import com.example.agileus.R
+import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.USERTYPE
 
 class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
     RecyclerView.Adapter<BuzonAdapter.ViewHolder>() {
@@ -40,16 +41,26 @@ class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
         val buzon = dataSet[position]
 
         if(tipo==1) {
-            viewHolder.textView.text =  "Mensaje enviado a : Broadcast"
-     //       viewHolder.textView1.text = "Asunto:  ${buzon.}"
+            if(USERTYPE == "Broadcast" ) {
+                viewHolder.textView.text = "Mensaje enviado por :${buzon.SenderId} "
+            }
+            else {
+                viewHolder.textView.text = "Mensaje enviado a : Broadcast"
+            }
+            viewHolder.textView1.text = "Asunto:  ${buzon.asunto}"
             viewHolder.textView2.text = "Mensaje: \n ${buzon.message}"
-       //     viewHolder.textview3.text = "Fecha de enviado: ${buzon.fecha}"
         }
         if(tipo==2) {
-        //    viewHolder.textView.text =  "Comunicado dia  : ${buzon.fecha}"
+
+            if (USERTYPE == "Broadcast") {
+                viewHolder.textView.text = "Mensaje enviado a :${buzon.receiverId} "
+            }
+            if(buzon.receiverId =="General"){
+                viewHolder.textView.text = "Comunicado:    ${buzon.receiverId}"
+            }
             viewHolder.textView1.text = "Asunto:    ${buzon.asunto}"
+
             viewHolder.textView2.text = "Mensaje: \n${buzon.message}"
-            viewHolder.textview3.text = ""
         }
 
     }

@@ -6,7 +6,7 @@ import com.example.agileus.models.Conversation
 import retrofit2.Response
 
 
-class ConversationDao() {
+class ConversationDao {
 
         fun  recuperarPublicaciones(): ArrayList<Conversation> {
 

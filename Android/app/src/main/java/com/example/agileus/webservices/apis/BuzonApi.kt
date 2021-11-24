@@ -2,15 +2,12 @@ package com.example.agileus.webservices.apis
 
 
 import com.example.agileus.Models.Buzon
-import com.example.agileus.models.Tasks
 import retrofit2.Call
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 
 interface BuzonApi {
 
-    @GET("servicio.json?alt=media&token=e3076cf4-2c04-4609-ab51-8d3cbffdc6d8")
+    @GET("listadeprueba.json?alt=media&token=f476d866-9b0e-4c3e-977c-a9d401c89fd1")
     fun getmensajesbuzon(): Call<ArrayList<Buzon>>
 
 }

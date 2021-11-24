@@ -7,10 +7,4 @@ import com.example.agileus.models.Conversation
 import com.example.agileus.providers.ConversationProviderListener
 import com.example.agileus.webservices.dao.ConversationDao
 
-class HomeActivityViewModel:ViewModel() {
-
-
-
-
-
-}
+class HomeActivityViewModel:ViewModel()
