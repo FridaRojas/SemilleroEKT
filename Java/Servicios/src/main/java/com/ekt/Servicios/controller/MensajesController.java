@@ -42,16 +42,17 @@ public class MensajesController {
 	MongoTemplate monogoTemplate;
 
 	@PostMapping("crearMensaje")
-	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) throws ApiUnprocessableEntity, ResultadoNoEncontrado {
+	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes)
+			throws ApiUnprocessableEntity, ResultadoNoEncontrado {
 
 		this.validarMensajeImpl.validator(mensajes);
-		
+
 		Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
 		Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
 
-		this.validarMensajeImpl.validarOptional(emisor,"emisor");
-		this.validarMensajeImpl.validarOptional(receptor,"receptor");
-		
+		this.validarMensajeImpl.validarOptional(emisor, "emisor");
+		this.validarMensajeImpl.validarOptional(receptor, "receptor");
+
 		List<User> listaConversacion = listaConversacion(emisor.get().getID());
 
 		boolean existeEnLista = false;
@@ -66,34 +67,34 @@ public class MensajesController {
 		if (existeEnLista) {
 			if (emisor.isPresent()) {
 				if (receptor.isPresent()) {
-					
-					if(mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("http://"))) {
+
+					if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("http://"))) {
 						mensajes.setRutaDocumento("");
 						mensajes.setStatusRutaDocumento(false);
 					} else {
 						mensajes.setTexto("Documento");
 						mensajes.setStatusRutaDocumento(true);
 					}
-					
+
 					List<Mensajes> conversacionForma1 = new ArrayList<>();
 					List<Mensajes> conversacionForma2 = new ArrayList<>();
-					
+
 					Iterable<Mensajes> conversacionIterable1 = mensajesService
 							.verConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
 					conversacionIterable1.forEach(conversacionForma1::add);
-					
+
 					Iterable<Mensajes> conversacionIterable2 = mensajesService
 							.verConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
 					conversacionIterable2.forEach(conversacionForma2::add);
-					
-					if(conversacionForma1.size()>0) {
+
+					if (conversacionForma1.size() > 0) {
 						mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-					}else if(conversacionForma2.size()>0) {
+					} else if (conversacionForma2.size() > 0) {
 						mensajes.setIDConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
-					}else {
+					} else {
 						mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
 					}
-					
+
 					// Status-fecha Creado
 					mensajes.setStatusCreado(true);
 
@@ -110,10 +111,11 @@ public class MensajesController {
 					mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
 
 					mensajes.setConversacionVisible(true);
-					
+
 					mensajesService.crearMensaje(mensajes);
 
-					return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.CREATED,"Se creo el mensaje",mensajes.getIDConversacion()));
+					return ResponseEntity.status(HttpStatus.CREATED)
+							.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
 
 				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
@@ -156,41 +158,41 @@ public class MensajesController {
 	}
 
 	@PutMapping("actualizarLeido")
-	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) throws ResultadoNoEncontrado{
-		//Buscamos el mensaje
+	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) throws ResultadoNoEncontrado {
+		// Buscamos el mensaje
 		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(mensajes.getID());
-		
-		//Validamos que exista
+
+		// Validamos que exista
 		validarMensajeImpl.validarOptionalMensajes(mensaje, "Mensaje");
-		
-		if(mensaje.get().isStatusLeido()) {
+
+		if (mensaje.get().isStatusLeido()) {
 			return ResponseEntity.status(HttpStatus.OK).body("El status ya es verdadero");
 		} else {
-			//Si existe:
-			//actualizamos la fecha actual a la fecha entrante
+			// Si existe:
+			// actualizamos la fecha actual a la fecha entrante
 			mensaje.get().setFechaLeido(mensajes.getFechaLeido());
-			
-			//actualizamos el statusLeido actual al entrante
+
+			// actualizamos el statusLeido actual al entrante
 			mensaje.get().setStatusLeido(true);
-			
-			//guardamos cambios
+
+			// guardamos cambios
 			mensajesService.save(mensaje.get());
-			
+
 			return ResponseEntity.status(HttpStatus.OK).body("Actualizado");
 		}
 	}
-	
+
 	public List<User> listaConversacion(String miId) throws ResultadoNoEncontrado {
 		List<User> listaConversacion = new ArrayList<>();
 
 		// 1.- Validar que yo exista
 		Optional<User> existo = userRepository.validarUsuario(miId);
-		this.validarMensajeImpl.validarOptional(existo,"emisor");
-		//existo.ifPresent(listaConversacion::add);
+		this.validarMensajeImpl.validarOptional(existo, "emisor");
+		// existo.ifPresent(listaConversacion::add);
 		// 2.- Buscar a mi jefe
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
-		//this.validarMensajeImpl.validarOptional(jefe,"jefe");
-		if(jefe.isPresent()) {
+		// this.validarMensajeImpl.validarOptional(jefe,"jefe");
+		if (jefe.isPresent()) {
 			jefe.ifPresent(listaConversacion::add);
 		}
 
@@ -208,50 +210,117 @@ public class MensajesController {
 	}
 
 	@GetMapping("/listarConversaciones")
-	public List<Conversacion> listarConversaciones(){
+	public List<Conversacion> listarConversaciones() {
 		List<String> mensajesList = new ArrayList<>();
 		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
-		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion",String.class);
+		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
 		MongoCursor mongoCursor = distinctIterable.iterator();
 		List<Conversacion> lConversacion = new ArrayList<>();
-		while(mongoCursor.hasNext()){
+		while (mongoCursor.hasNext()) {
 
-				Conversacion mConv = new Conversacion() ;
-			//if(.equals(id)){
-				String idConversacion = (String) mongoCursor.next();
-				mConv.setIdConversacion(idConversacion);
-				Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
-				Iterator <Mensajes> cursor = iter.iterator();
-				while(cursor.hasNext()){
-					Mensajes mensajes = cursor.next();
-					//if(mensajes.getIDEmisor()!= mensajes.getIDEmisor()){
+			Conversacion mConv = new Conversacion();
+			// if(.equals(id)){
+			String idConversacion = (String) mongoCursor.next();
+			mConv.setIdConversacion(idConversacion);
+			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+			Iterator<Mensajes> cursor = iter.iterator();
+			while (cursor.hasNext()) {
+				Mensajes mensajes = cursor.next();
+				// if(mensajes.getIDEmisor()!= mensajes.getIDEmisor()){
 
-							mConv.setIdReceptor(mensajes.getIDReceptor());
-							mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
-							mConv.setIdConversacion(mensajes.getIDConversacion());
+				mConv.setIdReceptor(mensajes.getIDReceptor());
+				mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
+				mConv.setIdConversacion(mensajes.getIDConversacion());
 
-						//mConv.setIdReceptor(mensajes.getIDReceptor());
-						//mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
-						//mConv.setIdConversacion(mensajes.getIDConversacion());
+				// mConv.setIdReceptor(mensajes.getIDReceptor());
+				// mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
+				// mConv.setIdConversacion(mensajes.getIDConversacion());
 
-					//}
-					break;
-				}
-				lConversacion.add(mConv);
-				//mensajesList.add(idConversacion);
+				// }
+				break;
+			}
+			lConversacion.add(mConv);
+			// mensajesList.add(idConversacion);
 		}
 		return lConversacion;
 	}
 
 	@PutMapping("/eliminarConversacion/{idConversacion}")
-	public  ResponseEntity<?>cambiarStatusConversacion(@PathVariable(value= "idConversacion")String idConversacion){
+	public ResponseEntity<?> cambiarStatusConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
-		for (Mensajes msg: iter) {
-				msg.setConversacionVisible(false);
-				mensajesService.save(msg);
+		for (Mensajes msg : iter) {
+			msg.setConversacionVisible(false);
+			mensajesService.save(msg);
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.CREATED,"",iter.iterator()));
+		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.CREATED, "", iter.iterator()));
 	}
-	//@GetMapping("listaMensajes/{idEmisor}")
-	//public ResponseEntity<?> listarMensajes()
+	// @GetMapping("listaMensajes/{idEmisor}")
+	// public ResponseEntity<?> listarMensajes()
+
+	@PostMapping("mensajeGrupo")
+	public ResponseEntity<?> crearMensajeGrupo(@RequestBody Mensajes mensaje) {
+
+		Optional<User> existo = userRepository.validarUsuario(mensaje.getIDEmisor());
+
+		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
+
+		/*if (jefe.isPresent()) {
+			return ResponseEntity.status(HttpStatus.CREATED).body(jefe);
+		}*/
+
+		StringBuilder idGrupo = buscarPersonasGrupo(mensaje.getIDEmisor());
+
+		if (idGrupo.length() < 1) {
+			return ResponseEntity.status(HttpStatus.CREATED).body("No se puede xd");
+		}
+
+		mensaje.setIDConversacion(idGrupo.toString());
+		mensaje.setIDEmisor(mensaje.getIDEmisor());
+		mensaje.setIDReceptor(idGrupo.toString());
+		mensaje.setTexto(mensaje.getTexto());
+		mensaje.setVisible(true);
+
+		// Validar
+		mensaje.setStatusRutaDocumento(false);
+		// mezclar "Chat" + puestoJefe + nombreJefe
+		
+		/*if(jefe.isPresent()) {
+			mensaje.setNombreConversacionReceptor("Chat "+jefe.get());
+		}*/
+		
+		
+		mensaje.setFechaCreacion(mensaje.getFechaCreacion());
+		mensaje.setStatusCreado(true);
+		mensaje.setFechaEnviado(new Date());
+		mensaje.setStatusEnviado(true);
+		mensaje.setFechaLeido(new Date(0));
+		mensaje.setStatusLeido(false);
+
+		// mensajesService.crearMensaje(mensaje);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(mensaje);
+		// return
+		// ResponseEntity.status(HttpStatus.CREATED).body(mensajesService.crearMensaje(mensaje));
+	}
+
+	public StringBuilder buscarPersonasGrupo(String miId) {
+
+		StringBuilder respuesta = new StringBuilder();
+		List<User> listaHijos = new ArrayList<>();
+
+		Iterable<User> misHijos = userRepository.findByBossId(miId);
+		misHijos.forEach(listaHijos::add);
+
+		if (listaHijos.size() < 2) {
+			respuesta.append("");
+		} else {
+			respuesta.append(miId);
+
+			for (User hijos : misHijos) {
+				respuesta.append("-" + hijos.getID());
+			}
+		}
+
+		return respuesta;
+	}
 }
