@@ -12,12 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-
-
 class CrearTareasViewModel: ViewModel() {
 
-    //var adaptadorSpinPersonas = MutableLiveData<spinListaAsignarAdapter>()
     var postTarea: TasksDao
     var listaPersonas: TasksDao
     var personasGrupoLista = MutableLiveData<ArrayList<PersonasGrupo>>()

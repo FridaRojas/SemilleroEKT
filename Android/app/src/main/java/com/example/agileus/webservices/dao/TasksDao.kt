@@ -28,7 +28,7 @@ class TasksDao {
 
 
     fun getPersonsGroup(id_grupo:String): ArrayList<PersonasGrupos>{
-        val callRespuesta = InitialApplication.webServiceGlobalTasks.getListaPersonasGrupo(id_grupo)
+        val callRespuesta = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(id_grupo)
         val Response: Response<ArrayList<PersonasGrupos>> = callRespuesta.execute()
 
         var listaPersons = ArrayList<PersonasGrupos>()

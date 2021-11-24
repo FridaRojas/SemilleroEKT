@@ -17,7 +17,7 @@ interface TasksApi {
 
 
     //todo Editar EndPoint para obtener personas de grupo
-    @GET( "    Url    ")
+    @GET( "{id_emisor}")
     //fun getListaPersonasGrupo(@Query("id_grupo") id_grupo: String) : Call<ArrayList<PersonasGrupo>>
     fun getListaPersonasGrupo(@Path("id_emisor") id_emisor: String) : Call<ArrayList<PersonasGrupos>> // id lider
 

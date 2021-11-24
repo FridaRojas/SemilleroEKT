@@ -10,6 +10,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.PersonasGrupo
@@ -19,7 +20,6 @@ import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 
 private const val ARG_PARAM1 = "param1"
-
 
 class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener {
 
@@ -33,12 +33,12 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
             }
     }
 
-    private lateinit var asignarTareaViewModel: CrearTareasViewModel
-    lateinit var listaPersonas: ArrayList<PersonasGrupo>
+    lateinit var asignarTareaViewModel          : CrearTareasViewModel
+    lateinit var listaPersonas                  : ArrayList<PersonasGrupo>
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
-    private var param1: String? = null
+    private var param1  : String? = null
 
     var idGrupo         : String = "GRUPOID1"
     var fechaInicio     : String = ""
@@ -55,7 +55,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-
         }
     }
 
@@ -63,10 +62,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        asignarTareaViewModel =
-            ViewModelProvider(this).get(CrearTareasViewModel::class.java)
-
+        //asignarTareaViewModel = ViewModelProvider(this).get(CrearTareasViewModel::class.java)
+        asignarTareaViewModel = ViewModelProvider(this).get()
         _binding = FragmentFormularioCrearTareasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -75,7 +72,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         setUpUiAsignarTareas()
 
@@ -135,10 +131,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     fun setUpUiAsignarTareas(){
 
         // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
-
-        val inflater                = requireActivity().layoutInflater;
-        val vista                   = inflater.inflate(R.layout.activity_home, null)
-        val spinListaPersonasAdapter = vista.findViewById<Spinner>(R.id.spinPersonaAsignada)
+        //val inflater                = requireActivity().layoutInflater;
+        //val vista                   = inflater.inflate(R.layout.activity_home, null)
+        //val spinListaPersonasAdapter = vista.findViewById<Spinner>(R.id.spinPersonaAsignada)
 
         asignarTareaViewModel.devuelvePersonasGrupo(idGrupo)
         asignarTareaViewModel.personasGrupoLista.observe(viewLifecycleOwner , {
@@ -148,21 +143,14 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
 
                 val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity), android.R.layout.simple_spinner_item, listaPersonas)
                 spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                //spinListaPersonasAdapter.adaptadorSpinPersonas = spinListaAsignarAdapter
+                //spinListaPersonasAdapter.adapter=spinListaAsignarAdapter
+                binding.spinPersonaAsignada.adapter=spinListaAsignarAdapter
 
             }else{
-                Toast.makeText(activity , "No se encontraron personas", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity , "No se encontraron personas en el grupo", Toast.LENGTH_LONG).show()
             }
-
-
         })
-
-
-
         // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
-
-
-
 
 
         // SPINER CON RECURSO XML
