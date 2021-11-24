@@ -13,7 +13,7 @@ import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 
-class TaskListFragment : Fragment() {
+class TaskListFragment : Fragment(), DialogosFormularioCrearTareasListener {
 
     private lateinit var taskViewModel: TaskViewModel
 
@@ -54,5 +54,6 @@ class TaskListFragment : Fragment() {
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
         TODO("Not yet implemented")
     }
+
 
 }

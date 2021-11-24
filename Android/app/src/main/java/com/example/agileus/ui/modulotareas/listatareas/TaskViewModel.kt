@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +35,7 @@ class TaskViewModel() : ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(listaConsumida as ArrayList<Tasks>)
+                            TasksAdapter(listaConsumida, listener)
                     }
                 }
 
@@ -47,7 +48,7 @@ class TaskViewModel() : ViewModel() {
 
     }
 
-    fun devolverListaPorStatus(){
+    fun devolverListaPorStatus(listener: DialogosFormularioCrearTareasListener){
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO){
                     lista.getTasksByStatus("ASDASDSAD", "Enviado")
@@ -55,7 +56,7 @@ class TaskViewModel() : ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(lista as ArrayList<Tasks>)
+                            TasksAdapter(lista as ArrayList<Tasks>, listener)
                     }
                 }
             }
