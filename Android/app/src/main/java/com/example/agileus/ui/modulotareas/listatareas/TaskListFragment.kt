@@ -41,7 +41,5 @@ class TaskListFragment : Fragment() {
             binding.recyclerTareasStatus.adapter = it
             binding.recyclerTareasStatus.layoutManager = LinearLayoutManager(activity)
         })
-
-
     }
 }

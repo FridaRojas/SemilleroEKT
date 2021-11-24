@@ -18,10 +18,7 @@ class TaskViewModel : ViewModel() {
     // lateinit var lista: ConversationDao
 
     //Cambiar el tipo de ArrayList a Tarea
-    lateinit var listaConsumida: ArrayList<Tasks>
-
-    //Lista de Estados Recycler
-
+    lateinit var listaConsumida : ArrayList<Tasks>
     init {
         lista = TasksDao()
     }
@@ -38,14 +35,25 @@ class TaskViewModel : ViewModel() {
                             TasksAdapter(listaConsumida as ArrayList<Tasks>)
                     }
                 }
-
             }
-
-
         } catch (ex: Exception) {
             Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
         }
 
+    }
+
+    fun devolverListaPorStatus(){
+            viewModelScope.launch {
+                listaConsumida = withContext(Dispatchers.IO){
+                    lista.getTasksByStatus("ASDASDSAD", "Enviado")
+                }
+                if (listaConsumida != null) {
+                    if (listaConsumida.isNotEmpty()) {
+                        adaptador.value =
+                            TasksAdapter(lista as ArrayList<Tasks>)
+                    }
+                }
+            }
 
     }
 }

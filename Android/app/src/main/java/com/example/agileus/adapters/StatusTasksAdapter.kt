@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 
-class StatusTasksAdapter(private val dataSet: List<String>) :
+class StatusTasksAdapter(private val dataSet: List<String>, val listener:TaskDialogListener) :
     RecyclerView.Adapter<StatusTasksAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -18,6 +19,11 @@ class StatusTasksAdapter(private val dataSet: List<String>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.statusTextView.text = dataSet[position]
+
+        viewHolder.statusTextView.setOnClickListener {
+            listener.getTaskByStatus(dataSet[position])
+        }
+
     }
 
     override fun getItemCount() = dataSet.size
