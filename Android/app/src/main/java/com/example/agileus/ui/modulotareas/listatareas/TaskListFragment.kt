@@ -8,6 +8,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.FragmentTasksBinding
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.MainActivity
+import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 
 class TaskListFragment : Fragment() {
 
@@ -35,11 +39,20 @@ class TaskListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //RecyclerListaTareas
-        taskViewModel.devuelveLista()
-
-        taskViewModel.adaptador.observe(viewLifecycleOwner,{
+        taskViewModel.devuelveLista(this)
+        taskViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerTareasStatus.adapter = it
             binding.recyclerTareasStatus.layoutManager = LinearLayoutManager(activity)
         })
+
     }
+
+    override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
+        TODO("Not yet implemented")
+    }
+
 }

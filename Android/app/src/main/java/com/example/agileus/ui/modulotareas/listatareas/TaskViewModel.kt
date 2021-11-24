@@ -12,18 +12,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TaskViewModel : ViewModel() {
+class TaskViewModel() : ViewModel() {
     var adaptador = MutableLiveData<TasksAdapter>()
     lateinit var lista: TasksDao
     // lateinit var lista: ConversationDao
 
-    //Cambiar el tipo de ArrayList a Tarea
+    //Lista de Estados Recycler
     lateinit var listaConsumida : ArrayList<Tasks>
+
+    //Cambiar el tipo de ArrayList a Tarea
     init {
         lista = TasksDao()
     }
 
-    fun devuelveLista() {
+    fun devuelveLista(listener: DialogosFormularioCrearTareasListener) {
         try {
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO) {
@@ -35,7 +37,10 @@ class TaskViewModel : ViewModel() {
                             TasksAdapter(listaConsumida as ArrayList<Tasks>)
                     }
                 }
+
             }
+
+
         } catch (ex: Exception) {
             Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
         }

@@ -1,6 +1,7 @@
 package com.example.agileus.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Tasks(
     @SerializedName("id_grupo") var idGrupo: String,
@@ -16,5 +17,5 @@ data class Tasks(
     @SerializedName("prioridad") var prioridad: String,
     @SerializedName("leido") var leido: Boolean,
     @SerializedName("createdDate") var createdDate: String
-)
+) : Serializable
 
