@@ -38,7 +38,7 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             var txtObservacionesD = vista.findViewById<TextView>(R.id.txtObservacionesD)
 
             nombreTarea = dataTask.titulo
-            nombrePersonaD = dataTask.nombreReceptor
+            nombrePersonaD = dataTask.nombreEmisor
             prioridadD = dataTask.prioridad
 //            // var txtEstatusD=args.tareas.estatus
             descripcionD = dataTask.descripcion

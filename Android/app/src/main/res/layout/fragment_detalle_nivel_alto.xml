@@ -105,7 +105,6 @@
         <Button
             android:id="@+id/btnCancelarTareaF"
             android:layout_width="115dp"
-
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:text="Cancelar Tarea"
