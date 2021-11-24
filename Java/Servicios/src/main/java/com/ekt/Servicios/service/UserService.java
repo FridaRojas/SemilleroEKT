@@ -14,13 +14,20 @@ public interface UserService {
 
      Optional<User> userValidate(String id, String password);
     Iterable<User> findUserByBossId(String id);
-    User updateIdBoss(User userUpdate,String idBoss);
+    User updateIdBoss(String idUser,String idBoss);
 
      User save(User user);
 
      void deleteById(String id);
 
+     void reasignaSuperiores(String[] idUsuarios, String[] idSuperiores);
 
+     User actualizaRol(User usuario, String idSuperior, String idGrupo, String nombreRol);
+     User actualizaUsuario(User usuario);
 
+     boolean buscaCorreoUsuario(String correo);
+     boolean buscaCURPUsuario(String curp);
+     boolean buscaRFCUsuario(String rfc);
+     boolean buscaNoEmpleadoUsuario(String noEmpleado);
 
 }
