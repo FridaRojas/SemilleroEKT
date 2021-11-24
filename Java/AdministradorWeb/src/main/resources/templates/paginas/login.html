@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->
-    <link rel="stylesheet" type="text/css" href="../estilos/estiloGeneral.css">
-    <link href="../elementos/menuLateral.html" rel="import" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloGeneral.css}" />
 </head>
 <body >
 <table >
@@ -17,7 +16,7 @@
     <td class="logo">
         <div  align="center" id="logo">
             <svg class="bi me-2" width="16" height="16" >
-                <img src="../assets/419-4190296_hojas-verde-png-sin-fondo.png", height="120", width="70">
+                <img src="/assets/419-4190296_hojas-verde-png-sin-fondo.png" height="120" width="70">
             </svg>
 
             <h3 class="fontA" >Agile Us</h3>
@@ -37,12 +36,12 @@
                 </div>
                 <br>
                 <div class="input-group input-group-lg">
-                    <h6>Contraseña:</h6>
+                    <h6>Contrasena:</h6>
                     <input type="password" name="contrasena" class="form-control" aria-describedby="sizing-addon1" required>
                 </div>
                 <br>
 
-                <button type="button" class="btn btn-success" id="login" name="login" type="submit">Entrar</button>
+                <button  class="btn btn-success" id="Entra" name="login" type="submit">Entrar</button>
 
             </form>
         </div>

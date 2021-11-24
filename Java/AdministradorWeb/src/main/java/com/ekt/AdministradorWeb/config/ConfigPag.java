@@ -11,7 +11,7 @@ public class ConfigPag {
         @GetMapping("/login")
         public String login() {
             //return "paginas/organigrama/InicioOrganigrama";
-             return "paginas/login";
+             return "elementos/menuLateral";
         }
 
 
