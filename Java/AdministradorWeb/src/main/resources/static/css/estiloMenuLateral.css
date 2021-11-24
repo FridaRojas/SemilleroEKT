@@ -1,7 +1,7 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
-    background-image: url("/templates/assets/1920x1080_px_minimalism_Tatof_Techno-541441.png");
+    background-image: url("../assets/1920x1080_px_minimalism_Tatof_Techno-541441.png");
     height: 417px;
     width: 626px;
 }
@@ -105,8 +105,7 @@ a[aria-expanded="false"]::before,
 a[aria-expanded="true"]::before {
     content: '\e259';
     display: block;
-    position: absolute;
-    right: 20px;
+    position: absolute;    right: 20px;
     font-family: 'Glyphicons Halflings';
     font-size: 0.6em;
 }
