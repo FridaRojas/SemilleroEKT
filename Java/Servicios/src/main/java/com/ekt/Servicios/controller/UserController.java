@@ -8,6 +8,8 @@ import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.UserService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -65,8 +67,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/validate")
-    public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
+    @PostMapping("/validate")
+    public ResponseEntity<?> userValidate(@RequestBody User infAcceso) throws JSONException {
 
         if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
             System.out.println("Error en las llaves");
@@ -79,7 +81,18 @@ public class UserController {
                 user.get().setToken(infAcceso.getToken());
                 userService.save(user.get());
 
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user.get()));
+                user.get().setFechaInicio(null);
+                user.get().setFechaTermino(null);
+                user.get().setPassword(null);
+                user.get().setIDGrupo(null);
+                user.get().setOpcionales(null);
+                user.get().setIDSuperiorInmediato(null);
+                user.get().setStatusActivo(null);
+                user.get().setCurp(null);
+                user.get().setRFC(null);
+
+
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
             }else{
             System.out.println("Usuario no encontrado");
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
