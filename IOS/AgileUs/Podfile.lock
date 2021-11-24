@@ -1,4 +1,7 @@
 PODS:
+  - Charts (3.6.0):
+    - Charts/Core (= 3.6.0)
+  - Charts/Core (3.6.0)
   - InputBarAccessoryView (5.1.0):
     - InputBarAccessoryView/Core (= 5.1.0)
   - InputBarAccessoryView/Core (5.1.0)
@@ -6,18 +9,21 @@ PODS:
     - InputBarAccessoryView (~> 5.1.0)
 
 DEPENDENCIES:
+  - Charts
   - InputBarAccessoryView (= 5.1.0)
   - MessageKit (~> 3.3.0)
 
 SPEC REPOS:
   trunk:
+    - Charts
     - InputBarAccessoryView
     - MessageKit
 
 SPEC CHECKSUMS:
+  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
   InputBarAccessoryView: 19953f486a23e846e9487099f92bbe3456e46ce5
   MessageKit: 1f07618183be6d92b648ba7a384aafa097362a00
 
-PODFILE CHECKSUM: c3f44ebea9bdcce274765cae965571f6125c827b
+PODFILE CHECKSUM: f167433220f037b48606036c6f81c9560efc4682
 
 COCOAPODS: 1.11.2
