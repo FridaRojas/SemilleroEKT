@@ -2,23 +2,23 @@ package com.ekt.Servicios.entity;
 
 public class BodyUpdateBoss {
 
-    private String[] idUser;
-    private String[] idBoss;
+    private String[] idUsuarios;
+    private String[] idSuperiores;
 
-    public String[] getIDUser() {
-        return idUser;
+    public String[] getIDUsuarios() {
+        return idUsuarios;
     }
 
-    public void setIDUser(String[] value) {
-        this.idUser = value;
+    public void setIDUsuarios(String[] value) {
+        this.idUsuarios = value;
     }
 
-    public String[] getIDBoss() {
-        return idBoss;
+    public String[] getIDSuperiores() {
+        return idSuperiores;
     }
 
-    public void setIDBoss(String[] value) {
-        this.idBoss = value;
+    public void setIDSuperiores(String[] value) {
+        this.idSuperiores = value;
     }
 
 }
