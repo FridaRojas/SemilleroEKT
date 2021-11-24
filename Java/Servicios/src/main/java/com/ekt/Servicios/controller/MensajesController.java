@@ -109,9 +109,11 @@ public class MensajesController {
 
 					mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
 
-					//mensajesService.crearMensaje(mensajes);
+					mensajes.setConversacionVisible(true);
+					
+					mensajesService.crearMensaje(mensajes);
 
-					return ResponseEntity.status(HttpStatus.CREATED).body(mensajesService.crearMensaje(mensajes).getIDConversacion());
+					return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.CREATED,"Se creo el mensaje",mensajes.getIDConversacion()));
 
 				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
@@ -149,14 +151,6 @@ public class MensajesController {
 
 	@GetMapping("listaContactos/{miId}")
 	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) throws ResultadoNoEncontrado { // 618d9c26beec342d91d747d6
-		// Existo existo
-		// return ResponseEntity.status(HttpStatus.OK).body(existo.get()); //1
-		// Jefe
-		// return ResponseEntity.status(HttpStatus.OK).body(jefe.get()); //1
-		// Hermanos
-		// return ResponseEntity.status(HttpStatus.OK).body(hermanos.iterator()); //4
-		// Hijos mios
-		// return ResponseEntity.status(HttpStatus.OK).body(misHijos.iterator()); //2
 		// listaConversacion
 		return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId)); // 8
 	}
@@ -195,8 +189,10 @@ public class MensajesController {
 		//existo.ifPresent(listaConversacion::add);
 		// 2.- Buscar a mi jefe
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
-		this.validarMensajeImpl.validarOptional(jefe,"jefe");
-		jefe.ifPresent(listaConversacion::add);
+		//this.validarMensajeImpl.validarOptional(jefe,"jefe");
+		if(jefe.isPresent()) {
+			jefe.ifPresent(listaConversacion::add);
+		}
 
 		// 3.- Buscar Hijos de jefe (hermanos)
 		Iterable<User> hermanos = userRepository.findByBossId(existo.get().getIDSuperiorInmediato());
