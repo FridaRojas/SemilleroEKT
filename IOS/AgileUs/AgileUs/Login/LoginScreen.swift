@@ -13,7 +13,6 @@ struct User: Codable {
     let token: String
 }
 
-
 class LoginScreen: UIViewController {
     @IBOutlet weak var txtUser: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
@@ -27,17 +26,14 @@ class LoginScreen: UIViewController {
     
     @IBAction func iniciarSesion(_ sender: UIButton) {
         
-        //Send JSON
-        
-        
+        //Enviar JSON para inicio de sesion
         let serverLogin = server+"user/validate"
         
         self.performSegue(withIdentifier: "Login_To_Home", sender: self)
-        let user = User(correo: "13@gmail.com", password: "123", token: "wefwfefwf121221fwe")
-        
+        let user = User(correo: txtUser.text!, password: txtPassword!.text!, token: "wefwfefwf121221fwe")
         
         guard let uploadData = try? JSONEncoder().encode(user) else {
-            print("error")
+            print("Error al crear JSON")
             return
         }
         
@@ -53,7 +49,7 @@ class LoginScreen: UIViewController {
             }
             guard let response = response as? HTTPURLResponse,
                 (200...299).contains(response.statusCode) else {
-                print ("server error")
+                    print ("Error servidor: \(response)")
                 return
             }
             if let mimeType = response.mimeType,
