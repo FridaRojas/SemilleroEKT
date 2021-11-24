@@ -17,6 +17,7 @@ class ListContactsViewModel : ViewModel() {
     var adaptador = MutableLiveData<ContactsAdapter>()
     lateinit var lista : ConversationDao
     lateinit var listaConsumida:ArrayList<Contacts>
+    var contactos = MutableLiveData<ArrayList<Contacts>>()
 
     init {
         lista = ConversationDao()
@@ -31,8 +32,10 @@ class ListContactsViewModel : ViewModel() {
                 Log.i("mensaje", "${listaConsumida.size}")
                 if (listaConsumida != null){
                     if(listaConsumida.isNotEmpty()){
+
                       //  adaptador.value = ContactsAdapter(listaConsumida as ArrayList<Contacts>)
                         adaptador.postValue(ContactsAdapter(listaConsumida as ArrayList<Contacts>))
+                        contactos.value = listaConsumida
                     }
                 }
 
@@ -43,6 +46,27 @@ class ListContactsViewModel : ViewModel() {
             Log.e(ListContactsViewModel::class.simpleName.toString(), ex.message.toString())
         }
 
+
+    }
+
+    fun filtrarChats(listaAdaptada:List<Contacts>){
+        try {
+            viewModelScope.launch {
+                listaConsumida =  withContext(Dispatchers.IO) {
+                    lista.recuperarListadeContactos()
+                }
+                if (listaConsumida != null){
+                    if(listaConsumida.isNotEmpty()){
+                        adaptador.value!!.update(listaAdaptada)
+                    }
+                }
+
+            }
+
+
+        }catch (ex:Exception){
+            Log.e(ListContactsViewModel::class.simpleName.toString(), ex.message.toString())
+        }
 
     }
 

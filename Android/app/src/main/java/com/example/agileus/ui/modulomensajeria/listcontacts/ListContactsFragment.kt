@@ -2,6 +2,8 @@ package com.example.agileus.ui.modulomensajeria.listcontacts
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.databinding.ListContactsFragmentBinding
+import com.example.agileus.models.Contacts
 
 class ListContactsFragment : Fragment() {
 
@@ -42,6 +45,29 @@ class ListContactsFragment : Fragment() {
             binding.recyclerListContacts.adapter = it
             binding.recyclerListContacts.layoutManager = LinearLayoutManager(activity)
         })
+
+        binding.etSearchContact.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//Se hace el filtro y aqui se pone toda la palabra en minisculas
+                contactsviewModel.devuelveLista()
+                contactsviewModel.contactos.observe(viewLifecycleOwner,{
+                    var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
+                    contactsviewModel.filtrarChats(filtro)
+                })
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+
+            }
+
+        })
+
     }
 
 }

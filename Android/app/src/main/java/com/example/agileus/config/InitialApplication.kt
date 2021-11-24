@@ -3,15 +3,15 @@ package com.example.agileus.config
 import android.app.Application
 import com.example.agileus.webservices.apis.ConversationApi
 import com.example.agileus.webservices.apis.MessageApi
+import com.example.agileus.webservices.apis.TasksApi
 
 class InitialApplication : Application() {
 
     companion object{
         lateinit var webServiceConversation: ConversationApi
         lateinit var webServiceMessage:MessageApi
-        lateinit var webServiceListContacts:ConversationApi
-
         lateinit var webServiceGlobalTasks: TasksApi
+        lateinit var webServiceGlobal:ConversationApi
 
     }
 
@@ -20,7 +20,7 @@ class InitialApplication : Application() {
         //Este objeto ya puede ser accedido en cualquier parte dela app
        webServiceConversation = ConfigRetrofit().obtenerConfiguracionRetofit()
        webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
-        webServiceListContacts = ConfigRetrofit().obtenerConfiguracionRetofitListaDeContactos()
+        webServiceGlobal = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
 
         //Este objeto ya puede ser accedido en cualquier parte de la app
          webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()

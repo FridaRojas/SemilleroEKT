@@ -3,13 +3,13 @@ package com.example.agileus.ui.modulomensajeria.conversationonetoone
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
+import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -47,10 +47,10 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             val formatt: DateFormat = SimpleDateFormat("ZZZZZ", Locale.getDefault())
             val localTime: String = formatt.format(currentLocalTime)
 
-            var mensaje = Message("618e8743c613329636a769aa","618d9c26beec342d91d747d6","${binding.etMensaje.text.toString()}","$date$localTime")
+            var mensaje = Message("618d9c26beec342d91d747d6","618e8743c613329636a769aa","","${binding.etMensaje.text.toString()}","$date$localTime")
             conversationviewModel.mandarMensaje(mensaje)
 
-          //  Toast.makeText(applicationContext, "$date$localTime", Toast.LENGTH_LONG).show()
+
         }
 
 

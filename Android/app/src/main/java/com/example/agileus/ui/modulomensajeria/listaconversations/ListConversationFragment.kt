@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentHomeBinding
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 
 
 class ListConversationFragment : Fragment() {
 
-    private lateinit var homeViewModel: ListConversationViewModel
+    private lateinit var ChatsViewModel: ListConversationViewModel
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -23,7 +25,7 @@ class ListConversationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
+        ChatsViewModel =
             ViewModelProvider(this).get(ListConversationViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -35,6 +37,13 @@ class ListConversationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ChatsViewModel.devuelveLista()
+
+        ChatsViewModel.adaptador.observe(viewLifecycleOwner, {
+            binding.recyclerListGroups.adapter = it
+            binding.recyclerListGroups.layoutManager = LinearLayoutManager(activity)
+        })
 
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)

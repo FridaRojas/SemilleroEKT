@@ -13,18 +13,18 @@ import retrofit2.Response
 
 class MessageDao {
 
-   /* suspend fun  insertarPublicacion(mensaje: Message){
-        val callRespuesta = InitialApplication.webServiceMessage.mandarMensaje(mensaje)
-        var ResponseDos = callRespuesta.execute()
 
-       if(ResponseDos.isSuccessful){
-         Log.i("EXITOSO", "REGISTRO EXITOSO")
-       }else{
-           Log.i("NOEXITOSO", "No fue exitoso")
-       }
+    suspend fun  recuperarMensajes(): ArrayList<Conversation> {
+        val callRespuesta = InitialApplication.webServiceConversation.getConversationOnetoOne()
+        var ResponseDos:Response<ArrayList<Conversation>> = callRespuesta.execute()
+
+        var lista = ArrayList<Conversation>()
+        if (ResponseDos.isSuccessful){
+            lista = ResponseDos.body()!!
+        }
+        return lista
+
     }
-
-    */
 
 
     suspend fun insertarMensajes(mensaje: Message){
@@ -64,49 +64,4 @@ class MessageDao {
         })
 
     }
-
-/*
-    fun insertarPublicacion(mensaje:Message) {
-       // var mMensajePrueba = Message("618d9c26beec342d91d747d6", "618d9c26beec342d91d747d6", mensaje, fecha)
-        webServiceMessage.mandarMensaje(mensaje).execute()
-        //var ResponseDos: Response<Message> = callRespuesta.execute()
-
-    }
-
-
-
- */
-
-/*
-        callRespuesta.enqueue(object: Callback<Publicacion> {
-            override fun onResponse(call: Call<Publicacion>, response: Response<Publicacion>) {
-                if(response.isSuccessful){
-                    if (response.body() != null){
-                        /* var nueva:Publicacion = response.body()!!
-                         var mensaje = "Publicacion creada con el id: ${nueva.id}"
-                         mensaje += "\n titulo: ${nueva.title}"
-                         mensaje += "\n userId: ${nueva.userId}"
-                         mensaje += "\n body: ${nueva.body}"
-                         Toast.makeText(applicationContext, "$mensaje", Toast.LENGTH_LONG).show()*/
-
-
-                    }
-                    else{
-                        Toast.makeText(applicationContext, "No se inserto ${response.code()}", Toast.LENGTH_LONG).show()
-                    }
-                }else{
-                    Toast.makeText(applicationContext, "No se inserto ${response.code()}", Toast.LENGTH_LONG).show()
-                }
-
-            }
-
-            override fun onFailure(call: Call<Publicacion>, t: Throwable) {
-                Toast.makeText(applicationContext, "El servidor ha fallado", Toast.LENGTH_LONG).show()
-            }
-
-        })
-
-    }
-    */
-
 }

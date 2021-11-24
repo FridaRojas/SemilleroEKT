@@ -5,18 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/paddingGeneral"
+    android:background="@color/colorBackground"
     tools:context=".ui.modulomensajeria.listaconversations.ListConversationFragment">
 
     <EditText
         android:id="@+id/et_search_conversation"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:shadowColor="#403434"
+        android:layout_height="@dimen/height_search"
         android:background="@drawable/rounded_bg"
+        android:backgroundTint="@color/white"
         android:drawableEnd="@drawable/iconobuscar"
-       app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
+        app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/margin_bottom_general"
+        android:layout_marginEnd="@dimen/margin_end_general">
 
     </EditText>
 
@@ -27,15 +30,26 @@
         app:layout_constraintStart_toEndOf="@id/et_search_conversation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/iconobroadcast"/>
+        android:src="@drawable/iconobroadcast"
+        android:layout_marginStart="@dimen/margin_start_general"/>
 
 <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recyclerListConversation"
+    android:id="@+id/recyclerListGroups"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/et_search_conversation"/>
+    app:layout_constraintTop_toBottomOf="@id/et_search_conversation"
+    android:layout_marginTop="@dimen/margin_top_general"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerListChats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerListGroups"
+        android:layout_marginTop="@dimen/margin_top_general"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnListContacts"

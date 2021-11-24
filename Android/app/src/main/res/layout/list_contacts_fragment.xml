@@ -11,13 +11,13 @@
     <EditText
         android:id="@+id/et_search_contact"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/height_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/rounded_bg"
         android:backgroundTint="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/margin_bottom_general"
         android:drawableEnd="@drawable/iconobuscar"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_search_contact"/>
+        app:layout_constraintTop_toBottomOf="@id/et_search_contact"
+        android:layout_marginTop="@dimen/paddingGeneral"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

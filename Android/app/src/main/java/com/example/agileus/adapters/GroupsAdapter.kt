@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
-import com.example.agileus.models.Contacts
-import com.example.agileus.models.Conversation
-import com.example.agileus.ui.HomeActivity
+import com.example.agileus.models.Groups
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 
-class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
-    RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+
+class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
+    RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
@@ -35,13 +33,6 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
-    fun update(filtrado: List<Contacts>) {
-        var array:ArrayList<Contacts> = ArrayList(filtrado)
-        dataSet = array
-        this.notifyDataSetChanged()
-    }
-
-
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
@@ -53,12 +44,11 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
 
         }
 
-
-        fun enlazarItem(contacts: Contacts){
-            txtNameContact.text = contacts.nombre
+        fun enlazarItem(groups: Groups){
+            txtNameContact.text = groups.nombreConversacionRecepto
 
             txtNameContact.setOnClickListener {
-               val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
+                val intent = Intent(contexto, ConversationOneToOneActivity::class.java)
                 contexto.startActivity(intent)
 
             }

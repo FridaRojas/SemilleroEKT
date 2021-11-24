@@ -13,8 +13,6 @@ import com.example.agileus.utils.Constantes
 class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
 
-
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
 
         var id_vista = if
