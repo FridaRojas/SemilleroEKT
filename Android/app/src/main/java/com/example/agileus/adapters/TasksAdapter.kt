@@ -39,7 +39,7 @@ class TasksAdapter(
         var personaAsignada: TextView
         var fecha: TextView
         var btnAbrirDetallesTarea: ImageView
-        var nivelUsuario: String = "Bajo"
+        var nivelUsuario: String = "Alto"
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
