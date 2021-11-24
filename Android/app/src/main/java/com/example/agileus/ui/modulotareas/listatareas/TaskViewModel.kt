@@ -26,7 +26,7 @@ class TaskViewModel() : ViewModel() {
         lista = TasksDao()
     }
 
-    fun devuelveLista(listener: DialogosFormularioCrearTareasListener) {
+    fun devuelveLista() {
         try {
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO) {
@@ -35,7 +35,7 @@ class TaskViewModel() : ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(listaConsumida, listener)
+                            TasksAdapter(listaConsumida)
                     }
                 }
 
@@ -48,7 +48,7 @@ class TaskViewModel() : ViewModel() {
 
     }
 
-    fun devolverListaPorStatus(listener: DialogosFormularioCrearTareasListener){
+    fun devolverListaPorStatus(){
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO){
                     lista.getTasksByStatus("ASDASDSAD", "Enviado")
@@ -56,7 +56,7 @@ class TaskViewModel() : ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(lista as ArrayList<Tasks>, listener)
+                            TasksAdapter(lista as ArrayList<Tasks>)
                     }
                 }
             }

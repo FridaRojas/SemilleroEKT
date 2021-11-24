@@ -13,7 +13,7 @@ import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
 
-class TaskListFragment : Fragment(), DialogosFormularioCrearTareasListener {
+class TaskListFragment : Fragment() {
 
     private lateinit var taskViewModel: TaskViewModel
 
@@ -39,21 +39,12 @@ class TaskListFragment : Fragment(), DialogosFormularioCrearTareasListener {
         super.onViewCreated(view, savedInstanceState)
 
         //RecyclerListaTareas
-        taskViewModel.devuelveLista(this)
+        taskViewModel.devuelveLista()
         taskViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerTareasStatus.adapter = it
             binding.recyclerTareasStatus.layoutManager = LinearLayoutManager(activity)
         })
 
     }
-
-    override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
-        TODO("Not yet implemented")
-    }
-
 
 }

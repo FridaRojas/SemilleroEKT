@@ -19,8 +19,7 @@ import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCre
 
 
 class TasksAdapter(
-    private val dataSet: ArrayList<Tasks>,
-    val listener: DialogosFormularioCrearTareasListener
+    private val dataSet: ArrayList<Tasks>
 ) :
     RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
 
@@ -31,7 +30,7 @@ class TasksAdapter(
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.task_item, viewGroup, false)
 
-        return ViewHolder(view, listener)
+        return ViewHolder(view)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -45,7 +44,7 @@ class TasksAdapter(
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
-    class ViewHolder(view: View, val listener: DialogosFormularioCrearTareasListener) :
+    class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
         var nombreTarea: TextView
         var personaAsignada: TextView
