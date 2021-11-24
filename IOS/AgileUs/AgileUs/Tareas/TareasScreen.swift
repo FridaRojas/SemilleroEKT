@@ -21,7 +21,16 @@ class TareasScreen: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         
     }
-
+    @IBAction func editTaskBtn(_ sender: Any) {
+        Api.shared.editTask(id: "619c036a755c956b81252e03") {
+            (task) in
+            print(task)
+        } failure: {
+            (error) in
+            print(error)
+        }
+    }
+    
     /*
     // MARK: - Navigation
 

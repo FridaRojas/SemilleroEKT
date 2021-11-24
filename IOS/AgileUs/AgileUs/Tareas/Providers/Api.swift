@@ -56,8 +56,47 @@ final class Api {
         task.resume()
     }
     
-    func editTask(id: String) {
+    func editTask(id: String, success: @escaping (_ task: Task) -> (), failure: @escaping (_ error: String) -> ()) {
         
+        let session = URLSession.shared
+        let url = URL(string: "\(url)/obtenerTareaPorId/\(id)")!
+        
+        let task = session.dataTask(with: url) {
+            (data, response, error) in
+            
+            var task: Task
+            
+            if let httpResponse = response as? HTTPURLResponse,
+                  self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                  failure("error")
+                  return;
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse,
+                  self.rangeStatusCode400.contains(httpResponse.statusCode){
+                  failure("error")
+                  return;
+            }
+            
+            if error != nil {
+                failure("error")
+                return;
+            }
+            
+            if let dataSuccess = data {
+   
+                do {
+                    task = try JSONDecoder().decode(Task.self, from: dataSuccess)
+                    success(task)
+                } catch {
+                    failure("Error JSONDecoder")
+                }
+            }
+                
+        }
+        
+        task.resume()
+
     }
         
 }

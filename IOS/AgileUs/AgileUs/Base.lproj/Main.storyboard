@@ -79,6 +79,15 @@
                                     <segue destination="0Cc-Uh-NmK" kind="show" id="pQQ-gP-Ka3"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZr-aq-1oN">
+                                <rect key="frame" x="76" y="550" width="264" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Tarea  619c036a755c956b81252e03"/>
+                                <connections>
+                                    <action selector="editTaskBtn:" destination="He9-Ti-izS" eventType="touchUpInside" id="nbN-iG-ebn"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Nxh-Ue-bao"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -149,7 +158,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="hAx-tq-Leh"/>
                                 </constraints>
-                                <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
