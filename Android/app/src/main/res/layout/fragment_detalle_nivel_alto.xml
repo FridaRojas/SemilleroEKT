@@ -11,75 +11,89 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp">
 
-        <TextView
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtNombreTareaD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:enabled="false"
             android:text="Nombre de la Tarea"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtNombrePersonaD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
+
             android:padding="@dimen/activity_vertical_margin"
             android:text="Nombre de la persona"
             app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtPrioridadD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:padding="@dimen/activity_vertical_margin"
             android:text="Prioridad"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD">
 
-        </TextView>
+        </com.google.android.material.textview.MaterialTextView>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtEstatusD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:padding="@dimen/activity_vertical_margin"
             android:text="Estatus"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtDescripcionD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Descripcion"
             android:padding="@dimen/activity_vertical_margin"
             android:text="Descripcion: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
             app:layout_constraintTop_toBottomOf="@+id/txtPrioridadD" />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtFechaInicioD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:padding="@dimen/activity_vertical_margin"
             android:text="Inicio: 16/01/2021"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
 
 
-        <TextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtFechaFinD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:padding="@dimen/activity_vertical_margin"
             android:text="Fin: 20/01/2021"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtObservacionesD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Observaciones"
             android:padding="@dimen/activity_vertical_margin"
             android:text="Observaciones: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
             app:layout_constraintTop_toBottomOf="@+id/txtFechaInicioD" />
@@ -91,14 +105,27 @@
             android:layout_height="wrap_content"
             android:background="@color/colorBackground"
             android:text="Adjuntar Archivo"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
 
+
+        <Button
+            android:id="@+id/btnCancelarEdicion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:background="@color/colorBackground"
+            android:text="Cancelar"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD"
+            tools:layout_editor_absoluteX="16dp" />
 
         <Button
             android:id="@+id/btnEditarTareaF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Editar"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
 
@@ -108,16 +135,19 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:text="Cancelar Tarea"
+            android:visibility="visible"
+
             app:layout_constraintStart_toEndOf="@+id/btnEditarTareaF"
             app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
 
         <Button
             android:id="@+id/btnObservacionF"
             android:layout_width="150dp"
-
             android:layout_height="wrap_content"
+
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:text="Agregar Observacion"
+            android:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/btnCancelarTareaF"
             app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
 

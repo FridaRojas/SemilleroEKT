@@ -95,10 +95,26 @@ class TasksDao {
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Faiulure ${t.cause}")
+                Log.d("Mensaje", "On Failure ${t.cause}")
+            }
+        })
+    }
+
+
+    fun editTask(t: DetalleNivelAltoFragmentArgs) {
+        val callback = InitialApplication.webServiceGlobalTasks.editTask(t, t.tareas.idTarea)
+        callback.enqueue(object : Callback<DataTask> {
+            override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
+                if (response.isSuccessful) {
+                    Log.d("Mensaje", "Tarea Editada")
+                } else {
+                    Log.d("Mensaje", "No se edito tarea ${response.code()}")
+                }
             }
 
-
+            override fun onFailure(call: Call<DataTask>, t: Throwable) {
+                Log.d("Mensaje", "On Failure ${t.cause}")
+            }
         })
     }
 }

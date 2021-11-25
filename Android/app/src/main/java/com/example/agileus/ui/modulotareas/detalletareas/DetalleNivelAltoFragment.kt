@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
@@ -47,10 +48,10 @@ class DetalleNivelAltoFragment : Fragment() {
         // var observaciones = args.tareas.observaciones
 
         with(binding) {
-            txtNombreTareaD.text = nombreTarea
+            txtNombreTareaD.setText(nombreTarea)
             txtNombrePersonaD.text = nombrePersona
             txtPrioridadD.text = prioridad
-            txtDescripcionD.text = descripcion
+            txtDescripcionD.setText(descripcion)
             //txtFechaInicioD.text = fechaInicio.toString()
             //txtFechaFinD.text = fechaFin.toString()
         }
@@ -58,16 +59,48 @@ class DetalleNivelAltoFragment : Fragment() {
         binding.btnCancelarTareaF.setOnClickListener {
             cancelarTarea(args)
         }
-        
-        binding.btnEditarTareaF.setOnClickListener { 
-            editarTarea(args)
+
+        binding.btnEditarTareaF.setOnClickListener {
+            binding.txtDescripcionD.isEnabled = true
+            binding.txtDescripcionD.isEnabled = true
+            binding.txtFechaInicioD.isEnabled = true
+            binding.txtFechaFinD.isEnabled = true
+            binding.txtObservacionesD.isEnabled = true
+            binding.btnAdjuntarArchivoF.setText("Guardar Tarea")
+            binding.btnEditarTareaF.isVisible = false
+            binding.btnCancelarTareaF.isVisible = false
+            binding.btnObservacionF.isVisible = false
+            binding.btnCancelarEdicion.isVisible = true
+        }
+
+
+        binding.btnCancelarEdicion.setOnClickListener {
+            binding.txtDescripcionD.isEnabled = false
+            binding.txtDescripcionD.isEnabled = false
+            binding.txtFechaInicioD.isEnabled = false
+            binding.txtFechaFinD.isEnabled = false
+            binding.txtObservacionesD.isEnabled = false
+            binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo")
+            binding.btnEditarTareaF.isVisible = true
+            binding.btnCancelarTareaF.isVisible = true
+            binding.btnObservacionF.isVisible = true
+            binding.btnCancelarEdicion.isVisible = false
+        }
+
+        binding.btnAdjuntarArchivoF.setOnClickListener {
+            if (binding.btnAdjuntarArchivoF.text.equals("Adjuntar Archivo")) {
+
+            } else if (binding.btnAdjuntarArchivoF.text.equals("Guardar Tarea")) {
+                editarTarea(args)
+            }
+
         }
 
 
     }
 
     private fun editarTarea(args: DetalleNivelAltoFragmentArgs) {
-
+        detalleNivelAltoViewModel.editarTarea(args)
     }
 
     private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {

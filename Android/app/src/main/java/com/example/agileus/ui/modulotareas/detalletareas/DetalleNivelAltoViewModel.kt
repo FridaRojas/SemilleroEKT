@@ -21,5 +21,16 @@ class DetalleNivelAltoViewModel : ViewModel() {
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
         }
+
+    }
+
+    fun editarTarea(dataTask: DetalleNivelAltoFragmentArgs) {
+        try {
+            viewModelScope.launch {
+                taskDao.editTask(dataTask)
+            }
+        } catch (ex: Exception) {
+            Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
+        }
     }
 }

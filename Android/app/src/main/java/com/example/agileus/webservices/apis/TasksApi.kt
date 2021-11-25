@@ -4,6 +4,7 @@ package com.example.agileus.webservices.apis
 import com.example.agileus.models.DataTask
 import com.example.agileus.models.TaskList
 import com.example.agileus.models.Tasks
+import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,5 +29,10 @@ interface TasksApi {
 
     @DELETE("tareas/cancelarTarea/{idTarea}")
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
+
+
+    @PUT("tareas/actualizarTarea/{idTarea}")
+    fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String): Call<DataTask>
+
 
 }

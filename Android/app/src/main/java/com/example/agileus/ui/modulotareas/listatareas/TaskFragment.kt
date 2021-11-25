@@ -16,12 +16,14 @@ import com.example.agileus.R
 
 import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentTaskBinding
+import com.example.agileus.models.DataTask
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
+import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
 
-class TaskFragment : Fragment(), TaskDialogListener {
-
+class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
 
     private var _binding: FragmentTaskBinding? = null
@@ -29,7 +31,8 @@ class TaskFragment : Fragment(), TaskDialogListener {
 
     private lateinit var taskViewModel: TaskViewModel
 
-    var listStatus = listOf("Pendientes", "Iniciadas", "Revisión", "Terminadas", "Asignadas", "Canceladas")
+    var listStatus =
+        listOf("Pendientes", "Iniciadas", "Revisión", "Terminadas", "Asignadas", "Canceladas")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +55,11 @@ class TaskFragment : Fragment(), TaskDialogListener {
         var adaptadorStatus = StatusTasksAdapter(listStatus, this)
         binding.recyclerStatusTareas.adapter = adaptadorStatus
         binding.recyclerStatusTareas.apply {
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL ,false)
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
 
         //RecyclerListaTareas
-        taskViewModel.devolverListaPorStatus()
+        taskViewModel.devolverListaPorStatus(this)
         taskViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerTareas.adapter = it
             binding.recyclerTareas.layoutManager = LinearLayoutManager(activity)
@@ -97,7 +100,12 @@ class TaskFragment : Fragment(), TaskDialogListener {
         }
 
         //taskViewModel.statusRecycler.value = "Iniciada"
-        taskViewModel.devolverListaPorStatus()
+        taskViewModel.devolverListaPorStatus(this)
         Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun abreDialogo(dataTask: DataTask) {
+        val newFragment = DialogoNivelBajo(this,dataTask)
+        newFragment.show((activity as HomeActivity).supportFragmentManager, "missiles")
     }
 }
