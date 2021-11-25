@@ -402,5 +402,24 @@ public class MensajesController {
 		return lConversacion2;
 	}
 
+	@GetMapping("listarMensajes/{idEmisor}")
+	public ResponseEntity<?> listarMensajesID (@PathVariable (value = "idEmisor")String idEmisor) {
 
+		Iterable<Mensajes> msg = mensajesRepository.traerMensajes(idEmisor);
+
+
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(msg.iterator());
+	}
+	@GetMapping("listarMensajesRecividos/{idEmisor}")
+	public Iterable<?> listarMensajesRecividos(@PathVariable (value = "idEmisor")String idEmisor){
+		Iterable<Mensajes> msg= mensajesRepository.findAll();
+		List<Mensajes> lMensajes = new ArrayList<>();
+
+		for (Mensajes msg2: msg) {
+			if(msg2.getIDConversacion().contains(idEmisor)){
+				lMensajes.add(msg2);
+			}
+		}
+		return lMensajes;
+	}
 }
