@@ -39,7 +39,7 @@ class ConfigRetrofit {
 
     fun obtenerConfiguracionRetofitPersonasTasks(): TasksApi {
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_Tasks_Personas2)
+            .baseUrl(URL_Tasks_Personas)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

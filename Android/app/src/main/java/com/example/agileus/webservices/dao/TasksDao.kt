@@ -12,36 +12,32 @@ import retrofit2.Response
 
 class TasksDao {
 
-    fun getPersonsGroup(): ArrayList<DataPersons>{
-        lateinit var listaPersons : PersonasGrupo
-        var listaPersonsRecuperada = ArrayList<DataPersons>()
 
-        val callRespuestaPersonas = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo()
-        if (callRespuestaPersonas != null) {
-            callRespuestaPersonas.enqueue(object: Callback<PersonasGrupo>{
-                override fun onResponse(call: Call<PersonasGrupo>, response: Response<PersonasGrupo>) {
-                    if (response.isSuccessful) {
-                        if(response.body()!=null) {
-                            listaPersons = response.body()!!
-                            listaPersonsRecuperada = listaPersons.data
-
-                            listaPersonsRecuperada.forEach {
-                                val id      =it.numeroEmpleado
-                                val title   = it.nombre
-                                Log.d("Mensaje", "El mensaje es $id . El title es $title")
-                            }
-                        }
+    fun getPersonsGroup(idsuperiorInmediato:String): ArrayList<DataPersons>{
+        lateinit var listaGrupoRecuperada : PersonasGrupo
+        var listaPersonsDatos = ArrayList<DataPersons>()
+        val callRespuestaPersonas = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(idsuperiorInmediato)
+        val Response = callRespuestaPersonas?.execute()
+        try {
+            if(Response != null) {
+                if (Response.isSuccessful) {
+                    listaGrupoRecuperada = Response.body()!!
+                    Log.d("Mensaje", "listaGrupoRecuperada: ${listaGrupoRecuperada.status} ")
+                    if(listaGrupoRecuperada.data != null){
+                        listaPersonsDatos= listaGrupoRecuperada.data
                     }else{
-                        Log.d("Mensaje", "Fallo la peticion ${response.code()}")
+                        listaPersonsDatos = emptyList<DataPersons>() as ArrayList<DataPersons>
                     }
-                }
-                override fun onFailure(call: Call<PersonasGrupo>, t: Throwable) {
-                    Log.d("Mensaje", "onFailure  $t")
-                }
 
-            })
+                }else {
+                Log.e("error", "Fallo la peticion ${Response.code()}")
+                }
+            }
+        }catch (e:Exception){
+            Log.e("error", e.toString())
         }
-        return listaPersonsRecuperada
+        Log.d("Mensaje", "listaPersonsDatos: ${listaPersonsDatos.size} ")
+        return listaPersonsDatos
     }
 
     fun postTasks(t:Tasks){
@@ -56,6 +52,7 @@ class TasksDao {
                     var mensaje= "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje+= ", Titulo:${nuevaTarea.titulo}"
                     mensaje+= ", Asignada a:${nuevaTarea.nombreReceptor}"
+                    mensaje+= ", Numero de empleado:${nuevaTarea.idReceptor}"
                     mensaje+= ", Descripcion:${nuevaTarea.descripcion}"
                     mensaje+= ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje+= ", Fecha fin:${nuevaTarea.fechaFin}"
@@ -72,9 +69,9 @@ class TasksDao {
 
     }
 
-    suspend fun getTasks(): ArrayList<Tasks> {
+    fun getTasks(): ArrayList<Tasks> {
         val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasks()
-        var ResponseDos: Response<ArrayList<Tasks>> = callRespuesta.execute()
+        val ResponseDos: Response<ArrayList<Tasks>> = callRespuesta.execute()
         var lista = ArrayList<Tasks>()
         if (ResponseDos.isSuccessful) {
             lista = ResponseDos.body()!!

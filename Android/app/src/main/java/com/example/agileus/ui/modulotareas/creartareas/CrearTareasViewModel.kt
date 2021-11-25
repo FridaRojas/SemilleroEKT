@@ -23,13 +23,14 @@ class CrearTareasViewModel: ViewModel() {
         personasGetDao  = TasksDao()
     }
 
-    fun devuelvePersonasGrupo(){
+     fun devuelvePersonasGrupo(idsuperiorInmediato : String){
         personasGrupoLista = MutableLiveData()
         try {
             viewModelScope.launch {
                 val listaGrupoPersonas = withContext(Dispatchers.IO) {
-                    personasGetDao .getPersonsGroup()
+                    personasGetDao .getPersonsGroup(idsuperiorInmediato)
                 }
+                Log.d("Mensaje", "listaGrupoPersonas CrearTareasViewModel: ${listaGrupoPersonas.size} ")
                 personasGrupoLista.value = listaGrupoPersonas
             }
         }
