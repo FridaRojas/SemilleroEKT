@@ -58,13 +58,19 @@ class DetalleNivelAltoFragment : Fragment() {
         binding.btnCancelarTareaF.setOnClickListener {
             cancelarTarea(args)
         }
+        
+        binding.btnEditarTareaF.setOnClickListener { 
+            editarTarea(args)
+        }
 
 
     }
 
-    private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
-//        args.estatus = "Cancelada"
+    private fun editarTarea(args: DetalleNivelAltoFragmentArgs) {
 
+    }
+
+    private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
         detalleNivelAltoViewModel.cancelarTarea(args)
     }
 
