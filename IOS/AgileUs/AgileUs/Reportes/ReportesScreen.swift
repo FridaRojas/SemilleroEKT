@@ -42,20 +42,12 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     var datos = [Any]()
     var cont = 0
     
+    //Adaptadores
     // modal
     let adaptador = Adaptador_Modals()
-    
-    //Servicios web     ************************************************
-    let serviceUser = "https://firebasestorage.googleapis.com/v0/b/proyectop-50f0b.appspot.com/o/busquedaPorIdJefe2.json?alt=media&token=3a996bbf-398d-4785-8bbf-9931f5eecfe2"
-    
-    let serviceTask = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Task.json?alt=media&token=bb6a2086-2e39-411a-8385-2294dabcc2d5"
-    
-    let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928"
-    
-    
-    
-    //v******************************************************************
-    
+    //Adaptador de la ejecución de los servicios web
+    let adaptadorServicios = AdaptadorServicios()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,26 +58,42 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         llenar_pie_chart(enviado: 46, recibido: 76, leido: 20)
         print("mensaje prueba")
         
-        
-        //webServiceUsuarios(service: serviceUser)
-        //webServiceTareas(service: serviceTask)
-        //webServiceMensajes(service: serviceMessage)
-        //print("ID didLoad: \(obtenerIdDelJefeInmediato())")
-        let adaptadorServicios = AdaptadorServicios()
-        let screen = adaptadorServicios.serviciosWeb{
-            [self] (Datos) -> Void in
-            
-            print(Datos[0])
+       
+        //serviciosTareas()
+        serviciosMensajes()
+
+    }
+    
+    func serviciosMensajes(){
+        adaptadorServicios.servicioWebMensajesAdapter{
+            [] (Datos) -> Void in
             
             for i in Datos{
-                print(i)
+                print("\n\(i)")
             }
-             
-            
         }
-        
-        
-        
+    }
+    
+    func serviciosTareas(){
+        adaptadorServicios.servicioWebTareasAdapter{
+            [] (Datos) -> Void in
+            
+            for i in Datos{
+                print("\n\(i)")
+            }
+        }
+    }
+    
+    func servicioUsuarios(){
+        //Servicio web de Usuarios
+        adaptadorServicios.serviciosWeb{
+            [] (Datos) -> Void in
+            
+            for i in Datos{
+                print("\n\(i)")
+            }
+
+        }
     }
     
     func configuracion_colores() {

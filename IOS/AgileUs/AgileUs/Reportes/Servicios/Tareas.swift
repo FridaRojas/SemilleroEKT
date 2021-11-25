@@ -24,40 +24,54 @@ struct Tareas:Codable{
     let createdDate:String
 }
 
+class TareasService{
 
-func webServiceTareas(service:String){
+    var webServiceTask: ((_ arrDatosTareas:[Any]) -> Void)?
     
-    let url = URL(string: service)
+    let serviceTask = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Task.json?alt=media&token=bb6a2086-2e39-411a-8385-2294dabcc2d5"
+
     
-    print("WebService de tareas")
-    
-    //Gernerar manejo de excepciones
-    URLSession.shared.dataTask(with: url!){
+    func webServiceTareas(){
+        let sevice = true
+        let url = URL(string: serviceTask)
         
-        (informacion, response, error) in
+        print("WebService de tareas")
         
-        //print(informacion!)
-        //print(response!)
-        //print(error)
-        
-        do{
+        //Gernerar manejo de excepciones
+        URLSession.shared.dataTask(with: url!){
             
+            (informacion, response, error) in
+            
+            //print(informacion!)
+            //print(response!)
+            //print(error)
+            
+            do{
                 
-            arrTareas = try JSONDecoder().decode(Tareas.self, from: informacion!)
-            DispatchQueue.main.async {
-                
-                print(type(of: arrTareas!))
-                
-                for elemento in arrTareas!.nombre_emisor{
-                    print(elemento)
+                    
+                arrTareas = try JSONDecoder().decode(Tareas.self, from: informacion!)
+                DispatchQueue.main.async {
+                    
+                    print(type(of: arrTareas!))
+                    
+                    for elemento in arrTareas!.nombre_emisor{
+                        print(elemento)
+                    }
+                    
+                    if sevice == true{
+                        self.webServiceTask?([arrTareas!])
+                    }
+                    
+                    
                 }
                 
+            }catch{
+                print("Error al leer el archivo")
             }
             
-        }catch{
-            print("Error al leer el archivo")
-        }
+        }.resume()
         
-    }.resume()
+    }
+
     
 }

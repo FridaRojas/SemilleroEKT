@@ -47,8 +47,8 @@ class Usuarios{
             (informacion, response, error) in
             
             print(informacion!)
-            print(response!)
-            print(error as Any)
+            //print(response!)
+            //print(error as Any)
             
             do{
                 //Añadir los datos del Json en el array de datos
@@ -56,64 +56,46 @@ class Usuarios{
                 
                 DispatchQueue.main.async { [self] in
                     
-                    //print(type(of: arrData!.data))
-                    
-                    //Mostrar los datos del arreglo de datos de los usuarios
                     print("\nUsuarios registrados")
                     
+                    let status = arrData!.status
+                    
+                    print("Status: \(status)")
+                    //Comprobar el estado del objeto
+                    if "\(status)" == "OK"{
+                        print("\nGuardando datos en el lambda")
+                        self.webService?(arrData!.data)
+                    }else{
+                        print("No se ha podido almacenar datos en el lambda")
+                    }
+                    
+                    //Mostrar los datos del arreglo de datos de los usuarios
+                    for elemento in arrData!.data{
                         
-                    for status in arrData!.status{
-                     
-                        print(status)
-                        
-                        if "\(status)" == "ok"{
-                            print("\nGuardando datos en el lambda")
-                            self.webService?(arrData!.data)
+                        if idJefe.isEmpty{
+                            print("\nSe ha asignado un jefe")
+                            idJefe = elemento.idsuperiorInmediato
+                        }else{
+                            print("\nSe asignó el id del jefe")
                         }
                         
                     }
-                        
-                    
-                    
-                    
-                    
+                       
                     filtroDeUsuariosPorJefe(idJefe: idJefe)
                     
-                    //print("ID: \(obtenerIdDelJefeInmediato())")
-                    
-                    //arrDatosUsuario = arrData!.data
-                    //print(arrDatosUsuario)
-                    
-                    
-                    /*var datos = arrData!.data.map({
-                        dat in dat
-                    })*/
-                    
-                    
                 }
-                
-                
                 
             }catch{
                 print("Error al leer el archivo")
             }
             
-            
         }.resume()
-     
-        
-        //print(type(of: arrDatosUsuario))
-        //print(arrDatosUsuario)
-        
-        //return arrData?.data as! [Any]
         
     }
 
     func obtenerIdDelJefeInmediato() -> String{
         return idJefe
     }
-
-
 
     func filtroDeUsuariosPorJefe(idJefe:String){
             
@@ -143,9 +125,6 @@ class Usuarios{
         }
         
     }
-
-
-
     
 }
 
