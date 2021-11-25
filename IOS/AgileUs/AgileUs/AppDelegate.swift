@@ -7,17 +7,37 @@
 
 import UIKit
 
-var id_usuario = String()
 var server = "http://10.97.0.137:3041/api/"
-var nombre_usuario = String()
-var inicio_sesion = Bool()
 
+var userID = String()
+var userName = String()
+var email = String()
+var employeeNumber = String()
+
+var isLogged = Bool()
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    func recoverUserInfo() {
+        userID = UserDefaults.standard.string(forKey: "userID") ?? String()
+        userName = UserDefaults.standard.string(forKey: "userName") ?? String()
+        email = UserDefaults.standard.string(forKey: "email") ?? String()
+        employeeNumber = UserDefaults.standard.string(forKey: "employeeNumber") ?? String()
+        
+        //print(userID)
+    }
+
+    func recoverLogged(){
+        isLogged = UserDefaults.standard.bool(forKey: "isLogged")
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        recoverUserInfo()
+        recoverLogged()
+        
         return true
     }
 

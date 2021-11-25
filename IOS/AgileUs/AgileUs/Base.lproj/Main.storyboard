@@ -30,6 +30,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="Api-M3-Qju"/>
+                    <connections>
+                        <segue destination="bS3-wo-jyG" kind="show" identifier="Splash_To_Home" id="MsL-cW-dAo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -47,8 +50,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="394" height="896"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wVN-9f-UtT">
-                                <rect key="frame" x="43" y="285" width="327" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wVN-9f-UtT">
+                                <rect key="frame" x="43" y="285" width="327" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -172,6 +175,9 @@
             <point key="canvasLocation" x="-23.188405797101453" y="41.517857142857139"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="MsL-cW-dAo"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="iniciar_sesion_btn" width="291" height="52"/>
         <image name="login_bckgrnd" width="373" height="787"/>
