@@ -6,6 +6,8 @@ import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
+import com.example.agileus.utils.Constantes.URL_Tasks_Personas
+import com.example.agileus.utils.Constantes.URL_Tasks_Personas2
 import com.example.agileus.webservices.apis.ConversationApi
 import com.example.agileus.webservices.apis.TasksApi
 import retrofit2.Retrofit
@@ -32,6 +34,15 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(TasksApi::class.java)
+    }
+
+    fun obtenerConfiguracionRetofitPersonasTasks(): TasksApi {
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_Tasks_Personas)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

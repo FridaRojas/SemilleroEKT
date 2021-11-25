@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.DataTask
 import com.example.agileus.models.TaskList
+import com.example.agileus.models.DataPersons
+import com.example.agileus.models.PersonasGrupo
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
 import retrofit2.Call
@@ -38,6 +40,7 @@ class TasksDao {
                         "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
                     mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
+                    mensaje+= ", Numero de empleado:${nuevaTarea.idReceptor}"
                     mensaje += ", Descripcion:${nuevaTarea.descripcion}"
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
@@ -115,4 +118,20 @@ class TasksDao {
             }
         })
     }
+
+    fun getPersonsGroup(idsuperiorInmediato:String): ArrayList<DataPersons>{
+        lateinit var listaGrupoRecuperada : PersonasGrupo
+        var listaPersonsDatos = ArrayList<DataPersons>()
+        val callRespuestaPersonas = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(idsuperiorInmediato)
+        val Response = callRespuestaPersonas?.execute()
+        try {
+            if(Response != null) {
+                if (Response.isSuccessful) {
+                    listaGrupoRecuperada = Response.body()!!
+                    Log.d("Mensaje", "listaGrupoRecuperada: ${listaGrupoRecuperada.status} ")
+                    if(listaGrupoRecuperada.data != null){
+                        listaPersonsDatos= listaGrupoRecuperada.data
+                    }else{
+                        listaPersonsDatos = emptyList<DataPersons>() as ArrayList<DataPersons>
+                    }
 }

@@ -11,6 +11,7 @@ class InitialApplication : Application() {
         lateinit var webServiceGlobal: ConversationApi
         lateinit var webServiceGlobalTasks: TasksApi
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
+        lateinit var webServiceGlobalTasksPersonas: TasksApi
 
     }
 
@@ -21,6 +22,8 @@ class InitialApplication : Application() {
         webServiceGlobal = ConfigRetrofit().obtenerConfiguracionRetofit()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
         BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
+        webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
+
     }
 
 }
