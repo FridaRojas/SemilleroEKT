@@ -9,7 +9,10 @@ object Constantes {
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
     var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
 
-    val URL_Tasks_Personas="http://10.97.0.165:3040/api/user/findByBossId/618e88acc613329636a769ae"
-    val URL_Tasks_Personas2="http://10.97.0.165:3040/api/user/findAll"
+    val URL_Tasks_Personas="http://10.97.4.92:3040/api/user/findByBossId/"
+    //val URL_Tasks_Personas="https://firebasestorage.googleapis.com/v0/b/demotesting-4ba17.appspot.com/o/"
+
+
+    val URL_Tasks_Personas2="http://10.97.0.165:3040/api/"
 
 }

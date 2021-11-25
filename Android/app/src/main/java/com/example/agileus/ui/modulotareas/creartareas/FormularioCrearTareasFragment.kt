@@ -1,19 +1,18 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
-import com.example.agileus.models.PersonasGrupo
+import com.example.agileus.models.Datas
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
@@ -34,13 +33,16 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     }
 
     lateinit var asignarTareaViewModel          : CrearTareasViewModel
-    lateinit var listaPersonas                  : ArrayList<PersonasGrupo>
+    lateinit var listaPersonas                  : ArrayList<Datas>
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
     private var param1  : String? = null
 
-    var idGrupo         : String = "GRUPOID1"
+    lateinit var nombrePersonaAsignada  : String
+    lateinit var idPersonaAsignada      : String
+
+    var idsuperiorInmediato        : String = "618e88acc613329636a769ae"
     var fechaInicio     : String = ""
     var fechaFin        : String = ""
 
@@ -58,12 +60,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //asignarTareaViewModel = ViewModelProvider(this).get(CrearTareasViewModel::class.java)
-        asignarTareaViewModel = ViewModelProvider(this).get()
+
         _binding = FragmentFormularioCrearTareasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -72,7 +71,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        asignarTareaViewModel = ViewModelProvider(this).get()
         setUpUiAsignarTareas()
 
         /* Boton Crear tarea  */
@@ -131,20 +130,32 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     fun setUpUiAsignarTareas(){
 
         // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
-        //val inflater                = requireActivity().layoutInflater;
-        //val vista                   = inflater.inflate(R.layout.activity_home, null)
-        //val spinListaPersonasAdapter = vista.findViewById<Spinner>(R.id.spinPersonaAsignada)
-
-        asignarTareaViewModel.devuelvePersonasGrupo(idGrupo)
+        //asignarTareaViewModel.devuelvePersonasGrupo(idsuperiorInmediato)
+        asignarTareaViewModel.devuelvePersonasGrupo()
         asignarTareaViewModel.personasGrupoLista.observe(viewLifecycleOwner , {
+
             if(it.isNotEmpty()){
+                listaPersonas = it
 
-                listaPersonas = it as ArrayList<PersonasGrupo>
+                //Remover item de la cuenta destino
+                val listaN = ArrayList<String>()
+                listaPersonas.forEach(){
+                    listaN.add(it.nombre)
+                }
+                //listaN.remove()
 
-                val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity), android.R.layout.simple_spinner_item, listaPersonas)
+                val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity),
+                    android.R.layout.simple_spinner_item, listaN)
                 spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                //spinListaPersonasAdapter.adapter=spinListaAsignarAdapter
                 binding.spinPersonaAsignada.adapter=spinListaAsignarAdapter
+
+                nombrePersonaAsignada = binding.spinPersonaAsignada.selectedItem as String
+
+                listaPersonas.forEach(){
+                    if(nombrePersonaAsignada == it.nombre){
+                        idPersonaAsignada= it.numeroEmpleado
+                    }
+                }
 
             }else{
                 Toast.makeText(activity , "No se encontraron personas en el grupo", Toast.LENGTH_LONG).show()
@@ -165,6 +176,26 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         val descripcion = binding.edtDescripcion.text
         val mPrioridad  = binding.spinPrioridad.selectedItem
 
+
+
+        tarea = Tasks(
+            "GRUPOID1",                // id_grupo
+            "EMIS1",
+            "Raul",
+            "RECEPT1",
+            //nombrePersonaAsignada,
+            "Carlos",
+            fechaInicio,            // Fecha Inicio
+            fechaFin,               // Fecha Fin
+            titulo.toString(),
+            descripcion.toString(), // Descripcion
+            mPrioridad.toString().lowercase(),  // Prioridad
+            "pendiente",
+            false,             // Leido
+            "2014-01-01"
+
+        )
+
         /*Toast.makeText(activity as HomeActivity,
             "Datos to POST = " +
                 "Titulo: $titulo, " +
@@ -174,22 +205,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
                 "Descripcion: $descripcion ",
             Toast.LENGTH_LONG).show()*/
 
-        tarea = Tasks(
-            idGrupo,                // id_grupo
-            "EMIS1",
-            "Raul",
-            "RECEPT1",
-            "Carlos",
-            fechaInicio,            // Fecha Inicio
-            fechaFin,               // Fecha Fin
-            titulo.toString(),      // Titulo
-            "EWREWF2323",
-            descripcion.toString(), // Descripcion
-            mPrioridad.toString().lowercase(),  // Prioridad
-            "pendiente",
-            false,             // Leido
-            "2014-01-01"
-        )
         asignarTareaViewModel.postTarea(tarea)
         Toast.makeText(activity as HomeActivity, "Tarea creada con exito", Toast.LENGTH_SHORT).show()
     }

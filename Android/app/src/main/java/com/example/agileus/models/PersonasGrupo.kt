@@ -1,7 +1,9 @@
 package com.example.agileus.models
 
+import com.google.gson.annotations.SerializedName
+
 data class PersonasGrupo(
-    val `data`: List<Data>,
-    val msj: String,
-    val status: String
+    @SerializedName("data")     val data: List<Datas>,
+    @SerializedName("msj")      val msj: String,
+    @SerializedName("status")   val status: String
 )

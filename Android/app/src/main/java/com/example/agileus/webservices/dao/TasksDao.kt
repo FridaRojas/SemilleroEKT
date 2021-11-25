@@ -1,46 +1,44 @@
 package com.example.agileus.webservices.dao
 
-import android.content.Context
+
 import android.util.Log
-import android.widget.Toast
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.models.PersonasGrupos
+import com.example.agileus.models.Datas
 import com.example.agileus.models.Tasks
-import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.modulotareas.creartareas.FormularioCrearTareasFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.coroutines.coroutineContext
 
 class TasksDao {
 
-    suspend fun getTasks(): ArrayList<Tasks> {
-        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasks()
-        var ResponseDos: Response<ArrayList<Tasks>> = callRespuesta.execute()
-
-        var lista = ArrayList<Tasks>()
-        if (ResponseDos.isSuccessful) {
-            lista = ResponseDos.body()!!
-        }
-        return lista
-    }
-
-
-    fun getPersonsGroup(id_grupo:String): ArrayList<PersonasGrupos>{
-        val callRespuesta = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(id_grupo)
-        val Response: Response<ArrayList<PersonasGrupos>> = callRespuesta.execute()
-
-        var listaPersons = ArrayList<PersonasGrupos>()
-        if (Response.isSuccessful) {
-            listaPersons = Response.body()!!
-        }
+    fun getPersonsGroup(): ArrayList<Datas>{
+        val callRespuestaPersonas = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo()
+        var listaPersons = ArrayList<Datas>()
+        callRespuestaPersonas.enqueue(object: Callback<ArrayList<Datas>>{
+            override fun onResponse(call: Call<ArrayList<Datas>>, response: Response<ArrayList<Datas>>) {
+                if (response.isSuccessful) {
+                    if(response.body()!=null) {
+                        listaPersons = response.body()!!
+                        listaPersons.forEach {
+                            var id      =it.numeroEmpleado
+                            var title   = it.nombre
+                            Log.d("Mensaje", "El mensaje es $id . El title es $title")
+                        }
+                    }
+                }else{
+                    Log.d("Mensaje", "Fallo la peticion ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<ArrayList<Datas>>, t: Throwable) {
+                Log.d("Mensaje", "onFailure ")
+            }
+        })
         return listaPersons
     }
 
-        fun postTasks(t:Tasks){
-        val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
+    fun postTasks(t:Tasks){
 
+        val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
         callInserta.enqueue(object : Callback<Tasks> {
             override fun onResponse(call: Call<Tasks>, response: Response<Tasks>) {
 
@@ -66,10 +64,13 @@ class TasksDao {
 
     }
 
-
-
-
-
-
-
+    suspend fun getTasks(): ArrayList<Tasks> {
+        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasks()
+        var ResponseDos: Response<ArrayList<Tasks>> = callRespuesta.execute()
+        var lista = ArrayList<Tasks>()
+        if (ResponseDos.isSuccessful) {
+            lista = ResponseDos.body()!!
+        }
+        return lista
+    }
 }

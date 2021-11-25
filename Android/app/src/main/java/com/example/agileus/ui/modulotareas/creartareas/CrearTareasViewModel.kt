@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.agileus.models.PersonasGrupo
+import com.example.agileus.models.Datas
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
 import com.example.agileus.webservices.dao.TasksDao
@@ -14,31 +14,28 @@ import kotlinx.coroutines.withContext
 
 class CrearTareasViewModel: ViewModel() {
 
-    var postTarea: TasksDao
-    var listaPersonas: TasksDao
-    var personasGrupoLista = MutableLiveData<ArrayList<PersonasGrupo>>()
+    var postTarea       : TasksDao
+    var personasGetDao   : TasksDao
+    var personasGrupoLista = MutableLiveData<ArrayList<Datas>>()
 
     init {
         postTarea = TasksDao()
-        listaPersonas = TasksDao()
+        personasGetDao  = TasksDao()
     }
 
-    fun devuelvePersonasGrupo(id_grupo:String){
+    fun devuelvePersonasGrupo(){
         personasGrupoLista = MutableLiveData()
         try {
             viewModelScope.launch {
                 val listaGrupoPersonas = withContext(Dispatchers.IO) {
-                    listaPersonas.getPersonsGroup(id_grupo)
+                    personasGetDao .getPersonsGroup()
                 }
-                //personasGrupoLista.value = listaGrupoPersonas
+                personasGrupoLista.value = listaGrupoPersonas
             }
-
         }
         catch (ex: Exception) {
-            //Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
+            Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
         }
-
-
     }
 
     fun  postTarea(t:Tasks){
