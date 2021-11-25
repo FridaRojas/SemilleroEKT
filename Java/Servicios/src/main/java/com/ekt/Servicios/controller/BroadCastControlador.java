@@ -22,7 +22,7 @@ public class BroadCastControlador {
 	private UserRepository userRepository;
 	@Autowired
 	private BroadCastRepositorio broadCastRepositorio;
-	
+
 	@GetMapping("/listaUsuarios/{miId}")
 	public ResponseEntity<?> listaUsuariosGeneral(@PathVariable (value = "miId")String miId){
 		
