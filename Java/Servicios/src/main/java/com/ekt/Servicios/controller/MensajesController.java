@@ -260,40 +260,31 @@ public class MensajesController {
 		return listaConversacion;
 	}
 
-	@GetMapping("/listarConversaciones")
-	public List<Conversacion> listarConversaciones() {
-		List<String> mensajesList = new ArrayList<>();
+	@GetMapping("/listarConversaciones/{idEmisor}")    //Tareas que asignó (REPORTES)
+	public ResponseEntity<?> getAllTareasOutByUserId(@PathVariable String idEmisor){
+		Iterable<Mensajes> tareas =mensajesRepository.getAllOutByUserId(idEmisor);
+		int nDocumentos = ((Collection<Mensajes>) tareas).size();
+		if(nDocumentos == 0){
+			return ResponseEntity.notFound().build();
+		}
 		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
 		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
 		MongoCursor mongoCursor = distinctIterable.iterator();
 		List<Conversacion> lConversacion = new ArrayList<>();
+		Conversacion mConv = new Conversacion();
 		while (mongoCursor.hasNext()) {
 
-			Conversacion mConv = new Conversacion();
-			// if(.equals(id)){
-			String idConversacion = (String) mongoCursor.next();
-			mConv.setIdConversacion(idConversacion);
-			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
-			Iterator<Mensajes> cursor = iter.iterator();
+			Iterator<Mensajes> cursor = tareas.iterator();
 			while (cursor.hasNext()) {
 				Mensajes mensajes = cursor.next();
-				// if(mensajes.getIDEmisor()!= mensajes.getIDEmisor()){
 
 				mConv.setIdReceptor(mensajes.getIDReceptor());
 				mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
 				mConv.setIdConversacion(mensajes.getIDConversacion());
-
-				// mConv.setIdReceptor(mensajes.getIDReceptor());
-				// mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
-				// mConv.setIdConversacion(mensajes.getIDConversacion());
-
-				// }
-				break;
 			}
-			lConversacion.add(mConv);
-			// mensajesList.add(idConversacion);
 		}
-		return lConversacion;
+		lConversacion.add(mConv);
+		return ResponseEntity.ok(lConversacion);
 	}
 
 	@PutMapping("/eliminarConversacion/{idConversacion}")
@@ -396,5 +387,45 @@ public class MensajesController {
 		}
 
 		return grupos;
+	}
+
+	@GetMapping("/listarConversaciones2/{idEmisor}")
+	public List<Conversacion> listarConversaciones2(@PathVariable(value ="idEmisor")String idEmisor){
+		//String idEmisor = "618e8821c613329636a769ac";
+		List<String> mensajesList = new ArrayList<>();
+		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
+		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
+		MongoCursor mongoCursor = distinctIterable.iterator();
+		List<Conversacion> lConversacion = new ArrayList<>();
+		List<Conversacion> lConversacion2 = new ArrayList<>();
+		while (mongoCursor.hasNext()) {
+
+			Conversacion mConv = new Conversacion();
+			// if(){
+			String idConversacion = (String) mongoCursor.next();
+			mConv.setIdConversacion(idConversacion);
+			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+			Iterator<Mensajes> cursor = iter.iterator();
+			while (cursor.hasNext()) {
+				Mensajes mensajes = cursor.next();
+
+				mConv.setIdReceptor(mensajes.getIDReceptor());
+				mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
+				mConv.setIdConversacion(mensajes.getIDConversacion());
+				mConv.setIdEmisor(mensajes.getIDEmisor());
+
+			}
+			lConversacion.add(mConv);
+			//mensajesList.add(idConversacion);
+
+		}
+		//lConversacion = listarConversaciones()
+		for (Conversacion conv: lConversacion){
+			if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor)){
+				lConversacion2.add(conv);
+			}
+
+		}
+		return lConversacion2;
 	}
 }

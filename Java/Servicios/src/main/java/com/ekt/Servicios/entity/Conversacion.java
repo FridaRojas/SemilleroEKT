@@ -4,6 +4,7 @@ public class Conversacion {
    private String idConversacion;
    private String idReceptor;
    private String nombreConversacionRecepto;
+   private String idEmisor;
 
     public String getIdConversacion() {
         return idConversacion;
@@ -29,5 +30,11 @@ public class Conversacion {
         this.nombreConversacionRecepto = nombreConversacionRecepto;
     }
 
+    public String getIdEmisor() {
+        return idEmisor;
+    }
 
+    public void setIdEmisor(String idEmisor) {
+        this.idEmisor = idEmisor;
+    }
 }
