@@ -22,4 +22,7 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     @Query("{'_id' : ?0}")
     Optional<User> validarUsuario(String _id); 
+    
+    @Query("{'idGrupo' : ?0}")
+    Iterable<User> findByGroupID(String idGrupo); 
 }
