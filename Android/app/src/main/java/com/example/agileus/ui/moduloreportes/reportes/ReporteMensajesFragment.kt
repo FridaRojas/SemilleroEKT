@@ -25,7 +25,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.components.LegendEntry
 
-class ReporteMensajesFragment : Fragment() {
+class ReporteMensajesFragment : Fragment(){
 
     private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
     private var _binding: ReporteMensajesFragmentBinding? = null
@@ -142,4 +142,5 @@ class ReporteMensajesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
