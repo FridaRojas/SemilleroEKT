@@ -11,13 +11,13 @@ final class Api {
     
     static let shared = Api()
     
-    let url = "http://10.97.0.165:2021/api/tareas"
+    let url = "http://10.97.3.134:2021/api/tareas"
     let rangeStatusCode200 = 200...299
     let rangeStatusCode400 = 400...499
     let rangeStatusCode500 = 500...599
     
     func createTask(task: Task, success: @escaping (_ task: String) -> (), failure: @escaping (_ error: String) -> ()){
-       
+        
         let session = URLSession.shared
         let url = URL(string: "\(url)/agregarTarea")!
         var request = URLRequest(url: url)
@@ -32,15 +32,15 @@ final class Api {
             (data, response, error) in
             
             if let httpResponse = response as? HTTPURLResponse,
-                  self.rangeStatusCode500.contains(httpResponse.statusCode) {
-                  failure("error")
-                  return;
+               self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                failure("error")
+                return;
             }
             
             if let httpResponse = response as? HTTPURLResponse,
-                  self.rangeStatusCode400.contains(httpResponse.statusCode){
-                  failure("error")
-                  return;
+               self.rangeStatusCode400.contains(httpResponse.statusCode){
+                failure("error")
+                return;
             }
             
             if error != nil {
@@ -51,7 +51,7 @@ final class Api {
                 success(dataString)
                 print("Success")
             }
-       
+            
         }
         task.resume()
     }
@@ -67,15 +67,15 @@ final class Api {
             var task: Task
             
             if let httpResponse = response as? HTTPURLResponse,
-                  self.rangeStatusCode500.contains(httpResponse.statusCode) {
-                  failure("error")
-                  return;
+               self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                failure("error")
+                return;
             }
             
             if let httpResponse = response as? HTTPURLResponse,
-                  self.rangeStatusCode400.contains(httpResponse.statusCode){
-                  failure("error")
-                  return;
+               self.rangeStatusCode400.contains(httpResponse.statusCode){
+                failure("error")
+                return;
             }
             
             if error != nil {
@@ -84,7 +84,7 @@ final class Api {
             }
             
             if let dataSuccess = data {
-   
+                
                 do {
                     task = try JSONDecoder().decode(Task.self, from: dataSuccess)
                     success(task)
@@ -92,11 +92,11 @@ final class Api {
                     failure("Error JSONDecoder")
                 }
             }
-                
+            
         }
         
         task.resume()
-
+        
     }
     
     func updateTask(id: String, task: Task, success: @escaping (_ task: String) -> (), failure: @escaping (_ error: String) -> ()) {
@@ -114,39 +114,92 @@ final class Api {
         let task = session.uploadTask(with: request, from: dataToJson) {
             (data, response, error) in
             
-            var task: Task
             
             if let httpResponse = response as? HTTPURLResponse,
-                  self.rangeStatusCode500.contains(httpResponse.statusCode) {
-                  failure("error")
-                  return;
+               self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    failure("error \(dataString!)")
+                }
+                return;
             }
             
             if let httpResponse = response as? HTTPURLResponse,
-                  self.rangeStatusCode400.contains(httpResponse.statusCode){
-                  failure("error")
-                  return;
+               self.rangeStatusCode400.contains(httpResponse.statusCode){
+                
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    failure("error \(dataString!)")
+                }
+                
+                return;
             }
             
             if error != nil {
-                failure("error")
+                failure("error: \(error!.localizedDescription)")
                 return;
             }
             if let dataSuccess = data {
-//                do {
-//                    task = try JSONDecoder().decode(Task.self, from: dataSuccess)
-//                    success(task)
-//                } catch {
-//                    failure("Error JSONDecoder")
-//                }
-            let dataString = String(data: dataSuccess, encoding: .utf8)
+                //                do {
+                //                    task = try JSONDecoder().decode(Task.self, from: dataSuccess)
+                //                    success(task)
+                //                } catch {
+                //                    failure("Error JSONDecoder")
+                //                }
+                let dataString = String(data: dataSuccess, encoding: .utf8)
                 success(dataString!)
                 print("Success")
             }
             
-       
+            
         }
         task.resume()
     }
+    
+    func cancelTask(id: String, success: @escaping (_ message: String) -> (), failure: @escaping (_ error: String) -> ()) {
         
+        let session = URLSession.shared
+        let url = URL(string: "\(url)/cancelarTarea/\(id)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "DELETE"
+        
+        let task = session.dataTask(with: request) {
+            (data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse,
+               self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    failure("error \(dataString!)")
+                }
+                return;
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse,
+               self.rangeStatusCode400.contains(httpResponse.statusCode){
+                
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    failure("error \(dataString!)")
+                }
+                
+                return;
+            }
+            
+            if error != nil {
+                failure("error: \(error!.localizedDescription)")
+                return;
+            }
+            if let dataSuccess = data {
+                
+                let dataString = String(data: dataSuccess, encoding: .utf8)
+                success(dataString!)
+                print("Success")
+            }
+            
+        }
+        task.resume()
+    }
+    
 }
