@@ -1,31 +1,30 @@
 package com.example.agileus.ui.modulotareas.listatareas
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.models.DataTask
-import com.example.agileus.models.Tasks
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TaskViewModel() : ViewModel() {
+
+
+    var statusRecycler = MutableLiveData<String>()
     var adaptador = MutableLiveData<TasksAdapter>()
-    lateinit var lista: TasksDao
-    // lateinit var lista: ConversationDao
 
-    //Lista de Estados Recycler
-    lateinit var listaConsumida : ArrayList<Tasks>
-    lateinit var listaTask:ArrayList<DataTask>
+    var lista: TasksDao = TasksDao()
+    var listaTask = ArrayList<DataTask>()
+    //lateinit var listaConsumida : ArrayList<Tasks>
 
-    //Cambiar el tipo de ArrayList a Tarea
     init {
-        lista = TasksDao()
+        statusRecycler.value = "Pendiente"
     }
-
     /*
     fun devuelveLista() {
         try {
@@ -46,17 +45,18 @@ class TaskViewModel() : ViewModel() {
     }*/
 
     fun devolverListaPorStatus(){
-            viewModelScope.launch {
+
+        viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
-                    lista.getTasksByStatus("RECEPT1", "Pendiente")
+                    lista.getTasksByStatus("RECEPT1", statusRecycler.value.toString())
                 }
                 if (listaTask != null) {
-                    if (listaTask.isNotEmpty()) {
-                        adaptador.value =
-                            TasksAdapter(listaTask)
-                    }
+                    adaptador.value = TasksAdapter(listaTask)
                 }
             }
-
+            if(listaTask.isNotEmpty()){
+                adaptador.value?.update(listaTask)
+            }
+            Log.d("tarea", "${statusRecycler.value}")
     }
 }

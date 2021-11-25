@@ -14,7 +14,7 @@ import com.example.agileus.models.DataTask
 import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
 
 
-class TasksAdapter(private val dataSet: ArrayList<DataTask>) :
+class TasksAdapter(private var dataSet: ArrayList<DataTask>) :
     RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -28,6 +28,11 @@ class TasksAdapter(private val dataSet: ArrayList<DataTask>) :
     }
 
     override fun getItemCount() = dataSet.size
+
+    fun update(filtro: ArrayList<DataTask>) {
+        dataSet = filtro
+        this.notifyDataSetChanged()
+    }
 
     class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
@@ -61,7 +66,5 @@ class TasksAdapter(private val dataSet: ArrayList<DataTask>) :
                 }
             }
         }
-
-
     }
 }

@@ -8,6 +8,7 @@ import com.example.agileus.models.Tasks
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class TasksDao {
 
@@ -56,16 +57,24 @@ class TasksDao {
         var response = callRespuesta?.execute()
 
         Log.d("tareas", listaTareas.toString())
-
-        if(response != null) {
-            if (response.isSuccessful) {
-                taskList = response.body()!!
-                listaTareas = taskList.data
-            } else {
-                Log.e("error", "Errooor")
+        try {
+            if(response != null) {
+                if (response.isSuccessful) {
+                    taskList = response.body()!!
+                    if(taskList.data != null){
+                        listaTareas = taskList.data
+                    }else{
+                        listaTareas = emptyList<DataTask>() as ArrayList<DataTask>
+                    }
+                } else {
+                    Log.e("error", "Errooor")
+                }
             }
+        }catch (e:Exception){
+            Log.e("error", e.toString())
         }
-        Log.d("tareas", listaTareas.toString())
+
+//        Log.d("tareas", listaTareas.toString())
 
         return listaTareas
     }

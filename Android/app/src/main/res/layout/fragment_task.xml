@@ -26,8 +26,8 @@
         app:layout_constraintTop_toBottomOf="@id/recyclerStatusTareas" />
 
 
-    <FrameLayout
-        android:id="@+id/contenedorTareas"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerTareas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
