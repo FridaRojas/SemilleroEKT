@@ -134,4 +134,15 @@ class TasksDao {
                     }else{
                         listaPersonsDatos = emptyList<DataPersons>() as ArrayList<DataPersons>
                     }
+
+                }else {
+                    Log.e("error", "Fallo la peticion ${Response.code()}")
+                }
+            }
+        }catch (e:Exception){
+            Log.e("error", e.toString())
+        }
+        Log.d("Mensaje", "listaPersonsDatos: ${listaPersonsDatos.size} ")
+        return listaPersonsDatos
+    }
 }
