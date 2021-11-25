@@ -260,33 +260,6 @@ public class MensajesController {
 		return listaConversacion;
 	}
 
-	@GetMapping("/listarConversaciones/{idEmisor}")    //Tareas que asignó (REPORTES)
-	public ResponseEntity<?> getAllTareasOutByUserId(@PathVariable String idEmisor){
-		Iterable<Mensajes> tareas =mensajesRepository.getAllOutByUserId(idEmisor);
-		int nDocumentos = ((Collection<Mensajes>) tareas).size();
-		if(nDocumentos == 0){
-			return ResponseEntity.notFound().build();
-		}
-		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
-		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
-		MongoCursor mongoCursor = distinctIterable.iterator();
-		List<Conversacion> lConversacion = new ArrayList<>();
-		Conversacion mConv = new Conversacion();
-		while (mongoCursor.hasNext()) {
-
-			Iterator<Mensajes> cursor = tareas.iterator();
-			while (cursor.hasNext()) {
-				Mensajes mensajes = cursor.next();
-
-				mConv.setIdReceptor(mensajes.getIDReceptor());
-				mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
-				mConv.setIdConversacion(mensajes.getIDConversacion());
-			}
-		}
-		lConversacion.add(mConv);
-		return ResponseEntity.ok(lConversacion);
-	}
-
 	@PutMapping("/eliminarConversacion/{idConversacion}")
 	public ResponseEntity<?> cambiarStatusConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
@@ -389,7 +362,7 @@ public class MensajesController {
 		return grupos;
 	}
 
-	@GetMapping("/listarConversaciones2/{idEmisor}")
+	@GetMapping("/listarConversaciones/{idEmisor}")
 	public List<Conversacion> listarConversaciones2(@PathVariable(value ="idEmisor")String idEmisor){
 		//String idEmisor = "618e8821c613329636a769ac";
 		List<String> mensajesList = new ArrayList<>();
