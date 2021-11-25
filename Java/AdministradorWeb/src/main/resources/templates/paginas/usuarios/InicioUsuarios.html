@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
@@ -82,6 +83,9 @@
 </head>
 <body >
 
+
+
+
 <table id="tabla">
         <td  class="menu">
             <div th:replace="elementos/menuLateral::menuLateral"></div>
@@ -122,280 +126,59 @@
             </div>
         </div>
 
-        <!-- Seccion que se va a iterar -->
-        <div class="item" th:fragment="aa">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        Diego A
-                    </div>
-                    <div class="col-sm">
-                        Gerente
-                    </div>
-                    <div class="col-sm">
-                        1421221312
-                    </div>
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
 
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-    </div>
-    <div class="col-sm" style="align-content: center">
-        <form method="POST"
-              action="">
-            <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-        </form>
-    </div>
-                </div>
-    </div>
+            <!-- Seccion que se va a iterar -->
+            <div class="item" th:each="user: ${listaUsuarios}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label th:text="${user.getNombre()}"></label>
+                        </div>
+                        <div class="col-sm">
+                            <label th:text="${user.getNombreRol()}"></label>
+                        </div>
+                        <div class="col-sm">
+                            <label th:text="${user.getNumeroEmpleado()}"></label>
+                        </div>
+                        <div class="col-sm">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <form method="POST"
+                                              action="">
 
-
-
-    </div>
-    </div>
-    </div>
-
-    </div>
-
-        <div class="item" th:fragment="aa">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        Diego A
-                    </div>
-                    <div class="col-sm">
-                        Gerente
-                    </div>
-                    <div class="col-sm">
-                        1421221312
-                    </div>
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
-
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                                <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
-                                          action="">
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
+                                            <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="col-sm" style="align-content: center">
+                                        <form method="POST"
+                                              action="">
+                                            <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
+
+
+
                         </div>
-
-
-
                     </div>
                 </div>
+
             </div>
 
-        </div>
-        <div class="item" th:fragment="aa">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        Diego A
-                    </div>
-                    <div class="col-sm">
-                        Gerente
-                    </div>
-                    <div class="col-sm">
-                        1421221312
-                    </div>
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
-
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                                <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
-                                          action="">
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
 
 
 
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="item" th:fragment="aa">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        Diego A
-                    </div>
-                    <div class="col-sm">
-                        Gerente
-                    </div>
-                    <div class="col-sm">
-                        1421221312
-                    </div>
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
-
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                                <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
-                                          action="">
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
 
 
 
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="item" th:fragment="aa">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        Diego A
-                    </div>
-                    <div class="col-sm">
-                        Gerente
-                    </div>
-                    <div class="col-sm">
-                        1421221312
-                    </div>
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
-
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                                <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
-                                          action="">
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="item" th:fragment="aa">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        Diego A
-                    </div>
-                    <div class="col-sm">
-                        Gerente
-                    </div>
-                    <div class="col-sm">
-                        1421221312
-                    </div>
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
-
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                                <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
-                                          action="">
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="item" th:fragment="aa">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        Diego A
-                    </div>
-                    <div class="col-sm">
-                        Gerente
-                    </div>
-                    <div class="col-sm">
-                        1421221312
-                    </div>
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
-
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                                <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
-                                          action="">
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
 
 
 
     </td>
 </table>
+
 
 <div class="contenedor">
     <button class="botonF1">
