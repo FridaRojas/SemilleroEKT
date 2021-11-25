@@ -401,4 +401,7 @@ public class MensajesController {
 		}
 		return lConversacion2;
 	}
+
+	@GetMapping("/listarMensajesPorID/{idEmisor}")
+	public ResponseEntity<Mensajes> listarMensajes(@PathVariable (value = "idEmisor")String idEmisor)
 }
