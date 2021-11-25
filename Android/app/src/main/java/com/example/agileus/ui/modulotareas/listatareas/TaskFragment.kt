@@ -109,7 +109,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
         }
 
         //taskViewModel.statusRecycler.value = "Iniciada"
-        taskViewModel.devolverListaPorStatus()
+        taskViewModel.devolverListaPorStatus(this)
         //Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
     }
 

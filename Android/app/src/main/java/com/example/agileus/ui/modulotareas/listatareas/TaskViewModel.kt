@@ -45,7 +45,6 @@ class TaskViewModel() : ViewModel() {
         }
     }*/
 
-    fun devolverListaPorStatus(){
     fun devolverListaPorStatus(listener: TaskListListener){
 
         viewModelScope.launch {
