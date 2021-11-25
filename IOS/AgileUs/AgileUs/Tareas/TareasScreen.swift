@@ -22,23 +22,15 @@ class TareasScreen: UIViewController {
         
     }
     @IBAction func editTaskBtn(_ sender: Any) {
-        Api.shared.editTask(id: "619c036a755c956b81252e03") {
-            (task) in
-            print(task)
-        } failure: {
-            (error) in
-            print(error)
-        }
+
+        
+        performSegue(withIdentifier: "viewEditTask", sender: self)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let destino = segue.destination as? EditarTareaViewController {
+            destino.idTask = "619c036a755c956b81252e03"
+        }
     }
-    */
 
 }

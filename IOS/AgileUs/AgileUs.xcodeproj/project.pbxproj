@@ -12,6 +12,7 @@
 		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
 		C9275E2A274D44B20093A4D0 /* Ext_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9275E29274D44B10093A4D0 /* Ext_Generales.swift */; };
 		C927DAC0274E93CD00D3C1B7 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927DABF274E93CD00D3C1B7 /* Task.swift */; };
+		C927DAC5274EB9B400D3C1B7 /* EditarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927DAC4274EB9B300D3C1B7 /* EditarTareaViewController.swift */; };
 		C946D0AE274BF05400543CB8 /* AsignarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0AD274BF05400543CB8 /* AsignarTareaViewController.swift */; };
 		C946D0B1274BF8AF00543CB8 /* Ext_UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0B0274BF8AF00543CB8 /* Ext_UITextField.swift */; };
 		C946D0B3274C1A0100543CB8 /* Ext_UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0B2274C1A0100543CB8 /* Ext_UITextView.swift */; };
@@ -59,6 +60,7 @@
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9275E29274D44B10093A4D0 /* Ext_Generales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_Generales.swift; sourceTree = "<group>"; };
 		C927DABF274E93CD00D3C1B7 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		C927DAC4274EB9B300D3C1B7 /* EditarTareaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditarTareaViewController.swift; sourceTree = "<group>"; };
 		C946D0AD274BF05400543CB8 /* AsignarTareaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsignarTareaViewController.swift; sourceTree = "<group>"; };
 		C946D0B0274BF8AF00543CB8 /* Ext_UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_UITextField.swift; sourceTree = "<group>"; };
 		C946D0B2274C1A0100543CB8 /* Ext_UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_UITextView.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				C946D0AD274BF05400543CB8 /* AsignarTareaViewController.swift */,
+				C927DAC4274EB9B300D3C1B7 /* EditarTareaViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -506,6 +509,7 @@
 				C946D0AE274BF05400543CB8 /* AsignarTareaViewController.swift in Sources */,
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
 				C946D0B1274BF8AF00543CB8 /* Ext_UITextField.swift in Sources */,
+				C927DAC5274EB9B400D3C1B7 /* EditarTareaViewController.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,

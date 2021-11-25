@@ -96,10 +96,13 @@
                     <navigationItem key="navigationItem" title="Tareas_2" largeTitleDisplayMode="always" id="Iy7-w9-iaC">
                         <barButtonItem key="backBarButtonItem" title="atras" id="K7t-nN-1Ne"/>
                     </navigationItem>
+                    <connections>
+                        <segue destination="14n-S6-Q1G" kind="show" identifier="viewEditTask" id="qVm-Nq-CMw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qy3-nT-dvq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3302.898550724638" y="466.74107142857139"/>
+            <point key="canvasLocation" x="3288" y="503"/>
         </scene>
         <!--Item 1-->
         <scene sceneID="2zx-pR-dO6">
@@ -259,7 +262,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X6u-EF-8hU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3302.898550724638" y="1192.6339285714284"/>
+            <point key="canvasLocation" x="3426" y="1283"/>
         </scene>
         <!--Item-->
         <scene sceneID="Dks-iE-rJY">
@@ -294,6 +297,165 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ud-PU-QiV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-23.188405797101453" y="41.517857142857139"/>
+        </scene>
+        <!--Editar Tarea-->
+        <scene sceneID="Fe5-MD-5UL">
+            <objects>
+                <viewController id="14n-S6-Q1G" customClass="EditarTareaViewController" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5ih-Zh-kae">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g4C-La-X3F">
+                                <rect key="frame" x="35" y="138" width="344" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="qZR-U9-jC8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sFZ-Xp-6ks">
+                                <rect key="frame" x="35" y="181" width="344" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="WXt-7z-hUB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HMQ-oB-9x3">
+                                <rect key="frame" x="35" y="226" width="344" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ach-DJ-4WQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1e2-0u-frA">
+                                <rect key="frame" x="25" y="271" width="344" height="177.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="177.5" id="SC0-fe-Yuy"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vuS-CV-M6b">
+                                <rect key="frame" x="35" y="470.5" width="150" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="EKk-WF-HQV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hNj-m3-kGC">
+                                <rect key="frame" x="229" y="470.5" width="150" height="19"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BxH-Pa-l3t">
+                                <rect key="frame" x="30" y="539.5" width="354" height="128"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="BDw-KY-Ldo"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zgm-3K-M5t">
+                                <rect key="frame" x="30" y="698.5" width="354" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="55d-h4-9Pk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8pC-gB-a4b">
+                                <rect key="frame" x="30" y="785.5" width="100" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="NHK-I1-fNV"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Editar">
+                                    <color key="baseBackgroundColor" red="0.48235297199999999" green="0.7254902124" blue="0.44705885649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k9B-QO-imP">
+                                <rect key="frame" x="135" y="785.5" width="100" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="5lw-rq-5VM"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button">
+                                    <color key="baseBackgroundColor" red="0.48235297199999999" green="0.7254902124" blue="0.44705885649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8d-HO-3Te">
+                                <rect key="frame" x="240" y="784.5" width="176" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="FoJ-YG-XNF"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Agregar Observaciones">
+                                    <color key="baseBackgroundColor" red="0.48235297199999999" green="0.7254902124" blue="0.44705885649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Voo-m1-TS3"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="k9B-QO-imP" firstAttribute="baseline" secondItem="8pC-gB-a4b" secondAttribute="baseline" id="1JI-lb-i8N"/>
+                            <constraint firstItem="BxH-Pa-l3t" firstAttribute="top" secondItem="vuS-CV-M6b" secondAttribute="bottom" constant="50" id="4LH-H5-cH4"/>
+                            <constraint firstItem="g4C-La-X3F" firstAttribute="top" secondItem="Voo-m1-TS3" secondAttribute="top" constant="50" id="4X0-Eq-xL1"/>
+                            <constraint firstItem="Voo-m1-TS3" firstAttribute="trailing" secondItem="g4C-La-X3F" secondAttribute="trailing" constant="35" id="8Cc-9J-1vq"/>
+                            <constraint firstItem="sFZ-Xp-6ks" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="35" id="AkZ-3X-AOq"/>
+                            <constraint firstItem="Voo-m1-TS3" firstAttribute="trailing" secondItem="hNj-m3-kGC" secondAttribute="trailing" constant="35" id="Bxj-Qf-CN7"/>
+                            <constraint firstItem="Voo-m1-TS3" firstAttribute="trailing" secondItem="Zgm-3K-M5t" secondAttribute="trailing" constant="30" id="CZR-Wu-xPX"/>
+                            <constraint firstItem="Zgm-3K-M5t" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="30" id="Cat-q8-DMq"/>
+                            <constraint firstItem="1e2-0u-frA" firstAttribute="top" secondItem="HMQ-oB-9x3" secondAttribute="bottom" constant="5" id="CrC-CY-Br0"/>
+                            <constraint firstItem="Zgm-3K-M5t" firstAttribute="top" secondItem="BxH-Pa-l3t" secondAttribute="bottom" constant="31" id="EYX-jJ-WdK"/>
+                            <constraint firstItem="Voo-m1-TS3" firstAttribute="trailing" secondItem="BxH-Pa-l3t" secondAttribute="trailing" constant="30" id="HXM-p0-ebr"/>
+                            <constraint firstItem="Voo-m1-TS3" firstAttribute="trailing" secondItem="sFZ-Xp-6ks" secondAttribute="trailing" constant="35" id="JUk-jt-wk4"/>
+                            <constraint firstItem="sFZ-Xp-6ks" firstAttribute="top" secondItem="g4C-La-X3F" secondAttribute="bottom" constant="3" id="JcB-5P-FLf"/>
+                            <constraint firstItem="HMQ-oB-9x3" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="35" id="TR4-PR-wGE"/>
+                            <constraint firstItem="HMQ-oB-9x3" firstAttribute="top" secondItem="sFZ-Xp-6ks" secondAttribute="bottom" constant="5" id="TZg-A6-Hz3"/>
+                            <constraint firstItem="k9B-QO-imP" firstAttribute="top" secondItem="Zgm-3K-M5t" secondAttribute="bottom" constant="47" id="XSZ-Jt-Wim"/>
+                            <constraint firstItem="k9B-QO-imP" firstAttribute="leading" secondItem="8pC-gB-a4b" secondAttribute="trailing" constant="5" id="ZAx-VN-az9"/>
+                            <constraint firstItem="g4C-La-X3F" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="35" id="dZz-7b-Vfz"/>
+                            <constraint firstItem="BxH-Pa-l3t" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="30" id="dzC-Wu-CSd"/>
+                            <constraint firstItem="A8d-HO-3Te" firstAttribute="leading" secondItem="k9B-QO-imP" secondAttribute="trailing" constant="5" id="e0f-k9-tA4"/>
+                            <constraint firstItem="hNj-m3-kGC" firstAttribute="top" secondItem="1e2-0u-frA" secondAttribute="bottom" constant="22" id="hCM-ka-bTa"/>
+                            <constraint firstItem="vuS-CV-M6b" firstAttribute="top" secondItem="1e2-0u-frA" secondAttribute="bottom" constant="22" id="jld-gg-J3F"/>
+                            <constraint firstItem="8pC-gB-a4b" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="30" id="kka-kO-kbI"/>
+                            <constraint firstItem="hNj-m3-kGC" firstAttribute="leading" secondItem="vuS-CV-M6b" secondAttribute="trailing" constant="44" id="nPL-oN-juB"/>
+                            <constraint firstItem="A8d-HO-3Te" firstAttribute="top" secondItem="Zgm-3K-M5t" secondAttribute="bottom" constant="46" id="omV-Vr-z3D"/>
+                            <constraint firstItem="Voo-m1-TS3" firstAttribute="trailing" secondItem="HMQ-oB-9x3" secondAttribute="trailing" constant="35" id="rSd-jr-RXb"/>
+                            <constraint firstItem="1e2-0u-frA" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="25" id="rTx-zV-3Pc"/>
+                            <constraint firstItem="vuS-CV-M6b" firstAttribute="leading" secondItem="Voo-m1-TS3" secondAttribute="leading" constant="35" id="su0-fq-AAy"/>
+                            <constraint firstItem="Voo-m1-TS3" firstAttribute="trailing" secondItem="1e2-0u-frA" secondAttribute="trailing" constant="45" id="yGS-19-AHb"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Editar Tarea" largeTitleDisplayMode="always" id="bEB-w7-mop"/>
+                    <connections>
+                        <outlet property="addObservationsBtn" destination="A8d-HO-3Te" id="jb0-Hi-B96"/>
+                        <outlet property="cancelTaskBtn" destination="k9B-QO-imP" id="CnV-9d-8ex"/>
+                        <outlet property="dateEndField" destination="hNj-m3-kGC" id="yi2-Ul-sgw"/>
+                        <outlet property="dateStartField" destination="vuS-CV-M6b" id="Hlx-Mf-6d6"/>
+                        <outlet property="descriptionText" destination="1e2-0u-frA" id="zyp-SZ-yry"/>
+                        <outlet property="fileField" destination="Zgm-3K-M5t" id="hY3-ic-wDy"/>
+                        <outlet property="nameTaskField" destination="g4C-La-X3F" id="Ej5-zC-AoR"/>
+                        <outlet property="observationField" destination="BxH-Pa-l3t" id="8gT-BC-oL4"/>
+                        <outlet property="personSelectField" destination="sFZ-Xp-6ks" id="ZHE-Gq-eLx"/>
+                        <outlet property="priortyField" destination="HMQ-oB-9x3" id="6jX-DM-xdf"/>
+                        <outlet property="updateTaskBtn" destination="8pC-gB-a4b" id="Qoz-dR-yMv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f5S-h0-a1z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4531.884057971015" y="1281.6964285714284"/>
         </scene>
     </scenes>
     <resources>

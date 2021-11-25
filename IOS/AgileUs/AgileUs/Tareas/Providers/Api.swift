@@ -98,5 +98,55 @@ final class Api {
         task.resume()
 
     }
+    
+    func updateTask(id: String, task: Task, success: @escaping (_ task: String) -> (), failure: @escaping (_ error: String) -> ()) {
+        
+        let session = URLSession.shared
+        let url = URL(string: "\(url)/actualizarTarea/\(id)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let dataToJson = try! JSONEncoder().encode(task)
+        
+        
+        let task = session.uploadTask(with: request, from: dataToJson) {
+            (data, response, error) in
+            
+            var task: Task
+            
+            if let httpResponse = response as? HTTPURLResponse,
+                  self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                  failure("error")
+                  return;
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse,
+                  self.rangeStatusCode400.contains(httpResponse.statusCode){
+                  failure("error")
+                  return;
+            }
+            
+            if error != nil {
+                failure("error")
+                return;
+            }
+            if let dataSuccess = data {
+//                do {
+//                    task = try JSONDecoder().decode(Task.self, from: dataSuccess)
+//                    success(task)
+//                } catch {
+//                    failure("Error JSONDecoder")
+//                }
+            let dataString = String(data: dataSuccess, encoding: .utf8)
+                success(dataString!)
+                print("Success")
+            }
+            
+       
+        }
+        task.resume()
+    }
         
 }

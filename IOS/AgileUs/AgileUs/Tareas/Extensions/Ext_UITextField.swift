@@ -38,16 +38,23 @@ extension UITextField {
 
     }
     
-    func setIcon(image: UIImage) {
+    
+    func setIcon(image: UIImage, inRight: Bool = true, positionUIImageView: CGRect = CGRect(x: -10, y: 0, width: 20, height: 20), positionUIView: CGRect = CGRect(x: 5, y: 0, width: 20, height: 20) ) {
         
-        let icon = UIImageView(frame: CGRect(x: -10, y: 0, width: 20, height: 20))
+        let icon = UIImageView(frame: positionUIImageView)
         icon.image = image
         
-        let iconContainerView: UIView = UIView(frame: CGRect(x: 5, y: 0, width: 20, height: 20))
+        let iconContainerView: UIView = UIView(frame: positionUIView)
         iconContainerView.addSubview(icon)
         
-        rightView = iconContainerView
-        rightViewMode = .always
+        if inRight {
+            rightView = iconContainerView
+            rightViewMode = .always
+        } else {
+            leftView = iconContainerView
+            leftViewMode = .always
+        }
+
 
     }
     
