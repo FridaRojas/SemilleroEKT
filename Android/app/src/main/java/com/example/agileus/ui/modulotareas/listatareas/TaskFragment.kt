@@ -1,6 +1,9 @@
 package com.example.agileus.ui.modulotareas.listatareas
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -74,30 +77,35 @@ class TaskFragment : Fragment(), TaskDialogListener {
     }
 
     override fun getTaskByStatus(status: String) {
-
         when (status) {
             listStatus[0] -> {
                 taskViewModel.statusRecycler.value = getString(R.string.status1)
+                binding.tituloTareas.text = getString(R.string.titleStatus1)
             }
             listStatus[1] -> {
                 taskViewModel.statusRecycler.value = getString(R.string.status2)
+                binding.tituloTareas.text = getString(R.string.titleStatus2)
             }
             listStatus[2] -> {
                 taskViewModel.statusRecycler.value = getString(R.string.status3)
+                binding.tituloTareas.text = getString(R.string.titleStatus3)
             }
             listStatus[3] -> {
                 taskViewModel.statusRecycler.value = getString(R.string.status4)
+                binding.tituloTareas.text = getString(R.string.titleStatus4)
             }
             listStatus[4] -> {
                 taskViewModel.statusRecycler.value = getString(R.string.status5)
+                binding.tituloTareas.text = getString(R.string.titleStatus5)
             }
             listStatus[5] -> {
                 taskViewModel.statusRecycler.value = getString(R.string.status6)
+                binding.tituloTareas.text = getString(R.string.titleStatus6)
             }
         }
 
         //taskViewModel.statusRecycler.value = "Iniciada"
         taskViewModel.devolverListaPorStatus()
-        Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
     }
 }

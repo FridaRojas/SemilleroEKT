@@ -45,7 +45,6 @@ class TaskViewModel() : ViewModel() {
     }*/
 
     fun devolverListaPorStatus(){
-
         viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
                     lista.getTasksByStatus("RECEPT1", statusRecycler.value.toString())

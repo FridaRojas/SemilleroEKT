@@ -39,12 +39,14 @@ class TasksAdapter(private var dataSet: ArrayList<DataTask>) :
         var nombreTarea: TextView
         var personaAsignada: TextView
         var fecha: TextView
+        var prioridad: TextView
         var btnAbrirDetallesTarea: ImageView
         var nivelUsuario: String = "Alto"
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
             personaAsignada = view.findViewById(R.id.txtPersonaAsignada)
+            prioridad = view.findViewById(R.id.txtPrioridad)
             fecha = view.findViewById(R.id.txtFecha)
             btnAbrirDetallesTarea = view.findViewById(R.id.iconoAbrirDetallesTarea)
         }
@@ -52,6 +54,7 @@ class TasksAdapter(private var dataSet: ArrayList<DataTask>) :
         fun enlazarItem(dataTask: DataTask) {
             nombreTarea.text = dataTask.titulo
             personaAsignada.text = dataTask.nombreReceptor
+            prioridad.text = dataTask.prioridad
 //            fecha.text = dataTask.fechaIni.toString()
 
 

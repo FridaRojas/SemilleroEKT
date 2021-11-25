@@ -12,6 +12,7 @@ import java.lang.Exception
 
 class TasksDao {
 
+
     //Obtener todas las tareas
     suspend fun getTasks(): ArrayList<Tasks> {
         val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasks()
@@ -73,9 +74,6 @@ class TasksDao {
         }catch (e:Exception){
             Log.e("error", e.toString())
         }
-
-//        Log.d("tareas", listaTareas.toString())
-
         return listaTareas
     }
 
