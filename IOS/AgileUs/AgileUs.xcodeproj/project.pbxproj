@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
+		4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EADD274D5B5200FA0380 /* Funciones_Date.swift */; };
 		49257000274C17E50014A8B4 /* Funciones_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */; };
 		49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49257001274C18120014A8B4 /* Adaptador_Modals.swift */; };
 		49257006274C1A0F0014A8B4 /* FiltroModal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4916EADD274D5B5200FA0380 /* Funciones_Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Date.swift; sourceTree = "<group>"; };
 		49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Generales.swift; sourceTree = "<group>"; };
 		49257001274C18120014A8B4 /* Adaptador_Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adaptador_Modals.swift; sourceTree = "<group>"; };
 		49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FiltroModal.storyboard; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */,
+				4916EADD274D5B5200FA0380 /* Funciones_Date.swift */,
 			);
 			path = Extensiones;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
 				49257000274C17E50014A8B4 /* Funciones_Generales.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
+				4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */,
 				49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */,

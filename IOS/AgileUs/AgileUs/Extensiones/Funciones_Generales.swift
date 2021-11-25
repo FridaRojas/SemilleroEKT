@@ -41,7 +41,7 @@ extension UIViewController {
         formatter.locale = Locale(identifier: "es_419")
         switch estilo {
         case "Fecha_Usuario":
-            formatter.dateFormat = "dd/MMMM/yyyy"
+            formatter.dateFormat = "dd/MM/yyyy"
         case "Fecha_Base_Datos":
             formatter.dateFormat = "yyyy/MM//dd"
         case "dia":
@@ -66,6 +66,26 @@ extension UIViewController {
         
         return formatter.string(from: fecha)
     }
+    
+    func Obtener_meses() -> [String] {
+        
+        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        
+        return meses
+        
+    }
+    
+    func alerta_mensajes(title: String, Mensaje: String) {
+        let mensaje_alerta = UIAlertController(title: title, message: Mensaje, preferredStyle: UIAlertController.Style.alert)
+        
+        let button_alerta = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler:nil)
+        
+        mensaje_alerta.addAction(button_alerta)
+        
+        self.present(mensaje_alerta, animated: true, completion: nil)
+    }
+    
+    
 }
 
 

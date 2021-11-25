@@ -37,10 +37,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var lblRecibidos: UILabel!
     @IBOutlet weak var lblTiempoLeido: UILabel!
     @IBOutlet weak var lblTiempoRes: UILabel!
+    @IBOutlet weak var lblNombreu: UILabel!
     
     // variables para lista
     var datos = [Any]()
-    var cont = 0
     
     // modal
     let adaptador = Adaptador_Modals()
@@ -208,6 +208,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             [self](Datos) -> Void in
             
             print(Datos)
+            lblNombreu.text = Datos[2] as! String
+            
             /*lblNombre.text = "Nombre: \(Datos[0] as! String)"
             lblApellido.text = "Apellido \(Datos[1] as! String)"
             lblEdad.text = "Edad \(Datos[2] as! String)"*/

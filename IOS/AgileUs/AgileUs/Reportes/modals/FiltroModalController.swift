@@ -7,27 +7,38 @@
 
 import UIKit
 
-class FiltroModalController: UIViewController {
+class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
+    // variables
     var accion_confirmacion: ((_ datos: [Any]) -> Void)?
-    var selector_semana = UIPickerView()
+    var selector_periodo = UIPickerView()
+    var selector_usuario = UIPickerView()
     let selector_fecha = UIDatePicker()
-    var opciones_periodo = ["Día", "Semana", "Mes", "Año"]
     
-    @IBOutlet weak var opPeriodos: UISegmentedControl!
+    var opciones_usuario = [String]()
+    var opciones_pIcker = [String]()
+    var semanas_anio = [String]()
+    var semanas_count = [String]()
     
     // elementos
+    @IBOutlet weak var opPeriodos: UISegmentedControl!
     @IBOutlet weak var txtFecha: UITextField!
-    
-    
+    @IBOutlet weak var txtPeriodo: UITextField!
+    @IBOutlet weak var lbOpcion: UILabel!
+    @IBOutlet weak var lbFechaIni: UILabel!
+    @IBOutlet weak var lbFechaFin: UILabel!
+    @IBOutlet weak var txtFechaIni: UITextField!
+    @IBOutlet weak var txtFechaFin: UITextField!
+    @IBOutlet weak var txtUsuario: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configuraciones()
-        configura_data_picker()
-        //selector_periodo.delegate = self
-        //selector_periodo.dataSource = self
-        // Do any additional setup after loading the view.
+        configura_date_picker()
+        configura_picker_view()
+        configura_picker_fecha_i()
+        configura_picker_fecha_f()
+        ocultar_campos(tipo: "periodo")
     }
     
     func configuraciones() {
@@ -37,41 +48,17 @@ class FiltroModalController: UIViewController {
     @IBAction func cancelar(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
-    /*func configura_picker_view() {
-        //sub-vista para picker
-        let barra_de_herramientas = UIToolbar()
-        barra_de_herramientas.sizeToFit()
         
-        //let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(fecha_elegida))
-        
-        barra_de_herramientas.setItems([boton_listo], animated: true)
-        
-        txtEdad.inputAccessoryView = barra_de_herramientas
-        //txtEdad.inputView = selector_fecha
-        
-        txtEdad.inputView = selector_personalizado
-        
-        
-        selector_fecha.datePickerMode = .date
-        
-    }*/
-    
-    // funciones datapicker
-    
-    func configura_data_picker() {
+    // funciones datepicker
+    func configura_date_picker() {
         if #available(iOS 13.4, *) {
             selector_fecha.preferredDatePickerStyle = .wheels
         }
         
         selector_fecha.locale = Locale(identifier: "es_419")
-        
-        //sub-vista para picker
+        let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(fecha_elegida))
         let barra_de_herramientas = UIToolbar()
         barra_de_herramientas.sizeToFit()
-        
-        let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(fecha_elegida))
-        
         barra_de_herramientas.setItems([boton_listo], animated: true)
         
         txtFecha.inputAccessoryView = barra_de_herramientas
@@ -80,15 +67,260 @@ class FiltroModalController: UIViewController {
         
     }
     
-    @objc func fecha_elegida() {
-        var fecha = selector_fecha.date
-        print(fecha)
-        txtFecha.text = "\(Obtener_valor_fecha(fecha: fecha, estilo: "Fecha_Usuario"))"
-        //print(selector_personalizado.selectedRow(inComponent: 0))
-        //print(selector_personalizado.selectedRow(inComponent: 1))
+    func configura_picker_view() {
         
+        //periodos
+        selector_periodo.delegate = self
+        selector_periodo.dataSource = self
+        selector_periodo.restorationIdentifier = "periodo"
+        
+        // usuarios
+        selector_usuario.delegate = self
+        selector_usuario.dataSource = self
+        selector_usuario.restorationIdentifier = "usuario"
+        configura_picker_usuarios()
+    
+    }
+        
+    @objc func valor_elegido() {
+        txtPeriodo.text = opciones_pIcker[selector_periodo.selectedRow(inComponent: 0)]
         self.view.endEditing(true)
     }
- 
+    
+    @objc func fecha_inicial_elegida() {
+        let fecha = selector_fecha.date
+        txtFechaIni.text = "\(Obtener_valor_fecha(fecha: fecha, estilo: "Fecha_Usuario"))"
+        self.view.endEditing(true)
+    }
+    
+    @objc func fecha_final_elegida() {
+        let fecha = selector_fecha.date
+        txtFechaFin.text = "\(Obtener_valor_fecha(fecha: fecha, estilo: "Fecha_Usuario"))"
+        self.view.endEditing(true)
+    }
+    
+    @objc func fecha_elegida() {
+        let fecha = selector_fecha.date
+        txtFecha.text = "\(Obtener_valor_fecha(fecha: fecha, estilo: "Fecha_Usuario"))"
+        self.view.endEditing(true)
+    }
+    
+    @objc func usuario_elegido() {
+        txtUsuario.text = opciones_usuario[selector_usuario.selectedRow(inComponent: 0)]
+        self.view.endEditing(true)
+    }
+    
+    func configura_picker_usuarios() {
+        let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(usuario_elegido))
+        let barra_de_herramientas = UIToolbar()
+        barra_de_herramientas.sizeToFit()
+        barra_de_herramientas.setItems([boton_listo], animated: true)
+        
+        txtUsuario.inputAccessoryView = barra_de_herramientas
+        txtUsuario.inputView = selector_usuario
+        obtener_usuarios()
+    }
+    
+    func configura_picker_fecha_i() {
+        let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(fecha_inicial_elegida))
+        let barra_de_herramientas = UIToolbar()
+        barra_de_herramientas.sizeToFit()
+        barra_de_herramientas.setItems([boton_listo], animated: true)
+        
+        txtFechaIni.inputAccessoryView = barra_de_herramientas
+        txtFechaIni.inputView = selector_fecha
+        selector_fecha.datePickerMode = .date
+    }
+    
+    func configura_picker_fecha_f() {
+        let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(fecha_final_elegida))
+        let barra_de_herramientas = UIToolbar()
+        barra_de_herramientas.sizeToFit()
+        barra_de_herramientas.setItems([boton_listo], animated: true)
+        
+        txtFechaFin.inputAccessoryView = barra_de_herramientas
+        txtFechaFin.inputView = selector_fecha
+        selector_fecha.datePickerMode = .date
+    }
+        
+    func cambiar_picker_view() {
+        let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(valor_elegido))
+        let barra_de_herramientas = UIToolbar()
+        barra_de_herramientas.sizeToFit()
+        barra_de_herramientas.setItems([boton_listo], animated: true)
+        
+        txtPeriodo.inputAccessoryView = barra_de_herramientas
+        txtPeriodo.inputView = selector_periodo
+    }
+    
+    // funciones pickerview
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        var opciones = Int()
+        
+        if pickerView.restorationIdentifier == "periodo" {
+            opciones =  opciones_pIcker.count
+        } else if pickerView.restorationIdentifier == "usuario"{
+            opciones = opciones_usuario.count
+        }
+        
+        return opciones
+    }
 
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        var opcion = String()
+        
+        if pickerView.restorationIdentifier == "periodo" {
+            opcion = opciones_pIcker[row]
+        
+        } else if pickerView.restorationIdentifier == "usuario" {
+            opcion = opciones_usuario[row]
+        }
+        return opcion
+    }
+    
+    // funciones para llenar picker view
+    func obtener_semanas_por_año() {
+        opciones_pIcker = Date().obtener_semanas_por_año()
+    }
+    
+    func obtener_meses_picker() {
+        opciones_pIcker = Obtener_meses()
+    }
+    
+    func obtener_anios() {
+        opciones_pIcker = ["2020", "2021", "2022"]
+    }
+    
+    func obtener_usuarios() {
+        opciones_usuario = ["Pedro", "Naruto"]
+    }
+    
+    @IBAction func cambioPeriodo(_ sender: UISegmentedControl) {
+        txtFecha.text = ""
+        txtPeriodo.text = ""
+        txtUsuario.text = ""
+        txtFechaFin.text = ""
+        txtFechaIni.text = ""
+        
+        switch sender.selectedSegmentIndex {
+        case 0:
+            //cambiar_picker_fecha()
+            ocultar_campos(tipo: "periodo")
+            //cambiar_picker_fecha()
+        case 1:
+            /*ocultar_campos(tipo: "fecha")
+            cambiar_picker_view()
+            obtener_semanas_por_año()*/
+            ocultar_campos(tipo: "fecha")
+            cambiar_picker_view()
+            obtener_meses_picker()
+        case 2:
+            ocultar_campos(tipo: "fecha")
+            cambiar_picker_view()
+            //obtener_meses_picker()
+            obtener_anios()
+        case 3:
+            /*ocultar_campos(tipo: "fecha")
+            cambiar_picker_view()
+            obtener_anios()*/
+            ocultar_campos(tipo: "custom")
+            //cambiar_picker_fecha()
+        default:
+            //cambiar_picker_fecha()
+            ocultar_campos(tipo: "periodo")
+        }
+    }
+    
+    func ocultar_campos(tipo: String) {
+        if tipo == "fecha" {
+            txtFecha.isHidden = true
+            txtPeriodo.isHidden = false
+            lbOpcion.isHidden = false
+            txtFechaFin.isHidden = true
+            txtFechaIni.isHidden = true
+            lbFechaFin.isHidden = true
+            lbFechaIni.isHidden = true
+        }
+        if tipo == "periodo" {
+            txtFecha.isHidden = false
+            txtPeriodo.isHidden = true
+            lbOpcion.isHidden = false
+            txtFechaFin.isHidden = true
+            txtFechaIni.isHidden = true
+            lbFechaFin.isHidden = true
+            lbFechaIni.isHidden = true
+        }
+        if tipo == "custom" {
+            lbOpcion.isHidden = true
+            txtFechaFin.isHidden = false
+            txtFechaIni.isHidden = false
+            txtFecha.isHidden = true
+            txtPeriodo.isHidden = true
+            lbFechaFin.isHidden = false
+            lbFechaIni.isHidden = false
+        }
+        
+    }
+    
+    @IBAction func btnAceptar(_ sender: UIButton) {
+        
+        var info = [Any]()
+        print(opPeriodos.selectedSegmentIndex)
+        
+       switch opPeriodos.selectedSegmentIndex {
+        case 0:
+           if txtFecha.text == "" || txtUsuario.text == "" {
+               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+               return
+           }
+           info = [txtFecha.text!, txtFecha.text!, txtUsuario.text!]
+                      
+       case 1:
+           if txtPeriodo.text == "" || txtUsuario.text == "" {
+               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+               return
+           }
+           
+           let fechas_mes = Date().obtener_primer_ultimo_dia_mes(mes: txtPeriodo.text!)
+           
+           info = [fechas_mes[0], fechas_mes[1], txtUsuario.text!]
+       case 2:
+           if txtPeriodo.text == "" || txtUsuario.text == "" {
+               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+               return
+           }
+           
+           let fechas_anio = Date().obtener_primer_ultimo_dia_anio(anio: txtPeriodo.text!)
+           
+           info = [fechas_anio[0], fechas_anio[1], txtUsuario.text!]
+       case 3:
+           
+           if txtFechaIni.text == "" || txtFechaFin.text == "" || txtUsuario.text == "" {
+               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+               return
+           }
+           
+           info = [txtFechaIni.text!, txtFechaFin.text!, txtUsuario.text!]
+           
+        default:
+            info = ["","",""]
+        }
+        
+        
+        self.accion_confirmacion?(info)
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func valida_campos() {
+        alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+        return
+    }
 }
