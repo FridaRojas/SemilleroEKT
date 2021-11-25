@@ -95,8 +95,6 @@ class DetalleNivelAltoFragment : Fragment() {
             }
 
         }
-
-
     }
 
     private fun editarTarea(args: DetalleNivelAltoFragmentArgs) {

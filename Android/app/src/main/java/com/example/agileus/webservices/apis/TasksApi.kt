@@ -30,7 +30,7 @@ interface TasksApi {
     @DELETE("tareas/cancelarTarea/{idTarea}")
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
 
-
+    @Headers("Content-Type: application/json")
     @PUT("tareas/actualizarTarea/{idTarea}")
     fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String): Call<DataTask>
 

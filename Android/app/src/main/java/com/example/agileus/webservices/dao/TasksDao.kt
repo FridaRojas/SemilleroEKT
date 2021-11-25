@@ -101,8 +101,8 @@ class TasksDao {
     }
 
 
-    fun editTask(t: DetalleNivelAltoFragmentArgs) {
-        val callback = InitialApplication.webServiceGlobalTasks.editTask(t, t.tareas.idTarea)
+    fun editTask(t: DetalleNivelAltoFragmentArgs, idTarea: String) {
+        val callback = InitialApplication.webServiceGlobalTasks.editTask(t, idTarea)
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
@@ -113,7 +113,7 @@ class TasksDao {
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Failure ${t.cause}")
+                Log.d("Mensaje", "On Failure ${t.message}")
             }
         })
     }
