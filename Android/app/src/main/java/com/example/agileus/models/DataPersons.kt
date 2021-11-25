@@ -1,8 +1,9 @@
 package com.example.agileus.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class Datas(
+data class DataPersons(
     @SerializedName("correo")       val correo: String,
     @SerializedName("curp")         val curp: String,
     @SerializedName("fechaInicio")  val fechaInicio: String,
@@ -19,4 +20,4 @@ data class Datas(
     @SerializedName("statusActivo") val statusActivo: String,
     @SerializedName("telefono")     val telefono: String,
     @SerializedName("token")        val token: String
-)
+) : Serializable

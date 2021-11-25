@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.agileus.models.Datas
+import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
 import com.example.agileus.webservices.dao.TasksDao
@@ -16,7 +16,7 @@ class CrearTareasViewModel: ViewModel() {
 
     var postTarea       : TasksDao
     var personasGetDao   : TasksDao
-    var personasGrupoLista = MutableLiveData<ArrayList<Datas>>()
+    var personasGrupoLista = MutableLiveData<ArrayList<DataPersons>>()
 
     init {
         postTarea = TasksDao()

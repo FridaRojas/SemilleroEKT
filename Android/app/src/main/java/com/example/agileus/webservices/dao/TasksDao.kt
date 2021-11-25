@@ -3,7 +3,8 @@ package com.example.agileus.webservices.dao
 
 import android.util.Log
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.models.Datas
+import com.example.agileus.models.DataPersons
+import com.example.agileus.models.PersonasGrupo
 import com.example.agileus.models.Tasks
 import retrofit2.Call
 import retrofit2.Callback
@@ -11,29 +12,36 @@ import retrofit2.Response
 
 class TasksDao {
 
-    fun getPersonsGroup(): ArrayList<Datas>{
+    fun getPersonsGroup(): ArrayList<DataPersons>{
+        lateinit var listaPersons : PersonasGrupo
+        var listaPersonsRecuperada = ArrayList<DataPersons>()
+
         val callRespuestaPersonas = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo()
-        var listaPersons = ArrayList<Datas>()
-        callRespuestaPersonas.enqueue(object: Callback<ArrayList<Datas>>{
-            override fun onResponse(call: Call<ArrayList<Datas>>, response: Response<ArrayList<Datas>>) {
-                if (response.isSuccessful) {
-                    if(response.body()!=null) {
-                        listaPersons = response.body()!!
-                        listaPersons.forEach {
-                            var id      =it.numeroEmpleado
-                            var title   = it.nombre
-                            Log.d("Mensaje", "El mensaje es $id . El title es $title")
+        if (callRespuestaPersonas != null) {
+            callRespuestaPersonas.enqueue(object: Callback<PersonasGrupo>{
+                override fun onResponse(call: Call<PersonasGrupo>, response: Response<PersonasGrupo>) {
+                    if (response.isSuccessful) {
+                        if(response.body()!=null) {
+                            listaPersons = response.body()!!
+                            listaPersonsRecuperada = listaPersons.data
+
+                            listaPersonsRecuperada.forEach {
+                                val id      =it.numeroEmpleado
+                                val title   = it.nombre
+                                Log.d("Mensaje", "El mensaje es $id . El title es $title")
+                            }
                         }
+                    }else{
+                        Log.d("Mensaje", "Fallo la peticion ${response.code()}")
                     }
-                }else{
-                    Log.d("Mensaje", "Fallo la peticion ${response.code()}")
                 }
-            }
-            override fun onFailure(call: Call<ArrayList<Datas>>, t: Throwable) {
-                Log.d("Mensaje", "onFailure ")
-            }
-        })
-        return listaPersons
+                override fun onFailure(call: Call<PersonasGrupo>, t: Throwable) {
+                    Log.d("Mensaje", "onFailure  $t")
+                }
+
+            })
+        }
+        return listaPersonsRecuperada
     }
 
     fun postTasks(t:Tasks){

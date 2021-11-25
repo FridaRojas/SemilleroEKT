@@ -1,7 +1,6 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
-import com.example.agileus.models.Datas
+import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
@@ -33,7 +32,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     }
 
     lateinit var asignarTareaViewModel          : CrearTareasViewModel
-    lateinit var listaPersonas                  : ArrayList<Datas>
+    lateinit var listaPersonas                  : ArrayList<DataPersons>
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
@@ -137,7 +136,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
             if(it.isNotEmpty()){
                 listaPersonas = it
 
-                //Remover item de la cuenta destino
+                //Llenar lista con nombres de subordinados
                 val listaN = ArrayList<String>()
                 listaPersonas.forEach(){
                     listaN.add(it.nombre)
