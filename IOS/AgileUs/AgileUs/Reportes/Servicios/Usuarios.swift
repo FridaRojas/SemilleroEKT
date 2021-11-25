@@ -11,7 +11,6 @@ import UIKit
 var arrData: Objeto?
 var idJefe = ""
 
-
 struct Objeto:Codable{
     let status:String
     let msj:String
@@ -26,96 +25,127 @@ struct Datos:Codable{
     let nombreRol:String
     let idgrupo:String
     let idsuperiorInmediato:String
-    
 }
 
-
-func webServiceUsuarios(service:String){
+class Usuarios{
     
-    var arrDatosUsuarios: [Any]?
+    var webService: ((_ arrDatosUsuario:[Any]) -> Void)?
+    //var arrDatosUsuario = [Any]()
     
-    let url = URL(string: service)
+    let serviceUser = "https://firebasestorage.googleapis.com/v0/b/proyectop-50f0b.appspot.com/o/busquedaPorIdJefe2.json?alt=media&token=3a996bbf-398d-4785-8bbf-9931f5eecfe2"
     
-    //Gernerar manejo de excepciones
-    URLSession.shared.dataTask(with: url!){
+    
+    func webServiceUsuarios() {
         
-        (informacion, response, error) in
+        print("Entrando al servicio de Usuarios")
         
-        print(informacion!)
-        //print(response!)
-        //print(error)
+        let url = URL(string: serviceUser)
         
-        do{
-            //Añadir los datos del Json en el array de datos
-            arrData = try JSONDecoder().decode(Objeto.self, from: informacion!)
+        //Generar manejo de excepciones
+        URLSession.shared.dataTask(with: url!) {
             
-            DispatchQueue.main.async {
-                
-                arrDatosUsuarios = [arrData!]
+            (informacion, response, error) in
             
-                //print(type(of: arrData!.data))
+            print(informacion!)
+            print(response!)
+            print(error as Any)
+            
+            do{
+                //Añadir los datos del Json en el array de datos
+                arrData = try JSONDecoder().decode(Objeto.self, from: informacion!)
                 
-                //Mostrar los datos del arreglo de datos de los usuarios
-                print("\nUsuarios registrados")
-                
-                for elemento in arrData!.data{
-                    print("\nId Grupo")
-                    print(elemento.idgrupo)
-                    print("Id Usuario")
-                    print(elemento.id)
-                    print("Rol")
-                    print(elemento.nombreRol)
+                DispatchQueue.main.async { [self] in
                     
-                    //Id del superior inmediato
-                    idJefe = elemento.idsuperiorInmediato
+                    //print(type(of: arrData!.data))
+                    
+                    //Mostrar los datos del arreglo de datos de los usuarios
+                    print("\nUsuarios registrados")
+                    
+                        
+                    for status in arrData!.status{
+                     
+                        print(status)
+                        
+                        if "\(status)" == "ok"{
+                            print("\nGuardando datos en el lambda")
+                            self.webService?(arrData!.data)
+                        }
+                        
+                    }
+                        
+                    
+                    
+                    
+                    
+                    filtroDeUsuariosPorJefe(idJefe: idJefe)
+                    
+                    //print("ID: \(obtenerIdDelJefeInmediato())")
+                    
+                    //arrDatosUsuario = arrData!.data
+                    //print(arrDatosUsuario)
+                    
+                    
+                    /*var datos = arrData!.data.map({
+                        dat in dat
+                    })*/
+                    
+                    
                 }
                 
-                //filtroDeUsuariosPorJefe(idJefe: id)
                 
-                print("ID: \(obtenerIdDelJefeInmediato())")
+                
+            }catch{
+                print("Error al leer el archivo")
             }
             
-        }catch{
-            print("Error al leer el archivo")
-        }
-        
-    }.resume()
-    
-}
-
-func obtenerIdDelJefeInmediato() -> String{
-    return idJefe
-}
-
-
-
-func filtroDeUsuariosPorJefe(idJefe:String){
-        
-    print("\nFuncion de Filtrado por Jefe inmediato")
-    
-    
-    if ((arrData?.data) == nil){
-        print("Hay datos vacios")
-    }else{
             
-        for elemto in arrData!.data{
+        }.resume()
+     
+        
+        //print(type(of: arrDatosUsuario))
+        //print(arrDatosUsuario)
+        
+        //return arrData?.data as! [Any]
+        
+    }
+
+    func obtenerIdDelJefeInmediato() -> String{
+        return idJefe
+    }
+
+
+
+    func filtroDeUsuariosPorJefe(idJefe:String){
             
-            if elemto.idsuperiorInmediato == idJefe{
+        print("\nFuncion de Filtrado por Jefe inmediato")
+        
+        
+        if ((arrData?.data) == nil){
+            print("Hay datos vacios")
+        }else{
                 
-                print("\nSe encontraron coincidencias")
-                print(elemto.nombre)
+            for elemto in arrData!.data{
                 
-            }else{
+                if elemto.idsuperiorInmediato == idJefe{
+                    
+                    print("\nSe encontraron coincidencias")
+                    print(elemto.nombre)
+                    
+                }else{
+                    
+                    print("No se han encontrado coincidencias")
+                    
+                }
                 
-                print("No se han encontrado coincidencias")
                 
             }
-            
             
         }
         
     }
+
+
+
     
 }
-
 

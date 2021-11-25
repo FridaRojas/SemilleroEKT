@@ -19,6 +19,7 @@
 		C1F206F9274D431100C89ABB /* Usuarios.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F206F8274D431100C89ABB /* Usuarios.swift */; };
 		C1F206FB274D6CC900C89ABB /* Mensajes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F206FA274D6CC900C89ABB /* Mensajes.swift */; };
 		C1F206FD274D70E100C89ABB /* Tareas.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F206FC274D70E100C89ABB /* Tareas.swift */; };
+		C1F20700274F03DF00C89ABB /* AdaptadorServicios.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F206FF274F03DF00C89ABB /* AdaptadorServicios.swift */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
 		D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C792746BD81002121E4 /* SceneDelegate.swift */; };
 		D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C7B2746BD81002121E4 /* ViewController.swift */; };
@@ -67,6 +68,7 @@
 		C1F206F8274D431100C89ABB /* Usuarios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usuarios.swift; sourceTree = "<group>"; };
 		C1F206FA274D6CC900C89ABB /* Mensajes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mensajes.swift; sourceTree = "<group>"; };
 		C1F206FC274D70E100C89ABB /* Tareas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tareas.swift; sourceTree = "<group>"; };
+		C1F206FF274F03DF00C89ABB /* AdaptadorServicios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptadorServicios.swift; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E69C742746BD81002121E4 /* AgileUs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileUs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E69C772746BD81002121E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -167,6 +169,14 @@
 			path = Servicios;
 			sourceTree = "<group>";
 		};
+		C1F206FE274F03C600C89ABB /* Adaptador */ = {
+			isa = PBXGroup;
+			children = (
+				C1F206FF274F03DF00C89ABB /* AdaptadorServicios.swift */,
+			);
+			path = Adaptador;
+			sourceTree = "<group>";
+		};
 		D4E69C6B2746BD81002121E4 = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +246,7 @@
 		D4E69CA82746C256002121E4 /* Reportes */ = {
 			isa = PBXGroup;
 			children = (
+				C1F206FE274F03C600C89ABB /* Adaptador */,
 				C1F206F7274D42CD00C89ABB /* Servicios */,
 				49257008274C1AD40014A8B4 /* listagrafica */,
 				49257003274C197E0014A8B4 /* modals */,
@@ -513,6 +524,7 @@
 			files = (
 				49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */,
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
+				C1F20700274F03DF00C89ABB /* AdaptadorServicios.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
 				49257000274C17E50014A8B4 /* Funciones_Generales.swift in Sources */,

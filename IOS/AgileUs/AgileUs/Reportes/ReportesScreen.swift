@@ -51,6 +51,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     let serviceTask = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Task.json?alt=media&token=bb6a2086-2e39-411a-8385-2294dabcc2d5"
     
     let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928"
+    
+    
+    
     //v******************************************************************
     
     
@@ -61,12 +64,25 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         configurar_bar_chart()
         configuracion_colores()
         llenar_pie_chart(enviado: 46, recibido: 76, leido: 20)
-        //print("mensaje prueba")
+        print("mensaje prueba")
+        
         
         //webServiceUsuarios(service: serviceUser)
         //webServiceTareas(service: serviceTask)
-        webServiceMensajes(service: serviceMessage)
+        //webServiceMensajes(service: serviceMessage)
         //print("ID didLoad: \(obtenerIdDelJefeInmediato())")
+        let adaptadorServicios = AdaptadorServicios()
+        let screen = adaptadorServicios.serviciosWeb{
+            [self] (Datos) -> Void in
+            
+            print(Datos[0])
+            
+            for i in Datos{
+                print(i)
+            }
+             
+            
+        }
         
         
         
