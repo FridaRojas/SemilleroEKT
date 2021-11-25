@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -53,7 +54,7 @@ class ReporteTareasFragment : Fragment() {
 
         setDataToPieChart()
 
-        reporteTareasViewModel.devuelvelistaReporte(1)
+        reporteTareasViewModel.devuelvelistaReporte()
 
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it
@@ -73,19 +74,19 @@ class ReporteTareasFragment : Fragment() {
 
     private fun initPieChart() {
         pieChart.setUsePercentValues(false)
+        pieChart.description.text = ""
         //hollow pie chart
         pieChart.isDrawHoleEnabled = false
         pieChart.setTouchEnabled(false)
         pieChart.setDrawEntryLabels(false)
         //adding padding
-        pieChart.setExtraOffsets(20f, 0f, 20f, 20f)
         pieChart.setUsePercentValues(false)
         pieChart.isRotationEnabled = false
         pieChart.setDrawEntryLabels(false)
         //pieChart.legend.isEnabled.
         //pieChart.legend.orientation = Legend.LegendOrientation.VERTICAL
         //pieChart.setDrawSliceText(false);
-        pieChart.legend.isWordWrapEnabled = true
+        pieChart.legend.isWordWrapEnabled = false
         pieChart.getLegend().setEnabled(false)
 
     }
@@ -100,7 +101,7 @@ class ReporteTareasFragment : Fragment() {
         val colors: ArrayList<Int> = ArrayList()
         colors.add(resources.getColor(R.color.colorPrimary))//"#4DD0E1"
         colors.add(resources.getColor(R.color.colorSecondary))//"#FFF176"
-        colors.add(Color.parseColor("#FFF176"))//"#FF8A65"
+        colors.add(resources.getColor(R.color.colorGray))//"#FF8A65"
 
         val dataSet = PieDataSet(dataEntries, "")
         val data = PieData(dataSet)
@@ -110,7 +111,8 @@ class ReporteTareasFragment : Fragment() {
         dataSet.colors = colors
         pieChart.data = data
         data.setValueTextSize(0f)
-        pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+        //pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+        pieChart.animateY(100, Easing.EaseInOutQuad)
 
         //create hole in center
         pieChart.holeRadius = 58f
@@ -124,6 +126,4 @@ class ReporteTareasFragment : Fragment() {
         pieChart.invalidate()
 
     }
-
-
 }

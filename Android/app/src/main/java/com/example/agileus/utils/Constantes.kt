@@ -7,7 +7,13 @@ object Constantes {
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
-    var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
+    //var URL_REPORTES_MENSAJES="https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
+    //var URL_REPORTES_TAREAS="https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
 
+    var URL_REPORTES_MENSAJES="https://firebasestorage.googleapis.com/v0/b/uberclone-fc437.appspot.com/o/"
+    var URL_REPORTES_TAREAS="https://firebasestorage.googleapis.com/v0/b/uberclone-fc437.appspot.com/o/"
+
+    var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
 }
+
 

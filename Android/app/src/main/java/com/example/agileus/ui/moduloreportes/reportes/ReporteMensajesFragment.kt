@@ -1,17 +1,21 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
 import android.graphics.Color
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.ui.MainActivity
@@ -24,12 +28,33 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.components.LegendEntry
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.time.temporal.ChronoUnit
+import javax.xml.datatype.DatatypeConstants.DAYS
+
+
+
 
 class ReporteMensajesFragment : Fragment() {
 
     private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
     private var _binding: ReporteMensajesFragmentBinding? = null
     private lateinit var pieChart: PieChart
+
+    //valores enteros de los datos de los mensajes
+    private var enviados: Int = 0
+    private var recibidos: Int = 0
+    private var totales: Int = 0
+    private var leidos: Int = 0
+
+    //valores porcentuales de los datos de los mensajes para graficar
+    private var porcentaje_enviados:Float = 0.0f
+    private var porcentaje_recibidos:Float = 0.0f
+    private var porcentaje_leidos:Float = 0.0f
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -53,14 +78,12 @@ class ReporteMensajesFragment : Fragment() {
         _binding = ReporteMensajesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        reporteMensajesViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
 
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -77,20 +100,56 @@ class ReporteMensajesFragment : Fragment() {
 
         pieChart = binding.pieChart
 
-        initPieChart()
-        setDataToPieChart()
+        reporteMensajesViewModel.devuelvelistaReporte()
+
+        reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
+            binding.RecyclerLista.adapter = it
+            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
+        })
+
+        reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+
+                binding.txtDataPrimerLegend.text = reporteMensajesViewModel.enviados.value.toString()
+                enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
+
+                binding.txtDataSegundoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
+                recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
+
+                binding.txtDataTercerLegend.text = reporteMensajesViewModel.totales.value.toString()
+                totales = reporteMensajesViewModel.totales.value.toString().toInt()
+
+                binding.txtDataCuartoLegend.text = reporteMensajesViewModel.leidos.value.toString()
+                leidos = reporteMensajesViewModel.leidos.value.toString().toInt()
+
+                porcentaje_enviados = obtenerPorcentajes(enviados, totales)
+                porcentaje_recibidos = obtenerPorcentajes(recibidos, totales)
+                porcentaje_leidos = obtenerPorcentajes(leidos, totales)
+
+                initPieChart()//inicializacion de la grafica de pie
+                //aquí se agregan los valores porcentuales para su visualización
+                setDataToPieChart(porcentaje_enviados, porcentaje_recibidos, porcentaje_leidos)
+
+        })
     }
 
+    //funcion regla de 3 para obtener un porcentage proporcional
+    fun obtenerPorcentajes(dato_parcial:Int, dato_total:Int):Float{
+        if(dato_total!=0) {
+            return (dato_parcial*100/dato_total).toFloat()
+        } else
+        return 0.0f
+    }
 
     private fun initPieChart() {
-        pieChart.setUsePercentValues(true)
+
         pieChart.description.text = ""
+
         //hollow pie chart
         pieChart.isDrawHoleEnabled = false
         pieChart.setTouchEnabled(false)
-        pieChart.setDrawEntryLabels(false)
+        pieChart.setDrawEntryLabels(true)
 
-        pieChart.setUsePercentValues(true)
+        //pieChart.setUsePercentValues(true)
         pieChart.isRotationEnabled = false
         pieChart.setDrawEntryLabels(false)
 
@@ -101,12 +160,12 @@ class ReporteMensajesFragment : Fragment() {
         pieChart.setDrawSliceText(false)
     }
 
-    private fun setDataToPieChart() {
+    private fun setDataToPieChart(enviados:Float,recibidos:Float,leidos:Float){
         pieChart.setUsePercentValues(true)
         val dataEntries = ArrayList<PieEntry>()
-        dataEntries.add(PieEntry(72f, "Android"))
-        dataEntries.add(PieEntry(26f, "Ios"))
-        dataEntries.add(PieEntry(2f, "Other"))
+        dataEntries.add(PieEntry(enviados, "Enviados"))
+        dataEntries.add(PieEntry(recibidos, "Recibidos"))
+        dataEntries.add(PieEntry(leidos, "Leídos"))
 
         val colors: ArrayList<Int> = ArrayList()
         colors.add(resources.getColor(R.color.colorPrimary))
@@ -118,11 +177,9 @@ class ReporteMensajesFragment : Fragment() {
 
         // In Percentage
         data.setValueFormatter(PercentFormatter())
-        //dataSet.sliceSpace = 3f
         dataSet.colors = colors
         pieChart.data = data
         data.setValueTextSize(0f)
-        //pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
         pieChart.animateY(100, Easing.EaseInOutQuad)
 
         //create hole in center

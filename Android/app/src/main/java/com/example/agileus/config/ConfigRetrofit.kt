@@ -2,6 +2,8 @@ package com.example.agileus.config
 
 
 import com.example.agileus.utils.Constantes.URL_BASE1
+import com.example.agileus.utils.Constantes.URL_REPORTES_MENSAJES
+import com.example.agileus.utils.Constantes.URL_REPORTES_TAREAS
 import com.example.agileus.webservices.apis.ConversationApi
 import com.example.agileus.webservices.apis.ReportesApi
 import retrofit2.Retrofit
@@ -25,13 +27,25 @@ class ConfigRetrofit {
     fun getconfigreportesTareas(): ReportesApi{
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE1)
+            .baseUrl(URL_REPORTES_TAREAS)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return mRetrofit.create(ReportesApi::class.java)
 
     }
+
+    fun getconfigreportesMensajes(): ReportesApi{
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_REPORTES_MENSAJES)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(ReportesApi::class.java)
+
+    }
+
 
 
 }
