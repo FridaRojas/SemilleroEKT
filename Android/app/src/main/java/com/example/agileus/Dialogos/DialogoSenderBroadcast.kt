@@ -1,16 +1,19 @@
 package com.example.demoroom.dialogos
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.Models.Buzon
 import com.example.agileus.R
 import com.example.agileus.ui.modulomensajeriabuzon.b.BroadcasterListener
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment() {
@@ -22,15 +25,17 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
             val inflater            = requireActivity().layoutInflater
             val vista               = inflater.inflate(R.layout.mensaje_broadcasting, null)
 
-            val Asunto          = vista.findViewById<TextInputLayout>(R.id.Asunto)
-            val Mensaje         = vista.findViewById<TextInputLayout>(R.id.Mensajes)
+            val Asunto          = vista.findViewById<TextInputEditText>(R.id.Asunto)
+            val Mensaje         = vista.findViewById<TextInputEditText>(R.id.Mensajes1)
 
 
-            val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")///lista a consumir
-
+            val items = listOf("Option 1", "Option 2", "Option 3", "Option 4","General")///lista a consumir
             val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
             val Destinatario =vista.findViewById<AutoCompleteTextView>(R.id.Responsable)
             Destinatario.setAdapter(adapter)
+            if(vista.isFocusable == true ){
+                hideSoftKeyboard(activity as Activity)
+            }
 
             builder.setView(vista)
                 .setPositiveButton(
@@ -43,12 +48,8 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
                             ).show()
                         }else{
                                 listener.mensajeBroadcasting(
-                                    Buzon("1","Broadcast",Destinatario.text.toString(),Asunto.toString(),Mensaje.toString())
+                                    Buzon("","Broadcast",Destinatario.text.toString(),Asunto.text.toString(),Mensaje.text.toString())
                                 )
-
-
-
-
                         }
                     })
                 .setNegativeButton("Cancelar",
@@ -58,5 +59,16 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
 
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
+    }
+    fun hideSoftKeyboard(activity: Activity) {
+        val inputMethodManager: InputMethodManager = activity.getSystemService(
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        if (inputMethodManager.isAcceptingText()) {
+            inputMethodManager.hideSoftInputFromWindow(
+                activity.currentFocus!!.windowToken,
+                0
+            )
+        }
     }
 }

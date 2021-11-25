@@ -6,16 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.Models.Buzon
 import com.example.agileus.adapters.BuzonAdapter
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.webservices.dao.ProviderBuzon
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class BuzonDetallesViewModel : ViewModel() {
 
     lateinit var listafiltrada: ArrayList<Buzon>
     var adaptador = MutableLiveData<BuzonAdapter>()
+    var myResponse :MutableLiveData<Response<Buzon>> = MutableLiveData()
     var lista: ProviderBuzon
     lateinit var listaConsumida: ArrayList<Buzon>
 
@@ -23,9 +27,14 @@ class BuzonDetallesViewModel : ViewModel() {
         lista = ProviderBuzon()
     }
 
+    companion object
+    {
+        var listasize=1
+    }
+
+
     fun devuelvebuzon() {
         listaConsumida = ArrayList()
-        Log.i("tamaño", "${listaConsumida.size}")
         try {
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO) {
@@ -33,6 +42,7 @@ class BuzonDetallesViewModel : ViewModel() {
                 }
 
                 if (listaConsumida.isNotEmpty()) {
+                    listasize=listaConsumida.size
                     listafiltrada = ArrayList()
 
                     if (BuzonFragment.control == 1) {
@@ -57,6 +67,22 @@ class BuzonDetallesViewModel : ViewModel() {
         } catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
         }
+    }
+
+    fun postMensaje(mypost: Buzon) {
+
+        mypost.id=(listasize+1).toString()
+        mypost.Senderid.toString()
+
+        try {
+            viewModelScope.launch {
+                val response :Response<Buzon> = lista.pushPost(mypost)
+                 myResponse.value=response
+            }
+        } catch (ex: Exception) {
+            Log.e("aqui", ex.message.toString())
+        }
+
     }
 
 }

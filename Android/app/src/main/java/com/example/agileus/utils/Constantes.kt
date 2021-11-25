@@ -7,6 +7,6 @@ object Constantes {
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
-    var URL_BASE2 = "http://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
+    var URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
 
 }

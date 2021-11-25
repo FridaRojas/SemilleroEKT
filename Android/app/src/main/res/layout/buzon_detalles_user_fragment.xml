@@ -9,7 +9,19 @@ android:background="#F5F5F5"
 tools:context=".ui.modulomensajeriabuzon.b.BuzonDetallesUserFragment"
 android:layout_marginBottom="64dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        tools:ignore="MissingConstraints"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fragment title"/>
 
 <LinearLayout
 

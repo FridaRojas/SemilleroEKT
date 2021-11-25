@@ -13,10 +13,12 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class BuzonDetallesUserViewModel : ViewModel() {
 
     lateinit var listafiltrada: ArrayList<Buzon>
+    var myResponse :MutableLiveData<Response<Buzon>> = MutableLiveData()
     var adaptador = MutableLiveData<BuzonAdapter>()
     var lista : ProviderBuzon
     lateinit var listaConsumida:ArrayList<Buzon>
@@ -27,6 +29,10 @@ class BuzonDetallesUserViewModel : ViewModel() {
     }
 
     fun devuelvebuzon(){
+
+        var Actuser:String
+        Actuser="juan"
+
         listaConsumida= ArrayList()
         Log.i("tamaño","${listaConsumida.size}")
         try {
@@ -39,25 +45,16 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
 
                     if (control == 1) {
-                        listaConsumida.forEach()
-                        {
-                            Log.i("campo: id"," ${it.id}")
-                            Log.i("campo: Receiver id"," ${it.Receiverid}")
-                            Log.i("campo: Sender id"," ${it.Senderid}")
-                            Log.i("campo: Asunto"," ${it.Asunto}")
-                            Log.i("campo: Message"," ${it.Message}")
-                        }
-
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Senderid.toString() == "juan") {
+                            if (listaConsumida[i].Senderid.toString() == Actuser) {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }
-                        Log.i("size "," ${listafiltrada.size}")
+
                     }
                     if (control == 2) {
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Receiverid == "General" || listaConsumida[i].Receiverid == "Pedro") {
+                            if (listaConsumida[i].Receiverid == "General" || listaConsumida[i].Receiverid == Actuser) {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }
@@ -70,5 +67,21 @@ class BuzonDetallesUserViewModel : ViewModel() {
             Log.e("aqui", ex.message.toString())
         }
     }
+
+    fun postMensaje(mypost: Buzon) {
+
+        mypost.id=(BuzonDetallesViewModel.listasize +1).toString()
+
+        try {
+            viewModelScope.launch {
+                val response : Response<Buzon> = lista.pushPost(mypost)
+                myResponse.value=response
+            }
+        } catch (ex: Exception) {
+            Log.e("aqui", ex.message.toString())
+        }
+
+    }
+
 
 }

@@ -11,6 +11,7 @@ import com.example.agileus.R
 import com.example.agileus.ui.modulomensajeriabuzon.b.BroadcasterListener
 import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment
 import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesUserFragment
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class DialogoSenderUser(val listener: BuzonDetallesUserFragment) : DialogFragment() {
@@ -22,14 +23,14 @@ class DialogoSenderUser(val listener: BuzonDetallesUserFragment) : DialogFragmen
             val inflater            = requireActivity().layoutInflater
             val vista               = inflater.inflate(R.layout.mensaje_broadcasting_user, null)
 
-            val Asunto          = vista.findViewById<TextInputLayout>(R.id.Asunto)
-            val Mensaje         = vista.findViewById<TextInputLayout>(R.id.Mensajes)
+            val Asunto          = vista.findViewById<TextInputEditText>(R.id.Asunto)
+            val Mensaje         = vista.findViewById<TextInputEditText>(R.id.Mensajes)
 
 
 //            val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")///lista a consumir
 
   //          val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-            val Destinatario =vista.findViewById<TextInputLayout>(R.id.Responsable)
+            val Destinatario =vista.findViewById<TextInputEditText>(R.id.Responsable)
             Destinatario.isEnabled=false
 
             builder.setView(vista)
@@ -43,7 +44,7 @@ class DialogoSenderUser(val listener: BuzonDetallesUserFragment) : DialogFragmen
                             ).show()
                         }else{
                                 listener.mensajeBroadcasting(
-                                    Buzon("1","User","Broadcast",Asunto.toString(),Mensaje.toString())
+                                    Buzon("","","Broadcast",Asunto.text.toString(),Mensaje.text.toString())
                                 )
                   }
                     })

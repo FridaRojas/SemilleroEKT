@@ -12,7 +12,6 @@
     <com.google.android.material.textfield.TextInputLayout
 
         android:background="#F5F5F5"
-        android:id="@+id/Asunto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/asunto"
@@ -24,6 +23,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
 
+            android:id="@+id/Asunto"
             app:endIconDrawable="@drawable/ic_baseline_close_24"
             app:endIconContentDescription="@string/asunto"
             app:endIconMode="clear_text"
@@ -37,7 +37,6 @@
     <com.google.android.material.textfield.TextInputLayout
 
         android:background="#F5F5F5"
-        android:id="@+id/Mensajes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/mensaje_nuevo"
@@ -49,6 +48,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
 
+            android:id="@+id/Mensajes"
             app:endIconDrawable="@drawable/ic_baseline_close_24"
             app:endIconContentDescription="@string/mensaje_nuevo"
             app:endIconMode="clear_text"
@@ -63,7 +63,6 @@
     <com.google.android.material.textfield.TextInputLayout
 
         android:background="#F5F5F5"
-        android:id="@+id/Responsable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Destinatario : Broadcast"
@@ -75,6 +74,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
 
+            android:id="@+id/Responsable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"

@@ -2,18 +2,25 @@ package com.example.agileus.ui.modulomensajeriabuzon.b
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.Models.Buzon
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
 import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.USERTYPE
 import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.control
 import com.example.demoroom.dialogos.DialogoSenderBroadcast
-import com.example.demoroom.dialogos.DialogoSenderUser
+import android.app.Activity
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
+
+
+
 
 
 class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
@@ -29,8 +36,19 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+    //    val mypost=Buzon("6","Broadcast","General","hola mundo feo","prueba de post")
+
+
+
+
         viewModel = ViewModelProvider(this)[BuzonDetallesViewModel::class.java]
         _binding = BuzonDetallesFragmentBinding.inflate(inflater, container, false)
+
+
+
+
+
         val root: View = binding.root
         return root
     }
@@ -75,7 +93,13 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
 
         override fun mensajeBroadcasting(buzon: Buzon) {
 
-
+            viewModel.postMensaje(buzon)
+            viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
+                if (response.isSuccessful)
+                {
+                    Log.i("Main",response.code().toString())
+                }
+            })
             Handler().postDelayed({
                 binding.vista1.visibility= View.INVISIBLE
                 binding.vista2.visibility = View.VISIBLE
@@ -90,4 +114,6 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
   }, 4000)
 
         }
+
+
     }
