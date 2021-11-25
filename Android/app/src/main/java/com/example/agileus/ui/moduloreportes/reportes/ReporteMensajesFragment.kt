@@ -38,7 +38,7 @@ import javax.xml.datatype.DatatypeConstants.DAYS
 
 
 
-class ReporteMensajesFragment : Fragment() {
+class ReporteMensajesFragment : Fragment(){
 
     private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
     private var _binding: ReporteMensajesFragmentBinding? = null
@@ -199,4 +199,5 @@ class ReporteMensajesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

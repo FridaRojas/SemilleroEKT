@@ -47,7 +47,9 @@
         tools:layout="@layout/reporte_tareas_fragment" >
         <action
             android:id="@+id/action_reporteTareasFragment_to_reporteMensajesFragment"
-            app:destination="@id/reporteMensajesFragment" />
+            app:destination="@id/reporteMensajesFragment"
+            app:popUpTo="@+id/reporteMensajesFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 </navigation>
