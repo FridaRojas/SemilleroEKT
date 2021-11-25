@@ -29,4 +29,10 @@
     <string name="comunicados">Comunicados</string>
     <string name="destinatario">Destinatario :</string>
     <string name="asunto">Asunto</string>
+
+    //Logueo
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+    <string name="olvidaste_tu_contrasena">¿Olvidaste tu contraseña?</string>
+    <string name="Guardar">Guardar</string>
+
 </resources>

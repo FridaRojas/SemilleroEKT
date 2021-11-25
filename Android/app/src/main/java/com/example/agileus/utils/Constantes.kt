@@ -9,4 +9,7 @@ object Constantes {
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
     var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
 
+    val TYPE_USER_KEY = "USER_KEY"
+    val USER_KEY = "USER"
+
 }

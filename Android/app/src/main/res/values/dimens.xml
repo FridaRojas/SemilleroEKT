@@ -6,4 +6,5 @@
     <dimen name="cornerRadiusCard">10dp</dimen>
     <dimen name="marginFormulario">15dp</dimen>
     <dimen name="paddingFormulario">20dp</dimen>
+    <dimen name="activity_vertical_margin_login">8dp</dimen>
 </resources>
