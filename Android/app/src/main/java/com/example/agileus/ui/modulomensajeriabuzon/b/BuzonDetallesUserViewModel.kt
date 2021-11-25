@@ -39,16 +39,25 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
 
                     if (control == 1) {
+                        listaConsumida.forEach()
+                        {
+                            Log.i("campo: id"," ${it.id}")
+                            Log.i("campo: Receiver id"," ${it.Receiverid}")
+                            Log.i("campo: Sender id"," ${it.Senderid}")
+                            Log.i("campo: Asunto"," ${it.Asunto}")
+                            Log.i("campo: Message"," ${it.Message}")
+                        }
+
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].SenderId == "Eduardo") {
+                            if (listaConsumida[i].Senderid.toString() == "juan") {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }
+                        Log.i("size "," ${listafiltrada.size}")
                     }
-
                     if (control == 2) {
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].receiverId == "General" || listaConsumida[i].receiverId == "Eduardo") {
+                            if (listaConsumida[i].Receiverid == "General" || listaConsumida[i].Receiverid == "Pedro") {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }

@@ -19,7 +19,6 @@ class BuzonDetallesViewModel : ViewModel() {
     var lista: ProviderBuzon
     lateinit var listaConsumida: ArrayList<Buzon>
 
-
     init {
         lista = ProviderBuzon()
     }
@@ -36,10 +35,9 @@ class BuzonDetallesViewModel : ViewModel() {
                 if (listaConsumida.isNotEmpty()) {
                     listafiltrada = ArrayList()
 
-
                     if (BuzonFragment.control == 1) {
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].receiverId == "Broadcast") {
+                            if (listaConsumida[i].Receiverid == "Broadcast") {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }
@@ -47,7 +45,7 @@ class BuzonDetallesViewModel : ViewModel() {
 
                     if (BuzonFragment.control == 2) {
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].SenderId == "Broadcast") {
+                            if (listaConsumida[i].Senderid == "Broadcast") {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }

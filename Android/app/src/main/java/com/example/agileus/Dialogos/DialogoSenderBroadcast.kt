@@ -43,7 +43,7 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
                             ).show()
                         }else{
                                 listener.mensajeBroadcasting(
-                                    Buzon("Broadcast",Destinatario.text.toString(),Asunto.toString(),Mensaje.toString())
+                                    Buzon("1","Broadcast",Destinatario.text.toString(),Asunto.toString(),Mensaje.toString())
                                 )
 
 

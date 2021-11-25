@@ -42,25 +42,26 @@ class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
 
         if(tipo==1) {
             if(USERTYPE == "Broadcast" ) {
-                viewHolder.textView.text = "Mensaje enviado por :${buzon.SenderId} "
+                viewHolder.textView.text = "Mensaje enviado por :${buzon.Senderid} "
             }
             else {
                 viewHolder.textView.text = "Mensaje enviado a : Broadcast"
             }
-            viewHolder.textView1.text = "Asunto:  ${buzon.asunto}"
-            viewHolder.textView2.text = "Mensaje: \n ${buzon.message}"
+            viewHolder.textView1.text = "Asunto:  ${buzon.Asunto}"
+            viewHolder.textView2.text = "Mensaje: \n ${buzon.Message}"
         }
         if(tipo==2) {
 
             if (USERTYPE == "Broadcast") {
-                viewHolder.textView.text = "Mensaje enviado a :${buzon.receiverId} "
+                viewHolder.textView.text = "Mensaje enviado a :${buzon.Receiverid} "
             }
-            if(buzon.receiverId =="General"){
-                viewHolder.textView.text = "Comunicado:    ${buzon.receiverId}"
+            if(buzon.Receiverid =="General"){
+                viewHolder.textView.text = "Comunicado:    ${buzon.Receiverid}"
             }
-            viewHolder.textView1.text = "Asunto:    ${buzon.asunto}"
 
-            viewHolder.textView2.text = "Mensaje: \n${buzon.message}"
+            viewHolder.textView1.text = "Asunto:    ${buzon.Asunto}"
+
+            viewHolder.textView2.text = "Mensaje: \n${buzon.Message}"
         }
 
     }

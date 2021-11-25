@@ -4,10 +4,13 @@ package com.example.agileus.webservices.apis
 import com.example.agileus.Models.Buzon
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface BuzonApi {
 
-    @GET("listadeprueba.json?alt=media&token=f476d866-9b0e-4c3e-977c-a9d401c89fd1")
+    @GET("api/Buzon/")
     fun getmensajesbuzon(): Call<ArrayList<Buzon>>
 
+    @POST("api/Mensajes/")
+    fun postmensajesbuzon(): Call<ArrayList<Buzon>>
 }
