@@ -28,4 +28,5 @@
     <string name="mensaje_nuevo">Mensaje nuevo</string>
     <string name="comunicados">Comunicados</string>
     <string name="destinatario">Destinatario :</string>
+    <string name="asunto">Asunto</string>
 </resources>

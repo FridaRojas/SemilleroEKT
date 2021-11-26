@@ -4,6 +4,5 @@ import com.example.agileus.Models.Buzon
 
 interface BroadcasterListener {
     abstract fun mensajeBroadcasting(buzon: Buzon)
-    abstract fun Tipodeusuario(seleccionado: String)
 
 }

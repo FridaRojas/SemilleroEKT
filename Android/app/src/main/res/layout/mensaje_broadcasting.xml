@@ -1,73 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/comunicado_bckgrnd"
     android:layout_marginTop="8dp"
     android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    >
+    android:layout_marginRight="8dp">
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+
         android:background="#F5F5F5"
         android:id="@+id/Asunto"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/asunto"
         android:layout_marginTop="80dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:hint="Asunto" />
+        app:endIconMode="clear_text">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+
+            app:endIconDrawable="@drawable/ic_baseline_close_24"
+            app:endIconContentDescription="@string/asunto"
+            app:endIconMode="clear_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+
         android:background="#F5F5F5"
-
         android:id="@+id/Mensajes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:hint="@string/mensaje_nuevo"
+        android:layout_marginTop="0dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif"
-        android:hint="Mensaje"
-        />
+        android:layout_marginBottom="8dp"
+        app:endIconMode="clear_text">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        >
-        <TextView
-            android:background="#F5F5F5"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:id="@+id/Destinatario"
-            android:layout_width="150dp"
+        <com.google.android.material.textfield.TextInputEditText
+
+            app:endIconDrawable="@drawable/ic_baseline_close_24"
+            app:endIconContentDescription="@string/mensaje_nuevo"
+            app:endIconMode="clear_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/destinatario"
-            android:hint="@string/destinatario"/>
-     <TextView
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        android:textSize="16dp"
-         android:background="#F5F5F5"
-         android:id="@+id/Responsable"
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+
+    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    android:background="#F5F5F5"
+    android:id="@+id/Responsable1"
+    android:layout_height="wrap_content"
+    android:hint="@string/destinatario"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            >
+
+
+    <AutoCompleteTextView
+        android:id="@+id/Responsable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif"
-        android:textAlignment="textStart"
-        android:hint="Destinatario"
+        android:inputType="none"
         />
-    </LinearLayout>
+</com.google.android.material.textfield.TextInputLayout>
+
 
 </LinearLayout>
