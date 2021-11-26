@@ -166,7 +166,7 @@ public class MensajesController {
 					mensajesService.crearMensaje(mensajes);
 
 					return ResponseEntity.status(HttpStatus.CREATED)
-							.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
+							.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes));
 
 				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
@@ -401,7 +401,7 @@ public class MensajesController {
 		}
 		return lConversacion2;
 	}
-	
+
 	@GetMapping("listarMensajesRecividos/{idEmisor}")
 	public Iterable<?> listarMensajesRecividos(@PathVariable (value = "idEmisor")String idEmisor){
 		Iterable<Mensajes> msg= mensajesRepository.findAll();
