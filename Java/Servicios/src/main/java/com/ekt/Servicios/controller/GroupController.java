@@ -26,9 +26,10 @@ public class GroupController {
     @Autowired
     public UserService userService;
 
-    @PostMapping()
+    @PostMapping("/crear")
     public ResponseEntity<?> save(@RequestBody Group group){
         Group obj= groupService.guardar(group);
+        System.out.println(group.getNombre());
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
     }
 

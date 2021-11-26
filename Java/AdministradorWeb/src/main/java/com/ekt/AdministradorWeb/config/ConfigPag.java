@@ -1,6 +1,7 @@
 package com.ekt.AdministradorWeb.config;
 
 
+import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.Respuesta;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
@@ -58,6 +59,28 @@ public class ConfigPag {
             System.out.println(e.getMessage());
         }
         return "paginas/login";
+    }
+
+    @PostMapping("/CrearGrupo")
+    public String CrearGrupo(@ModelAttribute Group gr) {
+        System.out.println(gr.getName());
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"nombre\": \""+gr.getName()+"\"\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/crear")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return "paginas/usuarios/InicioUsuarios";
+
     }
 
 
