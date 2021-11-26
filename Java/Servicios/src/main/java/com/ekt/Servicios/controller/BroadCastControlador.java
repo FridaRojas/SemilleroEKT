@@ -56,9 +56,18 @@ public class BroadCastControlador {
 	}
 
 	@PostMapping("/crearMensajeBroadcast")
-	public ResponseEntity<BroadCast> crearMensajeBroadCast(@RequestBody BroadCast broadCast){
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(broadCastRepositorio.save(broadCast));
+	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast){
+		BroadCast broadCastM = new BroadCast();
+		broadCastM.setIdEmisor(broadCast.getIdEmisor());
+		broadCastM.setAsunto(broadCast.getAsunto());
+		broadCastM.setDescripcion(broadCast.getDescripcion());
+		Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
+		if(user.isPresent()){
+			broadCastM.setNombreEmisor(user.get().getNombre());
+			broadCastRepositorio.save(broadCastM);
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.CREATED,"Se creo el mensaje a broadcast",broadCastM.getIdEmisor()));
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra el emisor",broadCastM.getIdEmisor()));
 	}
 	@GetMapping("/mostrarMensajesporID/{idEmisor}")
 	public List<BroadCast> mostrarMensajes(@PathVariable(value = "idEmisor")String idEmisor){
@@ -68,7 +77,6 @@ public class BroadCastControlador {
 			if(brd2.getIdEmisor().equals(idEmisor)){
 				listBrd.add(brd2);
 			}
-
 		}
 		return listBrd;
 	}
