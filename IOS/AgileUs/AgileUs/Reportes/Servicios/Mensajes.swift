@@ -35,6 +35,7 @@ struct Broadcast: Codable {
 class MensajesService {
     
     var webServiceMessage: ((_ arrDatosTareas:[Any]) -> Void)?
+    var webServiceBroadcast: ((_ arrDatosBroadcast:[Any]) -> Void)?
     
     //let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928"
 
@@ -73,6 +74,11 @@ class MensajesService {
     
     func webServiceBroadcast() {
         let url = URL(string: serviceBroadccast)
+        let idUsuario = "618b05c12d3d1d235de0ade0"
+        
+        URLSession.shared.dataTask(with: url!) {
+            
+        }
     }
 
     /*func cantidadDeMensajes(mensaje: [Mensajes], idUsuario: String) -> [Int] {
