@@ -11,5 +11,7 @@
     <dimen name="margin_top_general">4dp</dimen>
     <dimen name="margin_end_general">4dp</dimen>
     <dimen name="margin_start_general">4dp</dimen>
+    <dimen name="padding_message_writer">4dp</dimen>
+    <dimen name="height_view_write_mesage">66dp</dimen>
 
 </resources>

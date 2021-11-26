@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
+import com.example.agileus.utils.Constantes
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -28,7 +29,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
 
         conversationviewModel = ViewModelProvider(this).get()
-        conversationviewModel.devuelveLista()
+        conversationviewModel.devuelveLista(Constantes.idChat)
 
         conversationviewModel.adaptador.observe(this,{
             binding.recyclerConversacion.adapter = it
@@ -47,15 +48,9 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             val formatt: DateFormat = SimpleDateFormat("ZZZZZ", Locale.getDefault())
             val localTime: String = formatt.format(currentLocalTime)
 
-            var mensaje = Message("618d9c26beec342d91d747d6","618e8743c613329636a769aa","","${binding.etMensaje.text.toString()}","$date$localTime")
-            conversationviewModel.mandarMensaje(mensaje)
+            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","${binding.etMensaje.text.toString()}","$date$localTime")
+            conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
 
-
+}
         }
-
-
-
-    }
-
-
 }

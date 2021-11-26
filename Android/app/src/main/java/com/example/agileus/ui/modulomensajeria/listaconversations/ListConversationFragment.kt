@@ -38,16 +38,18 @@ class ListConversationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ChatsViewModel.devuelveLista()
+  /*      ChatsViewModel.devuelveLista()
 
         ChatsViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerListGroups.adapter = it
             binding.recyclerListGroups.layoutManager = LinearLayoutManager(activity)
         })
-
+   */
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
         }
+
+
     }
 
     override fun onDestroyView() {

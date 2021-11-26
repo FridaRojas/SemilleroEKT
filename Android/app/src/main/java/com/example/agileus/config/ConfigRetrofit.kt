@@ -9,11 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ConfigRetrofit {
 
-    val URL_BASE_CONVERSACION = "https://firebasestorage.googleapis.com/v0/b/nombre-7ec89.appspot.com/o/"
-    val URL_MESSAGE = "http://10.97.4.47:3040/api/"
+    //val URL_BASE_CONVERSACION = "https://firebasestorage.googleapis.com/v0/b/nombre-7ec89.appspot.com/o/"
+    val URL_BASE_CONVERSACION = "http://10.97.1.178:3040/api/"
+    val URL_MESSAGE = "http://10.97.1.178:3040/api/"
     val URL_BUZON = Constantes.URL_BASE2
-
-
 
     //todo Falta editar el url para las tareas
     val URL_BASE_TAREAS =

@@ -9,10 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.agileus.R
-import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.databinding.ListContactsFragmentBinding
-import com.example.agileus.models.Contacts
+import com.example.agileus.utils.Constantes
 
 class ListContactsFragment : Fragment() {
 
@@ -39,7 +37,7 @@ class ListContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        contactsviewModel.devuelveLista()
+        contactsviewModel.devuelveLista(Constantes.id)
 
         contactsviewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerListContacts.adapter = it
@@ -53,10 +51,10 @@ class ListContactsFragment : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 //Se hace el filtro y aqui se pone toda la palabra en minisculas
-                contactsviewModel.devuelveLista()
+                contactsviewModel.devuelveLista(Constantes.id)
                 contactsviewModel.contactos.observe(viewLifecycleOwner,{
                     var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
-                    contactsviewModel.filtrarChats(filtro)
+                    contactsviewModel.filtrarChats(Constantes.id,filtro)
                 })
 
             }

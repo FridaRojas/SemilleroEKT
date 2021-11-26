@@ -23,11 +23,11 @@ class ListContactsViewModel : ViewModel() {
         lista = ConversationDao()
     }
 
-    fun devuelveLista(){
+    fun devuelveLista(idUser:String){
         try {
             viewModelScope.launch {
                 listaConsumida =  withContext(Dispatchers.IO) {
-                    lista.recuperarListadeContactos()
+                    lista.recuperarListadeContactos(idUser)
                 }
                 Log.i("mensaje", "${listaConsumida.size}")
                 if (listaConsumida != null){
@@ -49,11 +49,11 @@ class ListContactsViewModel : ViewModel() {
 
     }
 
-    fun filtrarChats(listaAdaptada:List<Contacts>){
+    fun filtrarChats(idUser:String,listaAdaptada:List<Contacts>){
         try {
             viewModelScope.launch {
                 listaConsumida =  withContext(Dispatchers.IO) {
-                    lista.recuperarListadeContactos()
+                    lista.recuperarListadeContactos(idUser)
                 }
                 if (listaConsumida != null){
                     if(listaConsumida.isNotEmpty()){
@@ -62,13 +62,14 @@ class ListContactsViewModel : ViewModel() {
                 }
 
             }
-
-
         }catch (ex:Exception){
             Log.e(ListContactsViewModel::class.simpleName.toString(), ex.message.toString())
         }
-
     }
+
+
+
+
 
 
 

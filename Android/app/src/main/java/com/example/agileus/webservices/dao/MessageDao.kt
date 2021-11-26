@@ -1,45 +1,55 @@
 package com.example.agileus.webservices.dao
 
-import android.util.Log
-import android.widget.Toast
+
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.InitialApplication.Companion.webServiceMessage
 import com.example.agileus.models.Conversation
 import com.example.agileus.models.Message
-import com.example.agileus.ui.HomeActivity
-import retrofit2.Call
-import retrofit2.Callback
+import com.example.agileus.models.MessageResponse
 import retrofit2.Response
 
 class MessageDao {
+    lateinit var respuesta: MessageResponse
 
-
-    suspend fun  recuperarMensajes(): ArrayList<Conversation> {
-        val callRespuesta = InitialApplication.webServiceConversation.getConversationOnetoOne()
-        var ResponseDos:Response<ArrayList<Conversation>> = callRespuesta.execute()
+    suspend fun recuperarMensajes(idChat: String): ArrayList<Conversation> {
+        val callRespuesta =
+            InitialApplication.webServiceConversation.getConversationOnetoOne(idChat)
+        var ResponseDos: Response<ArrayList<Conversation>> = callRespuesta.execute()
 
         var lista = ArrayList<Conversation>()
-        if (ResponseDos.isSuccessful){
+        if (ResponseDos.isSuccessful) {
             lista = ResponseDos.body()!!
         }
         return lista
 
     }
 
+    suspend fun insertarMensajes(mensaje: Message): MessageResponse {
+        var callRespuesta = InitialApplication.webServiceMessage.mandarMensaje(mensaje)
+       var ResponseDos: Response<MessageResponse> = callRespuesta.execute()
 
+        if(ResponseDos.isSuccessful){
+        respuesta = ResponseDos.body()!!
+        }else{
+
+        }
+            return respuesta
+    }
+
+
+    /*
     suspend fun insertarMensajes(mensaje: Message){
 
         var callRespuesta = InitialApplication.webServiceMessage.mandarMensaje(mensaje)
 
-        callRespuesta.enqueue(object: Callback<Message>{
-            override fun onResponse(call: Call<Message>, response: Response<Message>) {
+        callRespuesta.enqueue(object: Callback<MessageResponse>{
+            override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
                 if(response.isSuccessful){
                     if (response.body() != null){
-                         var nueva:Message= response.body()!!
-                         var mensaje = "idEmisor: ${nueva.idEmisor}"
-                         mensaje += "\n idReceptor: ${nueva.idReceptor}"
-                         mensaje += "\n mensaje: ${nueva.texto}"
-                         mensaje += "\n fecha: ${nueva.fechaCreacion}"
+                         var nueva:MessageResponse= response.body()!!
+                         var mensaje = "idEmisor: ${nueva.msj}"
+                         mensaje += "\n idReceptor: ${nueva.status}"
+                         mensaje += "\n mensaje: ${nueva.data}"
+
 
                         Log.e("mensaje", "$mensaje")
 
@@ -56,7 +66,7 @@ class MessageDao {
 
             }
 
-            override fun onFailure(call: Call<Message>, t: Throwable) {
+            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
             Log.e("Servidor", "El servidor ha fallado")
                 //Toast.makeText(applicationContext, "El servidor ha fallado", Toast.LENGTH_LONG).show()
             }
@@ -64,4 +74,6 @@ class MessageDao {
         })
 
     }
+
+     */
 }

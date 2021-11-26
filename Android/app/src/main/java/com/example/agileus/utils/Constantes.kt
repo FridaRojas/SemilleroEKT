@@ -8,7 +8,8 @@ object Constantes {
     val URL_BUZON_2=""
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
-    val id = "618e878ec613329636a769ab"
+    val id = "618e8743c613329636a769aa"
+    val idChat = "618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
     var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
 

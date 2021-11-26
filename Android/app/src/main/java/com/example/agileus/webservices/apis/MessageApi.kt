@@ -1,6 +1,7 @@
 package com.example.agileus.webservices.apis
 
 import com.example.agileus.models.Message
+import com.example.agileus.models.MessageResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -8,6 +9,6 @@ import retrofit2.http.POST
 interface MessageApi {
 
     @POST("mensajes/crearMensaje")
-    fun mandarMensaje(@Body body:Message):Call<Message>
+    fun mandarMensaje(@Body body:Message):Call<MessageResponse>
 
 }

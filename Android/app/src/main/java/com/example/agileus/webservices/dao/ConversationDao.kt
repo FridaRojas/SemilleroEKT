@@ -13,7 +13,7 @@ import retrofit2.Response
 class ConversationDao() {
 
 
-   suspend fun  recuperarListadeContactos(): ArrayList<Contacts> {
+  /* suspend fun  recuperarListadeContactos(): ArrayList<Contacts> {
        val callRespuesta = InitialApplication.webServiceConversation.getListContacts()
        var ResponseDos:Response<ArrayList<Contacts>> = callRespuesta.execute()
 
@@ -28,6 +28,20 @@ class ConversationDao() {
        return lista
 
    }
+
+   */
+  suspend fun  recuperarListadeContactos(idUser:String): ArrayList<Contacts> {
+      val callRespuesta = InitialApplication.webServiceConversation.getListContacts(idUser)
+      var ResponseDos:Response<ArrayList<Contacts>> = callRespuesta.execute()
+
+      var lista = ArrayList<Contacts>()
+      if (ResponseDos.isSuccessful){
+          lista = ResponseDos.body()!!
+      }else{
+          Log.e("ERROR", ResponseDos.code().toString())
+      }
+      return lista
+  }
 
     suspend fun  recuperarListadeGrupos(): ArrayList<Groups> {
         val callRespuesta = InitialApplication.webServiceConversation.getListGroups()
