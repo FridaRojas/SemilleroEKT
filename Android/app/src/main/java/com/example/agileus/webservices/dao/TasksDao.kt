@@ -8,12 +8,15 @@ import com.example.agileus.models.DataPersons
 import com.example.agileus.models.PersonasGrupo
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
+import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class TasksDao {
+class TasksDao : DialogoConfirmacionListener{
 
     //Agregar nueva tarea
     fun postTasks(t: Tasks) {
@@ -32,6 +35,10 @@ class TasksDao {
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
                     Log.d("Mensaje", mensaje)
+
+                    //val newFragment = DialogoTareaCreadaExitosamente(this)
+                    //newFragment.show(, "Confirmacion")
+
                 } else {
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
                 }

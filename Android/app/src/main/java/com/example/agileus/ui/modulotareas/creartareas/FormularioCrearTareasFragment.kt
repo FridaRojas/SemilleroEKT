@@ -21,13 +21,13 @@ import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.File
 import java.io.FileNotFoundException
 
-class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener {
+class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!

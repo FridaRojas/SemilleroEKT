@@ -20,4 +20,4 @@ data class Tasks(
     @SerializedName("estatus") var estatus: String,
     @SerializedName("leido") var leido: Boolean,
     @SerializedName("createdDate") var createdDate: String
-) : Serializable
+)
