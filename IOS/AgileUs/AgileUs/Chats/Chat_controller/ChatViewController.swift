@@ -19,33 +19,7 @@ struct User: Codable
     let idreceptor: String
     let idemisor: String
 }
-//Estructura para crear un json personalizado
-struct JSONStringEncoder {
-    func encode(_ dictionary: [String: Any]) -> String?
-    {
-        guard JSONSerialization.isValidJSONObject(dictionary) else {assertionFailure("Invalid json object received.")
-            return nil
-    }
-        let jsonObject: NSMutableDictionary = NSMutableDictionary()
-        let jsonData: Data
 
-        dictionary.forEach { (arg) in jsonObject.setValue(arg.value, forKey: arg.key)}
-
-        do { jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)}
-        catch
-        {
-            assertionFailure("JSON data creation failed with error: \(error).")
-            return nil
-        }
-
-        guard let jsonString = String.init(data: jsonData, encoding: String.Encoding.utf8) else {
-            assertionFailure("JSON string creation failed.")
-            return nil
-        }
-        print("Valores_Mensaje: \(jsonString)")
-        return jsonString
-    }
-}
 //estructura del mensaje
 struct Sender: SenderType
 {
@@ -77,7 +51,7 @@ class ChatViewController:
     var messages = [MessageType]() //variable del tipo d emensaje
     var usuarios = [User]() //variable de tipo arreglo
     var mensaje = ""
-
+    var lastDisplayedSentDate: Date?
 
     override func viewDidLoad()
     {
@@ -112,30 +86,18 @@ class ChatViewController:
                                      messageId: "1",
                                      sentDate: Date(),
                                      kind: .text("\(mensaje)")))
-        //print(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))
+             var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
         self.messagesCollectionView.reloadData()
-        //create_json()
+        create_json(id_emisor: "id_emisor", id_receptor: "id_receptor", mensaje: mensaje, fecha: fecha){
+            (exito) in DispatchQueue.main.async { print("Todo Bien") }
+            
+        }fallido:
+        {
+            fallo in DispatchQueue.main.async { print("Algo fallo chAT") }
+        }
     }
-    /*
-    //funcion para crear json personalizado
-    func create_json()
-    {
-        let exampleDict: [String: Any] = [
-                "idEmisor" : "id_emisor",
-                "idReceptor" : "id_receptor",
-                "texto" : "\(mensaje)",
-                "fechaCreacion" : "\(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))",
-                                        ]
-
-            if let jsonString = JSONStringEncoder().encode(exampleDict) {
-               registro_mensajes(mensaje_json: jsonString)
-            } else {
-                print("fallo la codificacion")
-            }
-        
-    }
-    */
+  
     //funcion para perzonalizar la barra de texto
     func configureMessageInputBar() {
         messageInputBar.delegate = self
@@ -149,6 +111,8 @@ class ChatViewController:
         messageInputBar.inputTextView.backgroundColor = .brown
         
     }
+
+    
     //funcion para modificar el avatar de la conversacion
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         avatarView.isHidden = false
@@ -161,8 +125,38 @@ class ChatViewController:
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         return .bubbleOutline(UIColor.white)
     }
+    //funcion para mostrar los mensajes apartir del dia en que se carga la conversacion
+    func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        if let lastDisplayedSentDate = lastDisplayedSentDate, Calendar.current.isDate(lastDisplayedSentDate, inSameDayAs: message.sentDate) {
+                    return nil
+                }
+                lastDisplayedSentDate = message.sentDate
+                
+                return NSAttributedString(
+                        string: MessageKitDateFormatter.shared.string(from: message.sentDate),
+                        attributes: [
+                            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
+                            NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.1176470588, green: 0.4470588235, blue: 0.8, alpha: 1)])
+    }
+   //funcion para poner fecha de envio del mensaje
+    func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let dateString = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_Usuario")
+        return NSAttributedString(string: dateString , attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
+    }
+    //funcion para  dar tamaño a la fecha de conversacion
+    func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+            if (indexPath.item) % 4 == 0 {
+                return 10
+            } else {
+                return 0
+            }
+        }
+    //funcion para dar tamaño en la fecha que pone cuando se envia el mensaje
+    func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+            return 16
+        }
     
-   
+    
     func carga_mensajes()
     {
         let servicio = "https://firebasestorage.googleapis.com/v0/b/nombre-7ec89.appspot.com/o/VerConversacion.json?alt=media&token=5535d8d8-52d5-4a70-8222-b30838f0b19e"

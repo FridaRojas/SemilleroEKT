@@ -154,8 +154,8 @@
 				D4E69CA72746C24E002121E4 /* Chats */,
 				D4E69C772746BD81002121E4 /* AppDelegate.swift */,
 				D4E69C792746BD81002121E4 /* SceneDelegate.swift */,
-				D4E69C7B2746BD81002121E4 /* ViewController.swift */,
 				D4E69C7D2746BD81002121E4 /* Main.storyboard */,
+				D4E69C7B2746BD81002121E4 /* ViewController.swift */,
 				D4E69C802746BD83002121E4 /* Assets.xcassets */,
 				D4E69C822746BD83002121E4 /* LaunchScreen.storyboard */,
 				D4E69C852746BD83002121E4 /* Info.plist */,
@@ -241,11 +241,27 @@
 			path = Funciones_chat;
 			sourceTree = "<group>";
 		};
+		DF89B8602751633E000E8DAE /* tabla_lista_chats */ = {
+			isa = PBXGroup;
+			children = (
+				DFC33DD3274C54FF00E8DB7D /* lista_chats.xib */,
+				DFC33DD2274C54FF00E8DB7D /* lista_chats.swift */,
+			);
+			path = tabla_lista_chats;
+			sourceTree = "<group>";
+		};
+		DF89B86127516351000E8DAE /* tablas_lista_contactos */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = tablas_lista_contactos;
+			sourceTree = "<group>";
+		};
 		DFC33DD1274C54A300E8DB7D /* Tablas */ = {
 			isa = PBXGroup;
 			children = (
-				DFC33DD2274C54FF00E8DB7D /* lista_chats.swift */,
-				DFC33DD3274C54FF00E8DB7D /* lista_chats.xib */,
+				DF89B86127516351000E8DAE /* tablas_lista_contactos */,
+				DF89B8602751633E000E8DAE /* tabla_lista_chats */,
 			);
 			path = Tablas;
 			sourceTree = "<group>";

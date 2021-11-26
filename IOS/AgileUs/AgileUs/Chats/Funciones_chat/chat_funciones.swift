@@ -1,6 +1,7 @@
-
+//  autor: Carlos_Adolfo_Hernandez (C_A_H)
 import Foundation
 import UIKit
+
 
 //extenciones fecha
 func Obtener_valor_fecha(fecha: Date, stilo: String) -> String
@@ -15,6 +16,34 @@ func Obtener_valor_fecha(fecha: Date, stilo: String) -> String
     default: formatter.dateFormat = "dd/MM/yyyy hh:mm a"
     }
     return formatter.string(from: fecha)
+}
+
+//Estructura para crear un json personalizado
+struct JSONStringEncoder {
+    func encode(_ dictionary: [String: Any]) -> String?
+    {
+        guard JSONSerialization.isValidJSONObject(dictionary) else {assertionFailure("Invalid json object received.")
+            return nil
+    }
+        let jsonObject: NSMutableDictionary = NSMutableDictionary()
+        let jsonData: Data
+
+        dictionary.forEach { (arg) in jsonObject.setValue(arg.value, forKey: arg.key)}
+
+        do { jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)}
+        catch
+        {
+            assertionFailure("JSON data creation failed with error: \(error).")
+            return nil
+        }
+
+        guard let jsonString = String.init(data: jsonData, encoding: String.Encoding.utf8) else {
+            assertionFailure("JSON string creation failed.")
+            return nil
+        }
+        print("Valores_Mensaje: \(jsonString)")
+        return jsonString
+    }
 }
 
 //funcion para hacer petcion post al servidor
@@ -54,5 +83,38 @@ func registro_mensajes(mensaje_json: String, succes: @escaping (_ succes: String
     }
     //ejecuta la tarea
     task.resume()
+}
+
+
+//funcion para crear json personalizado
+func create_json(id_emisor: String, id_receptor: String, mensaje: String, fecha: String, exito: @escaping (_ exito: String) ->(), fallido: @escaping (_ fallido: String) ->() )
+{
+    let exampleDict: [String: Any] = [
+            "idEmisor" : id_emisor,
+            "idReceptor" : id_receptor,
+            "texto" : "\(mensaje)",
+            "fechaCreacion" : "\(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))",
+                                    ]
+
+
+        if let jsonString = JSONStringEncoder().encode(exampleDict) {
+            registro_mensajes(mensaje_json: jsonString) {
+                (succes) in
+                    print(succes)
+                DispatchQueue.main.async {
+                   exito("Todo Salio Bien")
+                }
+                
+            } fallo: {
+                fallo in
+                DispatchQueue.main.async {
+                fallido("Servidor Abajo")
+                }
+               
+            }
+        } else {
+            print("fallo la codificacion")
+        }
+    
 }
 
