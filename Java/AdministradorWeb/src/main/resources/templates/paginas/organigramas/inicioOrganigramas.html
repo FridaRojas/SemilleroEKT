@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <link
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../../static/css/InicioOrganigrama.css" type="text/css">
+    <title>Title</title>
+
+</head>
+<body >
+<h1 th:insert="elementos/menuLateral::pp"></h1>
+<h1 th:replace="ppp::hh"></h1>
+<div th:insert="elementos/menuLateral::pp"></div>
+
+<!-- Cabecera-->
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            Nombre Usuario
+        </div>
+        <div class="col-sm">
+            Rol
+        </div>
+        <div class="col-sm">
+            Numero de Emplea
+        </div>
+        <div class="col-sm">
+            Acciones
+        </div>
+    </div>
+</div>
+
+<!-- Seccion que se va a iterar -->
+<div class="item" th:fragment="aa">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                Diego A
+            </div>
+            <div class="col-sm">
+                Gerente
+            </div>
+            <div class="col-sm">
+                1421221312
+            </div>
+            <div class="col-sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <form method="POST"
+                                  action="">
+
+                                <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
+                            </form>
+                            </th>
+                        </div>
+                        <div class="col-sm" style="align-content: center">
+                            <form method="POST"
+                                  action="">
+                                <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="menuLateral :: pp " ></div>
+<h1 th:replace="ppp :: hh " ></h1>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
