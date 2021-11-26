@@ -105,15 +105,19 @@ class BuzonDetallesUserFragment : Fragment() ,UserBuzonListener{
             binding.vista2.visibility = View.INVISIBLE
             binding.vista1.visibility= View.VISIBLE
             binding.fab.visibility = View.VISIBLE
-        }, 4200)
+        }, 3800)
     }
 
     fun startTimeCounter() {
         var counter=0
+        binding.vista1.visibility= View.INVISIBLE
+        binding.vista2.visibility = View.VISIBLE
+        binding.fab.visibility = View.INVISIBLE
+
         val progressBar = binding.progress
         progressBar.visibility=View.VISIBLE
 //        val countTime: TextView = findViewById(R.id.countTime)
-        object : CountDownTimer(4000, 100) {
+        object : CountDownTimer(3900, 100) {
             override fun onTick(millisUntilFinished: Long) {
 //                countTime.text = counter.toString()
 //                Log.d("tiempo ", " $counter")

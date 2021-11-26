@@ -39,20 +39,22 @@
         <ProgressBar
 
             android:id="@+id/progress"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:background="@drawable/circular_shape"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:indeterminate="false"
-            android:max="41"
-            android:progress="1"
+            android:max="36"
+            android:progress="30"
             android:progressBackgroundTint="@color/colorGray"
             android:backgroundTintMode="add"
             android:secondaryProgressTintMode="add"
-            android:background="#ffffff"/>
+/>
 
         <TextView
             android:id="@+id/espera"

@@ -63,6 +63,7 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         USERTYPE="Broadcast"
             binding.vista2.visibility=View.INVISIBLE
 
@@ -82,15 +83,13 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
             }
         }
 
-
-
         viewModel.devuelvebuzon()
 
             viewModel.adaptador.observe(viewLifecycleOwner, {
                 binding.recyclerBuzon.adapter = it
                 binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-            })
 
+            })
         }
 
         override fun onDestroyView() {
@@ -104,12 +103,9 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
             viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
                 if (response.isSuccessful)
                 {
-                    Log.i("Main",response.code().toString())
+                    Log.i("Code ",response.code().toString())
                 }
             })
-
- //           val progressBar = binding.progress
-//            progressBar.progress = 20
 
             Handler().postDelayed({
                 binding.vista1.visibility= View.INVISIBLE
@@ -123,22 +119,20 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
                 binding.vista2.visibility = View.INVISIBLE
                 binding.vista1.visibility= View.VISIBLE
                 binding.fab.visibility = View.VISIBLE
-  }, 4200)
+  }, 3800)
 
         }
     fun startTimeCounter() {
         var counter=0
         val progressBar = binding.progress
         progressBar.visibility=View.VISIBLE
-//        val countTime: TextView = findViewById(R.id.countTime)
-        object : CountDownTimer(4000, 100) {
+        object : CountDownTimer(3900, 100) {
             override fun onTick(millisUntilFinished: Long) {
-//                countTime.text = counter.toString()
-//                Log.d("tiempo ", " $counter")
                 counter++
                 progressBar.progress = counter
             }
             override fun onFinish() {
+//                viewModel.devuelvebuzon()
             }
         }.start()
     }

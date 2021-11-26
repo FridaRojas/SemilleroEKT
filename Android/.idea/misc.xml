@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.14322916666666666" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/Comunicados.xml" value="0.2351851851851852" />
+        <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/circle_shape.xml" value="0.1421875" />
+        <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/circular_progress_bar.xml" value="0.1421875" />
+        <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/circular_shape.xml" value="0.264" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/cliente_backgroud.xml" value="0.264" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/com.xml" value="0.2351851851851852" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/ic_baseline_doorbell_24.xml" value="0.2351851851851852" />
@@ -36,7 +39,7 @@
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/drawable/rounded_rm.xml" value="0.2351851851851852" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.12447916666666667" />
-        <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.2" />
+        <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.264" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_user_fragment.xml" value="0.264" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/buzon_user_fragment.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/conversation_emisor_item.xml" value="0.12708333333333333" />
