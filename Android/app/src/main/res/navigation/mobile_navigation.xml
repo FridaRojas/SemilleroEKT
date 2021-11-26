@@ -5,6 +5,8 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/buzonUserFragment">
 
+
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.agileus.ui.modulomensajeria.listacontactos.HomeFragment"
@@ -28,7 +30,7 @@
     <fragment
         android:id="@+id/buzonFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
-        android:label="fragment_buzon"
+        android:label="Buzón Broacast"
         tools:layout="@layout/fragment_buzon" >
         <action
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
@@ -37,7 +39,7 @@
     <fragment
         android:id="@+id/buzonDetallesFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
-        android:label="buzon_detalles_fragment"
+        android:label="Mis Mensajes "
         tools:layout="@layout/buzon_detalles_fragment" >
         <action
             android:id="@+id/action_buzonDetallesFragment_to_buzonFragment"

@@ -2,6 +2,7 @@ package com.example.agileus.ui.modulomensajeriabuzon.b
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.Models.Buzon
 import com.example.agileus.R
@@ -42,13 +45,7 @@ class BuzonDetallesUserFragment : Fragment() ,UserBuzonListener{
         super.onViewCreated(view, savedInstanceState)
 
 
-        val toolbar: Toolbar = binding.toolbar
-        toolbar.setNavigationIcon(com.example.agileus.R.drawable.ic_back_button)
-        toolbar.setNavigationOnClickListener(View.OnClickListener {
-            findNavController().navigate(R.id.action_buzonDetallesUserFragment_to_buzonUserFragment)
 
-//            requireActivity().onBackPressed()
-        })
 
             binding.vista2.visibility=View.INVISIBLE
 
@@ -88,7 +85,7 @@ class BuzonDetallesUserFragment : Fragment() ,UserBuzonListener{
         viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
             if (response.isSuccessful)
             {
-                Log.i("Main",response.code().toString())
+                Log.i("response",response.code().toString())
             }}
         )
 
@@ -99,12 +96,33 @@ class BuzonDetallesUserFragment : Fragment() ,UserBuzonListener{
             binding.fab.visibility = View.INVISIBLE
         }, 5)
         ////////////////
+
+        startTimeCounter()
+
+
         Handler().postDelayed({
             Toast.makeText(context, " Mensaje enviado a Broadcast", Toast.LENGTH_SHORT).show()
             binding.vista2.visibility = View.INVISIBLE
             binding.vista1.visibility= View.VISIBLE
             binding.fab.visibility = View.VISIBLE
-        }, 4000)
+        }, 4200)
+    }
 
+    fun startTimeCounter() {
+        var counter=0
+        val progressBar = binding.progress
+        progressBar.visibility=View.VISIBLE
+//        val countTime: TextView = findViewById(R.id.countTime)
+        object : CountDownTimer(4000, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+//                countTime.text = counter.toString()
+//                Log.d("tiempo ", " $counter")
+                counter++
+                progressBar.progress = counter
+            }
+            override fun onFinish() {
+            }
+        }.start()
     }
 }
+

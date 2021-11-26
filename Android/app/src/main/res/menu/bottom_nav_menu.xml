@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/iconomensajes"
@@ -15,6 +16,5 @@
         android:id="@+id/reporteMensajesFragment"
         android:icon="@drawable/iconoreportes"
         android:title="@string/title_reportes" />
-
 
 </menu>

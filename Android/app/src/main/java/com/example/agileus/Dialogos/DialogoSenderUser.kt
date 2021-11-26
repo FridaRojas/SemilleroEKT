@@ -44,7 +44,7 @@ class DialogoSenderUser(val listener: BuzonDetallesUserFragment) : DialogFragmen
                             ).show()
                         }else{
                                 listener.mensajeBroadcasting(
-                                    Buzon("","","Broadcast",Asunto.text.toString(),Mensaje.text.toString())
+                                    Buzon("","Eduardo","Broadcast",Asunto.text.toString(),Mensaje.text.toString())
                                 )
                   }
                     })

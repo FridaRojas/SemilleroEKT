@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.Models.Buzon
 import com.example.agileus.adapters.BuzonAdapter
+import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesViewModel.Companion.listasize
 import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.control
 import com.example.agileus.webservices.dao.ProviderBuzon
 import com.google.android.material.snackbar.Snackbar
@@ -31,7 +32,7 @@ class BuzonDetallesUserViewModel : ViewModel() {
     fun devuelvebuzon(){
 
         var Actuser:String
-        Actuser="juan"
+        Actuser="Eduardo"
 
         listaConsumida= ArrayList()
         Log.i("tamaño","${listaConsumida.size}")
@@ -41,12 +42,13 @@ class BuzonDetallesUserViewModel : ViewModel() {
                     lista.recuperarbuzon(listaConsumida)
                 }
                 if (listaConsumida.isNotEmpty()) {
+                    listasize =listaConsumida.size
                     listafiltrada = ArrayList()
 
 
                     if (control == 1) {
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Senderid.toString() == Actuser) {
+                            if (listaConsumida[i].Senderid.toString() == "Eduardo") {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }
@@ -70,7 +72,9 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
     fun postMensaje(mypost: Buzon) {
 
-        mypost.id=(BuzonDetallesViewModel.listasize +1).toString()
+        mypost.id=(listasize +1).toString()
+        mypost.Senderid="Eduardo"
+
 
         try {
             viewModelScope.launch {

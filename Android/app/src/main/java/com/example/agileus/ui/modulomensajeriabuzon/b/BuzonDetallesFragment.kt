@@ -18,6 +18,13 @@ import com.example.demoroom.dialogos.DialogoSenderBroadcast
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import android.R
+import android.os.CountDownTimer
+
+import android.widget.ProgressBar
+
+
+
 
 
 
@@ -100,20 +107,40 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
                     Log.i("Main",response.code().toString())
                 }
             })
+
+ //           val progressBar = binding.progress
+//            progressBar.progress = 20
+
             Handler().postDelayed({
                 binding.vista1.visibility= View.INVISIBLE
                 binding.vista2.visibility = View.VISIBLE
                 binding.fab.visibility = View.INVISIBLE
             }, 5)
+            startTimeCounter()
               ////////////////
             Handler().postDelayed({
-//                Toast.makeText(context, " Mensaje enviado a ${buzon.receiverId}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, " Mensaje enviado a ${buzon.Receiverid}", Toast.LENGTH_SHORT).show()
                 binding.vista2.visibility = View.INVISIBLE
                 binding.vista1.visibility= View.VISIBLE
                 binding.fab.visibility = View.VISIBLE
-  }, 4000)
+  }, 4200)
 
         }
-
-
+    fun startTimeCounter() {
+        var counter=0
+        val progressBar = binding.progress
+        progressBar.visibility=View.VISIBLE
+//        val countTime: TextView = findViewById(R.id.countTime)
+        object : CountDownTimer(4000, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+//                countTime.text = counter.toString()
+//                Log.d("tiempo ", " $counter")
+                counter++
+                progressBar.progress = counter
+            }
+            override fun onFinish() {
+            }
+        }.start()
     }
+
+}
