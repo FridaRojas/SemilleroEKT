@@ -28,12 +28,9 @@ extension UITextField{
     func addBackgroundColorAndTextColor(backgroundColor: UIColor, textColor: UIColor) {
         self.backgroundColor = backgroundColor
         self.textColor = textColor
-        //self.layer.
-        //layoutSubviews()
     }
     
     func roundCorners(cornerRadius: Double){
-       
         self.layer.borderColor = self.backgroundColor?.cgColor
         self.layer.borderWidth = CGFloat(0.5)
         self.layer.cornerRadius = cornerRadius
@@ -42,8 +39,6 @@ extension UITextField{
     
     func addIcon(image: UIImage, direction: String){
         let mainView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 45))
-        //mainView.layer.cornerRadius = 5
-
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 15.0, y: 10.0, width: 24.0, height: 24.0)

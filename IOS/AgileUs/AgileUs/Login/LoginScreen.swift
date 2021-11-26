@@ -35,42 +35,17 @@ class LoginScreen: UIViewController {
         super.viewDidLoad()
         
         hideNavBar()
-        
+        initCustomUIKit()
+    }
+    
+    func initCustomUIKit(){
         txtUser.addBackgroundColorAndTextColor(backgroundColor: UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0), textColor: UIColor(red: 156.0/255, green: 158.0/255, blue: 159.0/255, alpha: 1.0))
         txtUser.roundCorners(cornerRadius: 20.0)
-        //txtUser.addIcon(icon: "user_icon")
-        //txtUser.withImage(direction: "Left", image: UIImage(named: "user_icon")!, colorSeparator: UIColor.black)
         txtUser.addIcon(image: UIImage(named: "user_icon")!, direction: "Left")
         
         txtPassword.addBackgroundColorAndTextColor(backgroundColor: UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0), textColor: UIColor(red: 156.0/255, green: 158.0/255, blue: 159.0/255, alpha: 1.0))
         txtPassword.roundCorners(cornerRadius: 20.0)
         txtPassword.addIcon(image: UIImage(named: "vector_icon")!, direction: "Left")
-        
-        
-        /*let path = UIBezierPath(roundedRect:txtUser.bounds, byRoundingCorners:[UIRectCorner.topRight, .bottomLeft], cornerRadii: CGSize(width: 20, height: 20))
-        
-        //UIBezierPath(rou)
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = path.cgPath
-        txtUser.layer.mask = maskLayer*/
-
-        
-
-        
-        //txtUser.layer.cornerRadius = 20.0
-        //txtUser.clipsToBounds = true
-        
-        /*txtPassword.addBackgroundColor(bgColor: UIColor.green /*UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0)*/, placeholderTxt: "DOWN", placeholderColor: UIColor.black, txtColor: UIColor.black)*/
-        //txtUser.addBackground(background: "login_txt_box")
-        
-        //txtUser.addPadding(direction: "Left", width: 50, heigth: 0)
-        //txtUser.addIcon(icon: "user_icon", direction: "Left", paddingRight: 0, paddingLeft: 0)//.addIcon(icon: "user_icon", direction: "Left")//
-        //txtUser.addPadding(direction: "Right", width: 25, heigth: 0)
-        
-        //txtUser.addBackgroundAndIcon(fondo: "login_txt_box", icono: "user_icon")
-        
-        //txtUser.addBackgroundAndLeftIcon(fondo: <#T##String#>, icono: <#T##String#>)
-        // Do any additional setup after loading the view.
     }
 
     func setUserVariables(userInfo: User){
@@ -153,15 +128,6 @@ class LoginScreen: UIViewController {
                         break
                     }
                     
-                    /*
-                    if dataResponse.status == "ACCEPTED" {
-                        
-                    } else if data*/
-                    
-                    
-
-                    
-                    
                  }catch{
                     print("Error")
                     print(data)
@@ -174,6 +140,13 @@ class LoginScreen: UIViewController {
         
     }
     
+    @IBAction func forgotPassword(_ sender: UIButton) {
+        
+        //let modalAdapter = ModalsAdapter()
+        //let modalForgotPassword = modalAdapter.generateModalForgotPassword()
+        
+        self.present(ModalsAdapter().generateModalForgotPassword(), animated: true)
+    }
     /*
      @IBAction func iniciarSesion(_ sender: UIButton) {
      }
