@@ -14,7 +14,6 @@ struct DatosPersons: Codable {
     let nombre:String
 }
 
-
 class AsignarTareaViewController: UIViewController, UITextViewDelegate {
 
 
@@ -47,8 +46,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
         Configurar_Picker_Prioridades()
         LoadPersonsAsig()
         nameTaskField.textAlignment = .center
-        fileField.textAlignment = .center
-        
+        fileField.textAlignment = .center        
     }
     
     
@@ -111,9 +109,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
             
 
         }
-    
 
-    
 }
 
 

@@ -13,6 +13,8 @@
 		AE1D0AC1274EED9A00D3792B /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D0AC0274EED9A00D3792B /* PickerView.swift */; };
 		AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D0AC2274EEEED00D3792B /* Keyboard.swift */; };
 		AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D0AC4274EF0B000D3792B /* DatePicker.swift */; };
+		AE4C5A312750391E0095B907 /* CustomVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C5A302750391E0095B907 /* CustomVisualEffectView.swift */; };
+		AE4C5A33275039520095B907 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C5A32275039520095B907 /* InfoViewController.swift */; };
 		AEA60A9B274C5D120087E417 /* AsignarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A96274C5D120087E417 /* AsignarTareaViewController.swift */; };
 		AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A98274C5D120087E417 /* Ext_UITextField.swift */; };
 		AEA60A9D274C5D120087E417 /* Ext_UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A99274C5D120087E417 /* Ext_UITextView.swift */; };
@@ -59,6 +61,8 @@
 		AE1D0AC0274EED9A00D3792B /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		AE1D0AC2274EEEED00D3792B /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		AE1D0AC4274EF0B000D3792B /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
+		AE4C5A302750391E0095B907 /* CustomVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVisualEffectView.swift; sourceTree = "<group>"; };
+		AE4C5A32275039520095B907 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		AEA60A96274C5D120087E417 /* AsignarTareaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignarTareaViewController.swift; sourceTree = "<group>"; };
 		AEA60A98274C5D120087E417 /* Ext_UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_UITextField.swift; sourceTree = "<group>"; };
 		AEA60A99274C5D120087E417 /* Ext_UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_UITextView.swift; sourceTree = "<group>"; };
@@ -128,6 +132,15 @@
 				6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		AE4C5A252750027B0095B907 /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				AE4C5A302750391E0095B907 /* CustomVisualEffectView.swift */,
+				AE4C5A32275039520095B907 /* InfoViewController.swift */,
+			);
+			path = Modal;
 			sourceTree = "<group>";
 		};
 		AEA60A95274C5D120087E417 /* Controllers */ = {
@@ -229,6 +242,7 @@
 		D4E69CA92746C25E002121E4 /* Tareas */ = {
 			isa = PBXGroup;
 			children = (
+				AE4C5A252750027B0095B907 /* Modal */,
 				AEA60A95274C5D120087E417 /* Controllers */,
 				AEA60A97274C5D120087E417 /* Extensions */,
 				D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */,
@@ -503,7 +517,9 @@
 				AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */,
 				AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */,
 				AEA60AA3274D97530087E417 /* Strings.swift in Sources */,
+				AE4C5A312750391E0095B907 /* CustomVisualEffectView.swift in Sources */,
 				AEA60AA1274D70670087E417 /* Funciones_Generales.swift in Sources */,
+				AE4C5A33275039520095B907 /* InfoViewController.swift in Sources */,
 				AEA60A9D274C5D120087E417 /* Ext_UITextView.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
 				AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */,
