@@ -28,20 +28,21 @@
         <div id="Contenedor"  >
 
         <div class="ContentForm">
-            <form action="" method="post" name="login" id="login">
+            <!--/*@thymesVar id="User" type="java"*/-->
+            <form th:action="@{/entrar}" th:object="${User}" method="post" name="Valida" id="Valida">
 
                 <div class="input-group input-group-lg">
                     <h6>Correo:</h6>
-                    <input type="text" class="form-control" name="nombre" id="nombre" aria-describedby="sizing-addon1" required>
+                    <input type="correo" class="form-control" name="correo" id="correo" aria-describedby="sizing-addon1" required>
                 </div>
                 <br>
                 <div class="input-group input-group-lg">
                     <h6>Contrasena:</h6>
-                    <input type="password" name="contrasena" class="form-control" aria-describedby="sizing-addon1" required>
+                    <input type="password" name="password" class="form-control" aria-describedby="sizing-addon1" required>
                 </div>
                 <br>
 
-                <button  class="btn btn-success" id="Entra" name="login" type="submit">Entrar</button>
+                <button  class="btn btn-success" id="Entra" name="Entra" type="submit">Entrar</button>
 
             </form>
         </div>

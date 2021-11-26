@@ -2,18 +2,18 @@ package com.ekt.AdministradorWeb.entity;
 
 import org.springframework.http.HttpStatus;
 
-public class Response {
+public class Respuesta {
     HttpStatus status;
     String msj;
     Object data;
 
-    public Response(HttpStatus status, String msj, Object data) {
+    public Respuesta(HttpStatus status, String msj, Object data) {
         this.status = status;
         this.msj = msj;
         this.data = data;
     }
 
-    public Response(){};
+    public Respuesta(){};
 
     public HttpStatus getStatus() {
         return status;

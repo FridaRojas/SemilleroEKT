@@ -2,8 +2,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-image: url("../assets/1920x1080_px_minimalism_Tatof_Techno-541441.png");
-    height: 417px;
-    width: 626px;
+
 }
 
 p {
@@ -48,7 +47,7 @@ SIDEBAR STYLE
 ----------------------------------------------------- */
 
 #sidebar {
-    width: 250px;
+    width: 15%;
     position: fixed;
     top: 0;
     left: 0;
