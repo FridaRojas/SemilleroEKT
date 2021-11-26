@@ -127,7 +127,7 @@ public class MensajesController {
 			if (emisor.isPresent()) {
 				if (receptor.isPresent()) {
 
-					if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("http://"))) {
+					if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
 						mensajes.setRutaDocumento("");
 						mensajes.setStatusRutaDocumento(false);
 					} else {
