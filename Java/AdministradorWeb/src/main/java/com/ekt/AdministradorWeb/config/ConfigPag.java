@@ -1,6 +1,11 @@
 package com.ekt.AdministradorWeb.config;
 
 
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -19,11 +24,11 @@ import java.io.IOException;
 @Controller
 public class ConfigPag {
 
-        @GetMapping("/login")
-        public String login() {
-            //return "paginas/organigrama/InicioOrganigrama";
-             return "paginas/login";
-        }
+    @GetMapping("/login")
+    public String login() {
+        //return "paginas/organigrama/InicioOrganigrama";
+         return "paginas/login";
+    }
 
     @GetMapping("/inicioUsuarios")
     public String inicioUsuarios() {
@@ -58,6 +63,7 @@ public class ConfigPag {
         }
         return "paginas/login";
     }
+
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
         Gson gson = new Gson();
@@ -87,9 +93,6 @@ public class ConfigPag {
                 listaUsuarios.add(gson.fromJson(name1.getJSONObject(i).toString(), User.class));
             }
 
-            //User a = gson.fromJson(name1.getJSONObject(1).toString(), User.class);
-            //System.out.println(a.getCorreo());
-
         }catch (Exception e){
             System.out.println("Error al realizar la consulta");
         }
@@ -97,4 +100,13 @@ public class ConfigPag {
         return "paginas/usuarios/InicioUsuarios";
         //return listaUsuarios;
     }
+
+    @GetMapping("/añadirUsuario")
+    public String añadirUsuario(@ModelAttribute User user){
+        //realizar el guardado
+
+
+            return "paginas/usuarios/AñadirUsuario";
+    }
+
 }
