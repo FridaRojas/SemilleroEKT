@@ -1,6 +1,13 @@
 package com.ekt.AdministradorWeb.config;
 
 
+import com.ekt.AdministradorWeb.entity.Group;
+import com.ekt.AdministradorWeb.entity.Respuesta;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
+import org.bson.json.JsonObject;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -96,5 +103,27 @@ public class ConfigPag {
         model.addAttribute("listaUsuarios",listaUsuarios);
         return "paginas/usuarios/InicioUsuarios";
         //return listaUsuarios;
+    }
+
+    @PostMapping("/CrearGrupo")
+    public String CrearGrupo(@ModelAttribute Group gr) {
+        System.out.println(gr.getName());
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"nombre\": \""+gr.getName()+"\"\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/crear")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return "paginas/usuarios/InicioUsuarios";
+
     }
 }

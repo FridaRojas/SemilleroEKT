@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
 
+<head>
     <style>
        table{
            width:100%;
@@ -181,9 +182,12 @@
 
 
 <div class="contenedor">
-    <button class="botonF1">
+    <button class="botonF1" type="button" data-toggle="modal" data-target="#modalCreaOrganigrama" >
         <span>+</span>
     </button>
+</div>
+
+<div th:replace="paginas/modalCreaOrganigrama::#modalCreaOrganigrama">
 </div>
 
 
