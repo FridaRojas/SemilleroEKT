@@ -9,16 +9,22 @@ public class Group {
 
         @Id
         private String id;
-        private String name;
-        private User[] users;
+        private String nombre;
+        private User[] usuarios;
+
+        public Group(String id, String name, User[] usuarios) {
+                this.id = id;
+                this.nombre = name;
+                this.usuarios = usuarios;
+        }
 
         public String getID() { return id; }
         public void setID(String value) { this.id = value; }
 
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
+        public String getNombre() { return nombre; }
+        public void setNombre(String value) { this.nombre = value; }
 
-        public User[] getUsers() { return users; }
-        public void setUsers(User[] value) { this.users = value; }
+        public User[] getUsuarios() { return usuarios; }
+        public void setUsuarios(User[] value) { this.usuarios = value; }
 
 }

@@ -26,9 +26,10 @@ public class GroupController {
     @Autowired
     public UserService userService;
 
-    @PostMapping()
+    @PostMapping("/crear")
     public ResponseEntity<?> save(@RequestBody Group group){
         Group obj= groupService.guardar(group);
+        System.out.println(group.getNombre());
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
     }
 
@@ -47,6 +48,7 @@ public class GroupController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:63342/")
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
         if (groupService.buscarPorId(id).isPresent()){
