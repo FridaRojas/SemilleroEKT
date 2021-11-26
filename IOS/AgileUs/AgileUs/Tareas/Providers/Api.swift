@@ -112,7 +112,7 @@ final class Api {
         
         
         let task = session.uploadTask(with: request, from: dataToJson) {
-            (data, response, error) in
+            (data, response, error) -> Void in
             
             
             if let httpResponse = response as? HTTPURLResponse,
@@ -200,6 +200,56 @@ final class Api {
             
         }
         task.resume()
+    }
+    
+    func changeStatus(id: String, status: String, success: @escaping (_ message: String) -> (), failure: @escaping (_ error: String) -> ()) {
+        
+        let session = URLSession.shared
+        let url = URL(string: "\(url)/actulizarEstatus/\(id)&\(status)")!
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = session.dataTask(with: request) {
+            (data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse, self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                if let data = data {
+                    let dataString = String(data: data, encoding: .utf8)
+                    
+                    failure("error: \(dataString)")
+                }
+                
+                return;
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, self.rangeStatusCode400.contains(httpResponse.statusCode) {
+                if let data = data {
+                    let dataString = String(data: data, encoding: .utf8)
+                    
+                    failure("error: \(dataString)")
+                }
+                
+                return;
+            }
+            
+            if error != nil {
+                failure("error: \(error!.localizedDescription)")
+                return;
+            }
+            
+            if let dataSuccess = data {
+                
+                let dataString = String(data: dataSuccess, encoding: .utf8)
+                success(dataString!)
+                print("Success")
+            }
+            
+        }
+        
+        task.resume()
+        
     }
     
 }
