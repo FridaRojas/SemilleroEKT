@@ -25,71 +25,42 @@ extension UITextField{
         self.background = UIImage(named: background)
     }
     
-    func addIcon(icon: String, direction: String, paddingRight: Double, paddingLeft: Double){
-        
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: icon)
-        
-        //let invisibleRectangle = UIView(frame: CGRect(x: 0, y: 0, width: width, height: self.frame.height))
-        self.leftView = UIView(frame: CGRect(x: 0, y: 0, width: paddingRight, height: self.frame.height))
-        self.leftViewMode = .always
-        
-        
-        switch direction{
-            case "Right":
-                self.rightView = imageView
-                self.rightViewMode = .always
-            break
-            case "Left":
-                self.leftView = imageView
-                self.leftViewMode = .always
-            break
-            default:
-            break
-        }
-        
-        
-        /*
-        let arrow = UIImageView(image: UIImage(named: icon))
-        //if let size = arrow.image?.size {
-        arrow.frame = CGRect(x: 10.0, y: 50.0, width: arrow.image!.size.width + 100.0, height: arrow.image!.size.height)
-        //}
-        //arrow.contentMode = .center
-        self.leftView = arrow
-        self.leftViewMode = .always*/
-        /*
-        let iconImage = UIImage(named: icon)
-        let iconView = UIImageView(frame:
-                                    CGRect(x: 0, y: 0, width: (iconImage?.size.width)!, height: (iconImage?.size.height)!))
-        iconView.image = iconImage
-        let iconContainerView: UIView = UIView(frame:
-                       CGRect(x: 0, y: 0, width: (iconImage?.size.width)!, height: (iconImage?.size.height)!))
-        iconContainerView.addSubview(iconView)
-        leftView = iconContainerView
-        leftViewMode = .always*/
-        
+    func addBackgroundColorAndTextColor(backgroundColor: UIColor, textColor: UIColor) {
+        self.backgroundColor = backgroundColor
+        self.textColor = textColor
+        //self.layer.
+        //layoutSubviews()
     }
     
-    func addPadding(direction: String, width: Double, heigth: Double){
-        
-        let invisibleRectangle = UIView(frame: CGRect(x: 0, y: 0, width: width, height: self.frame.height))
-        self.leftView = invisibleRectangle
-        self.leftViewMode = .always
-        
-        /*
-        switch direction{
-            case "Left":
-                self.leftView = invisibleRectangle
-                self.leftViewMode = .always
-            break
-            case "Right":
-                self.rightView = invisibleRectangle
-                self.rightViewMode = .always
-            break
-            default:
-            break
-        }*/
-        
-        
+    func roundCorners(cornerRadius: Double){
+       
+        self.layer.borderColor = self.backgroundColor?.cgColor
+        self.layer.borderWidth = CGFloat(0.5)
+        self.layer.cornerRadius = cornerRadius
+        self.clipsToBounds = true
     }
+    
+    func addIcon(image: UIImage, direction: String){
+        let mainView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 45))
+        //mainView.layer.cornerRadius = 5
+
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: 15.0, y: 10.0, width: 24.0, height: 24.0)
+        mainView.addSubview(imageView)
+
+        switch direction {
+            case "Left":
+                self.leftViewMode = .always
+                self.leftView = mainView
+                break
+            case "Right":
+                self.rightViewMode = .always
+                self.rightView = mainView
+                break
+            default:
+                break
+        }
+    }
+
 }

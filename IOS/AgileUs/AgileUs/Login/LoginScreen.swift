@@ -36,7 +36,32 @@ class LoginScreen: UIViewController {
         
         hideNavBar()
         
-        txtUser.addBackground(background: "login_txt_box")
+        txtUser.addBackgroundColorAndTextColor(backgroundColor: UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0), textColor: UIColor(red: 156.0/255, green: 158.0/255, blue: 159.0/255, alpha: 1.0))
+        txtUser.roundCorners(cornerRadius: 20.0)
+        //txtUser.addIcon(icon: "user_icon")
+        //txtUser.withImage(direction: "Left", image: UIImage(named: "user_icon")!, colorSeparator: UIColor.black)
+        txtUser.addIcon(image: UIImage(named: "user_icon")!, direction: "Left")
+        
+        txtPassword.addBackgroundColorAndTextColor(backgroundColor: UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0), textColor: UIColor(red: 156.0/255, green: 158.0/255, blue: 159.0/255, alpha: 1.0))
+        txtPassword.roundCorners(cornerRadius: 20.0)
+        txtPassword.addIcon(image: UIImage(named: "vector_icon")!, direction: "Left")
+        
+        
+        /*let path = UIBezierPath(roundedRect:txtUser.bounds, byRoundingCorners:[UIRectCorner.topRight, .bottomLeft], cornerRadii: CGSize(width: 20, height: 20))
+        
+        //UIBezierPath(rou)
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = path.cgPath
+        txtUser.layer.mask = maskLayer*/
+
+        
+
+        
+        //txtUser.layer.cornerRadius = 20.0
+        //txtUser.clipsToBounds = true
+        
+        /*txtPassword.addBackgroundColor(bgColor: UIColor.green /*UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0)*/, placeholderTxt: "DOWN", placeholderColor: UIColor.black, txtColor: UIColor.black)*/
+        //txtUser.addBackground(background: "login_txt_box")
         
         //txtUser.addPadding(direction: "Left", width: 50, heigth: 0)
         //txtUser.addIcon(icon: "user_icon", direction: "Left", paddingRight: 0, paddingLeft: 0)//.addIcon(icon: "user_icon", direction: "Left")//
@@ -65,11 +90,20 @@ class LoginScreen: UIViewController {
     
     @IBAction func iniciarSesion(_ sender: UIButton) {
         
+        guard let text = txtUser.text, !text.isEmpty else {
+            simpleAlertMessage(title: "Error!", message: "El campo usuario esta vacio")
+            return
+        }
+        
+        guard let text = txtPassword.text, !text.isEmpty else {
+            simpleAlertMessage(title: "Error!", message: "El campo contrasena esta vacio")
+            return
+        }
+        
         //Enviar JSON para inicio de sesion
         var serverLogin = server+"user/validate"
         serverLogin = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/login%20v2.json?alt=media&token=49f226f5-eb9f-4213-97ee-7f726d4db02b"
         
-        //self.performSegue(withIdentifier: "Login_To_Home", sender: self)
         let user = UserRequest(correo: txtUser.text!, password: txtPassword!.text!, token: "wefwfefwf121221fwe")
         
         guard let uploadData = try? JSONEncoder().encode(user) else {
