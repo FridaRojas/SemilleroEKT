@@ -8,57 +8,80 @@ import retrofit2.Response
 
 class MessageDao {
     lateinit var respuesta: MessageResponse
+    var listaMensajes = ArrayList<Conversation>()
+    var lista = ArrayList<Contacts>()
+    var listaGrupos = ArrayList<Groups>()
 
     suspend fun recuperarMensajes(idChat: String): ArrayList<Conversation> {
-        val callRespuesta =
-            InitialApplication.webServiceMessage.getConversationOnetoOne(idChat)
-        var ResponseDos: Response<ArrayList<Conversation>> = callRespuesta.execute()
+        try{
+            val callRespuesta =
+                InitialApplication.webServiceMessage.getConversationOnetoOne(idChat)
+            var ResponseDos: Response<ArrayList<Conversation>> = callRespuesta.execute()
 
-        var lista = ArrayList<Conversation>()
-        if (ResponseDos.isSuccessful) {
-            lista = ResponseDos.body()!!
+
+            if (ResponseDos.isSuccessful) {
+                listaMensajes = ResponseDos.body()!!
+            }
+
+        }catch (ex:Exception){
+
         }
-        return lista
 
+        return listaMensajes
     }
 
     suspend fun insertarMensajes(mensaje: Message): MessageResponse {
-        var callRespuesta = InitialApplication.webServiceMessage.mandarMensaje(mensaje)
-       var ResponseDos: Response<MessageResponse> = callRespuesta.execute()
+        try{
+            var callRespuesta = InitialApplication.webServiceMessage.mandarMensaje(mensaje)
+            var ResponseDos: Response<MessageResponse> = callRespuesta.execute()
 
-        if(ResponseDos.isSuccessful){
-        respuesta = ResponseDos.body()!!
-        }else{
+            if(ResponseDos.isSuccessful){
+                respuesta = ResponseDos.body()!!
+            }else{
+
+            }
+
+        }catch (ex:Exception){
 
         }
-            return respuesta
+        return respuesta
     }
 
 
     suspend fun  recuperarListadeContactos(idUser:String): ArrayList<Contacts> {
-        val callRespuesta = InitialApplication.webServiceMessage.getListContacts(idUser)
-        var ResponseDos:Response<ArrayList<Contacts>> = callRespuesta.execute()
+        try{
+            val callRespuesta = InitialApplication.webServiceMessage.getListContacts(idUser)
+            var ResponseDos:Response<ArrayList<Contacts>> = callRespuesta.execute()
 
-        var lista = ArrayList<Contacts>()
-        if (ResponseDos.isSuccessful){
-            lista = ResponseDos.body()!!
-        }else{
-            Log.e("ERROR", ResponseDos.code().toString())
+
+            if (ResponseDos.isSuccessful){
+                lista = ResponseDos.body()!!
+            }else{
+                Log.e("ERROR", ResponseDos.code().toString())
+            }
+
+        }catch (ex:Exception){
+
         }
         return lista
     }
 
     suspend fun  recuperarListadeGrupos(): ArrayList<Groups> {
-        val callRespuesta = InitialApplication.webServiceMessage.getListGroups()
-        var ResponseDos:Response<ArrayList<Groups>> = callRespuesta.execute()
+        try{
+            val callRespuesta = InitialApplication.webServiceMessage.getListGroups()
+            var ResponseDos:Response<ArrayList<Groups>> = callRespuesta.execute()
 
-        var lista = ArrayList<Groups>()
-        if (ResponseDos.isSuccessful){
-            lista = ResponseDos.body()!!
-        }else{
-            Log.e("ERROR", ResponseDos.code().toString())
+
+            if (ResponseDos.isSuccessful){
+                listaGrupos = ResponseDos.body()!!
+            }else{
+                Log.e("ERROR", ResponseDos.code().toString())
+            }
+
+        }catch (ex:Exception){
+
         }
-        return lista
 
+        return listaGrupos
     }
 }

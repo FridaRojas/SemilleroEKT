@@ -1,7 +1,6 @@
 package com.example.agileus.providers
 
 import com.example.agileus.models.Conversation
-import com.example.agileus.webservices.dao.ConversationDao
 
 class ConversationProvider : ConversationProviderListener{
 
