@@ -15,19 +15,6 @@ import java.lang.Exception
 
 class TasksDao {
 
-
-    //Obtener todas las tareas
-    suspend fun getTasks(): ArrayList<Tasks> {
-        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasks()
-        var ResponseDos: Response<ArrayList<Tasks>> = callRespuesta.execute()
-
-        var lista = ArrayList<Tasks>()
-        if (ResponseDos.isSuccessful) {
-            lista = ResponseDos.body()!!
-        }
-        return lista
-    }
-
     //Agregar nueva tarea
     fun postTasks(t: Tasks) {
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
@@ -83,7 +70,6 @@ class TasksDao {
         return listaTareas
     }
 
-
     fun cancelTask(t: DetalleNivelAltoFragmentArgs) {
         val callback = InitialApplication.webServiceGlobalTasks.cancelarTarea(t.tareas.idTarea)
         callback.enqueue(object : Callback<DataTask> {
@@ -100,7 +86,6 @@ class TasksDao {
             }
         })
     }
-
 
     fun editTask(t: DetalleNivelAltoFragmentArgs) {
         val callback = InitialApplication.webServiceGlobalTasks.editTask(t, t.tareas.idTarea)
