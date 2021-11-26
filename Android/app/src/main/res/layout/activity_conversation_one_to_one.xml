@@ -17,8 +17,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="@dimen/paddingGeneral"
         android:padding="@dimen/paddingGeneral"
-        android:paddingBottom="@dimen/paddingGeneral"
-        android:layout_marginBottom="@dimen/height_view_write_mesage"
+        android:paddingBottom="32dp"
+        android:layout_marginBottom="85dp"
         />
 
     <View

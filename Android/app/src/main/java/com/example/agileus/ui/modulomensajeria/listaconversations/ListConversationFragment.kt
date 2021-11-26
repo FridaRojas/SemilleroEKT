@@ -30,8 +30,6 @@ class ListConversationFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
         return root
     }
 
@@ -48,8 +46,6 @@ class ListConversationFragment : Fragment() {
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
         }
-
-
     }
 
     override fun onDestroyView() {

@@ -22,7 +22,6 @@ class ConversationViewModel:ViewModel() {
     lateinit var RespuestaMessage:MessageResponse
     var messages = MutableLiveData<ArrayList<Conversation>>()
 
-
     init {
         message = MessageDao()
     }
@@ -37,7 +36,6 @@ class ConversationViewModel:ViewModel() {
                     if(listaConsumida.isNotEmpty()){
                         messages.value = listaConsumida
                         adaptador.postValue(ConversationAdapter(listaConsumida as ArrayList<Conversation>))
-
                     }
                 }
 
@@ -46,7 +44,6 @@ class ConversationViewModel:ViewModel() {
             Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
-
 
     fun mandarMensaje(idChat:String,mensaje: Message){
         try {
@@ -61,5 +58,4 @@ class ConversationViewModel:ViewModel() {
         }
 
     }
-
 }

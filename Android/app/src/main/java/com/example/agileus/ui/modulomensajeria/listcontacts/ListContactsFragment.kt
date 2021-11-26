@@ -14,10 +14,6 @@ import com.example.agileus.utils.Constantes
 
 class ListContactsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ListContactsFragment()
-    }
-
     private lateinit var contactsviewModel: ListContactsViewModel
 
     private var _binding: ListContactsFragmentBinding? = null
@@ -46,22 +42,17 @@ class ListContactsFragment : Fragment() {
 
         binding.etSearchContact.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//Se hace el filtro y aqui se pone toda la palabra en minisculas
                 contactsviewModel.devuelveLista(Constantes.id)
                 contactsviewModel.contactos.observe(viewLifecycleOwner,{
                     var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
                     contactsviewModel.filtrarChats(Constantes.id,filtro)
                 })
-
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
-
             }
 
         })

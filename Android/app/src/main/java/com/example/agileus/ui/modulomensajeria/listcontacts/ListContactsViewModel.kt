@@ -8,6 +8,7 @@ import com.example.agileus.adapters.ContactsAdapter
 import com.example.agileus.models.Contacts
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.webservices.dao.ConversationDao
+import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,12 +16,12 @@ import kotlinx.coroutines.withContext
 class ListContactsViewModel : ViewModel() {
 
     var adaptador = MutableLiveData<ContactsAdapter>()
-    lateinit var lista : ConversationDao
+    lateinit var lista : MessageDao
     lateinit var listaConsumida:ArrayList<Contacts>
     var contactos = MutableLiveData<ArrayList<Contacts>>()
 
     init {
-        lista = ConversationDao()
+        lista = MessageDao()
     }
 
     fun devuelveLista(idUser:String){
@@ -32,21 +33,15 @@ class ListContactsViewModel : ViewModel() {
                 Log.i("mensaje", "${listaConsumida.size}")
                 if (listaConsumida != null){
                     if(listaConsumida.isNotEmpty()){
-
-                      //  adaptador.value = ContactsAdapter(listaConsumida as ArrayList<Contacts>)
                         adaptador.postValue(ContactsAdapter(listaConsumida as ArrayList<Contacts>))
                         contactos.value = listaConsumida
                     }
                 }
 
             }
-
-
         }catch (ex:Exception){
             Log.e(ListContactsViewModel::class.simpleName.toString(), ex.message.toString())
         }
-
-
     }
 
     fun filtrarChats(idUser:String,listaAdaptada:List<Contacts>){
@@ -60,17 +55,9 @@ class ListContactsViewModel : ViewModel() {
                         adaptador.value!!.update(listaAdaptada)
                     }
                 }
-
             }
         }catch (ex:Exception){
             Log.e(ListContactsViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
-
-
-
-
-
-
-
 }
