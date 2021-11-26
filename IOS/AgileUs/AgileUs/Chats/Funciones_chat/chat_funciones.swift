@@ -73,13 +73,6 @@ func registro_mensajes(mensaje_json: String, succes: @escaping (_ succes: String
             succes("succes")
             
         }
-        /*
-        print("///////////////////////////")
-        print(response)
-        print("///////////////////////////")
-        print(data!)
-        print("///////////////////////////")
-       */
     }
     //ejecuta la tarea
     task.resume()
