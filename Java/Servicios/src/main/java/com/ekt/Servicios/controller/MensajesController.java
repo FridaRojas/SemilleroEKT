@@ -377,6 +377,7 @@ public class MensajesController {
 		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
 		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
 		MongoCursor mongoCursor = distinctIterable.iterator();
+
 		List<Conversacion> lConversacion = new ArrayList<>();
 		List<Conversacion> lConversacion2 = new ArrayList<>();
 		while (mongoCursor.hasNext()) {
@@ -391,11 +392,14 @@ public class MensajesController {
 				Mensajes mensajes = cursor.next();
 
 				mConv.setIdReceptor(mensajes.getIDReceptor());
+
+				System.out.println(mensajes.getNombreConversacionReceptor());
 				mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
 				mConv.setIdConversacion(mensajes.getIDConversacion());
 				mConv.setIdEmisor(mensajes.getIDEmisor());
 
 			}
+
 			lConversacion.add(mConv);
 			//mensajesList.add(idConversacion);
 
