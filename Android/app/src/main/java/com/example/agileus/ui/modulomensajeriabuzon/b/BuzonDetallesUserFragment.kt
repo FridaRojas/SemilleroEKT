@@ -125,6 +125,7 @@ class BuzonDetallesUserFragment : Fragment() ,UserBuzonListener{
                 progressBar.progress = counter
             }
             override fun onFinish() {
+                viewModel.devuelvebuzon()
             }
         }.start()
     }

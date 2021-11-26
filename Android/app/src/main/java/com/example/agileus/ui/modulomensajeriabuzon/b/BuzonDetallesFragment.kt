@@ -132,7 +132,7 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
                 progressBar.progress = counter
             }
             override fun onFinish() {
-//                viewModel.devuelvebuzon()
+                viewModel.devuelvebuzon()
             }
         }.start()
     }
