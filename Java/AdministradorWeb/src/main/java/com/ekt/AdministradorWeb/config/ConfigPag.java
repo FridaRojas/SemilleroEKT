@@ -55,15 +55,11 @@ public class ConfigPag {
             System.out.println(response);
             JSONObject jsonObject= new JSONObject(response.body().string());
             if (jsonObject.get("data")!=""){
-                System.out.println("Aqui sistoy");
                 JSONObject grupoObjeto = jsonObject.getJSONObject("data");
-                System.out.println(grupoObjeto.toString());
                 Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
-                System.out.println(grupo.getUsuarios().length);
                 User[] usuarios = grupo.getUsuarios();
-                System.out.println(usuarios.length);
-                for(User usuariooooo: usuarios){
-                    System.out.println(usuariooooo.getNombre());
+                for(User usuario: usuarios){
+                    System.out.println(usuario.getNombre());
                 }
                 model.addAttribute("usuarios",usuarios);
                 return "paginas/modalEliminaUsuario";

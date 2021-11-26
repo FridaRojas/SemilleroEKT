@@ -30,7 +30,7 @@
                         <select name="propiedad" id="propiedad">
                             <optgroup>
                                 <p th:each="user: ${usuarios}">
-                                    <option name="usuario" th:text="${user.getNombre()}"></option>
+                                    <option th:text="${user.getNombre()} + '---' + ${user.getNombreRol()}"></option>
                                 </p>
                             </optgroup>
                         </select>
