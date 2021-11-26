@@ -13,6 +13,7 @@ import androidx.lifecycle.get
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
+import com.example.agileus.models.PersonasGrupo
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
@@ -33,6 +34,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     }
 
     lateinit var listaN: ArrayList<String>
+    lateinit var listaObj: ArrayList<DataPersons>
     lateinit var asignarTareaViewModel          : CrearTareasViewModel
     lateinit var listaPersonas                  : ArrayList<DataPersons>
 
@@ -145,6 +147,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
                     listaN.add(it.nombre)
                 }
 
+                listaObj = ArrayList<DataPersons>()
+                listaPersonas.forEach(){
+                    listaObj.add(it)
+                }
+
                 val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity),
                     android.R.layout.simple_spinner_item, listaN)
                 spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -198,7 +205,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         mesInicio   = mes
         diaInicio   = dia
         val fecha=binding.edtFechaInicio
-        fecha.setText("$anio-${mes+1}-$dia")
+        val fechaObtenida = "$anio-${mes+1}-$dia"
+        fecha.setText(fechaObtenida)
         fechaInicio = fecha.text.toString()
         Log.e("Mensaje", "Fecha Inicio $fechaInicio")
 
@@ -208,7 +216,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         mesFin  = mes
         diaFin  = dia
         val fecha=binding.edtFechaFin
-        fecha.setText("$anio-${mes+1}-$dia")
+        val fechaObtenida = "$anio-${mes+1}-$dia"
+        fecha.setText(fechaObtenida)
         fechaFin = fecha.text.toString()
         Log.e("Mensaje", "Fecha Fin $fechaFin")
 
