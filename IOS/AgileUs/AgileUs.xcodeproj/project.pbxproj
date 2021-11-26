@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
 		4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EADD274D5B5200FA0380 /* Funciones_Date.swift */; };
+		4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */; };
+		4916EAE9275005DF00FA0380 /* Usuarios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAE8275005DF00FA0380 /* Usuarios.swift */; };
+		4916EAEB27502D6100FA0380 /* Funciones_Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAEA27502D6100FA0380 /* Funciones_Charts.swift */; };
+		4916EAED27503C1000FA0380 /* Mensajes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAEC27503C1000FA0380 /* Mensajes.swift */; };
 		49257000274C17E50014A8B4 /* Funciones_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */; };
 		49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49257001274C18120014A8B4 /* Adaptador_Modals.swift */; };
 		49257006274C1A0F0014A8B4 /* FiltroModal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */; };
@@ -51,6 +55,10 @@
 
 /* Begin PBXFileReference section */
 		4916EADD274D5B5200FA0380 /* Funciones_Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Date.swift; sourceTree = "<group>"; };
+		4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdaptadorServicios.swift; sourceTree = "<group>"; };
+		4916EAE8275005DF00FA0380 /* Usuarios.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Usuarios.swift; sourceTree = "<group>"; };
+		4916EAEA27502D6100FA0380 /* Funciones_Charts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Charts.swift; sourceTree = "<group>"; };
+		4916EAEC27503C1000FA0380 /* Mensajes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mensajes.swift; sourceTree = "<group>"; };
 		49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Generales.swift; sourceTree = "<group>"; };
 		49257001274C18120014A8B4 /* Adaptador_Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adaptador_Modals.swift; sourceTree = "<group>"; };
 		49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FiltroModal.storyboard; sourceTree = "<group>"; };
@@ -113,11 +121,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4916EAE4275005AB00FA0380 /* Adaptador */ = {
+			isa = PBXGroup;
+			children = (
+				49257001274C18120014A8B4 /* Adaptador_Modals.swift */,
+				4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */,
+			);
+			path = Adaptador;
+			sourceTree = "<group>";
+		};
+		4916EAE5275005B400FA0380 /* Servicios */ = {
+			isa = PBXGroup;
+			children = (
+				4916EAEC27503C1000FA0380 /* Mensajes.swift */,
+				4916EAE8275005DF00FA0380 /* Usuarios.swift */,
+			);
+			path = Servicios;
+			sourceTree = "<group>";
+		};
 		49256FFE274C17D00014A8B4 /* Extensiones */ = {
 			isa = PBXGroup;
 			children = (
 				49256FFF274C17E50014A8B4 /* Funciones_Generales.swift */,
 				4916EADD274D5B5200FA0380 /* Funciones_Date.swift */,
+				4916EAEA27502D6100FA0380 /* Funciones_Charts.swift */,
 			);
 			path = Extensiones;
 			sourceTree = "<group>";
@@ -127,7 +154,6 @@
 			children = (
 				49257004274C1A0F0014A8B4 /* FiltroModal.storyboard */,
 				49257005274C1A0F0014A8B4 /* FiltroModalController.swift */,
-				49257001274C18120014A8B4 /* Adaptador_Modals.swift */,
 			);
 			path = modals;
 			sourceTree = "<group>";
@@ -179,7 +205,6 @@
 		D4E69C762746BD81002121E4 /* AgileUs */ = {
 			isa = PBXGroup;
 			children = (
-				49256FFE274C17D00014A8B4 /* Extensiones */,
 				D4E69CB02746CCCE002121E4 /* Login */,
 				D4E69CA92746C25E002121E4 /* Tareas */,
 				D4E69CA82746C256002121E4 /* Reportes */,
@@ -223,6 +248,9 @@
 		D4E69CA82746C256002121E4 /* Reportes */ = {
 			isa = PBXGroup;
 			children = (
+				49256FFE274C17D00014A8B4 /* Extensiones */,
+				4916EAE5275005B400FA0380 /* Servicios */,
+				4916EAE4275005AB00FA0380 /* Adaptador */,
 				49257008274C1AD40014A8B4 /* listagrafica */,
 				49257003274C197E0014A8B4 /* modals */,
 				D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */,
@@ -505,10 +533,14 @@
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
 				4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
+				4916EAE9275005DF00FA0380 /* Usuarios.swift in Sources */,
 				4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */,
 				49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */,
+				4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
+				4916EAEB27502D6100FA0380 /* Funciones_Charts.swift in Sources */,
+				4916EAED27503C1000FA0380 /* Mensajes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

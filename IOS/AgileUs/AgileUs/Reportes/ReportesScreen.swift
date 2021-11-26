@@ -42,19 +42,52 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     // variables para lista
     var datos = [Any]()
     
-    // modal
+    // arreglo de usuarios por lider
+    var usuarios:[Any]?
+    var idUsuario:String?
+    
+    // arreglo de cantidad de mensajes
+    var mensajes:[Any]?
+    var cantidad_mensajes = [Int]()
+    
+    // adaptdores
     let adaptador = Adaptador_Modals()
+    var adaptadorServicios = AdaptadorServicios()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        datos = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
+        serviciosMensajes()
+        serviciosUsuarios()
         configurar_pie_chart()
         configurar_lista()
         configurar_bar_chart()
         configuracion_colores()
-        llenar_pie_chart(enviado: 46, recibido: 76, leido: 20)
-        print("mensaje prueba")
+        //llenar_pie_chart(mensajes: cantidad_mensajes)
+        
     }
     
+    func serviciosUsuarios() {
+        
+        let screen = adaptadorServicios.serviciosWeb {
+            [self] (Datos) -> Void in
+            usuarios = Datos
+        }
+    }
+    
+    func serviciosMensajes() {
+
+        //let mensaje = MensajesService()
+        
+        let screen = adaptadorServicios.servicioWebMensajesAdapter {
+                [self] (Datos) -> Void in
+
+            mensajes = Datos
+            cantidad_mensajes = cantidadDeMensajes(mensaje: mensajes! as! [Mensajes], idUsuario: "618e8821c613329636a769ac")
+            llenar_pie_chart(mensajes: cantidad_mensajes)
+        }
+    }
+
     func configuracion_colores() {
         view.backgroundColor = Hexadecimal_Color(hex: "F5F5F5")
         imgEncabezado.backgroundColor = Hexadecimal_Color(hex: "66BB6A")
@@ -62,6 +95,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         optionstAB.selectedSegmentTintColor = Hexadecimal_Color(hex: "66BB6A")
         indEnviados.backgroundColor = Hexadecimal_Color(hex: "66BB6A")
         indRecibidos.backgroundColor = Hexadecimal_Color(hex: "87D169")
+        indLeidos.backgroundColor = UIColor.darkGray
     }
     
     func configurar_pie_chart() {
@@ -71,16 +105,12 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         piechart.isUserInteractionEnabled = false
         piechart.legend.enabled = false
         
-        //configurar descripcion
-        indLeidos.backgroundColor = UIColor.darkGray
-        
     }
     
     func configurar_bar_chart() {
         barchart = BarChartView(frame: CGRect(x: 0, y: 0, width: viewChart.frame.size.width, height: viewChart.frame.size.height))
         barchart.legend.enabled = false
         barchart.isUserInteractionEnabled = false
-        
     }
     
     func configurar_lista() {
@@ -92,24 +122,29 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func cambio(_ sender: UISegmentedControl) {
         
         if sender.selectedSegmentIndex == 0 {
-            llenar_pie_chart(enviado: 46, recibido: 76, leido: 20)
+            llenar_pie_chart(mensajes: cantidad_mensajes)
         }
         
         if sender.selectedSegmentIndex == 1 {
-            llenar_pie_chart(enviado: 78, recibido: 10, leido: 80)
+            llenar_pie_chart(mensajes: cantidad_mensajes)
         }
         
     }
         
-    func llenar_pie_chart(enviado: Double?, recibido: Double?, leido: Double?) {
-        cantEnviados.text = "\(enviado!)"
-        cantRecibidos.text = "\(recibido!)"
-        cantLeidos.text = "\(leido!)"
-        cantTotales.text = "\(enviado! + recibido! + leido!)"
+    // 0:envidos 1:recibidos 2:leidos
+    func llenar_pie_chart(mensajes: [Int]) {
+        let enviado = mensajes[0]
+        let recibido = mensajes[1]
+        let leido = mensajes[2]
         
-        let enviados = PieChartDataEntry(value: enviado!)
-        let recibidos = PieChartDataEntry(value: recibido!)
-        let leidos = PieChartDataEntry(value: leido!)
+        cantEnviados.text = "\(enviado)"
+        cantRecibidos.text = "\(recibido)"
+        cantLeidos.text = "\(leido)"
+        cantTotales.text = "\(enviado + recibido + leido)"
+        
+        let enviados = PieChartDataEntry(value: Double(enviado))
+        let recibidos = PieChartDataEntry(value: Double(recibido))
+        let leidos = PieChartDataEntry(value: Double(leido))
         
         let entries = [enviados, recibidos, leidos]
         let dataset = PieChartDataSet(entries: entries, label: nil)
@@ -122,8 +157,18 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         piechart.data = chartdata
         piechart.contentMode = .scaleToFill
         viewChart.addSubview(piechart)
+        cargar_animacion_pie()
         
-        actualizar_datos_lista_grafica(enviado: enviado!, recibido: recibido!)
+        actualizar_datos_lista_grafica(enviado: Double(enviado), recibido: Double(recibido))
+        
+    }
+    
+    func cargar_animacion_pie() {
+        piechart.animate(yAxisDuration: 1, easingOption: ChartEasingOption.easeInOutQuad)
+    }
+    
+    func cargar_animacion_bar() {
+        barchart.animate(yAxisDuration: 0.8, easingOption: ChartEasingOption.easeInOutQuad)
     }
     
     func llenar_bar_chart(datos: [Any]?) {
@@ -139,10 +184,17 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         let colors = [Hexadecimal_Color(hex: "66BB6A"), Hexadecimal_Color(hex: "87D169")]
         dataset.colors = colors
         viewChart.addSubview(barchart)
+        cargar_animacion_bar()
     }
     
     func actualizar_datos_lista_grafica(enviado: Double?, recibido: Double?) {
-        datos = [["ic_PieChart", enviado!, recibido!, "pie"], ["ic_Bar", enviado!, recibido!, "bar"]]
+        if enviado == nil || recibido == nil {
+            datos = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
+        } else {
+            datos = [["ic_PieChart", enviado!, recibido!, "pie"], ["ic_Bar", enviado!, recibido!, "bar"]]
+        }
+        //datos = [["ic_PieChart", enviado!, recibido!, "pie"], ["ic_Bar", enviado!, recibido!, "bar"]]
+        opcionesGrafica.reloadData()
     }
     
     // funciones table view
@@ -160,7 +212,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             barchart.removeFromSuperview()
-            llenar_pie_chart(enviado: 46, recibido: 76, leido: 20)
+            llenar_pie_chart(mensajes: cantidad_mensajes)
             ocultar_etiquetas(tipo: false)
         } else if (indexPath.row == 1) {
             piechart.removeFromSuperview()
@@ -177,10 +229,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         lblRecibidos.isHidden = tipo
         indLeidos.isHidden = tipo
         indRecibidos.isHidden = tipo
-        //cantLeidos.isHidden = tipo
         cantTotales.isHidden = tipo
         cantEnviados.isHidden = tipo
-        //cantRecibidos.isHidden = tipo
         lblTiempoLeido.isHidden = !tipo
         lblTiempoRes.isHidden = !tipo
         cambiar_color_indicador(tipo: tipo)
@@ -204,21 +254,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBAction func abrirFiltros(_ sender: Any) {
         
-        let modal_form = adaptador.crear_modal_funcion(Accion_Confirmacion_completion: {
+        let modal_form = adaptador.crear_modal_funcion(datos: usuarios!, Accion_Confirmacion_completion: {
             [self](Datos) -> Void in
-            
-            print(Datos)
-            lblNombreu.text = Datos[2] as! String
-            
-            /*lblNombre.text = "Nombre: \(Datos[0] as! String)"
-            lblApellido.text = "Apellido \(Datos[1] as! String)"
-            lblEdad.text = "Edad \(Datos[2] as! String)"*/
-            
-            //var numero_cervezas = Datos[1] as! Int
-            
-            
-            //dismiss(animated: true, completion: nil)
-            //alerta_mensajes(title: "Mensaje", Mensaje: "Cervezas: \(numero_cervezas)")
+              
+            lblNombreu.text = Datos[3] as! String
         })
         
         present(modal_form, animated: true)

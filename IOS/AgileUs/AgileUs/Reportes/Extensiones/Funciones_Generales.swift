@@ -85,7 +85,32 @@ extension UIViewController {
         self.present(mensaje_alerta, animated: true, completion: nil)
     }
     
-    
+    func cantidadDeMensajes(mensaje: [Mensajes], idUsuario: String) -> [Int] {
+        
+        var leidos = 0
+        var recibidos = 0
+        var enviados = 0
+        
+        for i in mensaje {
+            
+            if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
+                recibidos += 1
+            }
+            
+            if i.idreceptor == idUsuario && i.statusLeido == true {
+                leidos += 1
+            }
+            
+            if i.idemisor == idUsuario && i.statusEnviado == true {
+                enviados += 1
+            }
+            
+        }
+        
+        return [enviados, recibidos, leidos]
+        
+        
+    }
 }
 
 

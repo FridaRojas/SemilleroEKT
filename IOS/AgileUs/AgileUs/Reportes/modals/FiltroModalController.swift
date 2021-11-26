@@ -11,14 +11,15 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     // variables
     var accion_confirmacion: ((_ datos: [Any]) -> Void)?
+    var usuarios:[Any]?
+    var idUsuario:String?
+    
     var selector_periodo = UIPickerView()
     var selector_usuario = UIPickerView()
     let selector_fecha = UIDatePicker()
     
-    var opciones_usuario = [String]()
+    var opciones_usuario = [Any]()
     var opciones_pIcker = [String]()
-    var semanas_anio = [String]()
-    var semanas_count = [String]()
     
     // elementos
     @IBOutlet weak var opPeriodos: UISegmentedControl!
@@ -34,7 +35,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         configuraciones()
-        configura_date_picker()
+        configura_data_picker()
         configura_picker_view()
         configura_picker_fecha_i()
         configura_picker_fecha_f()
@@ -50,7 +51,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
         
     // funciones datepicker
-    func configura_date_picker() {
+    func configura_data_picker() {
         if #available(iOS 13.4, *) {
             selector_fecha.preferredDatePickerStyle = .wheels
         }
@@ -106,7 +107,10 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @objc func usuario_elegido() {
-        txtUsuario.text = opciones_usuario[selector_usuario.selectedRow(inComponent: 0)]
+        var usuario = opciones_usuario[selector_usuario.selectedRow(inComponent: 0)] as! Usuario
+        
+        txtUsuario.text = usuario.nombre
+        idUsuario = usuario.id
         self.view.endEditing(true)
     }
     
@@ -143,7 +147,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         selector_fecha.datePickerMode = .date
     }
         
-    func cambiar_picker_view() {
+    func cambiar_picker_view_periodo() {
         let boton_listo = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(valor_elegido))
         let barra_de_herramientas = UIToolbar()
         barra_de_herramientas.sizeToFit()
@@ -179,16 +183,14 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
             opcion = opciones_pIcker[row]
         
         } else if pickerView.restorationIdentifier == "usuario" {
-            opcion = opciones_usuario[row]
+            var usuario = opciones_usuario[row] as! Usuario
+            
+            opcion = usuario.nombre
         }
         return opcion
     }
     
     // funciones para llenar picker view
-    func obtener_semanas_por_año() {
-        opciones_pIcker = Date().obtener_semanas_por_año()
-    }
-    
     func obtener_meses_picker() {
         opciones_pIcker = Obtener_meses()
     }
@@ -198,7 +200,11 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func obtener_usuarios() {
-        opciones_usuario = ["Pedro", "Naruto"]
+        opciones_usuario = [String]()
+        let lista_usuarios = usuarios as! [Usuario]
+        for i in lista_usuarios {
+            opciones_usuario.append(i)
+        }
     }
     
     @IBAction func cambioPeriodo(_ sender: UISegmentedControl) {
@@ -210,29 +216,18 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         switch sender.selectedSegmentIndex {
         case 0:
-            //cambiar_picker_fecha()
             ocultar_campos(tipo: "periodo")
-            //cambiar_picker_fecha()
         case 1:
-            /*ocultar_campos(tipo: "fecha")
-            cambiar_picker_view()
-            obtener_semanas_por_año()*/
             ocultar_campos(tipo: "fecha")
-            cambiar_picker_view()
+            cambiar_picker_view_periodo()
             obtener_meses_picker()
         case 2:
             ocultar_campos(tipo: "fecha")
-            cambiar_picker_view()
-            //obtener_meses_picker()
+            cambiar_picker_view_periodo()
             obtener_anios()
         case 3:
-            /*ocultar_campos(tipo: "fecha")
-            cambiar_picker_view()
-            obtener_anios()*/
             ocultar_campos(tipo: "custom")
-            //cambiar_picker_fecha()
         default:
-            //cambiar_picker_fecha()
             ocultar_campos(tipo: "periodo")
         }
     }
@@ -271,7 +266,6 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBAction func btnAceptar(_ sender: UIButton) {
         
         var info = [Any]()
-        print(opPeriodos.selectedSegmentIndex)
         
        switch opPeriodos.selectedSegmentIndex {
         case 0:
@@ -279,7 +273,8 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
                alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
                return
            }
-           info = [txtFecha.text!, txtFecha.text!, txtUsuario.text!]
+           
+           info = [txtFecha.text!, txtFecha.text!, idUsuario!, txtUsuario.text!]
                       
        case 1:
            if txtPeriodo.text == "" || txtUsuario.text == "" {
@@ -289,7 +284,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
            
            let fechas_mes = Date().obtener_primer_ultimo_dia_mes(mes: txtPeriodo.text!)
            
-           info = [fechas_mes[0], fechas_mes[1], txtUsuario.text!]
+           info = [fechas_mes[0], fechas_mes[1], idUsuario!, txtUsuario.text!]
        case 2:
            if txtPeriodo.text == "" || txtUsuario.text == "" {
                alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
@@ -298,7 +293,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
            
            let fechas_anio = Date().obtener_primer_ultimo_dia_anio(anio: txtPeriodo.text!)
            
-           info = [fechas_anio[0], fechas_anio[1], txtUsuario.text!]
+           info = [fechas_anio[0], fechas_anio[1], idUsuario!, txtUsuario.text!]
        case 3:
            
            if txtFechaIni.text == "" || txtFechaFin.text == "" || txtUsuario.text == "" {
@@ -306,7 +301,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
                return
            }
            
-           info = [txtFechaIni.text!, txtFechaFin.text!, txtUsuario.text!]
+           info = [txtFechaIni.text!, txtFechaFin.text!, idUsuario!, txtUsuario.text!]
            
         default:
             info = ["","",""]
@@ -319,8 +314,4 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
-    func valida_campos() {
-        alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
-        return
-    }
 }
