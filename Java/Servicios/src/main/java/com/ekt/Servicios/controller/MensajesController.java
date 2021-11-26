@@ -53,10 +53,18 @@ public class MensajesController {
 		this.validarMensajeImpl.validarOptional(emisor, "emisor");
 		// this.validarMensajeImpl.validarOptional(receptor, "receptor");
 
-		List<User> listaConversacion = listaConversacion(emisor.get().getID());
+		List<User> listaConversacion = new ArrayList<>();
+		List<Conversacion> listaGrupo = new ArrayList<>();
+		//List<User> listaConversacion = listaConversacion(emisor.get().getID());
+		if(emisor.isPresent()) {
+			listaConversacion = listaConversacion(emisor.get().getID());
+			listaGrupo = grupos(mensajes.getIDEmisor());
+		}
 
-		List<Conversacion> listaGrupo = grupos(mensajes.getIDEmisor());
-
+		//List<Conversacion> listaGrupo = new ArrayList<>();
+		//List<Conversacion> listaGrupo = grupos(mensajes.getIDEmisor());
+		
+		
 		// Banderas para saber si se encontraron en alguna lista
 		boolean existeEnListaGrupo = false;
 		boolean existeEnListaUsuario = false;
@@ -74,7 +82,7 @@ public class MensajesController {
 
 		if (existeEnListaGrupo) {
 			if (emisor.isPresent()) {
-				if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("http://"))) {
+				if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
 					mensajes.setRutaDocumento("");
 					mensajes.setStatusRutaDocumento(false);
 				} else {
