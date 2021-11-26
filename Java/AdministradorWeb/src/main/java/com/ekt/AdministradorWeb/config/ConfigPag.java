@@ -1,6 +1,11 @@
 package com.ekt.AdministradorWeb.config;
 
-
+import com.ekt.AdministradorWeb.entity.Group;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.Respuesta;
 import com.ekt.AdministradorWeb.entity.User;
@@ -9,19 +14,11 @@ import okhttp3.*;
 import org.bson.json.JsonObject;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.io.IOException;
-
 
 @Controller
 public class ConfigPag {
@@ -38,6 +35,40 @@ public class ConfigPag {
         return "paginas/usuarios/InicioUsuarios";
     }
 
+    @GetMapping("/eliminaUsuario")
+    public String eliminaUsuario(@ModelAttribute Group group, ModelMap model){
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Gson gson = new Gson();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/buscar/619d220c3cd67733b375db11")
+                .method("GET", null)
+                .build();
+        try{
+            Response response = client.newCall(request).execute();
+            System.out.println(response);
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            if (jsonObject.get("data")!=""){
+                System.out.println("Aqui sistoy");
+                JSONObject grupoObjeto = jsonObject.getJSONObject("data");
+                System.out.println(grupoObjeto.toString());
+                Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
+                System.out.println(grupo.getUsuarios().length);
+                User[] usuarios = grupo.getUsuarios();
+                System.out.println(usuarios.length);
+                for(User usuariooooo: usuarios){
+                    System.out.println(usuariooooo.getNombre());
+                }
+                model.addAttribute("usuarios",usuarios);
+                return "paginas/modalEliminaUsuario";
+            }else{
+                return "paginas/login";
+            }
+        }catch (Exception e){
+            System.out.println("No se puede realizar la petición");
+        }
+        return "paginas/modalEliminaUsuario";
+    }
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us) {
              //codigo de postman
@@ -107,11 +138,11 @@ public class ConfigPag {
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr) {
-        System.out.println(gr.getName());
+        System.out.println(gr.getNombre());
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"nombre\": \""+gr.getName()+"\"\r\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"nombre\": \""+gr.getNombre()+"\"\r\n}");
         Request request = new Request.Builder()
                 .url("http://localhost:3040/api/grupo/crear")
                 .method("POST", body)
