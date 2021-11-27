@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.models.Tasks
-import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +42,7 @@ class TaskViewModel : ViewModel() {
 
 
         } catch (ex: Exception) {
-            Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
+          //  Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
 
 
