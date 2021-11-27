@@ -46,6 +46,10 @@ class ListConversationFragment : Fragment() {
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
         }
+        binding.imgBroadcast.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_buzonUserFragment)
+        }
+
     }
 
     override fun onDestroyView() {
