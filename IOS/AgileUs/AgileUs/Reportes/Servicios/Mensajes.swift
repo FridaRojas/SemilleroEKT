@@ -10,6 +10,7 @@ import UIKit
 import CoreMedia
 
 var arrMensajes: [Mensajes]?
+var arrBrodcast: Broadcast?
 var idRecpt = String()
 
 struct Mensajes:Codable {
@@ -37,10 +38,10 @@ class MensajesService {
     var webServiceMessage: ((_ arrDatosTareas:[Any]) -> Void)?
     var webServiceBroadcast: ((_ arrDatosBroadcast:[Any]) -> Void)?
     
-    //let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928"
+    let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928"
 
-    let serviceMessage = "http://10.97.1.178:3040/api/mensajes/listarMensajesRecividos/618e8821c613329636a769ac"
-    let serviceBroadccast = "10.97.1.178:3040/api/broadCast//mostrarMensajesporID/618b05c12d3d1d235de0ade0"
+    //let serviceMessage = "http://10.97.1.178:3040/api/mensajes/listarMensajesRecividos/618e8821c613329636a769ac"
+    let serviceBroadccast = "http://10.97.1.178:3040/api/broadCast//mostrarMensajesporID/618b05c12d3d1d235de0ade0"
     
     
     func webServiceMensajes() {
@@ -72,14 +73,26 @@ class MensajesService {
         
     }
     
-    func webServiceBroadcast() {
+    func webServiceBroadcastF() {
+        
         let url = URL(string: serviceBroadccast)
         let idUsuario = "618b05c12d3d1d235de0ade0"
         
         URLSession.shared.dataTask(with: url!) {
             
-        }
-    }
+            (informacion, response, error) in
+            
+            do{
+                arrBrodcast = try JSONDecoder().decode(Broadcast.self, from: informacion!)
+                DispatchQueue.main.async {
+                    
+                    self.webServiceBroadcast?([arrBrodcast!])
+                
+                }
+            }catch{
+                print("Error al leer el archivo")
+            }
+        }.resume()    }
 
     /*func cantidadDeMensajes(mensaje: [Mensajes], idUsuario: String) -> [Int] {
         

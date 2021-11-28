@@ -55,7 +55,7 @@ class Usuarios{
 
                 DispatchQueue.main.async { [self] in
                     
-                    var estatus = arrData!.status
+                    let estatus = arrData!.status
                     //print("\nUsuarios registrados")
                     
                     if "\(estatus)" == "OK"{

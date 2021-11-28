@@ -111,6 +111,50 @@ extension UIViewController {
         
         
     }
+    
+    
+    func cantidadDeTareas(tareas: [Tareas], idUsuario:String) -> [Int]{
+        
+        var pendientes = 0
+        var terminadas = 0
+        var iniciada = 0
+        var revision = 0
+        var arrTareas = [Int]()
+        
+        print("Tareas: \(tareas)")
+        
+        for i in tareas{
+            
+            if idUsuario == i.id_emisor {
+                
+                print(i.status)
+                
+                if "\(i.status)" == "pendiente"{
+                    pendientes += 1
+                }
+                
+                if "\(i.status)" == "iniciada"{
+                    iniciada += 1
+                }
+                
+                if "\(i.status)" == "revision"{
+                    revision += 1
+                }
+                
+                if "\(i.status)" == "terminada"{
+                    terminadas += 1
+                }
+                
+            }else{
+                print("No se encuentran coincidencias de usuarios")
+            }
+        }
+        
+        arrTareas = [pendientes, iniciada, revision, terminadas]
+        print(arrTareas)
+        return arrTareas
+    }
+    
 }
 
 

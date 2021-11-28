@@ -16,12 +16,12 @@ class AdaptadorServicios{
         pantallaUsuarios.webServiceUsuarios()
     }
     
-    /*func servicioWebTareasAdapter(webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
+    func servicioWebTareasAdapter(webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
         let claseTareas = TareasService()
         claseTareas.webServiceTask = webServiceTareas
         claseTareas.webServiceTareas()
         
-    }*/
+    }
         
     func servicioWebMensajesAdapter(webServiceMensajes: @escaping (_ Datos: [Any]) -> Void){
         let claseMensajes = MensajesService()
