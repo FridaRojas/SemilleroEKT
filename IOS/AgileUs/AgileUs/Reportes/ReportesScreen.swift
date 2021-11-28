@@ -65,7 +65,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         
         //Definir primeros datos de los elementos de la lista
-        arrDatosLista = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
+        arrDatosLista = [["ic_PieChart", 0, 0, "pieM"], ["ic_Bar", 0, 0, "barM"]]
         
         //CONFIGURACIONES
         
@@ -201,7 +201,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //Comprobar que el arreglo de datos que se va a interpretar no esté vacio
         if tareas.isEmpty{
-            print("No hay datos para mostrar")
+            print("No hay datos para mostrar TAREAS")
         }else{
             
             configuracion_etiquetasPieTareas()
@@ -246,7 +246,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //Comprobar que el arreglo de datos que se va a interpretar no esté vacio
         if mensajes.isEmpty{
-            print("No hay datos para mostrar")
+            print("No hay datos para mostrar MENSAJES")
         }else{
 
             configuracion_etiquetasPieMensajes()
@@ -309,9 +309,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //Comprobar que el arreglo no esté vacio
         if !arrDatosT.isEmpty{
-            let tareasCompletadas = BarChartDataEntry(x: 1, y: Double("\(arrDatosT[0])")!)
+            let tareasCompletadas = BarChartDataEntry(x: 1, y: Double("\(arrDatosT[3])")!)
             //Por definir este campo                        <---------------------------------------------------------
-            let tareasPendientes = BarChartDataEntry(x: 2, y: Double("\(arrDatosT[1])")!)
+            let tareasPendientes = BarChartDataEntry(x: 2, y: Double("\(arrDatosT[0])")!)
             
             let entrie = [tareasCompletadas, tareasPendientes]
             
@@ -323,7 +323,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             cargar_animacion_bar()
             
             //********* Añadir la configuracion de etiquetas *********
-            configuracion_etiquetasBarTareas()
+            configuracion_etiquetasBarTareas(arrCantTareas: arrCantidadDeTareas)
             ocultar_etiquetas(tipo: true)
         }else{
             print("El arreglo de tareas está vacio")
@@ -334,10 +334,13 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //  ACTUALIZAR DATOS DE LAS GRÁFICAS DE MENSAJES
     
     func actualizar_datos_lista_grafica(enviado: Double?, recibido: Double?) {
+        
+        print("Datos de la listá MENSAJES")
+        
         if enviado == nil || recibido == nil {
-            arrDatosLista = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
+            arrDatosLista = [["ic_PieChart", 0, 0, "pieM"], ["ic_Bar", 0, 0, "barM"]]
         } else {
-            arrDatosLista = [["ic_PieChart", enviado!, recibido!, "pie"], ["ic_Bar", enviado!, recibido!, "bar"]]
+            arrDatosLista = [["ic_PieChart", enviado!, recibido!, "pieM"], ["ic_Bar", enviado!, recibido!, "barM"]]
         }
         //datos = [["ic_PieChart", enviado!, recibido!, "pie"], ["ic_Bar", enviado!, recibido!, "bar"]]
         opcionesGrafica.reloadData()
@@ -348,12 +351,15 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func actualizar_datos_lista_grafica(tareasCompletadas: Double?, tareasPendientes: Double?) {
         
+        print("Datos de la listá TAREAS")
+        
         if tareasCompletadas == nil || tareasPendientes == nil {
-            arrDatosLista = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
+            arrDatosLista = [["ic_PieChart", 0, 0, "pieT"], ["ic_Bar", 0, 0, "barT"]]
         } else {
-            arrDatosLista = [["ic_PieChart", tareasCompletadas!, tareasPendientes!, "pie"], ["ic_Bar", tareasCompletadas!, tareasPendientes!, "bar"]]
+            arrDatosLista = [["ic_PieChart", tareasCompletadas!, tareasPendientes!, "pieT"], ["ic_Bar", tareasCompletadas!, tareasPendientes!, "barT"]]
+            
         }
-        //datos = [["ic_PieChart", enviado!, recibido!, "pie"], ["ic_Bar", enviado!, recibido!, "bar"]]
+        
         opcionesGrafica.reloadData()
     }
     
@@ -361,13 +367,27 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //  FUNCIONALIDADES DE TABLAS
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        //print("CumberOfRowInSection")
+        //print(tableView)
+        //print(section)
+        
         return arrDatosLista.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        print("cell For Row At")
+        
         let indice = indexPath.row
+        print(indice)
+        
         let celda_personalizada = tableView.dequeueReusableCell(withIdentifier: ListaGrafica.identificador, for: indexPath) as! ListaGrafica
+        
+        //Cambiar las etiquetas de la lista
         celda_personalizada.configurar_celda(datos: arrDatosLista[indice] as! [Any])
+        print("Datos ls")
+        print(arrDatosLista)
         return celda_personalizada
     }
     
@@ -399,7 +419,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                 ocultar_etiquetas(tipo: true)
                 datos_bar_chart(datos: [34, 60])
             }else{
-                llenar_bar_chartTareas(arrDatosT: [10,11])
+                
+                llenar_bar_chartTareas(arrDatosT: arrCantidadDeTareas)
                 
             }
         }
@@ -427,9 +448,11 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //      CONFIGURACIONES DE ELEMENTOS EN GRÁFICAS DE TAREAS
     //                  GRÁFICA DE PASTEL
     
-    func configuracion_etiquetasBarTareas(){
+    func configuracion_etiquetasBarTareas(arrCantTareas: [Any]){
         lblTiempoLeido.text = "Tareas Completadas"
         lblTiempoRes.text = "Tareas Pendientes"
+        cantLeidos.text = "\(arrCantTareas[3])"
+        cantRecibidos.text = "\(arrCantTareas[0])"
     }
     
     //                  GRÁFICA DE BARRAS
