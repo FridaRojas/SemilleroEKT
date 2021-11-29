@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "682204693772",
+    "project_id": "agile-u",
+    "storage_bucket": "agile-u.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682204693772:android:ad0645ed357a50e4973529",
+        "android_client_info": {
+          "package_name": "com.example.agileus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682204693772-34i0eam4bgdkd6k8ph7k7egis1271h1j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.agileus",
+            "certificate_hash": "7153fb4ab1d3ea2ef44152f28fc7cf63af1b04ed"
+          }
+        },
+        {
+          "client_id": "682204693772-em2efjtrku7ndiisever95ede8nlh382.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBHKMRToPMfbgFB9galH7qveCSJPYgwhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682204693772-em2efjtrku7ndiisever95ede8nlh382.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
