@@ -179,7 +179,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
             titulo.toString(),                  // Titulo de la tarea
             descripcion.toString(),             // Descripcion
             mPrioridad.toString().lowercase(),  // Prioridad
-            "pendiente",
+            "Pendiente",
             false,                         // Leido
             "2014-01-01"
 

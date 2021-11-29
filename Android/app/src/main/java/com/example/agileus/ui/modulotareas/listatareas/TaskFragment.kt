@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -80,6 +81,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     }
 
     override fun getTaskByStatus(status: String) {
+        binding.progressUno.visibility = View.VISIBLE
 
         when (status) {
             listStatus[0] -> {
@@ -110,6 +112,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
         //taskViewModel.statusRecycler.value = "Iniciada"
         taskViewModel.devolverListaPorStatus(this)
+        binding.progressUno.visibility = View.GONE
         //Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
     }
 
