@@ -40,7 +40,7 @@ import javax.xml.datatype.DatatypeConstants.DAYS
 
 
 
-class ReporteMensajesFragment : Fragment(), ReportesListener, , FiltroReportesDialog.FiltroReportesDialogListener {
+class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener {
 
     private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
     private var _binding: ReporteMensajesFragmentBinding? = null
@@ -332,12 +332,10 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, , FiltroReportesDi
 
     override fun onYearFilterSelected() {
         Toast.makeText(context, "Año, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-
     }
 
     override fun onCustomFilterSelected() {
         Toast.makeText(context, "Custom, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

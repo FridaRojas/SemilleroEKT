@@ -6,6 +6,7 @@ import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
@@ -24,7 +26,7 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 
-class ReporteTareasFragment : Fragment(), ReportesListener {
+class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener  {
 
     private lateinit var reporteTareasViewModel: ReporteTareasViewModel
     private var _binding: ReporteTareasFragmentBinding? = null
@@ -68,7 +70,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnFiltroReportes.setOnClickListener {
-            val newFragment = FiltroReportesDialog()
+            val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }
 
@@ -330,6 +332,23 @@ class ReporteTareasFragment : Fragment(), ReportesListener {
         }
 
 
+    }
+
+
+    override fun onDayFilterSelected() {
+        Toast.makeText(context, "Dia, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onMonthFilterSelected() {
+        Toast.makeText(context, "Mes, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onYearFilterSelected() {
+        Toast.makeText(context, "Año, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCustomFilterSelected() {
+        Toast.makeText(context, "Custom, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
 }
