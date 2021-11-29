@@ -119,6 +119,20 @@ public class BroadCastControlador {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no fue encontrado",""));
 		}
 		
+		Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
+		
+		boolean bandera = false;
+		
+		for(User usuarios : listaUsuarios) {
+			if(mensajeEntrante.getIDReceptor().equals(usuarios.getID())) {
+				bandera = true;
+			}
+		}
+		
+		if(!bandera) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no puede mandar mensaje a la otra personas",""));
+		}
+		
 		Mensajes mensaje = new Mensajes();
 		
 		mensaje.setIDConversacion(mensajeEntrante.getIDEmisor()+"_"+mensajeEntrante.getIDReceptor());
