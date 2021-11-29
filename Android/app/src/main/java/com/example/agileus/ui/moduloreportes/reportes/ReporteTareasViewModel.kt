@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
 import com.example.agileus.models.Estadisticas
-import com.example.agileus.ui.modulomensajeria.listacontactos.HomeViewModel
 import com.example.agileus.webservices.dao.ReporteTareasDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,7 +35,7 @@ class ReporteTareasViewModel : ViewModel() {
             }
 
         }catch (ex:Exception){
-            Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
+            Log.e(ReporteTareasViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 }

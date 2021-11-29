@@ -7,17 +7,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Conversation
+import com.example.agileus.utils.Constantes
 
 
-class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
+class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
 
-
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
+
+        var id_vista = if
+                (viewType == 1){
+            R.layout.conversation_emisor_item
+        } else{
+            R.layout.conversation_receptor_item
+        }
+
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.conversation_emisor_item, viewGroup, false)
+            .inflate(id_vista, viewGroup, false)
 
         return ViewHolder(view)
     }
@@ -33,10 +39,21 @@ class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+    fun update(filtrado: List<Conversation>) {
+        var array:ArrayList<Conversation> = ArrayList(filtrado)
+        dataSet = array
+        this.notifyDataSetChanged()
     }
 
+
+    override fun getItemViewType(position: Int): Int {
+        val usuario=dataSet[position]
+       if(Constantes.id.equals(usuario.idemisor)){
+           return 1
+        }else{
+            return 2
+       }
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val msgEmisor: TextView
@@ -48,14 +65,7 @@ class ConversationAdapter(private val dataSet: ArrayList<Conversation>) :
         }
 
         fun enlazarItem(conversacion:Conversation){
-
-
             msgEmisor.text = conversacion.texto
-
-
-
-
-
         }
     }
 

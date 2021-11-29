@@ -1,0 +1,826 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
+		5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */; };
+		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
+		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
+		D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C792746BD81002121E4 /* SceneDelegate.swift */; };
+		D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C7B2746BD81002121E4 /* ViewController.swift */; };
+		D4E69C7F2746BD81002121E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4E69C7D2746BD81002121E4 /* Main.storyboard */; };
+		D4E69C812746BD83002121E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4E69C802746BD83002121E4 /* Assets.xcassets */; };
+		D4E69C842746BD83002121E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4E69C822746BD83002121E4 /* LaunchScreen.storyboard */; };
+		D4E69C8F2746BD83002121E4 /* AgileUsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C8E2746BD83002121E4 /* AgileUsTests.swift */; };
+		D4E69C992746BD83002121E4 /* AgileUsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C982746BD83002121E4 /* AgileUsUITests.swift */; };
+		D4E69C9B2746BD83002121E4 /* AgileUsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C9A2746BD83002121E4 /* AgileUsUITestsLaunchTests.swift */; };
+		D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAA2746C288002121E4 /* ChatsScreen.swift */; };
+		D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */; };
+		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
+		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D4E69C8B2746BD83002121E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4E69C6C2746BD81002121E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4E69C732746BD81002121E4;
+			remoteInfo = AgileUs;
+		};
+		D4E69C952746BD83002121E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4E69C6C2746BD81002121E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4E69C732746BD81002121E4;
+			remoteInfo = AgileUs;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs_AgileUsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.release.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.release.xcconfig"; sourceTree = "<group>"; };
+		7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
+		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
+		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4E69C742746BD81002121E4 /* AgileUs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileUs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4E69C772746BD81002121E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D4E69C792746BD81002121E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D4E69C7B2746BD81002121E4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D4E69C7E2746BD81002121E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D4E69C802746BD83002121E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D4E69C832746BD83002121E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D4E69C852746BD83002121E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4E69C8A2746BD83002121E4 /* AgileUsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgileUsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4E69C8E2746BD83002121E4 /* AgileUsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgileUsTests.swift; sourceTree = "<group>"; };
+		D4E69C942746BD83002121E4 /* AgileUsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgileUsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4E69C982746BD83002121E4 /* AgileUsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgileUsUITests.swift; sourceTree = "<group>"; };
+		D4E69C9A2746BD83002121E4 /* AgileUsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgileUsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D4E69CAA2746C288002121E4 /* ChatsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsScreen.swift; sourceTree = "<group>"; };
+		D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportesScreen.swift; sourceTree = "<group>"; };
+		D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TareasScreen.swift; sourceTree = "<group>"; };
+		D4E69CB12746CCEF002121E4 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D4E69C712746BD81002121E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E69C872746BD83002121E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E69C912746BD83002121E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		52D2981BB9146F534D2E2D08 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */,
+				B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */,
+				E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */,
+				D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */,
+				4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */,
+				6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D4E69C6B2746BD81002121E4 = {
+			isa = PBXGroup;
+			children = (
+				D4E69C762746BD81002121E4 /* AgileUs */,
+				D4E69C8D2746BD83002121E4 /* AgileUsTests */,
+				D4E69C972746BD83002121E4 /* AgileUsUITests */,
+				D4E69C752746BD81002121E4 /* Products */,
+				52D2981BB9146F534D2E2D08 /* Pods */,
+				DD4994C3FA25C34E3D104F72 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D4E69C752746BD81002121E4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69C742746BD81002121E4 /* AgileUs.app */,
+				D4E69C8A2746BD83002121E4 /* AgileUsTests.xctest */,
+				D4E69C942746BD83002121E4 /* AgileUsUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D4E69C762746BD81002121E4 /* AgileUs */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69CB02746CCCE002121E4 /* Login */,
+				D4E69CA92746C25E002121E4 /* Tareas */,
+				D4E69CA82746C256002121E4 /* Reportes */,
+				D4E69CA72746C24E002121E4 /* Chats */,
+				D4E69C772746BD81002121E4 /* AppDelegate.swift */,
+				D4E69C792746BD81002121E4 /* SceneDelegate.swift */,
+				D4E69C7B2746BD81002121E4 /* ViewController.swift */,
+				D4E69C7D2746BD81002121E4 /* Main.storyboard */,
+				D4E69C802746BD83002121E4 /* Assets.xcassets */,
+				D4E69C822746BD83002121E4 /* LaunchScreen.storyboard */,
+				D4E69C852746BD83002121E4 /* Info.plist */,
+			);
+			path = AgileUs;
+			sourceTree = "<group>";
+		};
+		D4E69C8D2746BD83002121E4 /* AgileUsTests */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69C8E2746BD83002121E4 /* AgileUsTests.swift */,
+			);
+			path = AgileUsTests;
+			sourceTree = "<group>";
+		};
+		D4E69C972746BD83002121E4 /* AgileUsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69C982746BD83002121E4 /* AgileUsUITests.swift */,
+				D4E69C9A2746BD83002121E4 /* AgileUsUITestsLaunchTests.swift */,
+			);
+			path = AgileUsUITests;
+			sourceTree = "<group>";
+		};
+		D4E69CA72746C24E002121E4 /* Chats */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69CAA2746C288002121E4 /* ChatsScreen.swift */,
+			);
+			path = Chats;
+			sourceTree = "<group>";
+		};
+		D4E69CA82746C256002121E4 /* Reportes */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */,
+			);
+			path = Reportes;
+			sourceTree = "<group>";
+		};
+		D4E69CA92746C25E002121E4 /* Tareas */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */,
+			);
+			path = Tareas;
+			sourceTree = "<group>";
+		};
+		D4E69CB02746CCCE002121E4 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D4E69CB12746CCEF002121E4 /* LoginScreen.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		DD4994C3FA25C34E3D104F72 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */,
+				54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */,
+				C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D4E69C732746BD81002121E4 /* AgileUs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4E69C9E2746BD83002121E4 /* Build configuration list for PBXNativeTarget "AgileUs" */;
+			buildPhases = (
+				60E7CE997B6DE07DB607E477 /* [CP] Check Pods Manifest.lock */,
+				D4E69C702746BD81002121E4 /* Sources */,
+				D4E69C712746BD81002121E4 /* Frameworks */,
+				D4E69C722746BD81002121E4 /* Resources */,
+				84E0B205B1F53A7D95D242CF /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AgileUs;
+			productName = AgileUs;
+			productReference = D4E69C742746BD81002121E4 /* AgileUs.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D4E69C892746BD83002121E4 /* AgileUsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4E69CA12746BD83002121E4 /* Build configuration list for PBXNativeTarget "AgileUsTests" */;
+			buildPhases = (
+				0F2CF230D658038EABCE7B7E /* [CP] Check Pods Manifest.lock */,
+				D4E69C862746BD83002121E4 /* Sources */,
+				D4E69C872746BD83002121E4 /* Frameworks */,
+				D4E69C882746BD83002121E4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D4E69C8C2746BD83002121E4 /* PBXTargetDependency */,
+			);
+			name = AgileUsTests;
+			productName = AgileUsTests;
+			productReference = D4E69C8A2746BD83002121E4 /* AgileUsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D4E69C932746BD83002121E4 /* AgileUsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4E69CA42746BD83002121E4 /* Build configuration list for PBXNativeTarget "AgileUsUITests" */;
+			buildPhases = (
+				1B87535C7B65EB8EAFC68D38 /* [CP] Check Pods Manifest.lock */,
+				D4E69C902746BD83002121E4 /* Sources */,
+				D4E69C912746BD83002121E4 /* Frameworks */,
+				D4E69C922746BD83002121E4 /* Resources */,
+				3FEA9F9F5904792F381C64AB /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D4E69C962746BD83002121E4 /* PBXTargetDependency */,
+			);
+			name = AgileUsUITests;
+			productName = AgileUsUITests;
+			productReference = D4E69C942746BD83002121E4 /* AgileUsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D4E69C6C2746BD81002121E4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
+				LastUpgradeCheck = 1310;
+				TargetAttributes = {
+					D4E69C732746BD81002121E4 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					D4E69C892746BD83002121E4 = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = D4E69C732746BD81002121E4;
+					};
+					D4E69C932746BD83002121E4 = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = D4E69C732746BD81002121E4;
+					};
+				};
+			};
+			buildConfigurationList = D4E69C6F2746BD81002121E4 /* Build configuration list for PBXProject "AgileUs" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D4E69C6B2746BD81002121E4;
+			productRefGroup = D4E69C752746BD81002121E4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D4E69C732746BD81002121E4 /* AgileUs */,
+				D4E69C892746BD83002121E4 /* AgileUsTests */,
+				D4E69C932746BD83002121E4 /* AgileUsUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D4E69C722746BD81002121E4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E69C842746BD83002121E4 /* LaunchScreen.storyboard in Resources */,
+				D4E69C812746BD83002121E4 /* Assets.xcassets in Resources */,
+				D4E69C7F2746BD81002121E4 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E69C882746BD83002121E4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E69C922746BD83002121E4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0F2CF230D658038EABCE7B7E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AgileUsTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1B87535C7B65EB8EAFC68D38 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AgileUs-AgileUsUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3FEA9F9F5904792F381C64AB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		60E7CE997B6DE07DB607E477 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AgileUs-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		84E0B205B1F53A7D95D242CF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgileUs/Pods-AgileUs-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgileUs/Pods-AgileUs-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgileUs/Pods-AgileUs-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D4E69C702746BD81002121E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
+				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
+				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
+				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
+				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
+				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
+				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E69C862746BD83002121E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E69C8F2746BD83002121E4 /* AgileUsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E69C902746BD83002121E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E69C992746BD83002121E4 /* AgileUsUITests.swift in Sources */,
+				D4E69C9B2746BD83002121E4 /* AgileUsUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D4E69C8C2746BD83002121E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4E69C732746BD81002121E4 /* AgileUs */;
+			targetProxy = D4E69C8B2746BD83002121E4 /* PBXContainerItemProxy */;
+		};
+		D4E69C962746BD83002121E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4E69C732746BD81002121E4 /* AgileUs */;
+			targetProxy = D4E69C952746BD83002121E4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D4E69C7D2746BD81002121E4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D4E69C7E2746BD81002121E4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D4E69C822746BD83002121E4 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D4E69C832746BD83002121E4 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D4E69C9C2746BD83002121E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D4E69C9D2746BD83002121E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D4E69C9F2746BD83002121E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AgileUs/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUs;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D4E69CA02746BD83002121E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AgileUs/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUs;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D4E69CA22746BD83002121E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgileUs.app/AgileUs";
+			};
+			name = Debug;
+		};
+		D4E69CA32746BD83002121E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgileUs.app/AgileUs";
+			};
+			name = Release;
+		};
+		D4E69CA52746BD83002121E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AgileUs;
+			};
+			name = Debug;
+		};
+		D4E69CA62746BD83002121E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AgileUs;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D4E69C6F2746BD81002121E4 /* Build configuration list for PBXProject "AgileUs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4E69C9C2746BD83002121E4 /* Debug */,
+				D4E69C9D2746BD83002121E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D4E69C9E2746BD83002121E4 /* Build configuration list for PBXNativeTarget "AgileUs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4E69C9F2746BD83002121E4 /* Debug */,
+				D4E69CA02746BD83002121E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D4E69CA12746BD83002121E4 /* Build configuration list for PBXNativeTarget "AgileUsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4E69CA22746BD83002121E4 /* Debug */,
+				D4E69CA32746BD83002121E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D4E69CA42746BD83002121E4 /* Build configuration list for PBXNativeTarget "AgileUsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4E69CA52746BD83002121E4 /* Debug */,
+				D4E69CA62746BD83002121E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D4E69C6C2746BD81002121E4 /* Project object */;
+}

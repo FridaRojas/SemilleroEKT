@@ -41,12 +41,12 @@ class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
 
         if(tipo==1) {
             viewHolder.textView.text =  "Mensaje enviado a : Broadcast"
-            viewHolder.textView1.text = "Asunto:  ${buzon.id}"
+     //       viewHolder.textView1.text = "Asunto:  ${buzon.}"
             viewHolder.textView2.text = "Mensaje: \n ${buzon.message}"
-            viewHolder.textview3.text = "Fecha de enviado: ${buzon.fecha}"
+       //     viewHolder.textview3.text = "Fecha de enviado: ${buzon.fecha}"
         }
         if(tipo==2) {
-            viewHolder.textView.text =  "Comunicado dia  : ${buzon.fecha}"
+        //    viewHolder.textView.text =  "Comunicado dia  : ${buzon.fecha}"
             viewHolder.textView1.text = "Asunto:    ${buzon.asunto}"
             viewHolder.textView2.text = "Mensaje: \n${buzon.message}"
             viewHolder.textview3.text = ""

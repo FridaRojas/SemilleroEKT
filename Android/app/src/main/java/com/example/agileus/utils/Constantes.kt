@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 object Constantes {
-    val URL_ENVIAR_MENSAJE = "http://10.97.1.202:3040/api/"
+    val URL_ENVIAR_MENSAJE = "http://10.97.1.178:3040/api/"
     val URL_BUZON_1=""
     val URL_BUZON_2=""
     val URL_Tareas_Enviadas=""
