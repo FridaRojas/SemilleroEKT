@@ -7,19 +7,74 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.agileus.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="com.example.agileus.ui.modulomensajeria.listacontactos.ListConversationFragment"
+        android:label="@string/title_mensajes"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_listContactsFragment"
+            app:destination="@id/listContactsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.agileus.ui.dashboard.DashboardFragment"
+        android:name="com.example.agileus.ui.modulotareas.listatareas.TaskFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_formularioCrearTareasFragment"
+            app:destination="@id/formularioCrearTareasFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.agileus.ui.notifications.NotificationsFragment"
+        android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/reporte_mensajes_fragment" />
+    <fragment
+        android:id="@+id/listContactsFragment"
+        android:name="com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragment"
+        android:label="list_contacts_fragment"
+        tools:layout="@layout/list_contacts_fragment" >
+        android:id="@+id/buzonFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
+        android:label="fragment_buzon"
+        tools:layout="@layout/fragment_buzon" >
+        <action
+            android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
+            app:destination="@id/buzonDetallesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/buzonDetallesFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesFragment"
+        android:label="buzon_detalles_fragment"
+        tools:layout="@layout/buzon_detalles_fragment" />
+
+    <fragment
+        android:id="@+id/reporteMensajesFragment"
+        android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragment"
+        android:label="reporte_mensajes_fragment"
+        tools:layout="@layout/reporte_mensajes_fragment" >
+        <action
+            android:id="@+id/action_reporteMensajesFragment_to_reporteTareasFragment"
+            app:destination="@id/reporteTareasFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reporteTareasFragment"
+        android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteTareasFragment"
+        android:label="reporte_tareas_fragment"
+        tools:layout="@layout/reporte_tareas_fragment" >
+        <action
+            android:id="@+id/action_reporteTareasFragment_to_reporteMensajesFragment"
+            app:destination="@id/reporteMensajesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formularioCrearTareasFragment"
+        android:name="com.example.agileus.ui.modulotareas.creartareas.FormularioCrearTareasFragment"
+        android:label="Asignar Tarea"
+        >
+        <action
+            android:id="@+id/action_formularioCrearTareasFragment_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
+
 </navigation>
