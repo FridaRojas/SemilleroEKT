@@ -8,10 +8,16 @@
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/drawable/rounded_login.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/drawable/rounded_rm.xml" value="0.34629629629629627" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_auth.xml" value="0.1" />
+        <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_conversation_one_to_one.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_password_recup.xml" value="0.1" />
+        <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/formulario_recupera_pass.xml" value="0.1" />
+        <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_sign_out.xml" value="0.21666666666666667" />
+        <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/list_contacts_fragment.xml" value="0.2265625" />
+        <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.2265625" />
       </map>
     </option>
   </component>

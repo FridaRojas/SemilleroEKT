@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.agileus.ui.modulomensajeria.listacontactos.ListConversationFragment"
@@ -35,10 +36,12 @@
         android:name="com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragment"
         android:label="list_contacts_fragment"
         tools:layout="@layout/list_contacts_fragment" >
+
+        <fragmet
         android:id="@+id/buzonFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
         android:label="fragment_buzon"
-        tools:layout="@layout/fragment_buzon" >
+        tools:layout="@layout/fragment_buzon" />
         <action
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
             app:destination="@id/buzonDetallesFragment" />
@@ -76,5 +79,18 @@
             android:id="@+id/action_formularioCrearTareasFragment_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />
     </fragment>
+
+
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.agileus.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
 
 </navigation>

@@ -12,7 +12,7 @@ import com.example.agileus.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+  //  private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
 
@@ -26,8 +26,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+  //      homeViewModel =
+  //          ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -39,13 +39,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel.devuelveLista()
+ //       homeViewModel.devuelveLista()
 
-        homeViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.recyclerConversacion.adapter = it
-            binding.recyclerConversacion.layoutManager = LinearLayoutManager(activity)
+ //       homeViewModel.adaptador.observe(viewLifecycleOwner,{
+ //           binding.recyclerConversacion.adapter = it
+ //           binding.recyclerConversacion.layoutManager = LinearLayoutManager(activity)
 
-        })
+ //       })
 
     }
 

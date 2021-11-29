@@ -34,5 +34,8 @@
     <string name="iniciar_sesion">Iniciar Sesión</string>
     <string name="olvidaste_tu_contrasena">¿Olvidaste tu contraseña?</string>
     <string name="Guardar">Guardar</string>
+    <string name="login_password_hint">Ingrese una contraseña</string>
+    <string name="login_email_hint">Ingrese un correo electrónico</string>
+    <string name="iniciar_sesion_logueo">Iniciar Sesión</string>
 
 </resources>
