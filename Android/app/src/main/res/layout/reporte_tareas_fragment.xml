@@ -69,9 +69,25 @@
         android:layout_width="362sp"
         android:layout_height="238sp"
         android:layout_gravity="center"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes" />
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintBottom_toTopOf="@id/Legendstablareportes"
+        />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="362sp"
+        android:layout_height="238sp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintBottom_toTopOf="@id/Legendstablareportes"
+        />
+
 
     <LinearLayout
         android:id="@+id/Legendstablareportes"
@@ -80,9 +96,10 @@
         android:layout_marginStart="64dp"
         android:layout_marginEnd="32dp"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@id/pieChart"
-        app:layout_constraintStart_toStartOf="@id/pieChart"
-        app:layout_constraintTop_toBottomOf="@id/pieChart">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
+        >
 
 
         <LinearLayout
@@ -92,33 +109,35 @@
             android:paddingHorizontal="32dp">
 
             <ImageView
+                android:id="@+id/colorlegend1"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:src="@color/colorPrimary" />
+                android:background="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/txtPrimerLegend"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Enviados"
-                android:textSize="16sp"
+                android:text="@string/legendtext1"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/colorlegend2"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:src="@color/colorSecondary" />
+                android:background="@color/colorSecondary" />
 
             <TextView
                 android:id="@+id/txtSegundoLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Recibidos"
-                android:textSize="16sp"
+                android:text="@string/legendtext2"
+                android:textSize="14sp"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -152,33 +171,36 @@
             android:paddingHorizontal="32dp">
 
             <ImageView
+                android:id="@+id/colorlegend3"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:src="@color/colorGray" />
+                android:background="@color/white"
+                />
 
             <TextView
                 android:id="@+id/txtTercerLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Totales"
-                android:textSize="16sp"
+                android:text="@string/legendtext3"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/colorlegend4"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:src="@color/colorSecondary" />
+                android:background="@color/colorGray" />
 
             <TextView
                 android:id="@+id/txtCuartoLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Leidos"
-                android:textSize="16sp"
+                android:text="@string/legendtext4"
+                android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -211,9 +233,9 @@
         android:id="@+id/RecyclerLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Legendstablareportes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Legendstablareportes"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

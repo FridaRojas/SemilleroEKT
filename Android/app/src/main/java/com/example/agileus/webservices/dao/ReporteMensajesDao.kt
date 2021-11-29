@@ -4,10 +4,12 @@ import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.models.*
+import com.example.agileus.models.DatosMensajes
+import com.example.agileus.models.Estadisticas
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -15,7 +17,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ReporteMensajesDao {
-
 
 
     private var contador_mensajes_enviados:Int = 0
@@ -31,7 +32,7 @@ class ReporteMensajesDao {
 
     var employeeList = ArrayList<Contacts>()
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosMensajes(): ArrayList<Estadisticas> {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes()
@@ -53,19 +54,25 @@ class ReporteMensajesDao {
         if (ResponseMensajes.isSuccessful) {
             lista = ResponseMensajes.body()!!
             val id_emisor = lista[0].idemisor //Aquí se coloca el id del emisor deseado
-            MySharedPreferences.reportesGlobales.idUsuario = id_emisor  // ID De la sesion TO recuperar del inicio de sesion
-            MySharedPreferences.reportesGlobales.idUsuarioEstadisticas = id_emisor  // ID De la sesion TO recuperar del inicio de sesion
-            MySharedPreferences.fechaFinEstadisticas = currentDate
-            MySharedPreferences.fechaInicioEstadisticas = "1970/01/01"
-            Log.d("Response", "user: ${MySharedPreferences.idUsuario}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}")
+
+            var contador_m_enviados= 0
+            var contador_m_recibidos = 0
+            var contador_m_leidos=0
+            var contador_m_totales=0
+            var tiempo_p_respuesta=""
+            temporal=0
+            suma_tiempos=0
+            promedio_tiempo_respuesta=""
+
+
             fecha_anterior = ZonedDateTime.parse(lista[0].fechaEnviado) // primera fecha para comparar
 
             lista.forEach {
 
-                contador_mensajes_totales = contador_mensajes_totales + 1
+                contador_m_totales = contador_m_totales + 1
 
                 if(id_emisor==it.idemisor){
-                    contador_mensajes_enviados = contador_mensajes_enviados + 1
+                    contador_m_enviados = contador_m_enviados + 1
 
                      fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
                      diferencia_minutos = ChronoUnit.MINUTES.between(fecha_anterior, fecha_actual)
@@ -80,10 +87,10 @@ class ReporteMensajesDao {
                 }
                 else{
 
-                    contador_mensajes_recibidos = contador_mensajes_recibidos + 1
+                    contador_m_recibidos = contador_m_recibidos + 1
 
                     if(it.statusLeido){
-                        contador_mensajes_leidos = contador_mensajes_leidos + 1
+                        contador_m_leidos = contador_m_leidos + 1
                     }
 
                 }
@@ -91,14 +98,21 @@ class ReporteMensajesDao {
             }
 
             if(temporal==0)
-            promedio_tiempo_respuesta = "Sin tiempo de respuesta."
+            tiempo_p_respuesta = "Sin tiempo de respuesta."
             else
-            promedio_tiempo_respuesta = "${((suma_tiempos)/(temporal - 1))} minutos."
+            tiempo_p_respuesta = "${((suma_tiempos)/(temporal - 1))} minutos."
             //Log.d("mensaje","suma tiempos: ${suma_tiempos}")
 
+            contador_mensajes_enviados=contador_m_enviados
+            contador_mensajes_recibidos=contador_m_leidos
+            contador_mensajes_totales=contador_m_totales
+            contador_mensajes_leidos=contador_m_leidos
+            promedio_tiempo_respuesta=tiempo_p_respuesta
+
                 listaRecycler.add(Estadisticas("Enviados:",contador_mensajes_enviados.toString(),"Recibidos:",contador_mensajes_recibidos.toString(), R.drawable.ic_pie_chart))
-                listaRecycler.add(Estadisticas("Peticiones al Broadcast",contador_mensajes_enviados.toString(),"Respuestas del Broadcast",contador_mensajes_recibidos.toString(), R.drawable.ic_bar_chart))
-            }
+                listaRecycler.add(Estadisticas("Promedio de respuesta del Broadcast:","","",promedio_tiempo_respuesta, R.drawable.ic_bar_chart))
+        }
+
         return listaRecycler
 
     }
@@ -122,7 +136,6 @@ class ReporteMensajesDao {
 
         return contador_mensajes_leidos.toString()
     }
-
 
     fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
         try{

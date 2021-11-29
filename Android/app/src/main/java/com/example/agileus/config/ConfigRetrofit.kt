@@ -56,7 +56,4 @@ class ConfigRetrofit {
         return mRetrofit.create(ReportesApi::class.java)
 
     }
-
-
-
 }

@@ -11,6 +11,7 @@ import com.example.agileus.models.Contacts
 import com.example.agileus.models.EmployeeListByBossID
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.utils.Constantes
+import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteMensajesDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,14 +41,15 @@ class ReporteMensajesViewModel : ViewModel() {
 
     }
 
-    fun devuelvelistaReporte(){
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun devuelvelistaReporte(listener: ReportesListener){
 
             viewModelScope.launch {
                 listaConsumida =  withContext(Dispatchers.IO) {
                     lista.recuperardatosMensajes()
                 }
                 if(listaConsumida.isNotEmpty()){
-                    adaptador.value = ListaDatosAdapter(listaConsumida)
+                    adaptador.value = ListaDatosAdapter(listaConsumida,listener)
                     enviados.value = lista.obtenerMensajesEnviados()
                     recibidos.value = lista.obtenerMensajesRecibidos()
                     totales.value = lista.obtenerMensajesTotales()
