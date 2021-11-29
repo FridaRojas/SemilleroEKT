@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -20,7 +22,8 @@ import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCre
 
 private const val ARG_PARAM1 = "param1"
 
-class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener {
+class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener, AdapterView.OnItemSelectedListener {
+
 
     companion object {
         @JvmStatic
@@ -40,12 +43,16 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     private val binding get() = _binding!!
     private var param1  : String? = null
 
-    lateinit var nombrePersonaAsignada  : String
-    lateinit var idPersonaAsignada      : String
+    lateinit var personasAsignadasAdapter   : ArrayAdapter<String>
+    lateinit var prioridadAdapter           : ArrayAdapter<String>
+    lateinit var listaPrioridades           : Array<String>
+    lateinit var nombrePersonaAsignada      : String
+    lateinit var prioridadAsignada          : String
 
-    var idsuperiorInmediato        : String = "618e88acc613329636a769ae"
-    var fechaInicio     : String = ""
-    var fechaFin        : String = ""
+    var idPersonaAsignada      : String = ""
+    var idsuperiorInmediato    : String = "618e88acc613329636a769ae"
+    var fechaInicio            : String = ""
+    var fechaFin               : String = ""
 
     var anioInicio      : Int? = null
     var anioFin         : Int? = null
@@ -69,15 +76,18 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        listaPrioridades = resources.getStringArray(R.array.prioridad_array)
         asignarTareaViewModel = ViewModelProvider(this).get()
         setUpUiAsignarTareas()
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
 
-            // Guarda nombre de persona en variable nombrePersonaAsignada
-            nombrePersonaAsignada = binding.spinPersonaAsignada.selectedItem as String
-            Log.d("Mensaje", "nombrePersonaAsignada $nombrePersonaAsignada")
+            // Guardar datos
+            nombrePersonaAsignada = (binding.spinnerPersonaAsignada.getEditText() as AutoCompleteTextView).text.toString()
+            prioridadAsignada = (binding.spinnerPrioridad.getEditText() as AutoCompleteTextView).text.toString()
+            Toast.makeText(activity, "$nombrePersonaAsignada & $prioridadAsignada", Toast.LENGTH_SHORT).show()
 
             // Obtiene el numero de empleado de la persona seleccionada
             listaPersonas.forEach(){
@@ -145,29 +155,26 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
                     listaN.add(it.nombre)
                 }
 
-                val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity),
-                    android.R.layout.simple_spinner_item, listaN)
-                spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinPersonaAsignada.adapter=spinListaAsignarAdapter
+                //SpinnerPersonasAsignadas
+                personasAsignadasAdapter = ArrayAdapter((activity as HomeActivity), R.layout.support_simple_spinner_dropdown_item, listaN )
+                binding.textSpinPersona.setAdapter(personasAsignadasAdapter)
+                binding.textSpinPersona.threshold
 
             }else{
                 Toast.makeText(activity , "No se encontraron personas en el grupo", Toast.LENGTH_LONG).show()
             }
         })
-        // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
-        
-        // SPINER CON RECURSO XML
-        val spinPrioridadAdapter = ArrayAdapter.createFromResource(activity as HomeActivity, R.array.prioridad_array, android.R.layout.simple_spinner_item)
-        spinPrioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinPrioridad.adapter=spinPrioridadAdapter
-        // SPINER CON RECURSO XML
+
+        //Spinner Prioridades
+        prioridadAdapter = ArrayAdapter((activity as HomeActivity), R.layout.support_simple_spinner_dropdown_item, listaPrioridades )
+        binding.textSpinPrioridad.setAdapter(prioridadAdapter)
+        binding.textSpinPrioridad.threshold
     }
     fun operacionIsert(){
         val tarea: Tasks
         val titulo      = binding.edtAgregaTitulo.text
         val descripcion = binding.edtDescripcion.text
-        val mPrioridad  = binding.spinPrioridad.selectedItem
-
+        val mPrioridad  = binding.textSpinPrioridad.text
         tarea = Tasks(
             "GRUPOID1",                  // id_grupo
             "EMIS1",
@@ -178,7 +185,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
             fechaFin,                           // Fecha Fin
             titulo.toString(),                  // Titulo de la tarea
             descripcion.toString(),             // Descripcion
-            mPrioridad.toString().lowercase(),  // Prioridad
+            prioridadAsignada,  // Prioridad
             "Pendiente",
             false,                         // Leido
             "2014-01-01"
@@ -197,7 +204,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         anioInicio  = anio
         mesInicio   = mes
         diaInicio   = dia
-        val fecha=binding.edtFechaInicio
+        val fecha = binding.edtFechaInicio
         fecha.setText("$anio-${mes+1}-$dia")
         fechaInicio = fecha.text.toString()
         Log.e("Mensaje", "Fecha Inicio $fechaInicio")
@@ -216,6 +223,15 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        var p = parent?.getItemAtPosition(position).toString()
+        Log.d("item", "$p")
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
     // *** INTERFACES ***
 }

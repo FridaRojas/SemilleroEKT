@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 
-class StatusTasksAdapter(private val dataSet: List<String>, val listener:TaskDialogListener) :
+class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDialogListener) :
     RecyclerView.Adapter<StatusTasksAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
