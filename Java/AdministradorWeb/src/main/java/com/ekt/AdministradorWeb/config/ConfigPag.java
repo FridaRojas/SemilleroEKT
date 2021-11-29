@@ -45,7 +45,7 @@ public class ConfigPag {
     }
 
     @GetMapping("/eliminaUsuario")
-    public String eliminaUsuario(@ModelAttribute Group group, ModelMap model){
+    public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Gson gson = new Gson();
@@ -58,15 +58,11 @@ public class ConfigPag {
             System.out.println(response);
             JSONObject jsonObject= new JSONObject(response.body().string());
             if (jsonObject.get("data")!=""){
-                System.out.println("Aqui sistoy");
                 JSONObject grupoObjeto = jsonObject.getJSONObject("data");
-                System.out.println(grupoObjeto.toString());
                 Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
-                System.out.println(grupo.getUsuarios().length);
                 User[] usuarios = grupo.getUsuarios();
-                System.out.println(usuarios.length);
-                for(User usuariooooo: usuarios){
-                    System.out.println(usuariooooo.getNombre());
+                for(User usuario: usuarios){
+                    System.out.println(usuario.getNombre());
                 }
                 model.addAttribute("usuarios",usuarios);
                 return "paginas/modalEliminaUsuario";
@@ -78,6 +74,7 @@ public class ConfigPag {
         }
         return "paginas/modalEliminaUsuario";
     }
+
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -170,4 +167,36 @@ public class ConfigPag {
         return "redirect:/findAllUsuarios";
 
     }
+
+    @PostMapping("/reasignaSuperior")
+    public String reasignaSuperior(@ModelAttribute User usuario, ModelMap modelMap){
+        Gson gson = new Gson();
+        ArrayList<User> listaUsuarios = new ArrayList();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        Request request = new Request.Builder()
+                .url("localhost:3040/api/user/findByBossId/619bbf0623b2987cc6211172")
+                .method("GET", null)
+                .build();
+        try{
+            Response response = client.newCall(request).execute();
+            System.out.println(response);
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            if (jsonObject.get("data")!=""){
+
+                JSONArray usuarios = jsonObject.getJSONArray("data");
+
+                for (int i=0;i<usuarios.length();i++){
+                    listaUsuarios.add(gson.fromJson(usuarios.getJSONObject(i).toString(), User.class));
+                }
+                modelMap.addAttribute("usuarios",listaUsuarios);
+                return "paginas/ReasignaSuperior";
+            }else{
+                return "paginas/login";
+            }
+        }catch (Exception e){
+            System.out.println("No se puede realizar la petición");
+        }
+        return "paginas/modalEliminaUsuario";
+    }
+
 }
