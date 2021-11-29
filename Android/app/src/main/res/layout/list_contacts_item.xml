@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardCornerRadius="@dimen/cornerRadiusCard"
+    android:layout_marginBottom="@dimen/paddingGeneral"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:padding="8dp">
+
+
+        <TextView
+            android:id="@+id/txtNameContact"
+            style="@style/titleCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre del usuario"
+            />
+
+        <TextView
+            android:id="@+id/txtRol"
+            style="@style/textCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rol del usuario"
+           />
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
