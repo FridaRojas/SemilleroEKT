@@ -16,5 +16,4 @@
         android:icon="@drawable/iconoreportes"
         android:title="@string/title_reportes" />
 
-
 </menu>
