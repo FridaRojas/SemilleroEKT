@@ -21,7 +21,7 @@ class InitialApplication : Application() {
         webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
         BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
-        webServiceGlobalReportes = ConfigRetrofit().getconfigreportes()
+        webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
     }
 
 }

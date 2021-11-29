@@ -1,15 +1,22 @@
 package com.example.agileus.webservices.dao
 
+import android.content.SharedPreferences
+import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.models.Contacts
 import com.example.agileus.models.DatosMensajes
+import com.example.agileus.models.EmployeeListByBossID
 import com.example.agileus.models.Estadisticas
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReporteMensajesDao {
 
@@ -25,6 +32,7 @@ class ReporteMensajesDao {
     private var temporal:Int=0
     private lateinit var promedio_tiempo_respuesta:String
 
+    var employeeList = ArrayList<Contacts>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosMensajes(): ArrayList<Estadisticas> {
@@ -34,6 +42,16 @@ class ReporteMensajesDao {
 
         val listaRecycler= ArrayList<Estadisticas>()
         val lista: ArrayList<DatosMensajes>
+
+
+
+
+        val actualCal= Calendar.getInstance()
+        var dt = Date(actualCal.get(Calendar.YEAR)-1900, actualCal.get(Calendar.MONTH) , actualCal.get(Calendar.DAY_OF_MONTH))
+        val sdf = SimpleDateFormat("dd/MM/y", Locale.US)
+        val currentDate = sdf.format(dt)
+
+
 
         if (ResponseMensajes.isSuccessful) {
             lista = ResponseMensajes.body()!!
@@ -120,5 +138,25 @@ class ReporteMensajesDao {
 
         return contador_mensajes_leidos.toString()
     }
+
+    fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
+        try{
+            //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
+            var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
+
+            if (ResponseDos.isSuccessful){
+                val listaConsumida = ResponseDos.body()!!
+                employeeList = listaConsumida.dataEmployees
+            }else{
+                Log.e("ERROR SubCOntactos", ResponseDos.code().toString())
+            }
+
+        }catch (ex:Exception){
+
+        }
+        return employeeList
+    }
+
 
 }

@@ -11,20 +11,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.R.*
+import com.example.agileus.config.MySharedPreferences
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import java.util.*
-import kotlin.collections.ArrayList
 
-class FiltroReportesDialog(): DialogFragment(),
+class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFragment(),
         DatePickerFiltroReportesDialogFragment.DatePickerFiltroReportesDialogListener,
         MonthPickerDialogFragment.MonthPickerDialogListener,
-        YearPickerDialogFragment.YearPickerDialogListener
+        YearPickerDialogFragment.YearPickerDialogListener,
+        UserStadisticPickerDialogFragment.UserStadistickPickerDialogListener
     {
     private lateinit var txtFechaInicio: TextView
     private lateinit var txtFechaFin: TextView
+    private lateinit var txtDia: TextView
     private lateinit var txtMes: TextView
     private lateinit var txtAnio: TextView
+    private lateinit var txtTitulo: TextView
+    private lateinit var txtUsuario: TextView
     private var dateSelected = 0
     private var opcionFiltro = 0
 
@@ -40,30 +44,32 @@ class FiltroReportesDialog(): DialogFragment(),
             val inflater = requireActivity().layoutInflater
             val vista = inflater.inflate(layout.dialog_filtro_reportes, null)
 
+
             val txtInicio = vista.findViewById<TextView>(R.id.txtFechaInicio)
             val txtFin = vista.findViewById<TextView>(R.id.txtFechaFin)
             txtFechaInicio = vista.findViewById(R.id.txtNumeroFechaInicio)
             txtFechaFin = vista.findViewById(R.id.txtNumeroFechaFin)
             txtMes = vista.findViewById(R.id.txtFiltroMes)
             txtAnio = vista.findViewById(R.id.txtFiltroAnio)
+            txtTitulo = vista.findViewById(R.id.txtFiltroNombre)
+            txtDia = vista.findViewById(R.id.txtFiltroDia)
+            txtUsuario = vista.findViewById(R.id.txtFiltroUsuario)
 
             val chipGroup = vista.findViewById<ChipGroup>(R.id.group)
-            val chipDia = vista.findViewById<Chip>(R.id.chipFiltroDia)
-            val chipSemana = vista.findViewById<Chip>(R.id.chipFiltroSemana)
-            val chipMes = vista.findViewById<Chip>(R.id.chipFiltroMes)
-            val chipAnio = vista.findViewById<Chip>(R.id.chipFiltroAnio)
-            val chipCustom = vista.findViewById<Chip>(R.id.custom)
 
+            txtTitulo.setText(MySharedPreferences.idUsuario)
+            txtUsuario.setText(MySharedPreferences.idUsuarioEstadisticas)
             txtInicio.setText("Dia:")
             val fechaActual = dmyFormatoFecha(actualDay, actualMonth-1, actualYear)
-            txtFechaInicio.setText(formatoDiaSelected(actualDay, actualMonth, actualYear, fechaActual))
+            txtFechaInicio.setText(fechaActual)
             txtFechaFin.setText(fechaActual)
             txtFin.visibility =View.GONE
             txtFechaFin.visibility =View.GONE
-            chipSemana.visibility =View.GONE
-            txtMes.setText(mesDelAnio(actualDay, actualMonth, actualYear))
+            txtMes.setText(mesDelAnio(1, actualMonth, actualYear))
             txtMes.visibility =View.GONE
             txtAnio.visibility =View.GONE
+            txtFechaInicio.visibility =View.GONE
+            txtDia.setText(formatoDiaSelected(actualDay, actualMonth, actualYear, fechaActual))
 
             chipGroup.setOnCheckedChangeListener { chipGroup, selectedId ->
                 when (selectedId) {
@@ -71,18 +77,15 @@ class FiltroReportesDialog(): DialogFragment(),
                         opcionFiltro = 0
                         txtFin.visibility =View.GONE
                         txtFechaFin.visibility =View.GONE
-                        txtFechaInicio.visibility = View.VISIBLE
+                        txtFechaInicio.visibility =View.GONE
                         txtMes.visibility =View.GONE
                         txtAnio.visibility =View.GONE
-                        txtFechaInicio.setText(formatoDiaSelected(actualDay, actualMonth, actualYear, fechaActual))
+                        txtFechaFin.setText(fechaActual)
 
                         txtInicio.setText("Dia:")
-                    }
-                    R.id.chipFiltroSemana -> {
-                        opcionFiltro = 1
-                        txtFin.visibility =View.GONE
-                        txtFechaFin.visibility =View.GONE
-                        txtInicio.setText("Semana:")
+                        txtDia.visibility = View.VISIBLE
+                        txtDia.setText(formatoDiaSelected(actualDay, actualMonth, actualYear, fechaActual))
+
                     }
                     R.id.chipFiltroMes -> {
                         opcionFiltro = 2
@@ -90,6 +93,9 @@ class FiltroReportesDialog(): DialogFragment(),
                         txtFechaFin.visibility =View.GONE
                         txtFechaInicio.visibility =View.GONE
                         txtAnio.visibility =View.GONE
+                        txtDia.visibility = View.GONE
+                        txtFechaFin.setText(dmyFormatoFecha(1, actualMonth-1, actualYear))
+
                         txtInicio.setText("Mes:")
                         txtMes.visibility =View.VISIBLE
 
@@ -101,6 +107,9 @@ class FiltroReportesDialog(): DialogFragment(),
                         txtFechaInicio.visibility =View.GONE
                         txtMes.visibility =View.GONE
                         txtAnio.visibility =View.VISIBLE
+                        txtDia.visibility = View.GONE
+                        txtFechaFin.setText(dmyFormatoFecha(1, 0, actualYear))
+
                         txtInicio.setText("Año:")
                         txtAnio.setText(actualYear.toString())
                     }
@@ -111,6 +120,7 @@ class FiltroReportesDialog(): DialogFragment(),
                         txtFechaInicio.visibility = View.VISIBLE
                         txtMes.visibility =View.GONE
                         txtAnio.visibility =View.GONE
+                        txtDia.visibility = View.GONE
                         txtInicio.setText("Fecha de inicio:")
                         txtFechaInicio.setText(fechaActual)
                     }
@@ -121,6 +131,12 @@ class FiltroReportesDialog(): DialogFragment(),
 
             txtFechaInicio.setOnClickListener {
                 dateSelected = 0
+                val newFragment = DatePickerFiltroReportesDialogFragment(this)
+                newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
+            }
+
+            txtDia.setOnClickListener {
+                dateSelected = 1
                 val newFragment = DatePickerFiltroReportesDialogFragment(this)
                 newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
             }
@@ -137,16 +153,35 @@ class FiltroReportesDialog(): DialogFragment(),
                 val newFragment = YearPickerDialogFragment(this)
                 newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
             }
+            txtUsuario.setOnClickListener {
+                val newFragment = UserStadisticPickerDialogFragment(this)
+                newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
+            }
 
             builder.setView(vista)
                 // Add action buttons
                 .setPositiveButton("Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
                         //Toast.makeText(context, "${chipGroup.checkedChipId}", Toast.LENGTH_SHORT).show()
-                        Log.d("Mensaje", chipGroup.checkedChipId.toString())
-                        if (chipDia.isChecked){
-                            Log.d("Mensaje", "PrimerID")
+                        MySharedPreferences.idUsuarioEstadisticas = txtUsuario.text.toString()
+                        if (opcionFiltro == 0){
+                            MySharedPreferences.fechaInicioEstadisticas = txtFechaFin.text.toString()
+                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
+                            listener.onDayFilterSelected()
+                        }else if (opcionFiltro == 2){
+                            MySharedPreferences.fechaInicioEstadisticas = txtFechaFin.text.toString()
+                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
+                            listener.onMonthFilterSelected()
+                        }else if (opcionFiltro == 3){
+                            MySharedPreferences.fechaInicioEstadisticas = txtFechaFin.text.toString()
+                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
+                            listener.onYearFilterSelected()
+                        }else {
+                            MySharedPreferences.fechaInicioEstadisticas = txtFechaInicio.text.toString()
+                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
+                            listener.onCustomFilterSelected()
                         }
+
                     })
                 .setNegativeButton("Cancelar",
                     DialogInterface.OnClickListener { dialog, id ->
@@ -156,12 +191,16 @@ class FiltroReportesDialog(): DialogFragment(),
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    interface filtroReportesDialogListener{
-        //fun onDateSelected(anio:Int,mes:Int,dia:Int)
+    interface FiltroReportesDialogListener{
+        fun onDayFilterSelected()
+        fun onMonthFilterSelected()
+        fun onYearFilterSelected()
+        fun onCustomFilterSelected()
     }
 
     override fun onDateFiltroReportesSelected(anio: Int, mes: Int, dia: Int){
         val currentDate = dmyFormatoFecha(dia, mes, anio)//= sdf.format(d)
+        txtDia.setText(formatoDiaSelected(dia, mes+1, anio, currentDate))
 
         if (dateSelected == 0){
             txtFechaInicio.setText(formatoDiaSelected(dia, mes+1, anio, currentDate))
@@ -192,7 +231,7 @@ class FiltroReportesDialog(): DialogFragment(),
 
     fun dmyFormatoFecha(dia: Int, mes: Int, anio: Int):String{
         var dt = Date(anio-1900, mes, dia)
-        val sdf = SimpleDateFormat("dd/MM/YYYY", Locale.US)
+        val sdf = SimpleDateFormat("dd/MM/y", Locale.US)
         val currentDate = sdf.format(dt)
         return currentDate
     }
@@ -203,10 +242,16 @@ class FiltroReportesDialog(): DialogFragment(),
 
     override fun onMonthSelected(mes: Int) {
         txtMes.setText(mesDelAnio(actualDay, mes, actualYear))
+        txtFechaFin.setText(dmyFormatoFecha(1, mes-1, actualYear))
     }
 
     override fun onSelectedYear(year: Int) {
         txtAnio.setText(year.toString())
+        txtFechaFin.setText(dmyFormatoFecha(1, 0, year))
+    }
+
+    override fun onUserSelected(user: Int) {
+        txtUsuario.setText(user.toString())
     }
 
 

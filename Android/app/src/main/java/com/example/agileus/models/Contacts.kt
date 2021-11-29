@@ -15,3 +15,9 @@ class Contacts (
     @SerializedName("statusActivo") val statusActivo: String,
     @SerializedName("idsuperiorInmediato")val idsuperiorInmediato: String
         )
+
+class EmployeeListByBossID(
+    @SerializedName("status") val status: String,
+    @SerializedName("msj") val msj: String,
+    @SerializedName("data") val dataEmployees: ArrayList<Contacts>
+)

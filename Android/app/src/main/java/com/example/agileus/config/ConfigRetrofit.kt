@@ -46,8 +46,7 @@ class ConfigRetrofit {
         return mRetrofit.create(BuzonApi::class.java)
     }
 
-
-    fun getconfigreportes(): ReportesApi{
+    fun getConfigReportes(): ReportesApi{
 
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_REPORTES)

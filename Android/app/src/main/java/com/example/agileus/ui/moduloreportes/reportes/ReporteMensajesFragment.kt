@@ -1,6 +1,5 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
-
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -9,6 +8,8 @@ import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -19,17 +20,27 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
+import com.example.agileus.utils.Constantes
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.components.LegendEntry
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.time.temporal.ChronoUnit
+import javax.xml.datatype.DatatypeConstants.DAYS
 
 
-class ReporteMensajesFragment : Fragment(), ReportesListener {
+
+class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener {
 
     private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
     private var _binding: ReporteMensajesFragmentBinding? = null
@@ -76,8 +87,11 @@ class ReporteMensajesFragment : Fragment(), ReportesListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
+        //Log.e("Lista", reporteMensajesViewModel.devuelveListaContactos(Constantes.id).toString())
+
         binding.btnFiltroReportes.setOnClickListener {
-            val newFragment = FiltroReportesDialog()
+            val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }
 
@@ -192,8 +206,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener {
             setDataToPieChart(porcentaje_enviados, porcentaje_recibidos, porcentaje_leidos)
 
         })
-
-
     }
 
     //funcion regla de 3 para obtener un porcentage proporcional
@@ -308,6 +320,22 @@ class ReporteMensajesFragment : Fragment(), ReportesListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDayFilterSelected() {
+        Toast.makeText(context, "Dia, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onMonthFilterSelected() {
+        Toast.makeText(context, "Mes, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onYearFilterSelected() {
+        Toast.makeText(context, "Año, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCustomFilterSelected() {
+        Toast.makeText(context, "Custom, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
