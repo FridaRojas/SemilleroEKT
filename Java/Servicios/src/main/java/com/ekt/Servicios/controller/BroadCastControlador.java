@@ -46,8 +46,16 @@ public class BroadCastControlador {
 		
 		Optional<User> existo = userRepository.validarUsuario(miId);
 		
-		Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
+		if(existo.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario Broadcast",""));
+		}
 		
+		if(!existo.get().getNombreRol().equals("BROADCAST")) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
+		}
+		
+		Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
+				
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(listaUsuarios);
 	}
 
@@ -115,7 +123,7 @@ public class BroadCastControlador {
 				
 		Optional<User> existo = userRepository.validarUsuario(mensajeEntrante.getIDEmisor());
 		
-		if(existo.isEmpty()) {
+		if(!existo.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no fue encontrado",""));
 		}
 		
