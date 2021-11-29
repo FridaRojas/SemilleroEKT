@@ -5,8 +5,8 @@
     android:padding="16dp"
     android:layout_marginTop="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:background="@drawable/background">
+
 
         <ImageView
             android:id="@+id/iconolista"
@@ -73,7 +73,5 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             />
-
-    <!--</androidx.cardview.widget.CardView>!-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
