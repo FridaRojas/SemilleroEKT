@@ -54,7 +54,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listStatus = resources.getStringArray(R.array.status_array)
+        listStatus = resources.getStringArray(R.array.statusRecycler_array)
         //Recycler Status
         var adaptadorStatus = StatusTasksAdapter(listStatus, this)
         binding.recyclerStatusTareas.adapter = adaptadorStatus
@@ -82,30 +82,30 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
     override fun getTaskByStatus(status: String) {
         binding.progressUno.visibility = View.VISIBLE
-
+        var listaStatus = resources.getStringArray(R.array.status_array)
         when (status) {
             listStatus[0] -> {
-                taskViewModel.statusRecycler.value = getString(R.string.status1)
+                taskViewModel.statusRecycler.value = listaStatus[0]
                 binding.tituloTareas.text = getString(R.string.titleStatus1)
             }
             listStatus[1] -> {
-                taskViewModel.statusRecycler.value = getString(R.string.status2)
+                taskViewModel.statusRecycler.value = listaStatus[1]
                 binding.tituloTareas.text = getString(R.string.titleStatus2)
             }
             listStatus[2] -> {
-                taskViewModel.statusRecycler.value = getString(R.string.status3)
+                taskViewModel.statusRecycler.value = listaStatus[2]
                 binding.tituloTareas.text = getString(R.string.titleStatus3)
             }
             listStatus[3] -> {
-                taskViewModel.statusRecycler.value = getString(R.string.status4)
+                taskViewModel.statusRecycler.value = listaStatus[3]
                 binding.tituloTareas.text = getString(R.string.titleStatus4)
             }
             listStatus[4] -> {
-                taskViewModel.statusRecycler.value = getString(R.string.status5)
+                taskViewModel.statusRecycler.value = listaStatus[4]
                 binding.tituloTareas.text = getString(R.string.titleStatus5)
             }
             listStatus[5] -> {
-                taskViewModel.statusRecycler.value = getString(R.string.status6)
+                taskViewModel.statusRecycler.value = listaStatus[5]
                 binding.tituloTareas.text = getString(R.string.titleStatus6)
             }
         }

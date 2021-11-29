@@ -25,14 +25,23 @@
         <item>Alta</item>
     </string-array>
 
-    //Statud
+    //StatusArray
+    <string-array name="statusRecycler_array">
+        <item>Pendientes</item>
+        <item>Iniciadas</item>
+        <item>En Revisión</item>
+        <item>Terminadas</item>
+        <item>Asignadas</item>
+        <item>Cancelados</item>
+    </string-array>
+
     <string-array name="status_array">
         <item>pendiente</item>
-        <item>Iniciada</item>
-        <item>Revisión</item>
-        <item>Terminada</item>
-        <item>Asignada</item>
-        <item>Cancelado</item>
+        <item>iniciada</item>
+        <item>revisión</item>
+        <item>terminada</item>
+        <item>asignada</item>
+        <item>cancelado</item>
     </string-array>
 
     <string name="mensaje_nuevo">Mensaje nuevo</string>
@@ -40,13 +49,6 @@
     <string name="destinatario">Destinatario :</string>
     <string name="asunto">Asunto</string>
 
-    //Status Tareas
-    <string name="status1">Pendiente</string>
-    <string name="status2">Iniciada</string>
-    <string name="status3">Revision</string>
-    <string name="status4">Terminada</string>
-    <string name="status5">Asignada</string>
-    <string name="status6">Cancelado</string>
     <string name="titleStatus1">Tareas Pendientes</string>
     <string name="titleStatus2">Tareas Iniciadas</string>
     <string name="titleStatus3">Tareas en Revisión</string>
