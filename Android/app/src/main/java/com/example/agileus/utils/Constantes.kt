@@ -19,7 +19,7 @@ object Constantes {
     val idChat = "618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
     val referenciaMensajeria = "Mensajeria"
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
-    var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
+    var URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
 
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)

@@ -14,10 +14,6 @@ interface TasksApi {
     fun getTasks(): Call<ArrayList<Tasks>>
 
 
-    //todo Editar EndPoint para obtener personas de grupo
-    //@GET( )
-    //fun getListaPersonasGrupo() : Call<ArrayList<PersonasGrupo>>
-
     @POST("tareas/agregarTarea")
     fun insertarTarea(@Body t:Tasks): Call<Tasks>
 

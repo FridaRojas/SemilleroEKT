@@ -5,8 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.R
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 
 class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
     RecyclerView.Adapter<BuzonAdapter.ViewHolder>() {
@@ -40,16 +41,27 @@ class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
         val buzon = dataSet[position]
 
         if(tipo==1) {
-            viewHolder.textView.text =  "Mensaje enviado a : Broadcast"
-     //       viewHolder.textView1.text = "Asunto:  ${buzon.}"
-            viewHolder.textView2.text = "Mensaje: \n ${buzon.message}"
-       //     viewHolder.textview3.text = "Fecha de enviado: ${buzon.fecha}"
+            if(USERTYPE == "Broadcast" ) {
+                viewHolder.textView.text = "Mensaje enviado por :${buzon.Senderid} "
+            }
+            else {
+                viewHolder.textView.text = "Mensaje enviado a : Broadcast"
+            }
+            viewHolder.textView1.text = "Asunto:  ${buzon.Asunto}"
+            viewHolder.textView2.text = "Mensaje: \n ${buzon.Message}"
         }
         if(tipo==2) {
-        //    viewHolder.textView.text =  "Comunicado dia  : ${buzon.fecha}"
-            viewHolder.textView1.text = "Asunto:    ${buzon.asunto}"
-            viewHolder.textView2.text = "Mensaje: \n${buzon.message}"
-            viewHolder.textview3.text = ""
+
+            if (USERTYPE == "Broadcast") {
+                viewHolder.textView.text = "Mensaje enviado a :${buzon.Receiverid} "
+            }
+            if(buzon.Receiverid =="General"){
+                viewHolder.textView.text = "Comunicado:    ${buzon.Receiverid}"
+            }
+
+            viewHolder.textView1.text = "Asunto:    ${buzon.Asunto}"
+
+            viewHolder.textView2.text = "Mensaje: \n${buzon.Message}"
         }
 
     }

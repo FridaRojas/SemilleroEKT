@@ -34,7 +34,7 @@ class TaskViewModel : ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.value =
-                            TasksAdapter(listaConsumida as ArrayList<Tasks>)
+                            TasksAdapter(listaConsumida)
                     }
                 }
 

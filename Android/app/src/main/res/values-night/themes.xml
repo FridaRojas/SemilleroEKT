@@ -22,10 +22,6 @@
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="StyleChat" parent="@android:style/Widget.TextView">
-        <item name="android:background">@color/colorSecondary</item>
-    </style>
-
     <style name="titleSection" parent="android:style/Widget.TextView">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorPrimary</item>

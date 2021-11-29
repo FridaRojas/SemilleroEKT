@@ -1,10 +1,11 @@
-package com.example.agileus.Models
+package com.example.agileus.models
+
+import com.google.gson.annotations.SerializedName
 
 data class Buzon(
-    var SenderId: String?,
-    var receiverId: String?,
-    var message:String,
-    var asunto:String,
- //   var fecha:String,
-//    @SerializedName("id") val id: String
+    @SerializedName ("id") var id: String,
+    @SerializedName ("Senderid") var Senderid: String,
+    @SerializedName ("Receiverid") var Receiverid: String,
+    @SerializedName ("Message") var Message:String,
+    @SerializedName ("Asunto") var Asunto:String
 )
