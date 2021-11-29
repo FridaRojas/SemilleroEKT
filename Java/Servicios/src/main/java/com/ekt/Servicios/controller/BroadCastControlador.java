@@ -127,6 +127,10 @@ public class BroadCastControlador {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no fue encontrado",""));
 		}
 		
+		if(!existo.get().getNombreRol().equals("BROADCAST")) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
+		}
+		
 		Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
 		
 		boolean bandera = false;
