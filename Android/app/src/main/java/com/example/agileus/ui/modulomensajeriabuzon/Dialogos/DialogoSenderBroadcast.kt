@@ -1,20 +1,17 @@
-package com.example.demoroom.dialogos
+package com.example.agileus.ui.modulomensajeriabuzon.Dialogos
 
 import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.R
-import com.example.agileus.ui.modulomensajeriabuzon.b.BroadcasterListener
+import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment() {
 

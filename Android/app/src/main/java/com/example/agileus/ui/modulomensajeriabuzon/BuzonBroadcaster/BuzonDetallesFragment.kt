@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulomensajeriabuzon.b
+package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
@@ -10,27 +10,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
-import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.USERTYPE
-import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.control
-import com.example.demoroom.dialogos.DialogoSenderBroadcast
-import android.app.Activity
-import android.view.inputmethod.InputMethodManager
-import androidx.activity.OnBackPressedCallback
-import android.R
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.control
 import android.os.CountDownTimer
-
-import android.widget.ProgressBar
-
-
+import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
+import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
 
 
-
-
-
-
-class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
+class BuzonDetallesFragment: Fragment() , BroadcasterListener {
 
 
     private lateinit var viewModel: BuzonDetallesViewModel

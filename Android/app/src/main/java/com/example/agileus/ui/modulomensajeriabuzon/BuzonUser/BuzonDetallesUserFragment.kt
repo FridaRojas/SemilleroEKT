@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulomensajeriabuzon.b
+package com.example.agileus.ui.modulomensajeriabuzon.BuzonUser
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -10,20 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.agileus.Models.Buzon
-import com.example.agileus.R
-import com.example.agileus.databinding.BuzonDetallesFragmentBinding
+import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
-import com.example.demoroom.dialogos.DialogoSenderBroadcast
-import com.example.demoroom.dialogos.DialogoSenderUser
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
+import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
+import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
 
-class BuzonDetallesUserFragment : Fragment() ,UserBuzonListener{
+class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
 
     private lateinit var viewModel: BuzonDetallesUserViewModel

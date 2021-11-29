@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.R
-import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.USERTYPE
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 
 class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
     RecyclerView.Adapter<BuzonAdapter.ViewHolder>() {

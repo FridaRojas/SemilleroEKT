@@ -1,6 +1,6 @@
 package com.example.agileus.webservices.apis
 
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.models.*
 import retrofit2.Call
 import retrofit2.http.Body

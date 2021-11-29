@@ -1,71 +1,68 @@
-package com.example.agileus.ui.modulomensajeriabuzon.b
+package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.adapters.BuzonAdapter
-import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonDetallesViewModel.Companion.listasize
-import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.control
 import com.example.agileus.webservices.dao.ProviderBuzon
-import com.google.android.material.snackbar.Snackbar
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class BuzonDetallesUserViewModel : ViewModel() {
+class BuzonDetallesViewModel : ViewModel() {
 
     lateinit var listafiltrada: ArrayList<Buzon>
-    var myResponse :MutableLiveData<Response<Buzon>> = MutableLiveData()
     var adaptador = MutableLiveData<BuzonAdapter>()
-    var lista : ProviderBuzon
-    lateinit var listaConsumida:ArrayList<Buzon>
-
+    var myResponse :MutableLiveData<Response<Buzon>> = MutableLiveData()
+    var lista: ProviderBuzon
+    lateinit var listaConsumida: ArrayList<Buzon>
 
     init {
         lista = ProviderBuzon()
     }
 
-    fun devuelvebuzon(){
+    companion object
+    {
+        var listasize=1
+    }
 
-        var Actuser:String
-        Actuser="Eduardo"
 
-        listaConsumida= ArrayList()
-        Log.i("tamaño","${listaConsumida.size}")
+    fun devuelvebuzon() {
+        listaConsumida = ArrayList()
         try {
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO) {
                     lista.recuperarbuzon(listaConsumida)
                 }
+
                 if (listaConsumida.isNotEmpty()) {
                     listasize =listaConsumida.size
                     listafiltrada = ArrayList()
 
-
-                    if (control == 1) {
+                    if (BuzonFragment.control == 1) {
                         for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Senderid.toString() == "Eduardo") {
-                                listafiltrada.add(listaConsumida[i])
-                            }
-                        }
-
-                    }
-                    if (control == 2) {
-                        for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Receiverid == "General" || listaConsumida[i].Receiverid == Actuser) {
+                            if (listaConsumida[i].Receiverid == "Broadcast") {
                                 listafiltrada.add(listaConsumida[i])
                             }
                         }
                     }
-                    adaptador.value = BuzonAdapter(listafiltrada, control)
+
+                    if (BuzonFragment.control == 2) {
+                        for (i in 0 until listaConsumida.size) {
+                            if (listaConsumida[i].Senderid == "Broadcast") {
+                                listafiltrada.add(listaConsumida[i])
+                            }
+                        }
+                    }
+                    adaptador.value = BuzonAdapter(listafiltrada, BuzonFragment.control)
                 }
             }
 
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
         }
     }
@@ -73,13 +70,12 @@ class BuzonDetallesUserViewModel : ViewModel() {
     fun postMensaje(mypost: Buzon) {
 
         mypost.id=(listasize +1).toString()
-        mypost.Senderid="Eduardo"
-
+        mypost.Senderid.toString()
 
         try {
             viewModelScope.launch {
-                val response : Response<Buzon> = lista.pushPost(mypost)
-                myResponse.value=response
+                val response :Response<Buzon> = lista.pushPost(mypost)
+                 myResponse.value=response
             }
         } catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
@@ -87,5 +83,5 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
     }
 
-
 }
+

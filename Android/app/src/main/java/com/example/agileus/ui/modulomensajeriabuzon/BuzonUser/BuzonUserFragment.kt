@@ -1,25 +1,14 @@
-package com.example.agileus.ui.modulomensajeriabuzon.b
+package com.example.agileus.ui.modulomensajeriabuzon.BuzonUser
 
-import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.text.TextUtils.replace
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.BuzonUserFragmentBinding
-import com.example.agileus.databinding.FragmentBuzonBinding
-import androidx.appcompat.widget.Toolbar
-import androidx.navigation.ui.AppBarConfiguration
-import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
-import java.time.Instant
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import java.util.*
 
 

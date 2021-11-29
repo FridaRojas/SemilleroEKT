@@ -1,4 +1,4 @@
-package com.example.agileus.Models
+package com.example.agileus.models
 
 import com.google.gson.annotations.SerializedName
 
