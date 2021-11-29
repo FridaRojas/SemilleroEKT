@@ -40,9 +40,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     lateinit var mStorageReference      : StorageReference
     lateinit var resultLauncherArchivo  : ActivityResultLauncher<Intent>
     /*  *** Fb Storage ***  */
-    lateinit var listaN         : ArrayList<String>
+    var listaN         = ArrayList<String>()
     lateinit var listaObj       : ArrayList<DataPersons>
     lateinit var listaPersonas  : ArrayList<DataPersons>
+    lateinit var idPersonaAsignada : String
 
     lateinit var personasAsignadasAdapter   : ArrayAdapter<String>
     lateinit var prioridadAdapter           : ArrayAdapter<String>
@@ -63,9 +64,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -113,7 +111,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             // Guardar datos
             nombrePersonaAsignada = (binding.spinnerPersonaAsignada.getEditText() as AutoCompleteTextView).text.toString()
             prioridadAsignada = (binding.spinnerPrioridad.getEditText() as AutoCompleteTextView).text.toString()
-            Toast.makeText(activity, "$nombrePersonaAsignada & $prioridadAsignada", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, "$nombrePersonaAsignada & $prioridadAsignada", Toast.LENGTH_SHORT).show()
 
             // Obtiene el numero de empleado de la persona seleccionada
             listaPersonas.forEach(){
@@ -181,7 +179,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         val tarea: Tasks
         val titulo      = binding.edtAgregaTitulo.text
         val descripcion = binding.edtDescripcion.text
-        val mPrioridad  = binding.spinPrioridad.selectedItem
+        val mPrioridad  = binding.textSpinPrioridad.text
 
         tarea = Tasks(
             "Prueba Creacion Tarea",                  // id_grupo
@@ -193,7 +191,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             fechaFin,                           // Fecha Fin
             titulo.toString(),                  // Titulo de la tarea
             descripcion.toString(),             // Descripcion
-            mPrioridad.toString().lowercase(),  // Prioridad
+            prioridadAsignada,                  // Prioridad
             "pendiente",
             ""
 
@@ -265,15 +263,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 personasAsignadasAdapter = ArrayAdapter((activity as HomeActivity), R.layout.support_simple_spinner_dropdown_item, listaN )
                 binding.textSpinPersona.setAdapter(personasAsignadasAdapter)
                 binding.textSpinPersona.threshold
-                /*listaObj = ArrayList<DataPersons>()
-                listaPersonas.forEach(){
-                    listaObj.add(it)
-                }*/
-
-                val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity),
-                    android.R.layout.simple_spinner_item, listaN)
-                spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinPersonaAsignada.adapter=spinListaAsignarAdapter
 
             }else{
                 Toast.makeText(activity , "No se encontraron personas en el grupo", Toast.LENGTH_LONG).show()
@@ -284,39 +273,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         prioridadAdapter = ArrayAdapter((activity as HomeActivity), R.layout.support_simple_spinner_dropdown_item, listaPrioridades )
         binding.textSpinPrioridad.setAdapter(prioridadAdapter)
         binding.textSpinPrioridad.threshold
-        // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
 
-        // SPINER CON RECURSO XML
-        val spinPrioridadAdapter = ArrayAdapter.createFromResource(activity as HomeActivity, R.array.prioridad_array, android.R.layout.simple_spinner_item)
-        spinPrioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinPrioridad.adapter=spinPrioridadAdapter
-        // SPINER CON RECURSO XML
     }
-    fun operacionIsert(){
-        val tarea: Tasks
-        val titulo      = binding.edtAgregaTitulo.text
-        val descripcion = binding.edtDescripcion.text
-        val mPrioridad  = binding.textSpinPrioridad.text
-        tarea = Tasks(
-            "GRUPOID1",                  // id_grupo
-            "EMIS1",
-            "Raul",
-            idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
-            nombrePersonaAsignada,              // Nombre de subordinado seleccionado
-            fechaInicio,                        // Fecha Inicio
-            fechaFin,                           // Fecha Fin
-            titulo.toString(),                  // Titulo de la tarea
-            descripcion.toString(),             // Descripcion
-            prioridadAsignada,  // Prioridad
-            "Pendiente",
-            false,                         // Leido
-            "2014-01-01"
 
-        )
-        asignarTareaViewModel.postTarea(tarea)
-    }
     fun abrirDialogoFecha(view: View, b:Int) {
-    fun abrirDialogoFecha(b:Int) {
         val newFragment = EdtFecha(this, b)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
@@ -327,11 +287,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         anioInicio  = anio
         mesInicio   = mes
         diaInicio   = dia
-        val fecha=binding.edtFechaInicio
+        val fecha = binding.edtFechaInicio
         val fechaObtenida = "$anio-${mes+1}-$dia"
         fecha.setText(fechaObtenida)
-        val fecha = binding.edtFechaInicio
-        fecha.setText("$anio-${mes+1}-$dia")
         fechaInicio = fecha.text.toString()
         Log.e("Mensaje", "Fecha Inicio $fechaInicio")
 
@@ -340,7 +298,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         anioFin = anio
         mesFin  = mes
         diaFin  = dia
-        val fecha=binding.edtFechaFin
+        val fecha = binding.edtFechaFin
         fecha.setText("$anio-${mes+1}-$dia")
         fechaFin = fecha.text.toString()
         Log.e("Mensaje", "Fecha Fin $fechaFin")
@@ -351,13 +309,4 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         _binding = null
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        var p = parent?.getItemAtPosition(position).toString()
-        Log.d("item", "$p")
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
-    }
-    // *** INTERFACES ***
 }

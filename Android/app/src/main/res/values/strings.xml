@@ -27,7 +27,7 @@
 
     //Statud
     <string-array name="status_array">
-        <item>Pendiente</item>
+        <item>pendiente</item>
         <item>Iniciada</item>
         <item>Revisión</item>
         <item>Terminada</item>
