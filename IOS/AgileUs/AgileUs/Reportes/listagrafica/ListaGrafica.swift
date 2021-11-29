@@ -36,7 +36,7 @@ class ListaGrafica: UITableViewCell {
         
     func configurar_celda(datos: [Any]) {
         
-        print("Configurando celda")
+        //print("Configurando celda")
         
         //txtTitulo.text = "Tiempo de respuesta promedio"
         imgGrafica.image = UIImage(named: datos[0] as! String)
@@ -47,7 +47,7 @@ class ListaGrafica: UITableViewCell {
     
     func configurar_etiquetas(tipo: String) {
         
-        print("Configurando etiquetas en la lista")
+        //print("Configurando etiquetas en la lista")
         
         if (tipo == "pieM") {
             txtTitulo.text = "Enviados"

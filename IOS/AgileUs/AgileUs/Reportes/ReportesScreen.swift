@@ -84,14 +84,21 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         //LLenar los gráficos de barras
         llenar_pie_chartMensajes(mensajes: cantidad_mensajes)
         //llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
+        
+        //Ejecutar los servicios web
+        ejecucionServicios()
+    }
+    
+    func ejecucionServicios(){
+        serviciosUsuarios()
+        serviciosTareas()
+        serviciosMensajes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
         //Ejecutar los servicios web antes de cargar la pantalla principal
-        serviciosUsuarios()
-        serviciosTareas()
-        serviciosMensajes()
+       
     }
     
     //  SERVICIOS WEB       <--------------------------
@@ -112,6 +119,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                 [self] (Datos) -> Void in
 
             arrMensajes = Datos
+            
             cantidad_mensajes = cantidadDeMensajes(mensaje: arrMensajes! as! [Mensajes], idUsuario: "618e8821c613329636a769ac")
             llenar_pie_chartMensajes(mensajes: cantidad_mensajes)
         }
@@ -122,7 +130,13 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             [self] (Datos) -> Void in
             
             arrTareas = Datos
-            arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: "EMIS5")
+            
+            print(type(of: Datos))
+            
+            //print(arrTareas as Any)
+            
+            arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: "RECEPT1")
+            
             llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
         }
     }
@@ -204,6 +218,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             print("No hay datos para mostrar TAREAS")
         }else{
             
+            print("llenando gráfico de barras de Tareas")
             configuracion_etiquetasPieTareas()
             
             cantEnviados.text = "\(tareas[0])"
@@ -221,6 +236,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             let chartdata = PieChartData(dataSet: dataSet)
             chartdata.setValueTextColor(UIColor.clear)
             
+            let colors = [Hexadecimal_Color(hex: "66BB6A"), Hexadecimal_Color(hex: "87D169"), Hexadecimal_Color(hex: "7F8182"), Hexadecimal_Color(hex: "AAAABB")]
+            
+            dataSet.colors = colors
+            
             //Gráficar los datos que se están asignando
             piechart.data = chartdata
             piechart.contentMode = .scaleToFill
@@ -230,6 +249,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             //
             actualizar_datos_lista_grafica(tareasCompletadas: Double(tareas[3]), tareasPendientes: Double(tareas[0]))
+             
+             
         }
         
     }
@@ -282,7 +303,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    
     // LLENAR INFORMACION DE GRÁFICOS DE BARRAS
     
     //      Gráficos de barras de Mensajes
@@ -318,6 +338,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             let dataSet = BarChartDataSet(entries: entrie)
             let chartData = BarChartData(dataSet: dataSet)
             barchart.data = chartData
+            
+            let colors = [Hexadecimal_Color(hex: "66BB6A"), Hexadecimal_Color(hex: "87D169")]
+            dataSet.colors = colors
             
             viewChart.addSubview(barchart)
             cargar_animacion_bar()
@@ -377,17 +400,17 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        print("cell For Row At")
+        //print("cell For Row At")
         
         let indice = indexPath.row
-        print(indice)
+        //print(indice)
         
         let celda_personalizada = tableView.dequeueReusableCell(withIdentifier: ListaGrafica.identificador, for: indexPath) as! ListaGrafica
         
         //Cambiar las etiquetas de la lista
         celda_personalizada.configurar_celda(datos: arrDatosLista[indice] as! [Any])
-        print("Datos ls")
-        print(arrDatosLista)
+        //print("Datos ls")
+        //print(arrDatosLista)
         return celda_personalizada
     }
     

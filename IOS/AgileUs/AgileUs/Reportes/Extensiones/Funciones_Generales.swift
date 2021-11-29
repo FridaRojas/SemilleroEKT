@@ -119,41 +119,57 @@ extension UIViewController {
         var terminadas = 0
         var iniciada = 0
         var revision = 0
+        
+        var canceladas = 0
+        
         var arrTareas = [Int]()
         
         print("Tareas: \(tareas)")
         
         for i in tareas{
             
-            if idUsuario == i.id_emisor {
+            if idUsuario == i.id_receptor {
                 
-                print(i.status)
+                print(i.estatus)
                 
-                if "\(i.status)" == "pendiente"{
+                if "\(i.estatus)" == "Pendiente"{
                     pendientes += 1
                 }
                 
-                if "\(i.status)" == "iniciada"{
+                if "\(i.estatus)" == "Iniciada"{
                     iniciada += 1
+                    
                 }
                 
-                if "\(i.status)" == "revision"{
+                if "\(i.estatus)" == "Revision"{
                     revision += 1
                 }
                 
-                if "\(i.status)" == "terminada"{
+                if "\(i.estatus)" == "Terminada"{
                     terminadas += 1
                 }
+                
+                if "\(i.estatus)" == "Cancelado"{
+                    canceladas += 1
+                }
+                
+                
+                print(pendientes, iniciada, revision, terminadas, canceladas)
                 
             }else{
                 print("No se encuentran coincidencias de usuarios")
             }
         }
         
+        
+        
+        
         arrTareas = [pendientes, iniciada, revision, terminadas]
         print(arrTareas)
         return arrTareas
     }
+    
+    
     
 }
 
