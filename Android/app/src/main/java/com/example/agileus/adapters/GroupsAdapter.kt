@@ -1,29 +1,23 @@
 package com.example.agileus.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
-import com.example.agileus.models.Conversation
-import com.example.agileus.utils.Constantes
+import com.example.agileus.models.Groups
+import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 
 
-class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
-    RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
+class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
+    RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-
-        var id_vista = if
-                (viewType == 1){
-            R.layout.conversation_emisor_item
-        } else{
-            R.layout.conversation_receptor_item
-        }
-
+        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(id_vista, viewGroup, false)
+            .inflate(R.layout.list_contacts_item, viewGroup, false)
 
         return ViewHolder(view)
     }
@@ -39,33 +33,26 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
-    fun update(filtrado: List<Conversation>) {
-        var array:ArrayList<Conversation> = ArrayList(filtrado)
-        dataSet = array
-        this.notifyDataSetChanged()
-    }
-
-
-    override fun getItemViewType(position: Int): Int {
-        val usuario=dataSet[position]
-       if(Constantes.id.equals(usuario.idemisor)){
-           return 1
-        }else{
-            return 2
-       }
-    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val msgEmisor: TextView
+        val txtNameContact: TextView
+        val contexto = view.context
 
         init {
             // Define click listener for the ViewHolder's View.
-            msgEmisor = view.findViewById(R.id.msgEmisor)
+            txtNameContact = view.findViewById(R.id.txtNameContact)
 
         }
 
-        fun enlazarItem(conversacion:Conversation){
-            msgEmisor.text = conversacion.texto
+        fun enlazarItem(groups: Groups){
+            txtNameContact.text = groups.nombreConversacionRecepto
+
+            txtNameContact.setOnClickListener {
+                val intent = Intent(contexto, ConversationOneToOneActivity::class.java)
+                contexto.startActivity(intent)
+
+            }
+
         }
     }
 

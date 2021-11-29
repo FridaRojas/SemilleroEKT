@@ -10,8 +10,11 @@
         android:id="@+id/txtNombreTareaD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
         android:text="Nombre de la Tarea"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="@dimen/marginFormulario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +23,10 @@
         android:id="@+id/txtNombrePersonaD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        style="@style/StyleTextFragment"
         android:text="Nombre de la persona"
         app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
 
@@ -28,8 +34,11 @@
         android:id="@+id/txtPrioridadD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
         android:text="Prioridad"
+        android:textColor="@color/colorGray"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/marginFormulario"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD">
 
@@ -39,7 +48,10 @@
         android:id="@+id/txtEstatusD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
+        android:textColor="@color/colorGray"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/marginFormulario"
         android:text="Estatus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
@@ -48,7 +60,10 @@
         android:id="@+id/txtDescripcionD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/marginFormulario"
         android:text="Descripcion: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
         app:layout_constraintTop_toBottomOf="@+id/txtPrioridadD" />
 
@@ -56,7 +71,8 @@
         android:id="@+id/txtFechaInicioD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
+        style="@style/StyleTextGray"
+        android:layout_marginTop="@dimen/marginFormulario"
         android:text="Inicio: 16/01/2021"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
@@ -66,7 +82,8 @@
         android:id="@+id/txtFechaFinD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
+        style="@style/StyleTextGray"
+        android:layout_marginTop="@dimen/marginFormulario"
         android:text="Fin: 20/01/2021"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
@@ -75,24 +92,46 @@
         android:id="@+id/txtObservacionesD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
+        style="@style/StyleTextFragment"
+        android:layout_marginTop="@dimen/marginFormulario"
         android:text="Observaciones: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
         app:layout_constraintTop_toBottomOf="@+id/txtFechaInicioD" />
 
     <Button
         android:id="@+id/btnCambiarEstadoD"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cambiar a Iniciada"
+        android:text="Iniciar Tarea"
+        android:layout_marginTop="@dimen/marginFormulario"
+        android:background="@drawable/rounded_bg"
+        style="@style/StyleButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPdf" />
 
-    <ImageView
-        android:id="@+id/imvArchivoD"
+    <LinearLayout
+        android:id="@+id/btnPdf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_attach_file_50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtObservacionesD">
+
+        <ImageView
+            android:id="@+id/imvArchivoD"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_attach_file_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/StyleTextFragment"
+            android:textColor="@color/colorPrimary"
+            android:text="Descargar Archivo"/>
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
