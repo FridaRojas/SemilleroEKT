@@ -10,7 +10,7 @@
 </head>
 <body>
 <!--/*@thymesVar id="User" type="java"*/-->
-<form th:action="@{/eliminaUsuario}" th:object="${User}" method="post" >
+<form th:action="@{/eliminaUsuario(nombre)}" th:object="${User}" method="post" >
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEliminaUsuario">
         Borrar
@@ -18,7 +18,7 @@
 </form>
 <!-- Modal -->
 <div class="modal fade" id="modalEliminaUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <form th:action="@{/reasignaBusca}" th:object="${User}" method="post" name="CreaOrganigrama" id="CreaOrganigrama">
+    <form th:action="@{/reasignaSuperior}" method="post" name="reasigna" id="reasigna">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -28,10 +28,10 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Seleccione usuario</label>
-                            <select name="propiedad" id="propiedad">
+                            <select name="idUsuario" id="idUsuario">
                                 <optgroup>
                                     <p th:each="user: ${usuarios}">
-                                        <option th:text="${user.getNombre()} + '---' + ${user.getNombreRol()}" name="nombre"></option>
+                                        <option th:text="${user.getNombre()} + '---' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
                                     </p>
                                 </optgroup>
                             </select>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success">Eliminar</button>
+                    <button type="submit" class="btn btn-success">Eliminar</button>
                 </div>
             </div>
         </div>
