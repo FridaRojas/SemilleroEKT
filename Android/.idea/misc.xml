@@ -44,6 +44,7 @@
         <entry key="..\:/Users/ecube/Desktop/Proyectos_kotlin/semilleroekt/Android/app/src/main/res/layout/item_buzon.xml" value="0.264" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20364583333333333" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/drawable/background.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/drawable/background_selected.xml" value="0.2203125" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.20364583333333333" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.20364583333333333" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20364583333333333" />
@@ -61,6 +62,7 @@
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/item.xml" value="0.22" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/item_buzon.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/item_selected.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.2" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.2" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />

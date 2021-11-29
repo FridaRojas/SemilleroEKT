@@ -8,5 +8,6 @@ class MySharedPreferences {
         lateinit var fechaInicioEstadisticas: String
         lateinit var fechaFinEstadisticas: String
         var tipo_grafica:Int=0
+        var vista:Int=0
     }
 }
