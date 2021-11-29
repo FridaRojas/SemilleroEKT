@@ -74,6 +74,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                 }
             }
 
+            btnObservacionF.setOnClickListener {
+                txtObservacionesD.isVisible = true
+                txtObservacionesD.isEnabled=true
+            }
+
         }
         binding.txtFechaInicioD.setOnClickListener {
             val newFragment = EdtFecha(this, 1)
@@ -86,19 +91,26 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
         prioridad = args.tareas.prioridad
-        //estatus = args.tareas.estatus
+        estatus = args.tareas.estatus
         descripcion = args.tareas.descripcion
-        //fechaInicio = args.tareas.fechaIni
-        //fechaFin = args.tareas.fechaFin
-        //observaciones = args.tareas.observaciones
+        fechaInicio = args.tareas.fechaIni
+        fechaFin = args.tareas.fechaFin
+        if (args.tareas.observaciones != null) {
+            observaciones = args.tareas.observaciones
+        } else {
+            binding.txtObservacionesD.isVisible = false
+            observaciones = ""
+        }
 
         with(binding) {
             txtNombreTareaD.setText(nombreTarea)
             txtNombrePersonaD.text = nombrePersona
             txtPrioridadD.text = prioridad
             txtDescripcionD.setText(descripcion)
-            //txtFechaInicioD.text = fechaInicio.toString()
-            //txtFechaFinD.text = fechaFin.toString()
+            txtEstatusD.setText(estatus)
+            txtFechaInicioD.setText(fechaInicio.toString())
+            txtFechaFinD.setText(fechaFin.toString())
+            txtObservacionesD.setText(observaciones)
         }
     }
 
@@ -138,7 +150,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         Toast.makeText(context, "${args.tareas.descripcion}", Toast.LENGTH_SHORT).show()
         // args.tareas.fechaIni = binding.txtFechaInicioD.text.toString()
         // args.tareas.fechaFin = binding.txtFechaFinD.text.toString()
-       // args.tareas.observaciones = binding.txtObservacionesD.text.toString()
+        // args.tareas.observaciones = binding.txtObservacionesD.text.toString()
         Log.d("Mensaje", args.toString())
         detalleNivelAltoViewModel.editarTarea(args)
     }
