@@ -38,6 +38,12 @@
     <string name="status4">Terminada</string>
     <string name="status5">Asignada</string>
     <string name="status6">Cancelado</string>
+    <string name="titleStatus1">Tareas Pendientes</string>
+    <string name="titleStatus2">Tareas Iniciadas</string>
+    <string name="titleStatus3">Tareas en Revisión</string>
+    <string name="titleStatus4">Tareas Terminadas</string>
+    <string name="titleStatus5">Tareas Asignadas</string>
+    <string name="titleStatus6">Tareas Canceladas</string>
     <string name="respAceptar">Aceptar</string>
     <string name="respCancelar">Cancelar</string>
     <string name="GuardarTarea">Guardar Tarea</string>

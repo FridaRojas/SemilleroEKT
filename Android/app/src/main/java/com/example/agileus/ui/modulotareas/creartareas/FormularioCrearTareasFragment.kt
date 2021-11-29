@@ -1,70 +1,111 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
+import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
+import java.io.FileNotFoundException
 
-private const val ARG_PARAM1 = "param1"
+class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
-private var _binding: FragmentFormularioCrearTareasBinding? = null
-private val binding get() = _binding!!
+    private var _binding: FragmentFormularioCrearTareasBinding? = null
+    private val binding get() = _binding!!
 
+    lateinit var asignarTareaViewModel  : CrearTareasViewModel
+    /*  *** Fb Storage ***  */
+    lateinit var mStorageInstance       : FirebaseStorage
+    lateinit var mStorageReference      : StorageReference
+    lateinit var resultLauncherArchivo  : ActivityResultLauncher<Intent>
+    /*  *** Fb Storage ***  */
+    lateinit var listaN         : ArrayList<String>
+    lateinit var listaObj       : ArrayList<DataPersons>
+    lateinit var listaPersonas  : ArrayList<DataPersons>
 
-class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener {
+    lateinit var nombrePersonaAsignada  : String
+    lateinit var idPersonaAsignada      : String
 
-    private lateinit var asignarTareaViewModel: CrearTareasViewModel
-    private var param1: String? = null
+    var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"
+    var fechaInicio         : String = ""
+    var fechaFin            : String = ""
+    var uriPost             : String = ""
+    var anioInicio          : Int? = null
+    var anioFin             : Int? = null
+    var mesInicio           : Int? = null
+    var mesFin              : Int? = null
+    var diaInicio           : Int? = null
+    var diaFin              : Int? = null
 
-    var fechaInicio     : String = ""
-    var fechaFin        : String = ""
-
-    var anioInicio      : Int = 0
-    var anioFin         : Int = 0
-    var mesInicio       : Int = 0
-    var mesFin          : Int = 0
-    var diaInicio       : Int = 0
-    var diaFin          : Int = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        asignarTareaViewModel =
-            ViewModelProvider(this).get(CrearTareasViewModel::class.java)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentFormularioCrearTareasBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        asignarTareaViewModel = ViewModelProvider(this).get()
+        /*  *** Instancias Fb Storage ***  */
+        mStorageInstance = FirebaseStorage.getInstance()
+        mStorageReference = mStorageInstance.getReference("Documentos")
+        /*  *** Instancias Fb Storage ***  */
 
-        setUpUiAsignarTareas()
+        setUpUiAsignarTareas() /*  *** spiners ***  */
+
+        resultLauncherArchivo=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            if(result.resultCode== Activity.RESULT_OK){
+                val data:Intent?=result.data
+                if(data!= null){
+                    try{
+                        var returnUri = data?.data!!
+                        val uriString = data.toString()
+                        val myFile = File(uriString)
+                        Log.d("mensaje","PDF: $uriString")
+                        subirPdfFirebase(myFile , returnUri)
+                    }catch (e: FileNotFoundException){
+                        e.printStackTrace()
+                        Log.e("mensaje", "File not found. ${e.message}");
+
+                    }
+                }
+            }else{
+                Toast.makeText(context,"No se Selecciono archivo",Toast.LENGTH_LONG).show()
+            }
+        }
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
+
+            // Guarda nombre de persona en variable nombrePersonaAsignada
+            nombrePersonaAsignada = binding.spinPersonaAsignada.selectedItem as String
+            Log.d("Mensaje", "nombrePersonaAsignada $nombrePersonaAsignada")
+
+            // Obtiene el numero de empleado de la persona seleccionada
+            listaPersonas.forEach(){
+                if(nombrePersonaAsignada == it.nombre){
+                    idPersonaAsignada= it.numeroEmpleado
+                }
+            }
 
             if(fechaInicio=="" || fechaFin=="" ||
                 binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
@@ -74,67 +115,152 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
 
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
-                if(anioInicio<=anioFin){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
-                if(mesInicio+1<=mesFin+1){                      // es un mes menor o igual del mismo año
-                        if (mesInicio+1==mesFin+1){             // si mes inicio es igual a mes fin del mismo año
-                            if (diaInicio<=diaFin){             // es un dia menor o igual del mismo mes
-                                // OPERACION INSERTAR
+                if(anioInicio!!<=anioFin!!){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
+                if(mesInicio!!+1<=mesFin!!+1){                      // Es un mes menor o igual del mismo año
+                        if (mesInicio!!+1==mesFin!!+1){             // Si mes inicio es igual a mes fin del mismo año
+                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
                                 operacionIsert()
                             }else{
                                     Toast.makeText( context,
-                                    "El dia de Vencimiento no puede ser anterior al dia de inicio",
+                                    "Fecha de inicio no puede ser mayor a fecha fin",
                                     Toast.LENGTH_SHORT).show()
                                 }
-                        }else if(mesInicio<mesFin){             // mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE)
-                            // NO IMPORTA EL DIA
-                            // OPERACION INSERTAR
+                        }else if(mesInicio!!<mesFin!!){             // Mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE). NO IMPORTA EL DIA
                             operacionIsert()
                         }
-                    }else if(mesInicio>mesFin){                 // mesInicio es superior a mes fin pero de año fin superior
-                        // NO IMPORTA EL DIA
-                        // 28/05/2022  inicio
-                        // 05/03/2024  fin
-                        // OPERACION INSERTAR
+                    }else if(mesInicio!!>mesFin!!){                 // Mes de inicio es superior a mes fin pero de año fin superior. NO IMPORTA EL DIA
                         operacionIsert()
                     }
+
+
                 }else{
                     Toast.makeText( context,
-                        "El año de Vencimiento no puede ser anterior al año de inicio",
+                        "Fecha de inicio no puede ser mayor a fecha fin",
                         Toast.LENGTH_SHORT).show()
                 }
             }
+
+            //val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
+            //findNavController().navigate(action)
+
         }
         /* Boton Crear tarea  */
 
+        binding.btnAdjuntarArchivo.setOnClickListener {
+            val intentPdf= Intent()
+            intentPdf.setAction(Intent.ACTION_GET_CONTENT)
+            intentPdf.type = "application/pdf"
+            //intentPdf.type = "application/pdf"                     // Filtra para archivos pdf
+            resultLauncherArchivo.launch(intentPdf)
+        }
         binding.edtFechaInicio.setOnClickListener {
-            abrirDialogoFecha(view,1)
+            abrirDialogoFecha(1)
         }
         binding.edtFechaFin.setOnClickListener {
-            abrirDialogoFecha(view,2)
+            abrirDialogoFecha(2)
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String) =
-            FormularioCrearTareasFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+    // *** FUNCIONES ***
+    fun operacionIsert(){
+        val tarea: Tasks
+        val titulo      = binding.edtAgregaTitulo.text
+        val descripcion = binding.edtDescripcion.text
+        val mPrioridad  = binding.spinPrioridad.selectedItem
+
+        tarea = Tasks(
+            "Prueba Creacion Tarea",                  // id_grupo
+            "Emisor Carlos Cano",
+            "Carlos R",
+            idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
+            nombrePersonaAsignada,              // Nombre de subordinado seleccionado
+            fechaInicio,                        // Fecha Inicio
+            fechaFin,                           // Fecha Fin
+            titulo.toString(),                  // Titulo de la tarea
+            descripcion.toString(),             // Descripcion
+            mPrioridad.toString().lowercase(),  // Prioridad
+            "pendiente",
+            ""
+
+        )
+
+        Toast.makeText(activity as HomeActivity,
+            "Datos to POST = " +
+                "Titulo: $titulo, " +
+                "Prioridad: ${mPrioridad.toString().lowercase()}, " +
+                "Nombre persona asignada: $nombrePersonaAsignada, " +
+                "Fecha inicio: $fechaInicio, " +
+                "Fecha fin: $fechaFin, "+
+                "Descripcion: $descripcion ",
+            Toast.LENGTH_LONG).show()
+
+        asignarTareaViewModel.postTarea(tarea)
+    }
+    fun subirPdfFirebase(pdf: File, uri: Uri){
+        try{
+            var refenciaPdf = mStorageReference
+                .child("Archivos ${(0..999).random()}")
+            var uploadTask = refenciaPdf.putFile(uri)
+            //.putStream(stream)
+
+            uploadTask.addOnSuccessListener {
+                it.storage.downloadUrl.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        uriPost=task.result.toString()
+                        Toast.makeText(context, "Doc cargada correctamente", Toast.LENGTH_LONG).show()
+                        Log.i("Uri", "Archivo uri: ${task.result}")
+
+                    } else {
+                        Toast.makeText(context, "Ocurrió un error al cargar archivo", Toast.LENGTH_LONG)
+                            .show()
+                    }
                 }
             }
+
+            uploadTask.addOnFailureListener{
+                it.printStackTrace()
+                Toast.makeText(context,"Ocurrió un error al cargar archivo",Toast.LENGTH_LONG).show()
+            }
+
+        }catch(e:Exception){
+            Log.e("mensaje",e.message.toString())
+            e.printStackTrace()
+            Toast.makeText(context,"Ocurrió un error al cargar archivo",Toast.LENGTH_LONG).show()
+        }
+        finally {
+            uriPost=""
+        }
     }
-
-
     fun setUpUiAsignarTareas(){
-        //Recuperar id grupo
-        // SPINER CON OBJETO CONSUMIDO API RETROFIT
 
-        /*val spinListaPersonasAdapter = vista.findViewById<Spinner>(R.id.spinPersonaAsignada)
+        // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
+        asignarTareaViewModel.devuelvePersonasGrupo(idsuperiorInmediato)
+        asignarTareaViewModel.personasGrupoLista.observe(viewLifecycleOwner , {
 
-        val spinListaAsignarAdapter = ArrayAdapter<Int>((activity as HomeActivity), android.R.layout.simple_spinner_item, listaF)
-        spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinListaPersonasAdapter.adapter = spinListaAsignarAdapter*/
+            if(it.isNotEmpty()){
+                listaPersonas = it
 
+                //Llenar lista con nombres de subordinados
+                listaN = ArrayList<String>()
+                listaPersonas.forEach(){
+                    listaN.add(it.nombre)
+                }
+
+                /*listaObj = ArrayList<DataPersons>()
+                listaPersonas.forEach(){
+                    listaObj.add(it)
+                }*/
+
+                val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity),
+                    android.R.layout.simple_spinner_item, listaN)
+                spinListaAsignarAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinPersonaAsignada.adapter=spinListaAsignarAdapter
+
+            }else{
+                Toast.makeText(activity , "No se encontraron personas en el grupo", Toast.LENGTH_LONG).show()
+            }
+        })
+        // *** SPINER CON OBJETO CONSUMIDO API RETROFIT ***
 
         // SPINER CON RECURSO XML
         val spinPrioridadAdapter = ArrayAdapter.createFromResource(activity as HomeActivity, R.array.prioridad_array, android.R.layout.simple_spinner_item)
@@ -142,55 +268,22 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         binding.spinPrioridad.adapter=spinPrioridadAdapter
         // SPINER CON RECURSO XML
     }
-
-    fun operacionIsert(){
-        val tarea: Tasks
-        val titulo      = binding.edtAgregaTitulo.text
-        val descripcion = binding.edtDescripcion.text
-        val mPrioridad  = binding.spinPrioridad.selectedItem
-
-        /*Toast.makeText(activity as HomeActivity,
-            "Datos to POST = " +
-                "Titulo: $titulo, " +
-                "Prioridad: $mPrioridad, " +
-                "Fecha inicio: $fechaInicio, " +
-                "Fecha fin: $fechaFin, "+
-                "Descripcion: $descripcion ",
-            Toast.LENGTH_LONG).show()*/
-
-        tarea = Tasks(
-            "GRUPOID1",
-            "EMIS1",
-            "Raul",
-            "RECEPT1",
-            "Carlos",
-            fechaInicio,            //Fecha Inicio
-            fechaFin,               //Fecha Fin
-            titulo.toString(),      //Titulo
-            "EWREWF2323",
-            descripcion.toString(), //Descripcion
-            mPrioridad.toString(),  //Prioridad
-            false,             //Leido
-            "2014-01-01"
-        )
-        asignarTareaViewModel.postTarea(tarea)
-        Toast.makeText(activity as HomeActivity, "La tarea se creo correctamente", Toast.LENGTH_SHORT).show()
-
-    }
-
-
-    fun abrirDialogoFecha(view: View, b:Int) {
+    fun abrirDialogoFecha(b:Int) {
         val newFragment = EdtFecha(this, b)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
+    // *** FUNCIONES ***
 
+    // *** INTERFACES ***
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
         anioInicio  = anio
         mesInicio   = mes
         diaInicio   = dia
         val fecha=binding.edtFechaInicio
-        fecha.setText("$anio-${mes+1}-$dia")
+        val fechaObtenida = "$anio-${mes+1}-$dia"
+        fecha.setText(fechaObtenida)
         fechaInicio = fecha.text.toString()
+        Log.e("Mensaje", "Fecha Inicio $fechaInicio")
 
     }
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
@@ -198,14 +291,15 @@ class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasL
         mesFin  = mes
         diaFin  = dia
         val fecha=binding.edtFechaFin
-        fecha.setText("$anio-${mes+1}-$dia")
+        val fechaObtenida = "$anio-${mes+1}-$dia"
+        fecha.setText(fechaObtenida)
         fechaFin = fecha.text.toString()
+        Log.e("Mensaje", "Fecha Fin $fechaFin")
 
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
+    // *** INTERFACES ***
 }

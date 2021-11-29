@@ -6,10 +6,10 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import java.util.*
 
-class EdtFecha (var listenerFormularioCrear: DialogosFormularioCrearTareasListener, b:Int) : DialogFragment(),
+class EdtFecha (val listenerFormularioCrear: DialogoFechaListener, b:Int) : DialogFragment(),
     DatePickerDialog.OnDateSetListener{
 
     var bandera = b
@@ -23,7 +23,7 @@ class EdtFecha (var listenerFormularioCrear: DialogosFormularioCrearTareasListen
 
         val picker      = DatePickerDialog(activity as Context,this, anio,mes,dia )
 
-        picker.datePicker.minDate = calendar.timeInMillis   // validacion de minima fecha es hoy
+        picker.datePicker.minDate = calendar.timeInMillis   // validacion de minima fecha
         return picker
     }
 
