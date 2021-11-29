@@ -19,6 +19,7 @@
         android:padding="@dimen/paddingGeneral"
         android:paddingBottom="32dp"
         android:layout_marginBottom="85dp"
+        app:stackFromEnd="true"
         />
 
     <View

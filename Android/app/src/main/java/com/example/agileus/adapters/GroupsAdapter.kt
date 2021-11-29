@@ -9,48 +9,41 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Groups
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
+import com.example.agileus.utils.Constantes
 
 
 class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
     RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_contacts_item, viewGroup, false)
-
         return ViewHolder(view)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
         viewHolder.enlazarItem(dataSet[position])
     }
-
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
-
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
         val contexto = view.context
+        val myView:View
 
         init {
-            // Define click listener for the ViewHolder's View.
             txtNameContact = view.findViewById(R.id.txtNameContact)
-
+            myView = view.findViewById(R.id.idContact)
         }
 
         fun enlazarItem(groups: Groups){
             txtNameContact.text = groups.nombreConversacionRecepto
 
-            txtNameContact.setOnClickListener {
+            myView.setOnClickListener {
                 val intent = Intent(contexto, ConversationOneToOneActivity::class.java)
+                intent.putExtra(Constantes.CHAT_NAME, groups.idReceptor)
+                intent.putExtra(Constantes.CHAT_GROUP, groups.idConversacion)
                 contexto.startActivity(intent)
-
             }
 
         }

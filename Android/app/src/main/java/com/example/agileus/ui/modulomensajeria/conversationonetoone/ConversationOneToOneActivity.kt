@@ -32,6 +32,9 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var idReceptor = intent.getStringExtra(Constantes.CHAT_NAME)
+        var id_conversation_group = intent.getStringExtra(Constantes.CHAT_GROUP)
+
         conversationviewModel = ViewModelProvider(this).get()
         conversationviewModel.devuelveLista(Constantes.idChat)
 
@@ -66,7 +69,8 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         }
 
         firebaseProvider.obs.observe(this,{
-            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","$it",Constantes.finalDate)
+            Toast.makeText(applicationContext, "${it}",Toast.LENGTH_LONG).show()
+            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","${it}","Documento",Constantes.finalDate)
             conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
         })
 
