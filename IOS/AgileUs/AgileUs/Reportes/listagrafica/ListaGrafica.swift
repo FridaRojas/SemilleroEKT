@@ -42,10 +42,10 @@ class ListaGrafica: UITableViewCell {
         imgGrafica.image = UIImage(named: datos[0] as! String)
         lblCantEnviados.text = "\(datos[1])"
         lblCantRecibidos.text = "\(datos[2])"
-        configurar_etiquetas(tipo: datos[3] as! String)
+        configurar_etiquetas(tipo: datos[3] as! String, taskTimeEnd:"\(datos[4])")
     }
     
-    func configurar_etiquetas(tipo: String) {
+    func configurar_etiquetas(tipo: String, taskTimeEnd: String) {
         
         //print("Configurando etiquetas en la lista")
         
@@ -64,11 +64,11 @@ class ListaGrafica: UITableViewCell {
             lblRecibidos.text = "Pendientes"
             lblTiempo.isHidden = true
         }else if tipo == "barT"{
-            lblTiempo.text = "Tareas Terminadas"
+            lblTiempo.text = "Tareas Culminadas a tiempo"
             txtTitulo.isHidden = true
             lblCantEnviados.isHidden = true
             lblRecibidos.isHidden = true
-
+            lblCantRecibidos.text = taskTimeEnd
         }
         
     }

@@ -35,6 +35,11 @@ struct Tareas:Codable{
     //let nombre_emisor:String
     let id_receptor:String
     let estatus:String
+    //let leido:Bool
+    //let fecha_ini:String
+    //let fecha_iniR:String
+    //let fecha_fin:String
+    //let fecha_finR:String
 }
 
 class TareasService{

@@ -119,8 +119,9 @@ extension UIViewController {
         var terminadas = 0
         var iniciada = 0
         var revision = 0
-        
         var canceladas = 0
+        var tareasaTiempo = 0
+        var tareasDesTimempo = 0
         
         var arrTareas = [Int]()
         
@@ -153,24 +154,67 @@ extension UIViewController {
                     canceladas += 1
                 }
                 
+                /*
+                //Comprobar que los mensajes son leidos por el usuario
+                if i.leido == true{
+                    //comprobar la fecha desde que la inicio hasta que la terminó
+                    if i.fecha_fin < i.fecha_finR{
+                        print("La tarea no fué culminada en tiempo y forma")
+                        tareasDesTimempo += 1
+                    }else if i.fecha_fin >= i.fecha_finR{
+                        print("La tarea se cumplio en tiempo y forma")
+                        tareasaTiempo += 1
+                    }
+                }
+                 */
                 
-                print(pendientes, iniciada, revision, terminadas, canceladas)
                 
             }else{
                 print("No se encuentran coincidencias de usuarios")
             }
         }
         
+        //arrTareas = [pendientes, iniciada, revision, terminadas]
+        arrTareas = [pendientes, iniciada, revision, terminadas, tareasaTiempo, tareasDesTimempo]
         
-        
-        
-        arrTareas = [pendientes, iniciada, revision, terminadas]
-        print(arrTareas)
         return arrTareas
     }
     
     
     
+     /*
+    func estadisticasTareasTerminadas(fechas:[Tareas], idUsuario:String) -> [Int]{
+        
+        var tareasaTiempo = 0
+        var tareasDesTimempo = 0
+        
+        
+        for i in fechas{
+            if idUsuario == i.id_receptor{
+                //Comprobar que los mensajes son leidos por el usuario
+                if i.leido == true{
+                    //comprobar la fecha desde que la inicio hasta que la terminó
+                    if i.fecha_fin < i.fecha_finR{
+                        print("La tarea no fué culminada en tiempo y forma")
+                        tareasDesTimempo += 1
+                    }else if i.fecha_fin >= i.fecha_finR{
+                        print("La tarea se cumplio en tiempo y forma")
+                        tareasaTiempo += 1
+                    }
+                }
+            }
+        }
+        return [tareasaTiempo, tareasDesTimempo]
+    }
+     
+     */
+    
+    
 }
 
+//Fecha de creacion -> Fecha de registro en la BD
+//Fecha inical -> Cuando el jefe quiere que el usuario quiere que inicie la tarea
+//Fecha inicial Real -> El usuario subordinado, cambia el estado de la tarea.
 
+//Fecha fin -> Tiempo que asigna el jefe para terminar la tarea
+//Fecha fin real -> El usuario subordinado Termina la tarea

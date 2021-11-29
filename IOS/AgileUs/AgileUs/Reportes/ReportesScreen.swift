@@ -53,6 +53,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //arreglo de cantidad de tareas
     var arrTareas:[Any]?
     var arrCantidadDeTareas = [Int]()
+    var arrTareasTerminadas = [Int]()
     
     // adaptadores
     let adaptadorModal = Adaptador_Modals()
@@ -65,7 +66,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         
         //Definir primeros datos de los elementos de la lista
-        arrDatosLista = [["ic_PieChart", 0, 0, "pieM"], ["ic_Bar", 0, 0, "barM"]]
+        arrDatosLista = [["ic_PieChart", 0, 0, "pieM", 0], ["ic_Bar", 0, 0, "barM", 0]]
         
         //CONFIGURACIONES
         
@@ -135,9 +136,17 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             //print(arrTareas as Any)
             
+            //Cantidad de tareas
             arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: "RECEPT1")
             
+            //Tareas terminadas a tiempo y a desatiempo
+            //arrTareasTerminadas = estadisticasTareasTerminadas(fechas: arrTareas! as [Tareas], idUsuario: "")
+            
+            //Gráfica de pastel
             llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
+            
+            //gráfica de barras
+            //actualizar_datos_lista_grafica(arrCountTask: arrTareasTerminadas)
         }
     }
 
@@ -247,8 +256,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             viewChart.addSubview(piechart)
             cargar_animacion_pie()
             
-            //
-            actualizar_datos_lista_grafica(tareasCompletadas: Double(tareas[3]), tareasPendientes: Double(tareas[0]))
+            //LLenar gráfica de barras
+            actualizar_datos_lista_grafica(tareasCompletadas: Double(tareas[3]), tareasPendientes: Double(tareas[0]), tareasATiempo: Double(tareas[4]))
              
              
         }
@@ -295,7 +304,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             viewChart.addSubview(piechart)
             cargar_animacion_pie()
             
-            //  No sé que hace                                  <---------------------------------------------------------
+            //llenar gráfica de barras
             actualizar_datos_lista_grafica(enviado: Double(mensajes[0]), recibido: Double(mensajes[1]))
             
 
@@ -361,9 +370,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         print("Datos de la listá MENSAJES")
         
         if enviado == nil || recibido == nil {
-            arrDatosLista = [["ic_PieChart", 0, 0, "pieM"], ["ic_Bar", 0, 0, "barM"]]
+            arrDatosLista = [["ic_PieChart", 0, 0, "pieM", 0], ["ic_Bar", 0, 0, "barM", 0]]
         } else {
-            arrDatosLista = [["ic_PieChart", enviado!, recibido!, "pieM"], ["ic_Bar", enviado!, recibido!, "barM"]]
+            arrDatosLista = [["ic_PieChart", enviado!, recibido!, "pieM", 0], ["ic_Bar", enviado!, recibido!, "barM", 0]]
         }
         //datos = [["ic_PieChart", enviado!, recibido!, "pie"], ["ic_Bar", enviado!, recibido!, "bar"]]
         opcionesGrafica.reloadData()
@@ -372,14 +381,14 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     //  ACTUALIZAR DATOS DE LAS GRÁFICAS DE TAREAS
     
-    func actualizar_datos_lista_grafica(tareasCompletadas: Double?, tareasPendientes: Double?) {
+    func actualizar_datos_lista_grafica(tareasCompletadas: Double?, tareasPendientes: Double?, tareasATiempo: Double?) {
         
         print("Datos de la listá TAREAS")
         
         if tareasCompletadas == nil || tareasPendientes == nil {
             arrDatosLista = [["ic_PieChart", 0, 0, "pieT"], ["ic_Bar", 0, 0, "barT"]]
         } else {
-            arrDatosLista = [["ic_PieChart", tareasCompletadas!, tareasPendientes!, "pieT"], ["ic_Bar", tareasCompletadas!, tareasPendientes!, "barT"]]
+            arrDatosLista = [["ic_PieChart", tareasCompletadas!, tareasPendientes!, "pieT", tareasATiempo!], ["ic_Bar", tareasCompletadas!, tareasPendientes!, "barT", tareasATiempo!]]
             
         }
         
