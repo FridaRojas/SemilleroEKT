@@ -206,6 +206,7 @@ final class Api {
         
         let session = URLSession.shared
         let url = URL(string: "\(url)/actulizarEstatus/\(id)&\(status)")!
+        print(url)
         var request = URLRequest(url: url)
         
         request.httpMethod = "PUT"

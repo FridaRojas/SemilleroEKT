@@ -58,10 +58,6 @@ class EditarTareaViewController: UIViewController {
             
             DispatchQueue.main.async {
                 
-                
-                print("Entro a task \(task)")
-                
-                
                 self.task = task
                 self.nameTaskField.text = task.titulo!
                 self.personSelectField.text = task.nombre_receptor!
@@ -72,10 +68,16 @@ class EditarTareaViewController: UIViewController {
                 self.statusField.text = "Estatus: \(task.estatus!)"
 
           
-                if task.observaciones == nil {
-                    print("Holi")
+                if task.observaciones == nil || task.observaciones == "" {
+                } else {
+                    self.observationField.text = "Observaciones: \(task.observaciones!)"
                 }
                 
+                if task.estatus == "Terminada" || task.estatus == "Cancelado" {
+                    self.addObservationsBtn.isHidden = true
+                    self.updateTaskBtn.isHidden = true
+                    self.cancelTaskBtn.isHidden = true
+                }
         
                 
                 if task.estatus != "Revision" {
@@ -166,7 +168,6 @@ class EditarTareaViewController: UIViewController {
                     self.statusField.isEnabled = false
                     self.statusField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: false)
                 }
-                print("No se actualizo")
                 
             }
             
@@ -180,7 +181,7 @@ class EditarTareaViewController: UIViewController {
         
     }
     
-    func updateTask(idTask: String) {
+    func updateTask(idTask: String, updateObservation: Bool = false) {
         
         self.loader.startAnimating()
         self.viewBack.isHidden = false
@@ -197,9 +198,30 @@ class EditarTareaViewController: UIViewController {
         Api.shared.updateTask(id: idTask, task: task) {
             (task) in
             DispatchQueue.main.async {
-                self.altertaMensaje(title: "Exito", message: "Se actualizo la tarea correctamente", confirmationMessage: "Ok")
-                self.loader.stopAnimating()
-                self.viewBack.isHidden = true
+                
+                if updateObservation {
+                    Api.shared.changeStatus(id: self.idTask!, status: "Pendiente"){
+                        message in
+                        
+                        DispatchQueue.main.async {
+                            self.altertaMensaje(title: "Exito", message: "Se actualizo la tarea correctamente", confirmationMessage: "Ok")
+                            self.loader.stopAnimating()
+                            self.viewBack.isHidden = true
+                            self.statusField.text = "Estatus: Pendiente"
+                            self.addObservationsBtn.isHidden = true
+                            
+                        }
+                   
+                        
+                    } failure: { error in
+                        print("error cambio: \(error)")
+                    }
+                } else {
+                    self.altertaMensaje(title: "Exito", message: "Se actualizo la tarea correctamente", confirmationMessage: "Ok")
+                    self.loader.stopAnimating()
+                    self.viewBack.isHidden = true
+                }
+                
             }
         } failure: {
             (error) in
@@ -224,8 +246,11 @@ class EditarTareaViewController: UIViewController {
                     
                     self.loader.stopAnimating()
                     self.viewBack.isHidden = true
-                    
-                    self.altertaMensaje(title: "Exito", message: "Se cancelo la tarea correctamente", confirmationMessage: "Ok", popView: true)
+                    self.addObservationsBtn.isHidden = true
+                    self.updateTaskBtn.isHidden = true
+                    self.cancelTaskBtn.isHidden = true
+                    self.statusField.text = "Estatus: Cancelado"
+                    self.altertaMensaje(title: "Exito", message: "Se cancelo la tarea correctamente", confirmationMessage: "Ok")
                 }
             } failure: { error in
                 print(error)
@@ -256,10 +281,9 @@ class EditarTareaViewController: UIViewController {
             
         } else {
             
-        
             alertaConfirmacion(title: "Observaciones", message: "Desea agregar las observaciones a la tarea?", confirmationMessage: "Ok") {
                 
-                self.updateTask(idTask: self.idTask!)
+                self.updateTask(idTask: self.idTask!, updateObservation: true)
                 self.updateTaskBtn.isEnabled = true
                 self.observationField.isEditable = false
                 
@@ -267,6 +291,10 @@ class EditarTareaViewController: UIViewController {
                 
                 self.addObservationsBtn.initStyle(text: "Observaciones")
                 
+                self.loader.startAnimating()
+                self.viewBack.isHidden = false
+                
+        
 
                 
             } cancel: {
