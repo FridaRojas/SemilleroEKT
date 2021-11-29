@@ -130,7 +130,7 @@ public class BroadCastControlador {
 		}
 		
 		if(!bandera) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no puede mandar mensaje a la otra personas",""));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no puede mandar mensaje a la otra persona",""));
 		}
 		
 		Mensajes mensaje = new Mensajes();
