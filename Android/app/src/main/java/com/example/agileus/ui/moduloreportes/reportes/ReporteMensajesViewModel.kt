@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ReporteMensajesViewModel (): ViewModel() {
+class ReporteMensajesViewModel: ViewModel() {
 
     var adaptador = MutableLiveData<ListaDatosAdapter>()
     var enviados = MutableLiveData<String>()
