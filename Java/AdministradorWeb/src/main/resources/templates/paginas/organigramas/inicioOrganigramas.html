@@ -1,8 +1,75 @@
+
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <!-- Required meta tags -->
+    <style>
+        table{
+            width:100%;
+
+        }
+        table .resto{
+            padding: 20px;
+            width: 85% ;
+        }
+
+        table .menu{
+            width: 15% ;
+            height: max-content;
+
+
+        }
+        .main {
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        /* Bootstrap 4 text input with search icon */
+
+        .has-search .form-control {
+            padding-left: 2.375rem;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: right;
+            pointer-events: none;
+            color: #66BB6A;
+        }
+
+        .contenedor{
+            width:90px;
+            height:240px;
+            position:fixed;
+            right:0px;
+            bottom:0px;
+        }
+        .botonF1{
+            width:60px;
+            height:60px;
+            border-radius:100%;
+            background:#66BB6A;
+            right:0;
+            bottom:0;
+            position:absolute;
+            margin-right:16px;
+            margin-bottom:16px;
+            border:none;
+            outline:none;
+            color:#FFF;
+            font-size:36px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            transition:.3s;
+        }
+
+    </style>
+
     <link
             href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
             rel="stylesheet" />
@@ -10,76 +77,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../../static/css/InicioOrganigrama.css" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
     <title>Title</title>
 
 </head>
 <body >
-<h1 th:insert="elementos/menuLateral::pp"></h1>
-<h1 th:replace="ppp::hh"></h1>
-<div th:insert="elementos/menuLateral::pp"></div>
 
-<!-- Cabecera-->
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            Nombre Usuario
-        </div>
-        <div class="col-sm">
-            Rol
-        </div>
-        <div class="col-sm">
-            Numero de Emplea
-        </div>
-        <div class="col-sm">
-            Acciones
-        </div>
-    </div>
-</div>
 
-<!-- Seccion que se va a iterar -->
-<div class="item" th:fragment="aa">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                Diego A
-            </div>
-            <div class="col-sm">
-                Gerente
-            </div>
-            <div class="col-sm">
-                1421221312
-            </div>
-            <div class="col-sm">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                            <form method="POST"
-                                  action="">
 
-                                <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                            </form>
-                            </th>
+
+<table id="tabla">
+    <td  class="menu">
+        <div th:replace="elementos/menuLateral::menuLateral"></div>
+    </td>
+
+    <td class="resto" >
+
+
+        <div class="main" >
+            <!-- Another variation with a button -->
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar Usuario">
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Cabecera-->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    Nombre de grupo
+                </div>
+                <div class="col-sm">
+                    Cantidad de usuarios
+                </div>
+                <div class="col-sm">
+                    Acciones
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Seccion que se va a iterar -->
+        <div class="item" th:each="grupo: ${listaGrupos}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <label th:text="${grupo.getNombre()}"></label>
+                    </div>
+                    <div class="col-sm">
+                        <label th:text="${grupo.getUsuarios().length}"></label>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <form method="POST"
+                                          action="">
+
+                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </div>
+                                <div class="col-sm" style="align-content: center">
+                                    <form method="POST"
+                                          action="">
+                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm" style="align-content: center">
-                            <form method="POST"
-                                  action="">
-                                <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                            </form>
-                        </div>
+
+
+
                     </div>
                 </div>
-
-
-
             </div>
-        </div>
-    </div>
 
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </td>
+</table>
+
+
+<div class="contenedor">
+    <button class="botonF1" type="button" data-toggle="modal" data-target="#modalCreaOrganigrama" >
+        <span>+</span>
+    </button>
 </div>
 
-<div th:replace="menuLateral :: pp " ></div>
-<h1 th:replace="ppp :: hh " ></h1>
+<div th:replace="paginas/modalCreaOrganigrama::#modalCreaOrganigrama">
+</div>
+
 
 
 <!-- Optional JavaScript -->

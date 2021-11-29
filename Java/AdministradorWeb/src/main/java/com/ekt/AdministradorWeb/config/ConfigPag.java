@@ -6,7 +6,8 @@ import com.ekt.AdministradorWeb.entity.Respuesta;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
-import org.bson.json.JsonObject;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -107,11 +108,11 @@ public class ConfigPag {
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr) {
-        System.out.println(gr.getName());
+        System.out.println(gr.getNombre());
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"nombre\": \""+gr.getName()+"\"\r\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"nombre\": \""+gr.getNombre()+"\"\r\n}");
         Request request = new Request.Builder()
                 .url("http://localhost:3040/api/grupo/crear")
                 .method("POST", body)
@@ -126,4 +127,46 @@ public class ConfigPag {
         return "paginas/usuarios/InicioUsuarios";
 
     }
+
+
+    @GetMapping("/inicioGrupos")
+    public String inicioGrupos() {
+        return "paginas/organigramas/inicioOrganigramas";
+    }
+
+
+    @GetMapping("/buscarTodosGrupos")
+    public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model) {
+        Gson gson = new Gson();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/buscarTodo")
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String res = response.body().string();
+
+            JSONObject jsonObject= new JSONObject(res);
+
+            JSONArray name1 = jsonObject.getJSONArray("data");
+
+            for (int i=0;i<name1.length();i++){
+                listaGrupos.add(gson.fromJson(name1.getJSONObject(i).toString(), Group.class));
+            }
+
+        }catch (Exception e){
+            System.out.println("Error al realizar la consulta");
+        }
+        model.addAttribute("listaGrupos",listaGrupos);
+
+        return "paginas/organigramas/inicioOrganigramas.html";
+    }
+
+    @GetMapping("/editarGrupo")
+    public String editarGrupos() {
+        return "paginas/organigramas/editarOrganigrama";
+    }
+
 }
