@@ -17,6 +17,7 @@ class ConfigRetrofit {
     val URL_BASE_TAREAS =
         "http://10.97.3.134:2021/api/"
 
+
    fun obtenerConfiguracionRetofitMessage(): MessageApi {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)

@@ -129,6 +129,7 @@
         android:layout_marginTop="@dimen/marginFormulario"
         android:textColor="@color/colorPrimary"
         android:text="  Adjuntar Archivo PDF"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_descripcion"
         app:layout_constraintBottom_toTopOf="@id/btn_Crear_Tarea"/>

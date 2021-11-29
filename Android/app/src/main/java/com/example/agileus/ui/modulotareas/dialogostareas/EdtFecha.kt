@@ -6,10 +6,10 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import java.util.*
 
-class EdtFecha (val listenerFormularioCrear: DialogosFormularioCrearTareasListener, b:Int) : DialogFragment(),
+class EdtFecha (val listenerFormularioCrear: DialogoFechaListener, b:Int) : DialogFragment(),
     DatePickerDialog.OnDateSetListener{
 
     var bandera = b
