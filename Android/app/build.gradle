@@ -1,10 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id("androidx.navigation.safeargs")
+    id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -67,6 +66,4 @@ dependencies {
 
     //Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-
-
 }
