@@ -26,7 +26,7 @@ interface TasksApi {
     //fun getListaPersonasGrupo(): Call<PersonasGrupo>? // id lider
 
 
-    //todo Editar EndPoint para obtener personas de grupo
+    //Obtener una lista de personas en un grupo
     //http://10.97.0.165:3040/api/user/findByBossId/618d9c26beec342d91d747d6
     @GET( "{idsuperiorInmediato}")
      fun getListaPersonasGrupo(@Path("idsuperiorInmediato") idsuperiorInmediato: String) : Call<PersonasGrupo>? // id lider
@@ -38,14 +38,8 @@ interface TasksApi {
     @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
     fun getTasksByStatus(@Path("datos") datos: String): Call<TaskList>?
 
-    //Obtener una lista de personas en un grupo
-    //@GET( )
-    //fun getListaPersonasGrupo() : Call<ArrayList<PersonasGrupo>>
-
-
     @DELETE("tareas/cancelarTarea/{idTarea}")
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
-
 
     @PUT("tareas/actualizarTarea/{idTarea}")
     fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String): Call<DataTask>

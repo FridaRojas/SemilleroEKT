@@ -43,6 +43,7 @@ class CrearTareasViewModel: ViewModel() {
         try {
             viewModelScope.launch {
                 postTarea.postTasks(t)
+                Log.e("Mensaje viewModel", "$t")
             }
         }
         catch (ex: Exception) {

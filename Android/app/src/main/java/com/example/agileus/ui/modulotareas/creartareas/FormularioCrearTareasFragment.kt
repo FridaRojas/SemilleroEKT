@@ -45,7 +45,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     lateinit var nombrePersonaAsignada  : String
     lateinit var idPersonaAsignada      : String
 
-    var idsuperiorInmediato : String = "618e88acc613329636a769ae"
+    var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
     var uriPost             : String = ""
@@ -139,14 +139,17 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         Toast.LENGTH_SHORT).show()
                 }
             }
+
+            //val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
+            //findNavController().navigate(action)
+
         }
         /* Boton Crear tarea  */
 
         binding.btnAdjuntarArchivo.setOnClickListener {
             val intentPdf= Intent()
             intentPdf.setAction(Intent.ACTION_GET_CONTENT)
-            intentPdf.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intentPdf.type = "*/*"
+            intentPdf.type = "application/pdf"
             //intentPdf.type = "application/pdf"                     // Filtra para archivos pdf
             resultLauncherArchivo.launch(intentPdf)
         }
@@ -166,9 +169,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         val mPrioridad  = binding.spinPrioridad.selectedItem
 
         tarea = Tasks(
-            "GRUPOID1",                  // id_grupo
-            "EMIS1",
-            "Raul",
+            "Prueba Creacion Tarea",                  // id_grupo
+            "Emisor Carlos Cano",
+            "Carlos R",
             idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
@@ -176,9 +179,21 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             titulo.toString(),                  // Titulo de la tarea
             descripcion.toString(),             // Descripcion
             mPrioridad.toString().lowercase(),  // Prioridad
-            "pendiente"
+            "pendiente",
+            ""
 
         )
+
+        Toast.makeText(activity as HomeActivity,
+            "Datos to POST = " +
+                "Titulo: $titulo, " +
+                "Prioridad: ${mPrioridad.toString().lowercase()}, " +
+                "Nombre persona asignada: $nombrePersonaAsignada, " +
+                "Fecha inicio: $fechaInicio, " +
+                "Fecha fin: $fechaFin, "+
+                "Descripcion: $descripcion ",
+            Toast.LENGTH_LONG).show()
+
         asignarTareaViewModel.postTarea(tarea)
     }
     fun subirPdfFirebase(pdf: File, uri: Uri){
@@ -231,10 +246,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                     listaN.add(it.nombre)
                 }
 
-                listaObj = ArrayList<DataPersons>()
+                /*listaObj = ArrayList<DataPersons>()
                 listaPersonas.forEach(){
                     listaObj.add(it)
-                }
+                }*/
 
                 val spinListaAsignarAdapter = ArrayAdapter((activity as HomeActivity),
                     android.R.layout.simple_spinner_item, listaN)

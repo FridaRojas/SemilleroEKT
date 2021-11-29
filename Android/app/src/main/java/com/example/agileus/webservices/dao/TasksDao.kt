@@ -1,15 +1,15 @@
 package com.example.agileus.webservices.dao
 
 import android.util.Log
+import androidx.navigation.fragment.findNavController
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.DataTask
 import com.example.agileus.models.TaskList
 import com.example.agileus.models.DataPersons
 import com.example.agileus.models.PersonasGrupo
 import com.example.agileus.models.Tasks
+import com.example.agileus.ui.modulotareas.creartareas.FormularioCrearTareasFragmentDirections
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
-import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
-import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,6 +21,32 @@ class TasksDao : DialogoConfirmacionListener{
     //Agregar nueva tarea
     fun postTasks(t: Tasks) {
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
+
+        /*val Response = callInserta?.execute()
+        try {
+            if(Response != null) {
+                if (Response.isSuccessful) {
+                    val nuevaTarea: Tasks = Response.body()!!
+                    var mensaje =
+                        "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
+                    mensaje += ", Titulo:${nuevaTarea.titulo}"
+                    mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
+                    mensaje+= ", Numero de empleado:${nuevaTarea.idReceptor}"
+                    mensaje += ", Descripcion:${nuevaTarea.descripcion}"
+                    mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
+                    mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
+                    Log.d("Mensaje", mensaje)
+
+                    //val newFragment = DialogoTareaCreadaExitosamente(this)
+                    //newFragment.show(, "Confirmacion")
+                }else {
+                    Log.d("Mensaje", "No se creo la tarea ${Response.code()}")
+                }
+            }
+        }catch (e:Exception){
+            Log.e("error", e.toString())
+        }*/
+
         callInserta.enqueue(object : Callback<Tasks> {
             override fun onResponse(call: Call<Tasks>, response: Response<Tasks>) {
 
@@ -37,7 +63,7 @@ class TasksDao : DialogoConfirmacionListener{
                     Log.d("Mensaje", mensaje)
 
                     //val newFragment = DialogoTareaCreadaExitosamente(this)
-                    //newFragment.show(, "Confirmacion")
+                    //newFragment.show(this, "Confirmacion")
 
                 } else {
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
@@ -136,5 +162,9 @@ class TasksDao : DialogoConfirmacionListener{
         }
         Log.d("Mensaje", "listaPersonsDatos: ${listaPersonsDatos.size} ")
         return listaPersonsDatos
+    }
+
+    override fun onTaskCreated() {
+        TODO("Not yet implemented")
     }
 }

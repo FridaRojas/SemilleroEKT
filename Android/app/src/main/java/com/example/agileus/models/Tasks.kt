@@ -15,4 +15,5 @@ data class Tasks(
     @SerializedName("descripcion")  var descripcion: String,
     @SerializedName("prioridad")    var prioridad: String,
     @SerializedName("estatus")      var estatus: String,
-)
+    @SerializedName("archivo")      var archivo: String
+) : Serializable
