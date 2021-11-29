@@ -69,8 +69,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         }
 
         firebaseProvider.obs.observe(this,{
-            Toast.makeText(applicationContext, "${it}",Toast.LENGTH_LONG).show()
-            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","${it}","Documento",Constantes.finalDate)
+            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","$it",Constantes.finalDate)
             conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
         })
 
