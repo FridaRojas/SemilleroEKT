@@ -16,7 +16,12 @@ struct Datos:Codable{
     let prioridad: String?
 }
 
-class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    @IBOutlet weak var menu_clasificador: UICollectionView!
+    // nombre para las categorias de pendiente,final,
+let dataSource = ["Completados","Pendientes"," Asignados"]
+    
     
     let servico = "https://firebasestorage.googleapis.com/v0/b/apis-de-prueba-1088e.appspot.com/o/TareasResponse.json?alt=media&token=be446017-4996-4545-8273-005b3f37a77d"
     
@@ -63,7 +68,12 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         //llama al servico
         consumir_servicio()
-    
+        
+        
+        // llamada de menu
+        menu_clasificador.dataSource = self
+        menu_clasificador.delegate = self
+        menu_clasificador.register(ItemMenu.nib(), forCellWithReuseIdentifier: ItemMenu.identificador)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -136,5 +146,19 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         
     
     }
+    //Metodos para la categoria
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let celda = collectionView.dequeueReusableCell(withReuseIdentifier: ItemMenu.identificador, for: indexPath) as! ItemMenu
+        celda.Configure(categoria: dataSource[indexPath.row])
+        return celda
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selecccion: \(dataSource[indexPath.row])")
+    }
+    
 }
 
