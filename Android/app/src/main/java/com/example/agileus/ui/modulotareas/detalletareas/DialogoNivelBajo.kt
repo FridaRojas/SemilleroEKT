@@ -4,9 +4,11 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.agileus.R
 import com.example.agileus.models.DataTask
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
@@ -23,9 +25,15 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
     private lateinit var prioridadD: String
     private lateinit var nombrePersonaD: String
     private lateinit var nombreTarea: String
+    private lateinit var detalleNivelBajoViewModel: DetalleNivelAltoViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
+
+            detalleNivelBajoViewModel =
+                ViewModelProvider(this).get(DetalleNivelAltoViewModel::class.java)
+
+
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater;
             val vista = inflater.inflate(R.layout.dialog_nivel_bajo, null)
@@ -36,6 +44,25 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             var txtFechaInicioD = vista.findViewById<TextView>(R.id.txtFechaInicioD)
             var txtFechaFinD = vista.findViewById<TextView>(R.id.txtFechaFinD)
             var txtObservacionesD = vista.findViewById<TextView>(R.id.txtObservacionesD)
+            var btnEstado = vista.findViewById<Button>(R.id.btnCambiarEstadoD)
+
+            Log.d("Mensaje", dataTask.toString())
+
+            if (dataTask.estatus.equals("Pendiente")) {
+                btnEstado.setText("Cambiar a Iniciada")
+            } else if (dataTask.estatus.equals("Iniciada")) {
+                btnEstado.setText("Cambiar a Revision")
+            } else if (dataTask.estatus.equals("Revision")) {
+                btnEstado.setText("En revision")
+                btnEstado.isEnabled = false
+            } else if (dataTask.estatus.equals("Terminada")) {
+                btnEstado.setText("Tarea Terminada")
+                btnEstado.isEnabled = false
+            } else if (dataTask.estatus.equals("Cancelado")) {
+                btnEstado.setText("Tarea Cancelada")
+                btnEstado.isEnabled = false
+            }
+
 
             nombreTarea = dataTask.titulo
             nombrePersonaD = dataTask.nombreEmisor
@@ -53,13 +80,21 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
 ////            txtFechaInicioD.text = FechaInicioD.toString()
 ////            txtFechaFinD.text = FechaFinD.toString()
             // txtObservacionesD.text = observacionesD
-            dialog?.closeOptionsMenu()
+            this.dialog?.closeOptionsMenu()
+            btnEstado.setOnClickListener {
+                if (dataTask.estatus.equals("Pendiente")) {
+                    dataTask.estatus = "Iniciada"
+                } else if (dataTask.estatus.equals("Iniciada")) {
+                    dataTask.estatus="Revision"
+                }
+                if (dataTask.estatus.equals("Revision")) {
+                    btnEstado.isEnabled = false
+                }
+                detalleNivelBajoViewModel.actualizarEstatus(dataTask)
+                this.dialog?.dismiss()
+            }
             builder.setView(vista)
-                .setPositiveButton(getString(R.string.BtnCambiarEstadoDialogo),
-                    DialogInterface.OnClickListener { dialog, id ->
 
-
-                    })
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
 

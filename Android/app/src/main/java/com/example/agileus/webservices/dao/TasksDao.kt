@@ -102,19 +102,44 @@ class TasksDao {
 
 
     fun editTask(t: DetalleNivelAltoFragmentArgs, idTarea: String) {
+        Log.d("Mensaje", t.toString())
         val callback = InitialApplication.webServiceGlobalTasks.editTask(t, idTarea)
-        callback.enqueue(object : Callback<DataTask> {
-            override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
+        callback.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
-                    Log.d("Mensaje", "Tarea Editada")
+                    Log.d("Mensaje", "${response.body()}")
                 } else {
-                    Log.d("Mensaje", "No se edito tarea ${response.code()}")
+                    Log.d("Mensaje", "No se Edito tarea ${response.code()}")
+
                 }
             }
 
-            override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Failure ${t.message}")
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("Mensaje", "On Failure: ${t.message}")
             }
+        })
+    }
+
+     fun updateStatus(idTarea: String, estatus: String) {
+        var url = idTarea + "&" + estatus
+        url.trim()
+        Log.d("url", url)
+        val callback = InitialApplication.webServiceGlobalTasks.updateStatus(url)
+//        val value: Response<String> = callback.execute()
+//        Log.d("Mensaje", value.toString())
+           callback.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    Log.d("Mensaje", "Estatus Editado")
+                } else {
+                    Log.d("Mensaje", "No se Edito estatus ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("Mensaje", "On Failure: ${t.message}")
+            }
+
         })
     }
 }

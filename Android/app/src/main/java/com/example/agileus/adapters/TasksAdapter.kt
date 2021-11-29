@@ -44,7 +44,7 @@ class TasksAdapter(
         var personaAsignada: TextView
         var fecha: TextView
         var btnAbrirDetallesTarea: ImageView
-        var nivelUsuario: String = "Alto"
+        var nivelUsuario: String = "Bajo"
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
@@ -61,7 +61,6 @@ class TasksAdapter(
 
             btnAbrirDetallesTarea.setOnClickListener {
                 if (nivelUsuario.equals("Alto") || nivelUsuario.equals("Medio")) {
-                    Toast.makeText(itemView.context, "Abrimos Fragment", Toast.LENGTH_SHORT).show()
                     var action: NavDirections
                     action =
                         TaskFragmentDirections.actionNavigationDashboardToDetalleNivelAltoFragment(

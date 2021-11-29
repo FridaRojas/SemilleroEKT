@@ -10,6 +10,11 @@ import com.example.agileus.webservices.apis.ConversationApi
 import com.example.agileus.webservices.apis.TasksApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.google.gson.GsonBuilder
+
+import com.google.gson.Gson
+import retrofit2.converter.scalars.ScalarsConverterFactory
+
 
 class ConfigRetrofit {
 
@@ -18,7 +23,7 @@ class ConfigRetrofit {
 
     //todo Falta editar el url para las tareas
     val URL_BASE_TAREAS =
-        "http://10.97.4.92:2021/api/"
+        "http://10.97.3.134:2021/api/"
 
     fun obtenerConfiguracionRetofit(): ConversationApi {
         var mRetrofit = Retrofit.Builder()
@@ -30,9 +35,16 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
+
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(ScalarsConverterFactory.create())
             .build()
 
         return mRetrofit.create(TasksApi::class.java)

@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:padding="@dimen/activity_vertical_margin"
+            android:editable="false"
             android:text="Inicio: 16/01/2021"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />

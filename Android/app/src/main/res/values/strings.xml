@@ -38,5 +38,10 @@
     <string name="status4">Terminada</string>
     <string name="status5">Asignada</string>
     <string name="status6">Cancelado</string>
+    <string name="respAceptar">Aceptar</string>
+    <string name="respCancelar">Cancelar</string>
+    <string name="GuardarTarea">Guardar Tarea</string>
+    <string name="AdjuntarArchivo">Adjuntar Archivo</string>
+    <string name="dialogoAceptar">dialogoAceptar</string>
 
 </resources>

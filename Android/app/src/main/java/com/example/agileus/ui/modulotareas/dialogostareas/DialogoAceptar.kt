@@ -14,7 +14,7 @@ import com.example.agileus.webservices.dao.TasksDao
 import java.lang.IllegalStateException
 import java.util.*
 
-class DialogoAceptar(private var listener: TaskListListener, var dataTask: DataTask) :
+class DialogoAceptar() :
     DialogFragment() {
 
     private lateinit var observacionesD: String
@@ -26,6 +26,7 @@ class DialogoAceptar(private var listener: TaskListListener, var dataTask: DataT
     private lateinit var nombreTarea: String
 
     var taskDao: TasksDao
+    var resp: Boolean = false
 
     init {
         taskDao = TasksDao()
@@ -38,18 +39,12 @@ class DialogoAceptar(private var listener: TaskListListener, var dataTask: DataT
             val vista = inflater.inflate(R.layout.dialog_nivel_bajo, null)
 
             builder.setView(vista)
-                .setPositiveButton("Aceptar",
+                .setPositiveButton(getString(R.string.respAceptar),
                     DialogInterface.OnClickListener { dialog, id ->
-//                        try {
-//                            viewModelScope.launch {
-//                                taskDao.cancelTask(dataTask)
-//                            }
-//                        } catch (ex: Exception) {
-//                            Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
-//                        }
+                        resp = true
                     })
-                .setNegativeButton("Cancelar",
-                DialogInterface.OnClickListener { dialog, which ->  })
+                .setNegativeButton(getString(R.string.respCancelar),
+                    DialogInterface.OnClickListener { dialog, which -> })
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
 

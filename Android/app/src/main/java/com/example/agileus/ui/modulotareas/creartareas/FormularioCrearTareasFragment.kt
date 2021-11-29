@@ -17,12 +17,13 @@ import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCre
 
 private const val ARG_PARAM1 = "param1"
 
+private var _binding: FragmentFormularioCrearTareasBinding? = null
+private val binding get() = _binding!!
+
+
 class FormularioCrearTareasFragment : Fragment(), DialogosFormularioCrearTareasListener {
 
     private lateinit var asignarTareaViewModel: CrearTareasViewModel
-
-    private var _binding: FragmentFormularioCrearTareasBinding? = null
-    private val binding get() = _binding!!
     private var param1: String? = null
 
     var fechaInicio     : String = ""
