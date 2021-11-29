@@ -11,16 +11,24 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/estiloGeneral.css}" />
 </head>
 <body >
+<div>
+    <!--<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+         th:text="${mensaje}" class="alert" >
+    </div>-->
+
+    <div  class="alert alert-danger" th:if="${mensaje != null}" th:text="${mensaje}">
+    </div>
+</div>
 <table >
+
+
 
     <td class="logo">
         <div  align="center" id="logo">
             <svg class="bi me-2" width="16" height="16" >
                 <img src="/assets/419-4190296_hojas-verde-png-sin-fondo.png" height="120" width="70">
             </svg>
-
             <h3 class="fontA" >Agile Us</h3>
-
         </div>
     </td>
 
