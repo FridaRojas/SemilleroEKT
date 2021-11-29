@@ -33,7 +33,9 @@ extension AsignarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegat
         }
         else if personSelectField.isFirstResponder
         {
-            seleccionado_picker_persona = PersonasAsignadas[row]
+            seleccionado_picker_persona = PersonasAsignadas[row][0]
+            seleccionado_picker_persona_id = PersonasAsignadas[row][1]
+            
         }
         
 
@@ -45,7 +47,7 @@ extension AsignarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegat
         }
         else if personSelectField.isFirstResponder
         {
-            return PersonasAsignadas[row]
+            return PersonasAsignadas[row][0]
         }
         return ""
     }
@@ -101,17 +103,20 @@ extension AsignarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegat
     {
 
        var indexSelected = selector_Persona.selectedRow(inComponent: 0)
-        print(indexSelected)
         if (indexSelected == 0)
         {
             
-            personSelectField.text = PersonasAsignadas[0]
+            personSelectField.text = PersonasAsignadas[0][0]
+            seleccionado_picker_persona = PersonasAsignadas[0][0]
+            seleccionado_picker_persona_id = PersonasAsignadas[0][1]
         }
 
         else
         {
         personSelectField.text = seleccionado_picker_persona
         }
+        
+        //print("VARIABLE SELECCIONADO PICKER PERSONA ID: \(seleccionado_picker_persona_id)")
         self.view.endEditing(true)
     }
 }

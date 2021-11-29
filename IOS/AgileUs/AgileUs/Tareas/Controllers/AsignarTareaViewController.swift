@@ -7,12 +7,7 @@
 
 import UIKit
 
-struct FindPersons: Codable {
-let data: [DatosPersons]
-}
-struct DatosPersons: Codable {
-    let nombre:String
-}
+
 
 class AsignarTareaViewController: UIViewController, UITextViewDelegate {
 
@@ -29,8 +24,9 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
     
     let datePicker = UIDatePicker()
     var seleccionado_picker_persona = String()
+    var seleccionado_picker_persona_id = String()
     var seleccionado_picker_prioridad = String()
-    var PersonasAsignadas = [String]()
+    var PersonasAsignadas = [[String]]()
     var prioridades = ["Alta","Media","Baja"]
     var selector_Persona = UIPickerView()
     var selector_Prioridad = UIPickerView()
@@ -44,9 +40,11 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
         configurar_DatePicker()
         Configurar_Picker_PersonasAsignadas()
         Configurar_Picker_Prioridades()
-        LoadPersonsAsig()
+        MostarPersonasAsig()
         nameTaskField.textAlignment = .center
-        fileField.textAlignment = .center        
+        fileField.textAlignment = .center
+        
+
     }
     
     
@@ -86,29 +84,22 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
     }
     
 
-    func LoadPersonsAsig()
-        {
-            let urlStr = "http://10.97.0.165:3040/api/user/findByBossId/618e88acc613329636a769ae"
-            if let url = URL(string: urlStr) {
-                URLSession.shared.dataTask(with: url) { (data, response , error) in
-                    if let data = data {
-                        do {
-                            let Datapersons = try JSONDecoder().decode(FindPersons.self, from: data)
-                            for item in Datapersons.data
-                            {
-                                self.PersonasAsignadas.append(item.nombre)
-                            }
-                        } catch {
-                            print("error")
-                        }
-                    } else {
-                        print("error")
-                    }
-                }.resume()
-            }
-            
+        func MostarPersonasAsig()
+            {
 
-        }
+                Api.shared.LoadPersonasAsignadas(idLider: "619c036a755c956b81252e03") {
+                    persona in
+                    var i = 0
+                    for item in persona.data
+                        {
+                        self.PersonasAsignadas.append(contentsOf: [[item.nombre,item.id]])
+                        }
+  
+                } failure: { error in
+                    self.Alerta_CamposVacios(title: "Error", Mensaje: "Intente de nuevo")
+                }
+
+            }
 
 }
 

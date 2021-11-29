@@ -6,20 +6,9 @@
 //
 import UIKit
 
-struct Tareas: Codable
-{
-    let titulo:String
-    let nombre_receptor:String
-    let prioridad:String
-    let estatus:String
-    let descripcion:String
-    let fecha_ini:String
-    let fecha_fin:String
-    let observaciones:String?
-}
-
 class InfoViewController: UIViewController {
     
+    @IBOutlet weak var boton_estatus: UIButton!
     @IBOutlet weak var Titulo: UILabel!
     @IBOutlet weak var Nombre: UILabel!
     @IBOutlet weak var Prioridad: UILabel!
@@ -28,19 +17,23 @@ class InfoViewController: UIViewController {
     @IBOutlet weak var Fecha_inicio: UILabel!
     @IBOutlet weak var Fecha_fin: UILabel!
     @IBOutlet weak var Observacion: UITextView!
+    
+    var id_tarea:String = ""
+    var estatus:String = ""
+
     lazy var blurredView: UIView = {
-        // 1. create container view
+        // Crear containerView
         let containerView = UIView()
-        // 2. create custom blur view
+        // Crear blur view
         let blurEffect = UIBlurEffect(style: .light)
         let customBlurEffectView = CustomVisualEffectView(effect: blurEffect, intensity: 0.2)
         customBlurEffectView.frame = self.view.bounds
-        // 3. create semi-transparent black view
+        // Crear
         let dimmedView = UIView()
         dimmedView.backgroundColor = .black.withAlphaComponent(0.6)
         dimmedView.frame = self.view.bounds
         
-        // 4. add both as subviews
+        //Agregar subView
         containerView.addSubview(customBlurEffectView)
         containerView.addSubview(dimmedView)
         return containerView
@@ -49,11 +42,12 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        LoadTareaModal()
+        MostrarTareaModal()
+
     }
     
     func setupView() {
-        // 6. add blur view and send it to back
+        //Agregar blur view y mandarlo de regreso
         view.addSubview(blurredView)
         view.sendSubviewToBack(blurredView)
     }
@@ -61,46 +55,72 @@ class InfoViewController: UIViewController {
     @IBAction func Cerrar_modal(_ sender: UIButton) {
         dismiss(animated: true)
     }
-    
-    
-    func LoadTareaModal()
-            {
-                let urlStr = "http://10.97.3.134:2021/api/tareas/obtenerTareaPorId/619c036a755c956b81252e03"
-                if let url = URL(string: urlStr) {
-                    URLSession.shared.dataTask(with: url) { (data, response , error) in
-                        if let data = data {
-                            do {
-                                let AtribTarea = try JSONDecoder().decode(Tareas.self, from: data)
-                                DispatchQueue.main.async {
-                                    self.Titulo.text = AtribTarea.titulo
-                                    self.Nombre.text = AtribTarea.nombre_receptor
-                                    self.Prioridad.text = "Prioridad: \(AtribTarea.prioridad)"
-                                    self.Estatus.text = "Estatus: \(AtribTarea.estatus)"
-                                    self.Descripcion.text = AtribTarea.descripcion
-                                    self.Fecha_inicio.text = AtribTarea.fecha_ini
-                                    self.Fecha_fin.text = AtribTarea.fecha_fin
-                                    if (self.Observacion.text == "null")
-                                    {
-                                        self.Observacion.text = String()
-                                    }
-                                    else{
-                                        self.Observacion.text = AtribTarea.observaciones
-                                    }
-                                    
-
-                                }
-                                
-                                
-                            } catch {
-                                print("error")
-                            }
-                        } else {
-                            print("error")
-                        }
-                    }.resume()
+    func MostrarTareaModal()
+    {
+        self.MostrarSpinner(onView: self.view)
+        Api.shared.LoadTareaModal(idTarea: "619c036a755c956b81252e03") {
+            tarea in
+            print("si jalo")
+            DispatchQueue.main.async {
+                self.Titulo.text = tarea.titulo
+                self.Nombre.text = tarea.nombre_receptor
+                self.Prioridad.text = "Prioridad: \(tarea.prioridad)"
+                self.Estatus.text = "Estatus: \(tarea.estatus)"
+                self.estatus = tarea.estatus
+                self.id_tarea = tarea.id_tarea
+                switch self.estatus
+                {
+                case "pendiente":
+                    self.boton_estatus.setTitle("Cambiar a iniciada", for: .normal)
+                    self.estatus = "iniciada"
+                case "iniciada":
+                    self.boton_estatus.setTitle("Cambiar a revision", for: .normal)
+                    self.estatus = "revision"
+                case "revision":
+                    self.boton_estatus.isHidden = true
+                case "terminada":
+                    self.boton_estatus.isHidden = true
+                default:
+                    print("sin estatus")
                 }
-                
+                self.Descripcion.text = tarea.descripcion
+                self.Fecha_inicio.text = tarea.fecha_ini
+                self.Fecha_fin.text = tarea.fecha_fin
+                if (self.Observacion.text == "null")
+                {
+                    self.Observacion.text = String()
+                }
+                else{
+                    self.Observacion.text = tarea.observaciones
+                }
+                self.RemoverSpinner()
 
             }
+        } failure: { error in
+            print("ERROR")
+        }
+    }
 
+    
+    func CambiarEstatus()
+    {
+        self.MostrarSpinner(onView: self.view)
+        Api.shared.UpdateEstatus(idTarea: id_tarea, estatus: estatus)
+        {
+            tarea in
+            
+            DispatchQueue.main.async {
+                self.RemoverSpinner()
+                self.Alerta_CamposVacios(title: "Cambio Exitoso", Mensaje: "Se ha cambiado su estatus")
+                self.Estatus.text = "Estatus: \(self.estatus)"
+            }
+        } failure: { error in
+
+        }
+    }
+    
+    
+    @IBAction func BotonCambiarEstatus(_ sender: UIButton) {
+        CambiarEstatus()
+    }
 }

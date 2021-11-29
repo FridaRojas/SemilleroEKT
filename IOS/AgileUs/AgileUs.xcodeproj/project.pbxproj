@@ -21,6 +21,9 @@
 		AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A9A274C5D120087E417 /* Ext_Button.swift */; };
 		AEA60AA1274D70670087E417 /* Funciones_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60AA0274D70670087E417 /* Funciones_Generales.swift */; };
 		AEA60AA3274D97530087E417 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60AA2274D97530087E417 /* Strings.swift */; };
+		AEF5ADB3275158CD00AAC104 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB2275158CD00AAC104 /* Services.swift */; };
+		AEF5ADB527548E2800AAC104 /* DataPersonas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB427548E2800AAC104 /* DataPersonas.swift */; };
+		AEF5ADB727548F2E00AAC104 /* DataTareas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB627548F2E00AAC104 /* DataTareas.swift */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
 		D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C792746BD81002121E4 /* SceneDelegate.swift */; };
 		D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C7B2746BD81002121E4 /* ViewController.swift */; };
@@ -69,6 +72,9 @@
 		AEA60A9A274C5D120087E417 /* Ext_Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_Button.swift; sourceTree = "<group>"; };
 		AEA60AA0274D70670087E417 /* Funciones_Generales.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funciones_Generales.swift; sourceTree = "<group>"; };
 		AEA60AA2274D97530087E417 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		AEF5ADB2275158CD00AAC104 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		AEF5ADB427548E2800AAC104 /* DataPersonas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersonas.swift; sourceTree = "<group>"; };
+		AEF5ADB627548F2E00AAC104 /* DataTareas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTareas.swift; sourceTree = "<group>"; };
 		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
 		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -246,6 +252,9 @@
 				AEA60A95274C5D120087E417 /* Controllers */,
 				AEA60A97274C5D120087E417 /* Extensions */,
 				D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */,
+				AEF5ADB2275158CD00AAC104 /* Services.swift */,
+				AEF5ADB427548E2800AAC104 /* DataPersonas.swift */,
+				AEF5ADB627548F2E00AAC104 /* DataTareas.swift */,
 			);
 			path = Tareas;
 			sourceTree = "<group>";
@@ -515,11 +524,14 @@
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */,
+				AEF5ADB727548F2E00AAC104 /* DataTareas.swift in Sources */,
 				AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */,
 				AEA60AA3274D97530087E417 /* Strings.swift in Sources */,
 				AE4C5A312750391E0095B907 /* CustomVisualEffectView.swift in Sources */,
 				AEA60AA1274D70670087E417 /* Funciones_Generales.swift in Sources */,
 				AE4C5A33275039520095B907 /* InfoViewController.swift in Sources */,
+				AEF5ADB3275158CD00AAC104 /* Services.swift in Sources */,
+				AEF5ADB527548E2800AAC104 /* DataPersonas.swift in Sources */,
 				AEA60A9D274C5D120087E417 /* Ext_UITextView.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
 				AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */,

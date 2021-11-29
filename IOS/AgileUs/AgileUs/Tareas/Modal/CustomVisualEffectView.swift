@@ -8,11 +8,8 @@
 import UIKit
 
 final class CustomVisualEffectView: UIVisualEffectView {
-    /// Create visual effect view with given effect and its intensity
-    ///
-    /// - Parameters:
-    ///   - effect: visual effect, eg UIBlurEffect(style: .dark)
-    ///   - intensity: custom intensity from 0.0 (no effect) to 1.0 (full effect) using linear scale
+    /// Crear vista de efecto visual con efecto dado y su intensidad.
+
     init(effect: UIVisualEffect, intensity: CGFloat) {
         theEffect = effect
         customIntensity = intensity
