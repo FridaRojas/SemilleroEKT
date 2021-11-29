@@ -42,7 +42,7 @@ public class ConfigPag {
     }
 
     @GetMapping("/eliminaUsuario")
-    public String eliminaUsuario(@ModelAttribute Group group, ModelMap model){
+    public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Gson gson = new Gson();
@@ -71,6 +71,7 @@ public class ConfigPag {
         }
         return "paginas/modalEliminaUsuario";
     }
+
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us) {
              //codigo de postman
@@ -165,4 +166,36 @@ public class ConfigPag {
         return "paginas/usuarios/InicioUsuarios";
 
     }
+
+    @PostMapping("/reasignaSuperior")
+    public String reasignaSuperior(@ModelAttribute User usuario, ModelMap modelMap){
+        Gson gson = new Gson();
+        ArrayList<User> listaUsuarios = new ArrayList();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        Request request = new Request.Builder()
+                .url("localhost:3040/api/user/findByBossId/619bbf0623b2987cc6211172")
+                .method("GET", null)
+                .build();
+        try{
+            Response response = client.newCall(request).execute();
+            System.out.println(response);
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            if (jsonObject.get("data")!=""){
+
+                JSONArray usuarios = jsonObject.getJSONArray("data");
+
+                for (int i=0;i<usuarios.length();i++){
+                    listaUsuarios.add(gson.fromJson(usuarios.getJSONObject(i).toString(), User.class));
+                }
+                modelMap.addAttribute("usuarios",listaUsuarios);
+                return "paginas/ReasignaSuperior";
+            }else{
+                return "paginas/login";
+            }
+        }catch (Exception e){
+            System.out.println("No se puede realizar la petición");
+        }
+        return "paginas/modalEliminaUsuario";
+    }
+
 }
