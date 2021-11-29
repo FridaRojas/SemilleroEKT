@@ -35,8 +35,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
     private lateinit var taskViewModel: TaskViewModel
 
-    var listStatus =
-        listOf("Pendientes", "Iniciadas", "Revisión", "Terminadas", "Asignadas", "Canceladas")
+    lateinit var listStatus : Array<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +54,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        listStatus = resources.getStringArray(R.array.status_array)
         //Recycler Status
         var adaptadorStatus = StatusTasksAdapter(listStatus, this)
         binding.recyclerStatusTareas.adapter = adaptadorStatus

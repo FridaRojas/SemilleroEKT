@@ -25,6 +25,15 @@
         <item>Alta</item>
     </string-array>
 
+    //Statud
+    <string-array name="status_array">
+        <item>Pendiente</item>
+        <item>Iniciada</item>
+        <item>Revisión</item>
+        <item>Terminada</item>
+        <item>Asignada</item>
+        <item>Cancelado</item>
+    </string-array>
 
     <string name="mensaje_nuevo">Mensaje nuevo</string>
     <string name="comunicados">Comunicados</string>
@@ -32,7 +41,7 @@
     <string name="asunto">Asunto</string>
 
     //Status Tareas
-    <string name="status1">Pendiente</string>
+    <string name="status1">pendiente</string>
     <string name="status2">Iniciada</string>
     <string name="status3">Revision</string>
     <string name="status4">Terminada</string>

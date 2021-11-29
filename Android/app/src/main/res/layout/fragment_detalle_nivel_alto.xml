@@ -8,10 +8,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/paddingGeneral"
-        android:layout_marginBottom="50dp">
+        android:layout_height="0dp"
+        android:padding="20dp">
 
+        <!-- Nombre de la Tarea -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtNombreTareaD"
             android:layout_width="match_parent"
@@ -22,6 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Nombre de la Persona -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtNombrePersonaD"
             android:layout_width="match_parent"
@@ -31,6 +32,7 @@
             android:text="Nombre de la persona"
             app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
 
+        <!-- Prioridad -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtPrioridadD"
             android:layout_width="wrap_content"
@@ -44,6 +46,7 @@
 
         </com.google.android.material.textview.MaterialTextView>
 
+        <!-- Status -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtEstatusD"
             android:layout_width="wrap_content"
@@ -108,9 +111,10 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             style="@style/StyleTextFragment"
-            android:drawableRight="@drawable/adjuntar_archivo"
+            android:drawableLeft="@drawable/iconoadjuntararchivo"
             android:layout_marginTop="@dimen/marginFormulario"
-            android:text="Adjuntar Archivo PDF    "
+            android:textColor="@color/colorPrimary"
+            android:text="  Adjuntar Archivo PDF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtObservacionesD"/>
 
@@ -178,7 +182,8 @@
             android:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/btnCancelarTareaF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
+            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

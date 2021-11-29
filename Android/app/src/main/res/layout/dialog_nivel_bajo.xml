@@ -60,9 +60,7 @@
         android:id="@+id/txtDescripcionD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textStyle="normal"
-        android:textSize="16sp"
+        style="@style/StyleTextFragment"
         android:layout_marginTop="@dimen/marginFormulario"
         android:text="Descripcion: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
         app:layout_constraintTop_toBottomOf="@+id/txtPrioridadD" />
@@ -75,7 +73,8 @@
         android:layout_marginTop="@dimen/marginFormulario"
         android:text="Inicio: 16/01/2021"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD"
+        android:drawableLeft="@drawable/iconocalendario" />
 
 
     <TextView
@@ -86,7 +85,8 @@
         android:layout_marginTop="@dimen/marginFormulario"
         android:text="Fin: 20/01/2021"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD"
+        android:drawableLeft="@drawable/iconocalendario" />
 
     <TextView
         android:id="@+id/txtObservacionesD"
