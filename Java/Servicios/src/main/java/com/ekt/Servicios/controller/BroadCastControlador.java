@@ -133,6 +133,9 @@ public class BroadCastControlador {
 			okhttp3.Response response = client.newCall(request).execute();
 		} catch (IOException e) {
 			e.printStackTrace();
+
+
+			
 		}
 	}
 }
