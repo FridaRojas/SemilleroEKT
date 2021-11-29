@@ -32,6 +32,9 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var idReceptor = intent.getStringExtra(Constantes.CHAT_NAME)
+        var id_conversation_group = intent.getStringExtra(Constantes.CHAT_GROUP)
+
         conversationviewModel = ViewModelProvider(this).get()
         conversationviewModel.devuelveLista(Constantes.idChat)
 
