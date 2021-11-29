@@ -8,10 +8,7 @@ import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.models.Contacts
-import com.example.agileus.models.DatosMensajes
-import com.example.agileus.models.EmployeeListByBossID
-import com.example.agileus.models.Estadisticas
+import com.example.agileus.models.*
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -38,10 +35,10 @@ class ReporteMensajesDao {
     fun recuperardatosMensajes(): ArrayList<Estadisticas> {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes()
-        val ResponseMensajes: Response<ArrayList<DatosMensajes>> = callRespuesta.execute()
+        val ResponseMensajes: Response<ArrayList<Conversation>> = callRespuesta.execute()
 
         val listaRecycler= ArrayList<Estadisticas>()
-        val lista: ArrayList<DatosMensajes>
+        val lista: ArrayList<Conversation>
 
 
 
@@ -91,7 +88,7 @@ class ReporteMensajesDao {
 
                     contador_m_recibidos = contador_m_recibidos + 1
 
-                    if(it.statusLeido){
+                    if(it.statusLeido == "true"){
                         contador_m_leidos = contador_m_leidos + 1
                     }
 
