@@ -22,6 +22,7 @@ import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
+import com.example.agileus.utils.Constantes
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -80,6 +81,7 @@ class ReporteMensajesFragment : Fragment(), FiltroReportesDialog.FiltroReportesD
         _binding = ReporteMensajesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
         return root
 
     }
@@ -87,6 +89,9 @@ class ReporteMensajesFragment : Fragment(), FiltroReportesDialog.FiltroReportesD
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
+        //Log.e("Lista", reporteMensajesViewModel.devuelveListaContactos(Constantes.id).toString())
 
         binding.btnFiltroReportes.setOnClickListener {
             val newFragment = FiltroReportesDialog(this)

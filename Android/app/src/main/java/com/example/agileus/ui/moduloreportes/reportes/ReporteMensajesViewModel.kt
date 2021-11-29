@@ -1,12 +1,16 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
+import com.example.agileus.models.Contacts
+import com.example.agileus.models.EmployeeListByBossID
 import com.example.agileus.models.Estadisticas
+import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.dao.ReporteMensajesDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +27,7 @@ class ReporteMensajesViewModel : ViewModel() {
     var cargaDatosExitosa = MutableLiveData<Boolean>()
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
+    lateinit var listaHijosConsumida:ArrayList<Contacts>
 
     init {
 
@@ -54,6 +59,22 @@ class ReporteMensajesViewModel : ViewModel() {
                     }
                 }
             }
+    }
 
+    fun devuelveListaEmpleados(idUser:String){
+        try {
+            viewModelScope.launch {
+                listaHijosConsumida =  withContext(Dispatchers.IO) {
+                    lista.obtenerListaSubContactos(idUser)
+                }
+                listaHijosConsumida.forEach {
+                    Log.e("Hijos", it.nombre)
+                }
+
+                Log.i("sizeList", "${listaHijosConsumida.size}")
+            }
+        }catch (ex:Exception){
+            Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
+        }
     }
 }

@@ -7,8 +7,7 @@ import android.util.Log
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.models.DatosMensajes
-import com.example.agileus.models.Estadisticas
+import com.example.agileus.models.*
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -29,6 +28,8 @@ class ReporteMensajesDao {
     private var suma_tiempos:Int=0
     private var temporal:Int=0
     private lateinit var promedio_tiempo_respuesta:String
+
+    var employeeList = ArrayList<Contacts>()
 
 
     fun recuperardatosMensajes(): ArrayList<Estadisticas> {
@@ -121,5 +122,26 @@ class ReporteMensajesDao {
 
         return contador_mensajes_leidos.toString()
     }
+
+
+    fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
+        try{
+            //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
+            var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
+
+            if (ResponseDos.isSuccessful){
+                val listaConsumida = ResponseDos.body()!!
+                employeeList = listaConsumida.dataEmployees
+            }else{
+                Log.e("ERROR SubCOntactos", ResponseDos.code().toString())
+            }
+
+        }catch (ex:Exception){
+
+        }
+        return employeeList
+    }
+
 
 }
