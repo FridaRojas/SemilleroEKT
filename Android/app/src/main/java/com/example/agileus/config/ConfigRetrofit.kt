@@ -4,7 +4,6 @@ package com.example.agileus.config
 import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.utils.Constantes.URL_REPORTES_MENSAJES
 import com.example.agileus.utils.Constantes.URL_REPORTES_TAREAS
-import com.example.agileus.webservices.apis.ConversationApi
 import com.example.agileus.webservices.apis.ReportesApi
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
