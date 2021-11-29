@@ -4,7 +4,6 @@ package com.example.agileus.config
 import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
-import com.example.agileus.webservices.apis.ConversationApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi

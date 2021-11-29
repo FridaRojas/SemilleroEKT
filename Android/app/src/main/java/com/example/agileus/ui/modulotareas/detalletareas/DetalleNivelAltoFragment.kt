@@ -16,11 +16,11 @@ import com.example.agileus.models.DataTask
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogosFormularioCrearTareasListener
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import java.util.*
 
 
-class DetalleNivelAltoFragment : Fragment(), DialogosFormularioCrearTareasListener {
+class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private var _binding: FragmentDetalleNivelAltoBinding? = null
     private val binding get() = _binding!!
     private lateinit var observaciones: String
