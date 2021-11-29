@@ -9,6 +9,7 @@ import UIKit
 
 class ModalForgotPassword: UIViewController {
 
+    @IBOutlet weak var modalView: UIView!
     @IBOutlet weak var txtEmail: UITextField!
     
     override func viewDidLoad() {
@@ -26,6 +27,12 @@ class ModalForgotPassword: UIViewController {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        let touch = touches.first
+        if touch?.view != self.modalView
+        { self.dismiss(animated: true, completion: nil) }
+    }
     /*
     // MARK: - Navigation
 
