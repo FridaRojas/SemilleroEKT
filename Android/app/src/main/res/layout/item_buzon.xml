@@ -8,9 +8,12 @@
 
     android:orientation="vertical"
     android:padding="4dp"
+
+    android:background="@drawable/cliente_backgroud"
     android:layout_marginTop="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    android:backgroundTint="#FFFFFF">
 
 
 
@@ -20,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Asignada por "
+        android:text="Comunicado "
         android:textSize="18sp"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +40,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:text="Descripcion de la tarea"
+        android:text="Asunto"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -51,7 +54,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:text="Ultimo Mensaje"
+        android:text="Mensaje"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -77,7 +80,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
-            android:text="Estado Actual de la Tarea : No Realizada"
+            android:text=""
             android:textSize="18sp"
             />
 
@@ -105,8 +108,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"
-        android:layout_height="10dp"
-        android:background="@color/purple_700"/>
+        android:layout_height="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

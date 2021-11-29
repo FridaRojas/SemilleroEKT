@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/paddingFormulario"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.modulotareas.creartareas.FormularioCrearTareasFragment">
+
+    <!--    TextInputLayout Título   -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nombre_de_la_tarea"
+        android:layout_marginTop="@dimen/marginFormulario"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_agrega_titulo"
+            style="@style/StyleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:singleLine="true">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--     LinearLayout Persona Asignada "Spinner"   -->
+    <LinearLayout
+        android:id="@+id/linear_persona_asignada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTitulo"
+        app:layout_constraintBottom_toTopOf="@id/linear_prioridad">
+        <TextView
+            android:text="@string/persona_asignada"
+            style="@style/StyleTextFormulario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp" />
+        <Spinner
+            android:id="@+id/spinPersonaAsignada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!--      LinearLayout Prioridad "Spinner"   -->
+    <LinearLayout
+        android:id="@+id/linear_prioridad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_persona_asignada"
+        app:layout_constraintBottom_toTopOf="@id/edt_fecha_inicio">
+        <TextView
+            android:text="@string/prioridad"
+            style="@style/StyleTextFormulario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp" />
+        <Spinner
+            android:id="@+id/spinPrioridad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Fecha de Inicio -->
+    <EditText
+        android:id="@+id/edt_fecha_inicio"
+        style="@style/StyleTextFormulario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:drawableEnd="@drawable/iconocalendario"
+        android:focusable="false"
+        android:text="@string/fecha_de_inicio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_prioridad"
+        app:layout_constraintBottom_toTopOf="@id/edt_fecha_fin"/>
+
+    <!-- Fecha de Fin -->
+    <EditText
+        android:id="@+id/edt_fecha_fin"
+        style="@style/StyleTextFormulario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/iconocalendario"
+        android:clickable="true"
+        android:focusable="false"
+        android:text="@string/fecha_de_vencimiento"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edt_fecha_inicio"
+        app:layout_constraintBottom_toTopOf="@id/txt_descripcion"/>
+
+    <!--      TextInputLayout Descripción   -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txt_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/descripcion"
+        style="@style/textCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edt_fecha_fin"
+        app:layout_constraintBottom_toTopOf="@id/txtArchivo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_descripcion"
+            style="@style/StyleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:imeOptions="actionDone"
+            android:singleLine="false"
+            android:textAlignment="textStart"></com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Adjuntar Archivo -->
+    <TextView
+        android:id="@+id/txtArchivo"
+        android:text="Adjuntar archivo PDF"
+        style="@style/StyleTextFormulario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_descripcion"
+        app:layout_constraintBottom_toTopOf="@id/btn_Crear_Tarea" />
+
+    <ImageView
+        android:id="@+id/btnAdjuntarArchivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/adjuntar_archivo"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintStart_toEndOf="@id/txtArchivo"
+        app:layout_constraintTop_toBottomOf="@id/txt_descripcion"
+        app:layout_constraintBottom_toTopOf="@id/btn_Crear_Tarea"/>
+
+    <!-- Button Crear Tarea -->
+    <Button
+        android:id="@+id/btn_Crear_Tarea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crear_tarea"
+        android:background="@drawable/rounded_bg"
+        style="@style/StyleButton"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
