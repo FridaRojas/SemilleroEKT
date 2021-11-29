@@ -1,25 +1,28 @@
 package com.ekt.Servicios.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import com.ekt.Servicios.entity.BroadCast;
-import com.ekt.Servicios.entity.Mensajes;
-import com.ekt.Servicios.entity.Response;
+import com.ekt.Servicios.entity.*;
 import com.ekt.Servicios.repository.BroadCastRepositorio;
 import com.ekt.Servicios.service.BroadCastServicio;
-import com.ekt.Servicios.service.BroadCastServicioImpl;
+
 import com.ekt.Servicios.service.MensajesService;
 
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
+
 
 @RestController
 @RequestMapping("/api/broadCast")
@@ -65,6 +68,7 @@ public class BroadCastControlador {
 		if(user.isPresent()){
 			broadCastM.setNombreEmisor(user.get().getNombre());
 			broadCastRepositorio.save(broadCastM);
+			notificacion2(broadCastM.getNombreEmisor()  + " te ha enviado un mensaje", broadCast.getAsunto());
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.CREATED,"Se creo el mensaje a broadcast",broadCastM.getIdEmisor()));
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra el emisor",broadCastM.getIdEmisor()));
@@ -109,4 +113,27 @@ public class BroadCastControlador {
 		
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(mensaje);
 	}
+
+
+	public void notificacion2(String title, String asunto){
+		OkHttpClient client = new OkHttpClient().newBuilder().build();
+		MediaType mediaType = MediaType.parse("application/json");
+		okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\n    \"to\": \"flmUd4adQi-WvEgBCs6wIy:APA91bGRrGBndwMxconv1tIoCus-eY7vTcc-QmkgtYuuFBi7A2vpWAf_HBH-YghkLsSBqMlP6e5iCBz4O1ONaMZ8Cv0i4GxzZy0XF0fOYpuXx0-VXTxFeK1sZ3YwhMdmHQXz1WweNqZQ\",\n    " +
+				"\"notification\": {\n        " +
+				"\"body\": \""+ asunto +"\",\n        " +
+				"\"title\": \""+ title +"\"\n    }\n}");
+
+		Request request = new Request.Builder()
+				.url("https://fcm.googleapis.com/fcm/send")
+				.method("POST", body)
+				.addHeader("Authorization", "key=AAAAIITlXUs:APA91bHueyZr0vJFOSo-yLEbRsG20D8rquPQbQJ1C82JTcnaOjB2ghemxgUljAzwE4wsPEzjQZY2GlrNcI1sFx__SuxsGfszskEF2cx5zy3yYFCdiU2681mCoLwMw_fH4TjmocJIQyYx")
+				.addHeader("Content-Type", "application/json")
+				.build();
+		try {
+			okhttp3.Response response = client.newCall(request).execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
+
