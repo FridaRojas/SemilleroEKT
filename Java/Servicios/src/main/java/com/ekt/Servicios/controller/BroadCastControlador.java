@@ -87,7 +87,37 @@ public class BroadCastControlador {
 	
 	@PostMapping("/enviarMensaje")
 	public ResponseEntity<?> enviarMensaje(@RequestBody Mensajes mensajeEntrante){
-		//Optional<User> existo = userRepository.validarUsuario(mensajeEntrante.getIDEmisor());
+		
+		if(mensajeEntrante.getIDEmisor()==null || mensajeEntrante.getIDReceptor()==null || mensajeEntrante.getTexto()==null || mensajeEntrante.getFechaCreacion() ==null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"Campos no validos",""));
+		}
+		
+		if(mensajeEntrante.getIDEmisor().equals("") || mensajeEntrante.getIDEmisor().equals("null")) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idEmisor es no puede estar vacio",""));
+		}
+		if(mensajeEntrante.getIDEmisor().length()<24 || mensajeEntrante.getIDEmisor().length()>24) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idEmisor no es valido",""));
+		}
+		
+		if(mensajeEntrante.getIDReceptor().equals("") || mensajeEntrante.getIDReceptor().equals("null")) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idReceptor es no puede estar vacio",""));
+		}
+		if(mensajeEntrante.getIDReceptor().length()<24 || mensajeEntrante.getIDReceptor().length()>24) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idReceptor no es valido",""));
+		}
+		
+		if(mensajeEntrante.getTexto().equals("") || mensajeEntrante.getTexto().equals("null")) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo texto es no puede estar vacio",""));
+		}
+		if(mensajeEntrante.getTexto().length()<1) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del texto no es debe ser al menos de 1 caracter",""));
+		}
+				
+		Optional<User> existo = userRepository.validarUsuario(mensajeEntrante.getIDEmisor());
+		
+		if(existo.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no fue encontrado",""));
+		}
 		
 		Mensajes mensaje = new Mensajes();
 		
@@ -111,7 +141,7 @@ public class BroadCastControlador {
 		
 		mensajesService.crearMensaje(mensaje);
 		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(mensaje);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED,"Mensaje enviado",mensaje.getIDConversacion()));
 	}
 
 
