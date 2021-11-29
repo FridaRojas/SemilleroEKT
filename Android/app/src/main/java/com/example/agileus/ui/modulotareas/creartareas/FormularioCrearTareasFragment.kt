@@ -45,16 +45,16 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     lateinit var nombrePersonaAsignada  : String
     lateinit var idPersonaAsignada      : String
 
-    var idsuperiorInmediato        : String = "618e88acc613329636a769ae"
-    var fechaInicio     : String = ""
-    var fechaFin        : String = ""
-    var uriPost         : String = ""
-    var anioInicio      : Int? = null
-    var anioFin         : Int? = null
-    var mesInicio       : Int? = null
-    var mesFin          : Int? = null
-    var diaInicio       : Int? = null
-    var diaFin          : Int? = null
+    var idsuperiorInmediato : String = "618e88acc613329636a769ae"
+    var fechaInicio         : String = ""
+    var fechaFin            : String = ""
+    var uriPost             : String = ""
+    var anioInicio          : Int? = null
+    var anioFin             : Int? = null
+    var mesInicio           : Int? = null
+    var mesFin              : Int? = null
+    var diaInicio           : Int? = null
+    var diaFin              : Int? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentFormularioCrearTareasBinding.inflate(inflater, container, false)
@@ -151,10 +151,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             resultLauncherArchivo.launch(intentPdf)
         }
         binding.edtFechaInicio.setOnClickListener {
-            abrirDialogoFecha(view,1)
+            abrirDialogoFecha(1)
         }
         binding.edtFechaFin.setOnClickListener {
-            abrirDialogoFecha(view,2)
+            abrirDialogoFecha(2)
         }
     }
 
@@ -176,9 +176,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             titulo.toString(),                  // Titulo de la tarea
             descripcion.toString(),             // Descripcion
             mPrioridad.toString().lowercase(),  // Prioridad
-            "pendiente",
-            false,                         // Leido
-            "2014-01-01"
+            "pendiente"
 
         )
         asignarTareaViewModel.postTarea(tarea)
@@ -255,7 +253,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         binding.spinPrioridad.adapter=spinPrioridadAdapter
         // SPINER CON RECURSO XML
     }
-    fun abrirDialogoFecha(view: View, b:Int) {
+    fun abrirDialogoFecha(b:Int) {
         val newFragment = EdtFecha(this, b)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
