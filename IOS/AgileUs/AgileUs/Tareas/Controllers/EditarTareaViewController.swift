@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditarTareaViewController: UIViewController {
+class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     
     var idTask: String?
     var isEdit: Bool = false
@@ -47,11 +47,49 @@ class EditarTareaViewController: UIViewController {
         viewBack.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         loader.startAnimating()
         
+        observationField.tag = 1
+        descriptionText.tag = 2
+
+        observationField.delegate = self
+        descriptionText.delegate = self
+        
+        priortyField.tag = 1
+        statusField.tag = 2
+        dateStartField.tag = 3
+        dateEndField.tag = 4
+        
+        priortyField.delegate = self
+        statusField.delegate = self
+        dateStartField.delegate = self
+        dateEndField.delegate = self
+        
         
         
     }
     
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        switch textView.tag {
+        case 1: return textView.stopBackspaceIn(word: "Observaciones: ", text: text)
+        case 2: return textView.stopBackspaceIn(word: "Descripción: ", text: text)
+        default: print("otro")
+        }
+        return true
+    }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        switch textField.tag {
+        case 1: return textField.stopBackspaceIn(word: "Prioridad: ", text: string)
+        case 2: return textField.stopBackspaceIn(word: "Estatus: ", text: string)
+        case 3: return textField.stopBackspaceIn(word: "Inicio: ", text: string)
+        case 4: return textField.stopBackspaceIn(word: "Fin: ", text: string)
+
+        default: print("otro")
+        }
+        return true
+        
+    }
+
     func getTask() {
         Api.shared.editTask(id: idTask!) {
             (task) in
@@ -169,6 +207,9 @@ class EditarTareaViewController: UIViewController {
                     self.statusField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: false)
                 }
                 
+                self.loader.stopAnimating()
+                self.viewBack.isHidden = true
+                
             }
             
         } else {
@@ -262,6 +303,8 @@ class EditarTareaViewController: UIViewController {
             }
         } cancel: {
             print("No se cancelo tarea")
+            self.loader.stopAnimating()
+            self.viewBack.isHidden = true
         }
         
     }
@@ -298,7 +341,8 @@ class EditarTareaViewController: UIViewController {
 
                 
             } cancel: {
-                
+                self.loader.stopAnimating()
+                self.viewBack.isHidden = true
             }
         }
         

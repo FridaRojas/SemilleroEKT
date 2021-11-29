@@ -100,5 +100,21 @@ extension UITextField {
         }
     }
     
+    func stopBackspaceIn(word: String, text: String) -> Bool {
+        
+        let char = text.cString(using: String.Encoding.utf8)!
+        let isBackSpace = strcmp(char, "\\b")
+        
+        if self.text != word {
+            return true
+        } else {
+            if (isBackSpace == -92) {
+                return false
+            } else {
+                return true
+            }
+        }
+        
+    }
         
 }
