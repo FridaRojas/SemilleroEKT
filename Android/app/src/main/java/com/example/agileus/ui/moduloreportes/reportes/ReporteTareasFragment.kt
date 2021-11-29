@@ -112,7 +112,7 @@ class ReporteTareasFragment : Fragment() {
         pieChart.data = data
         data.setValueTextSize(0f)
         //pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
-        pieChart.animateY(100, Easing.EaseInOutQuad)
+        pieChart.animateY(1000, Easing.EaseInOutQuad)
 
         //create hole in center
         pieChart.holeRadius = 58f

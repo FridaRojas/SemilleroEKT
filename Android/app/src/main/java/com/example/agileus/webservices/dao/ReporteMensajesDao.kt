@@ -1,15 +1,19 @@
 package com.example.agileus.webservices.dao
 
+import android.content.SharedPreferences
+import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.DatosMensajes
 import com.example.agileus.models.Estadisticas
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReporteMensajesDao {
 
@@ -27,7 +31,6 @@ class ReporteMensajesDao {
     private lateinit var promedio_tiempo_respuesta:String
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosMensajes(): ArrayList<Estadisticas> {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes()
@@ -36,9 +39,24 @@ class ReporteMensajesDao {
         val listaRecycler= ArrayList<Estadisticas>()
         val lista: ArrayList<DatosMensajes>
 
+
+
+
+        val actualCal= Calendar.getInstance()
+        var dt = Date(actualCal.get(Calendar.YEAR)-1900, actualCal.get(Calendar.MONTH) , actualCal.get(Calendar.DAY_OF_MONTH))
+        val sdf = SimpleDateFormat("dd/MM/y", Locale.US)
+        val currentDate = sdf.format(dt)
+
+
+
         if (ResponseMensajes.isSuccessful) {
             lista = ResponseMensajes.body()!!
             val id_emisor = lista[0].idemisor //Aquí se coloca el id del emisor deseado
+            MySharedPreferences.reportesGlobales.idUsuario = id_emisor  // ID De la sesion TO recuperar del inicio de sesion
+            MySharedPreferences.reportesGlobales.idUsuarioEstadisticas = id_emisor  // ID De la sesion TO recuperar del inicio de sesion
+            MySharedPreferences.fechaFinEstadisticas = currentDate
+            MySharedPreferences.fechaInicioEstadisticas = "1970/01/01"
+            Log.d("Response", "user: ${MySharedPreferences.idUsuario}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}")
             fecha_anterior = ZonedDateTime.parse(lista[0].fechaEnviado) // primera fecha para comparar
 
             lista.forEach {
@@ -78,7 +96,7 @@ class ReporteMensajesDao {
             //Log.d("mensaje","suma tiempos: ${suma_tiempos}")
 
                 listaRecycler.add(Estadisticas("Enviados:",contador_mensajes_enviados.toString(),"Recibidos:",contador_mensajes_recibidos.toString(), R.drawable.ic_pie_chart))
-                listaRecycler.add(Estadisticas("Tiempo de respuesta promedio","","",promedio_tiempo_respuesta, R.drawable.ic_bar_chart))
+                listaRecycler.add(Estadisticas("Peticiones al Broadcast",contador_mensajes_enviados.toString(),"Respuestas del Broadcast",contador_mensajes_recibidos.toString(), R.drawable.ic_bar_chart))
             }
         return listaRecycler
 

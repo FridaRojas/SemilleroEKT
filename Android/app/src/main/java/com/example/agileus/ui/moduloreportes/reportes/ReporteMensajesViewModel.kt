@@ -35,7 +35,6 @@ class ReporteMensajesViewModel : ViewModel() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte(){
 
             viewModelScope.launch {
