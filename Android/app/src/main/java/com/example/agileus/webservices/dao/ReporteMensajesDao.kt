@@ -11,6 +11,8 @@ import com.example.agileus.models.Contacts
 import com.example.agileus.models.Conversation
 import com.example.agileus.models.EmployeeListByBossID
 import com.example.agileus.models.Estadisticas
+import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.models.*
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -43,6 +45,9 @@ class ReporteMensajesDao {
         val lista: ArrayList<Conversation>
 
 
+
+
+
         val actualCal= Calendar.getInstance()
         var dt = Date(actualCal.get(Calendar.YEAR)-1900, actualCal.get(Calendar.MONTH) , actualCal.get(Calendar.DAY_OF_MONTH))
         val sdf = SimpleDateFormat("dd/MM/y", Locale.US)
@@ -63,9 +68,8 @@ class ReporteMensajesDao {
             suma_tiempos=0
             promedio_tiempo_respuesta=""
 
-
-            fecha_anterior = ZonedDateTime.parse(lista[0].fechaEnviado) // primera fecha para comparar
-
+            // primera fecha para comparar TODO valor de GLOBAL fecha inicio
+            fecha_anterior = ZonedDateTime.parse(lista[0].fechaEnviado)  //1970-01-01T00:00:00.000+00:00"
             lista.forEach {
 
                 contador_m_totales = contador_m_totales + 1
@@ -153,7 +157,7 @@ class ReporteMensajesDao {
                 val listaConsumida = ResponseDos.body()!!
                 employeeList = listaConsumida.dataEmployees
             }else{
-                Log.e("ERROR SubCOntactos", ResponseDos.code().toString())
+                Log.e("ERROR SubContactos", ResponseDos.code().toString())
             }
 
         }catch (ex:Exception){
