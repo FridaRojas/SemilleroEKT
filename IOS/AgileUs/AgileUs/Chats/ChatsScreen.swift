@@ -13,21 +13,21 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     
     //se crea un arreglo para poder simular los datos que nos proporcionara el web service
     var datos = [
-        [1,"27/09/2021","aqui en mi casa"],
-        [2,"27/09/2021","aqui en mi otra casa"],
-        [3,"27/09/2021","aqui en mis casas"],
-        [4,"27/09/2021","aqui en mis casas"],
-        [5,"27/09/2021","aqui en mis casas"],
-        [6,"27/09/2021","aqui en mi casa"],
-        [7,"27/09/2021","aqui en mi otra casa"],
-        [8,"27/09/2021","aqui en mis casas"],
-        [9,"27/09/2021","aqui en mis casas"],
-        [10,"27/09/2021","aqui en mis casas"],
-        [11,"27/09/2021","aqui en mi casa"],
-        [12,"27/09/2021","aqui en mi otra casa"],
-        [13,"27/09/2021","aqui en mis casas"],
-        [14,"27/09/2021","aqui en mis casas"],
-        [15,"27/09/2021","aqui en mis casas"]
+        [1,"Pancho"],
+        [2,"Maria"],
+        [3,"Peña Nieto"],
+        [4,"Justin Bieber"],
+        [5,"Maluma"],
+        [6,"CR7"],
+        [7,"Messi"],
+        [8,"Pirlo"],
+        [9,"Gera "],
+        [10,"Babo"],
+        [11,"Tio Salinas"],
+        [12,"Coppel"],
+        [13,"Elecktra"],
+        [14,"Banco Azteca"],
+        [15,"aaaaa"]
     ]
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,7 +37,7 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let indice = indexPath.row
         var celda_personalizada = tableView.dequeueReusableCell(withIdentifier: lista_chats.identificador, for: indexPath) as! lista_chats
-        celda_personalizada.textLabel?.text = "Aqui iran las conversaciones"
+        //celda_personalizada.textLabel?.text = "Aqui iran las conversaciones"
         celda_personalizada.configurar_celda(Datos: datos[indice] as! [Any])
         return celda_personalizada
     }

@@ -12,21 +12,21 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var tabla_contactos: UITableView!
     
     var datos = [
-        [1,"27/09/2021","aqui en mi casa"],
-        [2,"27/09/2021","aqui en mi otra casa"],
-        [3,"27/09/2021","aqui en mis casas"],
-        [4,"27/09/2021","aqui en mis casas"],
-        [5,"27/09/2021","aqui en mis casas"],
-        [6,"27/09/2021","aqui en mi casa"],
-        [7,"27/09/2021","aqui en mi otra casa"],
-        [8,"27/09/2021","aqui en mis casas"],
-        [9,"27/09/2021","aqui en mis casas"],
-        [10,"27/09/2021","aqui en mis casas"],
-        [11,"27/09/2021","aqui en mi casa"],
-        [12,"27/09/2021","aqui en mi otra casa"],
-        [13,"27/09/2021","aqui en mis casas"],
-        [14,"27/09/2021","aqui en mis casas"],
-        [15,"27/09/2021","aqui en mis casas"]
+        [1,"Carlos"],
+        [2,"Adolfo"],
+        [3,"Hernandez"],
+        [4,"Moreno"],
+        [5,"Sofia"],
+        [6,"Pedro"],
+        [7,"Alondra"],
+        [8,"Poncho"],
+        [9,"Juan"],
+        [10,"Isacc"],
+        [11,"Aranxa"],
+        [12,"ASDFGHJKL"],
+        [13,"Holi"],
+        [14,"lkjfvkr"],
+        [15,"ñññ"]
     ]
     
     

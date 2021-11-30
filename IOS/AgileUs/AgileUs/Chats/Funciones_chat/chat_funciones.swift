@@ -41,73 +41,9 @@ struct JSONStringEncoder {
             assertionFailure("JSON string creation failed.")
             return nil
         }
-        print("Valores_Mensaje: \(jsonString)")
+       // print("Valores_Mensaje: \(jsonString)")
+       
         return jsonString
     }
-}
-
-//funcion para hacer petcion post al servidor
-func registro_mensajes(mensaje_json: String, succes: @escaping (_ succes: String) ->(), fallo: @escaping (_ fallo: String) ->() )
-{
-    //crea NSURL
-    let requestURL = URL(string: "http://10.97.5.252:3040/api/mensajes/crearMensaje")
-    //crea NSMutableURLRequest
-    let request = NSMutableURLRequest(url: requestURL! as URL)
-    //configura el método de envío
-    request.httpMethod = "POST";
-    //parámetros a enviar
-    let postParameters = mensaje_json;
-    //agrega los parámetros a la petición
-    request.httpBody = postParameters.data(using: String.Encoding.utf8)
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    //request.
-    //crea una tarea que envía la petición post
-    let task = URLSession.shared.dataTask(with:request as URLRequest){
-        data, response, error in
-        //si ocurre algún error sale
-        if error != nil{
-            fallo("Error")
-            return;
-        }
-        else{
-            succes("succes")
-            
-        }
-    }
-    //ejecuta la tarea
-    task.resume()
-}
-
-
-//funcion para crear json personalizado
-func create_json(id_emisor: String, id_receptor: String, mensaje: String, fecha: String, exito: @escaping (_ exito: String) ->(), fallido: @escaping (_ fallido: String) ->() )
-{
-    let exampleDict: [String: Any] = [
-            "idEmisor" : id_emisor,
-            "idReceptor" : id_receptor,
-            "texto" : "\(mensaje)",
-            "fechaCreacion" : "\(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))",
-                                    ]
-
-
-        if let jsonString = JSONStringEncoder().encode(exampleDict) {
-            registro_mensajes(mensaje_json: jsonString) {
-                (succes) in
-                    print(succes)
-                DispatchQueue.main.async {
-                   exito("Todo Salio Bien")
-                }
-                
-            } fallo: {
-                fallo in
-                DispatchQueue.main.async {
-                fallido("Servidor Abajo")
-                }
-               
-            }
-        } else {
-            print("fallo la codificacion")
-        }
-    
 }
 
