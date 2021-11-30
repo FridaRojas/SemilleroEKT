@@ -109,6 +109,69 @@ extension UIViewController {
         
         return [enviados, recibidos, leidos]
         
+    }
+    
+    func cantidadBroadRecibidos(mensajes: [Mensajes], idUsuario: String) -> Int {
+        
+        var recibidos = 0
+        
+        for i in mensajes {
+            if i.idemisor == userBroadcastID && i.idreceptor == idUsuario {
+                recibidos += 1
+            }
+        }
+        
+        return recibidos
+        
+    }
+    
+    func cantidadDeBroad(mensaje_broad: [Broadcast], idUsuario: String) -> [Int] {
+        
+        var recibidos = 0
+        var enviados = 0
+    
+        for i in mensaje_broad {
+            enviados += 1
+        }
+        return [enviados, recibidos]
+        
+    }
+    
+    
+    
+    func cantidadDeMensajesPorFecha(mensaje: [Mensajes], idUsuario: String, fechaIni: String, fechaFin: String) -> [Int] {
+        
+        // quitar por idUsuario
+        //let usuario = "618b05c12d3d1d235de0ade0"
+        // FECHAS
+        var fechaEnviado:Date?
+        let fechaInicial = Date().convertir_string_a_fecha(fecha: fechaIni)
+        let fechaFinal = Date().convertir_string_a_fecha(fecha: fechaFin)
+
+        var leidos = 0
+        var recibidos = 0
+        var enviados = 0
+        
+        for i in mensaje {
+            
+            let fechaEnv = "\(i.fechaEnviado)".prefix(10)
+            fechaEnviado = Date().convertir_string_servicio_a_fecha(fecha: String(fechaEnv))
+            if fechaEnviado! >= fechaInicial && fechaEnviado! <= fechaFinal {
+                if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
+                    recibidos += 1
+                }
+                
+                if i.idreceptor == idUsuario && i.statusLeido == true {
+                    leidos += 1
+                }
+                
+                if i.idemisor == idUsuario && i.statusEnviado == true {
+                    enviados += 1
+                }
+            }
+        }
+        
+        return [enviados, recibidos, leidos]
         
     }
 }
