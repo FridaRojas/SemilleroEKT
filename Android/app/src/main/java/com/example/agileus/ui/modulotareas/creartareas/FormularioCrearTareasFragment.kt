@@ -83,6 +83,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
         listaPrioridades = resources.getStringArray(R.array.prioridad_array)
         asignarTareaViewModel = ViewModelProvider(this).get()
+        conversationviewModel = ViewModelProvider(this).get()
         firebaseProvider  = FirebaseProvider()
         /*  *** Instancias Fb Storage ***  */
         mStorageInstance = FirebaseStorage.getInstance()
@@ -164,17 +165,15 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         Toast.LENGTH_SHORT).show()
                 }
 
+                // Enviar tarea a la conversacion grupal
+                var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","",
+                    "Tarea: ${binding.textTitulo} asignada a $nombrePersonaAsignada",Constantes.finalDate)
+                conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
+
+                //Volver al fragment anterior
                 val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
                 findNavController().navigate(action)
             }
-
-            // Enviar tarea a la conversacion grupal
-            //var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","${binding.etMensaje.text.toString()}",Constantes.finalDate)
-            //conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
-            //binding.etMensaje.setText("")
-
-
-
 
         }
         /* Boton Crear tarea  */
@@ -213,7 +212,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             descripcion.toString(),             // Descripcion
             prioridadAsignada,                  // Prioridad
             "pendiente",
-            uriPost,
+            uriPost,                            // Url de archivo pdf subido a firebase
             ""
 
         )
