@@ -133,12 +133,11 @@ public class ConfigPag {
         System.out.println(gr.getNombre());
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"nombre\": \""+gr.getNombre()+"\"\r\n}");
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/crear")
+                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
                 .method("POST", body)
-                .addHeader("Content-Type", "application/json")
                 .build();
         try {
             Response response = client.newCall(request).execute();
