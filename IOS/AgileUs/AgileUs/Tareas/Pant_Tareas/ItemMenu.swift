@@ -22,6 +22,7 @@ class ItemMenu: UICollectionViewCell {
         Texto.text = categoria
         Texto.textColor = UIColor.black
         Texto.backgroundColor = UIColor.clear
+    
     }
 }
 

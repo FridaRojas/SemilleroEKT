@@ -16,11 +16,18 @@ struct Datos:Codable{
     let prioridad: String?
 }
 
+struct Status: Codable{
+    let estatus: String
+    let mensaje: String
+    var data: [Datos]?
+
+}
+
 class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var menu_clasificador: UICollectionView!
     // nombre para las categorias de pendiente,final,
-let dataSource = ["Completados","Pendientes"," Asignados"]
+    let dataSource = ["Pendientes","Iniciadas","Revisión","Terminada"]
     
     
     let servico = "https://firebasestorage.googleapis.com/v0/b/apis-de-prueba-1088e.appspot.com/o/TareasResponse.json?alt=media&token=be446017-4996-4545-8273-005b3f37a77d"
@@ -32,11 +39,12 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
     // variables de mi tabla
     var tarea = [Any]()
     var arrTareas = [Datos]()
-    //variables de arreglo de json
-    var datostarea = ("hola")
+    var selestatus = [Status]()
    
+    //variable para mostrar el colection view
+
     
-  
+    
     
     //para formar el boton con color e imagen
     private let botonflotante: UIButton = {
@@ -107,19 +115,16 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
                 DispatchQueue.main.async
                 {
                     print(self.arrTareas)
-                    
-                    print("iniciado el dispatch")
-                   //print(self.arrTareas!.description)
-                  //  print(type(of: self.arrTareas))
-                    print("ddddd")
-                
-                    for i in self.arrTareas{
+                  
+                    for i in self.arrTareas {
+                        
                
                         print(i.prioridad)
                         print(i.titulo)
                         print(i.id_receptor)
                         print(i.id_tarea)
-                        print(i.id_tarea)
+                        
+                        print()
                  }
                     self.Lista_tareas.reloadData()
                  
@@ -140,7 +145,9 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let indice = indexPath.row
         let celda_personalizada = tableView.dequeueReusableCell(withIdentifier: List.identificador, for: indexPath) as! List
-        celda_personalizada.configurar_celda(i: arrTareas[ indice])
+       celda_personalizada.configurar_celda(i: arrTareas[indice])
+        
+        
         return celda_personalizada
         
         
@@ -154,6 +161,7 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let celda = collectionView.dequeueReusableCell(withReuseIdentifier: ItemMenu.identificador, for: indexPath) as! ItemMenu
         celda.Configure(categoria: dataSource[indexPath.row])
+     
         
         print(selectedIndex)
        
@@ -161,8 +169,8 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
        if selectedIndex == indexPath.row
         {
             celda.backgroundColor = UIColor.systemGreen
-            print("celda em verde es :\(selectedIndex)")
-            
+        
+            print("esta es la celda: \(selectedIndex)")
         }
         else{
         celda.backgroundColor = UIColor .white
@@ -173,8 +181,9 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         print("Selecccion: \(dataSource[indexPath.row])")
-        selectedIndex = indexPath.row
         
+        
+        selectedIndex = indexPath.row
         self.menu_clasificador.reloadData()
         
         

@@ -32,9 +32,11 @@ class List: UITableViewCell{
         Nametask.text = info.titulo
         Persona.text = info.id_receptor
         Fecha.text = info.fecha_ini
-        Prioridad.text = info.id_tarea
+        Prioridad.text = info.prioridad
+     
         
     }
+    
 }
 
 
