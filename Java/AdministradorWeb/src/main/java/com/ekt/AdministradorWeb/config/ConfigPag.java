@@ -117,7 +117,7 @@ public class ConfigPag {
 
 
     @PostMapping("/CrearGrupo")
-    public String CrearGrupo(@ModelAttribute Group gr) {
+    public String CrearGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
         System.out.println(gr.getNombre());
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -129,11 +129,19 @@ public class ConfigPag {
                 .build();
         try {
             Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+
+            if (jsonObject.get("status").toString().equals("OK")){
+                return "redirect:/inicioGrupos";
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "Grupo ya existente");
+                return "redirect:/inicioGrupos";
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
+            return "";
         }
-
-        return "redirect:/findAllUsuarios";
 
     }
 

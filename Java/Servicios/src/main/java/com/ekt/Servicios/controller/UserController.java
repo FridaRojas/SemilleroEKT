@@ -33,8 +33,8 @@ public class UserController {
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            Optional<User> us= userRepository.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
-            if (us.isPresent()){
+            boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
+            if (us){
                 return ResponseEntity.ok(new Response(HttpStatus.CONFLICT,"Usuario existente",""));
             }else {
                 userService.save(user);
@@ -206,12 +206,12 @@ public class UserController {
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            Optional<User> us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(),user.getRFC(),user.getNumeroEmpleado());
-            if (us.isPresent()){
+            boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
+            if (us){
                 System.out.println("El usuario existe");
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"El usuario existe",us.get()));
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"El usuario existe","true"));
             }else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado","false"));
             }
         }
     }
