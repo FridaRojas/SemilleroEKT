@@ -50,7 +50,7 @@ class TasksDao : DialogoConfirmacionListener {
                         "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
                     mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
-                    mensaje+= ", Numero de empleado:${nuevaTarea.idReceptor}"
+                    mensaje += ", Numero de empleado:${nuevaTarea.idReceptor}"
                     mensaje += ", Descripcion:${nuevaTarea.descripcion}"
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
@@ -113,7 +113,7 @@ class TasksDao : DialogoConfirmacionListener {
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Failure ${t.cause}")
+                Log.d("Mensaje", "On Failure ${t.message}")
             }
         })
     }
@@ -122,30 +122,30 @@ class TasksDao : DialogoConfirmacionListener {
     fun editTask(t: DetalleNivelAltoFragmentArgs, idTarea: String) {
         Log.d("Mensaje", t.toString())
         val callback = InitialApplication.webServiceGlobalTasks.editTask(t, idTarea)
-        callback.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+        callback.enqueue(object : Callback<DataTask> {
+            override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
-                    Log.d("Mensaje", "${response.body()}")
+                    Log.d("Mensaje", "Tarea ${response.body()!!.idTarea} editada")
                 } else {
                     Log.d("Mensaje", "No se Edito tarea ${response.code()}")
-
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }
         })
     }
 
-     fun updateStatus(idTarea: String, estatus: String) {
+    fun updateStatus(idTarea: String, estatus: String) {
         var url = idTarea + "&" + estatus
         url.trim()
         Log.d("url", url)
         val callback = InitialApplication.webServiceGlobalTasks.updateStatus(url)
 //        val value: Response<String> = callback.execute()
 //        Log.d("Mensaje", value.toString())
-           callback.enqueue(object : Callback<String> {
+        callback.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
                     Log.d("Mensaje", "Estatus Editado")
@@ -161,27 +161,30 @@ class TasksDao : DialogoConfirmacionListener {
         })
     }
 
-    fun getPersonsGroup(idsuperiorInmediato:String): ArrayList<DataPersons>{
-        lateinit var listaGrupoRecuperada : PersonasGrupo
+    fun getPersonsGroup(idsuperiorInmediato: String): ArrayList<DataPersons> {
+        lateinit var listaGrupoRecuperada: PersonasGrupo
         var listaPersonsDatos = ArrayList<DataPersons>()
-        val callRespuestaPersonas = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(idsuperiorInmediato)
+        val callRespuestaPersonas =
+            InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(
+                idsuperiorInmediato
+            )
         val Response = callRespuestaPersonas?.execute()
         try {
-            if(Response != null) {
+            if (Response != null) {
                 if (Response.isSuccessful) {
                     listaGrupoRecuperada = Response.body()!!
                     Log.d("Mensaje", "listaGrupoRecuperada: ${listaGrupoRecuperada.status} ")
-                    if(listaGrupoRecuperada.data != null){
-                        listaPersonsDatos= listaGrupoRecuperada.data
-                    }else{
+                    if (listaGrupoRecuperada.data != null) {
+                        listaPersonsDatos = listaGrupoRecuperada.data
+                    } else {
                         listaPersonsDatos = emptyList<DataPersons>() as ArrayList<DataPersons>
                     }
 
-                }else {
+                } else {
                     Log.e("error", "Fallo la peticion ${Response.code()}")
                 }
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             Log.e("error", e.toString())
         }
         Log.d("Mensaje", "listaPersonsDatos: ${listaPersonsDatos.size} ")

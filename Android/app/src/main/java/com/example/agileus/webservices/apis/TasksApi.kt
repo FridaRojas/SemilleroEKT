@@ -28,8 +28,8 @@ interface TasksApi {
 
     //Obtener una lista de personas en un grupo
     //http://10.97.0.165:3040/api/user/findByBossId/618d9c26beec342d91d747d6
-    @GET( "{idsuperiorInmediato}")
-     fun getListaPersonasGrupo(@Path("idsuperiorInmediato") idsuperiorInmediato: String) : Call<PersonasGrupo>? // id lider
+    @GET("{idsuperiorInmediato}")
+    fun getListaPersonasGrupo(@Path("idsuperiorInmediato") idsuperiorInmediato: String): Call<PersonasGrupo>? // id lider
 
     @POST("tareas/agregarTarea")
     fun insertarTarea(@Body t: Tasks): Call<Tasks>
@@ -42,10 +42,8 @@ interface TasksApi {
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
 
     @PUT("tareas/actualizarTarea/{idTarea}")
-    fun editTask(
-        @Body t: DetalleNivelAltoFragmentArgs,
-        @Path("idTarea") idTarea: String
-    ): Call<String>
+    fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String)
+            : Call<DataTask>
 
     @PUT("tareas/actulizarEstatus/{param}")
     fun updateStatus(@Path("param") param: String): Call<String>

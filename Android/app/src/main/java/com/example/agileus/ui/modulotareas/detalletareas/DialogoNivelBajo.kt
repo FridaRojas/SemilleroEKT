@@ -48,17 +48,17 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
 
             Log.d("Mensaje", dataTask.toString())
 
-            if (dataTask.estatus.equals("Pendiente")) {
+            if (dataTask.estatus.equals("pendiente")) {
                 btnEstado.setText("Cambiar a Iniciada")
-            } else if (dataTask.estatus.equals("Iniciada")) {
+            } else if (dataTask.estatus.equals("iniciada")) {
                 btnEstado.setText("Cambiar a Revision")
-            } else if (dataTask.estatus.equals("Revision")) {
+            } else if (dataTask.estatus.equals("revision")) {
                 btnEstado.setText("En revision")
                 btnEstado.isEnabled = false
-            } else if (dataTask.estatus.equals("Terminada")) {
+            } else if (dataTask.estatus.equals("terminada")) {
                 btnEstado.setText("Tarea Terminada")
                 btnEstado.isEnabled = false
-            } else if (dataTask.estatus.equals("Cancelado")) {
+            } else if (dataTask.estatus.equals("cancelado")) {
                 btnEstado.setText("Tarea Cancelada")
                 btnEstado.isEnabled = false
             }
@@ -82,12 +82,12 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             // txtObservacionesD.text = observacionesD
             this.dialog?.closeOptionsMenu()
             btnEstado.setOnClickListener {
-                if (dataTask.estatus.equals("Pendiente")) {
-                    dataTask.estatus = "Iniciada"
-                } else if (dataTask.estatus.equals("Iniciada")) {
-                    dataTask.estatus="Revision"
+                if (dataTask.estatus.equals("pendiente")) {
+                    dataTask.estatus = "iniciada"
+                } else if (dataTask.estatus.equals("iniciada")) {
+                    dataTask.estatus="revision"
                 }
-                if (dataTask.estatus.equals("Revision")) {
+                if (dataTask.estatus.equals("revision")) {
                     btnEstado.isEnabled = false
                 }
                 detalleNivelBajoViewModel.actualizarEstatus(dataTask)

@@ -59,7 +59,7 @@ class TasksAdapter(
             nombreTarea.text = dataTask.titulo
             personaAsignada.text = dataTask.nombreReceptor
             prioridad.text = dataTask.prioridad
-//            fecha.text = dataTask.fechaIni.toString()
+//          fecha.text = dataTask.fechaIni.toString()
 
 
             btnAbrirDetallesTarea.setOnClickListener {

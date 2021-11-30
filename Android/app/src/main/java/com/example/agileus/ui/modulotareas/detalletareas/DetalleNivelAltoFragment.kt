@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
-import com.example.agileus.models.DataTask
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
@@ -76,7 +75,13 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
             btnObservacionF.setOnClickListener {
                 txtObservacionesD.isVisible = true
-                txtObservacionesD.isEnabled=true
+                txtObservacionesD.isEnabled = true
+            }
+
+            btnGuardarTareaF.setOnClickListener {
+                var obs = binding.txtObservacionesD.text.toString()
+                args.tareas.observaciones = obs
+                detalleNivelAltoViewModel.editarTarea(args)
             }
 
         }
@@ -97,6 +102,8 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         fechaFin = args.tareas.fechaFin
         if (args.tareas.observaciones != null) {
             observaciones = args.tareas.observaciones
+            binding.txtObservacionesD.setText(observaciones)
+            binding.txtObservacionesD.isVisible = true
         } else {
             binding.txtObservacionesD.isVisible = false
             observaciones = ""
@@ -126,6 +133,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             btnCancelarTareaF.isVisible = true
             btnObservacionF.isVisible = true
             btnCancelarEdicion.isVisible = false
+            btnGuardarTareaF.isVisible = false
         }
     }
 
@@ -141,31 +149,28 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             btnCancelarTareaF.isVisible = false
             btnObservacionF.isVisible = false
             btnCancelarEdicion.isVisible = true
+            btnGuardarTareaF.isVisible = true
         }
     }
 
     private fun editarTarea(args: DetalleNivelAltoFragmentArgs) {
         //args.tareas.prioridad = binding.txtPrioridadD.text.toString()
-        args.tareas.descripcion = binding.txtDescripcionD.text.toString()
-        Toast.makeText(context, "${args.tareas.descripcion}", Toast.LENGTH_SHORT).show()
+        var des =binding.txtDescripcionD.text.toString()
+        args.tareas.descripcion = des
+        Toast.makeText(context, "$des", Toast.LENGTH_SHORT).show()
         // args.tareas.fechaIni = binding.txtFechaInicioD.text.toString()
         // args.tareas.fechaFin = binding.txtFechaFinD.text.toString()
         // args.tareas.observaciones = binding.txtObservacionesD.text.toString()
-        Log.d("Mensaje", args.toString())
-        detalleNivelAltoViewModel.editarTarea(args)
+
+
     }
 
     private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
-        val dialogoAceptar = DialogoAceptar()
+        val dialogoAceptar = DialogoAceptar(args)
         dialogoAceptar.show(
             (activity as HomeActivity).supportFragmentManager,
             getString(R.string.dialogoAceptar)
         )
-        var resp = dialogoAceptar.resp
-        if (resp == true) {
-            //todo si no jala anadimos un observable para la respuesta del dialogo
-            detalleNivelAltoViewModel.cancelarTarea(args)
-        }
     }
 
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {

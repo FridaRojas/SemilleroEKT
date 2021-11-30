@@ -38,7 +38,7 @@
     <string-array name="status_array">
         <item>pendiente</item>
         <item>iniciada</item>
-        <item>revisión</item>
+        <item>revision</item>
         <item>terminada</item>
         <item>asignada</item>
         <item>cancelado</item>
