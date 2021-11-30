@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
+import com.example.agileus.utils.Constantes
 
 
 class ListConversationFragment : Fragment() {
@@ -36,13 +37,18 @@ class ListConversationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-  /*      ChatsViewModel.devuelveLista()
+        ChatsViewModel.devuelveListaGrupos(Constantes.id)
+        ChatsViewModel.devuelveListaChats(Constantes.id)
 
-        ChatsViewModel.adaptador.observe(viewLifecycleOwner, {
+        ChatsViewModel.adaptadorGrupos.observe(viewLifecycleOwner, {
             binding.recyclerListGroups.adapter = it
             binding.recyclerListGroups.layoutManager = LinearLayoutManager(activity)
         })
-   */
+        ChatsViewModel.adaptadorChats.observe(viewLifecycleOwner,{
+            binding.recyclerListChats.adapter = it
+            binding.recyclerListChats.layoutManager = LinearLayoutManager(activity)
+        })
+
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
         }

@@ -1,56 +1,59 @@
 package com.example.agileus.adapters
 
+
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
-import com.example.agileus.models.Contacts
-import com.example.agileus.models.Conversation
-import com.example.agileus.ui.HomeActivity
+import com.example.agileus.models.Chats
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 import com.example.agileus.utils.Constantes
 
-class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
-    RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+
+class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
+    RecyclerView.Adapter<ChatsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_contacts_item, viewGroup, false)
         return ViewHolder(view)
     }
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.enlazarItem(dataSet[position])
     }
-
     override fun getItemCount() = dataSet.size
-
-    fun update(filtrado: List<Contacts>) {
-        var array:ArrayList<Contacts> = ArrayList(filtrado)
-        dataSet = array
-        this.notifyDataSetChanged()
-    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
+        val txtRol: TextView
         val contexto = view.context
-        val myView:View
+        val myView: View
 
         init {
             txtNameContact = view.findViewById(R.id.txtNameContact)
             myView = view.findViewById(R.id.idContact)
+            txtRol = view.findViewById(R.id.txtRol)
         }
 
-        fun enlazarItem(contacts: Contacts){
-            txtNameContact.text = contacts.nombre
+        fun enlazarItem(chats: Chats){
+            txtNameContact.text = chats.nombreConversacionRecepto
+
+            if(chats.idConversacion.length > 50){
+                myView.isVisible = false
+                myView.isEnabled = false
+            }
+            else{
+
+            }
 
             myView.setOnClickListener {
-               val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
-                intent.putExtra(Constantes.ID_RECEPTOR, contacts.id)
+                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
+                intent.putExtra(Constantes.ID_CHAT, chats.idConversacion)
                 contexto.startActivity(intent)
             }
 

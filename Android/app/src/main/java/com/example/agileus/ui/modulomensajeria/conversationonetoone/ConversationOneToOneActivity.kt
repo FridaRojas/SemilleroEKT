@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.adapters.ConversationAdapter
 import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
 import com.example.agileus.providers.FirebaseProvider
@@ -26,22 +27,29 @@ class ConversationOneToOneActivity : AppCompatActivity() {
     lateinit var conversationviewModel:ConversationViewModel
     lateinit var resultLauncherArchivo: ActivityResultLauncher<Intent>
     lateinit var firebaseProvider : FirebaseProvider
+    lateinit var id_receptor :String
+    lateinit var id_chat:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var idReceptor = intent.getStringExtra(Constantes.CHAT_NAME)
-        var id_conversation_group = intent.getStringExtra(Constantes.CHAT_GROUP)
-
         conversationviewModel = ViewModelProvider(this).get()
-        conversationviewModel.devuelveLista(Constantes.idChat)
+        id_chat = Constantes.idChat
+
+        id_receptor = intent.getStringExtra(Constantes.ID_RECEPTOR).toString()
+        conversationviewModel.devuelveLista(id_chat)
+
+        conversationviewModel.responseM.observe(this,{
+            id_chat = it.data
+            conversationviewModel.devuelveLista(id_chat)
+        })
 
         conversationviewModel.adaptador.observe(this,{
-            binding.recyclerConversacion.adapter = it
-            binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)
-
+                    binding.recyclerConversacion.adapter = it
+                    binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)
+                    binding.recyclerConversacion.getLayoutManager()?.scrollToPosition(conversationviewModel.listaConsumida.size-1)
         })
 
         firebaseProvider  = FirebaseProvider()
@@ -69,7 +77,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         }
 
         firebaseProvider.obs.observe(this,{
-            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","$it",Constantes.finalDate)
+            var mensaje = Message(Constantes.id,id_receptor,"$it","Documento",Constantes.finalDate)
             conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
         })
 
@@ -81,9 +89,16 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         }
 
         binding.btnEnviarMensaje.setOnClickListener {
-            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","${binding.etMensaje.text.toString()}",Constantes.finalDate)
-            conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
-            binding.etMensaje.setText("")
+            try{
+                if(binding.etMensaje.text.isNullOrEmpty()){
+
+                }else{
+                    var mensaje = Message(Constantes.id,id_receptor,"","${binding.etMensaje.text.toString()}",Constantes.finalDate)
+                    conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
+                    binding.etMensaje.setText("")
+                }
+            }catch (ex:Exception){
+            }
             }
         }
     }

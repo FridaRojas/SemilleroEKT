@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.GroupsAdapter
+import com.example.agileus.models.Chats
 import com.example.agileus.models.Groups
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
@@ -13,24 +15,41 @@ import kotlinx.coroutines.withContext
 
 class ListConversationViewModel : ViewModel() {
 
-    var adaptador = MutableLiveData<GroupsAdapter>()
-    lateinit var lista :MessageDao
-    lateinit var listaConsumida:ArrayList<Groups>
-
+    var adaptadorGrupos = MutableLiveData<GroupsAdapter>()
+    var adaptadorChats = MutableLiveData<ChatsAdapter>()
+    lateinit var lista : MessageDao
+    lateinit var listaConsumidaGrupos:ArrayList<Groups>
+    lateinit var listadeChats:ArrayList<Chats>
     init {
         lista = MessageDao()
     }
 
-    fun devuelveLista(){
+    fun devuelveListaGrupos(idUser:String){
         try {
             viewModelScope.launch {
-                listaConsumida =  withContext(Dispatchers.IO) {
-                    lista.recuperarListadeGrupos()
+                listaConsumidaGrupos =  withContext(Dispatchers.IO) {
+                    lista.recuperarListadeGrupos(idUser)
                 }
-                Log.i("mensaje", "${listaConsumida.size}")
-                if (listaConsumida != null){
-                    if(listaConsumida.isNotEmpty()){
-                        adaptador.postValue(GroupsAdapter(listaConsumida as ArrayList<Groups>))
+                Log.i("mensaje", "${listaConsumidaGrupos.size}")
+                if (listaConsumidaGrupos != null){
+                    if(listaConsumidaGrupos.isNotEmpty()){
+                        adaptadorGrupos.postValue(GroupsAdapter(listaConsumidaGrupos as ArrayList<Groups>))
+                    }
+                }
+            }
+        }catch (ex:Exception){
+            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+        }
+    }
+    fun devuelveListaChats(idUser:String){
+        try {
+            viewModelScope.launch {
+                listadeChats =  withContext(Dispatchers.IO) {
+                    lista.recuperarListadeChats(idUser)
+                }
+                if (listadeChats != null){
+                    if(listadeChats.isNotEmpty()){
+                        adaptadorChats.postValue(ChatsAdapter(listadeChats as ArrayList<Chats>))
                     }
                 }
             }

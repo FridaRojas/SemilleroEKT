@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Conversation
+import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.utils.Constantes
 import java.io.File
 import java.time.LocalDate
@@ -61,14 +62,14 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val msgEmisor: TextView
+        val msg: TextView
         lateinit var FechaMsj:TextView
         lateinit var documento: TextView
         lateinit var myView :View
         var context = view.context
 
         init {
-            msgEmisor = view.findViewById(R.id.msgEmisor)
+            msg = view.findViewById(R.id.msg)
             documento = view.findViewById(R.id.txtArchivoadjunto)
             FechaMsj = view.findViewById(R.id.txtFecha)
             myView = view.findViewById(R.id.idMsj)
@@ -76,7 +77,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun enlazarItem(conversacion:Conversation){
-            msgEmisor.text = conversacion.texto
+            msg.text = conversacion.texto
 
             val formatter: DateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
             val text: String = conversacion.fechaCreacion.format(formatter)
@@ -84,28 +85,21 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
             FechaMsj.text = parsedDate.toString()
 
             if(conversacion.texto.equals("Documento")){
-                msgEmisor.isVisible = false
-                msgEmisor.isEnabled = false
+                msg.isVisible = false
+                msg.isEnabled = false
+                documento.isVisible = true
+                documento.isEnabled = true
             }else{
-                msgEmisor.isVisible = true
-                msgEmisor.isEnabled = true
+                msg.isVisible = true
+                msg.isEnabled = true
                 documento.isVisible = false
                 documento.isEnabled = false
             }
 
             myView.setOnClickListener {
                 if(conversacion.texto.equals("Documento")){
-                    val file: File = File(context.getExternalFilesDir(null), "file")
-                    val request = DownloadManager.Request(Uri.parse(conversacion.rutaDocumento))
-                        .setTitle("${conversacion.texto}${(0..99999).random()}")
-                        .setDescription("Download")
-                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                        .setDestinationUri(Uri.fromFile(file))
-                        .setAllowedOverMetered(true)
-                        .setAllowedOverRoaming(true)
-                    val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    downloadManager.enqueue(request)
+                    var dowloadFile = DownloadProvider()
+                    dowloadFile.dowloadFile(context, "${conversacion.rutaDocumento}${conversacion.id}", conversacion.texto)
                 }
 
             }
