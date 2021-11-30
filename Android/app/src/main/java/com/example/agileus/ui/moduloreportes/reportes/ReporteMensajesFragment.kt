@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +22,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.providers.ReportesListener
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
 import com.github.mikephil.charting.animation.Easing
@@ -63,7 +67,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
@@ -73,14 +76,11 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        reporteMensajesViewModel =
-            ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
-
+        reporteMensajesViewModel = ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
         _binding = ReporteMensajesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -88,9 +88,11 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         super.onViewCreated(view, savedInstanceState)
 
         reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
-        //Log.e("Lista", reporteMensajesViewModel.devuelveListaContactos(Constantes.id).toString())
 
         binding.btnFiltroReportes.setOnClickListener {
+            reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
+                empleadoUsuario = list
+            })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }
@@ -108,9 +110,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private fun mostrargraficaBarras() {
 
         barChart=binding.barChart
-
         binding.colorlegend1.isVisible=false
-
         binding.colorlegend2.isVisible=false
 
         reporteMensajesViewModel.devuelvelistaReporte(this)
@@ -154,15 +154,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
-
-
-
         pieChart=binding.pieChart
-
         binding.colorlegend1.isVisible=true
-
         binding.colorlegend2.isVisible=true
-
 
         reporteMensajesViewModel.devuelvelistaReporte(this)
 
@@ -174,11 +168,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
 
             binding.txtPrimerLegend.text="Enviados"
-
             binding.txtSegundoLegend.text="Recibidos"
-
             binding.txtTercerLegend.text="Totales"
-
             binding.txtCuartoLegend.text="Leídos"
 
             binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
@@ -322,20 +313,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         _binding = null
     }
 
-    override fun onDayFilterSelected() {
-        Toast.makeText(context, "Dia, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onMonthFilterSelected() {
-        Toast.makeText(context, "Mes, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onYearFilterSelected() {
-        Toast.makeText(context, "Año, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onCustomFilterSelected() {
-        Toast.makeText(context, "Custom, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaInicioEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    override fun onDateFilterSelected() {
+        Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniCustomEstadisticas}, fin: ${MySharedPreferences.fechaEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -360,8 +339,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 mostrargraficaPie()
             }
         }
-
-
     }
 
 }

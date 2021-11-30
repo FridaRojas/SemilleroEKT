@@ -63,9 +63,8 @@ class ReporteMensajesDao {
             suma_tiempos=0
             promedio_tiempo_respuesta=""
 
-
-            fecha_anterior = ZonedDateTime.parse(lista[0].fechaEnviado) // primera fecha para comparar
-
+            // primera fecha para comparar TODO valor de GLOBAL fecha inicio
+            fecha_anterior = ZonedDateTime.parse(lista[0].fechaEnviado)  //1970-01-01T00:00:00.000+00:00"
             lista.forEach {
 
                 contador_m_totales = contador_m_totales + 1
@@ -146,7 +145,7 @@ class ReporteMensajesDao {
                 val listaConsumida = ResponseDos.body()!!
                 employeeList = listaConsumida.dataEmployees
             }else{
-                Log.e("ERROR SubCOntactos", ResponseDos.code().toString())
+                Log.e("ERROR SubContactos", ResponseDos.code().toString())
             }
 
         }catch (ex:Exception){
