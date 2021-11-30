@@ -61,12 +61,12 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
     var uriPost             : String = ""
-    var anioInicio          : Int? = null
-    var anioFin             : Int? = null
-    var mesInicio           : Int? = null
-    var mesFin              : Int? = null
-    var diaInicio           : Int? = null
-    var diaFin              : Int? = null
+    var anioInicio          : Int = 0
+    var anioFin             : Int = 0
+    var mesInicio           : Int = 0
+    var mesFin              : Int = 0
+    var diaInicio           : Int = 0
+    var diaFin              : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,10 +151,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                                     "Fecha de inicio no puede ser mayor a fecha fin",
                                     Toast.LENGTH_SHORT).show()
                                 }
-                        }else if(mesInicio!!<mesFin!!){             // Mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE). NO IMPORTA EL DIA
+                        }else if(mesInicio!!+1<mesFin!!+1){             // Mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE). NO IMPORTA EL DIA
                             operacionIsert()
                         }
-                    }else if(mesInicio!!>mesFin!!){                 // Mes de inicio es superior a mes fin pero de año fin superior. NO IMPORTA EL DIA
+                    }else if(mesInicio!!+1>mesFin!!+1 && anioInicio!!<anioFin!!){                 // Mes de inicio es superior a mes fin pero de año fin superior. NO IMPORTA EL DIA
                         operacionIsert()
                     }
 
@@ -164,15 +164,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         "Fecha de inicio no puede ser mayor a fecha fin",
                         Toast.LENGTH_SHORT).show()
                 }
+                // VALIDAR INICIO Y FIN FECHAS
 
-                // Enviar tarea a la conversacion grupal
-                var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","",
-                    "Tarea: ${binding.textTitulo} asignada a $nombrePersonaAsignada",Constantes.finalDate)
-                conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
-
-                //Volver al fragment anterior
-                val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
-                findNavController().navigate(action)
             }
 
         }
@@ -200,11 +193,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         val mPrioridad  = binding.textSpinPrioridad.text
 
         tarea = Tasks(
-            "GRUPOID1",                  // id_grupo
-            "EMIS1",
-            "Tareas",
-            "ReceptorAlexis",
-            //idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
+            "619696aa2ae47f99bde6e1e7",                  // id_grupo
+            idsuperiorInmediato,
+            "Armando Manzanero",
+            //"ReceptorAlexis",
+            idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
             fechaFin,                           // Fecha Fin
@@ -229,6 +222,17 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             Toast.LENGTH_LONG).show()
 
         asignarTareaViewModel.postTarea(tarea)
+
+        // Enviar tarea a la conversacion grupal
+        //val mensajeTareas = Message(Constantes.id,"618e878ec613329636a769ab","",
+            //"Tarea: ${titulo.toString()} asignada a $nombrePersonaAsignada",Constantes.finalDate)
+        //conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
+        //Log.d("mensaje Tareas","$mensajeTareas")
+
+        //Volver al fragment anterior
+        val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
+        findNavController().navigate(action)
+
     }
     fun setUpUiAsignarTareas(){
 
