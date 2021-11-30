@@ -4,10 +4,8 @@ package com.ekt.AdministradorWeb.entity;
 
 import java.util.Arrays;
 
-@Document ("group")
 public class Group {
 
-        @Id
         private String id;
         private String nombre;
         private User[] usuarios;
@@ -22,14 +20,10 @@ public class Group {
                 return id;
         }
 
-        public String getNombre() { return nombre; }
-        public void setNombre(String value) { this.nombre = value; }
         public void setId(String id) {
                 this.id = id;
         }
 
-        public User[] getUsuarios() { return usuarios; }
-        public void setUsuarios(User[] value) { this.usuarios = value; }
         public String getNombre() {
                 return nombre;
         }

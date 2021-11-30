@@ -54,7 +54,7 @@ public class ConfigPag {
 
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
-        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getID());
+        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
         model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
