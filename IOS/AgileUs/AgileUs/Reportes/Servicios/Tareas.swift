@@ -9,37 +9,19 @@ import Foundation
 
 var arrTareas: [Tareas]?
 
-struct TareasSubordinados:Codable{
-    let id_tarea:String
-    let id_grupo:String
-    let id_emisor:String
-    let nombre_emisor:String
-    let id_receptor:String
-    let nombre_receptor:String
-    let fecha_ini:String
-    let fecha_iniR:String
-    let fecha_fin:String
-    let fecha_finR:String
-    let titulo:String
-    let prioridad:String
-    let estatus:String
-    let leido:String
-    let fecha_BD:String
-    let archivo:String
-}
-
 struct Tareas:Codable{
     
     //let id_grupo:String
     //let id_emisor:String
     //let nombre_emisor:String
+    let nombre_receptor:String 
     let id_receptor:String
     let estatus:String
-    //let leido:Bool
-    //let fecha_ini:String
-    //let fecha_iniR:String
-    //let fecha_fin:String
-    //let fecha_finR:String
+    let leido:Bool
+    let fecha_ini:String
+    let fecha_iniR:String
+    let fecha_fin:String
+    let fecha_finR:String
 }
 
 class TareasService{
@@ -50,9 +32,11 @@ class TareasService{
 
     let serviceTaskBySubordinado = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/tareas.json?alt=media&token=fd5f6b25-d02b-4582-812f-16445b66e553"
     
+    let serviceTaskByDate = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/TareasFechas.json?alt=media&token=70ef0428-836f-421f-a9ef-cc6563b64819"
+    
     func webServiceTareas(){
         let sevice = true
-        let url = URL(string: serviceTaskBySubordinado)
+        let url = URL(string: serviceTaskByDate)
         
         print("WebService de tareas")
         
@@ -85,7 +69,40 @@ class TareasService{
         
     }
     
-    
+    func webServiceTareas(idUsuario:String){
+        let sevice = true
+        let url = URL(string: serviceTaskByDate)
+        
+        print("WebService de tareas")
+        
+        //Gernerar manejo de excepciones
+        URLSession.shared.dataTask(with: url!){
+            
+            (informacion, response, error) in
+            
+            //print(informacion!)
+            //print(response!)
+            //print(error)
+            
+            do{
+                
+                arrTareas = try JSONDecoder().decode([Tareas].self, from: informacion!)
+                DispatchQueue.main.async {
+                                        
+                    if sevice == true{
+                        self.webServiceTask?(arrTareas!)
+                    }
+                    //print(arrTareas!)
+                    
+                }
+                
+            }catch{
+                print("Error al leer el archivo Tareas")
+            }
+            
+        }.resume()
+        
+    }
 
     
 }

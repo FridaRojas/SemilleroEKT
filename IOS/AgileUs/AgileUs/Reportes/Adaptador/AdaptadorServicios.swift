@@ -28,5 +28,12 @@ class AdaptadorServicios{
         claseMensajes.webServiceMessage = webServiceMensajes
         claseMensajes.webServiceMensajes()
     }
+    
+    func servicioWebTareasAdapter(idUsuario: String, webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
+        let claseTareas = TareasService()
+        claseTareas.webServiceTask = webServiceTareas
+        claseTareas.webServiceTareas(idUsuario: idUsuario)
+    }
+    
 
 }

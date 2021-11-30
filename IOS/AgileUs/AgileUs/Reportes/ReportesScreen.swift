@@ -87,13 +87,14 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         //llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
         
         //Ejecutar los servicios web
+        serviciosMensajes()
         ejecucionServicios()
     }
     
     func ejecucionServicios(){
         serviciosUsuarios()
         serviciosTareas()
-        serviciosMensajes()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -149,6 +150,20 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             //actualizar_datos_lista_grafica(arrCountTask: arrTareasTerminadas)
         }
     }
+    
+    //  FILTRADO DE TAREAS
+    func serviciosTareasFiltrado(filtros: [String]) {
+        
+        adaptadorServicios.servicioWebTareasAdapter(idUsuario: filtros[2]){
+            [self] (Datos) -> Void in
+            arrTareas = Datos
+            arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: filtros[2], fechaInicio: filtros[0], fechaFin: filtros[1])
+            
+            llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
+        }
+        
+    }
+
 
     //  CONFIGURACIONES DE GRÁFICOS        <--------------------------
     
@@ -338,11 +353,11 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //Comprobar que el arreglo no esté vacio
         if !arrDatosT.isEmpty{
-            let tareasCompletadas = BarChartDataEntry(x: 1, y: Double("\(arrDatosT[3])")!)
+            let tareasATiempo = BarChartDataEntry(x: 1, y: Double("\(arrDatosT[4])")!)
             //Por definir este campo                        <---------------------------------------------------------
-            let tareasPendientes = BarChartDataEntry(x: 2, y: Double("\(arrDatosT[0])")!)
+            let tareasFueraTiempo = BarChartDataEntry(x: 2, y: Double("\(arrDatosT[5])")!)
             
-            let entrie = [tareasCompletadas, tareasPendientes]
+            let entrie = [tareasATiempo, tareasFueraTiempo]
             
             let dataSet = BarChartDataSet(entries: entrie)
             let chartData = BarChartData(dataSet: dataSet)
@@ -481,10 +496,11 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //                  GRÁFICA DE PASTEL
     
     func configuracion_etiquetasBarTareas(arrCantTareas: [Any]){
-        lblTiempoLeido.text = "Tareas Completadas"
-        lblTiempoRes.text = "Tareas Pendientes"
-        cantLeidos.text = "\(arrCantTareas[3])"
-        cantRecibidos.text = "\(arrCantTareas[0])"
+        lblTiempoLeido.text = "Finalizadas a tiempo"
+        cantRecibidos.text = "\(arrCantTareas[4])"
+        lblTotales.text = "Finalizadas fuera de tiempo"
+        cantLeidos.text = "\(arrCantTareas[5])"
+        
     }
     
     //                  GRÁFICA DE BARRAS
@@ -496,7 +512,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func ocultar_etiquetas(tipo: Bool) {
-        lblTotales.isHidden = tipo
+        lblTiempoRes.isHidden = tipo
         lblLeidos.isHidden = tipo
         lblEnviados.isHidden = tipo
         lblRecibidos.isHidden = tipo
@@ -528,9 +544,14 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func abrirFiltros(_ sender: Any) {
         
         let modal_form = adaptadorModal.crear_modal_funcion(datos: arrUsuarios!, Accion_Confirmacion_completion: {
-            [self](Datos) -> Void in
+            [self](Filtro) -> Void in
               
-            lblNombreu.text = (Datos[3] as! String)
+            lblNombreu.text = (Filtro[3] as! String)
+            
+            print(Filtro)
+            
+        serviciosTareasFiltrado(filtros: Filtro as! [String])
+            
         })
         
         present(modal_form, animated: true)

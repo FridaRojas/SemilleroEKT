@@ -38,7 +38,7 @@ class MensajesService {
     var webServiceMessage: ((_ arrDatosTareas:[Any]) -> Void)?
     var webServiceBroadcast: ((_ arrDatosBroadcast:[Any]) -> Void)?
     
-    let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928"
+    let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/mensajes_nuevo.json?alt=media&token=eadcb762-992e-493c-8ee7-50e4c3a93ce2"
 
     //let serviceMessage = "http://10.97.1.178:3040/api/mensajes/listarMensajesRecividos/618e8821c613329636a769ac"
     let serviceBroadccast = "http://10.97.1.178:3040/api/broadCast//mostrarMensajesporID/618b05c12d3d1d235de0ade0"
@@ -66,7 +66,7 @@ class MensajesService {
                 }
                 
             }catch{
-                print("Error al leer el archivo")
+                print("Error al leer el archivo Mensajes")
             }
             
         }.resume()

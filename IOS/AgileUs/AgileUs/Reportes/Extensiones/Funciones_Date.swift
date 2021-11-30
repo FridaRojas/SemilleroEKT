@@ -149,5 +149,32 @@ extension Date {
         fechas = [fecha_inicio, fecha_fin]
         return fechas
     }
+    
+    // funcion para convertir la fecha de los servicios a formato Date
+        func convertir_string_servicio_a_fecha(fecha: String) -> Date {
+            let dateFormatter = DateFormatter()
+            //dateFormatter.locale = Locale(identifier: "es_419")
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            return dateFormatter.date(from:fecha)!
+        }
         
+        func fechaServiciosAFecha(fecha: String) -> Date {
+            //let fecha = "\(i.fechaEnviado)".prefix(10)
+            var fechaHora = String()
+            let fechaD = fecha.prefix(10)
+            
+            let inicio = fecha.index(fecha.startIndex, offsetBy: 11)
+            let fin = fecha.index(fecha.endIndex, offsetBy: -10)
+            let rango = inicio..<fin
+
+            let subFecha = fecha[rango]
+            
+            fechaHora = "\(fechaD) \(subFecha)"
+            let fechaConvertida = convertir_string_servicio_a_fecha(fecha: fechaHora)
+            
+            return fechaConvertida
+            
+        }
+
 }
