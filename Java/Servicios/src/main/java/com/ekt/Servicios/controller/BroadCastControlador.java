@@ -111,11 +111,12 @@ public class BroadCastControlador {
 			broadCastM.setAsunto(broadCast.getAsunto());
 			broadCastM.setDescripcion(broadCast.getDescripcion());
 			Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
+			Optional<User> user2= userRepository.validarUsuario("61a101db174bcf469164d2fd");
 
 			if (user.isPresent()) {
 				broadCastM.setNombreEmisor(user.get().getNombre());
 				broadCastRepositorio.save(broadCastM);
-				notificacion2(broadCastM.getNombreEmisor() + " te ha enviado un mensaje", broadCast.getAsunto());
+				notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
 				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED, "Se creo el mensaje a broadcast", broadCastM.getIdEmisor()));
 			}
 
@@ -222,10 +223,10 @@ public class BroadCastControlador {
 	}
 
 
-	public void notificacion2(String title, String asunto){
+	public void notificacion2(String title, String asunto, String token){
 		OkHttpClient client = new OkHttpClient().newBuilder().build();
 		MediaType mediaType = MediaType.parse("application/json");
-		okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\n    \"to\": \"flmUd4adQi-WvEgBCs6wIy:APA91bGRrGBndwMxconv1tIoCus-eY7vTcc-QmkgtYuuFBi7A2vpWAf_HBH-YghkLsSBqMlP6e5iCBz4O1ONaMZ8Cv0i4GxzZy0XF0fOYpuXx0-VXTxFeK1sZ3YwhMdmHQXz1WweNqZQ\",\n    " +
+		okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\n    \"to\": \""+ token +"\",\n    " +
 				"\"notification\": {\n        " +
 				"\"body\": \""+ asunto +"\",\n        " +
 				"\"title\": \""+ title +"\"\n    }\n}");
