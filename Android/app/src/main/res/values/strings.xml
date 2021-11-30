@@ -55,5 +55,10 @@
     <string name="titleStatus4">Tareas Terminadas</string>
     <string name="titleStatus5">Tareas Asignadas</string>
     <string name="titleStatus6">Tareas Canceladas</string>
+    <string name="respAceptar">Aceptar</string>
+    <string name="respCancelar">Cancelar</string>
+    <string name="GuardarTarea">Guardar Tarea</string>
+    <string name="AdjuntarArchivo">Adjuntar Archivo</string>
+    <string name="dialogoAceptar">dialogoAceptar</string>
 
 </resources>

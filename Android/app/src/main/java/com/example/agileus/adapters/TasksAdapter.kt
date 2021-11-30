@@ -45,7 +45,7 @@ class TasksAdapter(
         var fecha: TextView
         var prioridad: TextView
         var btnAbrirDetallesTarea: ImageView
-        var nivelUsuario: String = "Bajo"
+        var nivelUsuario: String = "Alto"
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
@@ -59,12 +59,11 @@ class TasksAdapter(
             nombreTarea.text = dataTask.titulo
             personaAsignada.text = dataTask.nombreReceptor
             prioridad.text = dataTask.prioridad
-//            fecha.text = dataTask.fechaIni.toString()
+//          fecha.text = dataTask.fechaIni.toString()
 
 
             btnAbrirDetallesTarea.setOnClickListener {
                 if (nivelUsuario.equals("Alto") || nivelUsuario.equals("Medio")) {
-                    Toast.makeText(itemView.context, "Abrimos Fragment", Toast.LENGTH_SHORT).show()
                     var action: NavDirections
                     action =
                         TaskFragmentDirections.actionNavigationDashboardToDetalleNivelAltoFragment(

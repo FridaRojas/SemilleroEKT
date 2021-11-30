@@ -102,7 +102,6 @@
             style="@style/StyleTextFragment"
             android:enabled="false"
             android:hint="Observaciones"
-            android:text="Observaciones: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
             app:layout_constraintTop_toBottomOf="@+id/txtFechaInicioD" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -130,6 +129,17 @@
         -->
 
         <Button
+            android:id="@+id/btnGuardarTareaF"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_bg"
+            style="@style/StyleButton"
+            android:text="Guardar"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
+            tools:layout_editor_absoluteX="16dp" />
+   <Button
             android:id="@+id/btnCancelarEdicion"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
@@ -138,7 +148,7 @@
             style="@style/StyleButton"
             android:text="Cancelar"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
+            app:layout_constraintTop_toBottomOf="@+id/btnGuardarTareaF"
             tools:layout_editor_absoluteX="16dp" />
 
         <Button

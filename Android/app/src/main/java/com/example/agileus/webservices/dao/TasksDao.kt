@@ -7,6 +7,7 @@ import com.example.agileus.models.TaskList
 import com.example.agileus.models.DataPersons
 import com.example.agileus.models.PersonasGrupo
 import com.example.agileus.models.Tasks
+import com.example.agileus.models.*
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
 import retrofit2.Call
@@ -100,6 +101,9 @@ class TasksDao : DialogoConfirmacionListener{
         } catch (e: Exception) {
             Log.e("error", e.toString())
         }
+
+//        Log.d("tareas", listaTareas.toString())
+
         return listaTareas
     }
 
@@ -115,7 +119,7 @@ class TasksDao : DialogoConfirmacionListener{
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Failure ${t.cause}")
+                Log.d("Mensaje", "On Failure ${t.message}")
             }
         })
     }
@@ -125,22 +129,48 @@ class TasksDao : DialogoConfirmacionListener{
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
-                    Log.d("Mensaje", "Tarea Editada")
+                    Log.d("Mensaje", "Tarea ${response.body()!!.idTarea} editada")
                 } else {
-                    Log.d("Mensaje", "No se edito tarea ${response.code()}")
+                    Log.d("Mensaje", "No se Edito tarea ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Failure ${t.cause}")
+                Log.d("Mensaje", "On Failure: ${t.message}")
             }
+        })
+    }
+
+    fun updateStatus(idTarea: String, estatus: String) {
+        var url = idTarea + "&" + estatus
+        url.trim()
+        Log.d("url", url)
+        val callback = InitialApplication.webServiceGlobalTasks.updateStatus(url)
+//        val value: Response<String> = callback.execute()
+//        Log.d("Mensaje", value.toString())
+        callback.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    Log.d("Mensaje", "Estatus Editado")
+                } else {
+                    Log.d("Mensaje", "No se Edito estatus ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("Mensaje", "On Failure: ${t.message}")
+            }
+
         })
     }
 
     fun getPersonsGroup(idsuperiorInmediato:String): ArrayList<DataPersons>{
         lateinit var listaGrupoRecuperada : PersonasGrupo
         var listaPersonsDatos = ArrayList<DataPersons>()
-        val callRespuestaPersonas = InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(idsuperiorInmediato)
+        val callRespuestaPersonas =
+            InitialApplication.webServiceGlobalTasksPersonas.getListaPersonasGrupo(
+                idsuperiorInmediato
+            )
         val Response = callRespuestaPersonas?.execute()
         try {
             if(Response != null) {
