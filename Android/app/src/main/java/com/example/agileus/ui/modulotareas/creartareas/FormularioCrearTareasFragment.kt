@@ -17,13 +17,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
+import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
+import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
+import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.File
@@ -33,15 +38,16 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
-
+    lateinit var conversationviewModel: ConversationViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel
     /*  *** Fb Storage ***  */
+    lateinit var firebaseProvider : FirebaseProvider
     lateinit var mStorageInstance       : FirebaseStorage
     lateinit var mStorageReference      : StorageReference
     lateinit var resultLauncherArchivo  : ActivityResultLauncher<Intent>
     /*  *** Fb Storage ***  */
+
     var listaN         = ArrayList<String>()
-    lateinit var listaObj       : ArrayList<DataPersons>
     lateinit var listaPersonas  : ArrayList<DataPersons>
     lateinit var idPersonaAsignada : String
 
@@ -77,6 +83,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
         listaPrioridades = resources.getStringArray(R.array.prioridad_array)
         asignarTareaViewModel = ViewModelProvider(this).get()
+        conversationviewModel = ViewModelProvider(this).get()
+        firebaseProvider  = FirebaseProvider()
         /*  *** Instancias Fb Storage ***  */
         mStorageInstance = FirebaseStorage.getInstance()
         mStorageReference = mStorageInstance.getReference("Documentos")
@@ -92,8 +100,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         var returnUri = data?.data!!
                         val uriString = data.toString()
                         val myFile = File(uriString)
+                        //binding.btnAdjuntarArchivo.text= myFile.name
+                        binding.btnAdjuntarArchivo.text= "Archivo seleccionado"
                         Log.d("mensaje","PDF: $uriString")
-                        subirPdfFirebase(myFile , returnUri)
+                        firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
                         e.printStackTrace()
                         Log.e("mensaje", "File not found. ${e.message}");
@@ -104,6 +114,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 Toast.makeText(context,"No se Selecciono archivo",Toast.LENGTH_LONG).show()
             }
         }
+        firebaseProvider.obs.observe(viewLifecycleOwner,{
+            uriPost = it
+        })
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
@@ -129,7 +142,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
                 if(anioInicio!!<=anioFin!!){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
-                if(mesInicio!!+1<=mesFin!!+1){                      // Es un mes menor o igual del mismo año
+                    if(mesInicio!!+1<=mesFin!!+1){                  // Es un mes menor o igual del mismo año
                         if (mesInicio!!+1==mesFin!!+1){             // Si mes inicio es igual a mes fin del mismo año
                             if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
                                 operacionIsert()
@@ -151,10 +164,16 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         "Fecha de inicio no puede ser mayor a fecha fin",
                         Toast.LENGTH_SHORT).show()
                 }
-            }
 
-            //val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
-            //findNavController().navigate(action)
+                // Enviar tarea a la conversacion grupal
+                var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","",
+                    "Tarea: ${binding.textTitulo} asignada a $nombrePersonaAsignada",Constantes.finalDate)
+                conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
+
+                //Volver al fragment anterior
+                val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
+                findNavController().navigate(action)
+            }
 
         }
         /* Boton Crear tarea  */
@@ -162,15 +181,14 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         binding.btnAdjuntarArchivo.setOnClickListener {
             val intentPdf= Intent()
             intentPdf.setAction(Intent.ACTION_GET_CONTENT)
-            intentPdf.type = "application/pdf"
-            //intentPdf.type = "application/pdf"                     // Filtra para archivos pdf
+            intentPdf.type = "application/pdf"                     // Filtra para archivos pdf
             resultLauncherArchivo.launch(intentPdf)
         }
         binding.edtFechaInicio.setOnClickListener {
-            abrirDialogoFecha(view,1)
+            abrirDialogoFecha(1)
         }
         binding.edtFechaFin.setOnClickListener {
-            abrirDialogoFecha(view,2)
+            abrirDialogoFecha(2)
         }
     }
 
@@ -182,10 +200,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         val mPrioridad  = binding.textSpinPrioridad.text
 
         tarea = Tasks(
-            "Prueba Creacion Tarea",                  // id_grupo
-            "Emisor Carlos Cano",
-            "Carlos R",
-            idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
+            "GRUPOID1",                  // id_grupo
+            "EMIS1",
+            "Tareas",
+            "ReceptorAlexis",
+            //idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
             fechaFin,                           // Fecha Fin
@@ -193,6 +212,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             descripcion.toString(),             // Descripcion
             prioridadAsignada,                  // Prioridad
             "pendiente",
+            uriPost,                            // Url de archivo pdf subido a firebase
             ""
 
         )
@@ -204,45 +224,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 "Nombre persona asignada: $nombrePersonaAsignada, " +
                 "Fecha inicio: $fechaInicio, " +
                 "Fecha fin: $fechaFin, "+
+                "Url pdf: $uriPost, "+
                 "Descripcion: $descripcion ",
             Toast.LENGTH_LONG).show()
 
         asignarTareaViewModel.postTarea(tarea)
-    }
-    fun subirPdfFirebase(pdf: File, uri: Uri){
-        try{
-            var refenciaPdf = mStorageReference
-                .child("Archivos ${(0..999).random()}")
-            var uploadTask = refenciaPdf.putFile(uri)
-            //.putStream(stream)
-
-            uploadTask.addOnSuccessListener {
-                it.storage.downloadUrl.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        uriPost=task.result.toString()
-                        Toast.makeText(context, "Doc cargada correctamente", Toast.LENGTH_LONG).show()
-                        Log.i("Uri", "Archivo uri: ${task.result}")
-
-                    } else {
-                        Toast.makeText(context, "Ocurrió un error al cargar archivo", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                }
-            }
-
-            uploadTask.addOnFailureListener{
-                it.printStackTrace()
-                Toast.makeText(context,"Ocurrió un error al cargar archivo",Toast.LENGTH_LONG).show()
-            }
-
-        }catch(e:Exception){
-            Log.e("mensaje",e.message.toString())
-            e.printStackTrace()
-            Toast.makeText(context,"Ocurrió un error al cargar archivo",Toast.LENGTH_LONG).show()
-        }
-        finally {
-            uriPost=""
-        }
     }
     fun setUpUiAsignarTareas(){
 
@@ -275,8 +261,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         binding.textSpinPrioridad.threshold
 
     }
-
-    fun abrirDialogoFecha(view: View, b:Int) {
+    fun abrirDialogoFecha(b:Int) {
         val newFragment = EdtFecha(this, b)
         newFragment.show(parentFragmentManager, "Edt fecha")
     }
@@ -287,7 +272,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         anioInicio  = anio
         mesInicio   = mes
         diaInicio   = dia
-        val fecha = binding.edtFechaInicio
+        val fecha=binding.edtFechaInicio
         val fechaObtenida = "$anio-${mes+1}-$dia"
         fecha.setText(fechaObtenida)
         fechaInicio = fecha.text.toString()
@@ -298,8 +283,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         anioFin = anio
         mesFin  = mes
         diaFin  = dia
-        val fecha = binding.edtFechaFin
-        fecha.setText("$anio-${mes+1}-$dia")
+        val fecha=binding.edtFechaFin
+        val fechaObtenida = "$anio-${mes+1}-$dia"
+        fecha.setText(fechaObtenida)
         fechaFin = fecha.text.toString()
         Log.e("Mensaje", "Fecha Fin $fechaFin")
 
@@ -308,5 +294,5 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         super.onDestroyView()
         _binding = null
     }
-
+    // *** INTERFACES ***
 }

@@ -47,7 +47,7 @@ class TasksDao : DialogoConfirmacionListener {
                 if (response.isSuccessful) {
                     val nuevaTarea: Tasks = response.body()!!
                     var mensaje =
-                        "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
+                        "Tarea creada por el emisor: ${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
                     mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
                     mensaje += ", Numero de empleado:${nuevaTarea.idReceptor}"
@@ -88,8 +88,10 @@ class TasksDao : DialogoConfirmacionListener {
                         listaTareas = emptyList<DataTask>() as ArrayList<DataTask>
                     }
                 } else {
-                    Log.e("error", "Errooor")
+                    listaTareas = emptyList<DataTask>() as ArrayList<DataTask>
                 }
+            }else{
+               listaTareas = emptyList<DataTask>() as ArrayList<DataTask>
             }
         } catch (e: Exception) {
             Log.e("error", e.toString())
