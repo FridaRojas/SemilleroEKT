@@ -58,7 +58,7 @@ class InfoViewController: UIViewController {
     func MostrarTareaModal()
     {
         self.MostrarSpinner(onView: self.view)
-        Api.shared.LoadTareaModal(idTarea: "619c036a755c956b81252e03") {
+        Api.shared.LoadTareaModal(idTarea: "61a6a120516207029a580544") {
             tarea in
             print("si jalo")
             DispatchQueue.main.async {
@@ -83,15 +83,15 @@ class InfoViewController: UIViewController {
                 default:
                     print("sin estatus")
                 }
-                self.Descripcion.text = tarea.descripcion
-                self.Fecha_inicio.text = tarea.fecha_ini
-                self.Fecha_fin.text = tarea.fecha_fin
+                self.Descripcion.text = "Descripcion: \(tarea.descripcion)"
+                self.Fecha_inicio.text = "Fecha inicio: \(String(tarea.fecha_ini.prefix(10)))"
+                self.Fecha_fin.text = "Fecha fin:\(String(tarea.fecha_fin.prefix(10)))"
                 if (self.Observacion.text == "null")
                 {
                     self.Observacion.text = String()
                 }
                 else{
-                    self.Observacion.text = tarea.observaciones
+                    self.Observacion.text = "Observaciones: \(tarea.observaciones!)"
                 }
                 self.RemoverSpinner()
 
@@ -122,5 +122,8 @@ class InfoViewController: UIViewController {
     
     @IBAction func BotonCambiarEstatus(_ sender: UIButton) {
         CambiarEstatus()
+    }
+    @IBAction func VisorPDF(_ sender: UIButton) {
+        
     }
 }
