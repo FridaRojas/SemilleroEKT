@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
+        public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
         if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
@@ -125,13 +125,20 @@ public class UserController {
             if(!user.isPresent()) {
                 return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
             }else {
-                if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(user.get().getCorreo())){
+                System.out.println("0");
+                if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(userUpdate.getCorreo())){
+                    System.out.println("1");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", ""));
-                }else if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(user.get().getCurp())){
+                }else
+
+                    if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(userUpdate.getCurp())){
+                    System.out.println("2");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", ""));
-                }else if(!user.get().getRFC().equals(userUpdate.getRFC()) && userService.buscaRFCUsuario(user.get().getRFC())){
+                }else if(!user.get().getRFC().equals(userUpdate.getRFC()) && userService.buscaRFCUsuario(userUpdate.getRFC())){
+                    System.out.println("3");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "RFC no válido", ""));
-                }else if(!user.get().getNumeroEmpleado().equals(userUpdate.getNumeroEmpleado()) && userService.buscaNoEmpleadoUsuario(user.get().getNumeroEmpleado())){
+                }else if(!user.get().getNumeroEmpleado().equals(userUpdate.getNumeroEmpleado()) && userService.buscaNoEmpleadoUsuario(userUpdate.getNumeroEmpleado())){
+                    System.out.println("4");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
                 }else{
                     groupService.actualizaUsuario(userUpdate);
@@ -141,6 +148,7 @@ public class UserController {
         }catch (Exception e){
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, e.toString(), ""));
         }
+
     }
 
     @PutMapping("/updateRol")
