@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <style>
+        table{
+            width:100%;
+
+        }
+        table .resto{
+            padding: 20px;
+            width: 85% ;
+        }
+
+        table .menu{
+            width: 15% ;
+            height: max-content;
+        }
+        .main {
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        .formContenido{
+            position: static;
+            top: 0;
+            left: 0;
+            top: 0;
+            left: 0;
+            background: white;
+            background: rgba(255, 255,255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            width: 90%;
+            height: 90%;
+            overflow:auto;
+        }
+
+        .columna {
+            width: 50%;
+            height: 100%;
+            float: right;
+        }
+        .columna div {
+            height: 25%;
+            width: 95%;
+            margin: 5px;
+        }
+
+        .titulo{
+            background: white;
+            background: rgba(255, 255,255, 0.7);
+            border-radius: 10px;
+            alignment: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            width: 60%;
+            height: 35px;
+            margin: 15px;
+        }
+
+    </style>
+
+    <link
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
+    <title>Title</title>
+
+</head>
+<body >
+
+
+
+
+<table id="tabla">
+    <td  class="menu">
+        <div th:replace="elementos/menuLateral::menuLateral"></div>
+    </td>
+
+    <td class="resto" >
+
+        <div class="titulo" align="center" a >
+            <h3 >Añadir Usuarios</h3>
+        </div>
+
+
+        <div class="formContenido">
+            <div class="container">
+                <form method="POST"  th:action="@{/añadirUsuario}" th:object="${User}">
+                <div class="columna">
+                    <div class="form-group">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="uname">Correo:</label> <input type="email"
+                                                                 class="form-control"  placeholder="Ingrese el correo"
+                                                                 name="correo" required>
+                        <div class="valid-feedback">Valid.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uname">RFC:</label> <input type="text"
+                                                               title="Solo mayusculas o numeros, longitus de 13" minlength="13"
+                                                               maxlength="13" class="form-control"
+                                                               placeholder="Ingrese RFC" name="rfc" required pattern="[A-Z0-9]+">
+                        <div class="valid-feedback">Valid.</div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="uname">Telefono :</label> <input type="text"
+                                                                     title="Solo numeros , 10 digitos" maxlength="10" minlength="10"
+                                                                     class="form-control"  placeholder="Ingrese el telefono"
+                                                                     name="telefono" required pattern="[0-9]*">
+                        <div class="valid-feedback">Valid.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="uname">Fecha fin contrato:</label> <input type="date"
+                                                                                 class="form-control"
+                                                                                 placeholder="Ingrese la fecha de contrato" name="fechaInicio"
+                                                                                 required>
+                        <div class="valid-feedback">Valid.</div>
+
+                    </div>
+
+                </div>
+
+                <div class="columna">
+                    <div class="form-group">
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="uname">Nombre:</label> <input type="text"
+                                                                       class="form-control"  placeholder="Ingrese el nombre"
+                                                                       name="nombre" required>
+                        <div class="valid-feedback">Valid.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uname">CURP:</label> <input type="text"
+                                                                title="Solo mayusculas y numeros, lonitud de 18" minlength="18" maxlength="18"
+                                                                class="form-control" id="uname" placeholder="Ingrese su curp"
+                                                                name="curp" required pattern="[A-Z0-9]+">
+                        <div class="valid-feedback">Valid.</div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="uname">Numero de empleado :</label> <input type="text"
+                                                                     title="Solo numeros , 9 digitos" maxlength="9" minlength="9"
+                                                                     class="form-control"  placeholder="Ingrese el telefono"
+                                                                     name="numeroEmpleado" required pattern="[0-9]*">
+                        <div class="valid-feedback">Valid.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uname">Fecha inicio contrato:</label> <input type="date"
+                                                                          class="form-control"
+                                                                          placeholder="Ingrese la fecha de contrato" name="fechaTermino"
+                                                                          required>
+                        <div class="valid-feedback">Valid.</div>
+
+                    </div>
+
+
+                </div>
+                <div class="form-group" style="alignment: center">
+                    <button type="submit" name="crearUsuario" class="btn btn-warning">Crear</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </td>
+</table>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
