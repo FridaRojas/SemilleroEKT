@@ -80,6 +80,7 @@
     <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
     <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/prueba.js}"></script>
 
 </head>
 <body >
@@ -126,11 +127,13 @@
                 </div>
             </div>
         </div>
+        <!-- Seccion que se va a iterar -->
 
+        <th:block th:each="user: ${listaUsuarios}">
+            <th:block th:if="${user.getStatusActivo().equals('true')}">
+            <div class="item" >
 
-            <!-- Seccion que se va a iterar -->
-            <div class="item" th:each="user: ${listaUsuarios}">
-                <div class="container">
+                <div  class="container">
                     <div class="row">
                         <div class="col-sm">
                             <label th:text="${user.getNombre()}"></label>
@@ -145,16 +148,13 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-sm">
-                                        <form method="POST"
-                                              action="">
-
-                                            <button type="button" class="btn btn-primary" ><i class="fa fa-edit"></i></button>
+                                        <form method="post"  th:action="@{/EditarUsuario(id=${user.getID()})}" >
+                                            <button type="submit"    style="background: #66BB6A" class="btn btn-primary" ><i class="fa fa-edit"></i></button>
                                         </form>
                                     </div>
                                     <div class="col-sm" style="align-content: center">
-                                        <form method="POST"
-                                              action="">
-                                            <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
+                                        <form method="post"  th:action="@{/eliminarUsuario(id=${user.getID()})}" >
+                                            <button type="submit" value="submit"  style="background: #66BB6A"  class="btn btn-primary" ><i class="fa fa-trash"></i></button>
                                         </form>
                                     </div>
                                 </div>
@@ -167,28 +167,21 @@
                 </div>
 
             </div>
-
-
-
-
-
-
-
-
-
-
+            </th:block>
+        </th:block>
     </td>
 </table>
 
 
 <div class="contenedor">
-    <button class="botonF1" type="button" data-toggle="modal" data-target="#modalCreaOrganigrama" >
+    <button class="botonF1" type="button" data-toggle="modal" data-target="#modalCreaUsuario" >
         <span>+</span>
     </button>
 </div>
 
-<div th:replace="paginas/modalCreaOrganigrama::#modalCreaOrganigrama">
-</div>
+<div th:replace="paginas/modalCrearUsuario::#modalCreaUsuario"></div>
+<div th:replace="paginas/modalEditarUsuario::#modalEditarUsuario"></div>
+
 
 
 
@@ -197,6 +190,14 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $("#modalEditarUsuario").modal("hide");
+
+    function Values(ID) {
+        $("#nombre1").val(ID);
+    }
+</script>
 
 </body>
 </html>

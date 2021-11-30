@@ -1,30 +1,21 @@
 package com.ekt.AdministradorWeb.config;
 
 
-import com.ekt.AdministradorWeb.entity.User;
-import com.google.gson.Gson;
-import okhttp3.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import com.ekt.AdministradorWeb.entity.Group;
-import com.ekt.AdministradorWeb.entity.Respuesta;
-import com.ekt.AdministradorWeb.entity.User;
-import com.google.gson.Gson;
-import okhttp3.*;
-import org.bson.json.JsonObject;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import java.util.ArrayList;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import java.util.ArrayList;
 
 @Controller
 public class ConfigPag {
@@ -102,8 +93,37 @@ public class ConfigPag {
         }
         return "paginas/login";
     }
+
+    @GetMapping("/añadirUsuarioPage")
+    public String añadirUsuarioPage(){
+        return "paginas/usuarios/AñadirUsuario";
+    }
+
+
+    @PostMapping("/eliminarUsuario")
+    public String eliminarUsuario(@ModelAttribute(value = "id") String id){
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/delete/"+id)
+                .method("DELETE", body)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println("el id es: "+id+"  eliminado con exito");
+        }catch (Exception e) {
+            System.out.println("Error al eliminar usuario" +e);
+        }
+        return "redirect:/findAllUsuarios";
+    }
+
     @GetMapping("/findAllUsuarios")
-    public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
+    public String findAllUsuarios( ModelMap model) {
+         ArrayList<User> listaUsuarios = new ArrayList();
         Gson gson = new Gson();
         //ArrayList<User> listaUsuarios = new ArrayList();
             //se realiza la peticion al back
@@ -116,7 +136,7 @@ public class ConfigPag {
         try {
             Response response = client.newCall(request).execute();
             String res = response.body().string();
-            System.out.println(res);
+            //System.out.println(res);
             System.out.println("Peticion exitosa");
             JSONObject jsonObject= new JSONObject(res);
             //Separamos la parte de data
@@ -124,8 +144,8 @@ public class ConfigPag {
 
             //prueba de casteo
 
-            System.out.println(name1.getJSONObject(1));
-            System.out.println(name1.length());
+            //System.out.println(name1.getJSONObject(1));
+            //System.out.println(name1.length());
 
             for (int i=0;i<name1.length();i++){
                 listaUsuarios.add(gson.fromJson(name1.getJSONObject(i).toString(), User.class));
@@ -139,13 +159,65 @@ public class ConfigPag {
         //return listaUsuarios;
     }
 
-    @GetMapping("/añadirUsuario")
+    @PostMapping("/añadirUsuario")
     public String añadirUsuario(@ModelAttribute User user){
         //realizar el guardado
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\"" +user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\" "+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\" "+user.getCurp()+"\",\r\n    \"rfc\":\" "+user.getRFC()+"\"\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/create")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
 
-
-            return "paginas/usuarios/AñadirUsuario";
+        }catch (Exception e){
+            System.out.println("Error al insertar usuario");
+        }
+        return "redirect:/findAllUsuarios";
     }
+
+    @PostMapping("/EditarUsuario")
+    public String editarUsuario(@ModelAttribute(value = "id") String id,Model model){
+        //buscar al usuario
+        System.out.println("el usuario es: "+id);
+
+
+
+        //model.addAttribute(user);
+        return "/paginas/usuarios/AñadirUsuario";
+    }
+
+    @GetMapping("/VerUsuario")
+    public String verUsuario(@ModelAttribute User user,Model model){
+        Gson gson = new Gson();
+        //buscar usuario
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/find/618e8821c613329636a769ac")
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println("Peticion exitosa");
+            JSONObject jsonObject= new JSONObject(response);
+            //Separamos la parte de data
+            JSONObject name1 = jsonObject.getJSONObject("data");
+            user =gson.fromJson(name1.toString(), User.class);
+            model.addAttribute("user",user);
+        }catch (Exception e){
+            System.out.println("error al castear el usuario");
+        }
+
+
+
+        return "/paginas/modalEditarUsuario";
+    }
+
 
 
     @PostMapping("/CrearGrupo")
