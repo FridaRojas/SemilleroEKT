@@ -15,25 +15,24 @@
         android:theme="@style/Theme.AgileUs"
         android:usesCleartextTraffic="true"
         tools:ignore="MissingClass">
-
         <activity
-            android:name=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
-            android:name=".ui.HomeActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-
+            android:name=".ui.login.LoginActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity
+            android:name=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.HomeActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"    />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true" />

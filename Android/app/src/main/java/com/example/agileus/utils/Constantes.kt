@@ -2,6 +2,10 @@ package com.example.agileus.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -27,4 +31,9 @@ object Constantes {
     val localTime: String = formatt.format(currentLocalTime)
     val finalDate = "$date$localTime"
 
+    val URL_LOGIN = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"
+
+
+
 }
+

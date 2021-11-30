@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
+import com.example.agileus.webservices.apis.UserServiceApi
 
 class InitialApplication : Application() {
 
@@ -11,6 +12,7 @@ class InitialApplication : Application() {
         lateinit var webServiceMessage: MessageApi
         lateinit var webServiceGlobalTasks: TasksApi
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
+        lateinit var userServiceLog : UserServiceApi
 
     }
 
@@ -19,6 +21,8 @@ class InitialApplication : Application() {
         webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
         BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
+
+        userServiceLog = ConfigRetrofit().getUserDao()
     }
 
 }

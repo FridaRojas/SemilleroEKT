@@ -6,11 +6,13 @@ import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
+import com.example.agileus.webservices.apis.UserServiceApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ConfigRetrofit {
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE
+    val URL_LOGIN = Constantes.URL_LOGIN
 
     //todo Falta editar el url para las tareas
     val URL_BASE_TAREAS =
@@ -43,6 +45,18 @@ class ConfigRetrofit {
 
         return mRetrofit.create(BuzonApi::class.java)
     }
+
+
+    fun getUserDao(): UserServiceApi {
+        val mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_LOGIN)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return mRetrofit.create(UserServiceApi::class.java)
+
+    }
+
+
 
 
 }
