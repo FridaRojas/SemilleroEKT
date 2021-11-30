@@ -273,8 +273,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private fun initBarChart(enviados:Float,recibidos:Float) {
 
         val entries: ArrayList<BarEntry> = ArrayList()
-        entries.add(BarEntry(.5f, enviados))
-        entries.add(BarEntry(1.5f, recibidos))
+        entries.add(BarEntry(0f, enviados))
+        entries.add(BarEntry(.5f, recibidos))
 
         val barDataSet = BarDataSet(entries, "")
         //barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
@@ -286,18 +286,24 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         val data = BarData(barDataSet)
         barChart.data = data
+        data.setBarWidth(0.3f);//Reducir el ancho de las barras
         barDataSet.colors = colors
         data.setValueTextSize(0f)
 
         //hide grid lines
-        barChart.axisLeft.setDrawGridLines(false)
-        barChart.xAxis.setDrawGridLines(false)
-        barChart.xAxis.setDrawAxisLine(false)
-        barChart.setDrawValueAboveBar(false)
-
+        barChart.axisLeft.setDrawGridLines(true)
+        barChart.xAxis.setDrawGridLines(true)
+        barChart.xAxis.setDrawAxisLine(true)
+        barChart.xAxis.isEnabled=false
 
         //remove right y-axis
         barChart.axisRight.isEnabled = false
+        barChart.axisLeft.isEnabled = true
+
+        //forzar a que la barra izquierda de la gráfica, muestre por valores enteros
+        barChart.axisLeft.setGranularity(1.0f);
+        barChart.axisLeft.setGranularityEnabled(true); // Required to enable granularity
+
 
         barChart.setTouchEnabled(false)
 
@@ -309,7 +315,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         //add animation
         barChart.animateY(1000)
-
 
         //draw chart
         barChart.invalidate()

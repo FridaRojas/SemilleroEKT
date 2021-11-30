@@ -19,35 +19,26 @@ class ListaDatosAdapter(private val dataSet: ArrayList<Estadisticas>, val listen
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
 
-        //var id_vista=0
-        //if(vista==0){
+       var id_vista=0
 
-           /*vista = if(viewType == 0)
-            {
-                R.layout.item
-            }
-            else
-            {
-                R.layout.item_selected
-            }*/
-
-        //}
-        /*else{
-
+        if(vista==0){
             id_vista = if(viewType == 0)
-            {
                 R.layout.item_selected
-            }
-            else
-            {
+                else
                 R.layout.item
-            }
-
-        }*/
+        }
+        else{
+            id_vista = if(viewType == 0)
+                R.layout.item
+            else
+                R.layout.item_selected
+        }
 
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item, viewGroup, false)
+            .inflate(id_vista, viewGroup, false)
+
         return ViewHolder(view)
+
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -57,9 +48,12 @@ class ListaDatosAdapter(private val dataSet: ArrayList<Estadisticas>, val listen
     override fun getItemCount() = dataSet.size
 
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        private val id_vista: Int = 0
         val dato1: TextView
         val dato2: TextView
         val dato3: TextView

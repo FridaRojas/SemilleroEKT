@@ -7,12 +7,12 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.DatosTareas
 import com.example.agileus.models.Estadisticas
+import com.example.agileus.models.Tasks
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 class ReporteTareasDao {
-
 
     private var contador_tareas_terminadas:Int = 0
     private var contador_tareas_pendientes:Int = 0
@@ -38,7 +38,7 @@ class ReporteTareasDao {
         if (ResponseTareas.isSuccessful) {
             lista = ResponseTareas.body()!!
 
-            val id_receptor = lista[0].id_receptor //Aquí se coloca el id del usuario a revisar
+            val id_receptor = lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
 
             var contador_t_terminadas= 0
             var contador_t_pendientes = 0

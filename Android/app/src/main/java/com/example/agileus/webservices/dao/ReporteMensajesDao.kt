@@ -1,15 +1,14 @@
 package com.example.agileus.webservices.dao
 
-import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.Contacts
-import com.example.agileus.models.DatosMensajes
+import com.example.agileus.models.Conversation
 import com.example.agileus.models.EmployeeListByBossID
 import com.example.agileus.models.Estadisticas
 import retrofit2.Response
@@ -38,12 +37,10 @@ class ReporteMensajesDao {
     fun recuperardatosMensajes(): ArrayList<Estadisticas> {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes()
-        val ResponseMensajes: Response<ArrayList<DatosMensajes>> = callRespuesta.execute()
+        val ResponseMensajes: Response<ArrayList<Conversation>> = callRespuesta.execute()
 
         val listaRecycler= ArrayList<Estadisticas>()
-        val lista: ArrayList<DatosMensajes>
-
-
+        val lista: ArrayList<Conversation>
 
 
         val actualCal= Calendar.getInstance()
@@ -55,7 +52,7 @@ class ReporteMensajesDao {
 
         if (ResponseMensajes.isSuccessful) {
             lista = ResponseMensajes.body()!!
-            val id_emisor = lista[0].idemisor //Aquí se coloca el id del emisor deseado
+            val id_emisor = idUsuarioEstadisticas//lista[0].idemisor //Aquí se coloca el id del emisor deseado
 
             var contador_m_enviados= 0
             var contador_m_recibidos = 0
@@ -77,7 +74,13 @@ class ReporteMensajesDao {
                     contador_m_enviados = contador_m_enviados + 1
 
                      fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
+                     //var fecha_anterior=fecha_anterior
                      diferencia_minutos = ChronoUnit.MINUTES.between(fecha_anterior, fecha_actual)
+
+                     if(fecha_anterior!!.isBefore(fecha_actual) || fecha_anterior!!.isEqual(fecha_actual)){
+                    Log.d("mensaje","fecha 1: ${fecha_anterior.toString()}" +
+                            "   fecha 2: ${fecha_actual.toString()}. ")
+                      }
 
                      suma_tiempos = suma_tiempos + diferencia_minutos.toInt()
 
@@ -91,11 +94,12 @@ class ReporteMensajesDao {
 
                     contador_m_recibidos = contador_m_recibidos + 1
 
-                    if(it.statusLeido){
+                    if(it.statusLeido=="true"){
                         contador_m_leidos = contador_m_leidos + 1
                     }
 
                 }
+
 
             }
 

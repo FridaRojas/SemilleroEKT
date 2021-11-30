@@ -12,4 +12,5 @@ class MySharedPreferences {
         var tipo_grafica:Int=0
         var vista:Int=0
     }
+
 }

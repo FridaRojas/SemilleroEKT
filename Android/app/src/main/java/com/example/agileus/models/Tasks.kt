@@ -18,5 +18,3 @@ data class Tasks(
     @SerializedName("createdDate") var createdDate: String
 )
 
-
-
