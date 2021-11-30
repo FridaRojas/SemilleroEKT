@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
@@ -317,6 +318,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         _binding = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
         cambiarGrafica(tipo_grafica)
         Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniCustomEstadisticas}, fin: ${MySharedPreferences.fechaEstadisticas}", Toast.LENGTH_SHORT).show()
@@ -331,17 +333,22 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 mostrargraficaPie()
                 binding.pieChart.isVisible=true
                 binding.barChart.isVisible=false
+                vista = 0
+                tipo_grafica=0
             }
             1 -> {
 
                 mostrargraficaBarras()
                 binding.barChart.isVisible=true
                 binding.pieChart.isVisible=false
+                vista = 1
+                tipo_grafica=1
 
             }
 
             else -> {
                 mostrargraficaPie()
+                vista=0
             }
         }
     }
