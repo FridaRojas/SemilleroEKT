@@ -390,12 +390,12 @@ public class MensajesController {
 			while (cursor.hasNext()) {
 
 				Mensajes mensajes = cursor.next();
-				if(mensajes.getIDReceptor()!=  idEmisor) {
+				if(!mensajes.getIDReceptor().equals(idEmisor) ) {
 
 					mConv.setIdReceptor(mensajes.getIDReceptor());
 					mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
 					mConv.setIdConversacion(mensajes.getIDConversacion());
-					//mConv.setIdEmisor(mensajes.getIDEmisor());
+					mConv.setIdEmisor(mensajes.getIDEmisor());
 				}
 			}
 
