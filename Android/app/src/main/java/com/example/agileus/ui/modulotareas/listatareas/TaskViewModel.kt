@@ -24,7 +24,7 @@ class TaskViewModel() : ViewModel() {
     //lateinit var listaConsumida : ArrayList<Tasks>
 
     init {
-        statusRecycler.value = "Pendiente"
+        statusRecycler.value = "pendiente"
     }
     /*
     fun devuelveLista() {
