@@ -318,7 +318,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         _binding = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
+        cambiarGrafica(tipo_grafica)
         Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniCustomEstadisticas}, fin: ${MySharedPreferences.fechaEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
