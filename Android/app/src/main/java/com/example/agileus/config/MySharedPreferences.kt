@@ -1,5 +1,6 @@
 package com.example.agileus.config
 
+import com.example.agileus.models.Contacts
 import com.example.agileus.utils.Constantes
 
 class MySharedPreferences {
@@ -7,8 +8,10 @@ class MySharedPreferences {
     companion object reportesGlobales{
         var idUsuario = Constantes.id
         var idUsuarioEstadisticas = Constantes.id
-        lateinit var fechaInicioEstadisticas: String
-        lateinit var fechaFinEstadisticas: String
+        var opcionFiltro = 0
+        var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
+        var fechaEstadisticas = Constantes.date.toString()
+        var empleadoUsuario = emptyList<Contacts>()
         var tipo_grafica:Int=0
         var vista:Int=0
     }

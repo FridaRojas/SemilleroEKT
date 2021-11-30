@@ -20,8 +20,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
         DatePickerFiltroReportesDialogFragment.DatePickerFiltroReportesDialogListener,
         MonthPickerDialogFragment.MonthPickerDialogListener,
         YearPickerDialogFragment.YearPickerDialogListener,
-        UserStadisticPickerDialogFragment.UserStadistickPickerDialogListener
-    {
+        UserStadisticPickerDialogFragment.UserStadistickPickerDialogListener{
     private lateinit var txtFechaInicio: TextView
     private lateinit var txtFechaFin: TextView
     private lateinit var txtDia: TextView
@@ -29,8 +28,11 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     private lateinit var txtAnio: TextView
     private lateinit var txtTitulo: TextView
     private lateinit var txtUsuario: TextView
+    private lateinit var iniStringDate: String
+    private lateinit var endStringDate: String
     private var dateSelected = 0
     private var opcionFiltro = 0
+    private var userIdSelected = MySharedPreferences.idUsuarioEstadisticas
 
     val actualCal= Calendar.getInstance()
     val actualDay = actualCal.get(Calendar.DAY_OF_MONTH)
@@ -43,7 +45,6 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
             val vista = inflater.inflate(layout.dialog_filtro_reportes, null)
-
 
             val txtInicio = vista.findViewById<TextView>(R.id.txtFechaInicio)
             val txtFin = vista.findViewById<TextView>(R.id.txtFechaFin)
@@ -70,17 +71,19 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             txtAnio.visibility =View.GONE
             txtFechaInicio.visibility =View.GONE
             txtDia.setText(formatoDiaSelected(actualDay, actualMonth, actualYear, fechaActual))
+            resRangeValues()
 
             chipGroup.setOnCheckedChangeListener { chipGroup, selectedId ->
                 when (selectedId) {
                     R.id.chipFiltroDia -> {
-                        opcionFiltro = 0
+                        opcionFiltro = 1
                         txtFin.visibility =View.GONE
                         txtFechaFin.visibility =View.GONE
                         txtFechaInicio.visibility =View.GONE
                         txtMes.visibility =View.GONE
                         txtAnio.visibility =View.GONE
                         txtFechaFin.setText(fechaActual)
+                        resRangeValues()
 
                         txtInicio.setText("Dia:")
                         txtDia.visibility = View.VISIBLE
@@ -95,6 +98,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         txtAnio.visibility =View.GONE
                         txtDia.visibility = View.GONE
                         txtFechaFin.setText(dmyFormatoFecha(1, actualMonth-1, actualYear))
+                        resRangeValues()
 
                         txtInicio.setText("Mes:")
                         txtMes.visibility =View.VISIBLE
@@ -109,6 +113,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         txtAnio.visibility =View.VISIBLE
                         txtDia.visibility = View.GONE
                         txtFechaFin.setText(dmyFormatoFecha(1, 0, actualYear))
+                        resRangeValues()
 
                         txtInicio.setText("Año:")
                         txtAnio.setText(actualYear.toString())
@@ -121,8 +126,11 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         txtMes.visibility =View.GONE
                         txtAnio.visibility =View.GONE
                         txtDia.visibility = View.GONE
+                        resRangeValues()
+
                         txtInicio.setText("Fecha de inicio:")
                         txtFechaInicio.setText(fechaActual)
+                        txtFechaFin.setText(fechaActual)
                     }
                     else -> opcionFiltro = 5
                 }
@@ -159,28 +167,18 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             }
 
             builder.setView(vista)
-                // Add action buttons
                 .setPositiveButton("Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
-                        //Toast.makeText(context, "${chipGroup.checkedChipId}", Toast.LENGTH_SHORT).show()
                         MySharedPreferences.idUsuarioEstadisticas = txtUsuario.text.toString()
-                        if (opcionFiltro == 0){
-                            MySharedPreferences.fechaInicioEstadisticas = txtFechaFin.text.toString()
-                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
-                            listener.onDayFilterSelected()
-                        }else if (opcionFiltro == 2){
-                            MySharedPreferences.fechaInicioEstadisticas = txtFechaFin.text.toString()
-                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
-                            listener.onMonthFilterSelected()
-                        }else if (opcionFiltro == 3){
-                            MySharedPreferences.fechaInicioEstadisticas = txtFechaFin.text.toString()
-                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
-                            listener.onYearFilterSelected()
-                        }else {
-                            MySharedPreferences.fechaInicioEstadisticas = txtFechaInicio.text.toString()
-                            MySharedPreferences.fechaFinEstadisticas = txtFechaFin.text.toString()
-                            listener.onCustomFilterSelected()
-                        }
+
+                        MySharedPreferences.opcionFiltro = opcionFiltro
+                        MySharedPreferences.fechaIniCustomEstadisticas = iniStringDate
+                        MySharedPreferences.fechaEstadisticas = endStringDate
+                        MySharedPreferences.idUsuarioEstadisticas = userIdSelected
+
+                        //Toast.makeText(context, "ini: $iniStringDate, end: $endStringDate", Toast.LENGTH_LONG).show()
+                        //Log.e("Filtro", "ini: $iniStringDate, end: $endStringDate")
+                        listener.onDateFilterSelected()
 
                     })
                 .setNegativeButton("Cancelar",
@@ -192,24 +190,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     }
 
     interface FiltroReportesDialogListener{
-        fun onDayFilterSelected()
-        fun onMonthFilterSelected()
-        fun onYearFilterSelected()
-        fun onCustomFilterSelected()
-    }
-
-    override fun onDateFiltroReportesSelected(anio: Int, mes: Int, dia: Int){
-        val currentDate = dmyFormatoFecha(dia, mes, anio)//= sdf.format(d)
-        txtDia.setText(formatoDiaSelected(dia, mes+1, anio, currentDate))
-
-        if (dateSelected == 0){
-            txtFechaInicio.setText(formatoDiaSelected(dia, mes+1, anio, currentDate))
-            if(opcionFiltro == 4){
-                txtFechaInicio.setText(currentDate)
-            }
-        }else{
-            txtFechaFin.setText(currentDate)
-        }
+        fun onDateFilterSelected()
     }
 
     fun nombreDiaDelAnio(date:Int,  month: Int, year: Int): String{
@@ -236,25 +217,55 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
         return currentDate
     }
 
+    fun dataBaseFormatoFecha(dia: Int, mes: Int, anio: Int):String{
+        var dt = Date(anio-1900, mes, dia)
+        val sdf = SimpleDateFormat("y-MM-dd", Locale.US)
+        val currentDate = sdf.format(dt)+"T00:00:00.000+00:00"
+        return currentDate
+    }
+
     fun formatoDiaSelected(dia: Int, mes: Int, anio: Int, currentDF: String): String{
         return "${nombreDiaDelAnio(dia, mes, anio)}: ${currentDF} "
+    }
+
+    override fun onDateFiltroReportesSelected(anio: Int, mes: Int, dia: Int){
+        val currentDate = dmyFormatoFecha(dia, mes, anio)//= sdf.format(d)
+        txtDia.setText(formatoDiaSelected(dia, mes+1, anio, currentDate))
+
+        if (dateSelected == 0){
+            txtFechaInicio.setText(formatoDiaSelected(dia, mes, anio, currentDate))
+            if(opcionFiltro == 4){
+                txtFechaInicio.setText(currentDate)
+                iniStringDate = dataBaseFormatoFecha(dia, mes, anio)
+            }
+        }else{
+            txtFechaFin.setText(currentDate)
+            endStringDate = dataBaseFormatoFecha(dia, mes, anio)
+        }
     }
 
     override fun onMonthSelected(mes: Int) {
         txtMes.setText(mesDelAnio(actualDay, mes, actualYear))
         txtFechaFin.setText(dmyFormatoFecha(1, mes-1, actualYear))
+        endStringDate = dataBaseFormatoFecha(1, mes-1, actualYear)
     }
 
     override fun onSelectedYear(year: Int) {
         txtAnio.setText(year.toString())
         txtFechaFin.setText(dmyFormatoFecha(1, 0, year))
+        endStringDate = dataBaseFormatoFecha(1,0, year)
     }
 
     override fun onUserSelected(user: Int) {
-        txtUsuario.setText(user.toString())
+        //txtUsuario.setText(user.toString())
+        txtUsuario.setText(MySharedPreferences.empleadoUsuario[user].nombre)
+        userIdSelected = MySharedPreferences.empleadoUsuario[user].id
     }
 
-
+    fun resRangeValues(){
+        iniStringDate = dataBaseFormatoFecha(actualDay, actualMonth-1, actualYear)
+        endStringDate = dataBaseFormatoFecha(actualDay, actualMonth-1, actualYear)
+    }
         /*
 
     fun posicionPrimerDiaDelAnio(year: Int): Int{

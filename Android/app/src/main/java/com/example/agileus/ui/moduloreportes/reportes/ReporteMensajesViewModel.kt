@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.Contacts
 import com.example.agileus.models.EmployeeListByBossID
 import com.example.agileus.models.Estadisticas
@@ -63,16 +64,28 @@ class ReporteMensajesViewModel: ViewModel() {
             }
     }
 
+    var listaEmpleadosAux = MutableLiveData<ArrayList<Contacts>>()
+
     fun devuelveListaEmpleados(idUser:String){
         try {
             viewModelScope.launch {
                 listaHijosConsumida =  withContext(Dispatchers.IO) {
                     lista.obtenerListaSubContactos(idUser)
                 }
+                /*
                 listaHijosConsumida.forEach {
+                    Log.e("Hijos", it.nombre)
+                    MySharedPreferences.empleadoUsuario.add(it.id.toInt(), it.nombre)
+                }
+                 */
+                if (listaHijosConsumida.isNotEmpty()){
+                    listaEmpleadosAux.value = listaHijosConsumida
+                }
+                listaEmpleadosAux.value?.forEach {
                     Log.e("Hijos", it.nombre)
                 }
 
+                Log.i("AuxList", "${listaEmpleadosAux.value}")
                 Log.i("sizeList", "${listaHijosConsumida.size}")
             }
         }catch (ex:Exception){

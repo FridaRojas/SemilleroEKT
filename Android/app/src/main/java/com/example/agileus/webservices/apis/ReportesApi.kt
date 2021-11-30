@@ -10,8 +10,11 @@ interface ReportesApi {
     //@GET("ruta/{id}")
     //@GET("Task.json?alt=media&token=bb6a2086-2e39-411a-8385-2294dabcc2d5")
 
-    @GET("tareas.json?alt=media&token=4aac6ac6-b294-4366-896b-59ac573f15ab")
+    //@GET("tareas.json?alt=media&token=4aac6ac6-b294-4366-896b-59ac573f15ab")
+    //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
+    @GET("TareasFechas.json?alt=media&token=70ef0428-836f-421f-a9ef-cc6563b64819")
     fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
+    //fun getDatosReporteTareas(): Call<ArrayList<Tasks>>
 
     //@GET("Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928")
 

@@ -3,11 +3,13 @@ package com.example.agileus.ui.moduloreportes.dialogs
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
+import com.example.agileus.config.MySharedPreferences
 import java.util.*
 
 
@@ -21,6 +23,7 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             val cal= Calendar.getInstance()
             val month = cal.get(Calendar.MONTH)
 
+            /*
             val monthPicker = vista.findViewById<NumberPicker>(R.id.picker_year_month)
             val txtTitulo = vista.findViewById<TextView>(R.id.txtDPFTitulo)
             txtTitulo.setText("Usuarios")
@@ -29,12 +32,28 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             monthPicker.setValue(1)
 
             monthPicker.displayedValues = arrayOf("Hijo 1", "Hijo 2", "Hijo 3")
+             */
+
+            //MySharedPreferences.empleadoUsuario[0].nombre
+            var listaNombres = arrayListOf<String>()
+            MySharedPreferences.empleadoUsuario.forEach {
+                listaNombres.add(it.nombre)
+            }
+
+            val userPicker = vista.findViewById<NumberPicker>(R.id.picker_year_month)
+            val txtTitulo = vista.findViewById<TextView>(R.id.txtDPFTitulo)
+            txtTitulo.setText("Usuarios")
+            userPicker.setMinValue(0)
+            userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size-1)
+            userPicker.setValue(0)
+
+            userPicker.displayedValues = listaNombres.toTypedArray()
 
             builder.setView(vista)
                 // Add action buttons
                 .setPositiveButton("Guardar",
                     DialogInterface.OnClickListener { dialog, id ->
-                        listener.onUserSelected(monthPicker.value)
+                        listener.onUserSelected(userPicker.value)
                     })
                 .setNegativeButton("Cancelar",
                     DialogInterface.OnClickListener { dialog, id ->
