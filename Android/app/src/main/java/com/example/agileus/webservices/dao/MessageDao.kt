@@ -1,6 +1,5 @@
 package com.example.agileus.webservices.dao
 
-
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*

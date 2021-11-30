@@ -1,5 +1,7 @@
 package com.example.agileus.ui.modulomensajeria.listacontactos
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +29,7 @@ class ConversationViewModel:ViewModel() {
         message = MessageDao()
     }
 
+
     fun devuelveLista(idChat: String) {
         try {
             viewModelScope.launch {
@@ -52,6 +55,7 @@ class ConversationViewModel:ViewModel() {
 
 
     fun mandarMensaje(idChat:String,mensaje: Message){
+
         try {
             viewModelScope.launch {
                 RespuestaMessage = withContext(Dispatchers.IO) {

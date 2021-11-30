@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -37,9 +39,24 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
         conversationviewModel = ViewModelProvider(this).get()
         id_chat = Constantes.idChat
+        id_chat = intent.getStringExtra(Constantes.ID_CHAT).toString()
 
         id_receptor = intent.getStringExtra(Constantes.ID_RECEPTOR).toString()
         conversationviewModel.devuelveLista(id_chat)
+
+        var background = object : Thread(){
+            override fun run() {
+                while (true){
+                    conversationviewModel.devuelveLista(id_chat)
+                   // Log.i("ProbandoHilo", "ProbandoHilo")
+                    sleep(3000)
+
+
+                }
+
+            }
+        }.start()
+
 
         conversationviewModel.responseM.observe(this,{
             id_chat = it.data

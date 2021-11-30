@@ -10,8 +10,6 @@ import com.example.agileus.R
 import com.example.agileus.models.Groups
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 import com.example.agileus.utils.Constantes
-
-
 class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
     RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
 
@@ -20,7 +18,6 @@ class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
             .inflate(R.layout.list_contacts_item, viewGroup, false)
         return ViewHolder(view)
     }
-
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.enlazarItem(dataSet[position])
     }
@@ -40,9 +37,9 @@ class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
             txtNameContact.text = groups.nombreConversacionRecepto
 
             myView.setOnClickListener {
-                val intent = Intent(contexto, ConversationOneToOneActivity::class.java)
-                intent.putExtra(Constantes.CHAT_NAME, groups.idReceptor)
-                intent.putExtra(Constantes.CHAT_GROUP, groups.idConversacion)
+                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
+                intent.putExtra(Constantes.ID_CHAT, groups.idConversacion)
+                intent.putExtra(Constantes.ID_RECEPTOR, groups.idReceptor)
                 contexto.startActivity(intent)
             }
 

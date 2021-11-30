@@ -1,18 +1,14 @@
 package com.example.agileus.adapters
-
-
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 import com.example.agileus.utils.Constantes
-
 
 class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
     RecyclerView.Adapter<ChatsAdapter.ViewHolder>() {
@@ -43,17 +39,10 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
         fun enlazarItem(chats: Chats){
             txtNameContact.text = chats.nombreConversacionRecepto
 
-            if(chats.idConversacion.length > 50){
-                myView.isVisible = false
-                myView.isEnabled = false
-            }
-            else{
-
-            }
-
             myView.setOnClickListener {
                 val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
                 intent.putExtra(Constantes.ID_CHAT, chats.idConversacion)
+                intent.putExtra(Constantes.ID_RECEPTOR, chats.idReceptor)
                 contexto.startActivity(intent)
             }
 
