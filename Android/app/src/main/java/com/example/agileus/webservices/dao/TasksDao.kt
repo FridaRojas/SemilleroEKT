@@ -103,6 +103,36 @@ class TasksDao : DialogoConfirmacionListener {
     }
 
 
+    suspend fun getTasksAssigned(id: String, status: String): ArrayList<DataTask> {
+        var listaTareasAsignadas = ArrayList<DataTask>()
+        lateinit var taskList: TaskList
+
+        var datos = "$id&$status"
+        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksAssigned(datos)
+        var response = callRespuesta?.execute()
+
+        try {
+            if (response != null) {
+                if (response.isSuccessful) {
+                    taskList = response.body()!!
+                    if (taskList.data != null) {
+                        listaTareasAsignadas = taskList.data
+                    } else {
+                        listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
+                    }
+                } else {
+                    listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
+                }
+            }else{
+                listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
+            }
+        } catch (e: Exception) {
+            Log.e("error", e.toString())
+        }
+        return listaTareasAsignadas
+    }
+
+
     fun cancelTask(t: DetalleNivelAltoFragmentArgs) {
         val callback = InitialApplication.webServiceGlobalTasks.cancelarTarea(t.tareas.idTarea)
         callback.enqueue(object : Callback<DataTask> {
