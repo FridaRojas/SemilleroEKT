@@ -130,6 +130,7 @@
         <!-- Seccion que se va a iterar -->
 
         <th:block th:each="user: ${listaUsuarios}">
+
             <th:block th:if="${user.getStatusActivo().equals('true')}">
             <div class="item" >
 
@@ -148,8 +149,8 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-sm">
-                                        <form method="post"  th:action="@{/EditarUsuario(id=${user.getID()})}" >
-                                            <button type="submit"    style="background: #66BB6A" class="btn btn-primary" ><i class="fa fa-edit"></i></button>
+                                        <form method="post"  th:action="@{/editarUsuario(id=${user.getID()})}" >
+                                            <button type="submit"  value="submit"  style="background: #66BB6A" class="btn btn-primary" ><i class="fa fa-edit"></i></button>
                                         </form>
                                     </div>
                                     <div class="col-sm" style="align-content: center">
@@ -168,6 +169,7 @@
 
             </div>
             </th:block>
+
         </th:block>
     </td>
 </table>
@@ -180,7 +182,6 @@
 </div>
 
 <div th:replace="paginas/modalCrearUsuario::#modalCreaUsuario"></div>
-<div th:replace="paginas/modalEditarUsuario::#modalEditarUsuario"></div>
 
 
 

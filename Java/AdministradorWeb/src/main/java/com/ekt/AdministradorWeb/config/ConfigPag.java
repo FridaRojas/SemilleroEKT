@@ -180,31 +180,24 @@ public class ConfigPag {
         return "redirect:/findAllUsuarios";
     }
 
-    @PostMapping("/EditarUsuario")
+    @PostMapping("/editarUsuario")
     public String editarUsuario(@ModelAttribute(value = "id") String id,Model model){
         //buscar al usuario
-        System.out.println("el usuario es: "+id);
-
-
-
-        //model.addAttribute(user);
-        return "/paginas/usuarios/AñadirUsuario";
-    }
-
-    @GetMapping("/VerUsuario")
-    public String verUsuario(@ModelAttribute User user,Model model){
         Gson gson = new Gson();
+        User user = new User();
+
+        System.out.println("el usuarios es: "+id);
+
         //buscar usuario
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/find/618e8821c613329636a769ac")
+                .url("http://localhost:3040/api/user/find/"+id)
                 .method("GET", null)
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            System.out.println("Peticion exitosa");
-            JSONObject jsonObject= new JSONObject(response);
+            JSONObject jsonObject= new JSONObject(response.body().string());
             //Separamos la parte de data
             JSONObject name1 = jsonObject.getJSONObject("data");
             user =gson.fromJson(name1.toString(), User.class);
@@ -213,12 +206,19 @@ public class ConfigPag {
             System.out.println("error al castear el usuario");
         }
 
-
-
-        return "/paginas/modalEditarUsuario";
+        return "/paginas/usuarios/EditarUsuario";
     }
 
+    @PostMapping ("/editarUsuarioServicio")
+    public String editarUsuarioServicio(@ModelAttribute User user){
+        //validar que los datos no existan
 
+
+        //si no existen editar
+
+        //si existen retornar error
+        return "";
+    }
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr) {
