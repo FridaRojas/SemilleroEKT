@@ -207,6 +207,7 @@ public class GroupController {
      * @return
      *
      */
+    @CrossOrigin(origins = "http://localhost:8080/")
     @GetMapping("/buscarTodoPags")
     public Response buscarTodoPageable(@RequestBody String json){
         try {

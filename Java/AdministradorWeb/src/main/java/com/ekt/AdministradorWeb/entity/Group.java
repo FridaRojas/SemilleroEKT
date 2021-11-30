@@ -33,6 +33,11 @@ public class Group {
         public User[] getUsuarios() { return usuarios; }
         public void setUsuarios(User[] value) { this.usuarios = value; }
 
+
+
+
+
+
         @Override
         public String toString() {
                 return "Grupo{" +
