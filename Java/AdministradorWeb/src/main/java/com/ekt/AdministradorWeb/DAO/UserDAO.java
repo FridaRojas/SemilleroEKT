@@ -1,5 +1,6 @@
 package com.ekt.AdministradorWeb.DAO;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.OkHttpClient;
@@ -18,15 +19,16 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/findByBossId/619bbf0623b2987cc6211172")
+                .url("http://localhost:3040/api/user/findByBossId/" + idSuperior)
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
         try{
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            if (jsonObject.get("data")!=""){
+            if (!jsonObject.get("data").equals("")){
                 JSONArray usuarios = jsonObject.getJSONArray("data");
+
                 for (int i=0;i<usuarios.length();i++){
                     listaUsuarios.add(gson.fromJson(usuarios.getJSONObject(i).toString(), User.class));
                 }
@@ -40,8 +42,28 @@ public class UserDAO {
         }
     }
 
-    public ArrayList<User> muestraUsuariosGrupo(){
-
-        return null;
+    public User buscaID(String idUser){
+        Gson gson = new Gson();
+        User usuario;
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/find/619bbf0623b2987cc6211172")
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            if (!jsonObject.get("data").equals("")){
+                JSONObject usuarios = jsonObject.getJSONObject("data");
+                usuario = gson.fromJson(usuarios.toString(), User.class);
+                return usuario;
+            }else{
+                return null;
+            }
+        }catch (Exception e){
+            System.out.println("Ocurrió un problema");
+            return null;
+        }
     }
 }

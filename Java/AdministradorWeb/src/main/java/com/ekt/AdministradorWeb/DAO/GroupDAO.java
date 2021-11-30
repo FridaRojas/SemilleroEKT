@@ -21,7 +21,7 @@ public class GroupDAO {
         try{
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            if (jsonObject.get("data")!=""){
+            if (!jsonObject.get("data").equals("")){
                 JSONObject grupoObjeto = jsonObject.getJSONObject("data");
                 Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
                 User []usuarios = grupo.getUsuarios();

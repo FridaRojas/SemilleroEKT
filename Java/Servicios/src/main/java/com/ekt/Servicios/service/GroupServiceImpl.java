@@ -94,7 +94,7 @@ public class GroupServiceImpl implements GroupService{
 
     }
     @Override
-    public void borrarUsuarioDeGrupo( String idUser, String idGroup){
+    public void borrarUsuarioDeGrupo(String idUser, String idGroup){
         System.out.println("idUser:"+idUser+" idGroup:"+idGroup);
 
         //buscar el grupo

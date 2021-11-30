@@ -9,12 +9,26 @@ import okhttp3.*;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.ekt.AdministradorWeb.entity.Group;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
 import com.ekt.AdministradorWeb.entity.Group;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 
@@ -44,7 +58,6 @@ public class ConfigPag {
         model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
-
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -74,6 +87,34 @@ public class ConfigPag {
         }
     }
 
+
+
+    @GetMapping("/añadirUsuarioPage")
+    public String añadirUsuarioPage(){
+        return "paginas/usuarios/AñadirUsuario";
+    }
+
+
+    @PostMapping("/eliminarUsuario")
+    public String eliminarUsuario(@ModelAttribute(value = "id") String id){
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/delete/"+id)
+                .method("DELETE", body)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println("el id es: "+id+"  eliminado con exito");
+        }catch (Exception e) {
+            System.out.println("Error al eliminar usuario" +e);
+        }
+        return "redirect:/findAllUsuarios";
+    }
 
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
@@ -107,14 +148,66 @@ public class ConfigPag {
         //return listaUsuarios;
     }
 
-    @GetMapping("/añadirUsuario")
+    @PostMapping("/añadirUsuario")
     public String añadirUsuario(@ModelAttribute User user){
         //realizar el guardado
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\"" +user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\" "+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\" "+user.getCurp()+"\",\r\n    \"rfc\":\" "+user.getRFC()+"\"\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/create")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
 
-
-            return "paginas/usuarios/AñadirUsuario";
+        }catch (Exception e){
+            System.out.println("Error al insertar usuario");
+        }
+        return "redirect:/findAllUsuarios";
     }
 
+    @PostMapping("/editarUsuario")
+    public String editarUsuario(@ModelAttribute(value = "id") String id,Model model){
+        //buscar al usuario
+        Gson gson = new Gson();
+        User user = new User();
+
+        System.out.println("el usuarios es: "+id);
+
+        //buscar usuario
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/find/"+id)
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            //Separamos la parte de data
+            JSONObject name1 = jsonObject.getJSONObject("data");
+            user =gson.fromJson(name1.toString(), User.class);
+            model.addAttribute("user",user);
+        }catch (Exception e){
+            System.out.println("error al castear el usuario");
+        }
+
+        return "/paginas/usuarios/EditarUsuario";
+    }
+
+    @PostMapping ("/editarUsuarioServicio")
+    public String editarUsuarioServicio(@ModelAttribute User user){
+        //validar que los datos no existan
+
+
+        //si no existen editar
+
+        //si existen retornar error
+        return "";
+    }
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
@@ -146,9 +239,18 @@ public class ConfigPag {
     }
 
     @PostMapping("/reasignaSuperior")
-    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap, RedirectAttributes redirectAttributes){
-        ArrayList<User> listaUsuarios = userDAO.muestraSubordinados(idUsuario);
-        String idGrupo = "1234";
+    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap){
+        ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
+        ArrayList<User> listaUsuarios = new ArrayList<>();
+        User []usuarios;
+        User user = userDAO.buscaID(idUsuario);
+        usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
+        for(User usuario:usuarios){
+            if(!usuario.getID().equals(user.getID())){
+                listaUsuarios.add(usuario);
+            }
+        }
+        modelMap.addAttribute("listaSubordinados",listaSubordinados);
         modelMap.addAttribute("listaUsuarios",listaUsuarios);
         modelMap.addAttribute("idUsuario", idUsuario);
         //redirectAttributes.addFlashAttribute("idGrupo", idGrupo);
@@ -156,7 +258,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/EliminaActualiza")
-    public String eliminaActualiza(@ModelAttribute(value = "idUsuario") String idUsuario){
+    public String eliminaActualizaUser(@ModelAttribute(value = "idUsuario") String idUsuario){
         System.out.println(idUsuario);
         return "";
     }
@@ -202,5 +304,17 @@ public class ConfigPag {
         return "paginas/organigramas/editarOrganigrama";
     }
 
+    @PostMapping("/ActualizaElimina")
+    public String actualizaElimina(@ModelAttribute BodyUpdateBoss bodyUpdateBoss){
+        System.out.println("HOLA");
+        System.out.println(bodyUpdateBoss);
+
+        System.out.println(bodyUpdateBoss.getIDUser().length);
+        System.out.println(bodyUpdateBoss.getIDBoss().length);
+        for (String id:bodyUpdateBoss.getIDUser()){
+            System.out.println(id);
+        }
+        return "";
+    }
 
 }
