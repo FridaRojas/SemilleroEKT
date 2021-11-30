@@ -99,7 +99,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         var returnUri = data?.data!!
                         val uriString = data.toString()
                         val myFile = File(uriString)
-                        //myFile.
                         //binding.btnAdjuntarArchivo.text= myFile.name
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado"
                         Log.d("mensaje","PDF: $uriString")
@@ -164,6 +163,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         "Fecha de inicio no puede ser mayor a fecha fin",
                         Toast.LENGTH_SHORT).show()
                 }
+
+                val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
+                findNavController().navigate(action)
             }
 
             // Enviar tarea a la conversacion grupal
@@ -172,8 +174,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             //binding.etMensaje.setText("")
 
 
-            val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
-            findNavController().navigate(action)
+
 
         }
         /* Boton Crear tarea  */
@@ -181,8 +182,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         binding.btnAdjuntarArchivo.setOnClickListener {
             val intentPdf= Intent()
             intentPdf.setAction(Intent.ACTION_GET_CONTENT)
-            intentPdf.type = "application/pdf"
-            //intentPdf.type = "application/pdf"                     // Filtra para archivos pdf
+            intentPdf.type = "application/pdf"                     // Filtra para archivos pdf
             resultLauncherArchivo.launch(intentPdf)
         }
         binding.edtFechaInicio.setOnClickListener {
