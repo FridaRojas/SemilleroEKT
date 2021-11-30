@@ -197,14 +197,14 @@ public class MensajesController {
 		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(idMensaje);
 
 		if (!mensaje.isPresent()) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El mensaje no fue encontrado",""));
 		}
 
 		mensaje.get().setVisible(false);
 
 		mensajesService.save(mensaje.get());
 
-		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Se borro el mensaje",mensaje.get().getID()));
 	}
 
 	@GetMapping("listaContactos/{miId}")
