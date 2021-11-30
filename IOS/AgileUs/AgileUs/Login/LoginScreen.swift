@@ -17,7 +17,6 @@ struct Response: Codable{
     let status: String
     let msj: String
     let data: User
-    
 }
 
 struct User:Codable{
@@ -25,6 +24,14 @@ struct User:Codable{
     let correo: String
     let numeroEmpleado: String
     let nombre: String
+    let nombreRol: String
+    let idsuperiorInmediato: String
+}
+
+struct ResponseHierarchy:Codable{
+    let status: String
+    let msj: String
+    let data: [User]
 }
 
 class LoginScreen: UIViewController {
@@ -64,14 +71,46 @@ class LoginScreen: UIViewController {
         userName = userInfo.nombre
         email = userInfo.correo
         employeeNumber = userInfo.numeroEmpleado
+        rolName = userInfo.nombreRol
+        let idsuperiorInmediato = userInfo.idsuperiorInmediato
         isLogged = true
 
         UserDefaults.standard.setValue(userID, forKey: "userID")
         UserDefaults.standard.setValue(userName, forKey: "userName")
         UserDefaults.standard.setValue(email, forKey: "email")
         UserDefaults.standard.setValue(employeeNumber, forKey: "employeeNumber")
+        UserDefaults.standard.setValue(String(), forKey: "rolName")
         
         UserDefaults.standard.setValue(isLogged, forKey: "isLogged")
+        
+        let serverGetHierarchy = server + "/user/findByBossId/" + userID
+        let url = URL(string: serverGetHierarchy)
+        URLSession.shared.dataTask(with: url!)
+        { (data, respose, error) in
+            do{
+                let hierarchyData = try JSONDecoder().decode(ResponseHierarchy.self, from: data!)
+                DispatchQueue.main.async {
+                    switch hierarchyData.status{
+                        case "OK":
+                            if idsuperiorInmediato.isEmpty && !hierarchyData.data.isEmpty {
+                                hierarchyLevel = 1
+                            } else {
+                                hierarchyLevel = 2
+                            }
+                            break
+                        case "NOT_FOUND":
+                                hierarchyLevel = 3
+                            break
+                        default:
+                            break
+                    }
+                    
+                    UserDefaults.standard.setValue(hierarchyLevel, forKey: "hierarchyLevel")
+                    
+                }
+            }
+            catch{print("Error")}
+        }.resume()
     }
     
     @IBAction func iniciarSesion(_ sender: UIButton) {

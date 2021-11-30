@@ -16,6 +16,8 @@ var userName = String()
 var email = String()
 var employeeNumber = String()
 var pushNotificationToken = String()
+var rolName = String()
+var hierarchyLevel = Int()
 
 var isLogged = Bool()
 
@@ -70,6 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         userName = UserDefaults.standard.string(forKey: "userName") ?? String()
         email = UserDefaults.standard.string(forKey: "email") ?? String()
         employeeNumber = UserDefaults.standard.string(forKey: "employeeNumber") ?? String()
+        rolName = UserDefaults.standard.string(forKey: "employeeNumber") ?? String()
+        hierarchyLevel = UserDefaults.standard.integer(forKey: "hierarchyLevel")
     }
 
     func recoverLogged(){
@@ -139,6 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UserDefaults.standard.setValue(String(), forKey: "email")
         UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
         UserDefaults.standard.setValue(false, forKey: "isLogged")
+        UserDefaults.standard.setValue(String(), forKey: "rolName")
+        UserDefaults.standard.setValue(String(), forKey: "hierarchyLevek")
     }
 
 }
