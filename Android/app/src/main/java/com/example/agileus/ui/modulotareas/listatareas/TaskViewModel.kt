@@ -24,7 +24,7 @@ class TaskViewModel() : ViewModel() {
     //lateinit var listaConsumida : ArrayList<Tasks>
 
     init {
-        statusRecycler.value = "Pendiente"
+        statusRecycler.value = "pendiente"
     }
     /*
     fun devuelveLista() {
@@ -52,7 +52,7 @@ class TaskViewModel() : ViewModel() {
 
         viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
-                    lista.getTasksByStatus("RECEPT1", statusRecycler.value.toString())
+                    lista.getTasksByStatus("ReceptorAlexis", statusRecycler.value.toString())
                 }
                 if (listaTask != null) {
                     adaptador.value = TasksAdapter(listaTask,listener)
