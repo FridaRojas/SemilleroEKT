@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
@@ -272,18 +273,25 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         val data = BarData(barDataSet)
         barChart.data = data
+        data.setBarWidth(0.3f);//Reducir el ancho de las barras
         barDataSet.colors = colors
         data.setValueTextSize(0f)
 
         //hide grid lines
-        barChart.axisLeft.setDrawGridLines(false)
-        barChart.xAxis.setDrawGridLines(false)
-        barChart.xAxis.setDrawAxisLine(false)
-        barChart.setDrawValueAboveBar(false)
+        barChart.axisLeft.setDrawGridLines(true)
+        barChart.xAxis.setDrawGridLines(true)
+        barChart.xAxis.setDrawAxisLine(true)
+        barChart.xAxis.isEnabled=false
 
 
         //remove right y-axis
         barChart.axisRight.isEnabled = false
+        barChart.axisLeft.isEnabled = true
+
+        //forzar a que la barra izquierda de la gráfica, muestre por valores enteros
+        barChart.axisLeft.setGranularity(1.0f);
+        barChart.axisLeft.setGranularityEnabled(true); // Required to enable granularity
+
 
         barChart.setTouchEnabled(false)
 
@@ -318,12 +326,16 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 mostrargraficaPie()
                 binding.pieChart.isVisible=true
                 binding.barChart.isVisible=false
+                vista = 0
+                tipo_grafica=0
             }
             1 -> {
 
                 mostrargraficaBarras()
                 binding.barChart.isVisible=true
                 binding.pieChart.isVisible=false
+                vista = 1
+                tipo_grafica=1
 
             }
 
@@ -335,7 +347,9 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
+        cambiarGrafica(tipo_grafica)
         Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniCustomEstadisticas}, fecha: ${MySharedPreferences.fechaEstadisticas}", Toast.LENGTH_SHORT).show()
         Log.d("DateFilter",  "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniCustomEstadisticas}, fecha: ${MySharedPreferences.fechaEstadisticas}")
     }
