@@ -111,16 +111,28 @@ extension UIViewController {
         
     }
     
+    func cantidadBroadRecibidos(mensajes: [Mensajes], idUsuario: String) -> Int {
+        
+        var recibidos = 0
+        
+        for i in mensajes {
+            if i.idemisor == userBroadcastID && i.idreceptor == idUsuario {
+                recibidos += 1
+            }
+        }
+        
+        return recibidos
+        
+    }
+    
     func cantidadDeBroad(mensaje_broad: [Broadcast], idUsuario: String) -> [Int] {
         
-        var leidos = 0
         var recibidos = 0
         var enviados = 0
     
         for i in mensaje_broad {
             enviados += 1
         }
-        
         return [enviados, recibidos]
         
     }

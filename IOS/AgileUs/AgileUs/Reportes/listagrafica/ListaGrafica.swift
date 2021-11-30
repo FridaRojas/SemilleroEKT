@@ -15,7 +15,7 @@ class ListaGrafica: UITableViewCell {
     @IBOutlet weak var txtTitulo: UILabel!
     @IBOutlet weak var lblTiempo: UILabel!
     @IBOutlet weak var lblRecibidos: UILabel!
-    
+    @IBOutlet weak var imgFondo: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,7 +43,6 @@ class ListaGrafica: UITableViewCell {
     }
     
     func configurar_etiquetas(tipo: String) {
-        
         if (tipo == "pie") {
             txtTitulo.text = "Enviados"
             lblTiempo.isHidden = true
@@ -51,9 +50,11 @@ class ListaGrafica: UITableViewCell {
             txtTitulo.isHidden = true
             lblCantEnviados.isHidden = true
             lblRecibidos.isHidden = true
-            
         }
-        
+    }
+    
+    func configurar_fondo(fondo: String) {
+        imgFondo.image = UIImage(named: fondo)
     }
     
 }

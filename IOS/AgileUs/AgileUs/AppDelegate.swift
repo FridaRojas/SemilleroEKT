@@ -9,6 +9,7 @@ import UIKit
 
 let userID = "618b05c12d3d1d235de0ade0"
 let userName = "Pedrito"
+let userBroadcastID = "61a101db174bcf469164d2fd"
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         return true
     }
-
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

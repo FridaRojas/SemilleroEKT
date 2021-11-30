@@ -7,7 +7,6 @@
 
 import UIKit
 import Charts
-import simd
 
 class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -59,12 +58,15 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     let adaptador = Adaptador_Modals()
     var adaptadorServicios = AdaptadorServicios()
     
+    // variable para cambiar fondo de lista al seleccionar
+    var seleccionado = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configuracion_cantidades()
         serviciosMensajes(idUsuario: userID)
         serviciosUsuarios()
-        //serviciosBroadcast()
+        serviciosBroadcast(idUsuario: userID)
         configurar_pie_chart()
         configurar_lista()
         configurar_bar_chart()
@@ -93,13 +95,12 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         adaptadorServicios.servicioWebMensajesAdapter(idUsuario: idUsuario) {
                 [self] (Datos) -> Void in
             mensajes = Datos
-            cantidad_mensajes = cantidadDeMensajes(mensaje: mensajes! as! [Mensajes], idUsuario: userID)
+            cantidad_mensajes = cantidadDeMensajes(mensaje: mensajes! as! [Mensajes], idUsuario: idUsuario)
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
     }
     
     func serviciosMensajesFiltrado(filtros: [String]) {
-        
         adaptadorServicios.servicioWebMensajesAdapter(idUsuario: filtros[2]) {
                 [self] (Datos) -> Void in
             mensajes = Datos
@@ -110,14 +111,29 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func serviciosBroadcast() {
-        adaptadorServicios.servicioWebBroadcastAdapter(idUsuario: userID) {
+    func serviciosBroadcastRecibidos(idUsuario: String) {
+        adaptadorServicios.servicioWebMensajesAdapter(idUsuario: userBroadcastID) {
+                [self] (Datos) -> Void in
+            mensajes = Datos
+            let recibidos = cantidadBroadRecibidos(mensajes: mensajes! as! [Mensajes], idUsuario: idUsuario)
+            
+            cantidad_mensajes_broad[1] = recibidos
+            actualizar_datos_lista_grafica(mensajes: cantidad_mensajes, broadcast: cantidad_mensajes_broad)
+            
+            //cantidad_mensajes = cantidadDeMensajes(mensaje: mensajes! as! [Mensajes], idUsuario: idUsuario)
+            //llenar_pie_chart(mensajes: cantidad_mensajes)
+        }
+    }
+    
+    func serviciosBroadcast(idUsuario: String) {
+        adaptadorServicios.servicioWebBroadcastAdapter(idUsuario: idUsuario) {
             [self] (Datos) -> Void in
             
             mensajesBroad = Datos
             cantidad_mensajes_broad = cantidadDeBroad(mensaje_broad: mensajesBroad! as! [Broadcast], idUsuario:
-                                                     userID)
-            actualizar_datos_lista_grafica(mensajes: cantidad_mensajes, broadcast: cantidad_mensajes_broad)
+                                                     idUsuario)
+            //actualizar_datos_lista_grafica(mensajes: cantidad_mensajes, broadcast: cantidad_mensajes_broad)
+            serviciosBroadcastRecibidos(idUsuario: idUsuario)
         }
     }
 
@@ -136,7 +152,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         piechart.removeFromSuperview()
         piechart.isUserInteractionEnabled = false
         piechart.legend.enabled = false
-        
     }
     
     func configurar_bar_chart() {
@@ -224,7 +239,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func actualizar_datos_lista_grafica(mensajes: [Int], broadcast: [Int]) {
         datos = [["ic_PieChart", mensajes[0], mensajes[1], "pie"], ["ic_Bar", cantidad_mensajes_broad[1], cantidad_mensajes_broad[0], "bar"]]
-        
         opcionesGrafica.reloadData()
     }
     
@@ -237,10 +251,19 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         let indice = indexPath.row
         let celda_personalizada = tableView.dequeueReusableCell(withIdentifier: ListaGrafica.identificador, for: indexPath) as! ListaGrafica
         celda_personalizada.configurar_celda(datos: datos[indice] as! [Any])
+        
+        if (seleccionado == indexPath.row) {
+            celda_personalizada.configurar_fondo(fondo: "Card_2")
+        } else {
+            celda_personalizada.configurar_fondo(fondo: "Card")
+        }
+        
         return celda_personalizada
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        seleccionado = indexPath.row
+        
         if indexPath.row == 0 {
             barchart.removeFromSuperview()
             llenar_pie_chart(mensajes: cantidad_mensajes)
@@ -250,8 +273,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             datos_bar_chart(datos: cantidad_mensajes_broad)
             llenar_bar_chart(datos: cantidad_mensajes_broad)
             ocultar_etiquetas(tipo: true)
-            
         }
+        tableView.reloadData()
     }
     
     func ocultar_etiquetas(tipo: Bool) {
@@ -271,8 +294,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     func datos_bar_chart(datos: [Int]) {
         lblTiempoLeido.text = "Enviados a broadcast"
         lblTiempoRes.text = "Recibidos a broadcast"
-        cantLeidos.text = "\(datos[0])"
-        cantRecibidos.text = "\(datos[1])"
+        cantLeidos.text = "\(datos[1])"
+        cantRecibidos.text = "\(datos[0])"
     }
     
     func cambiar_color_indicador(tipo: Bool) {
@@ -289,15 +312,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             print(filtros)
             serviciosMensajesFiltrado(filtros: filtros as! [String])
-            //serviciosMensajes(idUsuario: Datos[2] as! String)
-              
-            /*var mensajes_fecha = cantidadDeMensajesPorFecha(mensaje: mensajes! as! [Mensajes], idUsuario: Datos[2] as! String, fechaIni: Datos[0] as! String, fechaFin: Datos[1] as! String)
-            
-            print(mensajes_fecha)
-            print(Datos)
-            lblNombreu.text = Datos[3] as! String
-            cantidad_mensajes = mensajes_fecha
-            llenar_pie_chart(mensajes: mensajes_fecha)*/
+            serviciosBroadcast(idUsuario: filtros[2] as! String)
         })
         present(modal_form, animated: true)
     }
