@@ -203,8 +203,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         tarea = Tasks(
             "GRUPOID1",                  // id_grupo
             "EMIS1",
-            "JOSE",
-            "RECEPT1",
+            "Tareas",
+            "ReceptorAlexis",
             //idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
