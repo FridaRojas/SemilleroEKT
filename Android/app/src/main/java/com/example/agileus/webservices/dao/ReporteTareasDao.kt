@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.DatosTareas
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.models.Tasks
@@ -38,7 +40,8 @@ class ReporteTareasDao {
         if (ResponseTareas.isSuccessful) {
             lista = ResponseTareas.body()!!
 
-            val id_receptor = lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
+            val id_receptor = "RECEPT1"
+                //lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
 
             var contador_t_terminadas= 0
             var contador_t_pendientes = 0
@@ -54,14 +57,14 @@ class ReporteTareasDao {
 
             lista.forEach {
 
-                if(id_receptor==it.id_receptor) {
+                if(id_receptor==it.idReceptor) {
 
                     contador_t_totales = contador_t_totales + 1
 
                     if (it.leido) {
                         contador_t_leidas = contador_t_leidas + 1
                     }
-                        if (it.status.equals("conpletada")) {
+                        if (it.status.equals("Cancelado")) {
                             contador_t_terminadas = contador_t_terminadas + 1
                         } else {
                             contador_t_pendientes = contador_t_pendientes + 1

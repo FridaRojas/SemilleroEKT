@@ -44,17 +44,6 @@ class ReporteMensajesDao {
         val listaRecycler= ArrayList<Estadisticas>()
         val lista: ArrayList<Conversation>
 
-
-
-
-
-        val actualCal= Calendar.getInstance()
-        var dt = Date(actualCal.get(Calendar.YEAR)-1900, actualCal.get(Calendar.MONTH) , actualCal.get(Calendar.DAY_OF_MONTH))
-        val sdf = SimpleDateFormat("dd/MM/y", Locale.US)
-        val currentDate = sdf.format(dt)
-
-
-
         if (ResponseMensajes.isSuccessful) {
             lista = ResponseMensajes.body()!!
             val id_emisor = idUsuarioEstadisticas//lista[0].idemisor //Aquí se coloca el id del emisor deseado
@@ -81,10 +70,10 @@ class ReporteMensajesDao {
                      //var fecha_anterior=fecha_anterior
                      diferencia_minutos = ChronoUnit.MINUTES.between(fecha_anterior, fecha_actual)
 
-                     if(fecha_anterior!!.isBefore(fecha_actual) || fecha_anterior!!.isEqual(fecha_actual)){
+                    if(fecha_anterior!!.isBefore(fecha_actual) || fecha_anterior!!.isEqual(fecha_actual)){
                     Log.d("mensaje","fecha 1: ${fecha_anterior.toString()}" +
                             "   fecha 2: ${fecha_actual.toString()}. ")
-                      }
+                     }
 
                      suma_tiempos = suma_tiempos + diferencia_minutos.toInt()
 
@@ -95,7 +84,6 @@ class ReporteMensajesDao {
                     temporal=temporal+1
                 }
                 else{
-
                     contador_m_recibidos = contador_m_recibidos + 1
 
                     if(it.statusLeido=="true"){
@@ -103,8 +91,6 @@ class ReporteMensajesDao {
                     }
 
                 }
-
-
             }
 
             if(temporal==0)
