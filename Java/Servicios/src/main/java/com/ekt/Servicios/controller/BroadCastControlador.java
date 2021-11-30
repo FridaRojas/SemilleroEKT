@@ -61,20 +61,24 @@ public class BroadCastControlador {
 
 	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
 	public ResponseEntity<?>listarMensajes(@PathVariable (value = "miId")String miId){
-		Optional<User> user = userRepository.validarUsuario(miId);
-
 		if(miId.length()<24 || miId.length()>24){
 			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El tamaño del id no es correcto", ""));
 		}
+		Optional<User> user = userRepository.validarUsuario(miId);
 		if(!user.isPresent()) {
 			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El usuario no existe",""));
 		}
-		if(user.get().getNombreRol().equals("BROADCAST")) {
+		if(user.isPresent()){
 
-			Iterable<BroadCast> brd = broadCastRepositorio.findAll();
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(brd);
+			if(user.get().getNombreRol().equals("BROADCAST")) {
+
+				Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+				return ResponseEntity.status(HttpStatus.ACCEPTED).body(brd);
+			}
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario ingresado no es un usuario BROADCAST", ""));
+
+
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El usuario ingresado no es un usuario BROADCAST", ""));
 	}
 
 	@PostMapping("/crearMensajeBroadcast")
@@ -95,12 +99,13 @@ public class BroadCastControlador {
 			if (broadCast.getAsunto().equals("") || broadCast.getAsunto().equals("null")) {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El campo Asunto no puede estar vacio", ""));
 			}
-			if (broadCast.getAsunto().length() < 1) {
+			if (broadCast.getAsunto().length() < 5) {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del Asunto no es valido", ""));
 			}
-			if (broadCast.getDescripcion().length() < 1) {
+			if (broadCast.getDescripcion().length() < 10) {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del texto descripcion debe ser al menos de 1 caracter", ""));
 			}
+
 			BroadCast broadCastM = new BroadCast();
 			broadCastM.setIdEmisor(broadCast.getIdEmisor());
 			broadCastM.setAsunto(broadCast.getAsunto());
@@ -118,14 +123,14 @@ public class BroadCastControlador {
 	}
 	@GetMapping("/mostrarMensajesporID/{idEmisor}")
 	public ResponseEntity<?> mostrarMensajes(@PathVariable(value = "idEmisor")String idEmisor){
-		Optional<User> user = userRepository.validarUsuario(idEmisor);
-		if(idEmisor.isEmpty() || idEmisor.equals("null") || idEmisor == null){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El id del usuario es necesario", "" ));
-		}
+
 		if(idEmisor.length() < 24 || idEmisor.length() > 24){
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del id no es correcto", "" ));
 		}
-		if(user.isPresent()){
+		Optional<User> user = userRepository.validarUsuario(idEmisor);
+		if(!user.isPresent()){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El Usuario no existe", "" ));
+		}else if(user.isPresent()){
 			List<BroadCast> listBrd = new ArrayList<>();
 			Iterable<BroadCast> brd = broadCastRepositorio.findAll();
 			for (BroadCast brd2 : brd) {
