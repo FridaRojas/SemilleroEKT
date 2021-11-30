@@ -24,7 +24,6 @@ class ModalForgotPassword: UIViewController {
     
     @IBAction func closeModal(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)

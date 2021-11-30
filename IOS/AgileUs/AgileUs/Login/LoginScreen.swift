@@ -33,7 +33,6 @@ class LoginScreen: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         hideNavBar()
         initCustomUIKit()
     }
@@ -46,6 +45,7 @@ class LoginScreen: UIViewController {
         txtPassword.addBackgroundColorAndTextColor(backgroundColor: UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0), textColor: UIColor(red: 156.0/255, green: 158.0/255, blue: 159.0/255, alpha: 1.0))
         txtPassword.roundCorners(cornerRadius: 20.0)
         txtPassword.addIcon(image: UIImage(named: "vector_icon")!, direction: "Left")
+        
     }
 
     func setUserVariables(userInfo: User){
@@ -79,7 +79,7 @@ class LoginScreen: UIViewController {
         var serverLogin = server+"user/validate"
         serverLogin = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/login%20v2.json?alt=media&token=49f226f5-eb9f-4213-97ee-7f726d4db02b"
         
-        let user = UserRequest(correo: txtUser.text!, password: txtPassword!.text!, token: "wefwfefwf121221fwe")
+        let user = UserRequest(correo: txtUser.text!, password: txtPassword!.text!, token: pushNotificationToken)
         
         guard let uploadData = try? JSONEncoder().encode(user) else {
             print("Error al crear JSON")
@@ -116,6 +116,9 @@ class LoginScreen: UIViewController {
                             
                             DispatchQueue.main.async {
                                 self.setUserVariables(userInfo: dataResponse.data)
+                                self.txtUser.becomeFirstResponder()
+                                self.txtUser.text = nil
+                                self.txtPassword.text = nil
                                 self.performSegue(withIdentifier: "Login_To_Home", sender: nil)
                             }
                         

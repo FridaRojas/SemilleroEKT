@@ -39,7 +39,7 @@
         <!--Login Screen-->
         <scene sceneID="xyP-Kg-WF5">
             <objects>
-                <viewController id="njg-x3-P2J" customClass="LoginScreen" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Login_Screen" id="njg-x3-P2J" customClass="LoginScreen" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ynp-EM-fZb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -76,7 +76,7 @@
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bienvenido" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jap-pX-w7c">
                                 <rect key="frame" x="140" y="181" width="135" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -97,22 +97,13 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FmI-mO-lej">
                                 <rect key="frame" x="79" y="533" width="253" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="¿Olvidaste tu contraseña?">
                                     <color key="baseForegroundColor" red="0.69385659690000001" green="0.71833616499999997" blue="0.75432312489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="forgotPassword:" destination="njg-x3-P2J" eventType="touchUpInside" id="MV9-lK-XHE"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Y5-bF-Uxp">
-                                <rect key="frame" x="265" y="680" width="67" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <action selector="Funcion_Subir_Archivo:" destination="njg-x3-P2J" eventType="touchUpInside" id="N79-ji-c48"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -146,7 +137,7 @@
             </objects>
             <point key="canvasLocation" x="3197" y="467"/>
         </scene>
-        <!--Chats-->
+        <!--Mensajes-->
         <scene sceneID="2zx-pR-dO6">
             <objects>
                 <viewController id="Srt-5x-2vk" customClass="ChatsScreen" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
@@ -156,7 +147,7 @@
                         <viewLayoutGuide key="safeArea" id="gt2-Yf-Tt1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Chats" id="l5m-6a-CuI"/>
+                    <tabBarItem key="tabBarItem" title="Mensajes" id="l5m-6a-CuI"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="La4-qR-MwO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -180,7 +171,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEV-Kx-CJu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2791" y="-324"/>
+            <point key="canvasLocation" x="3196" y="-372"/>
         </scene>
         <!--Reportes-->
         <scene sceneID="Dks-iE-rJY">

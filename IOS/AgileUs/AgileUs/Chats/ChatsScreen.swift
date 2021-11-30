@@ -12,10 +12,8 @@ class ChatsScreen: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideNavBar()
-        // Do any additional setup after loading the view.
+        addLogoutButton()
     }
-    
-
     /*
     // MARK: - Navigation
 
