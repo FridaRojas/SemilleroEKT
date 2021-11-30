@@ -25,8 +25,15 @@
         redirect: 'follow'
       };
 
+        var valor = obtenerValorParametro('idGrupo');
+        if (valor) {
+            console.log(valor);
+        } else {
+            console.log("El valor no existe");
+        }
+
       let req = await
-              fetch("http://localhost:3040/api/grupo/buscar/619696aa2ae47f99bde6e1e7", requestOptions)
+              fetch("http://localhost:3040/api/grupo/buscar/"+valor, requestOptions)
       let grupo = await req.json()
 
       let organi=[];
@@ -46,7 +53,20 @@
       chart.draw(data, { 'allowHtml': true });
 
     }
+    function obtenerValorParametro(sParametroNombre) {
+        var sPaginaURL = window.location.search.substring(1);
+        var sURLVariables = sPaginaURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) {
+            var sParametro = sURLVariables[i].split('=');
+            if (sParametro[0] == sParametroNombre) {
+                return sParametro[1];
+            }
+        }
+        return null;
+    }
   </script>
+
+
 
 </div>
 

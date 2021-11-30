@@ -10,21 +10,7 @@ import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.Group;
-import com.ekt.AdministradorWeb.entity.User;
-import com.google.gson.Gson;
-import okhttp3.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import com.ekt.AdministradorWeb.entity.Group;
-import com.ekt.AdministradorWeb.entity.Respuesta;
-import com.ekt.AdministradorWeb.entity.User;
-import com.google.gson.Gson;
-import okhttp3.*;
 
-import org.json.JSONArray;
-import org.bson.json.JsonObject;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -54,7 +40,7 @@ public class ConfigPag {
 
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
-        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getID());
+        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
         model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }

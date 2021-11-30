@@ -126,6 +126,7 @@
 
 
         <!-- Seccion que se va a iterar -->
+        <!--/*@thymesVar id="listaGrupos" type="ArrayList"*/-->
         <div class="item" th:each="grupo: ${listaGrupos}">
             <div class="container">
                 <div class="row">
@@ -140,14 +141,11 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-sm">
-                                    <form method="POST"
-                                          action="">
+                                    <a type="button" class="btn btn-primary" th:href="@{/editarGrupo/(idGrupo=${grupo.getId()})}" ><i class="fa fa-edit"></i></a>
 
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
                                 </div>
                                 <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
+                                    <form method="DELETE"
                                           action="">
                                         <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
                                     </form>
