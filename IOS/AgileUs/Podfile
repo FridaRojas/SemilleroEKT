@@ -8,6 +8,8 @@ target 'AgileUs' do
   # Pods for AgileUs
     pod 'MessageKit', '~> 3.3.0'
     pod 'InputBarAccessoryView', '5.1.0'
+    pod 'Firebase/Analytics'
+    pod 'Firebase/Storage'
 
 
   target 'AgileUsTests' do
