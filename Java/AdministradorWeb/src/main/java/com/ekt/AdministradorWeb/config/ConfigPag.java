@@ -1,9 +1,12 @@
 package com.ekt.AdministradorWeb.config;
 
 
+import com.ekt.AdministradorWeb.DAO.GroupDAO;
+import com.ekt.AdministradorWeb.DAO.UserDAO;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
+import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.Group;
@@ -25,14 +28,17 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ConfigPag {
+
+    UserDAO userDAO = new UserDAO();
+    GroupDAO groupDAO = new GroupDAO();
 
     @GetMapping("/login")
     public String login() {
@@ -48,32 +54,8 @@ public class ConfigPag {
 
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        Gson gson = new Gson();
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/buscar/619d220c3cd67733b375db11")
-                .method("GET", null)
-                .build();
-        try{
-            Response response = client.newCall(request).execute();
-            System.out.println(response);
-            JSONObject jsonObject= new JSONObject(response.body().string());
-            if (jsonObject.get("data")!=""){
-                JSONObject grupoObjeto = jsonObject.getJSONObject("data");
-                Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
-                User[] usuarios = grupo.getUsuarios();
-                for(User usuario: usuarios){
-                    System.out.println(usuario.getNombre());
-                }
-                model.addAttribute("usuarios",usuarios);
-                return "paginas/modalEliminaUsuario";
-            }else{
-                return "paginas/login";
-            }
-        }catch (Exception e){
-            System.out.println("No se puede realizar la petición");
-        }
+        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getID());
+        model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
 
@@ -170,34 +152,19 @@ public class ConfigPag {
     }
 
     @PostMapping("/reasignaSuperior")
-    public String reasignaSuperior(@ModelAttribute User usuario, ModelMap modelMap){
-        Gson gson = new Gson();
-        ArrayList<User> listaUsuarios = new ArrayList();
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        Request request = new Request.Builder()
-                .url("localhost:3040/api/user/findByBossId/619bbf0623b2987cc6211172")
-                .method("GET", null)
-                .build();
-        try{
-            Response response = client.newCall(request).execute();
-            System.out.println(response);
-            JSONObject jsonObject= new JSONObject(response.body().string());
-            if (jsonObject.get("data")!=""){
+    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap, RedirectAttributes redirectAttributes){
+        ArrayList<User> listaUsuarios = userDAO.muestraSubordinados(idUsuario);
+        String idGrupo = "1234";
+        modelMap.addAttribute("listaUsuarios",listaUsuarios);
+        modelMap.addAttribute("idUsuario", idUsuario);
+        //redirectAttributes.addFlashAttribute("idGrupo", idGrupo);
+        return "paginas/usuarios/ReasignaSuperior";
+    }
 
-                JSONArray usuarios = jsonObject.getJSONArray("data");
-
-                for (int i=0;i<usuarios.length();i++){
-                    listaUsuarios.add(gson.fromJson(usuarios.getJSONObject(i).toString(), User.class));
-                }
-                modelMap.addAttribute("usuarios",listaUsuarios);
-                return "paginas/ReasignaSuperior";
-            }else{
-                return "paginas/login";
-            }
-        }catch (Exception e){
-            System.out.println("No se puede realizar la petición");
-        }
-        return "paginas/modalEliminaUsuario";
+    @PostMapping("/EliminaActualiza")
+    public String eliminaActualiza(@ModelAttribute(value = "idUsuario") String idUsuario){
+        System.out.println(idUsuario);
+        return "";
     }
 
 
