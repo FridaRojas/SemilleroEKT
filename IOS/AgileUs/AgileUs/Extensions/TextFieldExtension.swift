@@ -58,17 +58,14 @@ extension UITextField{
         }
     }
     
-    func addButton(){
+    func addButton(iconImage: UIImage) -> UIButton{
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "visibility_btn"), for: .normal)
-        //button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.setImage(UIImage(named: "visibility_off"), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
         button.frame = CGRect(x: CGFloat(self.frame.size.width - 25), y: CGFloat(5), width: CGFloat(50), height: CGFloat(45))
-        button.addTarget(self, action: #selector(down), for: .touchUpInside)
         self.rightView = button
         self.rightViewMode = .always
+        return button
     }
     
-    @objc func down(sender: UIButton!) {
-        print("SELECTED")
-    }
 }

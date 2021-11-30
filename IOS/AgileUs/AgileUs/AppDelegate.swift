@@ -132,6 +132,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        UserDefaults.standard.setValue(String(), forKey: "userID")
+        UserDefaults.standard.setValue(String(), forKey: "userName")
+        UserDefaults.standard.setValue(String(), forKey: "email")
+        UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+        UserDefaults.standard.setValue(false, forKey: "isLogged")
+    }
 
 }
 
