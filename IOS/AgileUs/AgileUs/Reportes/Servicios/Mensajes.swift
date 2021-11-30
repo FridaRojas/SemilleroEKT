@@ -10,6 +10,7 @@ import UIKit
 import CoreMedia
 
 var arrMensajes: [Mensajes]?
+var arrBroadcast: [Broadcast]?
 var idRecpt = String()
 
 struct Mensajes:Codable {
@@ -35,19 +36,20 @@ struct Broadcast: Codable {
 class MensajesService {
     
     var webServiceMessage: ((_ arrDatosTareas:[Any]) -> Void)?
+    var webServiceBroad: ((_ arrDatosBroad:[Any]) -> Void)?
     
     //let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928"
 
-    let serviceMessage = "http://10.97.1.178:3040/api/mensajes/listarMensajesRecividos/618e8821c613329636a769ac"
-    let serviceBroadccast = "10.97.1.178:3040/api/broadCast//mostrarMensajesporID/618b05c12d3d1d235de0ade0"
+    //var serviceMessage = "http://10.97.2.202:3040/api/mensajes/listarMensajesRecividos/618e8821c613329636a769ac"
+    var serviceMessage = "http://10.97.7.227:3040/api/mensajes/listarMensajesRecividos/"
+    //let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/mensajes_nuevo.json?alt=media&token=eadcb762-992e-493c-8ee7-50e4c3a93ce2"
+    let serviceBroad = "http://10.97.7.227:3040/api/broadCast//mostrarMensajesporID/618b05c12d3d1d235de0ade0"
     
-    
-    func webServiceMensajes() {
-        //print("WebService de Mensajes")
+    func webServiceMensajes(idUsuario: String) {
         let service = true
+        serviceMessage = "\(serviceMessage)\(idUsuario)"
         let url = URL(string: serviceMessage)
-        let idUsuario = "618e8821c613329636a769ac"
-        
+    
         //Gernerar manejo de excepciones
         URLSession.shared.dataTask(with: url!){
             
@@ -71,44 +73,31 @@ class MensajesService {
         
     }
     
-    func webServiceBroadcast() {
-        let url = URL(string: serviceBroadccast)
-    }
-
-    /*func cantidadDeMensajes(mensaje: [Mensajes], idUsuario: String) -> [Int] {
+    func webServiceBroadcast(idUsuario: String) {
+        let service = true
+        //serviceBroad = "\(serviceBroad)\(idUsuario)"
+        let url = URL(string: serviceBroad)
         
-        var leidos = 0
-        var recibidos = 0
-        var enviados = 0
-        
-        for i in mensaje {
+        URLSession.shared.dataTask(with: url!){
             
-            if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
-                recibidos += 1
+            (info, response, error) in
+            
+            do {
+                arrBroadcast = try JSONDecoder().decode([Broadcast].self, from: info!)
+                
+                DispatchQueue.main.async {
+                    
+                    if service == true {
+                        self.webServiceBroad?(arrBroadcast!)
+                    }
+            
+                }
+            
+            } catch {
+                print("Error al leer broadcast")
             }
             
-            if i.idreceptor == idUsuario && i.statusLeido == true {
-                leidos += 1
-            }
-            
-            if i.idemisor == idUsuario && i.statusEnviado == true {
-                enviados += 1
-            }
-            
-        }
-        
-        return [enviados, recibidos, leidos]
-        
-        
-    }*/
-
-    func tiempoDeRespuestaPromedio(){
-        
+        }.resume()
     }
-
-    func tiempoDeLecturaPromedio(){
-        
-    }
-
     
 }

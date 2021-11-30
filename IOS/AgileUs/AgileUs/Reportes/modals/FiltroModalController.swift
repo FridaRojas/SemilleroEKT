@@ -201,6 +201,9 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     func obtener_usuarios() {
         opciones_usuario = [String]()
+        let usuarioL = Usuario(id: userID, nombre: userName, fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "")
+     
+        opciones_usuario.append(usuarioL)
         let lista_usuarios = usuarios as! [Usuario]
         for i in lista_usuarios {
             opciones_usuario.append(i)
@@ -304,9 +307,8 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
            info = [txtFechaIni.text!, txtFechaFin.text!, idUsuario!, txtUsuario.text!]
            
         default:
-            info = ["","",""]
+            info = ["","","",""]
         }
-        
         
         self.accion_confirmacion?(info)
         

@@ -48,7 +48,6 @@ class ListaGrafica: UITableViewCell {
             txtTitulo.text = "Enviados"
             lblTiempo.isHidden = true
         } else if (tipo == "bar") {
-            //lblTiempo.text = "Tiempo de respuesta promedio"
             txtTitulo.isHidden = true
             lblCantEnviados.isHidden = true
             lblRecibidos.isHidden = true
