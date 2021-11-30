@@ -378,39 +378,44 @@ public class MensajesController {
 
 		List<Conversacion> lConversacion = new ArrayList<>();
 		List<Conversacion> lConversacion2 = new ArrayList<>();
+		List<Conversacion> lConversacion3 = new ArrayList<>();
 		while (mongoCursor.hasNext()) {
 
 			Conversacion mConv = new Conversacion();
-			// if(){
+
 			String idConversacion = (String) mongoCursor.next();
 			mConv.setIdConversacion(idConversacion);
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
-			Iterator<Mensajes> cursor = iter.iterator();
 
-			while (cursor.hasNext()) {
+				Iterator<Mensajes> cursor = iter.iterator();
+				while (cursor.hasNext()) {
 
-				Mensajes mensajes = cursor.next();
-				if(!mensajes.getIDReceptor().equals(idEmisor) ) {
+					Mensajes mensajes = cursor.next();
+					if (!mensajes.getIDReceptor().equals(idEmisor)) {
 
-					mConv.setIdReceptor(mensajes.getIDReceptor());
-					mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
-					mConv.setIdConversacion(mensajes.getIDConversacion());
-					mConv.setIdEmisor(mensajes.getIDEmisor());
+
+						mConv.setIdReceptor(mensajes.getIDReceptor());
+						mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
+						mConv.setIdConversacion(mensajes.getIDConversacion());
+						mConv.setIdEmisor(mensajes.getIDEmisor());
+
+					}
 				}
-			}
-
+				
 			lConversacion.add(mConv);
-			//mensajesList.add(idConversacion);
-
 		}
-		//lConversacion = listarConversaciones()
+
 		for (Conversacion conv: lConversacion){
 			if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor)){
 				lConversacion2.add(conv);
 			}
-
 		}
-		return lConversacion2;
+		for (Conversacion conv2: lConversacion2){
+			if(conv2.getIdConversacion().length()<50){
+				lConversacion3.add(conv2);
+			}
+		}
+		return lConversacion3;
 	}
 
 	@GetMapping("listarMensajesRecividos/{idEmisor}")
