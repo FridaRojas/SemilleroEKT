@@ -107,6 +107,11 @@ public class MensajesController {
 				mensajes.setConversacionVisible(true);
 
 				mensajesService.crearMensaje(mensajes);
+				
+				if(mensajes.getTexto().equals("Documento")) {
+					return ResponseEntity.status(HttpStatus.CREATED)
+							.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+				}
 
 				return ResponseEntity.status(HttpStatus.CREATED).body(
 						new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
@@ -169,6 +174,11 @@ public class MensajesController {
 					mensajes.setConversacionVisible(true);
 
 					mensajesService.crearMensaje(mensajes);
+					
+					if(mensajes.getTexto().equals("Documento")) {
+						return ResponseEntity.status(HttpStatus.CREATED)
+								.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+					}
 
 					return ResponseEntity.status(HttpStatus.CREATED)
 							.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
