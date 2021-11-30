@@ -39,7 +39,7 @@ public class GroupController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error  en las llaves",""));
         }else{
             Group group= groupService.guardarUsuario(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
-            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIDUsuario()).get(), bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
+            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIDUsuario()).get(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getNombreRol());
             if (group==null && user==null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al realizar en la operacion,parametro no valido",""));
             }else{

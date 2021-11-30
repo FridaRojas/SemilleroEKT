@@ -28,9 +28,17 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(id);
     }
     @Override
-    public Optional<User> findUsersByUniqueData(String correo, String curp, String rfc, String empleado){
+    public Boolean findUsersByUniqueData(String correo, String curp, String rfc, String empleado){
 
-        return userRepository.findUsersByUniqueData(correo, curp,rfc,empleado);
+        boolean res=false;
+        boolean us= buscaCorreoUsuario(correo);
+        boolean us2= buscaCURPUsuario(curp);
+        boolean us3= buscaRFCUsuario(rfc);
+        boolean us4= buscaNoEmpleadoUsuario(empleado);
+        if (us || us2 || us3 || us4){
+            res=true;
+        }
+        return res;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.ekt.AdministradorWeb.config;
 
 
-import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.DAO.GroupDAO;
 import com.ekt.AdministradorWeb.DAO.UserDAO;
 import com.ekt.AdministradorWeb.entity.User;
@@ -10,6 +9,15 @@ import okhttp3.*;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.ekt.AdministradorWeb.entity.Group;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
 import com.ekt.AdministradorWeb.entity.Group;
 
 import org.springframework.stereotype.Controller;
@@ -45,37 +53,9 @@ public class ConfigPag {
     }
 
     @GetMapping("/eliminaUsuario")
-    public String eliminaUsuario(@ModelAttribute Group group, ModelMap model){
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        Gson gson = new Gson();
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/buscar/619d220c3cd67733b375db11")
-                .method("GET", null)
-                .build();
-        try{
-            Response response = client.newCall(request).execute();
-            System.out.println(response);
-            JSONObject jsonObject= new JSONObject(response.body().string());
-            if (jsonObject.get("data")!=""){
-                System.out.println("Aqui sistoy");
-                JSONObject grupoObjeto = jsonObject.getJSONObject("data");
-                System.out.println(grupoObjeto.toString());
-                Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
-                System.out.println(grupo.getUsuarios().length);
-                User[] usuarios = grupo.getUsuarios();
-                System.out.println(usuarios.length);
-                for(User usuariooooo: usuarios){
-                    System.out.println(usuariooooo.getNombre());
-                }
-                model.addAttribute("usuarios",usuarios);
-                return "paginas/modalEliminaUsuario";
-            }else{
-                return "paginas/login";
-            }
-        }catch (Exception e){
-            System.out.println("No se puede realizar la petición");
-        }
+    public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
+        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
+        model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
     @PostMapping("/entrar")
@@ -137,8 +117,7 @@ public class ConfigPag {
     }
 
     @GetMapping("/findAllUsuarios")
-    public String findAllUsuarios( ModelMap model) {
-         ArrayList<User> listaUsuarios = new ArrayList();
+    public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
         Gson gson = new Gson();
         //ArrayList<User> listaUsuarios = new ArrayList();
             //se realiza la peticion al back
@@ -151,8 +130,6 @@ public class ConfigPag {
         try {
             Response response = client.newCall(request).execute();
             String res = response.body().string();
-            //System.out.println(res);
-            System.out.println("Peticion exitosa");
             JSONObject jsonObject= new JSONObject(res);
             //Separamos la parte de data
             JSONArray name1 = jsonObject.getJSONArray("data");
@@ -233,7 +210,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/CrearGrupo")
-    public String CrearGrupo(@ModelAttribute Group gr) {
+    public String CrearGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
         System.out.println(gr.getNombre());
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -245,18 +222,35 @@ public class ConfigPag {
                 .build();
         try {
             Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+
+            if (jsonObject.get("status").toString().equals("OK")){
+                return "redirect:/inicioGrupos";
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "Grupo ya existente");
+                return "redirect:/inicioGrupos";
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
+            return "";
         }
-
-        return "redirect:/findAllUsuarios";
 
     }
 
     @PostMapping("/reasignaSuperior")
-    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap, RedirectAttributes redirectAttributes){
-        ArrayList<User> listaUsuarios = userDAO.muestraSubordinados(idUsuario);
-        String idGrupo = "1234";
+    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap){
+        ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
+        ArrayList<User> listaUsuarios = new ArrayList<>();
+        User []usuarios;
+        User user = userDAO.buscaID(idUsuario);
+        usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
+        for(User usuario:usuarios){
+            if(!usuario.getID().equals(user.getID())){
+                listaUsuarios.add(usuario);
+            }
+        }
+        modelMap.addAttribute("listaSubordinados",listaSubordinados);
         modelMap.addAttribute("listaUsuarios",listaUsuarios);
         modelMap.addAttribute("idUsuario", idUsuario);
         //redirectAttributes.addFlashAttribute("idGrupo", idGrupo);
@@ -264,7 +258,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/EliminaActualiza")
-    public String eliminaActualiza(@ModelAttribute(value = "idUsuario") String idUsuario){
+    public String eliminaActualizaUser(@ModelAttribute(value = "idUsuario") String idUsuario){
         System.out.println(idUsuario);
         return "";
     }
@@ -310,5 +304,17 @@ public class ConfigPag {
         return "paginas/organigramas/editarOrganigrama";
     }
 
+    @PostMapping("/ActualizaElimina")
+    public String actualizaElimina(@ModelAttribute BodyUpdateBoss bodyUpdateBoss){
+        System.out.println("HOLA");
+        System.out.println(bodyUpdateBoss);
+
+        System.out.println(bodyUpdateBoss.getIDUser().length);
+        System.out.println(bodyUpdateBoss.getIDBoss().length);
+        for (String id:bodyUpdateBoss.getIDUser()){
+            System.out.println(id);
+        }
+        return "";
+    }
 
 }
