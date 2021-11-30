@@ -28,7 +28,7 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
     @IBOutlet weak var Lista_tareas: UITableView!
     
     
-    
+    var selectedIndex = Int()
     // variables de mi tabla
     var tarea = [Any]()
     var arrTareas = [Datos]()
@@ -154,11 +154,32 @@ let dataSource = ["Completados","Pendientes"," Asignados"]
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let celda = collectionView.dequeueReusableCell(withReuseIdentifier: ItemMenu.identificador, for: indexPath) as! ItemMenu
         celda.Configure(categoria: dataSource[indexPath.row])
+        
+        print(selectedIndex)
+       
+      
+       if selectedIndex == indexPath.row
+        {
+            celda.backgroundColor = UIColor.systemGreen
+            print("celda em verde es :\(selectedIndex)")
+            
+        }
+        else{
+        celda.backgroundColor = UIColor .white
+        }
+        
         return celda
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         print("Selecccion: \(dataSource[indexPath.row])")
-    }
+        selectedIndex = indexPath.row
+        
+        self.menu_clasificador.reloadData()
+        
+        
+
+            }
     
 }
 

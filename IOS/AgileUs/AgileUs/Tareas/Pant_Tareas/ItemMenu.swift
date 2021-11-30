@@ -20,6 +20,8 @@ class ItemMenu: UICollectionViewCell {
     // CONSTRUCTOR QUE CAMBIA LA IMAGEN DEPENDIENDO DE LA CATEGORIA
     func Configure(categoria: String) {
         Texto.text = categoria
+        Texto.textColor = UIColor.black
+        Texto.backgroundColor = UIColor.clear
     }
 }
 
