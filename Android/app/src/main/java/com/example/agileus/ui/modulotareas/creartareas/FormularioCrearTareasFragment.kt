@@ -25,6 +25,7 @@ import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
@@ -37,7 +38,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
-
+    lateinit var conversationviewModel: ConversationViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel
     /*  *** Fb Storage ***  */
     lateinit var firebaseProvider : FirebaseProvider
@@ -47,7 +48,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     /*  *** Fb Storage ***  */
 
     var listaN         = ArrayList<String>()
-    lateinit var listaObj       : ArrayList<DataPersons>
     lateinit var listaPersonas  : ArrayList<DataPersons>
     lateinit var idPersonaAsignada : String
 
@@ -100,7 +100,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         val uriString = data.toString()
                         val myFile = File(uriString)
                         //myFile.
-                        binding.txtArchivo.text= myFile.name
+                        //binding.btnAdjuntarArchivo.text= myFile.name
+                        binding.btnAdjuntarArchivo.text= "Archivo seleccionado"
                         Log.d("mensaje","PDF: $uriString")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
@@ -141,7 +142,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
                 if(anioInicio!!<=anioFin!!){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
-                if(mesInicio!!+1<=mesFin!!+1){                      // Es un mes menor o igual del mismo año
+                    if(mesInicio!!+1<=mesFin!!+1){                  // Es un mes menor o igual del mismo año
                         if (mesInicio!!+1==mesFin!!+1){             // Si mes inicio es igual a mes fin del mismo año
                             if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
                                 operacionIsert()
@@ -164,6 +165,12 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         Toast.LENGTH_SHORT).show()
                 }
             }
+
+            // Enviar tarea a la conversacion grupal
+            //var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","${binding.etMensaje.text.toString()}",Constantes.finalDate)
+            //conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
+            //binding.etMensaje.setText("")
+
 
             val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
             findNavController().navigate(action)
