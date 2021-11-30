@@ -3,20 +3,18 @@ package com.ekt.AdministradorWeb.config;
 
 import com.ekt.AdministradorWeb.DAO.GroupDAO;
 import com.ekt.AdministradorWeb.DAO.UserDAO;
-import com.ekt.AdministradorWeb.entity.User;
+import com.ekt.AdministradorWeb.entity.*;
 import com.google.gson.Gson;
 import okhttp3.*;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.Group;
-import com.ekt.AdministradorWeb.entity.Respuesta;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
@@ -54,7 +52,7 @@ public class ConfigPag {
 
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
-        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getID());
+        User []usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
         model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
@@ -146,23 +144,30 @@ public class ConfigPag {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-
         return "redirect:/findAllUsuarios";
 
     }
 
     @PostMapping("/reasignaSuperior")
-    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap, RedirectAttributes redirectAttributes){
-        ArrayList<User> listaUsuarios = userDAO.muestraSubordinados(idUsuario);
-        String idGrupo = "1234";
+    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap){
+        ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
+        ArrayList<User> listaUsuarios = new ArrayList<>();
+        User []usuarios;
+        User user = userDAO.buscaID(idUsuario);
+        usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
+        for(User usuario:usuarios){
+            if(!usuario.getID().equals(user.getID())){
+                listaUsuarios.add(usuario);
+            }
+        }
+        modelMap.addAttribute("listaSubordinados",listaSubordinados);
         modelMap.addAttribute("listaUsuarios",listaUsuarios);
         modelMap.addAttribute("idUsuario", idUsuario);
-        //redirectAttributes.addFlashAttribute("idGrupo", idGrupo);
         return "paginas/usuarios/ReasignaSuperior";
     }
 
     @PostMapping("/EliminaActualiza")
-    public String eliminaActualiza(@ModelAttribute(value = "idUsuario") String idUsuario){
+    public String eliminaActualizaUser(@ModelAttribute(value = "idUsuario") String idUsuario){
         System.out.println(idUsuario);
         return "";
     }
@@ -208,5 +213,17 @@ public class ConfigPag {
         return "paginas/organigramas/editarOrganigrama";
     }
 
+    @PostMapping("/ActualizaElimina")
+    public String actualizaElimina(@ModelAttribute BodyUpdateBoss bodyUpdateBoss){
+        System.out.println("HOLA");
+        System.out.println(bodyUpdateBoss);
+
+        System.out.println(bodyUpdateBoss.getIDUser().length);
+        System.out.println(bodyUpdateBoss.getIDBoss().length);
+        for (String id:bodyUpdateBoss.getIDUser()){
+            System.out.println(id);
+        }
+        return "";
+    }
 
 }
