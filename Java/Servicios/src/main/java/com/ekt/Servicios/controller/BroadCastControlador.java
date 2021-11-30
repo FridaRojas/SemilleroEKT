@@ -46,7 +46,7 @@ public class BroadCastControlador {
 		
 		Optional<User> existo = userRepository.validarUsuario(miId);
 		
-		if(existo.isEmpty()) {
+		if(!existo.isPresent()) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario Broadcast",""));
 		}
 		
@@ -59,38 +59,84 @@ public class BroadCastControlador {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(listaUsuarios);
 	}
 
-	@GetMapping("/mostarMensajesdelBroadcast")
-	public Iterable<BroadCast>listarMensajes(){
-		Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
+	public ResponseEntity<?>listarMensajes(@PathVariable (value = "miId")String miId){
+		Optional<User> user = userRepository.validarUsuario(miId);
 
-		return brd;
+		if(miId.length()<24 || miId.length()>24){
+			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El tamaño del id no es correcto", ""));
+		}
+		if(!user.isPresent()) {
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El usuario no existe",""));
+		}
+		if(user.get().getNombreRol().equals("BROADCAST")) {
+
+			Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(brd);
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario ingresado no es un usuario BROADCAST", ""));
 	}
 
 	@PostMapping("/crearMensajeBroadcast")
-	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast){
-		BroadCast broadCastM = new BroadCast();
-		broadCastM.setIdEmisor(broadCast.getIdEmisor());
-		broadCastM.setAsunto(broadCast.getAsunto());
-		broadCastM.setDescripcion(broadCast.getDescripcion());
-		Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-		if(user.isPresent()){
-			broadCastM.setNombreEmisor(user.get().getNombre());
-			broadCastRepositorio.save(broadCastM);
-			notificacion2(broadCastM.getNombreEmisor()  + " te ha enviado un mensaje", broadCast.getAsunto());
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.CREATED,"Se creo el mensaje a broadcast",broadCastM.getIdEmisor()));
-		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra el emisor",broadCastM.getIdEmisor()));
+	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast) {
+
+
+			if (broadCast.getIdEmisor() == null || broadCast.getAsunto() == null || broadCast.getDescripcion() == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el dato", ""));
+			}
+
+			if (broadCast.getIdEmisor().equals("") || broadCast.getIdEmisor().equals("null")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El campo idEmisor es no puede estar vacio", ""));
+			}
+			if (broadCast.getIdEmisor().length() < 24 || broadCast.getIdEmisor().length() > 24) {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del idEmisor no es valido", ""));
+			}
+
+			if (broadCast.getAsunto().equals("") || broadCast.getAsunto().equals("null")) {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El campo Asunto no puede estar vacio", ""));
+			}
+			if (broadCast.getAsunto().length() < 1) {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del Asunto no es valido", ""));
+			}
+			if (broadCast.getDescripcion().length() < 1) {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del texto descripcion debe ser al menos de 1 caracter", ""));
+			}
+			BroadCast broadCastM = new BroadCast();
+			broadCastM.setIdEmisor(broadCast.getIdEmisor());
+			broadCastM.setAsunto(broadCast.getAsunto());
+			broadCastM.setDescripcion(broadCast.getDescripcion());
+			Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
+
+			if (user.isPresent()) {
+				broadCastM.setNombreEmisor(user.get().getNombre());
+				broadCastRepositorio.save(broadCastM);
+				notificacion2(broadCastM.getNombreEmisor() + " te ha enviado un mensaje", broadCast.getAsunto());
+				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED, "Se creo el mensaje a broadcast", broadCastM.getIdEmisor()));
+			}
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el emisor", ""));
 	}
 	@GetMapping("/mostrarMensajesporID/{idEmisor}")
-	public List<BroadCast> mostrarMensajes(@PathVariable(value = "idEmisor")String idEmisor){
-		List<BroadCast> listBrd = new ArrayList<>();
-		Iterable<BroadCast> brd = broadCastRepositorio.findAll();
-		for (BroadCast brd2 : brd) {
-			if(brd2.getIdEmisor().equals(idEmisor)){
-				listBrd.add(brd2);
-			}
+	public ResponseEntity<?> mostrarMensajes(@PathVariable(value = "idEmisor")String idEmisor){
+		Optional<User> user = userRepository.validarUsuario(idEmisor);
+		if(idEmisor.isEmpty() || idEmisor.equals("null") || idEmisor == null){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El id del usuario es necesario", "" ));
 		}
-		return listBrd;
+		if(idEmisor.length() < 24 || idEmisor.length() > 24){
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del id no es correcto", "" ));
+		}
+		if(user.isPresent()){
+			List<BroadCast> listBrd = new ArrayList<>();
+			Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+			for (BroadCast brd2 : brd) {
+				if(brd2.getIdEmisor().equals(idEmisor)){
+					listBrd.add(brd2);
+				}
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(listBrd);
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body((new Response(HttpStatus.NOT_FOUND,"El usuario no tiene mensajes enviados ", "")));
 	}
 	
 	@PostMapping("/enviarMensaje")

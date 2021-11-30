@@ -375,6 +375,7 @@ public class MensajesController {
 		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
 		MongoCursor mongoCursor = distinctIterable.iterator();
 
+
 		List<Conversacion> lConversacion = new ArrayList<>();
 		List<Conversacion> lConversacion2 = new ArrayList<>();
 		while (mongoCursor.hasNext()) {
@@ -385,16 +386,17 @@ public class MensajesController {
 			mConv.setIdConversacion(idConversacion);
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 			Iterator<Mensajes> cursor = iter.iterator();
+
 			while (cursor.hasNext()) {
+
 				Mensajes mensajes = cursor.next();
+				if(mensajes.getIDReceptor()!=  idEmisor) {
 
-				mConv.setIdReceptor(mensajes.getIDReceptor());
-
-				System.out.println(mensajes.getNombreConversacionReceptor());
-				mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
-				mConv.setIdConversacion(mensajes.getIDConversacion());
-				mConv.setIdEmisor(mensajes.getIDEmisor());
-
+					mConv.setIdReceptor(mensajes.getIDReceptor());
+					mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
+					mConv.setIdConversacion(mensajes.getIDConversacion());
+					//mConv.setIdEmisor(mensajes.getIDEmisor());
+				}
 			}
 
 			lConversacion.add(mConv);
@@ -413,6 +415,7 @@ public class MensajesController {
 
 	@GetMapping("listarMensajesRecividos/{idEmisor}")
 	public Iterable<?> listarMensajesRecividos(@PathVariable (value = "idEmisor")String idEmisor){
+
 		Iterable<Mensajes> msg= mensajesRepository.findAll();
 		List<Mensajes> lMensajes = new ArrayList<>();
 
