@@ -26,6 +26,19 @@ struct Task: Codable {
     var fechaLeido: String?
     var createdDate: String?
     var observaciones: String?
-    
+    var archivo: String?
+    var token: String?
+    var fecha_iniR: String?
+    var fecha_finR: String?
+
 }
 
+struct TaskResponse: Codable {
+    var estatus: String?
+    var mensaje: String?
+    var data: Task?
+}
+
+struct TaskRequestEdit {
+    
+}

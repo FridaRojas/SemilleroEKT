@@ -6,14 +6,19 @@
 //
 
 import UIKit
+import MobileCoreServices
 
-class AsignarTareaViewController: UIViewController, UITextViewDelegate {
+
+
+class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocumentPickerDelegate {
+    
+    var urlFile: URL?
 
     @IBOutlet weak var nameTaskField: UITextField!
     @IBOutlet weak var personSelectField: UITextField!
     @IBOutlet weak var priortyField: UITextField!
     @IBOutlet weak var dateStartField: UITextField!
-    @IBOutlet weak var fileField: UITextField!
+    @IBOutlet weak var fileField: UIButton!
     @IBOutlet weak var descriptionText: UITextView!
     @IBOutlet weak var dateEndField: UITextField!
     @IBOutlet weak var addTaskBtn: UIButton!
@@ -25,8 +30,10 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
         navbarConfig()
         viewStyleConfig()
         inputStyleConfig()
+
     }
     
+
     
     func navbarConfig() {
     }
@@ -41,18 +48,28 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
         priortyField.initStyle(placeholder: "Prioridad", imageName: "arrowIcon")
         dateStartField.initStyle(placeholder: "Fecha Inicio", imageName: "calendarIcon")
         dateEndField.initStyle(placeholder: "Fecha Fin", imageName: "calendarIcon")
-        fileField.initStyle(placeholder: "Archivo Adjunto", imageName: "fileIcon")
+        fileField.styleTypeInput(title: "Archivo Adjunto")
         descriptionText.initStyle(placeholder: "Descripcion")
         addTaskBtn.initStyle(text: "Asignar Tarea")
     }
     
     @IBAction func addTask(_ sender: Any) {
         
-        let task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", id_receptor: "RECEPT1", nombre_receptor: "FERNANDO", fecha_ini: dateEndField.text!, fecha_fin: dateEndField.text!, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: "2014-01-01T23:28:56.782Z", estatus: "pendiente")
+        let task = Task(
+                id_grupo: "GRUPOID1",
+                id_emisor: "EMIS1",
+                nombre_emisor: "JOSE",
+                id_receptor: "ReceptorAlexis",
+                nombre_receptor: "cristian",
+                fecha_ini: dateEndField.text!,
+                fecha_fin: dateEndField.text!,
+                titulo: nameTaskField.text!,
+                descripcion: descriptionText.text!,
+                prioridad: priortyField.text!,
+                estatus: "pendiente")
         
-        Api.shared.createTask(task: task) {
+        Api.shared.createTask(task: task, file: urlFile) {
             (task) in
-            print(task)
             DispatchQueue.main.async {
                 self.altertaMensaje(title: "Exito", message: "Se asigno la tarea correctamente", confirmationMessage: "Ok", popView: true)
             }
@@ -72,8 +89,52 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate {
              textView.textColor = UIColor.black
          }
     }
+    @IBAction func uploadFile(_ sender: Any) {
+        
+        let fileTypes = [
+            String(kUTTypePDF)
+        ]
+        
+        let viewPickerFile = UIDocumentPickerViewController(documentTypes: fileTypes, in: .import)
+        
+        viewPickerFile.delegate = self
+        
+        present(viewPickerFile, animated: true, completion: nil)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        
+        if controller.documentPickerMode == .import {
+            
+            guard let url = urls.first else {
+                return
+            }
+            
+            do {
+                if let filename = urls.first?.lastPathComponent {
+                    urlFile = url
+                    
+                    self.fileField.setTitle(filename, for: .normal)
+                    
+                    controller.dismiss(animated: true, completion: nil)
+
+
+                    
+                }
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+            
+        }
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
     
 }
+
 
 
 

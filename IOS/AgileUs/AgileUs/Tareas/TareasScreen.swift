@@ -29,7 +29,7 @@ class TareasScreen: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destino = segue.destination as? EditarTareaViewController {
-            destino.idTask = "6197c67c6646827286be5efa"
+            destino.idTask = "61a6a120516207029a580544"
         }
     }
 

@@ -14,11 +14,13 @@
 		C9275E2A274D44B20093A4D0 /* Ext_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9275E29274D44B10093A4D0 /* Ext_Generales.swift */; };
 		C927DAC0274E93CD00D3C1B7 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927DABF274E93CD00D3C1B7 /* Task.swift */; };
 		C927DAC5274EB9B400D3C1B7 /* EditarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927DAC4274EB9B300D3C1B7 /* EditarTareaViewController.swift */; };
+		C9436A762755795A005B1922 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C9436A7527557959005B1922 /* GoogleService-Info.plist */; };
 		C946D0AE274BF05400543CB8 /* AsignarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0AD274BF05400543CB8 /* AsignarTareaViewController.swift */; };
 		C946D0B1274BF8AF00543CB8 /* Ext_UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0B0274BF8AF00543CB8 /* Ext_UITextField.swift */; };
 		C946D0B3274C1A0100543CB8 /* Ext_UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946D0B2274C1A0100543CB8 /* Ext_UITextView.swift */; };
 		C97774A5274C1FED001671E5 /* Ext_Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97774A4274C1FED001671E5 /* Ext_Button.swift */; };
 		C97774A8274C38DA001671E5 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97774A7274C38DA001671E5 /* Api.swift */; };
+		C9FAD60D275698B60017B7B5 /* Prov_Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FAD60C275698B60017B7B5 /* Prov_Firebase.swift */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
 		D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C792746BD81002121E4 /* SceneDelegate.swift */; };
 		D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C7B2746BD81002121E4 /* ViewController.swift */; };
@@ -63,11 +65,13 @@
 		C9275E29274D44B10093A4D0 /* Ext_Generales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_Generales.swift; sourceTree = "<group>"; };
 		C927DABF274E93CD00D3C1B7 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C927DAC4274EB9B300D3C1B7 /* EditarTareaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditarTareaViewController.swift; sourceTree = "<group>"; };
+		C9436A7527557959005B1922 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C946D0AD274BF05400543CB8 /* AsignarTareaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsignarTareaViewController.swift; sourceTree = "<group>"; };
 		C946D0B0274BF8AF00543CB8 /* Ext_UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_UITextField.swift; sourceTree = "<group>"; };
 		C946D0B2274C1A0100543CB8 /* Ext_UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_UITextView.swift; sourceTree = "<group>"; };
 		C97774A4274C1FED001671E5 /* Ext_Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ext_Button.swift; sourceTree = "<group>"; };
 		C97774A7274C38DA001671E5 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		C9FAD60C275698B60017B7B5 /* Prov_Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prov_Firebase.swift; sourceTree = "<group>"; };
 		D4E69C742746BD81002121E4 /* AgileUs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileUs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E69C772746BD81002121E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4E69C792746BD81002121E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				C97774A7274C38DA001671E5 /* Api.swift */,
+				C9FAD60C275698B60017B7B5 /* Prov_Firebase.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 		D4E69C762746BD81002121E4 /* AgileUs */ = {
 			isa = PBXGroup;
 			children = (
+				C9436A7527557959005B1922 /* GoogleService-Info.plist */,
 				D4E69CB02746CCCE002121E4 /* Login */,
 				D4E69CA92746C25E002121E4 /* Tareas */,
 				D4E69CA82746C256002121E4 /* Reportes */,
@@ -388,6 +394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4E69C842746BD83002121E4 /* LaunchScreen.storyboard in Resources */,
+				C9436A762755795A005B1922 /* GoogleService-Info.plist in Resources */,
 				D4E69C812746BD83002121E4 /* Assets.xcassets in Resources */,
 				D4E69C7F2746BD81002121E4 /* Main.storyboard in Resources */,
 			);
@@ -523,6 +530,7 @@
 				C927DAC5274EB9B400D3C1B7 /* EditarTareaViewController.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
+				C9FAD60D275698B60017B7B5 /* Prov_Firebase.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
 				C97774A8274C38DA001671E5 /* Api.swift in Sources */,
 				C9275E2A274D44B20093A4D0 /* Ext_Generales.swift in Sources */,

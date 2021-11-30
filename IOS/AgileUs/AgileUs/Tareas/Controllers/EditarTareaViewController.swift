@@ -18,7 +18,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     @IBOutlet weak var personSelectField: UITextField!
     @IBOutlet weak var priortyField: UITextField!
     @IBOutlet weak var dateStartField: UITextField!
-    @IBOutlet weak var fileField: UITextField!
+    @IBOutlet weak var fileField: UIButton!
     @IBOutlet weak var descriptionText: UITextView!
     @IBOutlet weak var dateEndField: UITextField!
     @IBOutlet weak var updateTaskBtn: UIButton!
@@ -97,6 +97,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
             DispatchQueue.main.async {
                 
                 self.task = task
+                print(task)
                 self.nameTaskField.text = task.titulo!
                 self.personSelectField.text = task.nombre_receptor!
                 self.priortyField.text = "Prioridad: \(task.prioridad!)"
@@ -118,10 +119,22 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
                 }
         
                 
-                if task.estatus != "Revision" {
+                if task.estatus != "revision" {
                     self.addObservationsBtn.isHidden = true
                 }
+                
+                if task.observaciones != nil || task.observaciones != "" {
+                } else {
+                    self.observationField.text = "Observaciones: \(task.observaciones!)"
+                }
+                
+                if task.archivo != nil {
+                    self.fileField.styleTypeInput(title: "Tarea_\(task.id_tarea!)")
+                } else {
+                    self.fileField.styleTypeInput(title: "Archivo Adjunto")
 
+                }
+                
                 self.loader.stopAnimating()
                 self.viewBack.isHidden = true
             }
@@ -144,7 +157,6 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         dateEndField.initStyleEdit(fontSize: 12, fontWeight: .light, colorText: .darkGray, imageName: "calendarIcon", selected: isEdit)
  
         
-        fileField.initStyle(placeholder: "Archivo Adjunto", imageName: "fileIcon")
         updateTaskBtn.initStyle(text: "Editar")
         cancelTaskBtn.initStyle(text: "Cancelar")
         
@@ -175,7 +187,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         self.inputsEdit(isEdit: isEdit)
         self.inputStyleConfig(isEdit: isEdit)
         
-        if task!.estatus != "Revision" {
+        if task!.estatus != "revision" {
             statusField.isEnabled = false
             statusField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: false)
         }
@@ -202,7 +214,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
                 self.inputStyleConfig(isEdit: true)
                 self.updateTaskBtn.initStyle(text: "Guardar")
                 
-                if self.task!.estatus != "Revision"  {
+                if self.task!.estatus != "revision"  {
                     self.statusField.isEnabled = false
                     self.statusField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: false)
                 }
@@ -234,7 +246,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         let description = HelpString.removeWord(phrase: descriptionText.text!, word: "Descripción: ")
         let observation = HelpString.removeWord(phrase: observationField.text!, word: "Observaciones: ")
         
-        let task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", id_receptor: "RECEPT1", nombre_receptor: personSelectField.text!, fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: description, prioridad: priority, estatus: status, observaciones: observation)
+        let task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", id_receptor: "ReceptorAlexis", nombre_receptor: personSelectField.text!, fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: description, prioridad: priority, estatus: status, observaciones: observation)
         
         Api.shared.updateTask(id: idTask, task: task) {
             (task) in
@@ -345,10 +357,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
                 self.viewBack.isHidden = true
             }
         }
-        
-        
     }
-    
     
     
 }
