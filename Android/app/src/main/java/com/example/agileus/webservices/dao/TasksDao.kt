@@ -53,10 +53,10 @@ class TasksDao : DialogoConfirmacionListener{
                 if (response.isSuccessful) {
                     val nuevaTarea: Tasks = response.body()!!
                     var mensaje =
-                        "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
+                        "Tarea creada por el emisor: ${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
                     mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
-                    mensaje+= ", Numero de empleado:${nuevaTarea.idReceptor}"
+                    mensaje += ", Numero de empleado:${nuevaTarea.idReceptor}"
                     mensaje += ", Descripcion:${nuevaTarea.descripcion}"
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"

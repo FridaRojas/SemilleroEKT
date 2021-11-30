@@ -15,13 +15,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
+import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
+import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
+import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.File
@@ -34,12 +38,12 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
     lateinit var asignarTareaViewModel  : CrearTareasViewModel
     /*  *** Fb Storage ***  */
+    lateinit var firebaseProvider : FirebaseProvider
     lateinit var mStorageInstance       : FirebaseStorage
     lateinit var mStorageReference      : StorageReference
     lateinit var resultLauncherArchivo  : ActivityResultLauncher<Intent>
     /*  *** Fb Storage ***  */
     lateinit var listaN         : ArrayList<String>
-    lateinit var listaObj       : ArrayList<DataPersons>
     lateinit var listaPersonas  : ArrayList<DataPersons>
 
     lateinit var nombrePersonaAsignada  : String
@@ -65,6 +69,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         asignarTareaViewModel = ViewModelProvider(this).get()
+        firebaseProvider  = FirebaseProvider()
         /*  *** Instancias Fb Storage ***  */
         mStorageInstance = FirebaseStorage.getInstance()
         mStorageReference = mStorageInstance.getReference("Documentos")
@@ -80,8 +85,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         var returnUri = data?.data!!
                         val uriString = data.toString()
                         val myFile = File(uriString)
+                        //myFile.
+                        binding.txtArchivo.text= myFile.name
                         Log.d("mensaje","PDF: $uriString")
-                        subirPdfFirebase(myFile , returnUri)
+                        firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
                         e.printStackTrace()
                         Log.e("mensaje", "File not found. ${e.message}");
@@ -92,6 +99,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 Toast.makeText(context,"No se Selecciono archivo",Toast.LENGTH_LONG).show()
             }
         }
+        firebaseProvider.obs.observe(viewLifecycleOwner,{
+            uriPost = it
+        })
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
@@ -140,8 +150,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 }
             }
 
-            //val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
-            //findNavController().navigate(action)
+            val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
+            findNavController().navigate(action)
 
         }
         /* Boton Crear tarea  */
@@ -169,10 +179,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         val mPrioridad  = binding.spinPrioridad.selectedItem
 
         tarea = Tasks(
-            "Prueba Creacion Tarea",                  // id_grupo
-            "Emisor Carlos Cano",
-            "Carlos R",
-            idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
+            "GRUPOID1",                  // id_grupo
+            "EMIS1",
+            "JOSE",
+            "RECEPT1",
+            //idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
             fechaFin,                           // Fecha Fin
@@ -180,6 +191,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             descripcion.toString(),             // Descripcion
             mPrioridad.toString().lowercase(),  // Prioridad
             "pendiente",
+            uriPost,
             ""
 
         )
@@ -191,45 +203,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 "Nombre persona asignada: $nombrePersonaAsignada, " +
                 "Fecha inicio: $fechaInicio, " +
                 "Fecha fin: $fechaFin, "+
+                "Url pdf: $uriPost, "+
                 "Descripcion: $descripcion ",
             Toast.LENGTH_LONG).show()
 
         asignarTareaViewModel.postTarea(tarea)
-    }
-    fun subirPdfFirebase(pdf: File, uri: Uri){
-        try{
-            var refenciaPdf = mStorageReference
-                .child("Archivos ${(0..999).random()}")
-            var uploadTask = refenciaPdf.putFile(uri)
-            //.putStream(stream)
-
-            uploadTask.addOnSuccessListener {
-                it.storage.downloadUrl.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        uriPost=task.result.toString()
-                        Toast.makeText(context, "Doc cargada correctamente", Toast.LENGTH_LONG).show()
-                        Log.i("Uri", "Archivo uri: ${task.result}")
-
-                    } else {
-                        Toast.makeText(context, "Ocurrió un error al cargar archivo", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                }
-            }
-
-            uploadTask.addOnFailureListener{
-                it.printStackTrace()
-                Toast.makeText(context,"Ocurrió un error al cargar archivo",Toast.LENGTH_LONG).show()
-            }
-
-        }catch(e:Exception){
-            Log.e("mensaje",e.message.toString())
-            e.printStackTrace()
-            Toast.makeText(context,"Ocurrió un error al cargar archivo",Toast.LENGTH_LONG).show()
-        }
-        finally {
-            uriPost=""
-        }
     }
     fun setUpUiAsignarTareas(){
 

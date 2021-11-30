@@ -22,7 +22,7 @@ interface TasksApi {
     //Agregar Tarea nueva
     //todo Editar EndPoint para obtener personas de grupo
     //"http://10.97.0.165:3040/api/user/findAll"
-    //@GET( "user/findAll")
+    //@GET( "findAll")
     //fun getListaPersonasGrupo(): Call<PersonasGrupo>? // id lider
 
 

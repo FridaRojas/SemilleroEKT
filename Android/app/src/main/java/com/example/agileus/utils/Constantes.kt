@@ -16,13 +16,14 @@ object Constantes {
     val id = "618e8743c613329636a769aa"
     val idChat = "618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
     val referenciaMensajeria = "Mensajeria"
+    val referenciaTareas= "Tareas"
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
     var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
     val URL_BASE_TAREAS = "http://10.97.3.134:2021/api/"
 
     val URL_Tasks_Personas="http://10.97.3.134:3040/api/user/findByBossId/"
 
-    val URL_Tasks_Personas2="http://10.97.3.134:3040/api/"
+    val URL_Tasks_Personas2="http://10.97.3.134:3040/api/user/"
 
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)
