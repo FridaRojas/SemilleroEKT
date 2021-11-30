@@ -312,13 +312,13 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     override fun onDateFilterSelected() {
+        cambiarGrafica(tipo_grafica)
         Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniCustomEstadisticas}, fin: ${MySharedPreferences.fechaEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 

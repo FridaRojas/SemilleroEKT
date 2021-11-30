@@ -93,10 +93,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         barChart=binding.barChart
 
-        binding.colorlegend1.isVisible=false
-
-        binding.colorlegend2.isVisible=false
-
         reporteTareasViewModel.devuelvelistaReporte(this)
 
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
@@ -105,28 +101,24 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         })
 
         reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-
-
+            binding.txtPrimerLegend.text="Finalizadas a tiempo"
             binding.txtDataPrimerLegend.text=""
 
-            binding.txtDataSegundoLegend.text=""
+            binding.txtSegundoLegend.visibility = View.GONE
+            binding.colorlegend2.isVisible = false
+            binding.txtDataSegundoLegend.text = reporteTareasViewModel.terminadas.value.toString()
+            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
 
-            binding.txtPrimerLegend.text=""
-
-            binding.txtSegundoLegend.text=""
-
-            binding.txtTercerLegend.text="Terminadas"
-
-            binding.txtCuartoLegend.text="Pendientes"
-
-            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-
-            binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
-
+            binding.txtTercerLegend.text="Finalizadas fuera de tiempo"
+            binding.txtDataTercerLegend.text=""
 
             binding.txtDataTercerLegend.text = reporteTareasViewModel.terminadas.value.toString()
             terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
+            binding.txtDataTercerLegend.text=""
+            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorSecondary))
 
+            binding.txtCuartoLegend.visibility = View.GONE
+            binding.colorlegend4.isVisible = false
             binding.txtDataCuartoLegend.text = reporteTareasViewModel.pendientes.value.toString()
             pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
 
@@ -138,14 +130,26 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
-
-
-
         pieChart=binding.pieChart
 
         binding.colorlegend1.isVisible=true
-
         binding.colorlegend2.isVisible=true
+        binding.colorlegend3.isVisible=true
+        binding.colorlegend4.isVisible=true
+
+        binding.colorlegend2.visibility = View.VISIBLE
+        binding.colorlegend3.visibility = View.VISIBLE
+        binding.colorlegend4.visibility = View.VISIBLE
+        binding.txtSegundoLegend.visibility = View.VISIBLE
+        binding.txtCuartoLegend.visibility = View.VISIBLE
+
+        binding.txtPrimerLegend.text="Termindas"
+
+        binding.txtSegundoLegend.text="Pendientes"
+
+        binding.txtTercerLegend.text="Totales"
+
+        binding.txtCuartoLegend.text="Leídas"
 
 
         reporteTareasViewModel.devuelvelistaReporte(this)
