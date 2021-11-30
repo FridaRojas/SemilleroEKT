@@ -94,8 +94,10 @@ class TasksDao : DialogoConfirmacionListener{
                         listaTareas = emptyList<DataTask>() as ArrayList<DataTask>
                     }
                 } else {
-                    Log.e("error", "Errooor")
+                    listaTareas = emptyList<DataTask>() as ArrayList<DataTask>
                 }
+            }else{
+               listaTareas = emptyList<DataTask>() as ArrayList<DataTask>
             }
         } catch (e: Exception) {
             Log.e("error", e.toString())
