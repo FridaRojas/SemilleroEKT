@@ -10,7 +10,6 @@ import UIKit
 var id_usuario = String()
 var servidor = String()
 var nombre_usuario = String()
-
 var inicio_sesion = Bool()
 
 @main

@@ -14,8 +14,6 @@ class ChatsScreen: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
-
     /*
     // MARK: - Navigation
 
@@ -25,5 +23,4 @@ class ChatsScreen: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }
