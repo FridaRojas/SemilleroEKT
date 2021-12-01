@@ -9,6 +9,12 @@ import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.logging.HttpLoggingInterceptor
+
+import okhttp3.OkHttpClient
+
+
+
 
 class ConfigRetrofit {
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE
@@ -27,8 +33,15 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi{
+
+        /*val clientBuilder = OkHttpClient.Builder()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        clientBuilder.addInterceptor(loggingInterceptor)*/
+
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
+           // .client(clientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
