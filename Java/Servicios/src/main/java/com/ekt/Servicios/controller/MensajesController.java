@@ -1,5 +1,6 @@
 package com.ekt.Servicios.controller;
 
+import java.io.IOException;
 import java.util.*;
 
 import com.ekt.Servicios.entity.*;
@@ -7,6 +8,10 @@ import com.ekt.Servicios.repository.MensajesRepository;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -125,10 +130,13 @@ public class MensajesController {
 			mensajesService.crearMensaje(mensajes);
 
 			if (mensajes.getTexto().equals("Documento")) {
+				//notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a "+mensajes.getNombreConversacionReceptor(),"Nuevo documento", receptor.get().getToken());
+				//notificacion2(titulo, asunto, token);
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
 			}
 
+			//notificacion2("Nuevo Mensaje de "+emisor.get().getNombre(),mensajes.getTexto(), receptor.get().getToken());
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
 		}
@@ -186,10 +194,12 @@ public class MensajesController {
 			mensajesService.crearMensaje(mensajes);
 
 			if (mensajes.getTexto().equals("Documento")) {
+				notificacion2("Nuevo Mensaje de "+emisor.get().getNombre(),"Nuevo documento", receptor.get().getToken());
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
 			}
 
+			notificacion2("Nuevo Mensaje de "+emisor.get().getNombre(),mensajes.getTexto(), receptor.get().getToken());
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
 		}else {
@@ -305,25 +315,6 @@ public class MensajesController {
 		return listaConversacion;
 	}
 	
-	/*@GetMapping("listarHijos/{id}")
-	public ResponseEntity<?> listaHijos(@PathVariable (value = "id") String id){
-		
-		Iterable<User> hijos = userRepository.findByBossId(id);
-		
-		lista(hijos);
-		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.myArregloUsuario);
-	}
-	
-	@GetMapping("listarHijos2/{id}")
-	public ResponseEntity<?> listaHijos2(@PathVariable (value = "id") String id){
-		
-		Iterable<User> hijos = userRepository.findByBossId(id);
-		
-		//lista(hijos);
-		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(hijos);
-	}*/
 	
 	public void lista(Iterable<User> listaHijos){
 		List<User> contenedor = new ArrayList<>();
@@ -520,5 +511,27 @@ public class MensajesController {
 	}
 
 
+	public void notificacion2(String title, String asunto, String token){
+		OkHttpClient client = new OkHttpClient().newBuilder().build();
+		MediaType mediaType = MediaType.parse("application/json");
+		okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\n    \"to\": \""+ token +"\",\n    " +
+				"\"notification\": {\n        " +
+				"\"body\": \""+ asunto +"\",\n        " +
+				"\"title\": \""+ title +"\"\n    }\n}");
 
+		Request request = new Request.Builder()
+				.url("https://fcm.googleapis.com/fcm/send")
+				.method("POST", body)
+				.addHeader("Authorization", "key=AAAAIITlXUs:APA91bHueyZr0vJFOSo-yLEbRsG20D8rquPQbQJ1C82JTcnaOjB2ghemxgUljAzwE4wsPEzjQZY2GlrNcI1sFx__SuxsGfszskEF2cx5zy3yYFCdiU2681mCoLwMw_fH4TjmocJIQyYx")
+				.addHeader("Content-Type", "application/json")
+				.build();
+		try {
+			okhttp3.Response response = client.newCall(request).execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+
+
+			
+		}
+	}
 }
