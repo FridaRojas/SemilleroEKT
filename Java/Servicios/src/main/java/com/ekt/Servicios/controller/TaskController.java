@@ -142,4 +142,23 @@ public class TaskController {
         }
         return ResponseEntity.ok(tareas.iterator());
     }
+
+    @GetMapping("/filtrarTareasPorGrupo/{id_grupo}")// Reportes
+    public ResponseEntity<?> getTareasByGrupo(@PathVariable String id_grupo) {
+        Iterable<Task> tareas = tareaRepository.findByIdGrupo(id_grupo);
+        String mensaje;
+        //Si no existe el id_grupo
+        int nDocumentos = ((Collection<Task>) tareas).size();
+        if(nDocumentos == 0){
+            //Map<String, Object> body = new LinkedHashMap<>();//LinkedHashMap conserva el orden de inserción
+            Map<String, String> data = new LinkedHashMap<>();
+            //body.put("statusCode", String.valueOf(HttpStatus.NOT_FOUND.value()));
+            data.put("id_grupo","No hay tareas para el Grupo Id: "+ id_grupo);
+            //body.put("Data",data);
+            mensaje = "No hay tareas para el Grupo Id: "+ id_grupo;
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje, data));
+        }
+        mensaje = "Petición con éxito";
+        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas.iterator()));
+    }
 }
