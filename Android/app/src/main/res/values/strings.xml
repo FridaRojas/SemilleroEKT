@@ -1,14 +1,11 @@
 <resources>
     <string name="app_name">Agile Us</string>
-    <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="title_mensajes">Mensajes</string>
     <string name="title_tareas">Tareas</string>
     <string name="title_reportes">Reportes</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="crear_tarea">Crear Tarea</string>
     <string name="fecha_de_vencimiento">Fecha de Vencimiento</string>
     <string name="fecha_de_inicio">Fecha de Inicio</string>
@@ -48,6 +45,7 @@
     <string name="comunicados">Comunicados</string>
     <string name="destinatario">Destinatario :</string>
     <string name="asunto">Asunto</string>
+    <string name="name_contactos_fragment">Contactos</string>
 
     <string name="titleStatus1">Tareas Pendientes</string>
     <string name="titleStatus2">Tareas Iniciadas</string>

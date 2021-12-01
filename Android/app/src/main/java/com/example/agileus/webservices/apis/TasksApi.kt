@@ -28,6 +28,7 @@ interface TasksApi {
     @GET("{idsuperiorInmediato}")
     fun getListaPersonasGrupo(@Path("idsuperiorInmediato") idsuperiorInmediato: String): Call<PersonasGrupo>? // id lider
 
+
     @POST("tareas/agregarTarea")
     fun insertarTarea(@Body t: Tasks): Call<Tasks>
 
