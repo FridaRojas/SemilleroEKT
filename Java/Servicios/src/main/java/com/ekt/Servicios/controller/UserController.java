@@ -39,6 +39,7 @@ public class UserController {
         }else{
             boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
             if (us){
+                System.out.println("Error al crear usuario, el usuario existe");
                 return ResponseEntity.ok(new Response(HttpStatus.CONFLICT,"Usuario existente",""));
             }else {
                 userService.save(user);

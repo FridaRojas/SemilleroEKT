@@ -130,7 +130,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/añadirUsuario")
-    public String añadirUsuario(@ModelAttribute User user){
+    public String añadirUsuario(@ModelAttribute User user, RedirectAttributes redirectAttrs){
         //realizar el guardado
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -144,8 +144,18 @@ public class ConfigPag {
         try {
             Response response = client.newCall(request).execute();
 
+            //tratar la respuesta
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            //Separamos la parte de data y la validamos
+            if(jsonObject.getJSONObject("data").equals("")){
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "Error al crear un usuario, existen datos duplicasdos en la base de datos");
+                System.out.println("Error al insertar usuario");
+            }
         }catch (Exception e){
             System.out.println("Error al insertar usuario");
+            redirectAttrs
+                    .addFlashAttribute("mensaje", "Error al crear un usuario, existen datos duplicasdos en la base de datos");
         }
         return "redirect:/findAllUsuarios";
     }
