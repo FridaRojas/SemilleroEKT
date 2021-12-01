@@ -3,7 +3,7 @@ package com.ekt.AdministradorWeb.config;
 
 import com.ekt.AdministradorWeb.DAO.GroupDAO;
 import com.ekt.AdministradorWeb.DAO.UserDAO;
-import com.ekt.AdministradorWeb.entity.User;
+import com.ekt.AdministradorWeb.entity.*;
 import com.google.gson.Gson;
 import okhttp3.*;
 import okhttp3.RequestBody;
@@ -14,6 +14,14 @@ import com.google.gson.Gson;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
 import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
@@ -75,7 +83,7 @@ public class ConfigPag {
             JSONObject jsonObject= new JSONObject(response.body().string());
 
             if (!jsonObject.get("data").toString().equals("")){
-                return "redirect:/findAllUsuarios";
+                return "redirect:/Inicio";
             }else{
                 redirectAttrs
                         .addFlashAttribute("mensaje", "Usuario o contrasena incorrectos");
@@ -198,16 +206,7 @@ public class ConfigPag {
         return "/paginas/usuarios/EditarUsuario";
     }
 
-    @PostMapping ("/editarUsuarioServicio")
-    public String editarUsuarioServicio(@ModelAttribute User user){
-        //validar que los datos no existan
 
-
-        //si no existen editar
-
-        //si existen retornar error
-        return "";
-    }
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
@@ -315,6 +314,13 @@ public class ConfigPag {
             System.out.println(id);
         }
         return "";
+    }
+
+    @GetMapping("/Inicio")
+    public String Inicio(){
+
+
+        return "paginas/Inicio";
     }
 
 }
