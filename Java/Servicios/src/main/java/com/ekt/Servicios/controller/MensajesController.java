@@ -225,9 +225,17 @@ public class MensajesController {
 	// ver conversacion
 	@GetMapping("/verConversacion/{idConversacion}")
 	public ResponseEntity<?> verConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
-		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 
-		return ResponseEntity.ok(iter.iterator());
+		if(idConversacion.length()>24){
+			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id de la convbersacion no contiene los caracteres neesarios", ""));
+		}else if ((idConversacion.isEmpty())){
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
+		}else {
+			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+
+			return ResponseEntity.status(HttpStatus.OK).body(iter.iterator());
+		}
+		return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no hay conversacion", ""));
 	}
 
 	// eliminar mensaje(cambiar estado) ?
@@ -343,12 +351,19 @@ public class MensajesController {
 	
 	@PutMapping("/eliminarConversacion/{idConversacion}")
 	public ResponseEntity<?> cambiarStatusConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
+		if(idConversacion.length()>24) {
+			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El id de la convbersacion no contiene los caracteres neesarios", ""));
+		}
+		if ((idConversacion.isEmpty())){
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
+		}
+
 		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 		for (Mensajes msg : iter) {
 			msg.setConversacionVisible(false);
 			mensajesService.save(msg);
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.CREATED, "", iter.iterator()));
+		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.CREATED, "Se elimino la conversacion",""));
 	}
 
 	@GetMapping("listaGrupos/{miId}")
@@ -459,8 +474,15 @@ public class MensajesController {
 	}
 
 	@GetMapping("/listarConversaciones/{idEmisor}")
-	public List<Conversacion> listarConversaciones2(@PathVariable(value ="idEmisor")String idEmisor){
-		//String idEmisor = "618e8821c613329636a769ac";
+	public ResponseEntity<?> listarConversaciones(@PathVariable(value ="idEmisor")String idEmisor){
+
+		if(idEmisor.length()<24 || idEmisor.length()>24){
+			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id del usuariono tiene los caracteres necesarios",""));
+		}
+		Optional<User> user = userRepository.validarUsuario(idEmisor);
+		if (!user.isPresent()){
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra este usuario",""));
+		}
 		List<String> mensajesList = new ArrayList<>();
 		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
 		DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
@@ -506,12 +528,22 @@ public class MensajesController {
 				lConversacion3.add(conv2);
 			}
 		}
-		return lConversacion3;
+		return ResponseEntity.status(HttpStatus.OK).body(lConversacion3);
 	}
 
 	@GetMapping("listarMensajesRecividos/{idEmisor}")
-	public Iterable<?> listarMensajesRecividos(@PathVariable (value = "idEmisor")String idEmisor){
+	public ResponseEntity<?> listarMensajesRecividos(@PathVariable (value = "idEmisor")String idEmisor){
 
+		if(idEmisor.length()<24 || idEmisor.length()>24) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
+		}
+		if(idEmisor.isEmpty()){
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra el usuairo",""));
+		}
+		Optional<User> user=userRepository.validarUsuario(idEmisor);
+		if(!user.isPresent()){
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no se encuetra el usuario",""));
+		}
 		Iterable<Mensajes> msg= mensajesRepository.findAll();
 		List<Mensajes> lMensajes = new ArrayList<>();
 
@@ -520,7 +552,7 @@ public class MensajesController {
 				lMensajes.add(msg2);
 			}
 		}
-		return lMensajes;
+		return ResponseEntity.status(HttpStatus.OK).body(lMensajes);
 	}
 
 
