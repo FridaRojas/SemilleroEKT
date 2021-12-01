@@ -354,16 +354,17 @@ public class MensajesController {
 		if(idConversacion.length()<49) {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El id de la conversacion no contiene los caracteres neesarios", ""));
 		}
-		Optional<Mensajes> opt = mensajesRepository.validarCoversacion(idConversacion);
 		
-		if (opt.isEmpty()){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
-		}
-		if(!opt.get().isConversacionVisible()) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"La conversacion ya fue borrada", ""));
-		}
+		List<Mensajes> list = new ArrayList<>();
 
 		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+		iter.forEach(list::add);
+		if(list.size()<1) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Response(HttpStatus.NO_CONTENT, "No existe la conversacion",""));
+		}
+		if(!list.get(0).isConversacionVisible()) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "La conversacion ya se elimino anteriormente",""));
+		}
 		for (Mensajes msg : iter) {
 			msg.setConversacionVisible(false);
 			mensajesService.save(msg);
@@ -518,6 +519,7 @@ public class MensajesController {
 						
 					}else if(mensajes.getIDReceptor().equals(idEmisor)) {
 						Optional<User> user3 = userRepository.validarUsuario(mensajes.getIDEmisor());
+						System.out.println();
 						mConv.setIdReceptor(mensajes.getIDEmisor());
 						mConv.setNombreConversacionRecepto(user3.get().getNombre());
 						mConv.setIdConversacion(mensajes.getIDConversacion());
