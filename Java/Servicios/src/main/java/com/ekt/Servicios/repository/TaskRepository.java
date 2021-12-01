@@ -16,4 +16,7 @@ public interface TaskRepository extends MongoRepository<Task,String> {
 
     @Query(value = "{'id_receptor': ?0,'prioridad': ?1 }")
     Iterable<Task> findIdReceptorTareaByPrioridad(String id_receptor, String prioridad);
+
+    @Query(value = "{'id_emisor': ?0}")
+    Iterable<Task> getAllOutByUserId(String user_id);
 }
