@@ -25,4 +25,14 @@ public class TaskServiceImpl implements TaskService{
     public Iterable<Task> findAll() {
         return tareaRepository.findAll();
     }
+    @Override
+    public void  deleteById(String id){
+        Optional<Task> tareaOptionals = tareaRepository.findById(id);
+        if (tareaOptionals.isPresent()){
+            Task tareaUpdate = tareaOptionals.get();
+            tareaUpdate.setEstatus("Cancelado");
+
+            tareaRepository.save(tareaUpdate);
+        }
+    }
 }
