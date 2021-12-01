@@ -10,6 +10,13 @@
 		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
 		5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */; };
 		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
+		D404493B2750482D0016CB51 /* ButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D404493A2750482D0016CB51 /* ButtonExtension.swift */; };
+		D43CCF02275544DE00E2271F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D43CCF01275544DE00E2271F /* GoogleService-Info.plist */; };
+		D468550F27514B10001A1031 /* ModalsAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D468550E27514B10001A1031 /* ModalsAdapter.swift */; };
+		D468551527514DB4001A1031 /* ModalForgotPassword.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D468551427514DB4001A1031 /* ModalForgotPassword.storyboard */; };
+		D468551727514DF7001A1031 /* ModalForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = D468551627514DF7001A1031 /* ModalForgotPassword.swift */; };
+		D4D46A65274805E3008273D3 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D46A64274805E3008273D3 /* ViewControllerExtension.swift */; };
+		D4D46A672748086A008273D3 /* TextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D46A662748086A008273D3 /* TextFieldExtension.swift */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
 		D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C792746BD81002121E4 /* SceneDelegate.swift */; };
 		D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C7B2746BD81002121E4 /* ViewController.swift */; };
@@ -23,7 +30,7 @@
 		D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */; };
 		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
 		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
-		D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDE7482747174E00197CB1 /* CampoTexto.swift */; };
+
 		DF5BAE23274DAD370080C589 /* chat_funciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5BAE22274DAD370080C589 /* chat_funciones.swift */; };
 		DF89B86327517D13000E8DAE /* ContactosScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF89B86227517D13000E8DAE /* ContactosScreen.swift */; };
 		DF89B86827517DBA000E8DAE /* lista_contactos.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF89B86627517DBA000E8DAE /* lista_contactos.swift */; };
@@ -58,6 +65,13 @@
 		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
 		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D404493A2750482D0016CB51 /* ButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtension.swift; sourceTree = "<group>"; };
+		D43CCF01275544DE00E2271F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D468550E27514B10001A1031 /* ModalsAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalsAdapter.swift; sourceTree = "<group>"; };
+		D468551427514DB4001A1031 /* ModalForgotPassword.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ModalForgotPassword.storyboard; sourceTree = "<group>"; };
+		D468551627514DF7001A1031 /* ModalForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalForgotPassword.swift; sourceTree = "<group>"; };
+		D4D46A64274805E3008273D3 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
+		D4D46A662748086A008273D3 /* TextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExtension.swift; sourceTree = "<group>"; };
 		D4E69C742746BD81002121E4 /* AgileUs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileUs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E69C772746BD81002121E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4E69C792746BD81002121E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,7 +89,7 @@
 		D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportesScreen.swift; sourceTree = "<group>"; };
 		D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TareasScreen.swift; sourceTree = "<group>"; };
 		D4E69CB12746CCEF002121E4 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
-		D4EDE7482747174E00197CB1 /* CampoTexto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampoTexto.swift; sourceTree = "<group>"; };
+
 		D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DF5BAE22274DAD370080C589 /* chat_funciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat_funciones.swift; sourceTree = "<group>"; };
 		DF89B86227517D13000E8DAE /* ContactosScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactosScreen.swift; sourceTree = "<group>"; };
@@ -128,6 +142,25 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D468550B27514AB4001A1031 /* ForgotPasswordModal */ = {
+			isa = PBXGroup;
+			children = (
+				D468551427514DB4001A1031 /* ModalForgotPassword.storyboard */,
+				D468551627514DF7001A1031 /* ModalForgotPassword.swift */,
+			);
+			path = ForgotPasswordModal;
+			sourceTree = "<group>";
+		};
+		D4D46A63274805C6008273D3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D4D46A64274805E3008273D3 /* ViewControllerExtension.swift */,
+				D4D46A662748086A008273D3 /* TextFieldExtension.swift */,
+				D404493A2750482D0016CB51 /* ButtonExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D4E69C6B2746BD81002121E4 = {
 			isa = PBXGroup;
 			children = (
@@ -153,7 +186,8 @@
 		D4E69C762746BD81002121E4 /* AgileUs */ = {
 			isa = PBXGroup;
 			children = (
-				D4EDE7472747067E00197CB1 /* Extensions */,
+				D43CCF01275544DE00E2271F /* GoogleService-Info.plist */,
+				D4D46A63274805C6008273D3 /* Extensions */,
 				D4E69CB02746CCCE002121E4 /* Login */,
 				D4E69CA92746C25E002121E4 /* Tareas */,
 				D4E69CA82746C256002121E4 /* Reportes */,
@@ -217,17 +251,11 @@
 		D4E69CB02746CCCE002121E4 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				D468550B27514AB4001A1031 /* ForgotPasswordModal */,
 				D4E69CB12746CCEF002121E4 /* LoginScreen.swift */,
+				D468550E27514B10001A1031 /* ModalsAdapter.swift */,
 			);
 			path = Login;
-			sourceTree = "<group>";
-		};
-		D4EDE7472747067E00197CB1 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				D4EDE7482747174E00197CB1 /* CampoTexto.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		DD4994C3FA25C34E3D104F72 /* Frameworks */ = {
@@ -395,6 +423,8 @@
 				D4E69C842746BD83002121E4 /* LaunchScreen.storyboard in Resources */,
 				DF89B86927517DBA000E8DAE /* lista_contactos.xib in Resources */,
 				D4E69C812746BD83002121E4 /* Assets.xcassets in Resources */,
+				D43CCF02275544DE00E2271F /* GoogleService-Info.plist in Resources */,
+				D468551527514DB4001A1031 /* ModalForgotPassword.storyboard in Resources */,
 				D4E69C7F2746BD81002121E4 /* Main.storyboard in Resources */,
 				DFC33DD5274C54FF00E8DB7D /* lista_chats.xib in Resources */,
 			);
@@ -524,6 +554,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4D46A672748086A008273D3 /* TextFieldExtension.swift in Sources */,
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
 				DF5BAE23274DAD370080C589 /* chat_funciones.swift in Sources */,
 				DF89B86327517D13000E8DAE /* ContactosScreen.swift in Sources */,
@@ -531,11 +562,14 @@
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
 				DFC33DD4274C54FF00E8DB7D /* lista_chats.swift in Sources */,
+				D468551727514DF7001A1031 /* ModalForgotPassword.swift in Sources */,
+				D4D46A65274805E3008273D3 /* ViewControllerExtension.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
+				D468550F27514B10001A1031 /* ModalsAdapter.swift in Sources */,
+				D404493B2750482D0016CB51 /* ButtonExtension.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
 				DFC33DD8274C5C0600E8DB7D /* ChatViewController.swift in Sources */,
-				D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */,
 				DF89B86827517DBA000E8DAE /* lista_contactos.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

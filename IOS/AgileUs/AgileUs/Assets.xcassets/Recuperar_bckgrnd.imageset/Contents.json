@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Recuperar_bckgrnd.png",
+      "filename" : "recuperar_bckgrnd.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Recuperar_bckgrnd@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Recuperar_bckgrnd@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

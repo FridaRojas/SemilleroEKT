@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Recuperar_btn.png",
+      "filename" : "recuperar_btn.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Recuperar_btn@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Recuperar_btn@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

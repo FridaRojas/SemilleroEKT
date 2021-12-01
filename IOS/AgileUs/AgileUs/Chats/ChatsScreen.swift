@@ -12,11 +12,11 @@ struct Usuarios: Codable
     let id: Int
     let website:String
     let name:String
-   
+
 }
 
 class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource { //se importan las clases abstraptas
-   
+
     @IBOutlet weak var tabla_chats: UITableView!
     var usuarios = [Usuarios]()
     //se crea un arreglo para poder simular los datos que nos proporcionara el web service
@@ -37,20 +37,30 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         [14,"Banco Azteca"],
         [15,"aaaaa"]
     ]
-    
-    override func viewDidLoad() {
+
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
+
+        hideNavBar()
+        addLogoutButton()
+
         tabla_chats.delegate = self
         tabla_chats.dataSource = self
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
-        consumir_Servicio_web()
+        //consumir_Servicio_web()
+
     }
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
         return datos.count
+
+
     }
-    
+
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let indice = indexPath.row
         var celda_personalizada = tableView.dequeueReusableCell(withIdentifier: lista_chats.identificador, for: indexPath) as! lista_chats
@@ -67,10 +77,10 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     }
     func consumir_Servicio_web()
     {
-        let servicio = "https://10.97.4.165:3040/api/mensajes/listarConversaciones/618e8821c613329636a769ac"
+        let servicio = "http://10.97.6.83:3040/api/mensajes/listarConversaciones/618e8821c613329636a769ac"
         // let servicio = "https://jsonplaceholder.typicode.com/users?id=\(1)" si el api nos pediera parametros solo se le concatena dicho parametro(  ?=\(1)  )
         let url = URL(string: servicio)
-        
+
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
             do
@@ -79,23 +89,23 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
                 DispatchQueue.main.async
                 {
                     var cadena = String()
-                    
+
                     for item in self.usuarios
                     {
                         print("aqui va algo")
                     }
                     print("aqui tambien")
                 }
-                
+
             }
             catch{print("Error")}
         }.resume()
-        
+
     }
-    
-    
-    
-    
-   
-    
+
+
+
+
+
+
 }
