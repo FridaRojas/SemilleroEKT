@@ -9,6 +9,7 @@ import com.example.agileus.models.DatosTareas
 import com.example.agileus.models.Estadisticas
 import retrofit2.Response
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 class ReporteTareasDao {
 
@@ -155,7 +156,7 @@ class ReporteTareasDao {
             promedio_tiempo_respuesta=tiempo_p_respuesta
 
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
-            listaRecycler.add(Estadisticas("Tareas terminadas a tiempo:","","",promedio_tiempo_respuesta, R.drawable.ic_bar_chart))
+            listaRecycler.add(Estadisticas("Tareas terminadas a tiempo:","","","0", R.drawable.ic_bar_chart))
 
 
             Log.d("dias","promedio respuesta: ${promedio_tiempo_respuesta}")
