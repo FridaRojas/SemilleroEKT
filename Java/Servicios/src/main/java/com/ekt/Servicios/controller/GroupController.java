@@ -48,7 +48,7 @@ public class GroupController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080/")
+
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
         if (groupService.buscarPorId(id).isPresent()){
@@ -94,7 +94,6 @@ public class GroupController {
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo o usuario no encontrado",""));
             }
         }
-
     }
 
     @GetMapping("/buscarUsuarioEnGrupo")
@@ -249,5 +248,7 @@ public class GroupController {
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error desconocido", ""));
         }
     }
+
+
 
 }

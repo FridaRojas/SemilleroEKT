@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -125,6 +126,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean buscaNoEmpleadoUsuario(String noEmpleado) {
         return userRepository.findByNumeroEmpleado(noEmpleado).isPresent();
+    }
+
+    @Override
+    public Optional<ArrayList<User>> findChilds(String idPadre) {
+        return userRepository.findChilds(idPadre);
     }
 
 }
