@@ -33,28 +33,27 @@ import java.io.File
 import java.io.FileNotFoundException
 
 class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
-
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
-    lateinit var conversationviewModel: ConversationViewModel
+
+    lateinit var conversationviewModel  : ConversationViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel
     /*  *** Fb Storage ***  */
-    lateinit var firebaseProvider : FirebaseProvider
+    lateinit var firebaseProvider       : FirebaseProvider
     lateinit var mStorageInstance       : FirebaseStorage
     lateinit var mStorageReference      : StorageReference
     lateinit var resultLauncherArchivo  : ActivityResultLauncher<Intent>
     /*  *** Fb Storage ***  */
 
-    var listaN         = ArrayList<String>()
-    lateinit var listaPersonas  : ArrayList<DataPersons>
-    lateinit var idPersonaAsignada : String
-
+    lateinit var listaPersonas              : ArrayList<DataPersons>
     lateinit var personasAsignadasAdapter   : ArrayAdapter<String>
     lateinit var prioridadAdapter           : ArrayAdapter<String>
     lateinit var listaPrioridades           : Array<String>
     lateinit var nombrePersonaAsignada      : String
     lateinit var prioridadAsignada          : String
+    lateinit var idPersonaAsignada          : String
 
+    var listaN = ArrayList<String>()
     var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
@@ -79,14 +78,13 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listaPrioridades = resources.getStringArray(R.array.prioridad_array)
+        listaPrioridades = resources.getStringArray(R.array.prioridad_array)    // spiner lista de prioridades archivo strings.xml
         asignarTareaViewModel = ViewModelProvider(this).get()
         conversationviewModel = ViewModelProvider(this).get()
         firebaseProvider  = FirebaseProvider()
-        /*  *** Instancias Fb Storage ***  */
-        mStorageInstance = FirebaseStorage.getInstance()
-        mStorageReference = mStorageInstance.getReference("Documentos")
-        /*  *** Instancias Fb Storage ***  */
+        mStorageInstance = FirebaseStorage.getInstance()                           /*  *** Instancias Fb Storage ***  */
+        mStorageReference = mStorageInstance.getReference("Documentos")     /*  *** Instancias Fb Storage ***  */
+
 
         setUpUiAsignarTareas() /*  *** spiners ***  */
 
@@ -98,7 +96,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         var returnUri = data?.data!!
                         val uriString = data.toString()
                         val myFile = File(uriString)
-                        //binding.btnAdjuntarArchivo.text= myFile.name
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado"
                         Log.d("mensaje","PDF: $uriString")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
@@ -118,7 +115,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
-
             // Guardar datos
             nombrePersonaAsignada = (binding.spinnerPersonaAsignada.getEditText() as AutoCompleteTextView).text.toString()
             prioridadAsignada = (binding.spinnerPrioridad.getEditText() as AutoCompleteTextView).text.toString()
@@ -134,38 +130,41 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             if(fechaInicio=="" || fechaFin=="" ||
                 binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
                 binding.edtDescripcion.text.toString().isNullOrEmpty()){
-
-                Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
-                if(anioInicio!!<=anioFin!!){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
-                    if(mesInicio!!+1<=mesFin!!+1){                  // Es un mes menor o igual del mismo año
-                        if (mesInicio!!+1==mesFin!!+1){             // Si mes inicio es igual a mes fin del mismo año
-                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
-                                operacionIsert()
-                            }else{
-                                    Toast.makeText( context,
-                                    "Fecha de inicio no puede ser mayor a fecha fin",
-                                    Toast.LENGTH_SHORT).show()
-                                }
-                        }else if(mesInicio!!+1<mesFin!!+1){             // Mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE). NO IMPORTA EL DIA
-                            operacionIsert()
-                        }
-                    }else if(mesInicio!!+1>mesFin!!+1 && anioInicio!!<anioFin!!){                 // Mes de inicio es superior a mes fin pero de año fin superior. NO IMPORTA EL DIA
+                if(anioInicio!!<=anioFin!!){
+
+                    if(anioInicio!!<anioFin!!){                     // 2021 < 2022
                         operacionIsert()
                     }
 
+                    if(anioInicio==anioFin){                        // 2021 == 2021
+                        if (mesInicio==mesFin){                     // Si mes inicio es igual a mes fin del mismo año
+                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
+                                operacionIsert()
+                            }else if(diaInicio!!>diaFin!!){
+                                Toast.makeText( context,
+                                    "Fecha de inicio no puede ser mayor a fecha de vencimiento",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
 
+                        if(mesInicio!!<mesFin!!){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
+                            operacionIsert()
+                        }else if (mesInicio!!>mesFin!!){
+                            Toast.makeText( context,
+                                "Fecha de inicio no puede ser mayor a fecha de vencimiento",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }else{
                     Toast.makeText( context,
-                        "Fecha de inicio no puede ser mayor a fecha fin",
+                        "Fecha de inicio no puede ser mayor a fecha de vencimiento",
                         Toast.LENGTH_SHORT).show()
                 }
                 // VALIDAR INICIO Y FIN FECHAS
-
             }
-
         }
         /* Boton Crear tarea  */
 
@@ -269,7 +268,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     // *** INTERFACES ***
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
         anioInicio  = anio
-        mesInicio   = mes
+        mesInicio   = mes+1
         diaInicio   = dia
         val fecha=binding.edtFechaInicio
         val fechaObtenida = "$anio-${mes+1}-$dia"
@@ -280,7 +279,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     }
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
         anioFin = anio
-        mesFin  = mes
+        mesFin  = mes+1
         diaFin  = dia
         val fecha=binding.edtFechaFin
         val fechaObtenida = "$anio-${mes+1}-$dia"
