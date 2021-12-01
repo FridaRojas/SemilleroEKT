@@ -1,5 +1,6 @@
 package com.example.agileus.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.DataTask
 import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
+import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel
+import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel.Companion.status
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
 
@@ -40,12 +43,15 @@ class TasksAdapter(
 
     class ViewHolder(view: View, private val listener: TaskListListener) :
         RecyclerView.ViewHolder(view) {
+
+        private lateinit var taskViewModel: TaskViewModel
+
         var nombreTarea: TextView
         var personaAsignada: TextView
         var fecha: TextView
         var prioridad: TextView
         var btnAbrirDetallesTarea: ImageView
-        var nivelUsuario: String = "Alto"
+        var nivelUsuario: String = ""
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
@@ -55,15 +61,17 @@ class TasksAdapter(
             btnAbrirDetallesTarea = view.findViewById(R.id.iconoAbrirDetallesTarea)
         }
 
+
+
         fun enlazarItem(dataTask: DataTask) {
             nombreTarea.text = dataTask.titulo
             personaAsignada.text = dataTask.nombreReceptor
             prioridad.text = dataTask.prioridad
 //          fecha.text = dataTask.fechaIni.toString()
 
-
+            //Log.d("status", status)
             btnAbrirDetallesTarea.setOnClickListener {
-                if (nivelUsuario.equals("Alto") || nivelUsuario.equals("Medio")) {
+                if (status == "asignada") {
                     var action: NavDirections
                     action =
                         TaskFragmentDirections.actionNavigationDashboardToDetalleNivelAltoFragment(

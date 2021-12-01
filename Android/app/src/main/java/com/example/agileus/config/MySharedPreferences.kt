@@ -6,9 +6,9 @@ class MySharedPreferences(contexto: Context) {
 
     companion object{
         val TOKEN_KEY = "TOKEN_KEY"
+        val SESSION_TOKEN = "TOKEN"
     }
 
-    var SESSION_TOKEN = "TOKEN"
     val sharedPreferences = contexto.getSharedPreferences(SESSION_TOKEN, Context.MODE_PRIVATE)
 
 
@@ -19,6 +19,9 @@ class MySharedPreferences(contexto: Context) {
         }
     }
 
+    fun recuperarToken() : String{
+        return sharedPreferences.getString(TOKEN_KEY, "")!!
 
+    }
 
 }

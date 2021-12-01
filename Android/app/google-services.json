@@ -29,6 +29,13 @@
             {
               "client_id": "243751980259-tfu6obo9cr4pak909pushqsomnkhncqt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "243751980259-929m9409sr57ntvrr7oe2esiaq6ttaon.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Semillero.CarlosA.AgileUs"
+              }
             }
           ]
         }

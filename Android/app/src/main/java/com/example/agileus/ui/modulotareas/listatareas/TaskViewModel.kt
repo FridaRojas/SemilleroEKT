@@ -6,15 +6,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.DataTask
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 import com.example.agileus.webservices.dao.TasksDao
+import com.google.firebase.messaging.FirebaseMessagingService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TaskViewModel() : ViewModel() {
 
+    companion object{
+        var status = "pendiente"
+    }
 
     var statusRecycler = MutableLiveData<String>()
     var adaptador = MutableLiveData<TasksAdapter>()
@@ -51,7 +56,7 @@ class TaskViewModel() : ViewModel() {
     }*/
 
     fun devolverListaPorStatus(listener: TaskListListener){
-
+        status = statusRecycler.value.toString()
         viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
                     if(statusRecycler.value.toString() == "asignada"){
