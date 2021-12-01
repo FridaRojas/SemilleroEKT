@@ -33,6 +33,34 @@ extension Date {
         return dateFormatter.date(from:fecha)!
     }
     
+    // funcion para convertir la fecha de los servicios a formato Date
+    func convertir_string_servicio_a_fecha(fecha: String) -> Date {
+        let dateFormatter = DateFormatter()
+        //dateFormatter.locale = Locale(identifier: "es_419")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        return dateFormatter.date(from:fecha)!
+    }
+    
+    func fechaServiciosAFecha(fecha: String) -> Date {
+        //let fecha = "\(i.fechaEnviado)".prefix(10)
+        var fechaHora = String()
+        let fechaD = fecha.prefix(10)
+        
+        let inicio = fecha.index(fecha.startIndex, offsetBy: 11)
+        let fin = fecha.index(fecha.endIndex, offsetBy: -10)
+        let rango = inicio..<fin
+
+        let subFecha = fecha[rango]
+        
+        fechaHora = "\(fechaD) \(subFecha)"
+        let fechaConvertida = convertir_string_servicio_a_fecha(fecha: fechaHora)
+        
+        return fechaConvertida
+        
+    }
+    
+    
     // funcion que retorna el rango de fechas de una semana a partir de una fecha
     func dias_por_semana(fecha_semana: Date) -> String {
         
@@ -150,31 +178,21 @@ extension Date {
         return fechas
     }
     
-    // funcion para convertir la fecha de los servicios a formato Date
-        func convertir_string_servicio_a_fecha(fecha: String) -> Date {
-            let dateFormatter = DateFormatter()
-            //dateFormatter.locale = Locale(identifier: "es_419")
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            
-            return dateFormatter.date(from:fecha)!
-        }
-        
-        func fechaServiciosAFecha(fecha: String) -> Date {
-            //let fecha = "\(i.fechaEnviado)".prefix(10)
-            var fechaHora = String()
-            let fechaD = fecha.prefix(10)
-            
-            let inicio = fecha.index(fecha.startIndex, offsetBy: 11)
-            let fin = fecha.index(fecha.endIndex, offsetBy: -10)
-            let rango = inicio..<fin
 
-            let subFecha = fecha[rango]
-            
-            fechaHora = "\(fechaD) \(subFecha)"
-            let fechaConvertida = convertir_string_servicio_a_fecha(fecha: fechaHora)
-            
-            return fechaConvertida
-            
-        }
+    // funcion para convertir la fecha de los servicios a formato Date
+
+    func inicioDia(fecha: Date) -> Date {
+        return Calendar.current.startOfDay(for: fecha)
+    }
+    
+    func finDia(fecha: Date) -> Date {
+        
+        var inicio = inicioDia(fecha: fecha)
+        var components = DateComponents()
+        components.day = 1
+        components.second = -1
+        return Calendar.current.date(byAdding: components, to: inicio)!
+    }
+    
 
 }

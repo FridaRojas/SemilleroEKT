@@ -65,6 +65,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="displayP3"/>
             <connections>
+                <outlet property="imgFondo" destination="APY-cY-I8e" id="jcX-4L-fmA"/>
                 <outlet property="imgGrafica" destination="uvd-Mx-IkH" id="XC4-wa-fUj"/>
                 <outlet property="lblCantEnviados" destination="a9l-pB-V5b" id="LA9-dx-0Rq"/>
                 <outlet property="lblCantRecibidos" destination="Pt4-r5-cjS" id="PBc-7A-y8K"/>
