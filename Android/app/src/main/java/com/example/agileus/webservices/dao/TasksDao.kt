@@ -102,7 +102,6 @@ class TasksDao : DialogoConfirmacionListener {
         return listaTareas
     }
 
-
     suspend fun getTasksAssigned(id: String): ArrayList<DataTask> {
         var listaTareasAsignadas = ArrayList<DataTask>()
         lateinit var taskList: TaskList
@@ -130,7 +129,6 @@ class TasksDao : DialogoConfirmacionListener {
         }
         return listaTareasAsignadas
     }
-
 
     fun cancelTask(t: DetalleNivelAltoFragmentArgs) {
         val callback = InitialApplication.webServiceGlobalTasks.cancelarTarea(t.tareas.idTarea)
@@ -160,10 +158,6 @@ class TasksDao : DialogoConfirmacionListener {
                 if (response.code() == 400) {
                     Log.d("Error code 400", response.errorBody()!!.string());
                 }
-    fun editTask(t: DetalleNivelAltoFragmentArgs) {
-        val callback = InitialApplication.webServiceGlobalTasks.editTask(t, t.tareas.idTarea)
-        callback.enqueue(object : Callback<DataTask> {
-            override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
                    // Log.d("Mensaje", "Tarea ${response.body()!!.data.idTarea} editada")
                 } else {

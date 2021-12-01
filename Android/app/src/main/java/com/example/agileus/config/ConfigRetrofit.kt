@@ -9,8 +9,6 @@ import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import okhttp3.logging.HttpLoggingInterceptor
-
 import okhttp3.OkHttpClient
 
 
@@ -21,7 +19,7 @@ class ConfigRetrofit {
 
     //todo Falta editar el url para las tareas
     val URL_BASE_TAREAS =
-        "http://10.97.3.134:2021/api/"
+        "http://10.97.6.35:2021/api/"
 
 
    fun obtenerConfiguracionRetofitMessage(): MessageApi {

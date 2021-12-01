@@ -56,24 +56,23 @@ class TaskViewModel() : ViewModel() {
     fun devolverListaPorStatus(listener: TaskListListener){
         status = statusRecycler.value.toString()
         viewModelScope.launch {
-                listaTask = withContext(Dispatchers.IO){
+            listaTask = withContext(Dispatchers.IO){
+                if(statusRecycler.value.toString() == "asignada"){
+                    //id Emisor
+                    lista.getTasksAssigned("618d9c26beec342d91d747d6")
+                }else{
+                    //id Receptor -> id Receptor
                     lista.getTasksByStatus("4758399642", statusRecycler.value.toString())
-                    if(statusRecycler.value.toString() == "asignada"){
-                        //id Emisor
-                        lista.getTasksAssigned("618d9c26beec342d91d747d6")
-                    }else{
-                        //id Receptor -> id Receptor
-                        lista.getTasksByStatus("4758399642", statusRecycler.value.toString())
-                    }
-                }
-                if (listaTask != null) {
-                    adaptador.value = TasksAdapter(listaTask,listener)
                 }
             }
-            if(listaTask.isNotEmpty()){
-                adaptador.value?.update(listaTask)
+            if (listaTask != null) {
+                adaptador.value = TasksAdapter(listaTask,listener)
             }
-            Log.d("tarea", "${statusRecycler.value}")
+        }
+        if(listaTask.isNotEmpty()){
+            adaptador.value?.update(listaTask)
+        }
+        Log.d("tarea", "${statusRecycler.value}")
     }
 
 }
