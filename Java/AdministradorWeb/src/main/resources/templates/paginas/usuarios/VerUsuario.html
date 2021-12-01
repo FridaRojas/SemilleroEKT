@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        table .resto{
+            padding: 20px;
+            width: 85% ;
+        }
+
+        table .menu{
+            width: 15% ;
+            height: max-content;
+
+
+        }
+
+    </style>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloGeneral.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloVerUsuario.css}" />
+    <title>Title</title>
+
+</head>
+<body >
+
+
+
+
+<table id="tabla">
+    <td  class="menu">
+        <div th:replace="elementos/menuLateral::menuLateral"></div>
+    </td>
+
+    <td class="resto" >
+
+        <div id="Contenedor"  >
+
+            <div>
+                <section class="gray-bg" >
+                        <div class="row  justify-content-around ">
+                                <div class="about-text" style=" width: 80% !important;">
+                                    <br>
+                                    <h3 class="dark-color" th:text="${user.getNombre()}"></h3>
+                                    <br>
+                                    <h4 class="theme-color" th:text="${user.getNombreRol()}"></h4>
+                                    <br>
+                                    <div class="row">
+                                        <div class="column">
+                                            <p>Correo:   </p>
+                                        </div>
+                                        <div class="column">
+                                            <p th:text="${user.getCorreo()}"></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="column">
+                                            <p>Numero de Empleado:   </p>
+                                        </div>
+                                        <div class="column">
+                                            <p th:text="${user.getNumeroEmpleado()}"></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="column">
+                                            <p>Telefono:   </p>
+                                        </div>
+                                        <div class="column">
+                                            <p th:text="${user.getTelefono()}"></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="column">
+                                            <p>CURP:   </p>
+                                        </div>
+                                        <div class="colum">
+                                            <p th:text="${user.getCurp()}"></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="column">
+                                            <p>RFC:   </p>
+                                        </div>
+                                        <div class="colum">
+                                            <p th:text="${user.getRFC()}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                </section>
+
+            </div>
+        </div>
+
+    </td>
+</table>
+
+</body>
+</html>

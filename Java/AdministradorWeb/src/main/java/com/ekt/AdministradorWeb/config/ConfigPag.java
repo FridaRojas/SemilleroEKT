@@ -191,17 +191,16 @@ public class ConfigPag {
                 bandera=true;
            }
        }
-
         //si existen retornar error
-        if (!bandera){
+        if (bandera){
             System.out.println("se modifico con exito");
             return "redirect:/findAllUsuarios";
         }else{
+            System.out.println("Error al modificar usuario");
             redirectAttrs
-                    .addFlashAttribute("mensaje", "Grupo ya existente");
-            return "/paginas/usuarios/EditarUsuario";
+                    .addFlashAttribute("mensaje", "Error al editar usuario, existen datos duplicasdos en la base de datos");
+            return "redirect:/findAllUsuarios";
         }
-
     }
 
     @PostMapping("/CrearGrupo")
@@ -256,12 +255,10 @@ public class ConfigPag {
         }
     }
 
-
     @GetMapping("/inicioGrupos")
     public String inicioGrupos() {
         return "paginas/organigramas/inicioOrganigramas";
     }
-
 
     @GetMapping("/buscarTodosGrupos")
     public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model) {
@@ -292,8 +289,16 @@ public class ConfigPag {
         return "paginas/organigramas/inicioOrganigramas.html";
     }
 
-    @GetMapping("/editarGrupo")
-    public String editarGrupos() {
+    @PostMapping("/editarGrupo")
+    public String editarGrupos(@ModelAttribute User user,@ModelAttribute(value = "idGrupo") String id,Model model) {
+        System.out.println("id en editar: "+id);
+        //añadir la lista de usuarios sin grupo
+        model.addAttribute("listaDisponibles",userDAO.listaUsuariosDisponibles());
+
+        //añadir lista de usuarios del organigrama
+        model.addAttribute("listaUsuariosGrupo",userDAO.listaUsuariosOrganigrama(id));
+
+
         return "paginas/organigramas/editarOrganigrama";
     }
 
@@ -366,8 +371,6 @@ public class ConfigPag {
 
     @GetMapping("/Inicio")
     public String Inicio(){
-
-
         return "paginas/Inicio";
     }
 
@@ -398,6 +401,20 @@ public class ConfigPag {
             System.out.println(e.getMessage());
             return "";
         }
+
+    }
+
+    @GetMapping("/verUsuario")
+    public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
+            User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
+            if (user!=null){
+                model.addAttribute("user", user);
+                return "paginas/usuarios/verUsuario";
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "El usuario ya no existe");
+                return "/findAllUsuarios";
+            }
 
     }
 
