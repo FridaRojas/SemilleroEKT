@@ -9,14 +9,12 @@ import com.ekt.Servicios.service.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/tareas")
@@ -56,5 +54,18 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tarea));
         }else {mensaje = "Error de validacion de tarea";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, validarTareas));}
+    }
+
+    @GetMapping("/obtenerTareas")   //Reportes
+    public ResponseEntity<?> readAll(){
+        Iterable<Task> tareas = tareaService.findAll();
+        String mensaje;
+        int nDocumentos = ((Collection<Task>) tareas).size();
+        if(nDocumentos == 0) {
+            mensaje = "No se encontraron tareas";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
+        }
+        mensaje = "Tareas encontradas";
+        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
     }
 }
