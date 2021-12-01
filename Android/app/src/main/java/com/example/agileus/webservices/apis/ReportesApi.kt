@@ -21,6 +21,10 @@ interface ReportesApi {
     @GET("Messages.json?alt=media&token=39312937-7454-48f1-aa82-5ba279dee438")
     fun getDatosReporteMensajes(): Call<ArrayList<Conversation>>
 
+    @GET("Messages.json?alt=media&token=39312937-7454-48f1-aa82-5ba279dee438")
+    fun getDatosRespuestasBroadcast(): Call<ArrayList<Conversation>>
+
+
     //Busqueda por Id de jefe
     @GET("usuarios_encontrados.json?alt=media&token=92614c22-70fc-46b5-8c38-5137b2799c77")                      //TODO poner URL y consulta real
     fun getListSubContacts():Call<EmployeeListByBossID>

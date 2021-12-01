@@ -101,15 +101,6 @@ class ReporteTareasDao {
                     }
                 }
 
-                fechaIni = ZonedDateTime.parse(it.fecha_fin)
-                fechaIniR = ZonedDateTime.parse(it.fecha_finR)
-                val r = ChronoUnit.MILLIS.between(fechaIniR, fechaIni)
-                /*
-
-                if (0 <= r){
-                    contTareasaTiempo += 1
-                }
-                 */
                 if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
                     contTareasaTiempo += 1
                 }else{
