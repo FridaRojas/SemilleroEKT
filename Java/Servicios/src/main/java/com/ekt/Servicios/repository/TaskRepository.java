@@ -22,4 +22,7 @@ public interface TaskRepository extends MongoRepository<Task,String> {
 
     @Query(value = "{'id_receptor':?0}")
     Iterable<Task> getAllInByUserId(String user_id);
+
+    @Query(value = "{'id_grupo': ?0,'id_emisor': ?1 }")
+    Iterable<Task> getAllByGroupAndIdEmisor(String id_grupo, String id_emisor);
 }
