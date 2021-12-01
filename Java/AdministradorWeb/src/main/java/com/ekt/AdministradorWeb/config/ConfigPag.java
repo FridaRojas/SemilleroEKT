@@ -291,8 +291,16 @@ public class ConfigPag {
         return "paginas/organigramas/inicioOrganigramas.html";
     }
 
-    @GetMapping("/editarGrupo")
-    public String editarGrupos() {
+    @PostMapping("/editarGrupo")
+    public String editarGrupos(@ModelAttribute User user,@ModelAttribute(value = "idGrupo") String id,Model model) {
+        System.out.println("id en editar: "+id);
+        //añadir la lista de usuarios sin grupo
+        model.addAttribute("listaDisponibles",userDAO.listaUsuariosDisponibles());
+
+        //añadir lista de usuarios del organigrama
+        model.addAttribute("listaUsuariosGrupo",userDAO.listaUsuariosOrganigrama(id));
+
+
         return "paginas/organigramas/editarOrganigrama";
     }
 

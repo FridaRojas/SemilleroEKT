@@ -48,7 +48,7 @@ public class GroupController {
         }
     }
 
-
+    @CrossOrigin(origins = { "*" })
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
         if (groupService.buscarPorId(id).isPresent()){
@@ -89,6 +89,8 @@ public class GroupController {
             if (grupo.isPresent()){
                 groupService.borrarUsuarioDeGrupo(body.getIDUsuario(), body.getIDGrupo());
                 System.out.println("Usuario eliminado del grupo");
+                //eliminar informacion de usuario
+
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario eliminado del grupo",grupo.get()));
             }else {
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo o usuario no encontrado",""));
@@ -186,6 +188,7 @@ public class GroupController {
         //return new Response();
     }
 
+    @CrossOrigin(origins = { "*" })
     @GetMapping("/buscarTodo")
     public Response buscarTodo(){
         try {
