@@ -83,15 +83,16 @@
     </td>
 
     <td class="resto" >
-
+        <div  class="alert alert-danger" th:if="${mensaje != null}" th:text="${mensaje}"> </div>
         <div class="titulo" align="center" a >
             <h3 >Editar Usuario</h3>
         </div>
 
 
         <div class="formContenido">
+
             <div class="container">
-                <form method="POST"  th:action="@{/editarUsuarioServicio}" >
+                <form method="POST"  th:action="@{/editarUsuarioServicio(id=${user.getID()})}" th:object="${user}" >
                     <div class="columna">
                         <div class="form-group">
 
@@ -109,7 +110,8 @@
                                                                    th:value="${user.getRFC()}"
                                                                    title="Solo mayusculas o numeros, longitus de 13" minlength="13"
                                                                    maxlength="13" class="form-control"
-                                                                   placeholder="Ingrese RFC" name="rfc" required pattern="[A-Z0-9]+">
+                                                                   pattern="[A-Z0-9]+"
+                                                                   name="RFC" required >
                             <div class="valid-feedback">Valid.</div>
 
                         </div>
@@ -127,7 +129,7 @@
                             <label for="uname">Fecha fin contrato:</label> <input type="date"
                                                                                   th:value="${user.getFechaTermino()}"
                                                                                   class="form-control"
-                                                                                  placeholder="Ingrese la fecha de contrato" name="fechaInicio"
+                                                                                  placeholder="Ingrese la fecha de contrato" name="fechaTermino"
                                                                                   required>
                             <div class="valid-feedback">Valid.</div>
 
@@ -151,7 +153,7 @@
                         <div class="form-group">
                             <label for="uname">CURP:</label> <input type="text"
                                                                     th:value="${user.getCurp()}"
-                                                                    title="Solo mayusculas y numeros, lonitud de 18" minlength="18" maxlength="18"
+                                                                    title="Solo mayusculas y numeros, lonitud de 23" minlength="23" maxlength="23"
                                                                     class="form-control" id="uname" placeholder="Ingrese su curp"
                                                                     name="curp" required pattern="[A-Z0-9]+">
                             <div class="valid-feedback">Valid.</div>
@@ -170,7 +172,16 @@
                             <label for="uname">Fecha inicio contrato:</label> <input type="date"
                                                                                      th:value="${user.getFechaInicio()}"
                                                                                      class="form-control"
-                                                                                     placeholder="Ingrese la fecha de contrato" name="fechaTermino"
+                                                                                     placeholder="Ingrese la fecha de contrato" name="fechaInicio"
+                                                                                     required>
+                            <div class="valid-feedback">Valid.</div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="uname">Password:</label> <input type="password"
+                                                                                     th:value="${user.getPassword()}"
+                                                                                     class="form-control"
+                                                                                     placeholder="Ingrese la fecha de contrato" name="password"
                                                                                      required>
                             <div class="valid-feedback">Valid.</div>
 

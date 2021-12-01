@@ -207,7 +207,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/existUser")
+    @PostMapping("/existUser")
     public ResponseEntity<?> existUser(@RequestBody User user){
         if (user.getCorreo()==null || user.getCurp()==null || user.getRFC()==null || user.getNumeroEmpleado()==null){
             System.out.println("Error en las llaves");
