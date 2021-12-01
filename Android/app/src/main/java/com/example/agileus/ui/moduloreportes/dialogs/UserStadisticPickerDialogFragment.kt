@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences
+import java.lang.Exception
 import java.util.*
 
 
@@ -20,22 +21,9 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             val inflater = requireActivity().layoutInflater
             val vista = inflater.inflate(R.layout.dialog_picker_filtro_meses_anios, null)
 
-            val cal= Calendar.getInstance()
-            val month = cal.get(Calendar.MONTH)
-
-            /*
-            val monthPicker = vista.findViewById<NumberPicker>(R.id.picker_year_month)
-            val txtTitulo = vista.findViewById<TextView>(R.id.txtDPFTitulo)
-            txtTitulo.setText("Usuarios")
-            monthPicker.setMinValue(1)
-            monthPicker.setMaxValue(3)
-            monthPicker.setValue(1)
-
-            monthPicker.displayedValues = arrayOf("Hijo 1", "Hijo 2", "Hijo 3")
-             */
-
             //MySharedPreferences.empleadoUsuario[0].nombre
             var listaNombres = arrayListOf<String>()
+            //listaNombres.add(it.nombre)
             MySharedPreferences.empleadoUsuario.forEach {
                 listaNombres.add(it.nombre)
             }
@@ -44,10 +32,15 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             val txtTitulo = vista.findViewById<TextView>(R.id.txtDPFTitulo)
             txtTitulo.setText("Usuarios")
             userPicker.setMinValue(0)
-            userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size-1)
-            userPicker.setValue(0)
-
-            userPicker.displayedValues = listaNombres.toTypedArray()
+            try {
+                userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size-1)
+                userPicker.setValue(0)
+                userPicker.displayedValues = listaNombres.toTypedArray()
+            }catch (ex:Exception){
+                userPicker.setMaxValue(0)
+                userPicker.setValue(0)
+                userPicker.displayedValues = arrayOf("Cargando")
+            }
 
             builder.setView(vista)
                 // Add action buttons

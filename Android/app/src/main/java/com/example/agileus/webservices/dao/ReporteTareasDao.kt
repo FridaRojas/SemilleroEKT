@@ -14,6 +14,10 @@ class ReporteTareasDao {
 
     private var contador_tareas_terminadas:Int = 0
     private var contador_tareas_pendientes:Int = 0
+    private var contador_tareas_revision:Int = 0
+    private var contador_tareas_iniciada:Int = 0
+    private var contador_tareas_aTiempo:Int = 0
+    private var contador_tareas_fueraTiempo:Int = 0
     private var contador_tareas_leidas:Int=0
     private var contador_tareas_totales:Int=0
 
@@ -23,6 +27,9 @@ class ReporteTareasDao {
     private var suma_tiempos:Int=0
     private var temporal:Int=0
     private lateinit var promedio_tiempo_respuesta:String
+
+    lateinit var fechaIni: ZonedDateTime
+    lateinit var fechaIniR: ZonedDateTime
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosTareas(): ArrayList<Estadisticas> {
@@ -36,29 +43,55 @@ class ReporteTareasDao {
         if (ResponseTareas.isSuccessful) {
             lista = ResponseTareas.body()!!
 
-            val id_receptor = "RECEPT1"
+            val id_receptor = "RECEPT1"                             //TODO id receptor real
                 //lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
 
-            var contador_t_terminadas= 0
-            var contador_t_pendientes = 0
             var contador_t_leidas=0
             var contador_t_totales=0
             var tiempo_p_respuesta=""
+
+            var contador_t_terminadas= 0
+            var contador_t_pendientes = 0
+            var contCancelado = 0
+            var contIniciada = 0
+            var contRevision = 0
+            var contTareasaTiempo = 0
+            var contTareasFueraTiempo = 0
+
             temporal=0
             suma_tiempos=0
             promedio_tiempo_respuesta=""
 
-
+            /*
+            Pendientes
+            Cancelado
+            Iniciada
+            Revision
+            Terminada
+             */
             fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
 
+
             lista.forEach {
-
                 if(id_receptor==it.idReceptor) {
-
                     contador_t_totales = contador_t_totales + 1
 
                     if (it.leido) {
                         contador_t_leidas = contador_t_leidas + 1
+                    }
+
+                    if (it.status.equals("Terminada")) {
+                        contador_t_terminadas = contador_t_terminadas + 1
+                    } else{
+                        if(it.status.equals("Pendiente")) {
+                            contador_t_pendientes = contador_t_pendientes + 1
+                        } else if(it.status.equals("Iniciada")){
+                            contIniciada =+ 1
+                        } else if(it.status.equals("Revision")){
+                            contRevision =+ 1
+                        }else{  //Cancelado
+                            contCancelado =+ 1
+                        }
                     }
 
                     if (it.status.equals("Cancelado")) {
@@ -69,13 +102,26 @@ class ReporteTareasDao {
                     }
                 }
 
+                fechaIni = ZonedDateTime.parse(it.fecha_fin)
+                fechaIniR = ZonedDateTime.parse(it.fecha_finR)
+                val r = ChronoUnit.MILLIS.between(fechaIniR, fechaIni)
+                /*
+
+                if (0 <= r){
+                    contTareasaTiempo += 1
+                }
+                 */
+                if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
+                    contTareasaTiempo += 1
+                }else{
+                    contTareasFueraTiempo = contTareasFueraTiempo + 1
+                }
+
                 /*fecha_actual = ZonedDateTime.parse(it.fecha_ini)
                 diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)
 
                 Log.d("dias","diferencia días: ${diferencia_horas}")
-
                 suma_tiempos = suma_tiempos + diferencia_horas.toInt()
-
                 Log.d("dias","suma tiempos: ${suma_tiempos}")
 
                 fecha_anterior = fecha_actual
@@ -100,13 +146,17 @@ class ReporteTareasDao {
 
             contador_tareas_terminadas=contador_t_terminadas
             contador_tareas_pendientes=contador_t_pendientes
+            contador_tareas_revision=contRevision
+            contador_tareas_iniciada=contIniciada
+            contador_tareas_aTiempo=contTareasaTiempo
+            contador_tareas_fueraTiempo=contTareasFueraTiempo
             contador_tareas_totales=contador_t_totales
             contador_tareas_leidas=contador_t_leidas
             promedio_tiempo_respuesta=tiempo_p_respuesta
 
-
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
             listaRecycler.add(Estadisticas("Tareas terminadas a tiempo:","","",promedio_tiempo_respuesta, R.drawable.ic_bar_chart))
+
 
             Log.d("dias","promedio respuesta: ${promedio_tiempo_respuesta}")
         }
@@ -116,22 +166,34 @@ class ReporteTareasDao {
 
 
     fun obtenerTareasTerminadas():String{
-
         return contador_tareas_terminadas.toString()
     }
 
     fun obtenerTareasPendientes():String{
-
         return contador_tareas_pendientes.toString()
     }
 
-    fun obtenerTareasTotales():String{
+    fun obtenerTareasEnRevision():String{
+        return contador_tareas_revision.toString()
+    }
 
+    fun obtenerTareasIniciadas():String{
+        return contador_tareas_iniciada.toString()
+    }
+
+    fun obtenerTareasATiempo():String{
+        return contador_tareas_aTiempo.toString()
+    }
+
+    fun obtenerTareasFueraTiempo():String{
+        return contador_tareas_fueraTiempo.toString()
+    }
+
+    fun obtenerTareasTotales():String{
         return contador_tareas_totales.toString()
     }
 
     fun obtenerTareasLeidas():String{
-
         return contador_tareas_leidas.toString()
     }
 

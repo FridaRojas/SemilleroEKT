@@ -113,6 +113,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChart=binding.barChart
         binding.colorlegend1.isVisible=false
         binding.colorlegend2.isVisible=false
+        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
 
         reporteMensajesViewModel.devuelvelistaReporte(this)
 
@@ -158,6 +159,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         pieChart=binding.pieChart
         binding.colorlegend1.isVisible=true
         binding.colorlegend2.isVisible=true
+
+        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
 
         reporteMensajesViewModel.devuelvelistaReporte(this)
 
@@ -312,7 +315,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChart.invalidate()
 
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

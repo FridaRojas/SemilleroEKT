@@ -58,7 +58,8 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
 
             val chipGroup = vista.findViewById<ChipGroup>(R.id.group)
 
-            txtTitulo.setText(MySharedPreferences.idUsuario)
+            //txtTitulo.setText(MySharedPreferences.idUsuario)
+            txtTitulo.setText("Filtrar")
             txtUsuario.setText(MySharedPreferences.idUsuarioEstadisticas)
             txtInicio.setText("Dia:")
             val fechaActual = dmyFormatoFecha(actualDay, actualMonth-1, actualYear)

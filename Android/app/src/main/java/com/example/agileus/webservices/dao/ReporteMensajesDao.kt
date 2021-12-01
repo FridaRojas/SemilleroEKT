@@ -104,7 +104,7 @@ class ReporteMensajesDao {
             promedio_tiempo_respuesta=tiempo_p_respuesta
 
                 listaRecycler.add(Estadisticas("Enviados:",contador_mensajes_enviados.toString(),"Recibidos:",contador_mensajes_recibidos.toString(), R.drawable.ic_pie_chart))
-                listaRecycler.add(Estadisticas("Promedio de respuesta del Broadcast:","","",promedio_tiempo_respuesta, R.drawable.ic_bar_chart))
+                listaRecycler.add(Estadisticas("Respuestas del Broadcast:","","",contador_mensajes_recibidos.toString(), R.drawable.ic_bar_chart))
         }
 
         return listaRecycler
