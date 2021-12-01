@@ -33,15 +33,9 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         savedInstanceState: Bundle?
     ): View? {
 
-    //    val mypost=Buzon("6","Broadcast","General","hola mundo feo","prueba de post")
-
-
-
 
         viewModel = ViewModelProvider(this)[BuzonDetallesViewModel::class.java]
         _binding = BuzonDetallesFragmentBinding.inflate(inflater, container, false)
-
-
 
 
 
@@ -52,12 +46,33 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        var lista=viewModel.getLista()
+//        Log.i("lista",lista.size.toString())
+
+
+        //       val post=Buzon("12","Brody","General","hola mundo feo 1","prueba de post")
+   //     viewModel.postMensaje(post)
+
+        viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
+            if (response.isSuccessful)
+            {
+                Log.d("Main",response.body().toString())
+                Log.d("Main",response.code().toString())
+                Log.d("Main",response.message().toString())
+            }
+            else{
+                Log.d("Main",response.code().toString())
+            }
+        })
+
+
 
         USERTYPE="Broadcast"
             binding.vista2.visibility=View.INVISIBLE
 
         if (control == 1) {
             binding.fab.visibility = View.VISIBLE
+
             binding.fab.setOnClickListener {
                 val newFragment =
                     DialogoSenderBroadcast(this) //Se le pasa el dialogolistener con This
@@ -72,7 +87,7 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
             }
         }
 
-        viewModel.devuelvebuzon()
+//        viewModel.devuelvebuzon()
 
             viewModel.adaptador.observe(viewLifecycleOwner, {
                 binding.recyclerBuzon.adapter = it
@@ -88,12 +103,17 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
 
         override fun mensajeBroadcasting(buzon: Buzon) {
 
+
             viewModel.postMensaje(buzon)
+
+
             viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
                 if (response.isSuccessful)
                 {
                     Log.i("Code ",response.code().toString())
                 }
+                else{
+                    Log.i("Code ",response.code().toString())}
             })
 
             Handler().postDelayed({
@@ -101,6 +121,8 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 binding.vista2.visibility = View.VISIBLE
                 binding.fab.visibility = View.INVISIBLE
             }, 5)
+
+
             startTimeCounter()
               ////////////////
             Handler().postDelayed({

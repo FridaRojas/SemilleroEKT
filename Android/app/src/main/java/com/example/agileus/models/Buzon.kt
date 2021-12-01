@@ -2,6 +2,7 @@ package com.example.agileus.models
 
 import com.google.gson.annotations.SerializedName
 
+
 data class Buzon(
     @SerializedName ("id") var id: String,
     @SerializedName ("Senderid") var Senderid: String,

@@ -14,4 +14,4 @@ class Contacts (
     @SerializedName("telefono")val telefono: String,
     @SerializedName("statusActivo") val statusActivo: String,
     @SerializedName("idsuperiorInmediato")val idsuperiorInmediato: String
-        )
+    )

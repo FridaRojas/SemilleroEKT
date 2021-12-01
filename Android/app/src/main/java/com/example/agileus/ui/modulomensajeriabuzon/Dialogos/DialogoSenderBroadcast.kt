@@ -40,13 +40,12 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
                     DialogInterface.OnClickListener { dialog, id ->
                         if(Asunto.toString().isEmpty() || Mensaje.toString().isEmpty() ) {
                             Toast.makeText(activity,
-                                "",
+                                "Accion no permitida",
                                 Toast.LENGTH_LONG
                             ).show()
-                        }else{
-                                listener.mensajeBroadcasting(
-                                    Buzon("","Broadcast",Destinatario.text.toString(),Asunto.text.toString(),Mensaje.text.toString())
-                                )
+                        }else {
+                            listener.mensajeBroadcasting(Buzon("1","Broadcast",Destinatario.text.toString(),Asunto.text.toString(),Mensaje.text.toString())
+                            )
                         }
                     })
                 .setNegativeButton("Cancelar",

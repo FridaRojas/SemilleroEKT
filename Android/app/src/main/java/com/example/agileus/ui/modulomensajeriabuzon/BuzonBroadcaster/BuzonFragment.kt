@@ -11,7 +11,6 @@ import com.example.agileus.R
 import com.example.agileus.databinding.FragmentBuzonBinding
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
-import com.example.agileus.utils.isConnectedToThisServer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class BuzonFragment : Fragment() {
@@ -40,17 +39,6 @@ companion object{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
-        val host: String = "178.33.5.208 " // cambiar por la ip de sus pruebas
-
-        if (isConnectedToThisServer("host")) {
-            Log.i("Ping","PING SUCESSFULL")
-        } else {
-            Log.i("Ping","PING FAILED")
-        }
-
 
 
         binding.mensajesrecibidos.setOnClickListener {

@@ -62,6 +62,8 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
         viewModel.devuelvebuzon()
 
+
+
         viewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerBuzon.adapter = it
             binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
@@ -77,13 +79,14 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
     override fun mensajeBroadcasting(buzon: Buzon) {
 
         viewModel.postMensaje(buzon)
-        viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
-            if (response.isSuccessful)
-            {
-                Log.i("response",response.code().toString())
-            }}
+        viewModel.myResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                if (response.isSuccessful) {
+                    Log.i("response", response.code().toString())
+                }
+            },
         )
-
 
     Handler().postDelayed({
             binding.vista1.visibility= View.INVISIBLE
