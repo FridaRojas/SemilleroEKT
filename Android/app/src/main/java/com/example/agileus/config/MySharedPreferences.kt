@@ -12,6 +12,8 @@ class MySharedPreferences {
         var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
         var fechaEstadisticas = Constantes.date.toString()
         var id_broadcast="61a101db174bcf469164d2fd"
+        var fechaIniEstadisticas = "1970-01-01T00:00:00.000+00:00"
+        var fechaFinEstadisticas = Constantes.date.toString()
         var empleadoUsuario = emptyList<Contacts>()
         var tipo_grafica:Int=0
         var vista:Int=0

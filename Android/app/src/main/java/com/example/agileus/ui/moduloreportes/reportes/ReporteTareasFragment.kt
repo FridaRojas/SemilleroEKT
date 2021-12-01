@@ -104,6 +104,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         barChart=binding.barChart
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
 
         reporteTareasViewModel.devuelvelistaReporte(this)
 
@@ -142,6 +143,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private fun mostrargraficaPie() {
         pieChart=binding.pieChart
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
+
 
         reporteTareasViewModel.devuelvelistaReporte(this)
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
@@ -347,8 +350,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
         cambiarGrafica(tipo_grafica)
-        Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniCustomEstadisticas}, fecha: ${MySharedPreferences.fechaEstadisticas}", Toast.LENGTH_SHORT).show()
-        Log.d("DateFilter",  "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniCustomEstadisticas}, fecha: ${MySharedPreferences.fechaEstadisticas}")
+        Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+        Log.d("DateFilter",  "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}")
     }
 
 }
