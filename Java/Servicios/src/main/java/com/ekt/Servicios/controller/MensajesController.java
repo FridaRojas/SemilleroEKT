@@ -350,6 +350,16 @@ public class MensajesController {
 	@GetMapping("listaGrupos/{miId}")
 	public ResponseEntity<?> listaGrupos(@PathVariable(value = "miId") String miId) {
 
+		if(miId.length()<24 || miId.length()>24) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id incorrecto",""));
+		}
+		
+		Optional<User> existo = userRepository.validarUsuario(miId);
+		
+		if(!existo.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario en la base de datos",miId));
+		}
+		
 		List<Conversacion> grupos = grupos(miId);
 
 		return ResponseEntity.status(HttpStatus.OK).body(grupos);
