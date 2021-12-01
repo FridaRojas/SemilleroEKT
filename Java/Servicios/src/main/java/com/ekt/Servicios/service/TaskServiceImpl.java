@@ -55,4 +55,13 @@ public class TaskServiceImpl implements TaskService{
             tareaRepository.save(tareaUpdate);
         }
     }
+    @Override
+    public void actualizarEstatus(String id_tarea, String estatus){
+        Optional<Task> tareaOptionals = tareaRepository.findById(id_tarea);
+        if (tareaOptionals.isPresent()){
+            Task updateEstatus = tareaOptionals.get();
+            updateEstatus.setEstatus(estatus);
+            tareaRepository.save(updateEstatus);
+        }
+    }
 }

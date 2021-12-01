@@ -10,4 +10,5 @@ public interface TaskService {
     public Iterable<Task> findAll();
     public void  deleteById(String id );
     public void updateById(String id, Task tarea);
+    public void  actualizarEstatus(String id_tarea, String estatus );
 }
