@@ -9,4 +9,5 @@ public interface TaskService {
     public Optional<Task> findById(String id);
     public Iterable<Task> findAll();
     public void  deleteById(String id );
+    public void updateById(String id, Task tarea);
 }
