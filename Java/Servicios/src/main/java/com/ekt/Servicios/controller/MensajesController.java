@@ -245,27 +245,33 @@ public class MensajesController {
 	}
 
 	@PutMapping("actualizarLeido")
-	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) throws ResultadoNoEncontrado {
-		// Buscamos el mensaje
+	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) {
+		
+		if(mensajes.getID()==null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error en el Json de entrada",""));
+		}
+		
+		if(mensajes.getID().length()<24 || mensajes.getID().length()>24) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id mensaje incorrecto",""));
+		}
+		
 		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(mensajes.getID());
 
-		// Validamos que exista
-		validarMensajeImpl.validarOptionalMensajes(mensaje, "Mensaje");
-
+		if(!mensaje.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro un mensaje",""));
+		}
+		
 		if (mensaje.get().isStatusLeido()) {
-			return ResponseEntity.status(HttpStatus.OK).body("El status ya es verdadero");
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"El status ya es verdadero",""));
 		} else {
-			// Si existe:
-			// actualizamos la fecha actual a la fecha entrante
+			
 			mensaje.get().setFechaLeido(mensajes.getFechaLeido());
 
-			// actualizamos el statusLeido actual al entrante
 			mensaje.get().setStatusLeido(true);
 
-			// guardamos cambios
 			mensajesService.save(mensaje.get());
 
-			return ResponseEntity.status(HttpStatus.OK).body("Actualizado");
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Actualizado",mensaje.get().getID()));
 		}
 	}
 	
