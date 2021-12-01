@@ -2,10 +2,14 @@ package com.ekt.Servicios.service;
 
 import com.ekt.Servicios.entity.Task;
 import com.ekt.Servicios.repository.TaskRepository;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -105,8 +109,6 @@ public class TaskServiceImpl implements TaskService{
                 Task tareaUpdate = tareaOptional.get();
                 tareaUpdate.setFecha_finR(tarea.getFecha_finR());
                 tareaRepository.save(tareaUpdate);
-            }else{
-                //VALIDAR
             }
         }
     }
@@ -140,5 +142,27 @@ public class TaskServiceImpl implements TaskService{
         if (!estatusT) errores.add("estatus");
 
         return errores;
+    }
+
+    @Override
+    public void notificacion(String token, String asunto) {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        MediaType mediaType = MediaType.parse("application/json");
+        okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\n    \"to\": \""+token+"\",\n    " +
+                "\"notification\": {\n        " +
+                "\"body\": \""+ asunto +"\",\n        " +
+                "\"title\": \"Tienes una tarea nueva\"\n    }\n}");
+
+        Request request = new Request.Builder()
+                .url("https://fcm.googleapis.com/fcm/send")
+                .method("POST", body)
+                .addHeader("Authorization", "key=AAAAIITlXUs:APA91bHueyZr0vJFOSo-yLEbRsG20D8rquPQbQJ1C82JTcnaOjB2ghemxgUljAzwE4wsPEzjQZY2GlrNcI1sFx__SuxsGfszskEF2cx5zy3yYFCdiU2681mCoLwMw_fH4TjmocJIQyYx")
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            okhttp3.Response response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

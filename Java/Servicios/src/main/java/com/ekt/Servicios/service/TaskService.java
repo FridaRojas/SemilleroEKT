@@ -16,4 +16,5 @@ public interface TaskService {
     public void updateRealDateStart(String id_tarea, Task tarea);
     public void updateRealDateFinish(String id_tarea, Task tarea);
     public ArrayList<String> validarTareasCrear(Task tarea);
+    public void notificacion(String token, String asunto);
 }
