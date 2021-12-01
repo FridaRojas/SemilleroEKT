@@ -132,4 +132,14 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
         }
     }
+
+    @GetMapping("/filtrarTareasPorPrioridad/{prioridad}")//Reportes
+    public ResponseEntity<?> getTareasByPrioridad(@PathVariable String prioridad) {
+        Iterable<Task> tareas = tareaRepository.findByPriority(prioridad);
+        int nDocumentos = ((Collection<Task>) tareas).size();
+        if(nDocumentos == 0){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(tareas.iterator());
+    }
 }
