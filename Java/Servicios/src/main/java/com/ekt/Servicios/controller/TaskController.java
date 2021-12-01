@@ -118,4 +118,18 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
         }
     }
+
+    @DeleteMapping("/cancelarTarea/{id}") //Tareas
+    public ResponseEntity<?> deleteById(@PathVariable String id){
+        String mensaje;
+        Optional<Task> oTarea = tareaService.findById(id);
+        if (oTarea.isPresent()) {
+            tareaService.deleteById(id);
+            mensaje = "Tarea con id: "+id+" cancelada";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }else {
+            mensaje = "Tarea con Id: "+id +" no encontrado";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
+    }
 }
