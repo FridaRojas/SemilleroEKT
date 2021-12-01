@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -35,9 +37,8 @@ public class UserController {
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            Optional<User> us= userRepository.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
-
-            if (us.isPresent()){
+            boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
+            if (us){
                 return ResponseEntity.ok(new Response(HttpStatus.CONFLICT,"Usuario existente",""));
             }else {
                 userService.save(user);
@@ -67,8 +68,7 @@ public class UserController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<?> userValidate(@RequestBody User infAcceso) throws JSONException {
-
+        public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
         if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
@@ -141,13 +141,20 @@ public class UserController {
             if(!user.isPresent()) {
                 return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
             }else {
-                if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(user.get().getCorreo())){
+                System.out.println("0");
+                if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(userUpdate.getCorreo())){
+                    System.out.println("1");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", ""));
-                }else if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(user.get().getCurp())){
+                }else
+
+                    if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(userUpdate.getCurp())){
+                    System.out.println("2");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", ""));
-                }else if(!user.get().getRFC().equals(userUpdate.getRFC()) && userService.buscaRFCUsuario(user.get().getRFC())){
+                }else if(!user.get().getRFC().equals(userUpdate.getRFC()) && userService.buscaRFCUsuario(userUpdate.getRFC())){
+                    System.out.println("3");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "RFC no válido", ""));
-                }else if(!user.get().getNumeroEmpleado().equals(userUpdate.getNumeroEmpleado()) && userService.buscaNoEmpleadoUsuario(user.get().getNumeroEmpleado())){
+                }else if(!user.get().getNumeroEmpleado().equals(userUpdate.getNumeroEmpleado()) && userService.buscaNoEmpleadoUsuario(userUpdate.getNumeroEmpleado())){
+                    System.out.println("4");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
                 }else{
                     groupService.actualizaUsuario(userUpdate);
@@ -157,6 +164,7 @@ public class UserController {
         }catch (Exception e){
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, e.toString(), ""));
         }
+
     }
 
     @PutMapping("/updateRol")
@@ -204,7 +212,6 @@ public class UserController {
     public ResponseEntity<?> findByBossId(@PathVariable String id){
         try {
             Iterable<User> users = userService.findUserByBossId(id);
-            System.out.println(((Collection<User>) users).size());
             if(((Collection<User>) users).size()>0) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuarios encontrados", users));
             }
@@ -216,18 +223,18 @@ public class UserController {
         }
     }
 
-    @GetMapping("/existUser")
+    @PostMapping("/existUser")
     public ResponseEntity<?> existUser(@RequestBody User user){
         if (user.getCorreo()==null || user.getCurp()==null || user.getRFC()==null || user.getNumeroEmpleado()==null){
             System.out.println("Error en las llaves");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
-            Optional<User> us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(),user.getRFC(),user.getNumeroEmpleado());
-            if (us.isPresent()){
+            boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
+            if (us){
                 System.out.println("El usuario existe");
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"El usuario existe",us.get()));
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"El usuario existe","true"));
             }else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado","false"));
             }
         }
     }
@@ -251,4 +258,41 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/buscarFamilia/{id}")
+    public Response findFamily(@PathVariable String id){
+        System.out.println(id);
+        ArrayList<User> listaUsuarios=new ArrayList<>();
+
+        /*
+        -verificar que existe el id
+        -buscar al padre
+        -buscar hermanos
+        -buscarhijos
+        -buscar hijos de hijos hasta el infinito
+
+         */
+        try {
+            User tempUser=new User();
+            //verificar que existe el id
+            if(userService.findById(id).isPresent()){
+                tempUser=userService.findById(id).get();
+                //buscar al padre
+                if (tempUser.getIDSuperiorInmediato().length()>5){
+                    if (userService.findById(tempUser.getIDSuperiorInmediato()).isPresent()){
+                        listaUsuarios.add(userService.findById(tempUser.getIDSuperiorInmediato()).get());
+                    }
+                }
+                return new Response(HttpStatus.OK,"hasta aqui solo esta el papa",listaUsuarios);
+
+            }else{
+                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+id+" no existe","");
+            }
+        }catch (Exception e){
+            System.err.println("Excepcion: "+e);
+            return new Response(HttpStatus.NOT_FOUND,"Error en la consulta","");
+        }
+    }
+
+
 }

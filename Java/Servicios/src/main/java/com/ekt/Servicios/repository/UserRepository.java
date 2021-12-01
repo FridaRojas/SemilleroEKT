@@ -7,13 +7,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends MongoRepository<User,String> {
-
-    @Query("{ 'correo' : ?0, 'curp' : ?1, 'rfc' : ?2, 'numeroEmpleado' : ?3, }")
-    Optional<User> findUsersByUniqueData(String correo, String curp, String rfc, String empleado);
 
     @Query("{'correo': ?0,'password': ?1 }")
     Optional<User> findByCorreoPassoword (String correo,String passwoprd);
@@ -32,5 +30,8 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     @Query("{ 'numeroEmpleado' : ?0}")
     Optional<User> findByNumeroEmpleado(String numeroEmpleado);
+
+    @Query("{ 'idSuperiorInmediato' : ?0}")
+    Optional<ArrayList<User>> findChilds(String idPadre);
 
 }

@@ -2,6 +2,7 @@ package com.ekt.Servicios.service;
 
 import com.ekt.Servicios.entity.User;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public interface UserService {
@@ -10,7 +11,7 @@ public interface UserService {
 
      Optional<User> findById(String id);
 
-     Optional<User> findUsersByUniqueData(String correo, String curp, String rfc, String empleado);
+     Boolean findUsersByUniqueData(String correo, String curp, String rfc, String empleado);
 
      Optional<User> userValidate(String id, String password);
     Iterable<User> findUserByBossId(String id);
@@ -29,5 +30,5 @@ public interface UserService {
      boolean buscaCURPUsuario(String curp);
      boolean buscaRFCUsuario(String rfc);
      boolean buscaNoEmpleadoUsuario(String noEmpleado);
-
+        Optional<ArrayList<User>> findChilds(String idPadre);
 }

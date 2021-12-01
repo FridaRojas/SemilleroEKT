@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -28,9 +29,17 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(id);
     }
     @Override
-    public Optional<User> findUsersByUniqueData(String correo, String curp, String rfc, String empleado){
+    public Boolean findUsersByUniqueData(String correo, String curp, String rfc, String empleado){
 
-        return userRepository.findUsersByUniqueData(correo, curp,rfc,empleado);
+        boolean res=false;
+        boolean us= buscaCorreoUsuario(correo);
+        boolean us2= buscaCURPUsuario(curp);
+        boolean us3= buscaRFCUsuario(rfc);
+        boolean us4= buscaNoEmpleadoUsuario(empleado);
+        if (us || us2 || us3 || us4){
+            res=true;
+        }
+        return res;
     }
 
     @Override
@@ -117,6 +126,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean buscaNoEmpleadoUsuario(String noEmpleado) {
         return userRepository.findByNumeroEmpleado(noEmpleado).isPresent();
+    }
+
+    @Override
+    public Optional<ArrayList<User>> findChilds(String idPadre) {
+        return userRepository.findChilds(idPadre);
     }
 
 }

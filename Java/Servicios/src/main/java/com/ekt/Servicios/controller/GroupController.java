@@ -26,9 +26,10 @@ public class GroupController {
     @Autowired
     public UserService userService;
 
-    @PostMapping()
+    @PostMapping("/crear")
     public ResponseEntity<?> save(@RequestBody Group group){
         Group obj= groupService.guardar(group);
+        System.out.println(group.getNombre());
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
     }
 
@@ -38,7 +39,7 @@ public class GroupController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error  en las llaves",""));
         }else{
             Group group= groupService.guardarUsuario(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
-            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIDUsuario()).get(), bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
+            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIDUsuario()).get(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getNombreRol());
             if (group==null && user==null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al realizar en la operacion,parametro no valido",""));
             }else{
@@ -47,6 +48,7 @@ public class GroupController {
         }
     }
 
+    @CrossOrigin(origins = { "*" })
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
         if (groupService.buscarPorId(id).isPresent()){
@@ -86,13 +88,19 @@ public class GroupController {
 
             if (grupo.isPresent()){
                 groupService.borrarUsuarioDeGrupo(body.getIDUsuario(), body.getIDGrupo());
+                //cambia idSuperior, Rol y idGrupo a ""
+                Optional<User> us=userService.findById(body.getIDUsuario());
+                us.get().setIDSuperiorInmediato("");
+                us.get().setIDGrupo("");
+                us.get().setNombreRol("");
+                userService.save(us.get());
+
                 System.out.println("Usuario eliminado del grupo");
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario eliminado del grupo",grupo.get()));
             }else {
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo o usuario no encontrado",""));
             }
         }
-
     }
 
     @GetMapping("/buscarUsuarioEnGrupo")
@@ -185,6 +193,7 @@ public class GroupController {
         //return new Response();
     }
 
+    @CrossOrigin(origins = { "*" })
     @GetMapping("/buscarTodo")
     public Response buscarTodo(){
         try {
@@ -205,6 +214,7 @@ public class GroupController {
      * @return
      *
      */
+    @CrossOrigin(origins = "http://localhost:8080/")
     @GetMapping("/buscarTodoPags")
     public Response buscarTodoPageable(@RequestBody String json){
         try {
@@ -246,5 +256,7 @@ public class GroupController {
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error desconocido", ""));
         }
     }
+
+
 
 }

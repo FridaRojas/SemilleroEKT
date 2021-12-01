@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        table{
+            width:100%;
+
+        }
+        table .resto{
+            padding: 20px;
+            width: 85% ;
+        }
+
+        table .menu{
+            width: 15% ;
+            height: max-content;
+
+
+        }
+        .main {
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        /* Bootstrap 4 text input with search icon */
+
+        .has-search .form-control {
+            padding-left: 2.375rem;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: right;
+            pointer-events: none;
+            color: #66BB6A;
+        }
+
+        .contenedor{
+            width:90px;
+            height:240px;
+            position:fixed;
+            right:0px;
+            bottom:0px;
+        }
+        .botonF1{
+            width:60px;
+            height:60px;
+            border-radius:100%;
+            background:#66BB6A;
+            right:0;
+            bottom:0;
+            position:absolute;
+            margin-right:16px;
+            margin-bottom:16px;
+            border:none;
+            outline:none;
+            color:#FFF;
+            font-size:36px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            transition:.3s;
+        }
+
+    </style>
+
+    <link
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
+    <title>Title</title>
+
+</head>
+<body onload="buscar()">
+<table id="tabla">
+    <td  class="menu">
+        <div th:replace="elementos/menuLateral::menuLateral"></div>
+    </td>
+    <td class="resto" >
+        <div class="row justify-content-center" style="height: 75vh;overflow: auto;">
+            <div th:insert="elementos/Organigrama::organigrama"></div>
+        </div>
+        <div class="row d-flex justify-content-around" style="min-height: 20vh; ">
+            <!-- boton de agregar usuarios-->
+            <div class="col-2">
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalAgregarUsuarioAGrupo">
+                    <img src="/assets/++.png" style="max-height: 7vh;"/>
+                    <p>Agregar usuario</p>
+                </button>
+            </div>
+            <!-- modal agregar usuarios-->
+
+            <div class="col-2">
+                <button class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
+                    <img src="/assets/--.png" style="max-height: 7vh;"/>
+                    <p>Quitar usuario</p>
+                </button>
+            </div>
+            <div th:replace="paginas/modalEliminaUsuario::#modalEliminaUsuario"></div>
+
+        </div>
+    </td>
+</table>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalAgregarUsuarioAGrupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!--/*@thymesVar id="Group" type="java"*/-->
+    <form th:action="@{/agregarUsuarioAGrupo}" th:object="${Group}"  method="post" name="agregarUsuarioAGrupo" id="agregarUsuarioAGrupo">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Agregar usuario a organigrama</h5>
+                </div>
+
+                <div class="modal-body">
+                    <input type="text" name="name"  class="form-control" aria-describedby="sizing-addon1" required>
+
+                    <div class="form-group">
+                        <label>Seleccione usuario</label>
+                        <select name="idUsuario" id="idUsuario">
+                            <optgroup>
+                                <p th:each="user: ${listaDisponibles}">
+                                    <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                </p>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seleccione usuario</label>
+                        <select name="idUsuario" id="idUsuarioGrupo">
+                            <optgroup>
+                                <p th:each="user: ${listaUsuariosGrupo}">
+                                    <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                </p>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Asigne Rol</label>
+                        <input type="text" name="name"  class="form-control" aria-describedby="sizing-addon1" required>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Crear</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

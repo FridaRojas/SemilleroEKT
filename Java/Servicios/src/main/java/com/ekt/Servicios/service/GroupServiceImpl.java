@@ -94,7 +94,7 @@ public class GroupServiceImpl implements GroupService{
 
     }
     @Override
-    public void borrarUsuarioDeGrupo( String idUser, String idGroup){
+    public void borrarUsuarioDeGrupo(String idUser, String idGroup){
         System.out.println("idUser:"+idUser+" idGroup:"+idGroup);
 
         //buscar el grupo
@@ -137,23 +137,29 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public boolean actualizaUsuario(User usuario){
-        Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(usuario.getIDGrupo(),usuario.getID());
-        User []usuarios = grupo.get().getUsuarios();
         boolean bandera = false;
-        for(User user:usuarios){
-            if(user.getID().equals(usuario.getID())){
-                user.setCorreo(usuario.getCorreo());
-                user.setFechaInicio(usuario.getFechaInicio());
-                user.setFechaTermino(usuario.getFechaTermino());
-                user.setNombre(usuario.getNombre());
-                user.setPassword(usuario.getPassword());
-                user.setRFC(usuario.getRFC());
-                user.setCurp(usuario.getCurp());
-                user.setNumeroEmpleado(user.getNumeroEmpleado());
-                user.setTelefono(usuario.getTelefono());
-                bandera = true;
+        User []usuarios =null;
+        Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(usuario.getIDGrupo(),usuario.getID());
+
+        if (grupo.isPresent()){
+            usuarios = grupo.get().getUsuarios();
+            for(User user:usuarios){
+                if(user.getID().equals(usuario.getID())){
+                    user.setCorreo(usuario.getCorreo());
+                    user.setFechaInicio(usuario.getFechaInicio());
+                    user.setFechaTermino(usuario.getFechaTermino());
+                    user.setNombre(usuario.getNombre());
+                    user.setPassword(usuario.getPassword());
+                    user.setRFC(usuario.getRFC());
+                    user.setCurp(usuario.getCurp());
+                    user.setNumeroEmpleado(user.getNumeroEmpleado());
+                    user.setTelefono(usuario.getTelefono());
+                    bandera = true;
+                }
             }
         }
+
+
         if(bandera){
             grupo.get().setUsuarios(usuarios);
             groupRepository.save(grupo.get());
