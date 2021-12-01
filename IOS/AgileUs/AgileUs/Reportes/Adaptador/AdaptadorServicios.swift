@@ -10,23 +10,36 @@ import UIKit
 
 class AdaptadorServicios{
     
-    func serviciosWeb(webServiceUser: @escaping (_ Datos: [Any]) -> Void) {
+    func serviciosWeb(idUsuario: String, webServiceUser: @escaping (_ Datos: [Any]) -> Void) {
         let pantallaUsuarios = Usuarios()
         pantallaUsuarios.webService = webServiceUser
-        pantallaUsuarios.webServiceUsuarios()
+        pantallaUsuarios.webServiceUsuarios(idUsuario: idUsuario)
     }
     
-    /*func servicioWebTareasAdapter(webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
+    func servicioWebTareasAdapter(webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
         let claseTareas = TareasService()
         claseTareas.webServiceTask = webServiceTareas
         claseTareas.webServiceTareas()
         
-    }*/
+    }
         
-    func servicioWebMensajesAdapter(webServiceMensajes: @escaping (_ Datos: [Any]) -> Void){
+    func servicioWebMensajesAdapter(idUsuario: String, webServiceMensajes: @escaping (_ Datos: [Any]) -> Void){
         let claseMensajes = MensajesService()
         claseMensajes.webServiceMessage = webServiceMensajes
-        claseMensajes.webServiceMensajes()
+        claseMensajes.webServiceMensajes(idUsuario: idUsuario)
     }
+    
+    func servicioWebBroadcastAdapter(idUsuario: String, webServiceBroadcast: @escaping (_ Datos: [Any]) -> Void){
+        let claseMensajes = MensajesService()
+        claseMensajes.webServiceBroad = webServiceBroadcast
+        claseMensajes.webServiceBroadcast(idUsuario: idUsuario)
+    }
+    
+    func servicioWebTareasAdapter(idUsuario: String, webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
+        let claseTareas = TareasService()
+        claseTareas.webServiceTask = webServiceTareas
+        claseTareas.webServiceTareas(idUsuario: idUsuario)
+    }
+    
 
 }

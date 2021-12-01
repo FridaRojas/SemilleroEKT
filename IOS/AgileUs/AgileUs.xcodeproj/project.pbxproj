@@ -21,6 +21,7 @@
 		4925700C274C1AF20014A8B4 /* ListaGrafica.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4925700A274C1AF20014A8B4 /* ListaGrafica.xib */; };
 		5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */; };
 		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
+		C12B3D1527519D1F00ABDD09 /* Tareas.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12B3D1427519D1F00ABDD09 /* Tareas.swift */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
 		D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C792746BD81002121E4 /* SceneDelegate.swift */; };
 		D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C7B2746BD81002121E4 /* ViewController.swift */; };
@@ -71,6 +72,7 @@
 		7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
 		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
+		C12B3D1427519D1F00ABDD09 /* Tareas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tareas.swift; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E69C742746BD81002121E4 /* AgileUs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileUs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E69C772746BD81002121E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		4916EAE5275005B400FA0380 /* Servicios */ = {
 			isa = PBXGroup;
 			children = (
+				C12B3D1427519D1F00ABDD09 /* Tareas.swift */,
 				4916EAEC27503C1000FA0380 /* Mensajes.swift */,
 				4916EAE8275005DF00FA0380 /* Usuarios.swift */,
 			);
@@ -534,6 +537,7 @@
 				4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				4916EAE9275005DF00FA0380 /* Usuarios.swift in Sources */,
+				C12B3D1527519D1F00ABDD09 /* Tareas.swift in Sources */,
 				4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */,
 				49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */,
 				4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */,
@@ -736,6 +740,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -765,6 +770,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Semillero.CarlosA.AgileUs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
