@@ -227,7 +227,11 @@ public class MensajesController {
 	public ResponseEntity<?> verConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		
 		if(idConversacion.length()<49){
-			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id de la convbersacion no contiene los caracteres neesarios", ""));
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id de la convbersacion no contiene los caracteres neesarios", ""));
+		}
+		Optional<Mensajes> opt = mensajesRepository.buscarMensaje(idConversacion);
+		if(opt.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
 		}
 
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
@@ -249,7 +253,7 @@ public class MensajesController {
 		if (!mensaje.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El mensaje no fue encontrado",""));
 		}
-		if(mensaje.get().getVisible()) {
+		if(!mensaje.get().getVisible()) {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El mensaje ya se elimino",""));
 		}
 
@@ -353,12 +357,15 @@ public class MensajesController {
 	@PutMapping("/eliminarConversacion/{idConversacion}")
 	public ResponseEntity<?> cambiarStatusConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		if(idConversacion.length()<49) {
-			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El id de la convbersacion no contiene los caracteres neesarios", ""));
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El id de la conversacion no contiene los caracteres neesarios", ""));
 		}
 		Optional<Mensajes> opt = mensajesRepository.validarCoversacion(idConversacion);
 		
 		if (opt.isEmpty()){
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
+		}
+		if(!opt.get().isConversacionVisible()) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"La conversacion ya fue borrada", ""));
 		}
 
 		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
@@ -480,11 +487,11 @@ public class MensajesController {
 	public ResponseEntity<?> listarConversaciones(@PathVariable(value ="idEmisor")String idEmisor){
 
 		if(idEmisor.length()<24 || idEmisor.length()>24){
-			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id del usuario no tiene los caracteres necesarios",""));
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id del usuario no tiene los caracteres necesarios",""));
 		}
 		Optional<User> user = userRepository.validarUsuario(idEmisor);
-		if (user.isEmpty()){
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra este usuario",""));
+		if (!user.isPresent()){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra este usuario",""));
 		}
 		List<String> mensajesList = new ArrayList<>();
 		MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
@@ -522,7 +529,7 @@ public class MensajesController {
 		}
 
 		for (Conversacion conv: lConversacion){
-			if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor) || conv.getIdConversacion().length()<50){
+			if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor)){
 				lConversacion2.add(conv);
 			}
 		}
@@ -531,7 +538,7 @@ public class MensajesController {
 				lConversacion3.add(conv2);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(lConversacion2);
+		return ResponseEntity.status(HttpStatus.OK).body(lConversacion3);
 	}
 
 	@GetMapping("listarMensajesRecividos/{idEmisor}")
@@ -542,7 +549,7 @@ public class MensajesController {
 		}
 		Optional<User> user=userRepository.validarUsuario(idEmisor);
 		if(user.isEmpty()){
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no se encuetra el usuario",""));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no se encuetra el usuario",""));
 		}
 		Iterable<Mensajes> msg= mensajesRepository.findAll();
 		List<Mensajes> lMensajes = new ArrayList<>();
