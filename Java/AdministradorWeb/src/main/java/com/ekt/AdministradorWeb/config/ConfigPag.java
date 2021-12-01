@@ -54,12 +54,6 @@ public class ConfigPag {
          return "paginas/login";
     }
 
-    @GetMapping("/inicioUsuarios")
-    public String inicioUsuarios() {
-        //return "paginas/organigrama/InicioOrganigrama";
-        return "paginas/usuarios/InicioUsuarios";
-    }
-
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
         User []usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
@@ -92,10 +86,9 @@ public class ConfigPag {
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return "";
+            return "redirect:/error1";
         }
     }
-
 
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
@@ -219,15 +212,15 @@ public class ConfigPag {
             JSONObject jsonObject= new JSONObject(response.body().string());
 
             if (jsonObject.get("status").toString().equals("OK")){
-                return "redirect:/inicioGrupos";
+                return "redirect:/buscarTodosGrupos";
             }else{
                 redirectAttrs
                         .addFlashAttribute("mensaje", "Grupo ya existente");
-                return "redirect:/inicioGrupos";
+                return "redirect:/buscarTodosGrupos";
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return "";
+            return "redirect:/error1";
         }
 
     }
@@ -253,11 +246,6 @@ public class ConfigPag {
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
             return "paginas/organigramas/editarOrganigrama";
         }
-    }
-
-    @GetMapping("/inicioGrupos")
-    public String inicioGrupos() {
-        return "paginas/organigramas/inicioOrganigramas";
     }
 
     @GetMapping("/buscarTodosGrupos")
@@ -359,8 +347,6 @@ public class ConfigPag {
         return "paginas/error.html";
     }
 
-
-
     @GetMapping("/Inicio")
     public String Inicio(){
         return "paginas/Inicio";
@@ -397,7 +383,8 @@ public class ConfigPag {
 
     @GetMapping("/verUsuario")
     public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
-            User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
+        try {
+        User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
             if (user!=null){
                 model.addAttribute("user", user);
                 return "paginas/usuarios/verUsuario";
@@ -406,7 +393,10 @@ public class ConfigPag {
                         .addFlashAttribute("mensaje", "El usuario ya no existe");
                 return "/findAllUsuarios";
             }
-
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return "redirect:/error1";
+        }
     }
 
 }

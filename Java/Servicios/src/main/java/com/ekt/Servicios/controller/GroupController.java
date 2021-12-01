@@ -80,26 +80,31 @@ public class GroupController {
 
     @DeleteMapping("/borrarUsuarioDeGrupo")
     public ResponseEntity deleteUserFromgroup(@RequestBody BodyAddUserGroup body){
-        if (body.getIDGrupo()==null || body.getIDUsuario()==null){
-            System.out.println("Error en las llaves");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
-        }else{
-            Optional<Group> grupo= groupService.buscarUsuarioEnGrupo(body.getIDGrupo(),body.getIDUsuario());
+        try {
+            if (body.getIDGrupo()==null || body.getIDUsuario()==null){
+                System.out.println("Error en las llaves");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+            }else{
+                Optional<Group> grupo= groupService.buscarUsuarioEnGrupo(body.getIDGrupo(),body.getIDUsuario());
 
-            if (grupo.isPresent()){
-                groupService.borrarUsuarioDeGrupo(body.getIDUsuario(), body.getIDGrupo());
-                //cambia idSuperior, Rol y idGrupo a ""
-                Optional<User> us=userService.findById(body.getIDUsuario());
-                us.get().setIDSuperiorInmediato("");
-                us.get().setIDGrupo("");
-                us.get().setNombreRol("");
-                userService.save(us.get());
+                if (grupo.isPresent()){
+                    groupService.borrarUsuarioDeGrupo(body.getIDUsuario(), body.getIDGrupo());
+                    //cambia idSuperior, Rol y idGrupo a ""
+                    Optional<User> us=userService.findById(body.getIDUsuario());
+                    us.get().setIDSuperiorInmediato("");
+                    us.get().setIDGrupo("");
+                    us.get().setNombreRol("");
+                    userService.save(us.get());
 
-                System.out.println("Usuario eliminado del grupo");
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario eliminado del grupo",grupo.get()));
-            }else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo o usuario no encontrado",""));
+                    System.out.println("Usuario eliminado del grupo");
+                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario eliminado del grupo",grupo.get()));
+                }else {
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo o usuario no encontrado",""));
+                }
             }
+        }catch (Exception e){
+            System.err.println("Error: "+e);
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
         }
     }
 
