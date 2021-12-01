@@ -97,6 +97,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private fun mostrargraficaBarras() {
 
         barChart=binding.barChart
+        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
 
         reporteTareasViewModel.devuelvelistaReporte(this)
 
@@ -134,6 +135,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
         pieChart=binding.pieChart
+        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+
         reporteTareasViewModel.devuelvelistaReporte(this)
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it

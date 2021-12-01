@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences
+import java.lang.Exception
 import java.util.*
 
 
@@ -22,6 +23,7 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
 
             //MySharedPreferences.empleadoUsuario[0].nombre
             var listaNombres = arrayListOf<String>()
+            //listaNombres.add(it.nombre)
             MySharedPreferences.empleadoUsuario.forEach {
                 listaNombres.add(it.nombre)
             }
@@ -30,10 +32,15 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             val txtTitulo = vista.findViewById<TextView>(R.id.txtDPFTitulo)
             txtTitulo.setText("Usuarios")
             userPicker.setMinValue(0)
-            userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size-1)
-            userPicker.setValue(0)
-
-            userPicker.displayedValues = listaNombres.toTypedArray()
+            try {
+                userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size-1)
+                userPicker.setValue(0)
+                userPicker.displayedValues = listaNombres.toTypedArray()
+            }catch (ex:Exception){
+                userPicker.setMaxValue(0)
+                userPicker.setValue(0)
+                userPicker.displayedValues = arrayOf("Cargando")
+            }
 
             builder.setView(vista)
                 // Add action buttons
