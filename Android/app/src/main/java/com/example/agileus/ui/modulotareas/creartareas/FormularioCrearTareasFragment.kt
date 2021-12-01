@@ -2,14 +2,12 @@ package com.example.agileus.ui.modulotareas.creartareas
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
@@ -61,12 +59,12 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
     var uriPost             : String = ""
-    var anioInicio          : Int = 0
-    var anioFin             : Int = 0
-    var mesInicio           : Int = 0
-    var mesFin              : Int = 0
-    var diaInicio           : Int = 0
-    var diaFin              : Int = 0
+    var anioInicio          : Int? = null
+    var anioFin             : Int? = null
+    var mesInicio           : Int? = null
+    var mesFin              : Int? = null
+    var diaInicio           : Int? = null
+    var diaFin              : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,7 +194,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             "619696aa2ae47f99bde6e1e7",                  // id_grupo
             idsuperiorInmediato,
             "Armando Manzanero",
-            //"ReceptorAlexis",
             idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
@@ -205,9 +202,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             descripcion.toString(),             // Descripcion
             prioridadAsignada,                  // Prioridad
             "pendiente",
-            uriPost,                            // Url de archivo pdf subido a firebase
-            ""
-
+            uriPost                            // Url de archivo pdf subido a firebase
         )
 
         Toast.makeText(activity as HomeActivity,
@@ -224,10 +219,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         asignarTareaViewModel.postTarea(tarea)
 
         // Enviar tarea a la conversacion grupal
-        //val mensajeTareas = Message(Constantes.id,"618e878ec613329636a769ab","",
-            //"Tarea: ${titulo.toString()} asignada a $nombrePersonaAsignada",Constantes.finalDate)
-        //conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
-        //Log.d("mensaje Tareas","$mensajeTareas")
+        val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0-618d9c26beec342d91d747d6-618e8743c613329636a769aa","",
+            "Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
+        conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
+        Log.d("mensaje Tareas","$mensajeTareas")
 
         //Volver al fragment anterior
         val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()

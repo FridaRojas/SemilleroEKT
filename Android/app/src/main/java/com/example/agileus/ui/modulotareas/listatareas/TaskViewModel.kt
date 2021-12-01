@@ -52,7 +52,7 @@ class TaskViewModel() : ViewModel() {
 
         viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
-                    lista.getTasksByStatus("ReceptorAlexis", statusRecycler.value.toString())
+                    lista.getTasksByStatus("4758399642", statusRecycler.value.toString())
                 }
                 if (listaTask != null) {
                     adaptador.value = TasksAdapter(listaTask,listener)
