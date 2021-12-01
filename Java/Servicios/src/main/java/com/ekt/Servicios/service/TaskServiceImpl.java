@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Service
@@ -62,6 +64,20 @@ public class TaskServiceImpl implements TaskService{
             Task updateEstatus = tareaOptionals.get();
             updateEstatus.setEstatus(estatus);
             tareaRepository.save(updateEstatus);
+        }
+    }
+
+    public void actualizaLeido(String id_tarea, Boolean leido){
+        LocalDateTime date =  LocalDateTime.now();
+        Optional<Task> tareaOptional = tareaRepository.findById(id_tarea);
+        if (tareaOptional.isPresent()){
+            LocalDateTime ldt = date
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            Task tareaUpdate = tareaOptional.get();
+            tareaUpdate.setFechaLeido(ldt);
+            tareaUpdate.setLeido(leido);
+            tareaRepository.save(tareaUpdate);
         }
     }
 }
