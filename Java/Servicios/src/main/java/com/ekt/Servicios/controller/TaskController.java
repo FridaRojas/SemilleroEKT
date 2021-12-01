@@ -202,4 +202,17 @@ public class TaskController {
         mensaje = "Se encontraron tareas";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
     }
+
+    @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}&{id_emisor}")    //Reportes
+    public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@PathVariable String id_grupo,@PathVariable String id_emisor){
+        Iterable<Task> tareas =tareaRepository.getAllByGroupAndIdEmisor(id_grupo,id_emisor);
+        String mensaje;
+        int nDocumentos = ((Collection<Task>) tareas).size();
+        if(nDocumentos == 0){
+            mensaje = "No se encontraron tareas";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
+        mensaje = "Se encontraron tareas";
+        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
+    }
 }
