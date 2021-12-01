@@ -126,8 +126,7 @@ class LoginScreen: UIViewController {
         }
         
         //Enviar JSON para inicio de sesion
-        var serverLogin = server+"user/validate"
-        serverLogin = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/login%20v2.json?alt=media&token=49f226f5-eb9f-4213-97ee-7f726d4db02b"
+        var serverLogin = server + "user/validate"
         
         let user = UserRequest(correo: txtUser.text!, password: txtPassword!.text!, token: pushNotificationToken)
         
@@ -141,7 +140,7 @@ class LoginScreen: UIViewController {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let task = URLSession.shared.dataTask(with: url){ data, response, error in
+        let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
             if let error = error {
                 print ("error: \(error)")
                 return
