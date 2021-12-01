@@ -4,8 +4,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniCustomEstadisticas
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.Contacts
 import com.example.agileus.models.Conversation
@@ -53,7 +52,7 @@ class ReporteMensajesDao {
             suma_tiempos=0
             promedio_tiempo_respuesta=""
 
-            fecha_anterior = ZonedDateTime.parse(fechaIniCustomEstadisticas) // primera fecha para comparar
+            fecha_anterior = ZonedDateTime.parse(fechaIniEstadisticas) // primera fecha para comparar
 
             // primera fecha para comparar TODO valor de GLOBAL fecha inicio
             fecha_anterior = ZonedDateTime.parse(lista[0].fechaEnviado)  //1970-01-01T00:00:00.000+00:00"

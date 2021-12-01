@@ -1,13 +1,16 @@
 package com.example.agileus.webservices.dao
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.*
+import com.example.agileus.ui.HomeActivity
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -26,6 +29,8 @@ class ReporteTareasDao {
     private var diferencia_horas: Long = 0
     private var fecha_actual: ZonedDateTime? = null
     private var fecha_anterior: ZonedDateTime? = null
+    private lateinit var rangoIniFecha: ZonedDateTime
+    private lateinit var rangoFinFecha: ZonedDateTime
     private var suma_tiempos:Int=0
     private var temporal:Int=0
     private lateinit var promedio_tiempo_respuesta:String
@@ -74,56 +79,58 @@ class ReporteTareasDao {
             Terminada
              */
             fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
+            rangoIniFecha = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas) // primera fecha para comparar
+            rangoFinFecha = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas) // segunda fecha para comparar
 
-
+            Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
             lista.forEach {
-                if(id_receptor==it.idReceptor) {
-                    contador_t_totales = contador_t_totales + 1
+                val dateIni = ZonedDateTime.parse(it.fecha_ini)
+                if (dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha) &&
+                    dateIni.isBefore(rangoFinFecha) || dateIni.isEqual(rangoFinFecha)){
 
-                    if (it.leido) {
-                        contador_t_leidas = contador_t_leidas + 1
-                    }
+                    if(id_receptor==it.idReceptor) {
+                        contador_t_totales = contador_t_totales + 1
 
-                    if (it.status.equals("Terminada")) {
-                        contador_t_terminadas = contador_t_terminadas + 1
-                    } else{
-                        if(it.status.equals("Pendiente")) {
-                            contador_t_pendientes = contador_t_pendientes + 1
-                        } else if(it.status.equals("Iniciada")){
-                            contIniciada =+ 1
-                        } else if(it.status.equals("Revision")){
-                            contRevision =+ 1
-                        }else{  //Cancelado
-                            contCancelado =+ 1
+                        if (it.leido) {
+                            contador_t_leidas = contador_t_leidas + 1
+                        }
+
+                        if (it.status.equals("Terminada")) {
+                            contador_t_terminadas = contador_t_terminadas + 1
+                        } else{
+                            if(it.status.equals("Pendiente")) {
+                                contador_t_pendientes = contador_t_pendientes + 1
+                            } else if(it.status.equals("Iniciada")){
+                                contIniciada =+ 1
+                            } else if(it.status.equals("Revision")){
+                                contRevision =+ 1
+                            }else{  //Cancelado
+                                contCancelado =+ 1
+                            }
                         }
                     }
+
+                    fechaIni = ZonedDateTime.parse(it.fecha_fin)
+                    fechaIniR = ZonedDateTime.parse(it.fecha_finR)
+                    val r = ChronoUnit.MILLIS.between(fechaIniR, fechaIni)
+                    if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
+                        contTareasaTiempo += 1
+                    }else{
+                        contTareasFueraTiempo = contTareasFueraTiempo + 1
+                    }
+
+                    fecha_actual = ZonedDateTime.parse(it.fecha_ini)
+                    diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)
+
+                    Log.d("dias","diferencia días: ${diferencia_horas}")
+                    suma_tiempos = suma_tiempos + diferencia_horas.toInt()
+                    Log.d("dias","suma tiempos: ${suma_tiempos}")
+
+                    fecha_anterior = fecha_actual
+
+                    temporal=temporal+1
+
                 }
-
-                fechaIni = ZonedDateTime.parse(it.fecha_fin)
-                fechaIniR = ZonedDateTime.parse(it.fecha_finR)
-                val r = ChronoUnit.MILLIS.between(fechaIniR, fechaIni)
-                /*
-
-                if (0 <= r){
-                    contTareasaTiempo += 1
-                }
-                 */
-                if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
-                    contTareasaTiempo += 1
-                }else{
-                    contTareasFueraTiempo = contTareasFueraTiempo + 1
-                }
-
-                fecha_actual = ZonedDateTime.parse(it.fecha_ini)
-                diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)
-
-                Log.d("dias","diferencia días: ${diferencia_horas}")
-                suma_tiempos = suma_tiempos + diferencia_horas.toInt()
-                Log.d("dias","suma tiempos: ${suma_tiempos}")
-
-                fecha_anterior = fecha_actual
-
-                temporal=temporal+1
 
             }
 
