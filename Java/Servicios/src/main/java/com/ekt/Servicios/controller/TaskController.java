@@ -55,7 +55,7 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, validarTareas));}
     }
 
-    @GetMapping("/obtenerTareas")   //Reportes
+    @GetMapping("/obtenerTareas")   //10. Reportes
     public ResponseEntity<?> readAll(){
         Iterable<Task> tareas = tareaService.findAll();
         String mensaje;
@@ -119,7 +119,7 @@ public class TaskController {
         }
     }
 
-    @DeleteMapping("/cancelarTarea/{id}") //Tareas
+    @DeleteMapping("/cancelarTarea/{id}") //4. Tareas
     public ResponseEntity<?> deleteById(@PathVariable String id){
         String mensaje;
         Optional<Task> oTarea = tareaService.findById(id);
@@ -162,7 +162,7 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas.iterator()));
     }
 
-    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{idReceptor}") //Tareas
+    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{idReceptor}") //5. Tareas
     public ResponseEntity<?> getUsuarioTareasByPrioridad(@PathVariable String prioridad,@PathVariable String idReceptor) {
         Iterable<Task> tareas = tareaRepository.findIdReceptorTareaByPrioridad(idReceptor, prioridad);
         int nDocumentos = ((Collection<Task>) tareas).size();
@@ -216,7 +216,7 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
     }
 
-    @PutMapping("/actulizarEstatus/{id_tarea}&{estatus}")   // Tareas
+    @PutMapping("/actulizarEstatus/{id_tarea}&{estatus}")   //6. Tareas
     public ResponseEntity<?> actualizarEstatus(@PathVariable String id_tarea, @PathVariable String estatus) {
         //Validar Id tarea
         //Validar estatus
@@ -233,7 +233,7 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actualizarLeidoPorIdTarea/{id_tarea}")    //Tarea
+    @PutMapping("/actualizarLeidoPorIdTarea/{id_tarea}")    //7. Tarea
     public ResponseEntity<?> actualizaLeidoPorIdTarea(@PathVariable String id_tarea){
         String mensaje;
         Optional<Task> oTarea = tareaService.findById(id_tarea);
@@ -248,7 +248,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}&{estatus}") // Tareas
+    @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}&{estatus}") //8. Tareas
     public ResponseEntity<?> obtenerTareasQueLeAsignaronPorIdYEstatus(@PathVariable String id_usuario,@PathVariable String estatus){
         Iterable<Task> tareas = tareaRepository.getAllByIdReceptorAndStatus(id_usuario,estatus);
         int nDocumentos = ((Collection<Task>) tareas).size();
@@ -261,7 +261,7 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
     }
 
-    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}&{estatus}")  // Tareas
+    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}&{estatus}")  //9. Tareas
     public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@PathVariable String id_usuario,@PathVariable String estatus){
         Iterable<Task> tareas = tareaRepository.getAllByIdEmisorAndStatus(id_usuario,estatus);
         String mensaje;
