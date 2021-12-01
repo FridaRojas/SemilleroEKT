@@ -8,7 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class TaskServiceImpl implements TaskService{
@@ -106,5 +109,36 @@ public class TaskServiceImpl implements TaskService{
                 //VALIDAR
             }
         }
+    }
+
+    @Override
+    public ArrayList<String> validarTareasCrear(Task tarea) {
+        String idgrupo = tarea.getId_grupo();
+        String idEmisor = tarea.getId_emisor();
+        String nombreEmisor = tarea.getNombre_emisor();
+        String idReceptor = tarea.getId_receptor();
+        String nombreReceptor = tarea.getNombre_receptor();
+        Date fechaInicial = tarea.getFecha_ini();
+        Date fechaFinal = tarea.getFecha_fin();
+        String titulo = tarea.getTitulo();
+        String descripcion = tarea.getDescripcion();
+        String prioridad = tarea.getPrioridad();
+        String estatus = tarea.getEstatus();
+        String fechaI = fechaInicial.toString();
+        String fechaF = fechaFinal.toString();
+
+        boolean nombreE = Pattern.matches("^[a-zA-Z\\s]*$", nombreEmisor);
+        boolean nombreR = Pattern.matches("^[a-zA-Z\\s]*$", nombreReceptor);
+        boolean tituloT = Pattern.matches("^[a-zA-Z0-9\\s]*$", titulo);
+        boolean descripcionT = Pattern.matches("^[A-Za-z\\s]+[\\.]{0,1}[A-Za-z\\s]*$", descripcion);
+        boolean estatusT = Pattern.matches("^[a-zA-Z]*$", estatus);
+        ArrayList<String> errores = new ArrayList<>();
+        if (!nombreE) errores.add("nombreEmisor");
+        if (!nombreR) errores.add("nombreReceptor");
+        if (!tituloT) errores.add("titulo");
+        if (!descripcionT) errores.add("descripcion");
+        if (!estatusT) errores.add("estatus");
+
+        return errores;
     }
 }

@@ -2,6 +2,7 @@ package com.ekt.Servicios.service;
 
 import com.ekt.Servicios.entity.Task;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public interface TaskService {
@@ -14,4 +15,5 @@ public interface TaskService {
     public void actualizaLeido(String id_tarea,Boolean leido);
     public void updateRealDateStart(String id_tarea, Task tarea);
     public void updateRealDateFinish(String id_tarea, Task tarea);
+    public ArrayList<String> validarTareasCrear(Task tarea);
 }
