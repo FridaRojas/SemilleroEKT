@@ -27,6 +27,7 @@ class ReporteTareasDao {
     private var contador_tareas_leidas:Int=0
     private var contador_tareas_totales:Int=0
     lateinit var fecha_inicio: ZonedDateTime
+    lateinit var fecha_actual: ZonedDateTime
     lateinit var fecha_fin: ZonedDateTime
     lateinit var fechaFinTer: ZonedDateTime
     lateinit var fechaFinTerR: ZonedDateTime
@@ -103,37 +104,50 @@ class ReporteTareasDao {
             Terminada
              */
             lista.forEach {
-                if(id_receptor==it.idReceptor) {
+
+                fecha_actual = ZonedDateTime.parse(it.fecha_ini)
+
+                if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
+                    (fecha_actual.isBefore(fecha_fin))) {
+
                     contador_t_totales = contador_t_totales + 1
 
-                    if (it.leido) {
-                        contador_t_leidas = contador_t_leidas + 1
-                    }
+                    if (id_receptor == it.idReceptor) {
 
-                    if (it.status.equals("Terminada")) {
-                        contador_t_terminadas = contador_t_terminadas + 1
-                    } else{
-                        if(it.status.equals("Pendiente")) {
-                            contador_t_pendientes = contador_t_pendientes + 1
-                        } else if(it.status.equals("Iniciada")){
-                            contIniciada =+ 1
-                        } else if(it.status.equals("Revision")){
-                            contRevision =+ 1
-                        }else{  //Cancelado
-                            contCancelado =+ 1
+                        if (it.leido) {
+                            contador_t_leidas = contador_t_leidas + 1
+
+                            if (it.status.equals("Terminada")) {
+                                contador_t_terminadas = contador_t_terminadas + 1
+                            }
+
+                            if (it.status.equals("Pendiente")) {
+                                contador_t_pendientes = contador_t_pendientes + 1
+                            }
+                            if (it.status.equals("Iniciada")) {
+                                contIniciada = +1
+                            }
+                            if (it.status.equals("Revision")) {
+                                contRevision = +1
+                            }
                         }
+                        else {  //Cancel
+                            if (it.status.equals("Cancelado"))
+                                contCancelado = +1
+                            }
+                        }
+
+                    fechaFinTer = ZonedDateTime.parse(it.fecha_fin)
+                    fechaFinTerR = ZonedDateTime.parse(it.fecha_finR)
+
+                    if (fechaFinTer.isBefore(fechaFinTerR) || fechaFinTer.isEqual(fechaFinTerR)){
+                        contTareasaTiempo += 1
+                    }else{
+                        contTareasFueraTiempo = contTareasFueraTiempo + 1
+                    }
+
                     }
                 }
-
-                fechaFinTer = ZonedDateTime.parse(it.fecha_fin)
-                fechaFinTerR = ZonedDateTime.parse(it.fecha_finR)
-
-                if (fechaFinTer.isBefore(fechaFinTerR) || fechaFinTer.isEqual(fechaFinTerR)){
-                    contTareasaTiempo += 1
-                }else{
-                    contTareasFueraTiempo = contTareasFueraTiempo + 1
-                }
-            }
 
             contador_tareas_terminadas=contador_t_terminadas
             contador_tareas_pendientes=contador_t_pendientes
@@ -147,7 +161,7 @@ class ReporteTareasDao {
         }
 
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
-            listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contador_tareas_aTiempo.toString(), R.drawable.ic_bar_chart))
+            listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:",contador_tareas_aTiempo.toString(),"Tareas culminadas fuera de tiempo:",contador_tareas_fueraTiempo.toString(), R.drawable.ic_bar_chart))
 
         return listaRecycler
     }

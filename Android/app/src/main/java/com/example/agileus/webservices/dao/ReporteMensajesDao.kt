@@ -92,7 +92,7 @@ class ReporteMensajesDao {
                 fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
 
                 if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
-                    (fecha_actual.isEqual(fecha_fin) || fecha_actual.isBefore(fecha_fin))) {
+                    (fecha_actual.isBefore(fecha_fin))) {
 
                     contador_m_totales = contador_m_totales + 1
 
