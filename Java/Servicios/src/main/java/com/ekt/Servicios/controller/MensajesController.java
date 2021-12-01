@@ -129,13 +129,26 @@ public class MensajesController {
 
 			mensajesService.crearMensaje(mensajes);
 
+			List<User> usuarios = new ArrayList<>();
+			String[] lenguajesComoArreglo = mensajes.getIDReceptor().split("-");
+			for (String idUsuario : lenguajesComoArreglo) {
+				Optional<User> usuario = userRepository.validarUsuario(idUsuario);
+				usuario.ifPresent(usuarios::add);
+			}
+
 			if (mensajes.getTexto().equals("Documento")) {
 				//notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a "+mensajes.getNombreConversacionReceptor(),"Nuevo documento", receptor.get().getToken());
 				//notificacion2(titulo, asunto, token);
+				for(User usuario : usuarios) {
+					notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a: "+mensajes.getNombreConversacionReceptor(),"Nuevo documento", usuario.getToken());
+				}
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
 			}
 
+			for(User usuario : usuarios) {
+				notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a: "+mensajes.getNombreConversacionReceptor(),mensajes.getTexto(), usuario.getToken());
+			}
 			//notificacion2("Nuevo Mensaje de "+emisor.get().getNombre(),mensajes.getTexto(), receptor.get().getToken());
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
