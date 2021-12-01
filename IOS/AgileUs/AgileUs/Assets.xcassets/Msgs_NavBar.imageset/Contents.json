@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "msgs_navbar.png",
+      "filename" : "Msgs_NavBar.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Msgs_NavBar@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Msgs_NavBar@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

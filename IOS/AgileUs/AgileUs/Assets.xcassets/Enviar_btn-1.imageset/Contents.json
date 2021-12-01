@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "Enviar_msg_txt_box.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Enviar_msg_txt_box@2x.png",
+      "filename" : "Enviar_btn@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Enviar_msg_txt_box@3x.png",
+      "filename" : "Enviar_btn@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
