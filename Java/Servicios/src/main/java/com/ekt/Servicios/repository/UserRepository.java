@@ -34,4 +34,12 @@ public interface UserRepository extends MongoRepository<User,String> {
     @Query("{ 'idSuperiorInmediato' : ?0}")
     Optional<ArrayList<User>> findChilds(String idPadre);
 
+    @Query("{'_id' : ?0}")
+    Optional<User> validarUsuario(String _id); 
+    
+    @Query("{'idGrupo' : ?0}")
+    Iterable<User> findByGroupID(String idGrupo); 
+    
+    @Query("{'nombreRol' : ?0")
+    Optional<User> findRol(String nombreRol);
 }
