@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -235,4 +237,41 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/buscarFamilia/{id}")
+    public Response findFamily(@PathVariable String id){
+        System.out.println(id);
+        ArrayList<User> listaUsuarios=new ArrayList<>();
+
+        /*
+        -verificar que existe el id
+        -buscar al padre
+        -buscar hermanos
+        -buscarhijos
+        -buscar hijos de hijos hasta el infinito
+
+         */
+        try {
+            User tempUser=new User();
+            //verificar que existe el id
+            if(userService.findById(id).isPresent()){
+                tempUser=userService.findById(id).get();
+                //buscar al padre
+                if (tempUser.getIDSuperiorInmediato().length()>5){
+                    if (userService.findById(tempUser.getIDSuperiorInmediato()).isPresent()){
+                        listaUsuarios.add(userService.findById(tempUser.getIDSuperiorInmediato()).get());
+                    }
+                }
+                return new Response(HttpStatus.OK,"hasta aqui solo esta el papa",listaUsuarios);
+
+            }else{
+                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+id+" no existe","");
+            }
+        }catch (Exception e){
+            System.err.println("Excepcion: "+e);
+            return new Response(HttpStatus.NOT_FOUND,"Error en la consulta","");
+        }
+    }
+
+
 }

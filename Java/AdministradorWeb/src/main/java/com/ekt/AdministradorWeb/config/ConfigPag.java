@@ -194,5 +194,44 @@ public class ConfigPag {
         return "paginas/organigramas/editarOrganigrama";
     }
 
+    @PostMapping("/buscarGrupo")
+    public String buscarGrupo(String nombre){
+        try {
+            ArrayList<Group> listaGrupos=new ArrayList<>();
+            Gson gson = new Gson();
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url("http://localhost:3040/api/grupo/buscarPorNombre/"+nombre)
+                    .method("GET", null)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            String res = response.body().string();
+
+
+            JSONObject jsonObject= new JSONObject(res);
+
+            //JSONArray name1 = jsonObject.getJSONArray("data");
+
+            //listaGrupos.add(gson.fromJson(name1.getJSONObject(0).toString(), Group.class));
+
+            System.out.println(jsonObject.toString());
+
+        }catch (Exception e){
+            System.err.println("Exception"+e);
+            return "/error1";
+        }
+
+        return null;
+    }
+
+    @GetMapping("/error1")
+    public String error() {
+        return "paginas/error.html";
+    }
+
+
 
 }

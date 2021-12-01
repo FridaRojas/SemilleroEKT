@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
@@ -82,118 +81,26 @@
     <title>Title</title>
 
 </head>
-<body >
-
-
-
-
+<body onload="buscar()">
 <table id="tabla">
     <td  class="menu">
         <div th:replace="elementos/menuLateral::menuLateral"></div>
     </td>
-
     <td class="resto" >
-
-
-        <div class="main" >
-
-
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar Usuario" >
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-
-
-
-
+        <div class="row mt-5 px-5">
+            <h2>Pagina no dispopnible temporalmente<br>Intente mas tarde <br>Si el problema persiste contacte al administrador</h2>
         </div>
-
-
-        <!-- Cabecera-->
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    Nombre de grupo
-                </div>
-                <div class="col-sm">
-                    Cantidad de usuarios
-                </div>
-                <div class="col-sm">
-                    Acciones
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Seccion que se va a iterar -->
-        <!--/*@thymesVar id="listaGrupos" type="ArrayList"*/-->
-        <div class="item" th:each="grupo: ${listaGrupos}">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <label th:text="${grupo.getNombre()}"></label>
-                    </div>
-                    <div class="col-sm">
-                        <label th:text="${grupo.getUsuarios().length}"></label>
-                    </div>
-
-                    <div class="col-sm">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <a type="button" class="btn btn-primary" th:href="@{/editarGrupo/(idGrupo=${grupo.getId()})}" ><i class="fa fa-edit"></i></a>
-
-                                </div>
-                                <div class="col-sm" style="align-content: center">
-                                    <form method="DELETE"
-                                          action="">
-                                        <button type="button" class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-
-
-
-
-
-
-
-
     </td>
 </table>
-
-
-<div class="contenedor">
-    <button class="botonF1" type="button" data-toggle="modal" data-target="#modalCreaOrganigrama" >
-        <span>+</span>
-    </button>
-</div>
-
-<div th:replace="paginas/modalCreaOrganigrama::#modalCreaOrganigrama">
-</div>
-
-
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+
+
 </body>
 </html>
+
+

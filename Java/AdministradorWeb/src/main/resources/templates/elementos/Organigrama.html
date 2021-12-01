@@ -39,7 +39,7 @@
       let organi=[];
       for(let user of grupo.data.usuarios){
         organi.push([
-          {'v':user.id,'f': user.nombre+'<div style="color:red; font-style:italic">'+user.nombreRol+'</div>'},
+          {'v':user.id,'f': user.nombre+'<div style="color:red; font-style:italic">'+user.nombreRol+'<br>'+user.id+'</div>'},
           user.idsuperiorInmediato,
           user.nombre
         ]);
