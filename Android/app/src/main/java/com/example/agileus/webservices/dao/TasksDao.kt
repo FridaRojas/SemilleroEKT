@@ -124,7 +124,7 @@ class TasksDao : DialogoConfirmacionListener {
     fun editTask(taskUpdate: TaskUpdate, idTarea: String) {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
-        val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate)
+        val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate, idTarea)
         callback.enqueue(object : Callback<TaskList2> {
             override fun onResponse(call: Call<TaskList2>, response: Response<TaskList2>) {
 

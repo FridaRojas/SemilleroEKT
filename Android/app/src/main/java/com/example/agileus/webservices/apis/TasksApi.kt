@@ -40,8 +40,8 @@ interface TasksApi {
     @DELETE("tareas/cancelarTarea/{idTarea}")
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
 
-    @PUT("tareas/actualizarTarea/61a6a5e7516207029a580548")
-    fun editTask(@Body t: TaskUpdate): Call<TaskList2>
+    @PUT("tareas/actualizarTarea/{idTarea}")
+    fun editTask(@Body t: TaskUpdate, @Path("idTarea") idTarea: String): Call<TaskList2>
 
     @PUT("tareas/actulizarEstatus/{param}")
     fun updateStatus(@Path("param") param: String): Call<String>
