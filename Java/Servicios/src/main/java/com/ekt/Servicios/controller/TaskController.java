@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/tareas")
@@ -67,5 +66,25 @@ public class TaskController {
         }
         mensaje = "Tareas encontradas";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
+    }
+
+    @GetMapping(value="/obtenerTareaPorId/{id}")    //2. Tareas
+    public ResponseEntity<?> read(@PathVariable String id){
+        Optional<Task> oTarea = tareaService.findById(id);
+        String mensaje;
+        //Si el iD no existe
+
+        //Si no hay ninguna tarea
+        if(!oTarea.isPresent()){
+            Map<String, Object> body = new LinkedHashMap<>();//LinkedHashMap conserva el orden de inserción
+            Map<String, String> data = new LinkedHashMap<>();
+            body.put("statusCode", String.valueOf(HttpStatus.NOT_FOUND.value()));
+            data.put("Tarea","No existe la tarea con Id: "+ id);
+            body.put("Data",data);
+            mensaje = "No existe tarea con id: "+id;
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
+        mensaje = "Se encontró una tarea";
+        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,oTarea));
     }
 }
