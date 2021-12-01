@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.isConnectedToThisServer
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
+import com.example.agileus.R
+
 
 class ListContactsFragment : Fragment() {
 
@@ -38,6 +42,7 @@ class ListContactsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         contactsviewModel.devuelveLista(Constantes.id)
 
+
         contactsviewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerListContacts.adapter = it
             binding.recyclerListContacts.layoutManager = LinearLayoutManager(activity)
@@ -50,10 +55,9 @@ class ListContactsFragment : Fragment() {
                 contactsviewModel.devuelveLista(Constantes.id)
                 contactsviewModel.contactos.observe(viewLifecycleOwner,{
                     var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
-                    contactsviewModel.filtrarChats(Constantes.id,filtro)
+                    contactsviewModel.filtrarContactos(Constantes.id,filtro)
                 })
             }
-
             override fun afterTextChanged(p0: Editable?) {
             }
 

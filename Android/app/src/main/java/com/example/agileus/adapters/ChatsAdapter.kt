@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Chats
+import com.example.agileus.models.Contacts
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 import com.example.agileus.utils.Constantes
 
@@ -24,6 +25,12 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
     }
     override fun getItemCount() = dataSet.size
 
+    fun update(filtrado: ArrayList<Chats>) {
+        var array:ArrayList<Chats> = ArrayList(filtrado)
+        dataSet = array
+        this.notifyDataSetChanged()
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
         val txtRol: TextView
@@ -38,6 +45,7 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
 
         fun enlazarItem(chats: Chats){
             txtNameContact.text = chats.nombreConversacionRecepto
+            txtRol.text = chats.nombreRol
 
             myView.setOnClickListener {
                 val intent = Intent(contexto,ConversationOneToOneActivity::class.java)

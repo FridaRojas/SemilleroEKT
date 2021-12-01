@@ -10,7 +10,9 @@ import com.example.agileus.adapters.ConversationAdapter
 import com.example.agileus.models.Conversation
 import com.example.agileus.models.Message
 import com.example.agileus.models.MessageResponse
+import com.example.agileus.models.StatusRead
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
+import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,7 +48,6 @@ class ConversationViewModel:ViewModel() {
                 }else{
 
                 }
-
             }
         } catch (ex: Exception) {
             Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
@@ -62,6 +63,20 @@ class ConversationViewModel:ViewModel() {
                     message.insertarMensajes(mensaje)
                 }
                 devuelveLista(idChat)
+                responseM.value = RespuestaMessage
+            }
+        }catch (ex:Exception){
+            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+        }
+    }
+
+    fun statusUpdateMessage(statusRead: StatusRead){
+
+        try {
+            viewModelScope.launch {
+                RespuestaMessage = withContext(Dispatchers.IO) {
+                    message.actualizarStatus(statusRead)
+                }
                 responseM.value = RespuestaMessage
             }
         }catch (ex:Exception){

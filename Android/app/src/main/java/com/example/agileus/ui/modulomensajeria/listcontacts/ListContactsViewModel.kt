@@ -35,14 +35,13 @@ class ListContactsViewModel : ViewModel() {
                         contactos.value = listaConsumida
                     }
                 }
-
             }
         }catch (ex:Exception){
             Log.e(ListContactsViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 
-    fun filtrarChats(idUser:String,listaAdaptada:List<Contacts>){
+    fun filtrarContactos(idUser:String,listaAdaptada:List<Contacts>){
         try {
             viewModelScope.launch {
                 listaConsumida =  withContext(Dispatchers.IO) {
@@ -51,7 +50,11 @@ class ListContactsViewModel : ViewModel() {
                 if (listaConsumida != null){
                     if(listaConsumida.isNotEmpty()){
                         adaptador.value!!.update(listaAdaptada)
+                    }else{
+
                     }
+                }else{
+
                 }
             }
         }catch (ex:Exception){

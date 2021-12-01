@@ -103,4 +103,21 @@ class MessageDao {
 
         return listaChats
     }
+
+    suspend fun actualizarStatus(statusRead: StatusRead): MessageResponse {
+        try{
+            var callRespuesta = InitialApplication.webServiceMessage.statusUpdate(statusRead)
+            var ResponseDos: Response<MessageResponse> = callRespuesta.execute()
+
+            if(ResponseDos.isSuccessful){
+                respuesta = ResponseDos.body()!!
+            }else{
+
+            }
+
+        }catch (ex:Exception){
+            Log.e("ErrorAlActualizarLeido ", ex.message.toString())
+        }
+        return respuesta
+    }
 }

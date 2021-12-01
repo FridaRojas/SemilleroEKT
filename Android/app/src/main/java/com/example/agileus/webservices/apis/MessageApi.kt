@@ -3,10 +3,7 @@ package com.example.agileus.webservices.apis
 import com.example.agileus.models.Buzon
 import com.example.agileus.models.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface MessageApi {
 
@@ -24,5 +21,8 @@ interface MessageApi {
 
     @GET("mensajes/listaGrupos/{id}")
     fun getListGroups(@Path("id") idUser: String):Call<ArrayList<Groups>>
+
+    @PUT("mensajes/actualizarLeido")
+    fun statusUpdate(@Body body:StatusRead):Call<MessageResponse>
 
 }

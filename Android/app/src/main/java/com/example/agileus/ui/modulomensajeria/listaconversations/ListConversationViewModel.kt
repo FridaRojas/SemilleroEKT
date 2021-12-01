@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.GroupsAdapter
 import com.example.agileus.models.Chats
+import com.example.agileus.models.Contacts
 import com.example.agileus.models.Groups
+import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsViewModel
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +22,7 @@ class ListConversationViewModel : ViewModel() {
     lateinit var lista : MessageDao
     lateinit var listaConsumidaGrupos:ArrayList<Groups>
     lateinit var listadeChats:ArrayList<Chats>
+    var chatsdeUsuario = MutableLiveData<ArrayList<Chats>>()
     init {
         lista = MessageDao()
     }
@@ -34,6 +37,7 @@ class ListConversationViewModel : ViewModel() {
                 if (listaConsumidaGrupos != null){
                     if(listaConsumidaGrupos.isNotEmpty()){
                         adaptadorGrupos.postValue(GroupsAdapter(listaConsumidaGrupos as ArrayList<Groups>))
+
                     }
                 }
             }
@@ -50,6 +54,24 @@ class ListConversationViewModel : ViewModel() {
                 if (listadeChats != null){
                     if(listadeChats.isNotEmpty()){
                         adaptadorChats.postValue(ChatsAdapter(listadeChats as ArrayList<Chats>))
+                        chatsdeUsuario.value = listadeChats!!
+                    }
+                }
+            }
+        }catch (ex:Exception){
+            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+        }
+    }
+
+    fun filtrarChats(idUser:String,listaAdaptada:ArrayList<Chats>){
+        try {
+            viewModelScope.launch {
+                listadeChats =  withContext(Dispatchers.IO) {
+                    lista.recuperarListadeChats(idUser)
+                }
+                if (listadeChats != null){
+                    if(listadeChats.isNotEmpty()){
+                        adaptadorChats.value!!.update(listaAdaptada)
                     }
                 }
             }

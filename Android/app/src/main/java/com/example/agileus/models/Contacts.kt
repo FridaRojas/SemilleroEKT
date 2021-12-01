@@ -10,8 +10,9 @@ class Contacts (
     @SerializedName("numeroEmpleado")val numeroEmpleado: String,
     @SerializedName("nombre") val nombre: String,
     @SerializedName("password") val password: String,
-    @SerializedName("roles") val roles: String,
+    @SerializedName("nombreRol") val nombreRol: String,
     @SerializedName("telefono")val telefono: String,
     @SerializedName("statusActivo") val statusActivo: String,
-    @SerializedName("idsuperiorInmediato")val idsuperiorInmediato: String
+    @SerializedName("idsuperiorInmediato")val idsuperiorInmediato: String,
+    @SerializedName("token")val token: String
         )

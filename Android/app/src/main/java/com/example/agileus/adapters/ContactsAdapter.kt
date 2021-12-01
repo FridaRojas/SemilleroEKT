@@ -34,16 +34,18 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
+        val txtRol:TextView
         val contexto = view.context
         val myView:View
 
         init {
             txtNameContact = view.findViewById(R.id.txtNameContact)
             myView = view.findViewById(R.id.idContact)
+            txtRol= view.findViewById(R.id.txtRol)
         }
-
         fun enlazarItem(contacts: Contacts){
             txtNameContact.text = contacts.nombre
+            txtRol.text = contacts.nombreRol
 
             myView.setOnClickListener {
                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)

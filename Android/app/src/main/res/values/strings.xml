@@ -26,4 +26,5 @@
     <string name="comunicados">Comunicados</string>
     <string name="destinatario">Destinatario :</string>
     <string name="asunto">Asunto</string>
+    <string name="name_contactos_fragment">Contactos</string>
 </resources>

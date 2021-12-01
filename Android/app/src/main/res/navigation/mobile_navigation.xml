@@ -36,8 +36,12 @@
     <fragment
         android:id="@+id/listContactsFragment"
         android:name="com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragment"
-        android:label="list_contacts_fragment"
-        tools:layout="@layout/list_contacts_fragment" />
+        android:label="@string/name_contactos_fragment"
+        tools:layout="@layout/list_contacts_fragment" >
+        <action
+            android:id="@+id/action_listContactsFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/buzonDetallesFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesFragment"
