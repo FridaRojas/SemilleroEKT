@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface TaskService {
     public Task save(Task tarea);
     public Optional<Task> findById(String id);
+    public Iterable<Task> findAll();
 }
