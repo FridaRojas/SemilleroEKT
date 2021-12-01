@@ -88,9 +88,14 @@ public class GroupController {
 
             if (grupo.isPresent()){
                 groupService.borrarUsuarioDeGrupo(body.getIDUsuario(), body.getIDGrupo());
-                System.out.println("Usuario eliminado del grupo");
-                //eliminar informacion de usuario
+                //cambia idSuperior, Rol y idGrupo a ""
+                Optional<User> us=userService.findById(body.getIDUsuario());
+                us.get().setIDSuperiorInmediato("");
+                us.get().setIDGrupo("");
+                us.get().setNombreRol("");
+                userService.save(us.get());
 
+                System.out.println("Usuario eliminado del grupo");
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario eliminado del grupo",grupo.get()));
             }else {
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Grupo o usuario no encontrado",""));

@@ -255,12 +255,10 @@ public class ConfigPag {
         }
     }
 
-
     @GetMapping("/inicioGrupos")
     public String inicioGrupos() {
         return "paginas/organigramas/inicioOrganigramas";
     }
-
 
     @GetMapping("/buscarTodosGrupos")
     public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model) {
@@ -402,6 +400,20 @@ public class ConfigPag {
             System.out.println(e.getMessage());
             return "";
         }
+
+    }
+
+    @GetMapping("/verUsuario")
+    public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
+            User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
+            if (user!=null){
+                model.addAttribute("user", user);
+                return "paginas/usuarios/verUsuario";
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "El usuario ya no existe");
+                return "/findAllUsuarios";
+            }
 
     }
 

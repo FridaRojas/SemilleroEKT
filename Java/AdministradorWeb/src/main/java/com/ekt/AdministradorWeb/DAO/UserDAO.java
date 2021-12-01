@@ -65,7 +65,6 @@ public class UserDAO {
         }
     }
 
-
     public Boolean editarUsuario(User user){
         System.out.println("En editarUsuario "+user.getFechaInicio()+"  "+user.getRFC());
         Boolean res=false;
@@ -118,8 +117,6 @@ public class UserDAO {
 
         return res;
     }
-
-
 
     public boolean actualizaIdSujperior(String idUser, String idSuperior){
 
