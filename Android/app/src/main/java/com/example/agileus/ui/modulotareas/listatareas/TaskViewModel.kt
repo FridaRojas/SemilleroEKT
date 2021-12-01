@@ -26,8 +26,6 @@ class TaskViewModel() : ViewModel() {
 
     var lista: TasksDao = TasksDao()
     var listaTask = ArrayList<DataTask>()
-    var listaTaskAssigned = ArrayList<DataTask>()
-
     //lateinit var listaConsumida : ArrayList<Tasks>
 
     init {
@@ -59,6 +57,7 @@ class TaskViewModel() : ViewModel() {
         status = statusRecycler.value.toString()
         viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
+                    lista.getTasksByStatus("4758399642", statusRecycler.value.toString())
                     if(statusRecycler.value.toString() == "asignada"){
                         //id Emisor
                         lista.getTasksAssigned("618d9c26beec342d91d747d6")

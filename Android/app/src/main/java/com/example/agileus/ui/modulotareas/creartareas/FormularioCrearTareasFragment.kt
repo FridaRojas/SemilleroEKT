@@ -2,14 +2,13 @@ package com.example.agileus.ui.modulotareas.creartareas
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
+import android.icu.text.DateFormat
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
@@ -33,40 +32,45 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.File
 import java.io.FileNotFoundException
+import java.text.Format
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.time.Duration.Companion.days
 
 class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
-
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
-    lateinit var conversationviewModel: ConversationViewModel
+
+    lateinit var conversationviewModel  : ConversationViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel
     /*  *** Fb Storage ***  */
-    lateinit var firebaseProvider : FirebaseProvider
+    lateinit var firebaseProvider       : FirebaseProvider
     lateinit var mStorageInstance       : FirebaseStorage
     lateinit var mStorageReference      : StorageReference
     lateinit var resultLauncherArchivo  : ActivityResultLauncher<Intent>
     /*  *** Fb Storage ***  */
 
-    var listaN         = ArrayList<String>()
-    lateinit var listaPersonas  : ArrayList<DataPersons>
-    lateinit var idPersonaAsignada : String
-
+    lateinit var listaPersonas              : ArrayList<DataPersons>
     lateinit var personasAsignadasAdapter   : ArrayAdapter<String>
     lateinit var prioridadAdapter           : ArrayAdapter<String>
     lateinit var listaPrioridades           : Array<String>
     lateinit var nombrePersonaAsignada      : String
     lateinit var prioridadAsignada          : String
+    lateinit var idPersonaAsignada          : String
 
+    var listaN = ArrayList<String>()
     var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
     var uriPost             : String = ""
-    var anioInicio          : Int = 0
-    var anioFin             : Int = 0
-    var mesInicio           : Int = 0
-    var mesFin              : Int = 0
-    var diaInicio           : Int = 0
-    var diaFin              : Int = 0
+    var anioInicio          : Int? = null
+    var anioFin             : Int? = null
+    var mesInicio           : Int? = null
+    var mesFin              : Int? = null
+    var diaInicio           : Int? = null
+    var diaFin              : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,14 +85,13 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listaPrioridades = resources.getStringArray(R.array.prioridad_array)
+        listaPrioridades = resources.getStringArray(R.array.prioridad_array)    // spiner lista de prioridades archivo strings.xml
         asignarTareaViewModel = ViewModelProvider(this).get()
         conversationviewModel = ViewModelProvider(this).get()
         firebaseProvider  = FirebaseProvider()
-        /*  *** Instancias Fb Storage ***  */
-        mStorageInstance = FirebaseStorage.getInstance()
-        mStorageReference = mStorageInstance.getReference("Documentos")
-        /*  *** Instancias Fb Storage ***  */
+        mStorageInstance = FirebaseStorage.getInstance()                           /*  *** Instancias Fb Storage ***  */
+        mStorageReference = mStorageInstance.getReference("Documentos")     /*  *** Instancias Fb Storage ***  */
+
 
         setUpUiAsignarTareas() /*  *** spiners ***  */
 
@@ -100,7 +103,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                         var returnUri = data?.data!!
                         val uriString = data.toString()
                         val myFile = File(uriString)
-                        //binding.btnAdjuntarArchivo.text= myFile.name
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado"
                         Log.d("mensaje","PDF: $uriString")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
@@ -111,7 +113,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                     }
                 }
             }else{
-                Toast.makeText(context,"No se Selecciono archivo",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"No se selecciono archivo",Toast.LENGTH_LONG).show()
             }
         }
         firebaseProvider.obs.observe(viewLifecycleOwner,{
@@ -120,7 +122,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
         /* Boton Crear tarea  */
         binding.btnCrearTarea.setOnClickListener {
-
             // Guardar datos
             nombrePersonaAsignada = (binding.spinnerPersonaAsignada.getEditText() as AutoCompleteTextView).text.toString()
             prioridadAsignada = (binding.spinnerPrioridad.getEditText() as AutoCompleteTextView).text.toString()
@@ -136,38 +137,41 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             if(fechaInicio=="" || fechaFin=="" ||
                 binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
                 binding.edtDescripcion.text.toString().isNullOrEmpty()){
-
-                Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
-                if(anioInicio!!<=anioFin!!){                        // AÑO FIN NO PUEDE SER MENOR QUE AÑO INICIO
-                    if(mesInicio!!+1<=mesFin!!+1){                  // Es un mes menor o igual del mismo año
-                        if (mesInicio!!+1==mesFin!!+1){             // Si mes inicio es igual a mes fin del mismo año
-                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
-                                operacionIsert()
-                            }else{
-                                    Toast.makeText( context,
-                                    "Fecha de inicio no puede ser mayor a fecha fin",
-                                    Toast.LENGTH_SHORT).show()
-                                }
-                        }else if(mesInicio!!+1<mesFin!!+1){             // Mes inicio(AGOSTO) es menor que mes fin(DICIEMBRE). NO IMPORTA EL DIA
-                            operacionIsert()
-                        }
-                    }else if(mesInicio!!+1>mesFin!!+1 && anioInicio!!<anioFin!!){                 // Mes de inicio es superior a mes fin pero de año fin superior. NO IMPORTA EL DIA
+                if(anioInicio!!<=anioFin!!){
+
+                    if(anioInicio!!<anioFin!!){                     // 2021 < 2022
                         operacionIsert()
                     }
 
+                    if(anioInicio==anioFin){                        // 2021 == 2021
+                        if (mesInicio==mesFin){                     // Si mes inicio es igual a mes fin del mismo año
+                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
+                                operacionIsert()
+                            }else if(diaInicio!!>diaFin!!){
+                                Toast.makeText( context,
+                                    "Fecha de inicio no puede ser mayor a fecha de vencimiento",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
 
+                        if(mesInicio!!<mesFin!!){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
+                            operacionIsert()
+                        }else if (mesInicio!!>mesFin!!){
+                            Toast.makeText( context,
+                                "Fecha de inicio no puede ser mayor a fecha de vencimiento",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }else{
                     Toast.makeText( context,
-                        "Fecha de inicio no puede ser mayor a fecha fin",
+                        "Fecha de inicio no puede ser mayor a fecha de vencimiento",
                         Toast.LENGTH_SHORT).show()
                 }
                 // VALIDAR INICIO Y FIN FECHAS
-
             }
-
         }
         /* Boton Crear tarea  */
 
@@ -190,13 +194,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         val tarea: Tasks
         val titulo      = binding.edtAgregaTitulo.text
         val descripcion = binding.edtDescripcion.text
-        val mPrioridad  = binding.textSpinPrioridad.text
 
         tarea = Tasks(
             "619696aa2ae47f99bde6e1e7",                  // id_grupo
             idsuperiorInmediato,
             "Armando Manzanero",
-            //"ReceptorAlexis",
             idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
@@ -205,12 +207,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             descripcion.toString(),             // Descripcion
             prioridadAsignada,                  // Prioridad
             "pendiente",
-            uriPost,                            // Url de archivo pdf subido a firebase
-            ""
-
+            uriPost                            // Url de archivo pdf subido a firebase
         )
 
-        Toast.makeText(activity as HomeActivity,
+        /*Toast.makeText(activity as HomeActivity,
             "Datos to POST = " +
                 "Titulo: $titulo, " +
                 "Prioridad: ${mPrioridad.toString().lowercase()}, " +
@@ -219,13 +219,13 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 "Fecha fin: $fechaFin, "+
                 "Url pdf: $uriPost, "+
                 "Descripcion: $descripcion ",
-            Toast.LENGTH_LONG).show()
+            Toast.LENGTH_LONG).show()*/
 
         asignarTareaViewModel.postTarea(tarea)
 
         // Enviar tarea a la conversacion grupal
-        //val mensajeTareas = Message(Constantes.id,"618e878ec613329636a769ab","",
-            //"Tarea: ${titulo.toString()} asignada a $nombrePersonaAsignada",Constantes.finalDate)
+        //val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0-618d9c26beec342d91d747d6-618e8743c613329636a769aa","",
+            //"Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
         //conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
         //Log.d("mensaje Tareas","$mensajeTareas")
 
@@ -273,22 +273,50 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
     // *** INTERFACES ***
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
+        val diaString : String
+        val mesString : String
         anioInicio  = anio
-        mesInicio   = mes
+        mesInicio   = mes+1
         diaInicio   = dia
+
+        if(dia<10){
+            diaString = "0$dia"
+        }else{
+            diaString = "$dia"
+        }
+        if(mes+1<10){
+            mesString = "0$mesInicio"
+        }else{
+            mesString = "${mes+1}"
+        }
+
         val fecha=binding.edtFechaInicio
-        val fechaObtenida = "$anio-${mes+1}-$dia"
+        val fechaObtenida = "$anio-$mesString-$diaString"
         fecha.setText(fechaObtenida)
         fechaInicio = fecha.text.toString()
         Log.e("Mensaje", "Fecha Inicio $fechaInicio")
 
     }
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
-        anioFin = anio
-        mesFin  = mes
-        diaFin  = dia
+        val diaString : String
+        val mesString : String
+        anioFin  = anio
+        mesFin   = mes+1
+        diaFin   = dia
+
+        if(dia<10){
+            diaString = "0$dia"
+        }else{
+            diaString = "$dia"
+        }
+        if(mes+1<10){
+            mesString = "0$mesFin"
+        }else{
+            mesString = "${mes+1}"
+        }
+
         val fecha=binding.edtFechaFin
-        val fechaObtenida = "$anio-${mes+1}-$dia"
+        val fechaObtenida = "$anio-$mesString-$diaString"
         fecha.setText(fechaObtenida)
         fechaFin = fecha.text.toString()
         Log.e("Mensaje", "Fecha Fin $fechaFin")
