@@ -38,15 +38,22 @@ interface TasksApi {
     @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
     fun getTasksByStatus(@Path("datos") datos: String): Call<TaskList>?
 
+    //Cancelar tarea
     @DELETE("tareas/cancelarTarea/{idTarea}")
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
 
+    //Editar tarea
     @PUT("tareas/actualizarTarea/{idTarea}")
     fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String)
             : Call<DataTask>
 
+    //Actualizar Status
     @PUT("tareas/actulizarEstatus/{param}")
     fun updateStatus(@Path("param") param: String): Call<String>
 
+    //Obtener las tareas que asigno el usuario por id, status
+    //@GET("tareas/obtenerTareasQueAsignoPorIdYEstatus/{datos}")
+    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
+    fun getTasksAssigned(@Path("datos") datos: String): Call<TaskList>?
 
 }

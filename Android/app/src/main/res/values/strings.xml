@@ -41,7 +41,7 @@
         <item>revision</item>
         <item>terminada</item>
         <item>asignada</item>
-        <item>cancelado</item>
+        <item>Cancelado</item>
     </string-array>
 
     <string name="mensaje_nuevo">Mensaje nuevo</string>

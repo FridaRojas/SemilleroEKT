@@ -2,11 +2,6 @@ package com.example.agileus.webservices.dao
 
 import android.util.Log
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.models.DataTask
-import com.example.agileus.models.TaskList
-import com.example.agileus.models.DataPersons
-import com.example.agileus.models.PersonasGrupo
-import com.example.agileus.models.Tasks
 import com.example.agileus.models.*
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
@@ -106,6 +101,37 @@ class TasksDao : DialogoConfirmacionListener{
 
         return listaTareas
     }
+
+
+    suspend fun getTasksAssigned(id: String, status: String): ArrayList<DataTask> {
+        var listaTareasAsignadas = ArrayList<DataTask>()
+        lateinit var taskList: TaskList
+
+        var datos = "$id&$status"
+        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksAssigned(datos)
+        var response = callRespuesta?.execute()
+
+        try {
+            if (response != null) {
+                if (response.isSuccessful) {
+                    taskList = response.body()!!
+                    if (taskList.data != null) {
+                        listaTareasAsignadas = taskList.data
+                    } else {
+                        listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
+                    }
+                } else {
+                    listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
+                }
+            }else{
+                listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
+            }
+        } catch (e: Exception) {
+            Log.e("error", e.toString())
+        }
+        return listaTareasAsignadas
+    }
+
 
     fun cancelTask(t: DetalleNivelAltoFragmentArgs) {
         val callback = InitialApplication.webServiceGlobalTasks.cancelarTarea(t.tareas.idTarea)
