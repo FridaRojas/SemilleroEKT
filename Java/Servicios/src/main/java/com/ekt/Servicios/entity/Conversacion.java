@@ -6,6 +6,7 @@ public class Conversacion {
    private String nombreConversacionRecepto;
    private String idEmisor;
 
+
     public String getIdConversacion() {
         return idConversacion;
     }

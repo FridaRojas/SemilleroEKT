@@ -225,17 +225,15 @@ public class MensajesController {
 	// ver conversacion
 	@GetMapping("/verConversacion/{idConversacion}")
 	public ResponseEntity<?> verConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
-
-		if(idConversacion.length()>24){
+		
+		if(idConversacion.length()<49){
 			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id de la convbersacion no contiene los caracteres neesarios", ""));
-		}else if ((idConversacion.isEmpty())){
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
-		}else {
+		}
+
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 
 			return ResponseEntity.status(HttpStatus.OK).body(iter.iterator());
-		}
-		return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no hay conversacion", ""));
+
 	}
 
 	// eliminar mensaje(cambiar estado) ?
@@ -250,6 +248,9 @@ public class MensajesController {
 
 		if (!mensaje.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El mensaje no fue encontrado",""));
+		}
+		if(mensaje.get().getVisible()) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El mensaje ya se elimino",""));
 		}
 
 		mensaje.get().setVisible(false);
@@ -519,7 +520,7 @@ public class MensajesController {
 		}
 
 		for (Conversacion conv: lConversacion){
-			if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor)){
+			if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor) || conv.getIdConversacion().length()<50){
 				lConversacion2.add(conv);
 			}
 		}
@@ -528,7 +529,7 @@ public class MensajesController {
 				lConversacion3.add(conv2);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(lConversacion3);
+		return ResponseEntity.status(HttpStatus.OK).body(lConversacion2);
 	}
 
 	@GetMapping("listarMensajesRecividos/{idEmisor}")
