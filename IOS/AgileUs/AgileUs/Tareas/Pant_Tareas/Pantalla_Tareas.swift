@@ -8,6 +8,13 @@
 import UIKit
 
 
+struct Status: Codable{
+    let estatus: String
+    let mensaje: String
+    let data: [Datos]?
+
+}
+
 struct Datos:Codable{
     let fecha_ini:String?
     let id_receptor: String?
@@ -16,16 +23,11 @@ struct Datos:Codable{
     let prioridad: String?
 }
 
-struct Status: Codable{
-    let estatus: String
-    let mensaje: String
-    var data: [Datos]?
-
-}
 
 class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var menu_clasificador: UICollectionView!
+    
     // nombre para las categorias de pendiente,final,
     let dataSource = ["Pendientes","Iniciadas","Revisión","Terminada"]
     
@@ -77,6 +79,8 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         //llama al servico
         consumir_servicio()
         
+     // llamar al servico de filtros
+        
         
         // llamada de menu
         menu_clasificador.dataSource = self
@@ -125,6 +129,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
                         print(i.id_tarea)
                         
                         print()
+                        
                  }
                     self.Lista_tareas.reloadData()
                  
@@ -136,6 +141,9 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         }.resume()
         
 }
+    
+    //funcion del servicio de filtros
+    
 
     //metodos para uso de la tabla
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -191,4 +199,5 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
             }
     
 }
+
 
