@@ -229,11 +229,6 @@ public class MensajesController {
 		if(idConversacion.length()<49){
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id de la convbersacion no contiene los caracteres neesarios", ""));
 		}
-		Optional<Mensajes> opt = mensajesRepository.buscarMensaje(idConversacion);
-		if(opt.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
-		}
-
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 
 			return ResponseEntity.status(HttpStatus.OK).body(iter.iterator());
@@ -523,7 +518,6 @@ public class MensajesController {
 						
 					}else if(mensajes.getIDReceptor().equals(idEmisor)) {
 						Optional<User> user3 = userRepository.validarUsuario(mensajes.getIDEmisor());
-						System.out.println();
 						mConv.setIdReceptor(mensajes.getIDEmisor());
 						mConv.setNombreConversacionRecepto(user3.get().getNombre());
 						mConv.setIdConversacion(mensajes.getIDConversacion());
