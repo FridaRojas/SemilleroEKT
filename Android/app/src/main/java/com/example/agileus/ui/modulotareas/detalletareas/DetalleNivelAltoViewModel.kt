@@ -29,7 +29,7 @@ class DetalleNivelAltoViewModel : ViewModel() {
     fun editarTarea(dataTask: DetalleNivelAltoFragmentArgs) {
         try {
             viewModelScope.launch {
-                taskDao.editTask(dataTask, dataTask.tareas.idTarea)
+                taskDao.editTask(dataTask)
                 Log.d("Mensaje", "id: ${dataTask.tareas.idTarea}")
             }
         } catch (ex: Exception) {
