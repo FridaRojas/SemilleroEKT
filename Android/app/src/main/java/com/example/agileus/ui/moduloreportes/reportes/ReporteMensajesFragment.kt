@@ -115,7 +115,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend1.isVisible=false
         binding.colorlegend2.isVisible=false
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-
         reporteMensajesViewModel.devuelvelistaReporte(this)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
@@ -162,7 +161,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend2.isVisible=true
 
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-
         reporteMensajesViewModel.devuelvelistaReporte(this)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
@@ -325,7 +323,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
         cambiarGrafica(tipo_grafica)
-        Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
