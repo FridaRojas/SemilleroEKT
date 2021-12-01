@@ -7,6 +7,9 @@ import com.ekt.Servicios.repository.MensajesRepository;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+
+import kotlin.collections.ArrayDeque;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
@@ -42,32 +45,51 @@ public class MensajesController {
 	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes)
 			throws ApiUnprocessableEntity, ResultadoNoEncontrado {
 
-		this.validarMensajeImpl.validator(mensajes);
+		if (mensajes.getIDEmisor() == null || mensajes.getIDReceptor() == null || mensajes.getTexto() == null
+				|| mensajes.getRutaDocumento() == null || mensajes.getFechaCreacion() == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, "Cuerpo de Json incorrecto", ""));
+		}
+
+		if (mensajes.getIDEmisor().length() < 24 || mensajes.getIDEmisor().length() > 24) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idEmisor no es correcto", ""));
+		}
+
+		if (mensajes.getIDReceptor().length() < 24) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idReceptor no es correcto", ""));
+		}
+
+		if (mensajes.getTexto().length() < 1) { 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					new Response(HttpStatus.BAD_REQUEST, "El texto del mensaje debe ser de al menos 1 caracter", ""));
+		}
 
 		Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
 		Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
 
-		this.validarMensajeImpl.validarOptional(emisor, "emisor");
-		// this.validarMensajeImpl.validarOptional(receptor, "receptor");
-
 		List<User> listaConversacion = new ArrayList<>();
 		List<Conversacion> listaGrupo = new ArrayList<>();
-		//List<User> listaConversacion = listaConversacion(emisor.get().getID());
-		if(emisor.isPresent()) {
+
+		/*if (!receptor.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
+					"No existe el receptor en la base de datos", mensajes.getIDReceptor()));
+		}*/
+
+		if (emisor.isPresent()) {
 			listaConversacion = listaConversacion(emisor.get().getID());
 			listaGrupo = grupos(mensajes.getIDEmisor());
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
+					"No existe el emisor en la base de datos", mensajes.getIDEmisor()));
 		}
-
-		//List<Conversacion> listaGrupo = new ArrayList<>();
-		//List<Conversacion> listaGrupo = grupos(mensajes.getIDEmisor());
 		
-		
-		// Banderas para saber si se encontraron en alguna lista
 		boolean existeEnListaGrupo = false;
 		boolean existeEnListaUsuario = false;
 
 		Conversacion cuerpoConversacion = new Conversacion();
-		// Comparar receptor en lista de grupos
+		
 		for (Conversacion conversacion : listaGrupo) {
 			if (conversacion.getIdConversacion().equals(mensajes.getIDReceptor())) {
 				existeEnListaGrupo = true;
@@ -78,44 +100,39 @@ public class MensajesController {
 		}
 
 		if (existeEnListaGrupo) {
-			if (emisor.isPresent()) {
-				if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
-					mensajes.setRutaDocumento("");
-					mensajes.setStatusRutaDocumento(false);
-				} else {
-					mensajes.setTexto("Documento");
-					mensajes.setStatusRutaDocumento(true);
-				}
-
-				mensajes.setIDConversacion(mensajes.getIDReceptor());
-
-				// Status-fecha Creado
-				mensajes.setStatusCreado(true);
-
-				// Status-fecha Enviado
-				mensajes.setFechaEnviado(new Date());
-				mensajes.setStatusEnviado(true);
-
-				// Status-fecha Leido
-				mensajes.setStatusLeido(false);
-				mensajes.setFechaLeido(new Date(0));
-
-				mensajes.setVisible(true);
-
-				mensajes.setNombreConversacionReceptor(cuerpoConversacion.getNombreConversacionRecepto());
-
-				mensajes.setConversacionVisible(true);
-
-				mensajesService.crearMensaje(mensajes);
-				
-				if(mensajes.getTexto().equals("Documento")) {
-					return ResponseEntity.status(HttpStatus.CREATED)
-							.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
-				}
-
-				return ResponseEntity.status(HttpStatus.CREATED).body(
-						new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
+			if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
+				mensajes.setRutaDocumento("");
+				mensajes.setStatusRutaDocumento(false);
+			} else {
+				mensajes.setTexto("Documento");
+				mensajes.setStatusRutaDocumento(true);
 			}
+
+			mensajes.setIDConversacion(mensajes.getIDReceptor());
+			
+			mensajes.setStatusCreado(true);
+			
+			mensajes.setFechaEnviado(new Date());
+			mensajes.setStatusEnviado(true);
+			
+			mensajes.setStatusLeido(false);
+			mensajes.setFechaLeido(new Date(0));
+
+			mensajes.setVisible(true);
+
+			mensajes.setNombreConversacionReceptor(cuerpoConversacion.getNombreConversacionRecepto());
+
+			mensajes.setConversacionVisible(true);
+
+			mensajesService.crearMensaje(mensajes);
+
+			if (mensajes.getTexto().equals("Documento")) {
+				return ResponseEntity.status(HttpStatus.CREATED)
+						.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+			}
+
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
 		}
 
 		// Comparar receptor en lista de contactos
@@ -126,72 +143,65 @@ public class MensajesController {
 		}
 
 		if (existeEnListaUsuario) {
-			if (emisor.isPresent()) {
-				if (receptor.isPresent()) {
 
-					if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
-						mensajes.setRutaDocumento("");
-						mensajes.setStatusRutaDocumento(false);
-					} else {
-						mensajes.setTexto("Documento");
-						mensajes.setStatusRutaDocumento(true);
-					}
-
-					List<Mensajes> conversacionForma1 = new ArrayList<>();
-					List<Mensajes> conversacionForma2 = new ArrayList<>();
-
-					Iterable<Mensajes> conversacionIterable1 = mensajesService
-							.verConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-					conversacionIterable1.forEach(conversacionForma1::add);
-
-					Iterable<Mensajes> conversacionIterable2 = mensajesService
-							.verConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
-					conversacionIterable2.forEach(conversacionForma2::add);
-
-					if (conversacionForma1.size() > 0) {
-						mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-					} else if (conversacionForma2.size() > 0) {
-						mensajes.setIDConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
-					} else {
-						mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-					}
-
-					// Status-fecha Creado
-					mensajes.setStatusCreado(true);
-
-					// Status-fecha Enviado
-					mensajes.setFechaEnviado(new Date());
-					mensajes.setStatusEnviado(true);
-
-					// Status-fecha Leido
-					mensajes.setStatusLeido(false);
-					mensajes.setFechaLeido(new Date(0));
-
-					mensajes.setVisible(true);
-
-					mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
-
-					mensajes.setConversacionVisible(true);
-
-					mensajesService.crearMensaje(mensajes);
-					
-					if(mensajes.getTexto().equals("Documento")) {
-						return ResponseEntity.status(HttpStatus.CREATED)
-								.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
-					}
-
-					return ResponseEntity.status(HttpStatus.CREATED)
-							.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
-
-				}
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(receptor.get());
+			if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
+				mensajes.setRutaDocumento("");
+				mensajes.setStatusRutaDocumento(false);
 			} else {
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(emisor.get());
+				mensajes.setTexto("Documento");
+				mensajes.setStatusRutaDocumento(true);
 			}
+
+			List<Mensajes> conversacionForma1 = new ArrayList<>();
+			List<Mensajes> conversacionForma2 = new ArrayList<>();
+
+			Iterable<Mensajes> conversacionIterable1 = mensajesService
+					.verConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
+			conversacionIterable1.forEach(conversacionForma1::add);
+
+			Iterable<Mensajes> conversacionIterable2 = mensajesService
+					.verConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
+			conversacionIterable2.forEach(conversacionForma2::add);
+
+			if (conversacionForma1.size() > 0) {
+				mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
+			} else if (conversacionForma2.size() > 0) {
+				mensajes.setIDConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
+			} else {
+				mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
+			}
+
+			mensajes.setStatusCreado(true);
+
+			mensajes.setFechaEnviado(new Date());
+			mensajes.setStatusEnviado(true);
+
+			mensajes.setStatusLeido(false);
+			mensajes.setFechaLeido(new Date(0));
+
+			mensajes.setVisible(true);
+
+			mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
+
+			mensajes.setConversacionVisible(true);
+
+			mensajesService.crearMensaje(mensajes);
+
+			if (mensajes.getTexto().equals("Documento")) {
+				return ResponseEntity.status(HttpStatus.CREATED)
+						.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+			}
+
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
+					"No puedes mandarle mensaje a este receptor", mensajes.getIDReceptor()));
 		}
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No existe el receptor en la lista");
+
 	}
 
+	
 	// ver conversacion
 	@GetMapping("/verConversacion/{idConversacion}")
 	public ResponseEntity<?> verConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
@@ -247,34 +257,69 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.OK).body("Actualizado");
 		}
 	}
-
-	public List<User> listaConversacion(String miId) throws ResultadoNoEncontrado {
+	
+	List<User> myArregloUsuario = new ArrayList<>();
+	public List<User> listaConversacion(String miId){
 		List<User> listaConversacion = new ArrayList<>();
-
-		// 1.- Validar que yo exista
+		
 		Optional<User> existo = userRepository.validarUsuario(miId);
-		this.validarMensajeImpl.validarOptional(existo, "emisor");
-		// existo.ifPresent(listaConversacion::add);
-		// 2.- Buscar a mi jefe
+		
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
-		// this.validarMensajeImpl.validarOptional(jefe,"jefe");
+		
 		if (jefe.isPresent()) {
 			jefe.ifPresent(listaConversacion::add);
 		}
 
-		// 3.- Buscar Hijos de jefe (hermanos)
 		Iterable<User> hermanos = userRepository.findByBossId(existo.get().getIDSuperiorInmediato());
-		this.validarMensajeImpl.validarIterableUser(hermanos, "hermanos");
-		hermanos.forEach(listaConversacion::add);
+		for(User hermano : hermanos) {
+			if(!hermano.getID().equals(miId)) {
+				listaConversacion.add(hermano);
+			}
+		}
 
-		// 4.- Buscar a mis hijos
 		Iterable<User> misHijos = userRepository.findByBossId(existo.get().getID());
-		this.validarMensajeImpl.validarIterableUser(misHijos, "hijos");
-		misHijos.forEach(listaConversacion::add);
-
+		
+		lista(misHijos);
+		
+		for(User usuariosHijos : this.myArregloUsuario) {
+			listaConversacion.add(usuariosHijos);
+		}
+		
 		return listaConversacion;
 	}
-
+	
+	/*@GetMapping("listarHijos/{id}")
+	public ResponseEntity<?> listaHijos(@PathVariable (value = "id") String id){
+		
+		Iterable<User> hijos = userRepository.findByBossId(id);
+		
+		lista(hijos);
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.myArregloUsuario);
+	}
+	
+	@GetMapping("listarHijos2/{id}")
+	public ResponseEntity<?> listaHijos2(@PathVariable (value = "id") String id){
+		
+		Iterable<User> hijos = userRepository.findByBossId(id);
+		
+		//lista(hijos);
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(hijos);
+	}*/
+	
+	public void lista(Iterable<User> listaHijos){
+		List<User> contenedor = new ArrayList<>();
+		for(User usuario : listaHijos) {
+			this.myArregloUsuario.add(usuario);
+			Iterable<User> listaNietos = userRepository.findByBossId(usuario.getID());
+			listaNietos.forEach(contenedor::add);
+			if(contenedor.size()>0) {
+				lista(listaNietos);
+			}
+		}
+	}
+	
 	@PutMapping("/eliminarConversacion/{idConversacion}")
 	public ResponseEntity<?> cambiarStatusConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
