@@ -43,7 +43,7 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         tabla_chats.delegate = self
         tabla_chats.dataSource = self
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
-        consumir_Servicio_web()
+       // consumir_Servicio_web()
     }
     
     

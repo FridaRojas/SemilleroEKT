@@ -12,7 +12,7 @@ import InputBarAccessoryView
 //declaramos Structuras
 //estructura para codear json de api del servicio web
 //con los datos que vamos a ocupar
-struct User: Codable
+struct Chats: Codable
 {
     let id: String
     let texto: String
@@ -50,11 +50,11 @@ class ChatViewController:
     MessagesViewController,MessagesDataSource,MessagesLayoutDelegate,InputBarAccessoryViewDelegate,MessageLabelDelegate,MessagesDisplayDelegate,MessageCellDelegate {
     
     //declaramos variables globales
-    let servicio = "http://10.97.4.165:3040/api/mensajes/verConversacion/618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
+    
     var currentUser = Sender(senderId: "user" , displayName: "Carlos") //variables usuario emisor
     var otherUser = Sender(senderId: "other", displayName: "Bops") //variable usuario receptor
     var messages = [MessageType]() //variable del tipo d emensaje
-    var usuarios = [User]() //variable de tipo arreglo
+    var usuarios = [Chats]() //variable de tipo arreglo
     var mensaje = ""
     var lastDisplayedSentDate: Date?
     var Boton_ver:UIButton?
@@ -209,12 +209,13 @@ class ChatViewController:
     
     func carga_mensajes()
     {
+        let servicio = "http://10.97.6.73:3040/api/mensajes/verConversacion/618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
             do
             {
-                self.usuarios = try JSONDecoder().decode([User].self, from: data!)
+                self.usuarios = try JSONDecoder().decode([Chats].self, from: data!)
                 DispatchQueue.main.async
                 {
                     var cont = 0
