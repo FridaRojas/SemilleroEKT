@@ -215,4 +215,21 @@ public class TaskController {
         mensaje = "Se encontraron tareas";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
     }
+
+    @PutMapping("/actulizarEstatus/{id_tarea}&{estatus}")   // Tareas
+    public ResponseEntity<?> actualizarEstatus(@PathVariable String id_tarea, @PathVariable String estatus) {
+        //Validar Id tarea
+        //Validar estatus
+        String mensaje = "";
+        Optional<Task> oTarea = tareaService.findById(id_tarea);
+        if (oTarea.isPresent()) {
+            tareaService.actualizarEstatus(id_tarea, estatus);
+            mensaje = "Estatus actualizado correctamente";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje));
+        } else {
+            mensaje = "Id no encontrado";
+            //return ResponseEntity.ok(new Respuesta(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),e.getMessage()));
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
+        }
+    }
 }
