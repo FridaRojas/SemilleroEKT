@@ -12,6 +12,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.R.*
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuario
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import java.util.*
@@ -273,11 +275,11 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
 
     override fun onUserSelected(user: Int) {
         if (user == 0){
-            txtUsuario.setText(MySharedPreferences.idUsuario)
-            userIdSelected = MySharedPreferences.idUsuario
+            txtUsuario.setText(idUsuario)
+            userIdSelected = idUsuario
         }else{
-            txtUsuario.setText(MySharedPreferences.empleadoUsuario[user-1].nombre)
-            userIdSelected = MySharedPreferences.empleadoUsuario[user-1].id
+            txtUsuario.setText(empleadoUsuario[user-1].nombre)
+            userIdSelected = empleadoUsuario[user-1].id
         }
     }
 
