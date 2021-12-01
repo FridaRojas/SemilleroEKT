@@ -165,4 +165,28 @@ public class TaskServiceImpl implements TaskService{
             e.printStackTrace();
         }
     }
+    @Override
+    public ArrayList<String> validarTareasActualizar(Task tarea) {
+
+        Date fechaInicial = tarea.getFecha_ini();
+        Date fechaFinal = tarea.getFecha_fin();
+        String titulo = tarea.getTitulo();
+        String descripcion = tarea.getDescripcion();
+        String prioridad = tarea.getPrioridad();
+        String estatus = tarea.getEstatus();
+        String observaviones = tarea.getObservaciones();
+
+        boolean observacionesA = Pattern.matches("^[a-zA-Z\\s]*$", observaviones);
+        boolean prioridadA = Pattern.matches("^[a-zA-Z\\s]*$", prioridad);
+        boolean tituloA = Pattern.matches("^[a-zA-Z0-9\\s]*$", titulo);
+        boolean descripcionA = Pattern.matches("^[A-Za-z\\s]+[\\.]{0,1}[A-Za-z\\s]*$", descripcion);
+        boolean estatusA = Pattern.matches("^[a-zA-Z]*$", estatus);
+        ArrayList<String> erroresActulizar = new ArrayList<>();
+        if (!observacionesA) erroresActulizar.add("observaciones");
+        if (!prioridadA) erroresActulizar.add("prioridad");
+        if (!tituloA) erroresActulizar.add("titulo");
+        if (!descripcionA) erroresActulizar.add("descripcion");
+        if (!estatusA) erroresActulizar.add("estatus");
+        return erroresActulizar;
+    }
 }
