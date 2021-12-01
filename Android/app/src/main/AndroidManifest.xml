@@ -24,10 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity"
             android:exported="true"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.HomeActivity"
             android:exported="true"
@@ -36,6 +37,8 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true" />
+
+
     </application>
 
 </manifest>
