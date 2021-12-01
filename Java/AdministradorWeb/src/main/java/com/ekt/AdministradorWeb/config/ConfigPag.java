@@ -255,12 +255,10 @@ public class ConfigPag {
         }
     }
 
-
     @GetMapping("/inicioGrupos")
     public String inicioGrupos() {
         return "paginas/organigramas/inicioOrganigramas";
     }
-
 
     @GetMapping("/buscarTodosGrupos")
     public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model) {
