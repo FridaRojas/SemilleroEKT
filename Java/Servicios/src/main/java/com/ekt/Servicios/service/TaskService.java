@@ -13,4 +13,5 @@ public interface TaskService {
     public void  actualizarEstatus(String id_tarea, String estatus );
     public void actualizaLeido(String id_tarea,Boolean leido);
     public void updateRealDateStart(String id_tarea, Task tarea);
+    public void updateRealDateFinish(String id_tarea, Task tarea);
 }

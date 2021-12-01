@@ -93,4 +93,18 @@ public class TaskServiceImpl implements TaskService{
             }
         }
     }
+
+    @Override
+    public void updateRealDateFinish(String id_tarea, Task tarea){
+        Optional<Task> tareaOptional = tareaRepository.findById(id_tarea);
+        if(tareaOptional.isPresent()){
+            if(tarea.getFecha_finR()!=null){
+                Task tareaUpdate = tareaOptional.get();
+                tareaUpdate.setFecha_finR(tarea.getFecha_finR());
+                tareaRepository.save(tareaUpdate);
+            }else{
+                //VALIDAR
+            }
+        }
+    }
 }
