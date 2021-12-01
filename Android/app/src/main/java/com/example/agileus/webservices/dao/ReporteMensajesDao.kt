@@ -4,11 +4,10 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniCustomEstadisticas
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.id_broadcast
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.opcionFiltro
 import com.example.agileus.models.*
 import retrofit2.Response
 import java.time.ZonedDateTime
@@ -40,22 +39,9 @@ class ReporteMensajesDao {
         var lista: ArrayList<Conversation>
         var lista_B: ArrayList<DatosBroadCast>
 
-
-        when (opcionFiltro) {
-
-            0 -> {
-                //Desde la fecha default hasta ahora
-                fecha_inicio = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas)
-                fecha_fin =ZonedDateTime.now()
-            }
-            else -> {
-                //Fechas por día, mes, año y custom
-                fecha_inicio = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas)
-                fecha_fin = ZonedDateTime.parse(MySharedPreferences.fechaFinEstadisticas)
-
-            }
-
-        }
+        //Fechas por día, mes, año, custom y default
+        fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
+        fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
 
         if (ResponseMensajes.isSuccessful) {
             lista = ResponseMensajes.body()!!

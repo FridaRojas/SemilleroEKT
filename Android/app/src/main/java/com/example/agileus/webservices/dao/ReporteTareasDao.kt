@@ -5,18 +5,14 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.models.DatosTareas
-import com.example.agileus.models.Estadisticas
-import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniCustomEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.opcionFiltro
-import com.example.agileus.models.*
+import com.example.agileus.models.Contacts
+import com.example.agileus.models.DatosTareas
+import com.example.agileus.models.EmployeeListByBossID
+import com.example.agileus.models.Estadisticas
 import retrofit2.Response
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 
 class ReporteTareasDao {
 
@@ -45,21 +41,10 @@ class ReporteTareasDao {
         var listaRecycler= ArrayList<Estadisticas>()
         val lista: ArrayList<DatosTareas>
 
-        when (opcionFiltro) {
-
-            0 -> {
-                //Desde la fecha default hasta ahora
-                fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
-                fecha_fin =ZonedDateTime.now()
-            }
-            else -> {
-                //Fechas por día, mes, año y custom
+                //Fechas por día, mes, año, custom y default
                 fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
                 fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
 
-            }
-
-        }
 
         if (ResponseTareas.isSuccessful) {
             lista = ResponseTareas.body()!!
