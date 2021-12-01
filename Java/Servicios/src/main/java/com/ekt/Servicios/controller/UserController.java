@@ -7,6 +7,8 @@ import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.GroupServiceImpl;
 import com.ekt.Servicios.service.UserService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +83,19 @@ public class UserController {
                 //actualizar token
                 user.get().setToken(infAcceso.getToken());
                 userService.save(user.get());
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user.get()));
+
+                user.get().setFechaInicio(null);
+                user.get().setFechaTermino(null);
+                user.get().setPassword(null);
+                user.get().setIDGrupo(null);
+                user.get().setOpcionales(null);
+                user.get().setIDSuperiorInmediato(null);
+                user.get().setStatusActivo(null);
+                user.get().setCurp(null);
+                user.get().setRFC(null);
+
+
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
             }else{
             System.out.println("Login: Usuario no encontrado");
             return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}

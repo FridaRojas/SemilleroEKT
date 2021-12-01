@@ -122,4 +122,67 @@ public class UserDAO {
 
         return false;
     }
+
+    public ArrayList<User> listaUsuariosDisponibles(){
+        Gson gson = new Gson();
+        ArrayList<User> listaUsuarios = new ArrayList();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/findAll")
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String res = response.body().string();
+            JSONObject jsonObject= new JSONObject(res);
+            //Separamos la parte de data
+            JSONArray name1 = jsonObject.getJSONArray("data");
+
+            //prueba de casteo
+
+            for (int i=0;i<name1.length();i++){
+                if(gson.fromJson(name1.getJSONObject(i).toString(), User.class).getIDGrupo().equals("")){
+                    listaUsuarios.add(gson.fromJson(name1.getJSONObject(i).toString(), User.class));
+                }
+            }
+            System.out.println("La lista de disponibles es: "+listaUsuarios.size());
+        }catch (Exception e){
+            System.out.println("Error al lista usuarios");
+        }
+        return listaUsuarios;
+    }
+
+    public ArrayList<User> listaUsuariosOrganigrama(String id){
+        Gson gson = new Gson();
+        ArrayList<User> listaUsuariosOrganigrama = new ArrayList();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/buscar/"+id)
+                .method("GET", null)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            String res = response.body().string();
+
+            JSONObject jsonObject= new JSONObject(res);
+
+            JSONObject name1 = jsonObject.getJSONObject("data");
+            System.out.println(name1.toString());
+            JSONArray users = name1.getJSONArray("usuarios");
+            System.out.println(users.toString());
+            for (int i=0;i<users.length();i++){
+                    listaUsuariosOrganigrama.add(gson.fromJson(users.getJSONObject(i).toString(), User.class));
+            }
+            System.out.println("Lista de usuarios en un grupo: "+listaUsuariosOrganigrama.size());
+
+        }catch (Exception e){
+            System.out.println("Error al hacer la peticion");
+        }
+
+        return listaUsuariosOrganigrama;
+    }
+
 }

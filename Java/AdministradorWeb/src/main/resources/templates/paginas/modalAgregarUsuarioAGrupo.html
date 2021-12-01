@@ -17,7 +17,7 @@
 <!-- Modal -->
 <div class="modal fade" id="modalAgregarUsuarioAGrupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <!--/*@thymesVar id="Group" type="java"*/-->
-    <form th:action="@{/agregarUsuarioAGrupo}" th:object="${Group}"  method="post" name="agregarUsuarioAGrupo" id="agregarUsuarioAGrupo">
+    <form th:action="@{/agregarUsuarioAGrupo(idGrupo)}" th:object="${User}"  method="post" name="agregarUsuarioAGrupo" id="agregarUsuarioAGrupo">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
@@ -26,12 +26,36 @@
                 </div>
 
                 <div class="modal-body">
-                    <input type="text" name="name"  class="form-control" aria-describedby="sizing-addon1" required>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Superior</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" th:text="${idGrupo}" name="idGrupoModal"  class="form-control" aria-describedby="sizing-addon1" required hidden>
+                                    <select name="nombre"  class="form-control" aria-describedby="sizing-addon1" required>
+                                        <option>1</option><option>2</option><option>3</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="superior"  class="form-control" aria-describedby="sizing-addon1" required>
+                                        <option>1</option><option>2</option><option>3</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="rol"  class="form-control" aria-describedby="sizing-addon1" required></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Crear</button>
+                    <button type="submit" class="btn btn-success">Agregar</button>
                 </div>
 
             </div>

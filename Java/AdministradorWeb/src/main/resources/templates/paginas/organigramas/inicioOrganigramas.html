@@ -146,8 +146,9 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-sm">
-                                    <a type="button" style="background-color: #66BB6A" class="btn btn-primary" th:href="@{/editarGrupo/(idGrupo=${grupo.getId()})}" ><i class="fa fa-edit"></i></a>
-
+                                    <form method="POST" th:action="@{/editarGrupo(idGrupo=${grupo.getId()})}">
+                                    <button type="submit"  value="submit" style="background-color: #66BB6A" class="btn btn-primary"  ><i class="fa fa-edit"></i></button>
+                                    </form>
                                 </div>
                                 <div class="col-sm" style="align-content: center">
                                     <form method="DELETE"

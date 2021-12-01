@@ -48,7 +48,7 @@ public class GroupController {
         }
     }
 
-    @CrossOrigin(origins = {"*"})
+    @CrossOrigin(origins = { "*" })
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id){
         if (groupService.buscarPorId(id).isPresent()){
@@ -198,6 +198,7 @@ public class GroupController {
         //return new Response();
     }
 
+    @CrossOrigin(origins = { "*" })
     @GetMapping("/buscarTodo")
     public Response buscarTodo(){
         try {
