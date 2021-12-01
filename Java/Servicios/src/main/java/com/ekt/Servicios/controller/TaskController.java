@@ -87,4 +87,35 @@ public class TaskController {
         mensaje = "Se encontró una tarea";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,oTarea));
     }
+
+    @PutMapping("/actualizarTarea/{id_tarea}")  //3. Tareas
+    public ResponseEntity<?> updateById(@PathVariable String id_tarea,@RequestBody Task tarea){
+        Optional<Task> oTarea = tareaService.findById(id_tarea);
+        String mensaje = "";
+        if(oTarea.isPresent()) {
+            ArrayList<String> validarActualizacion = tareaService.validarTareasActualizar(tarea);
+            if(validarActualizacion.size() == 0) {
+                LocalDateTime date = LocalDateTime.now();
+                TaskLog bitacora = new TaskLog();
+                String id_tareas = id_tarea;
+                bitacora.setId_emisor(tarea.getId_emisor());
+                bitacora.setNombre_emisor(tarea.getNombre_emisor());
+                bitacora.setAccion("Actualizo la tarea");
+                bitacora.setId_tarea(id_tarea);
+                bitacora.setFecha_actualizacion(date);
+
+                bitacoraRepository.save(bitacora);
+                tareaService.updateById(id_tarea, tarea);
+                Optional<Task> newTarea = tareaRepository.findById(id_tarea);
+                mensaje = "Tarea " + id_tarea + " actualizada correctamente";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, newTarea));
+            }else {mensaje = "Error de validacion de tarea a actualizar";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, validarActualizacion));
+            }
+        }else {
+            //return ResponseEntity.ok(new Respuesta(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),e.getMessage()));
+            mensaje = "El id no fue encontrado";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
+        }
+    }
 }
