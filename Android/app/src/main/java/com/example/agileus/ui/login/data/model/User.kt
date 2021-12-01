@@ -2,7 +2,34 @@ package com.example.agileus.ui.login.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class User (
+
+data class User(
+    val `data`: Data,
+    val msj: String,
+    val status: String
+)
+
+data class Data(
+    val correo: String,
+    val curp: Any,
+    val fechaInicio: Any,
+    val fechaTermino: Any,
+    val id: String,
+    val idgrupo: Any,
+    val idsuperiorInmediato: Any,
+    val nombre: String,
+    val nombreRol: String,
+    val numeroEmpleado: String,
+    val opcionales: Any,
+    val password: Any,
+    val rfc: Any,
+    val statusActivo: Any,
+    val telefono: String,
+    val token: String
+)
+
+
+/*data class User (
 
     @SerializedName("status" ) var status : String? = null,
     @SerializedName("msj"    ) var msj    : String? = null,
@@ -30,3 +57,5 @@ data class Data (
     @SerializedName("idsuperiorInmediato" ) var idsuperiorInmediato : String? = null
 
 )
+
+ */

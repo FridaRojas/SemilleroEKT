@@ -8,13 +8,17 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 
 import android.content.Intent
 import com.example.agileus.databinding.FragmentLoginBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding: FragmentLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = FragmentLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
     }
 
 }

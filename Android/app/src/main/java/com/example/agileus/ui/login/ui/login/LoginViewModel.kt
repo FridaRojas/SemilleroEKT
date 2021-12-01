@@ -1,48 +1,49 @@
 package com.example.agileus.ui.login.ui.login
 
 import android.util.Log
+import android.widget.Button
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.agileus.ui.login.data.model.Data
-import com.example.agileus.ui.login.ui.login.services.GetUserDao
+import com.example.agileus.R
+import com.example.agileus.ui.login.data.model.User
+import com.example.agileus.ui.login.data.dao.LoginDao
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class LoginViewModel :  ViewModel() {
+class LoginViewModel : ViewModel() {
+    var lista: LoginDao
+    lateinit var listaConsumida: ArrayList<User>
 
-    var lista: LoginProvider
-    lateinit var listafiltrada: ArrayList<Data>
-    lateinit var listaConsumida: ArrayList<Data>
 
     init {
-        lista = LoginProvider()
+        lista = LoginDao()
     }
 
 
-    fun devuelveUser() {
-        Log.d("paso","a")
+
+    fun devuelveUser(/* pasar parametros login */) {
         listaConsumida = ArrayList()
         try {
             viewModelScope.launch {
                 listaConsumida = withContext(Dispatchers.IO) {
-                    lista.recupera(listaConsumida) ///recuperarListaUsuario
+                    lista.recuperarUser(listaConsumida) ///recuperarListaUsuario
                 }
-                Log.d("Data","hola")
+
                 if (listaConsumida.isNotEmpty()) {
-                    listaConsumida.forEach {
-
-                        Log.d("Data","${it.nombre}")
+                    listaConsumida.forEach(){
+                        Log.i("vista","${it.data.nombre}")
                     }
-
+                    /*
+                    * logica del login dado que ya se deberia tener datos de registro junto con la lista de usuarios
+                    * */
+//                    listaConsumida[0].data.
+                    ////trabajar con lo obtenido
                 }
             }
+        }catch (ex: Exception) {
+            Log.e("aqui", ex.message.toString())
         }
-        catch (ex:Exception){
-            Log.e("Exception", ex.message.toString())
-        }
-         }
     }
-
-
+}

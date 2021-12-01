@@ -1,15 +1,13 @@
 package com.example.agileus.utils
 
+
 import android.os.Build
 import androidx.annotation.RequiresApi
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
+
 
 object Constantes {
     val URL_ENVIAR_MENSAJE = "http://10.97.1.178:3040/api/"
@@ -32,7 +30,7 @@ object Constantes {
     val finalDate = "$date$localTime"
 
     val URL_LOGIN = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"
-
+    val URL_Login = "http://10.97.2.202:3040"
 
 
 }
