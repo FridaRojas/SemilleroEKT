@@ -111,7 +111,7 @@ public class BroadCastControlador {
 			broadCastM.setAsunto(broadCast.getAsunto());
 			broadCastM.setDescripcion(broadCast.getDescripcion());
 			Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-			Optional<User> user2= userRepository.findRol("BROADCAST");
+			Optional<User> user2= userRepository.validarUsuario("61a101db174bcf469164d2fd");
 
 			if (user.isPresent()) {
 				broadCastM.setNombreEmisor(user.get().getNombre());
