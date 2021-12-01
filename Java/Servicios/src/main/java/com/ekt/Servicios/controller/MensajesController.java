@@ -8,8 +8,6 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 
-import kotlin.collections.ArrayDeque;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
@@ -201,7 +199,6 @@ public class MensajesController {
 
 	}
 
-	
 	// ver conversacion
 	@GetMapping("/verConversacion/{idConversacion}")
 	public ResponseEntity<?> verConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
@@ -213,7 +210,11 @@ public class MensajesController {
 	// eliminar mensaje(cambiar estado) ?
 	@PutMapping("eliminarMensaje/{idMensaje}")
 	public ResponseEntity<?> borrarMensaje(@PathVariable(value = "idMensaje") String idMensaje) {
-
+		
+		if(idMensaje.length()<24 || idMensaje.length()>24) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.NOT_FOUND,"Tamaño del id del mensaje invalido",""));
+		}
+		
 		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(idMensaje);
 
 		if (!mensaje.isPresent()) {
