@@ -174,4 +174,16 @@ public class TaskController {
         mensaje = "Se encontraron tareas";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
     }
+    @GetMapping("/obtenerTareasQueAsignoPorId/{id}")    //REPORTES
+    public ResponseEntity<?> getAllTareasOutByUserId(@PathVariable String id){
+        Iterable<Task> tareas =tareaRepository.getAllOutByUserId(id);
+        int nDocumentos = ((Collection<Task>) tareas).size();
+        String mensaje;
+        if(nDocumentos == 0){
+            mensaje="No se encontraron tareas";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
+        mensaje = "Se encontraron tareas";
+        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
+    }
 }
