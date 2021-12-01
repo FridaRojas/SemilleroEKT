@@ -20,6 +20,8 @@ class Modal_Comunicados: UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        Asunto_Comunicado.text = nil
+        Mensaje_Comunicado.text = nil
     }
     
     @IBAction func Cancelar_Comunicado(_ sender: Any)

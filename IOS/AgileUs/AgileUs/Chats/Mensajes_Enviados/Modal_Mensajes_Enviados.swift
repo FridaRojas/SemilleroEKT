@@ -20,6 +20,8 @@ class Modal_Mensajes_Enviados: UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        Asunto_Comunicado.text = nil
+        Mensaje_Comunicado.text = nil
     }
     
     
