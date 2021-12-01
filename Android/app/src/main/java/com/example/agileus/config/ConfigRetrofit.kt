@@ -20,11 +20,6 @@ class ConfigRetrofit {
 
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE
 
-    //todo Falta editar el url para las tareas
-    val URL_BASE_TAREAS =
-        "http://10.97.6.35:2021/api/"
-
-
    fun obtenerConfiguracionRetofitMessage(): MessageApi {
        val mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)
