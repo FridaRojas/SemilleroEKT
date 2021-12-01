@@ -55,12 +55,11 @@ class TaskViewModel() : ViewModel() {
         viewModelScope.launch {
                 listaTask = withContext(Dispatchers.IO){
                     if(statusRecycler.value.toString() == "asignada"){
-                        //Listas asignadas
-                            //idEmisor
-                        lista.getTasksByStatus("618b05c12d3d1d235de0ade0", statusRecycler.value.toString())
+                        //id Emisor
+                        lista.getTasksAssigned("618d9c26beec342d91d747d6")
                     }else{
-                        //idReceptor
-                        lista.getTasksAssigned("618b05c12d3d1d235de0ade0", statusRecycler.value.toString())
+                        //id Receptor -> id Receptor
+                        lista.getTasksByStatus("4758399642", statusRecycler.value.toString())
                     }
                 }
                 if (listaTask != null) {

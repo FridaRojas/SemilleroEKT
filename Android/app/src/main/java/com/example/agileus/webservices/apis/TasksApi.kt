@@ -53,7 +53,7 @@ interface TasksApi {
 
     //Obtener las tareas que asigno el usuario por id, status
     //@GET("tareas/obtenerTareasQueAsignoPorIdYEstatus/{datos}")
-    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
+    @GET("tareas/obtenerTareasQueAsignoPorId/{datos}")
     fun getTasksAssigned(@Path("datos") datos: String): Call<TaskList>?
 
 }

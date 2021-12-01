@@ -103,12 +103,11 @@ class TasksDao : DialogoConfirmacionListener{
     }
 
 
-    suspend fun getTasksAssigned(id: String, status: String): ArrayList<DataTask> {
+    suspend fun getTasksAssigned(id: String): ArrayList<DataTask> {
         var listaTareasAsignadas = ArrayList<DataTask>()
         lateinit var taskList: TaskList
 
-        var datos = "$id&$status"
-        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksAssigned(datos)
+        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksAssigned(id)
         var response = callRespuesta?.execute()
 
         try {
