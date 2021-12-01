@@ -80,7 +80,7 @@ class ReporteTareasDao {
              */
             fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
             rangoIniFecha = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas) // primera fecha para comparar
-            rangoFinFecha = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas) // segunda fecha para comparar
+            rangoFinFecha = ZonedDateTime.parse(MySharedPreferences.fechaFinEstadisticas) // segunda fecha para comparar
 
             Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
             lista.forEach {

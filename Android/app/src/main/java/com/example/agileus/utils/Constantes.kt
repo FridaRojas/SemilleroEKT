@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 
 object Constantes {
@@ -25,6 +26,7 @@ object Constantes {
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)
     val date: LocalDateTime = LocalDateTime.now()
+    val zonedDate: ZonedDateTime = ZonedDateTime.now()
     val currentLocalTime = calendar.time
     val formatt: DateFormat = SimpleDateFormat("ZZZZZ", Locale.getDefault())
     val localTime: String = formatt.format(currentLocalTime)

@@ -184,7 +184,6 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                 .setPositiveButton("Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
 
-                        MySharedPreferences.opcionFiltro = opcionFiltro
                         MySharedPreferences.fechaIniEstadisticas = iniStringDate
                         MySharedPreferences.fechaFinEstadisticas = endStringDate
                         MySharedPreferences.idUsuarioEstadisticas = userIdSelected

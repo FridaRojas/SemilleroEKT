@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
@@ -21,8 +22,8 @@ class ReporteMensajesDao {
     private var contador_mensajes_leidos:Int=0
     private var contador_mensajes_totales:Int=0
     private var enviados_al_B:Int=0
-    lateinit var fecha_inicio: ZonedDateTime
-    lateinit var fecha_fin: ZonedDateTime
+    private lateinit var fecha_inicio: ZonedDateTime
+    private lateinit var fecha_fin: ZonedDateTime
     lateinit var fecha_actual: ZonedDateTime
     var employeeList = ArrayList<Contacts>()
 
@@ -59,7 +60,6 @@ class ReporteMensajesDao {
 
                 if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
                     (fecha_actual.isBefore(fecha_fin))) {
-
                     contador_m_totales = contador_m_totales + 1
 
                     if (id_usuario_actual == it.idemisor) {
