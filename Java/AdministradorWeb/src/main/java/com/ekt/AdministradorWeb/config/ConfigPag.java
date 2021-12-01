@@ -17,6 +17,15 @@ import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
+import com.ekt.AdministradorWeb.entity.Group;
+import com.ekt.AdministradorWeb.entity.User;
+import com.google.gson.Gson;
+import okhttp3.*;
 import com.ekt.AdministradorWeb.entity.Group;
 
 import org.springframework.stereotype.Controller;
@@ -74,7 +83,7 @@ public class ConfigPag {
             JSONObject jsonObject= new JSONObject(response.body().string());
 
             if (!jsonObject.get("data").toString().equals("")){
-                return "redirect:/findAllUsuarios";
+                return "redirect:/Inicio";
             }else{
                 redirectAttrs
                         .addFlashAttribute("mensaje", "Usuario o contrasena incorrectos");
@@ -320,6 +329,13 @@ public class ConfigPag {
             System.out.println(id);
         }
         return "";
+    }
+
+    @GetMapping("/Inicio")
+    public String Inicio(){
+
+
+        return "paginas/Inicio";
     }
 
 }
