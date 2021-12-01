@@ -35,27 +35,19 @@ class ListaGrafica: UITableViewCell {
     }
         
     func configurar_celda(datos: [Any]) {
-        
-        //print("Configurando celda")
-        
-        //txtTitulo.text = "Tiempo de respuesta promedio"
         imgGrafica.image = UIImage(named: datos[0] as! String)
         lblCantEnviados.text = "\(datos[1])"
         lblCantRecibidos.text = "\(datos[2])"
-        configurar_etiquetas(tipo: datos[3] as! String, taskTimeEnd:"\(datos[4])")
+        configurar_etiquetas(tipo: datos[3] as! String)
     }
     
 
-    func configurar_etiquetas(tipo: String, taskTimeEnd: String) {
-        
-        //print("Configurando etiquetas en la lista")
-        if (tipo == "pie") {
+    func configurar_etiquetas(tipo: String) {
+        if (tipo == "pieM") {
             txtTitulo.text = "Enviados"
-            lblRecibidos.text = "Recibidos"
+            //lblRecibidos.text = "Recibidos"
             lblTiempo.isHidden = true
-            
-        } else if (tipo == "bar") {
-            //lblTiempo.text = "Tiempo de respuesta promedio"
+        } else if (tipo == "barM") {
             txtTitulo.isHidden = true
             lblCantEnviados.isHidden = true
             lblRecibidos.isHidden = true
@@ -69,10 +61,9 @@ class ListaGrafica: UITableViewCell {
             txtTitulo.isHidden = true
             lblCantEnviados.isHidden = true
             lblRecibidos.isHidden = true
-            lblCantRecibidos.text = taskTimeEnd
+            //lblCantRecibidos.text = taskTimeEnd
         }
     }
-    
     
     func configurar_fondo(fondo: String) {
         imgFondo.image = UIImage(named: fondo)

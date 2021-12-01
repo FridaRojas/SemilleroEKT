@@ -7,36 +7,48 @@
 
 import Foundation
 
-var arrTareas: [Tareas]?
+var arrTareas: ObjetoTareas?
+
+
+struct ObjetoTareas:Codable{
+    let estatus: String
+    let mensaje: String
+    let data:[Tareas]
+}
 
 struct Tareas:Codable{
     
     //let id_grupo:String
     //let id_emisor:String
     //let nombre_emisor:String
-    let nombre_receptor:String 
-    let id_receptor:String
-    let estatus:String
-    let leido:Bool
-    let fecha_ini:String
-    let fecha_iniR:String
-    let fecha_fin:String
-    let fecha_finR:String
+    let nombre_receptor:String?
+    let id_receptor:String?
+    let estatus:String?
+    let leido:Bool?
+    let fecha_ini:String?
+    let fecha_iniR:String?
+    let fecha_fin:String?
+    let fecha_finR:String?
 }
 
 class TareasService{
 
     var webServiceTask: ((_ arrDatosTareas:[Any]) -> Void)?
     
-    let serviceTask = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/Task.json?alt=media&token=bb6a2086-2e39-411a-8385-2294dabcc2d5"
+    let serviceTask = "http://10.97.6.35:2021/api/tareas/obtenerTareasQueLeAsignaronPorId/"
 
     let serviceTaskBySubordinado = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/tareas.json?alt=media&token=fd5f6b25-d02b-4582-812f-16445b66e553"
     
-    let serviceTaskByDate = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/TareasFechas.json?alt=media&token=70ef0428-836f-421f-a9ef-cc6563b64819"
+    let serviceTaskByDate = "https://10.97.3.134:2021/api/tareas/obtenerTareas"
     
     func webServiceTareas(){
         let sevice = true
-        let url = URL(string: serviceTaskByDate)
+        //let serviceByID = "\(serviceTask)\(userID)"
+        let serviceByID = "\(serviceTask)ReceptorAlexis"
+        
+        print(serviceByID)
+        
+        let url = URL(string: serviceByID)
         
         print("WebService de tareas")
         
@@ -45,17 +57,17 @@ class TareasService{
             
             (informacion, response, error) in
             
-            //print(informacion!)
-            //print(response!)
-            //print(error)
+            print(informacion!)
+            print(response!)
+            print(error)
             
             do{
                 
-                arrTareas = try JSONDecoder().decode([Tareas].self, from: informacion!)
+                arrTareas = try JSONDecoder().decode(ObjetoTareas.self, from: informacion!)
                 DispatchQueue.main.async {
                                         
                     if sevice == true{
-                        self.webServiceTask?(arrTareas!)
+                        self.webServiceTask?(arrTareas!.data)
                     }
                     //print(arrTareas!)
                     
@@ -86,11 +98,11 @@ class TareasService{
             
             do{
                 
-                arrTareas = try JSONDecoder().decode([Tareas].self, from: informacion!)
+                arrTareas = try JSONDecoder().decode(ObjetoTareas.self, from: informacion!)
                 DispatchQueue.main.async {
                                         
                     if sevice == true{
-                        self.webServiceTask?(arrTareas!)
+                        self.webServiceTask?(arrTareas!.data)
                     }
                     //print(arrTareas!)
                     
