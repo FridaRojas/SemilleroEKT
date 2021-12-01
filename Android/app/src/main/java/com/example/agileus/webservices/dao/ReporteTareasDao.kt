@@ -8,7 +8,9 @@ import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.DatosTareas
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniCustomEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.opcionFiltro
 import com.example.agileus.models.*
 import retrofit2.Response
 import java.time.ZonedDateTime
@@ -24,16 +26,10 @@ class ReporteTareasDao {
     private var contador_tareas_fueraTiempo:Int = 0
     private var contador_tareas_leidas:Int=0
     private var contador_tareas_totales:Int=0
-
-    private var diferencia_horas: Long = 0
-    private var fecha_actual: ZonedDateTime? = null
-    private var fecha_anterior: ZonedDateTime? = null
-    private var suma_tiempos:Int=0
-    private var temporal:Int=0
-    private lateinit var promedio_tiempo_respuesta:String
-
-    lateinit var fechaIni: ZonedDateTime
-    lateinit var fechaIniR: ZonedDateTime
+    lateinit var fecha_inicio: ZonedDateTime
+    lateinit var fecha_fin: ZonedDateTime
+    lateinit var fechaFinTer: ZonedDateTime
+    lateinit var fechaFinTerR: ZonedDateTime
 
     var employeeList = ArrayList<Contacts>()
 
@@ -46,6 +42,43 @@ class ReporteTareasDao {
         var listaRecycler= ArrayList<Estadisticas>()
         val lista: ArrayList<DatosTareas>
 
+        when (opcionFiltro) {
+
+            0 -> {
+                //Desde la fecha default hasta ahora
+                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
+                fecha_fin =ZonedDateTime.now()
+            }
+            1 -> {
+                //Fechas por día
+                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
+                fecha_fin =ZonedDateTime.now()
+
+            }
+            2 -> {
+                //Fechas por mes
+                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
+                fecha_fin =ZonedDateTime.now()
+            }
+            3 -> {
+                //Fechas por año
+                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
+                fecha_fin =ZonedDateTime.now()
+            }
+            4 -> {
+                //Fechas personalizadas
+                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
+                fecha_fin =ZonedDateTime.now()
+            }
+            else->{
+                //Desde la fecha default hasta ahora
+                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
+                fecha_fin =ZonedDateTime.now()
+
+            }
+
+        }
+
         if (ResponseTareas.isSuccessful) {
             lista = ResponseTareas.body()!!
 
@@ -54,8 +87,6 @@ class ReporteTareasDao {
 
             var contador_t_leidas=0
             var contador_t_totales=0
-            var tiempo_p_respuesta=""
-
             var contador_t_terminadas= 0
             var contador_t_pendientes = 0
             var contCancelado = 0
@@ -64,10 +95,6 @@ class ReporteTareasDao {
             var contTareasaTiempo = 0
             var contTareasFueraTiempo = 0
 
-            temporal=0
-            suma_tiempos=0
-            promedio_tiempo_respuesta=""
-
             /*
             Pendientes
             Cancelado
@@ -75,9 +102,6 @@ class ReporteTareasDao {
             Revision
             Terminada
              */
-            fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
-
-
             lista.forEach {
                 if(id_receptor==it.idReceptor) {
                     contador_t_totales = contador_t_totales + 1
@@ -101,38 +125,15 @@ class ReporteTareasDao {
                     }
                 }
 
-                if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
+                fechaFinTer = ZonedDateTime.parse(it.fecha_fin)
+                fechaFinTerR = ZonedDateTime.parse(it.fecha_finR)
+
+                if (fechaFinTer.isBefore(fechaFinTerR) || fechaFinTer.isEqual(fechaFinTerR)){
                     contTareasaTiempo += 1
                 }else{
                     contTareasFueraTiempo = contTareasFueraTiempo + 1
                 }
-
-                fecha_actual = ZonedDateTime.parse(it.fecha_ini)
-                diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)
-
-                Log.d("dias","diferencia días: ${diferencia_horas}")
-                suma_tiempos = suma_tiempos + diferencia_horas.toInt()
-                Log.d("dias","suma tiempos: ${suma_tiempos}")
-
-                fecha_anterior = fecha_actual
-
-                temporal=temporal+1
-
             }
-
-            if(temporal==0)
-                tiempo_p_respuesta = "Sin tiempo de respuesta."
-            else {
-
-                var t_respuesta= ((suma_tiempos) / (temporal - 1)) / 24
-
-                if(t_respuesta==1)
-                tiempo_p_respuesta = "${t_respuesta} día."
-                else
-                tiempo_p_respuesta = "${t_respuesta} días."
-
-            }
-            Log.d("dias","suma tiempos: ${suma_tiempos}")
 
             contador_tareas_terminadas=contador_t_terminadas
             contador_tareas_pendientes=contador_t_pendientes
@@ -142,13 +143,11 @@ class ReporteTareasDao {
             contador_tareas_fueraTiempo=contTareasFueraTiempo
             contador_tareas_totales=contador_t_totales
             contador_tareas_leidas=contador_t_leidas
-            promedio_tiempo_respuesta=tiempo_p_respuesta
+
+        }
 
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
-            listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contTareasaTiempo.toString(), R.drawable.ic_bar_chart))
-
-            Log.d("dias","promedio respuesta: ${promedio_tiempo_respuesta}")
-        }
+            listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contador_tareas_aTiempo.toString(), R.drawable.ic_bar_chart))
 
         return listaRecycler
     }

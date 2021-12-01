@@ -17,13 +17,11 @@ interface ReportesApi {
     //fun getDatosReporteTareas(): Call<ArrayList<Tasks>>
 
     //@GET("Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928")
-
     @GET("Messages.json?alt=media&token=39312937-7454-48f1-aa82-5ba279dee438")
     fun getDatosReporteMensajes(): Call<ArrayList<Conversation>>
 
-    @GET("Messages.json?alt=media&token=39312937-7454-48f1-aa82-5ba279dee438")
-    fun getDatosRespuestasBroadcast(): Call<ArrayList<Conversation>>
-
+    @GET("BroadcastPorID.json?alt=media&token=fd56d452-e0f1-4b35-b5f3-7dc8b49a34c3")
+    fun getDatosRespuestasBroadcast(): Call<ArrayList<DatosBroadCast>>
 
     //Busqueda por Id de jefe
     @GET("usuarios_encontrados.json?alt=media&token=92614c22-70fc-46b5-8c38-5137b2799c77")                      //TODO poner URL y consulta real
