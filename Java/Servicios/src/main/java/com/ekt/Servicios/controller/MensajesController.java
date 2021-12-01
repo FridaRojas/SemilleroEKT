@@ -367,6 +367,11 @@ public class MensajesController {
 
 	@GetMapping("listaPersonasGrupo/{idGrupo}")
 	public ResponseEntity<?> listaDePersonasEnGrupo(@PathVariable(value = "idGrupo") String idGrupo) {
+		
+		if(idGrupo.length()<74) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"No es un chat de grupo",""));
+		}
+		
 		List<User> usuarios = new ArrayList<>();
 
 		String[] lenguajesComoArreglo = idGrupo.split("-");
