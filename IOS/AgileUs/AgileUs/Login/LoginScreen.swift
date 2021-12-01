@@ -31,7 +31,6 @@ struct User:Codable{
 struct ResponseHierarchy:Codable{
     let status: String
     let msj: String
-    let data: [User]
 }
 
 class LoginScreen: UIViewController {
@@ -83,33 +82,52 @@ class LoginScreen: UIViewController {
         
         UserDefaults.standard.setValue(isLogged, forKey: "isLogged")
         
-        let serverGetHierarchy = server + "/user/findByBossId/" + userID
+        let serverGetHierarchy = server + "user/findByBossId/" + userID
         let url = URL(string: serverGetHierarchy)
         URLSession.shared.dataTask(with: url!)
-        { (data, respose, error) in
-            do{
-                let hierarchyData = try JSONDecoder().decode(ResponseHierarchy.self, from: data!)
-                DispatchQueue.main.async {
-                    switch hierarchyData.status{
-                        case "OK":
-                            if idsuperiorInmediato.isEmpty && !hierarchyData.data.isEmpty {
-                                hierarchyLevel = 1
-                            } else {
-                                hierarchyLevel = 2
-                            }
-                            break
-                        case "NOT_FOUND":
-                                hierarchyLevel = 3
-                            break
-                        default:
-                            break
+        { (data, response, error) in
+            
+            if let error = error {
+                print ("error: \(error)")
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse,
+                (200...299).contains(response.statusCode) else {
+                    print ("Error servidor: \(response)")
+                return
+            }
+            
+            if let mimeType = response.mimeType,
+                mimeType == "application/json",
+               let data = data
+            {
+                
+                do{
+                    let hierarchyData = try JSONDecoder().decode(ResponseHierarchy.self, from: data)
+                    DispatchQueue.main.async {
+                        switch hierarchyData.status{
+                            case "OK":
+                            if idsuperiorInmediato.isEmpty {
+                                    hierarchyLevel = 1
+                                } else {
+                                    hierarchyLevel = 2
+                                }
+                                break
+                            case "NOT_FOUND":
+                                    hierarchyLevel = 3
+                                break
+                            default:
+                                break
+                        }
+                        
+                        UserDefaults.standard.setValue(hierarchyLevel, forKey: "hierarchyLevel")
                     }
-                    
-                    UserDefaults.standard.setValue(hierarchyLevel, forKey: "hierarchyLevel")
-                    
+                }catch let error_S
+                {
+                    print("Error al conseguir hierarchy level\n\n\(error_S)\n\n********")
                 }
             }
-            catch{print("Error")}
         }.resume()
     }
     

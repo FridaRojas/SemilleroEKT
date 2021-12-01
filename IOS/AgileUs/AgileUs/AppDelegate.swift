@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import FirebaseMessaging
 
-var server = "https://18.218.7.148:3040/api/"
+var server = "http://18.218.7.148:3040/api/"
 
 var userID = String()
 var userName = String()
