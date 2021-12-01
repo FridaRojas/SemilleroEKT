@@ -66,7 +66,7 @@ public class TaskServiceImpl implements TaskService{
             tareaRepository.save(updateEstatus);
         }
     }
-
+    @Override
     public void actualizaLeido(String id_tarea, Boolean leido){
         LocalDateTime date =  LocalDateTime.now();
         Optional<Task> tareaOptional = tareaRepository.findById(id_tarea);

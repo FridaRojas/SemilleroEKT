@@ -11,4 +11,5 @@ public interface TaskService {
     public void  deleteById(String id );
     public void updateById(String id, Task tarea);
     public void  actualizarEstatus(String id_tarea, String estatus );
+    public void actualizaLeido(String id_tarea,Boolean leido);
 }
