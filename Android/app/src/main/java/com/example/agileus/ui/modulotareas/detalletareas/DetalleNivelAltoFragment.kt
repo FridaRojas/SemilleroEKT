@@ -75,10 +75,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             }
 
             btnAdjuntarArchivoF.setOnClickListener {
-                if (binding.btnAdjuntarArchivoF.text.equals(getString(R.string.AdjuntarArchivo))) {
-                } else if (binding.btnAdjuntarArchivoF.text.equals(getString(R.string.GuardarTarea))) {
-                    editarTarea(args)
-                }
+
             }
 
             btnObservacionF.setOnClickListener {
@@ -135,23 +132,68 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     private fun setInfo(args: DetalleNivelAltoFragmentArgs) {
+        var mesI: String = ""
+        var diaI: String = ""
+        var mesF: String = ""
+        var diaF: String = ""
+        var fechaFi: String = ""
+        var fechaIn: String = ""
         val sdf3 = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
 
+        val cal = Calendar.getInstance()
         var fechaI = sdf3.parse(args.tareas.fechaIni.toString())
         var fechaF = sdf3.parse(args.tareas.fechaFin.toString())
 
-        val cal = Calendar.getInstance()
         cal.time = fechaI
-        var fechaIn =
-            cal[Calendar.YEAR].toString() + "-" + (cal[Calendar.MONTH] + 1) + "-" + cal[Calendar.DATE]
-        fechaIn.trim()
-        Log.d("Mensaje", "fecha nueva $fechaIn")
 
-        cal.time = fechaF
-        var fechaFi =
-            cal[Calendar.YEAR].toString() + "-" + (cal[Calendar.MONTH] + 1) + "-" + cal[Calendar.DATE]
-        fechaFi.trim()
+
+        if (cal[Calendar.MONTH] <= 9) {
+            mesI = "0${cal[Calendar.MONTH] + 1}"
+            Log.d("Mensaje", "Mes nuevo $mesI")
+        } else {
+            cal[Calendar.MONTH] + 1
+            mesI = cal[Calendar.MONTH].toString()
+        }
+
+
+        if (cal[Calendar.DATE] <= 9) {
+            diaI = "0${cal[Calendar.DATE] + 1}"
+            Log.d("Mensaje", "Dia nuevo $diaI")
+        } else {
+            cal[Calendar.DATE] + 1
+            diaI = cal[Calendar.DATE].toString()
+        }
+
+        fechaIn =
+            cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
+
         Log.d("Mensaje", "fecha nueva $fechaIn")
+///////////////////////////////////////////////////////////////777
+        cal.time = fechaF
+
+        if (cal[Calendar.MONTH] <= 9) {
+            mesF = "0${cal[Calendar.MONTH] + 1}"
+            Log.d("Mensaje", "Mes nuevo $mesF")
+        } else {
+            cal[Calendar.MONTH] + 1
+            mesF = cal[Calendar.MONTH].toString()
+        }
+
+
+        if (cal[Calendar.DATE] <= 9) {
+            diaF = "0${cal[Calendar.DATE] + 1}"
+        } else {
+            cal[Calendar.DATE] + 1
+            diaF = cal[Calendar.DATE].toString()
+        }
+
+        fechaFi =
+            cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
+        Log.d("Mensaje", "fecha nueva $fechaFi")
+
+
+
+
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
         prioridad = args.tareas.prioridad
@@ -213,16 +255,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         }
     }
 
-    private fun editarTarea(args: DetalleNivelAltoFragmentArgs) {
-        //args.tareas.prioridad = binding.txtPrioridadD.text.toString()
-        var des = binding.txtDescripcionD.text.toString()
-        args.tareas.descripcion = des
-        Toast.makeText(context, "$des", Toast.LENGTH_SHORT).show()
-        // args.tareas.fechaIni = binding.txtFechaInicioD.text.toString()
-        // args.tareas.fechaFin = binding.txtFechaFinD.text.toString()
-        // args.tareas.observaciones = binding.txtObservacionesD.text.toString()
-    }
-
     private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
         val dialogoAceptar = DialogoAceptar(args)
         dialogoAceptar.show(
@@ -232,49 +264,47 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
-        val diaString : String
-        val mesString : String
-        anioInicio  = anio
-        mesInicio   = mes+1
-        diaInicio   = dia
+        val diaString: String
+        val mesString: String
+        anioInicio = anio
+        mesInicio = mes + 1
+        diaInicio = dia
 
-        if(dia<10){
+        if (dia < 10) {
             diaString = "0$dia"
-        }else{
+        } else {
             diaString = "$dia"
         }
-        if(mes+1<10){
+        if (mes + 1 < 10) {
             mesString = "0$mesInicio"
-        }else{
-            mesString = "${mes+1}"
+        } else {
+            mesString = "${mes + 1}"
         }
 
-        val fecha=binding.txtFechaInicioD
+        val fecha = binding.txtFechaInicioD
         val fechaObtenida = "$anio-$mesString-$diaString"
         fecha.setText(fechaObtenida)
-
-
     }
 
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
-        val diaString : String
-        val mesString : String
-        anioFin  = anio
-        mesFin   = mes+1
-        diaFin   = dia
+        val diaString: String
+        val mesString: String
+        anioFin = anio
+        mesFin = mes + 1
+        diaFin = dia
 
-        if(dia<10){
+        if (dia < 10) {
             diaString = "0$dia"
-        }else{
+        } else {
             diaString = "$dia"
         }
-        if(mes+1<10){
+        if (mes + 1 < 10) {
             mesString = "0$mesFin"
-        }else{
-            mesString = "${mes+1}"
+        } else {
+            mesString = "${mes + 1}"
         }
 
-        val fecha=binding.txtFechaFinD
+        val fecha = binding.txtFechaFinD
         val fechaObtenida = "$anio-$mesString-$diaString"
         fecha.setText(fechaObtenida)
 
