@@ -229,9 +229,19 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaContactos/{miId}")
-	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) throws ResultadoNoEncontrado { // 618d9c26beec342d91d747d6
-		// listaConversacion
-		return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId)); // 8
+	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) { // 618d9c26beec342d91d747d6
+		
+		if(miId.length()<24 || miId.length()>24) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
+		}
+		
+		Optional<User> existo = userRepository.validarUsuario(miId);
+		
+		if(!existo.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario no existe en la base de datos",miId));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId));
 	}
 
 	@PutMapping("actualizarLeido")
