@@ -8,7 +8,9 @@ import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.DatosTareas
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniCustomEstadisticas
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.opcionFiltro
 import com.example.agileus.models.*
@@ -47,34 +49,13 @@ class ReporteTareasDao {
 
             0 -> {
                 //Desde la fecha default hasta ahora
-                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
+                fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
                 fecha_fin =ZonedDateTime.now()
             }
-            1 -> {
-                //Fechas por día
-                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
-                fecha_fin =ZonedDateTime.now()
-
-            }
-            2 -> {
-                //Fechas por mes
-                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
-                fecha_fin =ZonedDateTime.now()
-            }
-            3 -> {
-                //Fechas por año
-                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
-                fecha_fin =ZonedDateTime.now()
-            }
-            4 -> {
-                //Fechas personalizadas
-                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
-                fecha_fin =ZonedDateTime.now()
-            }
-            else->{
-                //Desde la fecha default hasta ahora
-                fecha_inicio = ZonedDateTime.parse(fechaIniCustomEstadisticas)
-                fecha_fin =ZonedDateTime.now()
+            else -> {
+                //Fechas por día, mes, año y custom
+                fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
+                fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
 
             }
 
