@@ -63,21 +63,10 @@ public class ConfigPag {
 
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        System.out.println("correo: "+us.getCorreo()+"  contras: "+us.getPassword());
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\": \""+us.getCorreo()+"\",\r\n    \"password\": \""+us.getPassword()+"\",\r\n    \"token\":\"wesasasa\"\r\n}\r\n\r\n\r\n");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/validate")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        boolean res=userDAO.validaCorreoPassword(us);
         try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject= new JSONObject(response.body().string());
-
-            if (!jsonObject.get("data").toString().equals("")){
+            //si es true, entra a inicio, si es false regresa a login con un mensaje de error
+            if (res){
                 return "redirect:/Inicio";
             }else{
                 redirectAttrs
@@ -198,20 +187,11 @@ public class ConfigPag {
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
-        System.out.println(gr.getNombre());
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
-                .method("POST", body)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject= new JSONObject(response.body().string());
 
-            if (jsonObject.get("status").toString().equals("OK")){
+        try {
+            boolean res= groupDAO.crearGrupo(gr);
+            //si es true regresa, si es false regresa con error de grupo ya existente
+            if (res){
                 return "redirect:/buscarTodosGrupos";
             }else{
                 redirectAttrs

@@ -185,4 +185,34 @@ public class UserDAO {
         return listaUsuariosOrganigrama;
     }
 
+    public boolean validaCorreoPassword(User us){
+        boolean resp;
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\": \""+us.getCorreo()+"\",\r\n    \"password\": \""+us.getPassword()+"\",\r\n    \"token\":\"wesasasa\"\r\n}\r\n\r\n\r\n");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/validate")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            //hace la peticion
+            Response response = client.newCall(request).execute();
+            //convierte la respuesta en Json
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            //si data es diferente de "" --> si coincide, si es igual a "" --> no coincide
+            if (!jsonObject.get("data").toString().equals("")){
+                resp=true;
+            }else{
+                resp=false;
+            }
+        }catch (Exception e){
+            resp=false;
+            System.out.println(e.getMessage());
+        }
+
+        return resp;
+    }
+
 }
