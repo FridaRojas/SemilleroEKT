@@ -3,7 +3,7 @@ package com.ekt.AdministradorWeb.config;
 
 import com.ekt.AdministradorWeb.DAO.GroupDAO;
 import com.ekt.AdministradorWeb.DAO.UserDAO;
-import com.ekt.AdministradorWeb.entity.User;
+import com.ekt.AdministradorWeb.entity.*;
 import com.google.gson.Gson;
 import okhttp3.*;
 import okhttp3.RequestBody;
@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
@@ -86,14 +85,6 @@ public class ConfigPag {
             return "";
         }
     }
-
-
-
-    @GetMapping("/añadirUsuarioPage")
-    public String añadirUsuarioPage(){
-        return "paginas/usuarios/AñadirUsuario";
-    }
-
 
     @PostMapping("/eliminarUsuario")
     public String eliminarUsuario(@ModelAttribute(value = "id") String id){
@@ -199,14 +190,28 @@ public class ConfigPag {
     }
 
     @PostMapping ("/editarUsuarioServicio")
-    public String editarUsuarioServicio(@ModelAttribute User user){
+    public String editarUsuarioServicio(@ModelAttribute User user,@ModelAttribute(value = "id") String id,RedirectAttributes redirectAttrs){
+        Boolean bandera=false;
+        user.setID(id);
+
         //validar que los datos no existan
-
-
-        //si no existen editar
+       if (!userDAO.existusuario(user)) {
+           //editar informacion
+           if(userDAO.editarUsuario(user)){
+                bandera=true;
+           }
+       }
 
         //si existen retornar error
-        return "";
+        if (!bandera){
+            System.out.println("se modifico con exito");
+            return "redirect:/findAllUsuarios";
+        }else{
+            redirectAttrs
+                    .addFlashAttribute("mensaje", "Grupo ya existente");
+            return "/paginas/usuarios/EditarUsuario";
+        }
+
     }
 
     @PostMapping("/CrearGrupo")
