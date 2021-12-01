@@ -1,15 +1,16 @@
 package com.example.agileus.webservices.apis
 
 
-import com.example.agileus.models.*
+import com.example.agileus.models.DataTask
+import com.example.agileus.models.TaskList
+import com.example.agileus.models.PersonasGrupo
+import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
-import com.google.android.gms.tasks.Task
 import retrofit2.Call
 import retrofit2.http.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface TasksApi {
@@ -37,13 +38,22 @@ interface TasksApi {
     @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
     fun getTasksByStatus(@Path("datos") datos: String): Call<TaskList>?
 
+    //Cancelar tarea
     @DELETE("tareas/cancelarTarea/{idTarea}")
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
 
+    //Editar tarea
     @PUT("tareas/actualizarTarea/{idTarea}")
-    fun editTask(@Body t: TaskUpdate, @Path("idTarea") idTarea: String): Call<TaskList2>
+    fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String)
+            : Call<DataTask>
 
+    //Actualizar Status
     @PUT("tareas/actulizarEstatus/{param}")
     fun updateStatus(@Path("param") param: String): Call<String>
+
+    //Obtener las tareas que asigno el usuario por id, status
+    //@GET("tareas/obtenerTareasQueAsignoPorIdYEstatus/{datos}")
+    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
+    fun getTasksAssigned(@Path("datos") datos: String): Call<TaskList>?
 
 }

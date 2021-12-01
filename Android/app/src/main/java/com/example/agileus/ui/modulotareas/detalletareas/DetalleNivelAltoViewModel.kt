@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.models.DataTask
-import com.example.agileus.models.TaskUpdate
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.launch
 import java.util.*
@@ -27,10 +26,11 @@ class DetalleNivelAltoViewModel : ViewModel() {
 
     }
 
-    fun editarTarea(taskUpdate: TaskUpdate, idTarea: String) {
+    fun editarTarea(dataTask: DetalleNivelAltoFragmentArgs) {
         try {
             viewModelScope.launch {
-                taskDao.editTask(taskUpdate, idTarea)
+                taskDao.editTask(dataTask)
+                Log.d("Mensaje", "id: ${dataTask.tareas.idTarea}")
             }
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())

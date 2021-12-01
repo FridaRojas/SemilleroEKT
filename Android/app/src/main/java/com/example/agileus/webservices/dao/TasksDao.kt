@@ -132,13 +132,13 @@ class TasksDao : DialogoConfirmacionListener {
                     Log.d("Error code 400",response.errorBody()!!.string());
                 }
                 if (response.isSuccessful) {
-                    Log.d("Mensaje", "Tarea editada")
+                    Log.d("Mensaje", "Tarea ${response.body()!!.idTarea} editada")
                 } else {
-                    Log.d("Mensaje", "No se Edito tarea ${response.raw()}")
+                    Log.d("Mensaje", "No se Edito tarea ${response.code()}")
                 }
             }
 
-            override fun onFailure(call: Call<TaskList2>, t: Throwable) {
+            override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }
         })
