@@ -352,10 +352,12 @@ public class MensajesController {
 	
 	@PutMapping("/eliminarConversacion/{idConversacion}")
 	public ResponseEntity<?> cambiarStatusConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
-		if(idConversacion.length()>24) {
+		if(idConversacion.length()<49) {
 			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El id de la convbersacion no contiene los caracteres neesarios", ""));
 		}
-		if ((idConversacion.isEmpty())){
+		Optional<Mensajes> opt = mensajesRepository.validarCoversacion(idConversacion);
+		
+		if (opt.isEmpty()){
 			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
 		}
 
@@ -364,7 +366,7 @@ public class MensajesController {
 			msg.setConversacionVisible(false);
 			mensajesService.save(msg);
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.CREATED, "Se elimino la conversacion",""));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "Se elimino la conversacion",""));
 	}
 
 	@GetMapping("listaGrupos/{miId}")
@@ -478,10 +480,10 @@ public class MensajesController {
 	public ResponseEntity<?> listarConversaciones(@PathVariable(value ="idEmisor")String idEmisor){
 
 		if(idEmisor.length()<24 || idEmisor.length()>24){
-			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id del usuariono tiene los caracteres necesarios",""));
+			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id del usuario no tiene los caracteres necesarios",""));
 		}
 		Optional<User> user = userRepository.validarUsuario(idEmisor);
-		if (!user.isPresent()){
+		if (user.isEmpty()){
 			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra este usuario",""));
 		}
 		List<String> mensajesList = new ArrayList<>();
@@ -538,11 +540,8 @@ public class MensajesController {
 		if(idEmisor.length()<24 || idEmisor.length()>24) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
 		}
-		if(idEmisor.isEmpty()){
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra el usuairo",""));
-		}
 		Optional<User> user=userRepository.validarUsuario(idEmisor);
-		if(!user.isPresent()){
+		if(user.isEmpty()){
 			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no se encuetra el usuario",""));
 		}
 		Iterable<Mensajes> msg= mensajesRepository.findAll();
