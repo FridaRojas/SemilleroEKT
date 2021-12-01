@@ -1,4 +1,4 @@
 package com.ekt.Servicios.service;
 
-public class TaskService {
+public interface TaskService {
 }
