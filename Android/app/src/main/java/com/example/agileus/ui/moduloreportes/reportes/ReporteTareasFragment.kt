@@ -40,12 +40,16 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     //valores enteros de los datos de los mensajes
     private var terminadas: Int = 0
     private var pendientes: Int = 0
+    private var iniciada: Int = 0
+    private var revision: Int = 0
     private var totales: Int = 0
     private var leidas: Int = 0
 
     //valores porcentuales de los datos de los mensajes para graficar
     private var porcentaje_termidas:Float = 0.0f
     private var porcentaje_pendientes:Float = 0.0f
+    private var porcentaje_iniciada:Float = 0.0f
+    private var porcentaje_revision:Float = 0.0f
     private var porcentaje_leidas:Float = 0.0f
 
 
@@ -105,24 +109,22 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             binding.txtPrimerLegend.text="Finalizadas a tiempo"
             binding.txtDataPrimerLegend.text=""
 
-            binding.txtSegundoLegend.visibility = View.GONE
             binding.colorlegend2.isVisible = false
-            binding.txtDataSegundoLegend.text = reporteTareasViewModel.terminadas.value.toString()
-            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
+            binding.txtSegundoLegend.text = reporteTareasViewModel.aTiempo.value.toString()
+            binding.txtDataSegundoLegend.text = ""
 
             binding.txtTercerLegend.text="Finalizadas fuera de tiempo"
             binding.txtDataTercerLegend.text=""
-
-            binding.txtDataTercerLegend.text = reporteTareasViewModel.terminadas.value.toString()
-            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
-            binding.txtDataTercerLegend.text=""
+            //binding.txtDataTercerLegend.text = reporteTareasViewModel.terminadas.value.toString()
+            //terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
             binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorSecondary))
 
-            binding.txtCuartoLegend.visibility = View.GONE
+            binding.txtDataCuartoLegend.text = ""
             binding.colorlegend4.isVisible = false
-            binding.txtDataCuartoLegend.text = reporteTareasViewModel.pendientes.value.toString()
-            pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
+            binding.txtCuartoLegend.text = reporteTareasViewModel.fueraTiempo.value.toString()
 
+            pendientes = reporteTareasViewModel.aTiempo.value.toString().toInt()
+            terminadas = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
             initBarChart(terminadas.toFloat(),pendientes.toFloat())//inicializacion de la grafica de barras
             // y se agregan los valores porcentuales para su visualización
 
@@ -132,67 +134,48 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
         pieChart=binding.pieChart
-
-        binding.colorlegend1.isVisible=true
-        binding.colorlegend2.isVisible=true
-        binding.colorlegend3.isVisible=true
-        binding.colorlegend4.isVisible=true
-
-        binding.colorlegend2.visibility = View.VISIBLE
-        binding.colorlegend3.visibility = View.VISIBLE
-        binding.colorlegend4.visibility = View.VISIBLE
-        binding.txtSegundoLegend.visibility = View.VISIBLE
-        binding.txtCuartoLegend.visibility = View.VISIBLE
-
-        binding.txtPrimerLegend.text="Termindas"
-
-        binding.txtSegundoLegend.text="Pendientes"
-
-        binding.txtTercerLegend.text="Totales"
-
-        binding.txtCuartoLegend.text="Leídas"
-
-
         reporteTareasViewModel.devuelvelistaReporte(this)
-
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
 
         reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+            binding.colorlegend2.isVisible=true
+            binding.colorlegend4.isVisible=true
 
-            binding.txtPrimerLegend.text="Termindas"
-
-            binding.txtSegundoLegend.text="Pendientes"
-
-            binding.txtTercerLegend.text="Totales"
-
-            binding.txtCuartoLegend.text="Leídas"
+            binding.txtPrimerLegend.text="Pendientes"
+            binding.txtSegundoLegend.text="Iniciadas"
+            binding.txtTercerLegend.text="Revisión"
+            binding.txtCuartoLegend.text="Terminadas"
 
             binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
-
             binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorGray))
 
-            binding.txtDataPrimerLegend.text = reporteTareasViewModel.terminadas.value.toString()
-            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
-
-            binding.txtDataSegundoLegend.text = reporteTareasViewModel.pendientes.value.toString()
             pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
+            binding.txtDataPrimerLegend.text = pendientes.toString()
 
-            binding.txtDataTercerLegend.text = reporteTareasViewModel.totales.value.toString()
+            iniciada = reporteTareasViewModel.iniciadas.value.toString().toInt()
+            binding.txtDataSegundoLegend.text = iniciada.toString()
+
+            revision = reporteTareasViewModel.revision.value.toString().toInt()
+            binding.txtDataTercerLegend.text = revision.toString()
+
+            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
+            binding.txtDataCuartoLegend.text = terminadas.toString()
+
             totales = reporteTareasViewModel.totales.value.toString().toInt()
-
-            binding.txtDataCuartoLegend.text = reporteTareasViewModel.leidas.value.toString()
-            leidas = reporteTareasViewModel.leidas.value.toString().toInt()
-
             porcentaje_termidas = obtenerPorcentajes(terminadas, totales)
             porcentaje_pendientes = obtenerPorcentajes(pendientes, totales)
             porcentaje_leidas = obtenerPorcentajes(leidas, totales)
 
+            porcentaje_revision = obtenerPorcentajes(revision, totales)
+            porcentaje_iniciada = obtenerPorcentajes(iniciada, totales)
+            porcentaje_leidas = obtenerPorcentajes(leidas, totales)
+
             initPieChart()//inicializacion de la grafica de pie
             //aquí se agregan los valores porcentuales para su visualización
-            setDataToPieChart(porcentaje_termidas, porcentaje_pendientes, porcentaje_leidas)
+            setDataToPieChart(porcentaje_pendientes, porcentaje_iniciada, porcentaje_revision, porcentaje_termidas)
 
         })
 
@@ -226,17 +209,19 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         pieChart.setDrawSliceText(false)
     }
 
-    private fun setDataToPieChart(enviados:Float,recibidos:Float,leidos:Float){
+    private fun setDataToPieChart(pendientes:Float,iniciadas:Float,revision:Float,terminadas:Float){
         pieChart.setUsePercentValues(true)
         val dataEntries = ArrayList<PieEntry>()
-        dataEntries.add(PieEntry(enviados, "Terminadas"))
-        dataEntries.add(PieEntry(recibidos, "Pendientes"))
-        dataEntries.add(PieEntry(leidos, "Leídas"))
+        dataEntries.add(PieEntry(pendientes, "Pendientes"))
+        dataEntries.add(PieEntry(iniciadas, "Iniciadas"))
+        dataEntries.add(PieEntry(revision, "Revision"))
+        dataEntries.add(PieEntry(terminadas, "Terminadas"))
 
         val colors: ArrayList<Int> = ArrayList()
         colors.add(resources.getColor(R.color.colorPrimary))
         colors.add(resources.getColor(R.color.colorSecondary))
         colors.add(resources.getColor(R.color.colorGray))
+        colors.add(resources.getColor(R.color.colorBackground))
 
         val dataSet = PieDataSet(dataEntries, "")
         val data = PieData(dataSet)

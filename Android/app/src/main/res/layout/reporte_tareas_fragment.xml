@@ -73,7 +73,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
-        app:layout_constraintBottom_toTopOf="@id/Legendstablareportes"
         />
 
     <com.github.mikephil.charting.charts.BarChart
@@ -85,28 +84,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
-        app:layout_constraintBottom_toTopOf="@id/Legendstablareportes"
         />
 
-
     <LinearLayout
-        android:id="@+id/Legendstablareportes"
-        android:layout_width="match_parent"
+        android:id="@+id/llTercerLegend"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="238dp"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
-        >
-
+        app:layout_constraintEnd_toStartOf="@+id/llCuartoLegend"
+        app:layout_constraintStart_toStartOf="@id/RecyclerLista"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="32dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/colorlegend1"
@@ -118,65 +112,32 @@
             <TextView
                 android:id="@+id/txtPrimerLegend"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/legendtext1"
                 android:textSize="14sp"
                 android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/colorlegend2"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:background="@color/colorSecondary" />
-
-            <TextView
-                android:id="@+id/txtSegundoLegend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/legendtext2"
-                android:textSize="14sp"
-                android:textStyle="bold"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDataPrimerLegend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="32dp">
-
-            <TextView
-                android:id="@+id/txtDataPrimerLegend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="15dp"
-                android:text="000" />
-
-            <TextView
-                android:id="@+id/txtDataSegundoLegend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="15dp"
-                android:text="000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="32dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/colorlegend3"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/white"
-                />
+                android:background="@color/white" />
 
             <TextView
                 android:id="@+id/txtTercerLegend"
@@ -186,14 +147,64 @@
                 android:text="@string/legendtext3"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+        </LinearLayout>
 
+        <TextView
+            android:id="@+id/txtDataTercerLegend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llCuartoLegend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/RecyclerLista"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
+        app:layout_constraintStart_toEndOf="@+id/llTercerLegend">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/colorlegend2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+                />
+            <TextView
+                android:id="@+id/txtSegundoLegend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/legendtext2"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDataSegundoLegend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <ImageView
                 android:id="@+id/colorlegend4"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/colorGray" />
-
+                android:background="@color/colorGray"
+                />
             <TextView
                 android:id="@+id/txtCuartoLegend"
                 android:layout_width="match_parent"
@@ -204,38 +215,21 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/txtDataCuartoLegend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="32dp">
-
-            <TextView
-                android:id="@+id/txtDataTercerLegend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="15dp"
-                android:text="000" />
-
-            <TextView
-                android:id="@+id/txtDataCuartoLegend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="15dp"
-                android:text="000" />
-        </LinearLayout>
-
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/llTercerLegend"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Legendstablareportes"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
