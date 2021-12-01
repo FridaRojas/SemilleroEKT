@@ -209,17 +209,16 @@ public class ConfigPag {
                 bandera=true;
            }
        }
-
         //si existen retornar error
-        if (!bandera){
+        if (bandera){
             System.out.println("se modifico con exito");
             return "redirect:/findAllUsuarios";
         }else{
+            System.out.println("Error al modificar usuario");
             redirectAttrs
-                    .addFlashAttribute("mensaje", "Grupo ya existente");
-            return "/paginas/usuarios/EditarUsuario";
+                    .addFlashAttribute("mensaje", "Error al editar usuario, existen datos duplicasdos en la base de datos");
+            return "redirect:/findAllUsuarios";
         }
-
     }
 
     @PostMapping("/CrearGrupo")
@@ -342,8 +341,6 @@ public class ConfigPag {
 
     @GetMapping("/Inicio")
     public String Inicio(){
-
-
         return "paginas/Inicio";
     }
 

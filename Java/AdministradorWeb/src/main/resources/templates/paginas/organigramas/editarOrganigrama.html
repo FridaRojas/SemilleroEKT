@@ -93,7 +93,7 @@
         </div>
         <div class="row d-flex justify-content-around" style="min-height: 20vh; ">
             <div class="col-2">
-                <button class="btn button col">
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalCreaUsuarioOrganigrama">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
                     <p>Agregar usuario</p>
                 </button>
@@ -124,5 +124,6 @@
 
 </script>
 
+<div th:replace="paginas/modalCrearUsuarioOrganigrama::#modalCreaUsuarioOrganigrama"></div>
 </body>
 </html>
