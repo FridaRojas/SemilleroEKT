@@ -38,16 +38,17 @@ public class TaskController {
             bitacora.setId_emisor(tarea.getId_emisor());
             bitacora.setNombre_emisor(tarea.getNombre_emisor());
             bitacora.setAccion("Creo una tarea");
-            bitacora.setFecha_actualizacion(date);
-            bitacora.setEstatus(tarea.getEstatus());
-            bitacoraRepository.save(bitacora);
-            tarea.setFecha_BD(date);
 
             LocalDateTime ldt = date
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
-            tarea.setFecha_BD(ldt);
+            Date newLdt =Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+
+            tarea.setFecha_BD(newLdt);
             tareaService.save(tarea);
+            bitacora.setFecha_actualizacion(newLdt);
+            bitacora.setEstatus(tarea.getEstatus());
+            bitacoraRepository.save(bitacora);
 
             mensaje = "Tarea creada correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tarea));
@@ -102,7 +103,8 @@ public class TaskController {
                 bitacora.setNombre_emisor(tarea.getNombre_emisor());
                 bitacora.setAccion("Actualizo la tarea");
                 bitacora.setId_tarea(id_tarea);
-                bitacora.setFecha_actualizacion(date);
+                Date newLdt =Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
+                bitacora.setFecha_actualizacion(newLdt);
 
                 bitacoraRepository.save(bitacora);
                 tareaService.updateById(id_tarea, tarea);

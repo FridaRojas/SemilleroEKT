@@ -64,14 +64,14 @@ public class Task implements Serializable {
     //Fecha en la que sea vio la tarea
     @Field(name = "leido_fecha")//Cambiar a Timestamp (hora)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime fechaLeido;
+    private Date fechaLeido;
     @Field(name = "prioridad")
     private String prioridad;
 
     //Fecha de creacion de tarea en BD
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Field(name = "fecha_BD")
-    private LocalDateTime fecha_BD;
+    private Date fecha_BD;
 
     //Observaciones de la tarea
     @Field(name = "observaciones")
@@ -218,19 +218,19 @@ public class Task implements Serializable {
         this.observaciones = observaciones;
     }
 
-    public LocalDateTime getFecha_BD() {
+    public Date getFecha_BD() {
         return fecha_BD;
     }
 
-    public void setFecha_BD(LocalDateTime fecha_BD) {
+    public void setFecha_BD(Date fecha_BD) {
         this.fecha_BD = fecha_BD;
     }
 
-    public LocalDateTime getFechaLeido() {
+    public Date getFechaLeido() {
         return fechaLeido;
     }
 
-    public void setFechaLeido(LocalDateTime fechaLeido) {
+    public void setFechaLeido(Date fechaLeido) {
         this.fechaLeido = fechaLeido;
     }
 

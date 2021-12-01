@@ -2,6 +2,7 @@ package com.ekt.Servicios.service;
 
 import com.ekt.Servicios.entity.Task;
 import com.ekt.Servicios.repository.TaskRepository;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -77,7 +78,7 @@ public class TaskServiceImpl implements TaskService{
     public void actualizaLeido(String id_tarea, Boolean leido){
         LocalDateTime date =  LocalDateTime.now();
         Optional<Task> tareaOptional = tareaRepository.findById(id_tarea);
-        if (tareaOptional.isPresent()){
+        /*if (tareaOptional.isPresent()){
             LocalDateTime ldt = date
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
@@ -85,7 +86,7 @@ public class TaskServiceImpl implements TaskService{
             tareaUpdate.setFechaLeido(ldt);
             tareaUpdate.setLeido(leido);
             tareaRepository.save(tareaUpdate);
-        }
+        }*/
     }
     @Override
     public void updateRealDateStart(String id_tarea, Task tarea){

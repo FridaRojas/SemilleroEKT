@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Document(collection = "BitacoraTarea")
 public class TaskLog {
@@ -28,7 +29,7 @@ public class TaskLog {
 
     @Field(name = "fecha_actualizacion")//Cambiar a Timestamp (hora)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime fecha_actualizacion;
+    private Date fecha_actualizacion;
 
     //Status
     @Field(name = "estatus")
@@ -37,7 +38,7 @@ public class TaskLog {
     public TaskLog() {
     }
 
-    public TaskLog(String id_emisor, String id_tarea, String nombre_emisor, String accion, LocalDateTime fecha_actualizacion, String estatus) {
+    public TaskLog(String id_emisor, String id_tarea, String nombre_emisor, String accion, Date fecha_actualizacion, String estatus) {
         this.id_emisor = id_emisor;
         this.id_tarea = id_tarea;
         this.nombre_emisor = nombre_emisor;
@@ -78,11 +79,11 @@ public class TaskLog {
         this.accion = accion;
     }
 
-    public LocalDateTime getFecha_actualizacion() {
+    public Date getFecha_actualizacion() {
         return fecha_actualizacion;
     }
 
-    public void setFecha_actualizacion(LocalDateTime fecha_actualizacion) {
+    public void setFecha_actualizacion(Date fecha_actualizacion) {
         this.fecha_actualizacion = fecha_actualizacion;
     }
 
