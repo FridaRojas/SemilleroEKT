@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "chat_nuevo_bckgrnd.png",
+      "filename" : "Chat_nuevo_bckgrnd.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Chat_nuevo_bckgrnd@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Chat_nuevo_bckgrnd@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

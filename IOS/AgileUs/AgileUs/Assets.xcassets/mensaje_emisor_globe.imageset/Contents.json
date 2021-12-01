@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "mensaje_emisor_globe.png",
+      "filename" : "Mensaje_emisor_globe.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Mensaje_emisor_globe@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Mensaje_emisor_globe@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

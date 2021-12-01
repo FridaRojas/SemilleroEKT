@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "¿olvidaste tu contraseña__btn.png",
+      "filename" : "¿Olvidaste tu Contraseña__btn.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "¿Olvidaste tu Contraseña__btn@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "¿Olvidaste tu Contraseña__btn@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
