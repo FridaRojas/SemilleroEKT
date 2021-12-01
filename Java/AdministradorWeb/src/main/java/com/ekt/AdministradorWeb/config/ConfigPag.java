@@ -371,4 +371,33 @@ public class ConfigPag {
         return "paginas/Inicio";
     }
 
+    @PostMapping("/agregarUsuarioAGrupo")
+    public String agregarUsuarioAGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
+        System.out.println(gr.getNombre());
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
+                .method("POST", body)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+
+            if (jsonObject.get("status").toString().equals("OK")){
+                return "redirect:/inicioGrupos";
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "Grupo ya existente");
+                return "redirect:/inicioGrupos";
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return "";
+        }
+
+    }
+
 }
