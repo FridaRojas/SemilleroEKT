@@ -70,13 +70,12 @@ class ChatViewController:
         configureMessageInputBar()
         //create_json()
        carga_mensajes()
-
+       
     }
-    
-    
-    
+  
     override func viewDidAppear(_ animated: Bool) {
         auto_scroll()
+        showNavBar()
     }
     //creacion de funciones
     //funcion que retornar el usuario remitente
@@ -100,9 +99,9 @@ class ChatViewController:
         inputBar.inputTextView.text = ""
         
         self.messagesCollectionView.reloadData()
-        create_json(id_emisor: "618b05c12d3d1d235de0ade0", id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: "", fecha: fecha){
+        create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: "", fecha: fecha){
             (exito) in
-            print("Exitoso")}fallido:{ fallido in
+            print("Exitoso \(userID)")}fallido:{ fallido in
             print("Registro Fallido")
         }
     }
@@ -221,7 +220,7 @@ class ChatViewController:
                     for item in self.usuarios
                     {
                         var current_usuario =  item.idemisor
-                        if item.idreceptor == "618b05c12d3d1d235de0ade0"
+                        if item.idemisor == userID
                         {
                         //self.cadena = self.cadena + "\(item.texto)"
                             if item.rutaDocumento != ""
@@ -284,7 +283,7 @@ class ChatViewController:
     func create_json(id_emisor: String, id_receptor: String, mensaje: String,rutaDocumento : String, fecha: String, exito: @escaping (_ exito: String) ->(), fallido: @escaping (_ fallido: String) ->() )
     {
         let exampleDict: [String: Any] = [
-                "idEmisor" : id_emisor,
+            "idEmisor" : userID,
                 "idReceptor" : id_receptor,
                 "texto" : "\(mensaje)",
                 "rutaDocumento" : "\(rutaDocumento)",

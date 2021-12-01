@@ -41,8 +41,6 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
-        hideNavBar()
         addLogoutButton()
 
         tabla_chats.delegate = self
@@ -50,6 +48,9 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
         //consumir_Servicio_web()
 
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        hideNavBar()
     }
 
 
