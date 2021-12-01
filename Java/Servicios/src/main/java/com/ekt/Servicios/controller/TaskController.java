@@ -232,4 +232,20 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
         }
     }
+
+    @PutMapping("/actualizarLeidoPorIdTarea/{id_tarea}")    //Tarea
+    public ResponseEntity<?> actualizaLeidoPorIdTarea(@PathVariable String id_tarea){
+        String mensaje;
+        Optional<Task> oTarea = tareaService.findById(id_tarea);
+        if (oTarea.isPresent()) {
+            tareaService.actualizaLeido(id_tarea, true);
+            mensaje = "Actualizacion Leído de tarea con id " + id_tarea;
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }else{
+            mensaje = "Id no encontrado";
+            //return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
+    }
+
 }
