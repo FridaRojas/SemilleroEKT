@@ -261,4 +261,17 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
     }
 
+    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}&{estatus}")  // Tareas
+    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@PathVariable String id_usuario,@PathVariable String estatus){
+        Iterable<Task> tareas = tareaRepository.getAllByIdEmisorAndStatus(id_usuario,estatus);
+        String mensaje;
+        int nDocumentos = ((Collection<Task>) tareas).size();
+        if(nDocumentos ==0){
+            mensaje = "No hay tareas que asignó el id: "+id_usuario+" por estatus: "+estatus;
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
+        }
+        mensaje = "Tareas que asignó el id: "+id_usuario+" por estatus: "+estatus+ " obtenidas correctamente";
+        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+    }
+
 }
