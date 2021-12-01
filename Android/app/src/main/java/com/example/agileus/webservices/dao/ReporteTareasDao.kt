@@ -7,6 +7,9 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.DatosTareas
 import com.example.agileus.models.Estadisticas
+import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
+import com.example.agileus.models.*
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -31,6 +34,8 @@ class ReporteTareasDao {
 
     lateinit var fechaIni: ZonedDateTime
     lateinit var fechaIniR: ZonedDateTime
+
+    var employeeList = ArrayList<Contacts>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosTareas(): ArrayList<Estadisticas> {
@@ -94,13 +99,6 @@ class ReporteTareasDao {
                             contCancelado =+ 1
                         }
                     }
-
-                    if (it.status.equals("Cancelado")) {
-                            contador_t_terminadas = contador_t_terminadas + 1
-                    }
-                    else {
-                        contador_t_pendientes = contador_t_pendientes + 1
-                    }
                 }
 
                 fechaIni = ZonedDateTime.parse(it.fecha_fin)
@@ -118,7 +116,7 @@ class ReporteTareasDao {
                     contTareasFueraTiempo = contTareasFueraTiempo + 1
                 }
 
-                /*fecha_actual = ZonedDateTime.parse(it.fecha_ini)
+                fecha_actual = ZonedDateTime.parse(it.fecha_ini)
                 diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)
 
                 Log.d("dias","diferencia días: ${diferencia_horas}")
@@ -127,7 +125,7 @@ class ReporteTareasDao {
 
                 fecha_anterior = fecha_actual
 
-                temporal=temporal+1*/
+                temporal=temporal+1
 
             }
 
@@ -156,8 +154,7 @@ class ReporteTareasDao {
             promedio_tiempo_respuesta=tiempo_p_respuesta
 
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
-            listaRecycler.add(Estadisticas("Tareas terminadas a tiempo:","","","0", R.drawable.ic_bar_chart))
-
+            listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contTareasaTiempo.toString(), R.drawable.ic_bar_chart))
 
             Log.d("dias","promedio respuesta: ${promedio_tiempo_respuesta}")
         }
@@ -196,6 +193,25 @@ class ReporteTareasDao {
 
     fun obtenerTareasLeidas():String{
         return contador_tareas_leidas.toString()
+    }
+
+    fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
+        try{
+            //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
+            var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
+
+            if (ResponseDos.isSuccessful){
+                val listaConsumida = ResponseDos.body()!!
+                employeeList = listaConsumida.dataEmployees
+            }else{
+                Log.e("ERROR SubContactos", ResponseDos.code().toString())
+            }
+
+        }catch (ex:Exception){
+
+        }
+        return employeeList
     }
 
 

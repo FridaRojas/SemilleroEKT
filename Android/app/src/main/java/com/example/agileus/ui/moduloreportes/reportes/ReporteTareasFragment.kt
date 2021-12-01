@@ -21,7 +21,9 @@ import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_graf
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
+import com.example.agileus.utils.Constantes
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -75,7 +77,11 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
         binding.btnFiltroReportes.setOnClickListener {
+            reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
+                MySharedPreferences.empleadoUsuario = list
+            })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }

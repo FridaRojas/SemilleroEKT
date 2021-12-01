@@ -81,6 +81,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         _binding = ReporteMensajesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        //MySharedPreferences.idUsuarioEstadisticas = MySharedPreferences.idUsuario
+
         return root
     }
 
@@ -105,7 +107,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         }
 
             cambiarGrafica(tipo_grafica)
-
 }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras() {

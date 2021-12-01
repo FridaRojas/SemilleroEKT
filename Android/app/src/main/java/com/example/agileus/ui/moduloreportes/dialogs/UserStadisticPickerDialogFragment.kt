@@ -23,7 +23,7 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
 
             //MySharedPreferences.empleadoUsuario[0].nombre
             var listaNombres = arrayListOf<String>()
-            //listaNombres.add(it.nombre)
+            listaNombres.add(MySharedPreferences.idUsuario)
             MySharedPreferences.empleadoUsuario.forEach {
                 listaNombres.add(it.nombre)
             }
@@ -33,13 +33,13 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             txtTitulo.setText("Usuarios")
             userPicker.setMinValue(0)
             try {
-                userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size-1)
+                userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size)
                 userPicker.setValue(0)
                 userPicker.displayedValues = listaNombres.toTypedArray()
             }catch (ex:Exception){
                 userPicker.setMaxValue(0)
                 userPicker.setValue(0)
-                userPicker.displayedValues = arrayOf("Cargando")
+                userPicker.displayedValues = arrayOf(MySharedPreferences.idUsuario)
             }
 
             builder.setView(vista)
