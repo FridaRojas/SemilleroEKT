@@ -80,4 +80,17 @@ public class TaskServiceImpl implements TaskService{
             tareaRepository.save(tareaUpdate);
         }
     }
+    @Override
+    public void updateRealDateStart(String id_tarea, Task tarea){
+        Optional<Task> tareaOptional = tareaRepository.findById(id_tarea);
+        if(tareaOptional.isPresent()){
+            if(tarea.getFecha_iniR()!=null) {
+                Task tareaUpdate = tareaOptional.get();
+                tareaUpdate.setFecha_iniR(tarea.getFecha_iniR());
+                tareaRepository.save(tareaUpdate);
+            }else{
+                //VALIDAR
+            }
+        }
+    }
 }
