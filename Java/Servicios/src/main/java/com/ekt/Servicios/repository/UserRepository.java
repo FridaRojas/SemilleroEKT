@@ -25,4 +25,7 @@ public interface UserRepository extends MongoRepository<User,String> {
     
     @Query("{'idGrupo' : ?0}")
     Iterable<User> findByGroupID(String idGrupo); 
+    
+    @Query("{'nombreRol' : ?0")
+    Optional<User> findRol(String nombreRol);
 }

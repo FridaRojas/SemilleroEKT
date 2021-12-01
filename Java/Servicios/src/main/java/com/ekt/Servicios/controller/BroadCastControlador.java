@@ -111,13 +111,13 @@ public class BroadCastControlador {
 			broadCastM.setAsunto(broadCast.getAsunto());
 			broadCastM.setDescripcion(broadCast.getDescripcion());
 			Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-			Optional<User> user2= userRepository.validarUsuario("61a101db174bcf469164d2fd");
+			Optional<User> user2= userRepository.findRol("BROADCAST");
 
 			if (user.isPresent()) {
 				broadCastM.setNombreEmisor(user.get().getNombre());
 				broadCastRepositorio.save(broadCastM);
 				notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED, "Se creo el mensaje a broadcast", broadCastM.getIdEmisor()));
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 			}
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el emisor", ""));
@@ -131,7 +131,8 @@ public class BroadCastControlador {
 		Optional<User> user = userRepository.validarUsuario(idEmisor);
 		if(!user.isPresent()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El Usuario no existe", "" ));
-		}else if(user.isPresent()){
+		}
+		if(user.isPresent()){
 			List<BroadCast> listBrd = new ArrayList<>();
 			Iterable<BroadCast> brd = broadCastRepositorio.findAll();
 			for (BroadCast brd2 : brd) {
