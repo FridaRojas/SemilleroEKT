@@ -3,9 +3,7 @@ package com.ekt.AdministradorWeb.DAO;
 import ch.qos.logback.core.encoder.EchoEncoder;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -48,7 +46,7 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/find/619bbf0623b2987cc6211172")
+                .url("http://localhost:3040/api/user/find/" + idUser)
                 .method("GET", null)
                 .build();
         try {
@@ -56,7 +54,9 @@ public class UserDAO {
             JSONObject jsonObject= new JSONObject(response.body().string());
             if (!jsonObject.get("data").equals("")){
                 JSONObject usuarios = jsonObject.getJSONObject("data");
+                System.out.println(usuarios);
                 usuario = gson.fromJson(usuarios.toString(), User.class);
+                System.out.println(usuario.toString());
                 return usuario;
             }else{
                 return null;
@@ -65,5 +65,10 @@ public class UserDAO {
             System.out.println("Ocurrió un problema");
             return null;
         }
+    }
+
+    public boolean actualizaIdSujperior(String idUser, String idSuperior){
+
+        return false;
     }
 }

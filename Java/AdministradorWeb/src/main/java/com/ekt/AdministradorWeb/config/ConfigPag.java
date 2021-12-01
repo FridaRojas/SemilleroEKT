@@ -3,7 +3,7 @@ package com.ekt.AdministradorWeb.config;
 
 import com.ekt.AdministradorWeb.DAO.GroupDAO;
 import com.ekt.AdministradorWeb.DAO.UserDAO;
-import com.ekt.AdministradorWeb.entity.User;
+import com.ekt.AdministradorWeb.entity.*;
 import com.google.gson.Gson;
 import okhttp3.*;
 import okhttp3.RequestBody;
@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
@@ -97,7 +96,6 @@ public class ConfigPag {
 
     @PostMapping("/eliminarUsuario")
     public String eliminarUsuario(@ModelAttribute(value = "id") String id){
-
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
@@ -241,34 +239,30 @@ public class ConfigPag {
     @PostMapping("/reasignaSuperior")
     public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap){
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
-        ArrayList<User> listaUsuarios = new ArrayList<>();
-        User []usuarios;
         User user = userDAO.buscaID(idUsuario);
-        usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
-        for(User usuario:usuarios){
-            if(!usuario.getID().equals(user.getID())){
-                listaUsuarios.add(usuario);
+        if(listaSubordinados != null) {
+            ArrayList<User> listaUsuarios = new ArrayList<>();
+            User[] usuarios;
+            usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
+            for (User usuario : usuarios) {
+                if (!usuario.getID().equals(user.getID())) {
+                    listaUsuarios.add(usuario);
+                }
             }
+            modelMap.addAttribute("listaSubordinados", listaSubordinados);
+            modelMap.addAttribute("listaUsuarios", listaUsuarios);
+            modelMap.addAttribute("idUsuario", idUsuario);
+            return "paginas/usuarios/ReasignaSuperior";
+        }else{
+            groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
+            return "paginas/organigramas/editarOrganigrama";
         }
-        modelMap.addAttribute("listaSubordinados",listaSubordinados);
-        modelMap.addAttribute("listaUsuarios",listaUsuarios);
-        modelMap.addAttribute("idUsuario", idUsuario);
-        //redirectAttributes.addFlashAttribute("idGrupo", idGrupo);
-        return "paginas/usuarios/ReasignaSuperior";
     }
-
-    @PostMapping("/EliminaActualiza")
-    public String eliminaActualizaUser(@ModelAttribute(value = "idUsuario") String idUsuario){
-        System.out.println(idUsuario);
-        return "";
-    }
-
 
     @GetMapping("/inicioGrupos")
     public String inicioGrupos() {
         return "paginas/organigramas/inicioOrganigramas";
     }
-
 
     @GetMapping("/buscarTodosGrupos")
     public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model) {
@@ -305,16 +299,30 @@ public class ConfigPag {
     }
 
     @PostMapping("/ActualizaElimina")
-    public String actualizaElimina(@ModelAttribute BodyUpdateBoss bodyUpdateBoss){
-        System.out.println("HOLA");
-        System.out.println(bodyUpdateBoss);
+    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap){
+        userDAO.actualizaIdSujperior(idUser,idBoss);
 
-        System.out.println(bodyUpdateBoss.getIDUser().length);
-        System.out.println(bodyUpdateBoss.getIDBoss().length);
-        for (String id:bodyUpdateBoss.getIDUser()){
-            System.out.println(id);
+        ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
+        User user = userDAO.buscaID(idUsuario);
+        if(listaSubordinados != null) {
+            ArrayList<User> listaUsuarios = new ArrayList<>();
+            User[] usuarios;
+            usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
+            for (User usuario : usuarios) {
+                if (!usuario.getID().equals(user.getID())) {
+                    listaUsuarios.add(usuario);
+                }
+            }
+            modelMap.addAttribute("listaSubordinados", listaSubordinados);
+            modelMap.addAttribute("listaUsuarios", listaUsuarios);
+            modelMap.addAttribute("idUsuario", idUsuario);
+            return "paginas/usuarios/ReasignaSuperior";
+        }else{
+            groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
+            return "paginas/organigramas/editarOrganigrama";
         }
-        return "";
+
+
     }
 
 }

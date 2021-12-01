@@ -196,7 +196,6 @@ public class UserController {
     public ResponseEntity<?> findByBossId(@PathVariable String id){
         try {
             Iterable<User> users = userService.findUserByBossId(id);
-            System.out.println(((Collection<User>) users).size());
             if(((Collection<User>) users).size()>0) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuarios encontrados", users));
             }
