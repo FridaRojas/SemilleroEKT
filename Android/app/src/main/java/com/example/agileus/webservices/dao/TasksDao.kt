@@ -149,7 +149,7 @@ class TasksDao : DialogoConfirmacionListener{
         })
     }
 
-    fun editTask(t: DetalleNivelAltoFragmentArgs, idTarea: String) {
+    fun editTask(t: DetalleNivelAltoFragmentArgs) {
         val callback = InitialApplication.webServiceGlobalTasks.editTask(t, t.tareas.idTarea)
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {

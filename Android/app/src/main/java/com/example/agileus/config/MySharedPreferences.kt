@@ -11,14 +11,6 @@ class MySharedPreferences(contexto: Context) {
 
     val sharedPreferences = contexto.getSharedPreferences(SESSION_TOKEN, Context.MODE_PRIVATE)
 
-
-    fun guardarToken(token:String){
-        with (sharedPreferences.edit()) {
-            putString(TOKEN_KEY, token)
-            commit()
-        }
-    }
-
     fun recuperarToken() : String{
         return sharedPreferences.getString(TOKEN_KEY, "")!!
 
