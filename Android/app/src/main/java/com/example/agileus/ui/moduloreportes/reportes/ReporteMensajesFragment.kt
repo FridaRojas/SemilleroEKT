@@ -114,7 +114,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChart=binding.barChart
         binding.colorlegend1.isVisible=false
         binding.colorlegend2.isVisible=false
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+
 
         reporteMensajesViewModel.devuelvelistaReporte(this)
 
@@ -124,6 +124,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+            binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
 
 
             binding.txtDataPrimerLegend.text=""
@@ -171,6 +173,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+            binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
 
             binding.txtPrimerLegend.text="Enviados"
             binding.txtSegundoLegend.text="Recibidos"

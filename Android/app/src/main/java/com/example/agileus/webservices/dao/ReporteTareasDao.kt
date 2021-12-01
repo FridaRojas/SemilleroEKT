@@ -85,8 +85,8 @@ class ReporteTareasDao {
             Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
             lista.forEach {
                 val dateIni = ZonedDateTime.parse(it.fecha_ini)
-                if (dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha) &&
-                    dateIni.isBefore(rangoFinFecha) || dateIni.isEqual(rangoFinFecha)){
+                if ((dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha)) &&
+                    dateIni.isBefore(rangoFinFecha)){
 
                     if(id_receptor==it.idReceptor) {
                         contador_t_totales = contador_t_totales + 1
