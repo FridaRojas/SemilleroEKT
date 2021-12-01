@@ -124,17 +124,21 @@ class TasksDao : DialogoConfirmacionListener {
     fun editTask(taskUpdate: TaskUpdate, idTarea: String) {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
-        val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate, idTarea)
-        callback.enqueue(object : Callback<TaskList> {
-            override fun onResponse(call: Call<TaskList>, response: Response<TaskList>) {
+        val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate)
+        callback.enqueue(object : Callback<TaskList2> {
+            override fun onResponse(call: Call<TaskList2>, response: Response<TaskList2>) {
+
+                if (response.code() == 400) {
+                    Log.d("Error code 400",response.errorBody()!!.string());
+                }
                 if (response.isSuccessful) {
                     Log.d("Mensaje", "Tarea editada")
                 } else {
-                    Log.d("Mensaje", "No se Edito tarea ${response.code()}")
+                    Log.d("Mensaje", "No se Edito tarea ${response.raw()}")
                 }
             }
 
-            override fun onFailure(call: Call<TaskList>, t: Throwable) {
+            override fun onFailure(call: Call<TaskList2>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }
         })

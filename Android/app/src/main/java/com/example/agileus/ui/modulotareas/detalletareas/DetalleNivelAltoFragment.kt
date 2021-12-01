@@ -144,14 +144,15 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         val cal = Calendar.getInstance()
         cal.time = fechaI
         var fechaIn =
-            cal[Calendar.DATE].toString() + "/" + (cal[Calendar.MONTH] + 1) + "/" + cal[Calendar.YEAR]
+            cal[Calendar.YEAR].toString() + "-" + (cal[Calendar.MONTH] + 1) + "-" + cal[Calendar.DATE]
+        fechaIn.trim()
         Log.d("Mensaje", "fecha nueva $fechaIn")
 
         cal.time = fechaF
         var fechaFi =
-            cal[Calendar.DATE].toString() + "/" + (cal[Calendar.MONTH] + 1) + "/" + cal[Calendar.YEAR]
+            cal[Calendar.YEAR].toString() + "-" + (cal[Calendar.MONTH] + 1) + "-" + cal[Calendar.DATE]
+        fechaFi.trim()
         Log.d("Mensaje", "fecha nueva $fechaIn")
-
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
         prioridad = args.tareas.prioridad
@@ -171,10 +172,10 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         with(binding) {
             txtNombreTareaD.setText(nombreTarea)
-            txtNombrePersonaD.text =  nombrePersona
+            txtNombrePersonaD.text = nombrePersona
             txtPrioridadD.text = prioridad
             txtDescripcionD.setText(descripcion)
-            txtEstatusD.setText( estatus)
+            txtEstatusD.setText(estatus)
             txtFechaInicioD.setText(fechaIn)
             txtFechaFinD.setText(fechaFi)
             txtObservacionesD.setText(observaciones)
@@ -233,26 +234,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
     override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
 
-        anioInicio = anio
-        mesInicio = mes
-        diaInicio = dia
-        val fecha = binding.txtFechaInicioD
-        val fechaObtenida = "$anio-${mes + 1}-$dia"
-        fecha.setText(fechaObtenida)
-//        var fechaInicio = fecha.text.toString()
-//        Log.e("Mensaje", "Fecha Inicio $fechaInicio")
 
     }
 
     override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
-        anioFin = anio
-        mesFin = mes
-        diaFin = dia
-        val fecha = binding.txtFechaFinD
-        val fechaObtenida = "$anio-${mes + 1}-$dia"
-        fecha.setText( fechaObtenida)
-//        var fechaFin = fecha.text.toString()
-//        Log.e("Mensaje", "Fecha Fin $fechaFin")
+
     }
 
 }
