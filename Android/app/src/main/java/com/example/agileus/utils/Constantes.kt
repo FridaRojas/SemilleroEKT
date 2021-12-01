@@ -25,8 +25,8 @@ object Constantes {
 
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)
-    //val date: LocalDateTime = LocalDateTime.now()
-    val date: ZonedDateTime = ZonedDateTime.now()
+    val date: LocalDateTime = LocalDateTime.now()
+    val zonedDate: ZonedDateTime = ZonedDateTime.now()
     val currentLocalTime = calendar.time
     val formatt: DateFormat = SimpleDateFormat("ZZZZZ", Locale.getDefault())
     val localTime: String = formatt.format(currentLocalTime)
