@@ -5,14 +5,10 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.DatosTareas
 import com.example.agileus.models.Estadisticas
-import com.example.agileus.models.Tasks
 import retrofit2.Response
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 
 class ReporteTareasDao {
 
@@ -64,14 +60,16 @@ class ReporteTareasDao {
                     if (it.leido) {
                         contador_t_leidas = contador_t_leidas + 1
                     }
-                        if (it.status.equals("Cancelado")) {
+
+                    if (it.status.equals("Cancelado")) {
                             contador_t_terminadas = contador_t_terminadas + 1
-                        } else {
-                            contador_t_pendientes = contador_t_pendientes + 1
-                        }
+                    }
+                    else {
+                        contador_t_pendientes = contador_t_pendientes + 1
+                    }
                 }
 
-                fecha_actual = ZonedDateTime.parse(it.fecha_ini)
+                /*fecha_actual = ZonedDateTime.parse(it.fecha_ini)
                 diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)
 
                 Log.d("dias","diferencia días: ${diferencia_horas}")
@@ -82,7 +80,7 @@ class ReporteTareasDao {
 
                 fecha_anterior = fecha_actual
 
-                temporal=temporal+1
+                temporal=temporal+1*/
 
             }
 
@@ -108,7 +106,7 @@ class ReporteTareasDao {
 
 
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
-            listaRecycler.add(Estadisticas("Promedio de respuesta del Broadcast:","","",promedio_tiempo_respuesta, R.drawable.ic_bar_chart))
+            listaRecycler.add(Estadisticas("Tareas terminadas a tiempo:","","",promedio_tiempo_respuesta, R.drawable.ic_bar_chart))
 
             Log.d("dias","promedio respuesta: ${promedio_tiempo_respuesta}")
         }

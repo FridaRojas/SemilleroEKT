@@ -344,7 +344,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             }
         }
 
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
