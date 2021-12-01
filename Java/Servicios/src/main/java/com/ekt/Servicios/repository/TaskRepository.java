@@ -10,4 +10,7 @@ public interface TaskRepository extends MongoRepository<Task,String> {
 
     @Query(value = "{'prioridad': ?0}")
     Iterable<Task> findByPriority(String prioridad);
+
+    @Query(value = "{'id_grupo': ?0}")
+    Iterable<Task> findByIdGrupo(String id_grupo);
 }
