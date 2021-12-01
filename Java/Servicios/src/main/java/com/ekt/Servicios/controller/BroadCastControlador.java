@@ -117,7 +117,7 @@ public class BroadCastControlador {
 				broadCastM.setNombreEmisor(user.get().getNombre());
 				broadCastRepositorio.save(broadCastM);
 				notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED, "Se creo el mensaje a broadcast", broadCastM.getIdEmisor()));
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 			}
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el emisor", ""));
@@ -131,7 +131,8 @@ public class BroadCastControlador {
 		Optional<User> user = userRepository.validarUsuario(idEmisor);
 		if(!user.isPresent()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El Usuario no existe", "" ));
-		}else if(user.isPresent()){
+		}
+		if(user.isPresent()){
 			List<BroadCast> listBrd = new ArrayList<>();
 			Iterable<BroadCast> brd = broadCastRepositorio.findAll();
 			for (BroadCast brd2 : brd) {
@@ -234,7 +235,7 @@ public class BroadCastControlador {
 		Request request = new Request.Builder()
 				.url("https://fcm.googleapis.com/fcm/send")
 				.method("POST", body)
-				.addHeader("Authorization", "key=AAAAIITlXUs:APA91bHueyZr0vJFOSo-yLEbRsG20D8rquPQbQJ1C82JTcnaOjB2ghemxgUljAzwE4wsPEzjQZY2GlrNcI1sFx__SuxsGfszskEF2cx5zy3yYFCdiU2681mCoLwMw_fH4TjmocJIQyYx")
+				.addHeader("Authorization", "AAAAOMDADOM:APA91bF39PZzaPSPbFgPbEO6KvjsOD-AtfnpwEgNGZ6lMFQyx4xaswBX6HDe3iQfjAPiP5MR32Onws1Ry5diSbVY_PwRBhZLQ0PGJzPFLUk14xR8ELQVyleVG2_z00wdWBqs1inATbLP")
 				.addHeader("Content-Type", "application/json")
 				.build();
 		try {

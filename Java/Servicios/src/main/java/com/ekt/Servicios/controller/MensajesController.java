@@ -222,11 +222,6 @@ public class MensajesController {
 		if(idConversacion.length()<49){
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id de la convbersacion no contiene los caracteres neesarios", ""));
 		}
-		Optional<Mensajes> opt = mensajesRepository.buscarMensaje(idConversacion);
-		if(opt.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
-		}
-
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 
 			return ResponseEntity.status(HttpStatus.OK).body(iter.iterator());
@@ -352,16 +347,17 @@ public class MensajesController {
 		if(idConversacion.length()<49) {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El id de la conversacion no contiene los caracteres neesarios", ""));
 		}
-		Optional<Mensajes> opt = mensajesRepository.validarCoversacion(idConversacion);
 		
-		if (opt.isEmpty()){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"La conversacion no existe",""));
-		}
-		if(!opt.get().isConversacionVisible()) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"La conversacion ya fue borrada", ""));
-		}
+		List<Mensajes> list = new ArrayList<>();
 
 		Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+		iter.forEach(list::add);
+		if(list.size()<1) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Response(HttpStatus.NO_CONTENT, "No existe la conversacion",""));
+		}
+		if(!list.get(0).isConversacionVisible()) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "La conversacion ya se elimino anteriormente",""));
+		}
 		for (Mensajes msg : iter) {
 			msg.setConversacionVisible(false);
 			mensajesService.save(msg);
@@ -507,14 +503,20 @@ public class MensajesController {
 				while (cursor.hasNext()) {
 
 					Mensajes mensajes = cursor.next();
-					if (!mensajes.getIDReceptor().equals(idEmisor)) {
-
-
+					if (/*!mensajes.getIDEmisor().equals(idEmisor) ||*/ !mensajes.getIDReceptor().equals(idEmisor)  ) {
+			
 						mConv.setIdReceptor(mensajes.getIDReceptor());
 						mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
 						mConv.setIdConversacion(mensajes.getIDConversacion());
 						mConv.setIdEmisor(mensajes.getIDEmisor());
-
+						
+					}else if(mensajes.getIDReceptor().equals(idEmisor)) {
+						Optional<User> user3 = userRepository.validarUsuario(mensajes.getIDEmisor());
+						System.out.println();
+						mConv.setIdReceptor(mensajes.getIDEmisor());
+						mConv.setNombreConversacionRecepto(user3.get().getNombre());
+						mConv.setIdConversacion(mensajes.getIDConversacion());
+						mConv.setIdEmisor(mensajes.getIDEmisor());
 					}
 				}
 				
@@ -528,6 +530,16 @@ public class MensajesController {
 		}
 		for (Conversacion conv2: lConversacion2){
 			if(conv2.getIdConversacion().length()<50){
+				if(conv2.getIdReceptor() !=null ) {
+					Optional<User> user2 = userRepository.validarUsuario(conv2.getIdReceptor());
+					
+					conv2.setNombreRol(user2.get().getNombreRol());
+					
+					//System.out.println(user2.get().getNombreRol());	
+					System.out.println(conv2.getNombreRol());
+				}
+				//System.out.println(conv2.getIdReceptor());	
+				
 				lConversacion3.add(conv2);
 			}
 		}

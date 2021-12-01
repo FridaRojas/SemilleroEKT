@@ -22,6 +22,7 @@ public class Mensajes {
     private boolean statusRutaDocumento;
     
     private String nombreConversacionReceptor;
+    private String nombreConversacionEmisor;
     
     private Date fechaCreacion;
     private boolean statusCreado;

@@ -5,6 +5,7 @@ public class Conversacion {
    private String idReceptor;
    private String nombreConversacionRecepto;
    private String idEmisor;
+   private String nombreRol;
 
 
     public String getIdConversacion() {
@@ -38,4 +39,14 @@ public class Conversacion {
     public void setIdEmisor(String idEmisor) {
         this.idEmisor = idEmisor;
     }
+
+	public String getNombreRol() {
+		return nombreRol;
+	}
+
+	public void setNombreRol(String nombreRol) {
+		this.nombreRol = nombreRol;
+	}
+    
+    
 }
