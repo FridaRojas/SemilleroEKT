@@ -161,4 +161,17 @@ public class TaskController {
         mensaje = "Petición con éxito";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas.iterator()));
     }
+
+    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{idReceptor}") //Tareas
+    public ResponseEntity<?> getUsuarioTareasByPrioridad(@PathVariable String prioridad,@PathVariable String idReceptor) {
+        Iterable<Task> tareas = tareaRepository.findIdReceptorTareaByPrioridad(idReceptor, prioridad);
+        int nDocumentos = ((Collection<Task>) tareas).size();
+        String mensaje;
+        if(nDocumentos == 0){
+            mensaje = "No se encontró la tarea";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
+        mensaje = "Se encontraron tareas";
+        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
+    }
 }
