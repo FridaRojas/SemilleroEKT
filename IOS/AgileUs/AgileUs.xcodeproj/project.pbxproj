@@ -7,17 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0402F2202756F59E002AD536 /* Ext_UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402F21C2756F59E002AD536 /* Ext_UITextField.swift */; };
-		0402F2212756F59E002AD536 /* Ext_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402F21D2756F59E002AD536 /* Ext_Generales.swift */; };
-		0402F2222756F59E002AD536 /* Ext_UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402F21E2756F59E002AD536 /* Ext_UITextView.swift */; };
-		0402F2232756F59E002AD536 /* Ext_Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402F21F2756F59E002AD536 /* Ext_Button.swift */; };
-		0402F2272756F5F5002AD536 /* AsignarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402F2252756F5F5002AD536 /* AsignarTareaViewController.swift */; };
-		0402F2282756F5F5002AD536 /* EditarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402F2262756F5F5002AD536 /* EditarTareaViewController.swift */; };
 		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
 		5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */; };
 		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
+		AE1D0AC1274EED9A00D3792B /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D0AC0274EED9A00D3792B /* PickerView.swift */; };
+		AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D0AC2274EEEED00D3792B /* Keyboard.swift */; };
+		AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D0AC4274EF0B000D3792B /* DatePicker.swift */; };
+		AE43C31B275595FC0035A514 /* VisorPDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE43C31A275595FC0035A514 /* VisorPDF.swift */; };
+		AE4918EA27570828000162AA /* Ext_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4918E927570828000162AA /* Ext_Generales.swift */; };
+		AE4918EC27570968000162AA /* EditarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4918EB27570968000162AA /* EditarTareaViewController.swift */; };
+		AE4918EE27570A2D000162AA /* NewTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4918ED27570A2D000162AA /* NewTask.swift */; };
+		AE4C5A312750391E0095B907 /* CustomVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C5A302750391E0095B907 /* CustomVisualEffectView.swift */; };
+		AE4C5A33275039520095B907 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C5A32275039520095B907 /* InfoViewController.swift */; };
+		AEA60A9B274C5D120087E417 /* AsignarTareaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A96274C5D120087E417 /* AsignarTareaViewController.swift */; };
+		AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A98274C5D120087E417 /* Ext_UITextField.swift */; };
+		AEA60A9D274C5D120087E417 /* Ext_UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A99274C5D120087E417 /* Ext_UITextView.swift */; };
+		AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A9A274C5D120087E417 /* Ext_Button.swift */; };
+		AEA60AA1274D70670087E417 /* Funciones_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60AA0274D70670087E417 /* Funciones_Generales.swift */; };
+		AEA60AA3274D97530087E417 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60AA2274D97530087E417 /* Strings.swift */; };
+		AEF5ADB3275158CD00AAC104 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB2275158CD00AAC104 /* Services.swift */; };
+		AEF5ADB527548E2800AAC104 /* DataPersonas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB427548E2800AAC104 /* DataPersonas.swift */; };
+		AEF5ADB727548F2E00AAC104 /* DataTareas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB627548F2E00AAC104 /* DataTareas.swift */; };
 		C910568F2750145700CA5A89 /* Help_String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C910568E2750145700CA5A89 /* Help_String.swift */; };
-		C927DAC0274E93CD00D3C1B7 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927DABF274E93CD00D3C1B7 /* Task.swift */; };
 		C9436A762755795A005B1922 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C9436A7527557959005B1922 /* GoogleService-Info.plist */; };
 		C97774A8274C38DA001671E5 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97774A7274C38DA001671E5 /* Api.swift */; };
 		C9FAD60D275698B60017B7B5 /* Prov_Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FAD60C275698B60017B7B5 /* Prov_Firebase.swift */; };
@@ -54,16 +65,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0402F21C2756F59E002AD536 /* Ext_UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_UITextField.swift; sourceTree = "<group>"; };
-		0402F21D2756F59E002AD536 /* Ext_Generales.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_Generales.swift; sourceTree = "<group>"; };
-		0402F21E2756F59E002AD536 /* Ext_UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_UITextView.swift; sourceTree = "<group>"; };
-		0402F21F2756F59E002AD536 /* Ext_Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_Button.swift; sourceTree = "<group>"; };
-		0402F2252756F5F5002AD536 /* AsignarTareaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignarTareaViewController.swift; sourceTree = "<group>"; };
-		0402F2262756F5F5002AD536 /* EditarTareaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditarTareaViewController.swift; sourceTree = "<group>"; };
 		4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs_AgileUsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.release.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.release.xcconfig"; sourceTree = "<group>"; };
 		7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE1D0AC0274EED9A00D3792B /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
+		AE1D0AC2274EEEED00D3792B /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
+		AE1D0AC4274EF0B000D3792B /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
+		AE43C31A275595FC0035A514 /* VisorPDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisorPDF.swift; sourceTree = "<group>"; };
+		AE4918E927570828000162AA /* Ext_Generales.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_Generales.swift; sourceTree = "<group>"; };
+		AE4918EB27570968000162AA /* EditarTareaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditarTareaViewController.swift; sourceTree = "<group>"; };
+		AE4918ED27570A2D000162AA /* NewTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTask.swift; sourceTree = "<group>"; };
+		AE4C5A302750391E0095B907 /* CustomVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVisualEffectView.swift; sourceTree = "<group>"; };
+		AE4C5A32275039520095B907 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		AEA60A96274C5D120087E417 /* AsignarTareaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignarTareaViewController.swift; sourceTree = "<group>"; };
+		AEA60A98274C5D120087E417 /* Ext_UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_UITextField.swift; sourceTree = "<group>"; };
+		AEA60A99274C5D120087E417 /* Ext_UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_UITextView.swift; sourceTree = "<group>"; };
+		AEA60A9A274C5D120087E417 /* Ext_Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_Button.swift; sourceTree = "<group>"; };
+		AEA60AA0274D70670087E417 /* Funciones_Generales.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funciones_Generales.swift; sourceTree = "<group>"; };
+		AEA60AA2274D97530087E417 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		AEF5ADB2275158CD00AAC104 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		AEF5ADB427548E2800AAC104 /* DataPersonas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersonas.swift; sourceTree = "<group>"; };
+		AEF5ADB627548F2E00AAC104 /* DataTareas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTareas.swift; sourceTree = "<group>"; };
 		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
 		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,26 +144,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0402F21B2756F577002AD536 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				0402F21F2756F59E002AD536 /* Ext_Button.swift */,
-				0402F21D2756F59E002AD536 /* Ext_Generales.swift */,
-				0402F21C2756F59E002AD536 /* Ext_UITextField.swift */,
-				0402F21E2756F59E002AD536 /* Ext_UITextView.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		0402F2242756F5E3002AD536 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				0402F2252756F5F5002AD536 /* AsignarTareaViewController.swift */,
-				0402F2262756F5F5002AD536 /* EditarTareaViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		52D2981BB9146F534D2E2D08 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +155,48 @@
 				6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		AE43C319275595AE0035A514 /* VisorPDF */ = {
+			isa = PBXGroup;
+			children = (
+				AE43C31A275595FC0035A514 /* VisorPDF.swift */,
+			);
+			path = VisorPDF;
+			sourceTree = "<group>";
+		};
+		AE4C5A252750027B0095B907 /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				AE4C5A302750391E0095B907 /* CustomVisualEffectView.swift */,
+				AE4C5A32275039520095B907 /* InfoViewController.swift */,
+			);
+			path = Modal;
+			sourceTree = "<group>";
+		};
+		AEA60A95274C5D120087E417 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AE4918EB27570968000162AA /* EditarTareaViewController.swift */,
+				AEA60A96274C5D120087E417 /* AsignarTareaViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		AEA60A97274C5D120087E417 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AE4918E927570828000162AA /* Ext_Generales.swift */,
+				AEA60A98274C5D120087E417 /* Ext_UITextField.swift */,
+				AEA60A99274C5D120087E417 /* Ext_UITextView.swift */,
+				AEA60AA0274D70670087E417 /* Funciones_Generales.swift */,
+				AEA60A9A274C5D120087E417 /* Ext_Button.swift */,
+				AEA60AA2274D97530087E417 /* Strings.swift */,
+				AE1D0AC0274EED9A00D3792B /* PickerView.swift */,
+				AE1D0AC2274EEEED00D3792B /* Keyboard.swift */,
+				AE1D0AC4274EF0B000D3792B /* DatePicker.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C910568D2750143900CA5A89 /* Helpers */ = {
@@ -166,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				C927DABF274E93CD00D3C1B7 /* Task.swift */,
+				AE4918ED27570A2D000162AA /* NewTask.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -256,12 +302,17 @@
 		D4E69CA92746C25E002121E4 /* Tareas */ = {
 			isa = PBXGroup;
 			children = (
-				0402F2242756F5E3002AD536 /* Controllers */,
-				0402F21B2756F577002AD536 /* Extensions */,
 				C910568D2750143900CA5A89 /* Helpers */,
 				C927DABE274E93BF00D3C1B7 /* Models */,
 				C97774A6274C38C8001671E5 /* Providers */,
+				AE43C319275595AE0035A514 /* VisorPDF */,
+				AE4C5A252750027B0095B907 /* Modal */,
+				AEA60A95274C5D120087E417 /* Controllers */,
+				AEA60A97274C5D120087E417 /* Extensions */,
 				D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */,
+				AEF5ADB2275158CD00AAC104 /* Services.swift */,
+				AEF5ADB427548E2800AAC104 /* DataPersonas.swift */,
+				AEF5ADB627548F2E00AAC104 /* DataTareas.swift */,
 			);
 			path = Tareas;
 			sourceTree = "<group>";
@@ -526,21 +577,32 @@
 			files = (
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
-				0402F2232756F59E002AD536 /* Ext_Button.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
+				AE4918EC27570968000162AA /* EditarTareaViewController.swift in Sources */,
 				C9FAD60D275698B60017B7B5 /* Prov_Firebase.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
-				0402F2222756F59E002AD536 /* Ext_UITextView.swift in Sources */,
 				C97774A8274C38DA001671E5 /* Api.swift in Sources */,
-				0402F2272756F5F5002AD536 /* AsignarTareaViewController.swift in Sources */,
+				AEA60A9B274C5D120087E417 /* AsignarTareaViewController.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
-				0402F2212756F59E002AD536 /* Ext_Generales.swift in Sources */,
+				AE4918EE27570A2D000162AA /* NewTask.swift in Sources */,
 				C910568F2750145700CA5A89 /* Help_String.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
+				AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */,
+				AEF5ADB727548F2E00AAC104 /* DataTareas.swift in Sources */,
+				AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */,
+				AEA60AA3274D97530087E417 /* Strings.swift in Sources */,
+				AE4C5A312750391E0095B907 /* CustomVisualEffectView.swift in Sources */,
+				AEA60AA1274D70670087E417 /* Funciones_Generales.swift in Sources */,
+				AE4C5A33275039520095B907 /* InfoViewController.swift in Sources */,
+				AEF5ADB3275158CD00AAC104 /* Services.swift in Sources */,
+				AEF5ADB527548E2800AAC104 /* DataPersonas.swift in Sources */,
+				AEA60A9D274C5D120087E417 /* Ext_UITextView.swift in Sources */,
+				AE4918EA27570828000162AA /* Ext_Generales.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
-				0402F2282756F5F5002AD536 /* EditarTareaViewController.swift in Sources */,
-				C927DAC0274E93CD00D3C1B7 /* Task.swift in Sources */,
-				0402F2202756F59E002AD536 /* Ext_UITextField.swift in Sources */,
+				AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */,
+				AE1D0AC1274EED9A00D3792B /* PickerView.swift in Sources */,
+				AE43C31B275595FC0035A514 /* VisorPDF.swift in Sources */,
+				AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,6 +790,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -757,6 +820,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

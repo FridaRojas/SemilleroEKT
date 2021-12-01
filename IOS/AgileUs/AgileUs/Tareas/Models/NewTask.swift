@@ -1,13 +1,12 @@
 //
-//  Task.swift
+//  NewTask.swift
 //  AgileUs
 //
-//  Created by Andres Villanueva Sanchez on 24/11/21.
+//  Created by Carlos nitsuga Hernandez hernandez on 30/11/21.
 //
-
 import Foundation
 
-/*struct Task: Codable {
+struct Task: Codable {
     
     var id_tarea: String?
     var id_grupo: String?
@@ -42,4 +41,4 @@ struct TaskResponse: Codable {
 struct TaskRequestEdit {
     
 }
-*/
+

@@ -7,11 +7,13 @@
 
 import UIKit
 
+
+
 class TareasScreen: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         
         
         self.navigationController?.navigationBar.topItem?.title = "hola"
@@ -33,4 +35,16 @@ class TareasScreen: UIViewController {
         }
     }
 
+    @IBAction func Visualizar_tarea(_ sender: UIButton) {
+        
+        if let infoViewController = storyboard?.instantiateViewController(identifier: "InfoViewController") {
+            infoViewController.modalPresentationStyle = .overCurrentContext
+            infoViewController.modalTransitionStyle = .crossDissolve
+            present(infoViewController, animated: true)
+                }
+    }
+   
+        
+    
+    
 }
