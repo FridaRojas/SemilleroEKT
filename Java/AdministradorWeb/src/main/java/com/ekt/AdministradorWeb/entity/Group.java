@@ -7,10 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
 
-@Document("group")
 public class Group {
 
-        @Id
         private String id;
         private String nombre;
         private User[] usuarios;
@@ -25,19 +23,25 @@ public class Group {
                 return id;
         }
 
-        public String getNombre() { return nombre; }
-        public void setNombre(String value) { this.nombre = value; }
         public void setId(String id) {
                 this.id = id;
         }
 
-        public User[] getUsuarios() { return usuarios; }
-        public void setUsuarios(User[] value) { this.usuarios = value; }
+        public String getNombre() {
+                return nombre;
+        }
 
+        public void setNombre(String nombre) {
+                this.nombre = nombre;
+        }
 
+        public User[] getUsuarios() {
+                return usuarios;
+        }
 
-
-
+        public void setUsuarios(User[] usuarios) {
+                this.usuarios = usuarios;
+        }
 
         @Override
         public String toString() {

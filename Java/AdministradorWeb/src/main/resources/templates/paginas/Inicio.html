@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        table .resto{
+            padding: 20px;
+            width: 85% ;
+        }
+
+        table .menu{
+            width: 15% ;
+            height: max-content;
+
+
+        }
+
+    </style>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloGeneral.css}" />
+    <title>Title</title>
+
+</head>
+<body >
+
+
+
+
+<table id="tabla">
+    <td  class="menu">
+        <div th:replace="elementos/menuLateral::menuLateral"></div>
+    </td>
+
+    <td class="resto" >
+
+        <div id="Contenedor"  >
+
+            <div>
+                <h1 style="color: white; font-family: 'Poppins', sans-serif; padding: 10% 0% 5% 45% " >Bienvenido!</h1>
+
+                <img src="/assets/default.png" height="250" width="250">
+
+            </div>
+        </div>
+
+    </td>
+</table>
+
+</body>
+</html>

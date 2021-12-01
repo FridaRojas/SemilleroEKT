@@ -11,7 +11,7 @@ public interface UserService {
 
      Optional<User> findById(String id);
 
-     Optional<User> findUsersByUniqueData(String correo, String curp, String rfc, String empleado);
+     Boolean findUsersByUniqueData(String correo, String curp, String rfc, String empleado);
 
      Optional<User> userValidate(String id, String password);
     Iterable<User> findUserByBossId(String id);

@@ -3,9 +3,7 @@ package com.ekt.AdministradorWeb.DAO;
 import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.json.JSONObject;
 
 public class GroupDAO {
@@ -15,13 +13,13 @@ public class GroupDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/buscar/619d220c3cd67733b375db11")
+                .url("http://localhost:3040/api/grupo/buscar/619d220c3cd67733b375db11" /* + idGrupo */)
                 .method("GET", null)
                 .build();
         try{
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            if (jsonObject.get("data")!=""){
+            if (!jsonObject.get("data").equals("")){
                 JSONObject grupoObjeto = jsonObject.getJSONObject("data");
                 Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
                 User []usuarios = grupo.getUsuarios();
@@ -32,5 +30,26 @@ public class GroupDAO {
         }catch (Exception e){
             return null;
         }
+    }
+
+    public boolean eliminaUsuarioGrupo(String idUser, String idGroup){
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"idUsuario\":\""+idUser+"\",\r\n    \"idGrupo\":\""+idGroup+"\"\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/borrarUsuarioDeGrupo")
+                .method("DELETE", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            System.out.println(jsonObject);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 }

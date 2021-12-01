@@ -15,7 +15,7 @@ public class User {
     private String nombre;
     private String password;
     private String nombreRol;
-    private String idGrupo;
+    private String idgrupo;
     private Object[] opcionales;
     private String token;
     private String telefono;
@@ -48,8 +48,8 @@ public class User {
     public String getNombreRol() { return nombreRol; }
     public void setNombreRol(String value) { this.nombreRol = value; }
 
-    public String getIDGrupo() { return idGrupo; }
-    public void setIDGrupo(String value) { this.idGrupo = value; }
+    public String getIDGrupo() { return idgrupo; }
+    public void setIDGrupo(String value) { this.idgrupo = value; }
 
     public Object[] getOpcionales() { return opcionales; }
     public void setOpcionales(Object[] value) { this.opcionales = value; }

@@ -31,7 +31,7 @@
                             <select name="idUsuario" id="idUsuario">
                                 <optgroup>
                                     <p th:each="user: ${usuarios}">
-                                        <option th:text="${user.getNombre()} + '---' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                        <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
                                     </p>
                                 </optgroup>
                             </select>
