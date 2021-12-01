@@ -1,11 +1,13 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
+import com.example.agileus.models.Contacts
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteTareasDao
@@ -44,6 +46,7 @@ class ReporteTareasViewModel: ViewModel() {
     }
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
+    lateinit var listaHijosConsumida:ArrayList<Contacts>
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte(listener: ReportesListener){
@@ -71,5 +74,33 @@ class ReporteTareasViewModel: ViewModel() {
 
         }
 
+    }
+    var listaEmpleadosAux = MutableLiveData<ArrayList<Contacts>>()
+
+    fun devuelveListaEmpleados(idUser:String){
+        try {
+            viewModelScope.launch {
+                listaHijosConsumida =  withContext(Dispatchers.IO) {
+                    lista.obtenerListaSubContactos(idUser)
+                }
+                /*
+                listaHijosConsumida.forEach {
+                    Log.e("Hijos", it.nombre)
+                    MySharedPreferences.empleadoUsuario.add(it.id.toInt(), it.nombre)
+                }
+                 */
+                if (listaHijosConsumida.isNotEmpty()){
+                    listaEmpleadosAux.value = listaHijosConsumida
+                }
+                listaEmpleadosAux.value?.forEach {
+                    Log.e("Hijos", it.nombre)
+                }
+
+                Log.i("AuxList", "${listaEmpleadosAux.value}")
+                Log.i("sizeList", "${listaHijosConsumida.size}")
+            }
+        }catch (ex:Exception){
+            Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
+        }
     }
 }

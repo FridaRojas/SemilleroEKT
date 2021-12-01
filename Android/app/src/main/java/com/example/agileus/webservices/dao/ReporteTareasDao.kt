@@ -7,9 +7,7 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
-import com.example.agileus.models.DatosTareas
-import com.example.agileus.models.Estadisticas
-import com.example.agileus.models.Tasks
+import com.example.agileus.models.*
 import retrofit2.Response
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -34,6 +32,8 @@ class ReporteTareasDao {
 
     lateinit var fechaIni: ZonedDateTime
     lateinit var fechaIniR: ZonedDateTime
+
+    var employeeList = ArrayList<Contacts>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosTareas(): ArrayList<Estadisticas> {
@@ -191,6 +191,25 @@ class ReporteTareasDao {
 
     fun obtenerTareasLeidas():String{
         return contador_tareas_leidas.toString()
+    }
+
+    fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
+        try{
+            //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
+            var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
+
+            if (ResponseDos.isSuccessful){
+                val listaConsumida = ResponseDos.body()!!
+                employeeList = listaConsumida.dataEmployees
+            }else{
+                Log.e("ERROR SubContactos", ResponseDos.code().toString())
+            }
+
+        }catch (ex:Exception){
+
+        }
+        return employeeList
     }
 
 

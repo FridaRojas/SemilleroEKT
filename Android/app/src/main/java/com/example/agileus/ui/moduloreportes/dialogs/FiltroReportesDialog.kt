@@ -257,87 +257,18 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     }
 
     override fun onUserSelected(user: Int) {
-        //txtUsuario.setText(user.toString())
-        txtUsuario.setText(MySharedPreferences.empleadoUsuario[user].nombre)
-        userIdSelected = MySharedPreferences.empleadoUsuario[user].id
+        if (user == 0){
+            txtUsuario.setText(MySharedPreferences.idUsuario)
+            userIdSelected = MySharedPreferences.idUsuario
+        }else{
+            txtUsuario.setText(MySharedPreferences.empleadoUsuario[user-1].nombre)
+            userIdSelected = MySharedPreferences.empleadoUsuario[user-1].id
+        }
     }
 
     fun resRangeValues(){
         iniStringDate = dataBaseFormatoFecha(actualDay, actualMonth-1, actualYear)
         endStringDate = dataBaseFormatoFecha(actualDay, actualMonth-1, actualYear)
     }
-        /*
-
-    fun posicionPrimerDiaDelAnio(year: Int): Int{
-        val asDay = nombreDiaDelAnio(year, 0, 1)
-        val posDia = posDiaSemana(asDay, listaDiasDeLaSemana())
-        return posDia
-    }
-
-    fun posDiaSemana(dia:String, diasDeLaSemana: ArrayList<String>):Int{
-        var aux = 0
-        var pos = 0
-        diasDeLaSemana.forEach {
-            if (dia == it){
-                pos = aux
-            }
-            aux += 1
-        }
-        return pos
-    }
-
-
-
-    fun semanasDelAnio(year: Int, day: Int): ArrayList<String>{
-        var listaSemanas  = arrayListOf<String>()
-        var dt = Date(year-1900, 0, 1)
-        var dateFormat = SimpleDateFormat("w", Locale.US)
-        var asWeeks: String = dateFormat.format(dt)
-        var isBisiesto = false
-        var semanasTotales = 52
-
-        if(year%4 == 0 && (year%100 != 0 || year%400 == 0)){
-            isBisiesto = true
-            semanasTotales = 53
-        }else
-
-        for(weeks in 0..semanasTotales){
-            dt = Date(2000-1900, 1, 1)
-            dateFormat = SimpleDateFormat("w", Locale.US)
-            asWeeks = dateFormat.format(dt)
-            listaSemanas.add(asWeeks)
-        }
-
-        Toast.makeText(context, asWeeks, Toast.LENGTH_SHORT).show()
-        return listaSemanas
-    }
-
-    fun listaDiasDeLaSemana(): ArrayList<String>{
-        val listaDias  = arrayListOf<String>()
-        for(date in 23..29){
-            listaDias.add(nombreDiaDelAnio(2021-1900, 11, date))
-        }
-        return listaDias
-    }
-
-
-
-    fun listaMesesDelAnio(): ArrayList<String>{
-        val listaMeses  = arrayListOf<String>()
-        var dt = Date(2000-1900, 0, 1)
-        var dateFormat = SimpleDateFormat("MMMM", Locale.forLanguageTag("Spanish"))
-        var asMonth: String = dateFormat.format(dt)
-        for(month in 0..11){
-            dt = Date(2000-1900, month, 1)
-            dateFormat = SimpleDateFormat("MMMM", Locale.forLanguageTag("Spanish"))
-            asMonth = dateFormat.format(dt)
-            listaMeses.add(asMonth)
-        }
-        Log.d("Lista", listaMeses.toString())
-        return listaMeses
-    }
-         */
-
-
 }
 
