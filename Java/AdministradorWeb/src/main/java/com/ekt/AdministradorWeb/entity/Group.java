@@ -1,31 +1,21 @@
-package com.ekt.Servicios.entity;
+package com.ekt.AdministradorWeb.entity;
+
 
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Arrays;
 
-@Document ("group")
 public class Group {
 
-        @Id
         private String id;
         private String nombre;
         private User[] usuarios;
 
-        public Group() {
-        }
-
-        public Group(String nombre, User[] usuarios) {
-                this.nombre = nombre;
-                this.usuarios = usuarios;
-        }
-
-        public Group(String id, String nombre, User[] usuarios) {
+        public Group(String id, String name, User[] usuarios) {
                 this.id = id;
-                this.nombre = nombre;
+                this.nombre = name;
                 this.usuarios = usuarios;
         }
 
@@ -61,4 +51,5 @@ public class Group {
                         ", usuarios=" + Arrays.toString(usuarios) +
                         '}';
         }
+
 }
