@@ -11,7 +11,6 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel : ViewModel() {
     var lista: LoginDao
-    lateinit var listafiltrada: ArrayList<User>
     lateinit var listaConsumida: ArrayList<User>
 
     init {

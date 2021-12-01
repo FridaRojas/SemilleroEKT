@@ -7,6 +7,7 @@ import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
+import com.example.agileus.utils.Constantes.URL_Login
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
 import okhttp3.OkHttpClient
@@ -71,7 +72,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitLogin(): LoginApi {
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE3)
+            .baseUrl(URL_Login)
             .addConverterFactory(GsonConverterFactory.create())
             .client(cliente(60))
             .build()

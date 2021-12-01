@@ -2,7 +2,6 @@ package com.example.agileus.webservices.dao
 
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.User
-import retrofit2.Call
 import retrofit2.Response
 
 class LoginDao {
