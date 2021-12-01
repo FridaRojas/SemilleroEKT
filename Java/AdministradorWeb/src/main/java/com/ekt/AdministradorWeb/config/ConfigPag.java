@@ -372,7 +372,8 @@ public class ConfigPag {
     }
 
     @PostMapping("/agregarUsuarioAGrupo")
-    public String agregarUsuarioAGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
+    public String agregarUsuarioAGrupo(@ModelAttribute User gr,@ModelAttribute (value="idGrupo")String idGrupo, RedirectAttributes redirectAttrs) {
+        System.out.println(idGrupo);
         System.out.println(gr.getNombre());
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
