@@ -20,20 +20,14 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.ekt.Servicios.controller.config.validator.ValidarMensajeImpl;
 import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.MensajesService;
-import com.ekt.Servicios.util.exceptions.ApiUnprocessableEntity;
-import com.ekt.Servicios.util.exceptions.ResultadoNoEncontrado;
 
 @RestController
 @RequestMapping("/api/mensajes/")
 public class MensajesController {
 	@Autowired
 	private MensajesService mensajesService;
-
-	@Autowired
-	private ValidarMensajeImpl validarMensajeImpl;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -45,8 +39,7 @@ public class MensajesController {
 	MongoTemplate monogoTemplate;
 
 	@PostMapping("crearMensaje")
-	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes)
-			throws ApiUnprocessableEntity, ResultadoNoEncontrado {
+	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) {
 
 		if (mensajes.getIDEmisor() == null || mensajes.getIDReceptor() == null || mensajes.getTexto() == null
 				|| mensajes.getRutaDocumento() == null || mensajes.getFechaCreacion() == null) {
