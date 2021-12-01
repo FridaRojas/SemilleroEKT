@@ -76,11 +76,11 @@
             android:drawableLeft="@drawable/iconocalendario"
             android:layout_marginTop="@dimen/marginFormulario"
             style="@style/StyleTextGray"
+            android:editable="false"
             android:enabled="false"
             android:text="Inicio: 16/01/2021"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
-
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtFechaFinD"
@@ -88,6 +88,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/iconocalendario"
             android:layout_marginTop="@dimen/marginFormulario"
+            android:editable="false"
             style="@style/StyleTextGray"
             android:enabled="false"
             android:text="Fin: 20/01/2021"

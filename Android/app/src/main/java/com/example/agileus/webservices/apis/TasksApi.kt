@@ -1,11 +1,9 @@
 package com.example.agileus.webservices.apis
 
 
-import com.example.agileus.models.DataTask
-import com.example.agileus.models.TaskList
-import com.example.agileus.models.PersonasGrupo
-import com.example.agileus.models.Tasks
+import com.example.agileus.models.*
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
+import com.google.android.gms.tasks.Task
 import retrofit2.Call
 import retrofit2.http.*
 import retrofit2.http.Body
@@ -42,11 +40,9 @@ interface TasksApi {
     fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
 
     @PUT("tareas/actualizarTarea/{idTarea}")
-    fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String)
-            : Call<DataTask>
+    fun editTask(@Body t: TaskUpdate, @Path("idTarea") idTarea: String): Call<TaskList>
 
     @PUT("tareas/actulizarEstatus/{param}")
     fun updateStatus(@Path("param") param: String): Call<String>
-
 
 }
