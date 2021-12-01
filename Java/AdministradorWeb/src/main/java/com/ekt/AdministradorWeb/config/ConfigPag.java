@@ -66,6 +66,7 @@ public class ConfigPag {
         model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
+
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -345,6 +346,20 @@ public class ConfigPag {
 
 
         return "paginas/Inicio";
+    }
+
+    @GetMapping("/verUsuario")
+    public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
+            User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
+            if (user!=null){
+                model.addAttribute("user", user);
+                return "paginas/usuarios/verUsuario";
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "El usuario ya no existe");
+                return "/findAllUsuarios";
+            }
+
     }
 
 }

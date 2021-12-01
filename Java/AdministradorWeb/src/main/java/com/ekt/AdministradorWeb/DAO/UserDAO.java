@@ -3,9 +3,7 @@ package com.ekt.AdministradorWeb.DAO;
 import ch.qos.logback.core.encoder.EchoEncoder;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -67,7 +65,6 @@ public class UserDAO {
         }
     }
 
-
     public Boolean editarUsuario(User user){
         System.out.println("En editarUsuario "+user.getFechaInicio()+"  "+user.getRFC());
         Boolean res=false;
@@ -120,8 +117,6 @@ public class UserDAO {
 
         return res;
     }
-
-
 
     public boolean actualizaIdSujperior(String idUser, String idSuperior){
 
