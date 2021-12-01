@@ -28,4 +28,8 @@ public interface TaskRepository extends MongoRepository<Task,String> {
 
     @Query(value = "{'id_receptor': ?0, 'estatus': ?1}")//Todas las que le fueron asignadas mediante un estatus
     Iterable<Task> getAllByIdReceptorAndStatus(String id_receptor, String estatus);
+
+    @Query(value = "{'id_grupo': ?0,'id_receptor': ?1 }")
+    Iterable<Task> getAllByGroupAndIdReceptor(String id_grupo, String id_receptor);
+
 }
