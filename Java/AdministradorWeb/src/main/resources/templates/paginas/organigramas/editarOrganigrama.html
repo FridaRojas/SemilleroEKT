@@ -88,23 +88,28 @@
         <div th:replace="elementos/menuLateral::menuLateral"></div>
     </td>
     <td class="resto" >
-        <div class="row justify-content-center" style="min-height: 75vh; ">
+        <div class="row justify-content-center" style="height: 75vh;overflow: auto;">
             <div th:insert="elementos/Organigrama::organigrama"></div>
         </div>
         <div class="row d-flex justify-content-around" style="min-height: 20vh; ">
+            <!-- boton de agregar usuarios-->
             <div class="col-2">
                 <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalCreaUsuarioOrganigrama">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
                     <p>Agregar usuario</p>
                 </button>
             </div>
+            <!-- modal agregar usuarios-->
+            <div th:replace="paginas/modalAgregarUsuarioAGrupo::#modalAgregarUsuarioAGrupo"></div>
+
+
             <div class="col-2">
-                <button class="btn button col">
+                <button class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
                     <img src="/assets/--.png" style="max-height: 7vh;"/>
                     <p>Quitar usuario</p>
                 </button>
             </div>
-
+            <div th:replace="paginas/modalEliminaUsuario::#modalEliminaUsuario"></div>
 
         </div>
     </td>
@@ -115,14 +120,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<script>
 
-    function buscar() {
-
-    }
-
-
-</script>
 
 <div th:replace="paginas/modalCrearUsuarioOrganigrama::#modalCreaUsuarioOrganigrama"></div>
 </body>

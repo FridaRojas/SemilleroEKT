@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository
@@ -29,5 +30,8 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     @Query("{ 'numeroEmpleado' : ?0}")
     Optional<User> findByNumeroEmpleado(String numeroEmpleado);
+
+    @Query("{ 'idSuperiorInmediato' : ?0}")
+    Optional<ArrayList<User>> findChilds(String idPadre);
 
 }

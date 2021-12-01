@@ -66,6 +66,7 @@ public class ConfigPag {
         model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
+
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -95,25 +96,6 @@ public class ConfigPag {
         }
     }
 
-    @PostMapping("/eliminarUsuario")
-    public String eliminarUsuario(@ModelAttribute(value = "id") String id){
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/delete/"+id)
-                .method("DELETE", body)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            System.out.println("el id es: "+id+"  eliminado con exito");
-        }catch (Exception e) {
-            System.out.println("Error al eliminar usuario" +e);
-        }
-        return "redirect:/findAllUsuarios";
-    }
 
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
@@ -273,10 +255,12 @@ public class ConfigPag {
         }
     }
 
+
     @GetMapping("/inicioGrupos")
     public String inicioGrupos() {
         return "paginas/organigramas/inicioOrganigramas";
     }
+
 
     @GetMapping("/buscarTodosGrupos")
     public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model) {
@@ -339,9 +323,78 @@ public class ConfigPag {
 
     }
 
+    @PostMapping("/buscarGrupo")
+    public String buscarGrupo(String nombre){
+        try {
+            ArrayList<Group> listaGrupos=new ArrayList<>();
+            Gson gson = new Gson();
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url("http://localhost:3040/api/grupo/buscarPorNombre/"+nombre)
+                    .method("GET", null)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            String res = response.body().string();
+
+
+            JSONObject jsonObject= new JSONObject(res);
+
+            //JSONArray name1 = jsonObject.getJSONArray("data");
+
+            //listaGrupos.add(gson.fromJson(name1.getJSONObject(0).toString(), Group.class));
+
+            System.out.println(jsonObject.toString());
+
+        }catch (Exception e){
+            System.err.println("Exception"+e);
+            return "/error1";
+        }
+
+        return null;
+    }
+
+    @GetMapping("/error1")
+    public String error() {
+        return "paginas/error.html";
+    }
+
+
+
     @GetMapping("/Inicio")
     public String Inicio(){
         return "paginas/Inicio";
+    }
+
+    @PostMapping("/agregarUsuarioAGrupo")
+    public String agregarUsuarioAGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
+        System.out.println(gr.getNombre());
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
+                .method("POST", body)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+
+            if (jsonObject.get("status").toString().equals("OK")){
+                return "redirect:/inicioGrupos";
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "Grupo ya existente");
+                return "redirect:/inicioGrupos";
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return "";
+        }
+
     }
 
 }
