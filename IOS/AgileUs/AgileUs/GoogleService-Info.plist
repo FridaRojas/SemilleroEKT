@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>243751980259-929m9409sr57ntvrr7oe2esiaq6ttaon.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.243751980259-929m9409sr57ntvrr7oe2esiaq6ttaon</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBGWI2-zkLEMyj1-fG6e-A-0xEs7yK8-Qw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>243751980259</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Semillero.CarlosA.AgileUs</string>
+	<key>PROJECT_ID</key>
+	<string>agileus-55195</string>
+	<key>STORAGE_BUCKET</key>
+	<string>agileus-55195.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:243751980259:ios:6d263805924cbde460c9d6</string>
+</dict>
+</plist>
