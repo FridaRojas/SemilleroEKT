@@ -5,6 +5,8 @@ import java.util.*;
 
 import com.ekt.Servicios.entity.*;
 import com.ekt.Servicios.repository.MensajesRepository;
+import com.mongodb.MongoException;
+import com.mongodb.MongoSocketOpenException;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -40,179 +42,202 @@ public class MensajesController {
 
 	@PostMapping("crearMensaje")
 	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) {
+		try {
 
-		if (mensajes.getIDEmisor() == null || mensajes.getIDReceptor() == null || mensajes.getTexto() == null
-				|| mensajes.getRutaDocumento() == null || mensajes.getFechaCreacion() == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, "Cuerpo de Json incorrecto", ""));
-		}
-
-		if (mensajes.getIDEmisor().length() < 24 || mensajes.getIDEmisor().length() > 24) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idEmisor no es correcto", ""));
-		}
-
-		if (mensajes.getIDReceptor().length() < 24) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idReceptor no es correcto", ""));
-		}
-
-		if (mensajes.getTexto().length() < 1) { 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-					new Response(HttpStatus.BAD_REQUEST, "El texto del mensaje debe ser de al menos 1 caracter", ""));
-		}
-
-		Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
-		Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
-
-		List<User> listaConversacion = new ArrayList<>();
-		List<Conversacion> listaGrupo = new ArrayList<>();
-
-		/*if (!receptor.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
-					"No existe el receptor en la base de datos", mensajes.getIDReceptor()));
-		}*/
-
-		if (emisor.isPresent()) {
-			listaConversacion = listaConversacion(emisor.get().getID());
-			listaGrupo = grupos(mensajes.getIDEmisor());
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
-					"No existe el emisor en la base de datos", mensajes.getIDEmisor()));
-		}
-		
-		boolean existeEnListaGrupo = false;
-		boolean existeEnListaUsuario = false;
-
-		Conversacion cuerpoConversacion = new Conversacion();
-		
-		for (Conversacion conversacion : listaGrupo) {
-			if (conversacion.getIdConversacion().equals(mensajes.getIDReceptor())) {
-				existeEnListaGrupo = true;
-				cuerpoConversacion.setIdConversacion(conversacion.getIdConversacion());
-				cuerpoConversacion.setIdReceptor(conversacion.getIdReceptor());
-				cuerpoConversacion.setNombreConversacionRecepto(conversacion.getNombreConversacionRecepto());
+			if (mensajes.getIDEmisor() == null || mensajes.getIDReceptor() == null || mensajes.getTexto() == null
+					|| mensajes.getRutaDocumento() == null || mensajes.getFechaCreacion() == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new Response(HttpStatus.BAD_REQUEST, "Cuerpo de Json incorrecto", ""));
 			}
-		}
 
-		if (existeEnListaGrupo) {
-			if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
-				mensajes.setRutaDocumento("");
-				mensajes.setStatusRutaDocumento(false);
+			if (mensajes.getIDEmisor().length() < 24 || mensajes.getIDEmisor().length() > 24) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idEmisor no es correcto", ""));
+			}
+
+			if (mensajes.getIDReceptor().length() < 24) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idReceptor no es correcto", ""));
+			}
+
+			if (mensajes.getTexto().length() < 1) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,
+						"El texto del mensaje debe ser de al menos 1 caracter", ""));
+			}
+
+			Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
+			Optional<User> receptor = userRepository.validarUsuario(mensajes.getIDReceptor());
+
+			List<User> listaConversacion = new ArrayList<>();
+			List<Conversacion> listaGrupo = new ArrayList<>();
+
+			/*
+			 * if (!receptor.isPresent()) { return
+			 * ResponseEntity.status(HttpStatus.NOT_FOUND).body(new
+			 * Response(HttpStatus.NOT_FOUND, "No existe el receptor en la base de datos",
+			 * mensajes.getIDReceptor())); }
+			 */
+
+			if (emisor.isPresent()) {
+				listaConversacion = listaConversacion(emisor.get().getID());
+				listaGrupo = grupos(mensajes.getIDEmisor());
 			} else {
-				mensajes.setTexto("Documento");
-				mensajes.setStatusRutaDocumento(true);
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
+						"No existe el emisor en la base de datos", mensajes.getIDEmisor()));
 			}
 
-			mensajes.setIDConversacion(mensajes.getIDReceptor());
-			
-			mensajes.setStatusCreado(true);
-			
-			mensajes.setFechaEnviado(new Date());
-			mensajes.setStatusEnviado(true);
-			
-			mensajes.setStatusLeido(false);
-			mensajes.setFechaLeido(new Date(0));
+			boolean existeEnListaGrupo = false;
+			boolean existeEnListaUsuario = false;
 
-			mensajes.setVisible(true);
+			Conversacion cuerpoConversacion = new Conversacion();
 
-			mensajes.setNombreConversacionReceptor(cuerpoConversacion.getNombreConversacionRecepto());
-
-			mensajes.setConversacionVisible(true);
-
-			mensajesService.crearMensaje(mensajes);
-
-			List<User> usuarios = new ArrayList<>();
-			String[] lenguajesComoArreglo = mensajes.getIDReceptor().split("-");
-			for (String idUsuario : lenguajesComoArreglo) {
-				Optional<User> usuario = userRepository.validarUsuario(idUsuario);
-				usuario.ifPresent(usuarios::add);
-			}
-
-			if (mensajes.getTexto().equals("Documento")) {
-				//notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a "+mensajes.getNombreConversacionReceptor(),"Nuevo documento", receptor.get().getToken());
-				//notificacion2(titulo, asunto, token);
-				for(User usuario : usuarios) {
-					notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a: "+mensajes.getNombreConversacionReceptor(),"Nuevo documento", usuario.getToken());
+			for (Conversacion conversacion : listaGrupo) {
+				if (conversacion.getIdConversacion().equals(mensajes.getIDReceptor())) {
+					existeEnListaGrupo = true;
+					cuerpoConversacion.setIdConversacion(conversacion.getIdConversacion());
+					cuerpoConversacion.setIdReceptor(conversacion.getIdReceptor());
+					cuerpoConversacion.setNombreConversacionRecepto(conversacion.getNombreConversacionRecepto());
 				}
+			}
+
+			if (existeEnListaGrupo) {
+				if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
+					mensajes.setRutaDocumento("");
+					mensajes.setStatusRutaDocumento(false);
+				} else {
+					mensajes.setTexto("Documento");
+					mensajes.setStatusRutaDocumento(true);
+				}
+
+				mensajes.setIDConversacion(mensajes.getIDReceptor());
+
+				mensajes.setStatusCreado(true);
+
+				mensajes.setFechaEnviado(new Date());
+				mensajes.setStatusEnviado(true);
+
+				mensajes.setStatusLeido(false);
+				mensajes.setFechaLeido(new Date(0));
+
+				mensajes.setVisible(true);
+
+				mensajes.setNombreConversacionReceptor(cuerpoConversacion.getNombreConversacionRecepto());
+
+				mensajes.setConversacionVisible(true);
+
+				mensajesService.crearMensaje(mensajes);
+
+				List<User> usuarios = new ArrayList<>();
+				String[] lenguajesComoArreglo = mensajes.getIDReceptor().split("-");
+				for (String idUsuario : lenguajesComoArreglo) {
+					Optional<User> usuario = userRepository.validarUsuario(idUsuario);
+					usuario.ifPresent(usuarios::add);
+				}
+
+				if (mensajes.getTexto().equals("Documento")) {
+					// notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a
+					// "+mensajes.getNombreConversacionReceptor(),"Nuevo documento",
+					// receptor.get().getToken());
+					// notificacion2(titulo, asunto, token);
+					for (User usuario : usuarios) {
+						notificacion2(
+								"Nuevo Mensaje de " + emisor.get().getNombre() + " a: "
+										+ mensajes.getNombreConversacionReceptor(),
+								"Nuevo documento", usuario.getToken());
+					}
+					return ResponseEntity.status(HttpStatus.CREATED)
+							.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+				}
+
+				for (User usuario : usuarios) {
+					notificacion2(
+							"Nuevo Mensaje de " + emisor.get().getNombre() + " a: "
+									+ mensajes.getNombreConversacionReceptor(),
+							mensajes.getTexto(), usuario.getToken());
+				}
+				// notificacion2("Nuevo Mensaje de
+				// "+emisor.get().getNombre(),mensajes.getTexto(), receptor.get().getToken());
+				return ResponseEntity.status(HttpStatus.CREATED).body(
+						new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
+			}
+
+			// Comparar receptor en lista de contactos
+			for (User contactos : listaConversacion) {
+				if (contactos.getID().equals(receptor.get().getID())) {
+					existeEnListaUsuario = true;
+				}
+			}
+
+			if (existeEnListaUsuario) {
+
+				if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
+					mensajes.setRutaDocumento("");
+					mensajes.setStatusRutaDocumento(false);
+				} else {
+					mensajes.setTexto("Documento");
+					mensajes.setStatusRutaDocumento(true);
+				}
+
+				List<Mensajes> conversacionForma1 = new ArrayList<>();
+				List<Mensajes> conversacionForma2 = new ArrayList<>();
+
+				Iterable<Mensajes> conversacionIterable1 = mensajesService
+						.verConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
+				conversacionIterable1.forEach(conversacionForma1::add);
+
+				Iterable<Mensajes> conversacionIterable2 = mensajesService
+						.verConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
+				conversacionIterable2.forEach(conversacionForma2::add);
+
+				if (conversacionForma1.size() > 0) {
+					mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
+				} else if (conversacionForma2.size() > 0) {
+					mensajes.setIDConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
+				} else {
+					mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
+				}
+
+				mensajes.setStatusCreado(true);
+
+				mensajes.setFechaEnviado(new Date());
+				mensajes.setStatusEnviado(true);
+
+				mensajes.setStatusLeido(false);
+				mensajes.setFechaLeido(new Date(0));
+
+				mensajes.setVisible(true);
+
+				mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
+
+				mensajes.setConversacionVisible(true);
+
+				mensajesService.crearMensaje(mensajes);
+
+				if (mensajes.getTexto().equals("Documento")) {
+					notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), "Nuevo documento",
+							receptor.get().getToken());
+					return ResponseEntity.status(HttpStatus.CREATED)
+							.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+				}
+
+				notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), mensajes.getTexto(),
+						receptor.get().getToken());
 				return ResponseEntity.status(HttpStatus.CREATED)
-						.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
-			}
-
-			for(User usuario : usuarios) {
-				notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a: "+mensajes.getNombreConversacionReceptor(),mensajes.getTexto(), usuario.getToken());
-			}
-			//notificacion2("Nuevo Mensaje de "+emisor.get().getNombre(),mensajes.getTexto(), receptor.get().getToken());
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
-		}
-
-		// Comparar receptor en lista de contactos
-		for (User contactos : listaConversacion) {
-			if (contactos.getID().equals(receptor.get().getID())) {
-				existeEnListaUsuario = true;
-			}
-		}
-
-		if (existeEnListaUsuario) {
-
-			if (mensajes.getRutaDocumento().equals("") || !(mensajes.getRutaDocumento().contains("https://"))) {
-				mensajes.setRutaDocumento("");
-				mensajes.setStatusRutaDocumento(false);
+						.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
 			} else {
-				mensajes.setTexto("Documento");
-				mensajes.setStatusRutaDocumento(true);
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
+						"No puedes mandarle mensaje a este receptor", mensajes.getIDReceptor()));
 			}
-
-			List<Mensajes> conversacionForma1 = new ArrayList<>();
-			List<Mensajes> conversacionForma2 = new ArrayList<>();
-
-			Iterable<Mensajes> conversacionIterable1 = mensajesService
-					.verConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-			conversacionIterable1.forEach(conversacionForma1::add);
-
-			Iterable<Mensajes> conversacionIterable2 = mensajesService
-					.verConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
-			conversacionIterable2.forEach(conversacionForma2::add);
-
-			if (conversacionForma1.size() > 0) {
-				mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-			} else if (conversacionForma2.size() > 0) {
-				mensajes.setIDConversacion(mensajes.getIDReceptor() + "_" + mensajes.getIDEmisor());
-			} else {
-				mensajes.setIDConversacion(mensajes.getIDEmisor() + "_" + mensajes.getIDReceptor());
-			}
-
-			mensajes.setStatusCreado(true);
-
-			mensajes.setFechaEnviado(new Date());
-			mensajes.setStatusEnviado(true);
-
-			mensajes.setStatusLeido(false);
-			mensajes.setFechaLeido(new Date(0));
-
-			mensajes.setVisible(true);
-
-			mensajes.setNombreConversacionReceptor(receptor.get().getNombre());
-
-			mensajes.setConversacionVisible(true);
-
-			mensajesService.crearMensaje(mensajes);
-
-			if (mensajes.getTexto().equals("Documento")) {
-				notificacion2("Nuevo Mensaje de "+emisor.get().getNombre(),"Nuevo documento", receptor.get().getToken());
-				return ResponseEntity.status(HttpStatus.CREATED)
-						.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
-			}
-
-			notificacion2("Nuevo Mensaje de "+emisor.get().getNombre(),mensajes.getTexto(), receptor.get().getToken());
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
-		}else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
-					"No puedes mandarle mensaje a este receptor", mensajes.getIDReceptor()));
+		} catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
 		}
-
 	}
 
 	// ver conversacion
@@ -231,72 +256,103 @@ public class MensajesController {
 	// eliminar mensaje(cambiar estado) ?
 	@PutMapping("eliminarMensaje/{idMensaje}")
 	public ResponseEntity<?> borrarMensaje(@PathVariable(value = "idMensaje") String idMensaje) {
-		
-		if(idMensaje.length()<24 || idMensaje.length()>24) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.NOT_FOUND,"Tamaño del id del mensaje invalido",""));
+		try {
+			if(idMensaje.length()<24 || idMensaje.length()>24) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.NOT_FOUND,"Tamaño del id del mensaje invalido",""));
+			}
+			
+			Optional<Mensajes> mensaje = mensajesService.buscarMensaje(idMensaje);
+
+			if (!mensaje.isPresent()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El mensaje no fue encontrado",""));
+			}
+			if(!mensaje.get().getVisible()) {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El mensaje ya se elimino",""));
+			}
+
+			mensaje.get().setVisible(false);
+
+			mensajesService.save(mensaje.get());
+
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Se borro el mensaje",mensaje.get().getID()));
+		} catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
 		}
-		
-		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(idMensaje);
-
-		if (!mensaje.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El mensaje no fue encontrado",""));
-		}
-		if(!mensaje.get().getVisible()) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El mensaje ya se elimino",""));
-		}
-
-		mensaje.get().setVisible(false);
-
-		mensajesService.save(mensaje.get());
-
-		return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Se borro el mensaje",mensaje.get().getID()));
 	}
 
 	@GetMapping("listaContactos/{miId}")
 	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) { // 618d9c26beec342d91d747d6
-		
-		if(miId.length()<24 || miId.length()>24) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
+		try {
+			if(miId.length()<24 || miId.length()>24) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
+			}
+			
+			Optional<User> existo = userRepository.validarUsuario(miId);
+			
+			if(!existo.isPresent()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario no existe en la base de datos",miId));
+			}
+			
+			return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId));
+		} catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
 		}
-		
-		Optional<User> existo = userRepository.validarUsuario(miId);
-		
-		if(!existo.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario no existe en la base de datos",miId));
-		}
-		
-		return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId));
 	}
 
 	@PutMapping("actualizarLeido")
 	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) {
-		
-		if(mensajes.getID()==null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error en el Json de entrada",""));
-		}
-		
-		if(mensajes.getID().length()<24 || mensajes.getID().length()>24) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id mensaje incorrecto",""));
-		}
-		
-		Optional<Mensajes> mensaje = mensajesService.buscarMensaje(mensajes.getID());
-
-		if(!mensaje.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro un mensaje",""));
-		}
-		
-		if (mensaje.get().isStatusLeido()) {
-			return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"El status ya es verdadero",""));
-		} else {
+		try {
+			if(mensajes.getID()==null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error en el Json de entrada",""));
+			}
 			
-			mensaje.get().setFechaLeido(mensajes.getFechaLeido());
+			if(mensajes.getID().length()<24 || mensajes.getID().length()>24) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id mensaje incorrecto",""));
+			}
+			
+			Optional<Mensajes> mensaje = mensajesService.buscarMensaje(mensajes.getID());
 
-			mensaje.get().setStatusLeido(true);
+			if(!mensaje.isPresent()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro un mensaje",""));
+			}
+			
+			if (mensaje.get().isStatusLeido()) {
+				return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"El status ya es verdadero",""));
+			} else {
+				
+				mensaje.get().setFechaLeido(mensajes.getFechaLeido());
 
-			mensajesService.save(mensaje.get());
+				mensaje.get().setStatusLeido(true);
 
-			return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Actualizado",mensaje.get().getID()));
+				mensajesService.save(mensaje.get());
+
+				return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Actualizado",mensaje.get().getID()));
+			}
+		} catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
 		}
+		
 	}
 	
 	List<User> myArregloUsuario = new ArrayList<>();
@@ -367,41 +423,61 @@ public class MensajesController {
 
 	@GetMapping("listaGrupos/{miId}")
 	public ResponseEntity<?> listaGrupos(@PathVariable(value = "miId") String miId) {
+		try {
+			if(miId.length()<24 || miId.length()>24) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id incorrecto",""));
+			}
+			
+			Optional<User> existo = userRepository.validarUsuario(miId);
+			
+			if(!existo.isPresent()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario en la base de datos",miId));
+			}
+			
+			List<Conversacion> grupos = grupos(miId);
 
-		if(miId.length()<24 || miId.length()>24) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id incorrecto",""));
+			return ResponseEntity.status(HttpStatus.OK).body(grupos);
+		} catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
 		}
-		
-		Optional<User> existo = userRepository.validarUsuario(miId);
-		
-		if(!existo.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario en la base de datos",miId));
-		}
-		
-		List<Conversacion> grupos = grupos(miId);
-
-		return ResponseEntity.status(HttpStatus.OK).body(grupos);
 	}
 
 	@GetMapping("listaPersonasGrupo/{idGrupo}")
 	public ResponseEntity<?> listaDePersonasEnGrupo(@PathVariable(value = "idGrupo") String idGrupo) {
-		
-		if(idGrupo.length()<74) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"No es un chat de grupo",""));
+		try {
+			if(idGrupo.length()<74) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"No es un chat de grupo",""));
+			}
+			
+			List<User> usuarios = new ArrayList<>();
+
+			String[] lenguajesComoArreglo = idGrupo.split("-");
+
+			for (String idUsuario : lenguajesComoArreglo) {
+
+				Optional<User> usuario = userRepository.validarUsuario(idUsuario);
+				usuario.ifPresent(usuarios::add);
+
+			}
+
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarios);
+		} catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
 		}
-		
-		List<User> usuarios = new ArrayList<>();
-
-		String[] lenguajesComoArreglo = idGrupo.split("-");
-
-		for (String idUsuario : lenguajesComoArreglo) {
-
-			Optional<User> usuario = userRepository.validarUsuario(idUsuario);
-			usuario.ifPresent(usuarios::add);
-
-		}
-
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarios);
 	}
 
 	public List<Conversacion> grupos(String miId) {
@@ -553,7 +629,7 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
 		}
 		Optional<User> user=userRepository.validarUsuario(idEmisor);
-		if(user.isEmpty()){
+		if(!user.isPresent()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no se encuetra el usuario",""));
 		}
 		Iterable<Mensajes> msg= mensajesRepository.findAll();
