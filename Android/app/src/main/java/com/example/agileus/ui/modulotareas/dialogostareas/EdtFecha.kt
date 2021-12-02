@@ -27,10 +27,25 @@ class EdtFecha(val listenerFormularioCrear: DialogoFechaListener, b: Int) : Dial
     }
 
     override fun onDateSet(p0: DatePicker?, anio: Int, mes: Int, dia: Int) {
+        /*val diaString : String
+        val mesString : String
+
+        if(dia<10){
+            diaString = "0$dia"
+        }else{
+            diaString = "$dia"
+        }
+        if(mes+1<10){
+            mesString = "0${mes+1}"
+        }else{
+            mesString = "${mes+1}"
+        }*/
+
         if (bandera == 1) {
             listenerFormularioCrear.onDateInicioSelected(anio, mes, dia)
         } else if (bandera == 2) {
             listenerFormularioCrear.onDateFinSelected(anio, mes, dia)
         }
     }
+
 }
