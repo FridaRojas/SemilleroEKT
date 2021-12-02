@@ -162,7 +162,7 @@ public class TaskServiceImpl implements TaskService{
                 .build();
         try {
             okhttp3.Response response = client.newCall(request).execute();
-            System.out.println(response.toString());
+            response.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
