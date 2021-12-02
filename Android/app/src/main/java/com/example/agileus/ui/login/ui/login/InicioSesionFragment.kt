@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.ui.login.data.model.Users
@@ -50,6 +52,7 @@ class InicioSesionFragment : Fragment() {
         viewModel.inicioExitoso.observe(viewLifecycleOwner, {
             if (it) {
                 Toast.makeText(activity, "Exitoso", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
             } else {
                 Toast.makeText(activity, "Fallido", Toast.LENGTH_SHORT).show()
             }
@@ -61,7 +64,7 @@ class InicioSesionFragment : Fragment() {
         val correo = binding.username.text.toString()
         val password = binding.password.text.toString()
 
-        val usuario= Users("4@gmail.com", 123,TOKEN_KEY)
+        val usuario= Users(correo,password.toInt(), TOKEN_KEY)
         viewModel.recuperarLogueo(usuario)
 
     }

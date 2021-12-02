@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_buzonUserFragment"
             app:destination="@id/buzonUserFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_inicioSesionFragment"
+            app:destination="@id/inicioSesionFragment" />
     </fragment>
 
     <fragment
@@ -119,8 +122,11 @@
         android:label="Inicio de Sesión"
         tools:layout="@layout/inicio_sesion_fragment" >
         <action
-            android:id="@+id/action_inicioSesionFragment_to_loginFragment"
-            app:destination="@id/inicioSesionFragment" />
+            android:id="@+id/action_inicioSesionFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/inicioSesionFragment"/>
+
     </fragment>
 
 

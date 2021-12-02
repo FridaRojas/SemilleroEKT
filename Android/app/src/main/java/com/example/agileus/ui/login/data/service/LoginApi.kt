@@ -12,7 +12,7 @@ import retrofit2.http.POST
 
 interface LoginApi {
 
-   @POST("api/user/validaten")
+   @POST("api/user/validate")
     fun iniciarSesionLogin(@Body usuario:Users) : Call<LoginResponse>
 
 }
