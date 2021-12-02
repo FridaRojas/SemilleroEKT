@@ -6,11 +6,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.ConversationAdapter
-import com.example.agileus.models.Conversation
-import com.example.agileus.models.Message
-import com.example.agileus.models.MessageResponse
-import com.example.agileus.models.StatusRead
+import com.example.agileus.models.*
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.dao.MessageDao
@@ -26,6 +24,10 @@ class ConversationViewModel:ViewModel() {
     lateinit var RespuestaMessage: MessageResponse
     var responseM = MutableLiveData<MessageResponse>()
     var actualizar = MutableLiveData<ArrayList<Conversation>>()
+
+    var adaptadorChats = MutableLiveData<ChatsAdapter>()
+    lateinit var listadeChats:ArrayList<Chats>
+    var pruebaArreglo = MutableLiveData<ArrayList<Chats>>()
 
 
     init {
@@ -79,6 +81,25 @@ class ConversationViewModel:ViewModel() {
                     message.actualizarStatus(statusRead)
                 }
                 responseM.value = RespuestaMessage
+            }
+        }catch (ex:Exception){
+            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+        }
+    }
+
+    fun devuelveListaChats(idUser:String){
+        try {
+            viewModelScope.launch {
+                listadeChats =  withContext(Dispatchers.IO) {
+                    message.recuperarListadeChats(idUser)
+                }
+                if (listadeChats != null){
+                    if(listadeChats.isNotEmpty()){
+                        adaptadorChats.postValue(ChatsAdapter(listadeChats as ArrayList<Chats>))
+                        pruebaArreglo.value = listadeChats
+
+                    }
+                }
             }
         }catch (ex:Exception){
             Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())

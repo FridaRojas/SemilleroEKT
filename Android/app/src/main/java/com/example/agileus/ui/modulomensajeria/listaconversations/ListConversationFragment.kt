@@ -23,7 +23,6 @@ import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 
 class ListConversationFragment : Fragment() {
 
-    lateinit var arreglo:HashMap <String,String>
     private lateinit var ChatsViewModel: ListConversationViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -55,9 +54,6 @@ class ListConversationFragment : Fragment() {
             binding.recyclerListChats.adapter = it
             binding.recyclerListChats.layoutManager = LinearLayoutManager(activity)
         })
-
-
-
 
 
         binding.btnListContacts.setOnClickListener {

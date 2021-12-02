@@ -44,10 +44,21 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
         conversationviewModel.devuelveLista(id_chat)
 
+        conversationviewModel.devuelveListaChats(Constantes.id)
+        conversationviewModel.pruebaArreglo.observe(this,{
+            for (user in it){
+                if(user.idReceptor.equals(id_receptor)){
+                    id_chat = user.idConversacion
+                    conversationviewModel.devuelveLista(id_chat)
+                }
+            }
+        })
+
         conversationviewModel.responseM.observe(this,{
             id_chat = it.data
             conversationviewModel.devuelveLista(id_chat)
         })
+
 
         var background = object : Thread(){
             override fun run() {
@@ -67,6 +78,8 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             }
 
         })
+
+
 
         conversationviewModel.adaptador.observe(this,{
                     binding.recyclerConversacion.adapter = it

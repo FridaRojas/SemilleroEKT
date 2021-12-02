@@ -10,6 +10,7 @@ import com.example.agileus.models.Chats
 import com.example.agileus.models.Contacts
 import com.example.agileus.models.Groups
 import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsViewModel
+import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class ListConversationViewModel : ViewModel() {
     lateinit var listaConsumidaGrupos:ArrayList<Groups>
     lateinit var listadeChats:ArrayList<Chats>
     var chatsdeUsuario = MutableLiveData<ArrayList<Chats>>()
-    var pruebaArreglo = MutableLiveData<ArrayList<Chats>>()
+
     init {
         lista = MessageDao()
     }
@@ -56,7 +57,6 @@ class ListConversationViewModel : ViewModel() {
                     if(listadeChats.isNotEmpty()){
                         adaptadorChats.postValue(ChatsAdapter(listadeChats as ArrayList<Chats>))
                         chatsdeUsuario.value = listadeChats!!
-                        pruebaArreglo.value = listadeChats!!
                     }
                 }
             }

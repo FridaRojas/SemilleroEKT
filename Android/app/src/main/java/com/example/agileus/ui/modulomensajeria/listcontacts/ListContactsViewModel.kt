@@ -4,8 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.ContactsAdapter
+import com.example.agileus.models.Chats
 import com.example.agileus.models.Contacts
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
+import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,6 +21,8 @@ class ListContactsViewModel : ViewModel() {
     lateinit var lista : MessageDao
     lateinit var listaConsumida:ArrayList<Contacts>
     var contactos = MutableLiveData<ArrayList<Contacts>>()
+
+
 
     init {
         lista = MessageDao()
@@ -61,4 +67,7 @@ class ListContactsViewModel : ViewModel() {
             Log.e(ListContactsViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
+
+
+
 }

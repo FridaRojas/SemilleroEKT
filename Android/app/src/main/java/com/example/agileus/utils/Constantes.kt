@@ -1,11 +1,14 @@
 package com.example.agileus.utils
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.agileus.models.Chats
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 object Constantes {
@@ -15,8 +18,8 @@ object Constantes {
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
     //val id = "618e878ec613329636a769ab"
-    val id = "618b05c12d3d1d235de0ade0"
-    //val id = "618e878ec613329636a769ab"
+   // val id = "618b05c12d3d1d235de0ade0"
+    val id = "618e8743c613329636a769aa"
     val ID_RECEPTOR = "ID_RECEPTOR"
     val CHAT_GROUP = "CHAT_GROUP"
     val ID_CHAT = "ID_CHAT"
@@ -36,6 +39,5 @@ object Constantes {
     val finalDate = "$date$localTime"
 
 
-    var arreglo_conversacion = HashMap<String,String>()
 
 }
