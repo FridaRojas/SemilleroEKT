@@ -13,6 +13,10 @@ class InitialApplication : Application() {
         lateinit var webServiceGlobalTasks: TasksApi
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
         lateinit var BroadcastServiceGlobalTasks2: BuzonApi2
+        lateinit var webServiceGlobalTasksPersonas: TasksApi
+
+        //SharedPreferences
+        lateinit var preferenciasGlobal: MySharedPreferences
 
     }
 
@@ -22,6 +26,11 @@ class InitialApplication : Application() {
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
         BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         BroadcastServiceGlobalTasks2=ConfigRetrofit().obtenerConfiguracionRetofitBuzon2()
+
+        webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
+
+        //SharedPreferences
+        preferenciasGlobal = MySharedPreferences(applicationContext)
 
     }
 

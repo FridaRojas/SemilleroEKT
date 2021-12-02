@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.modulotareas.detalletareas.DetalleNivelAltoFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="20dp">
+
+        <!-- Nombre de la Tarea -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtNombreTareaD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Nombre de la Tarea"
+            style="@style/StyleTitleFragment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Nombre de la Persona -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtNombrePersonaD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            style="@style/StyleTextFragment"
+            android:text="Nombre de la persona"
+            app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
+
+        <!-- Prioridad -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtPrioridadD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            style="@style/StyleTextGray"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:text="Prioridad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD">
+
+        </com.google.android.material.textview.MaterialTextView>
+
+        <!-- Status -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtEstatusD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            style="@style/StyleTextGray"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:text="Estatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtDescripcionD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            style="@style/StyleTextFragment"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:hint="Descripción"
+            android:text="Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+            app:layout_constraintTop_toBottomOf="@+id/txtPrioridadD" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtFechaInicioD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/iconocalendario"
+            android:layout_marginTop="@dimen/marginFormulario"
+            style="@style/StyleTextGray"
+            android:editable="false"
+            android:enabled="false"
+            android:text="Inicio: 16/01/2021"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtFechaFinD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/iconocalendario"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:editable="false"
+            style="@style/StyleTextGray"
+            android:enabled="false"
+            android:text="Fin: 20/01/2021"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtObservacionesD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginFormulario"
+            style="@style/StyleTextFragment"
+            android:enabled="false"
+            android:hint="Observaciones"
+            app:layout_constraintTop_toBottomOf="@+id/txtFechaInicioD" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/btnAdjuntarArchivoF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            style="@style/StyleTextFragment"
+            android:drawableLeft="@drawable/iconoadjuntararchivo"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:textColor="@color/colorPrimary"
+            android:text="  Adjuntar Archivo PDF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtObservacionesD"/>
+
+        <!--
+        <Button
+            android:id="@+id/btnAdjuntarArchivoF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:text="Adjuntar Archivo"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
+        -->
+
+        <Button
+            android:id="@+id/btnGuardarTareaF"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_bg"
+            style="@style/StyleButton"
+            android:text="Guardar"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
+            tools:layout_editor_absoluteX="16dp" />
+   <Button
+            android:id="@+id/btnCancelarEdicion"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_bg"
+            style="@style/StyleButton"
+            android:text="Cancelar"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/btnGuardarTareaF"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/btnEditarTareaF"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            style="@style/StyleButton"
+            android:background="@drawable/rounded_bg"
+            android:text="Editar"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnCancelarTareaF"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
+
+        <Button
+            android:id="@+id/btnCancelarTareaF"
+            android:layout_marginTop="20dp"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="Cancelar Tarea"
+            android:visibility="visible"
+            android:background="@drawable/rounded_bg"
+            style="@style/StyleButton"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintStart_toEndOf="@+id/btnEditarTareaF"
+            app:layout_constraintEnd_toStartOf="@id/btnObservacionF"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
+
+        <Button
+            android:id="@+id/btnObservacionF"
+            android:layout_marginTop="20dp"
+            android:layout_width="125dp"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_bg"
+            style="@style/StyleButton"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:text="Agregar Observacion"
+            android:visibility="visible"
+            app:layout_constraintStart_toEndOf="@+id/btnCancelarTareaF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

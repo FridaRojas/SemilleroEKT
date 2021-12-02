@@ -8,8 +8,8 @@ import java.time.LocalDateTime
 import java.util.*
 
 object Constantes {
-    val URL_BASE_TAREAS = "http://10.97.2.202:3040/api/"
-    val URL_ENVIAR_MENSAJE = "http://10.97.2.202:3040/api/"
+    val URL_BASE_TAREAS = "http://10.97.5.172:2021/api/"
+    val URL_ENVIAR_MENSAJE = "http://10.97.1.178:3040/api/"
     val URL_BUZON_1=""
     val URL_BUZON_2=""
     val URL_Tareas_Enviadas=""
@@ -17,12 +17,18 @@ object Constantes {
     val id = "618e8743c613329636a769aa"
     val idChat = "618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
     val referenciaMensajeria = "Mensajeria"
+    val referenciaTareas= "Tareas"
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
 //    var URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
     val URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
     val URL_BASE3 = "http://10.97.6.83:3040/api/"
     val URL_Login = "http://10.97.2.202:3040"
     val broadlist = "61a101db174bcf469164d2fd"
+    //var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
+
+    val URL_Tasks_Personas="http://10.97.3.134:3040/api/user/findByBossId/"
+
+    val URL_Tasks_Personas2="http://10.97.3.134:3040/api/user/"
 
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)

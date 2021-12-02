@@ -4,14 +4,11 @@ package com.example.agileus.config
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_BASE2
-import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
-import com.example.agileus.utils.Constantes.URL_Login
-import com.example.agileus.webservices.apis.BuzonApi2
+import com.example.agileus.utils.cliente
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
 import okhttp3.OkHttpClient
-
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -41,8 +38,25 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi{
+
+        /*val clientBuilder = OkHttpClient.Builder()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        clientBuilder.addInterceptor(loggingInterceptor)*/
+
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
+           // .client(clientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(TasksApi::class.java)
+    }
+
+    fun obtenerConfiguracionRetofitPersonasTasks(): TasksApi {
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_Tasks_Personas)
+            .client(cliente(60))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
