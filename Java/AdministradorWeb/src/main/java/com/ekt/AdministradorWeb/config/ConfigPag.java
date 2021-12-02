@@ -165,6 +165,7 @@ public class ConfigPag {
         }
     }
 
+    @RequestMapping(value="/editarUsuario",method = { RequestMethod.POST, RequestMethod.GET })
     @PostMapping("/editarUsuario")//*
     public String editarUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
         User user;
@@ -175,7 +176,7 @@ public class ConfigPag {
                 return "/paginas/usuarios/EditarUsuario";
             }else {
                 redirectAttrs
-                        .addFlashAttribute("mensaje", "El usuario no existe");
+                        .addFlashAttribute("mensaje", "El usuario ya existe");
                 return "redirect:/findAllUsuarios";
             }
         }catch (Exception e){
@@ -205,7 +206,7 @@ public class ConfigPag {
             System.out.println("Error al modificar usuario");
             redirectAttrs
                     .addFlashAttribute("mensaje", "Error al editar usuario, existen datos duplicasdos en la base de datos");
-            return "redirect:/findAllUsuarios";
+            return "redirect:/editarUsuario/?id="+user.getID();
         }
     }
 
