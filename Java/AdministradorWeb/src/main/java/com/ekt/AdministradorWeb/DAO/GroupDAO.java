@@ -53,4 +53,32 @@ public class GroupDAO {
         }
 
     }
+
+    public boolean crearGrupo(Group gr){
+        boolean res=true;
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
+                .method("POST", body)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+
+            //si status es "OK" creo el grupo y regresa true, si es diferente a "OK" el grupo ya existe y regresa false
+            if (jsonObject.get("status").toString().equals("OK")){
+                res=true;
+            }else{
+                res=false;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return res;
+    }
 }
