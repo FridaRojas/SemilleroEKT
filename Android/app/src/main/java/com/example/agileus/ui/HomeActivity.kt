@@ -34,7 +34,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //Todo Login
-        InitialApplication.preferenciasGlobal.recuperarToken()
+        val token = InitialApplication.preferenciasGlobal.recuperarToken()
+        Log.d("token", token)
 
         val navView: BottomNavigationView = binding.navView
 
