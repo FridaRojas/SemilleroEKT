@@ -4,6 +4,5 @@ import com.example.agileus.models.Buzon
 import com.example.agileus.models.MsgBodyUser
 
 interface UserBuzonListener {
-     fun mensajeBroadcasting(buzon: Buzon)
      fun mensajeBroadcasting1(buzon: MsgBodyUser)
 }

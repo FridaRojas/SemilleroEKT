@@ -94,9 +94,6 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         _binding = null
     }
 
-    override fun mensajeBroadcasting(buzon: Buzon) {
-        //TODO("Not yet implemented")
-    }
 
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
 
