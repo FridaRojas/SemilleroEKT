@@ -352,46 +352,36 @@ public class ConfigPag {
     }
 
     @PostMapping("/agregarUsuarioAGrupo")
-    public String agregarUsuarioAGrupo(@ModelAttribute BodyAddUserGroup body, RedirectAttributes redirectAttrs) {
-
-        System.out.println("Grupo: "+body.getIDGrupo());
-        System.out.println("Usuario: "+body.getIDUsuario());
-        System.out.println("Rol: "+body.getNombreRol());
-        System.out.println("Superior: "+body.getIDSuperior());
-
-
-
-
-
-
-
-
-        return null;
-        /*
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
-                .method("POST", body)
-                .build();
-        try {
+    public String agregarUsuarioAGrupo(@ModelAttribute BodyAddUserGroup bodyAdd, RedirectAttributes redirectAttrs) {
+        try{
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType,
+                     "{\r\n    \"idUsuario\":\""+bodyAdd.getIdUsuario()+
+                            "\",\r\n    \"idGrupo\":\""+bodyAdd.getIdGrupo()+
+                             "\",\r\n    \"idSuperior\":\""+bodyAdd.getIdSuperior()+
+                             "\",\r\n    \"nombreRol\":\""+bodyAdd.getNombreRol()+"\"\r\n}\r\n\r\n");
+            Request request = new Request.Builder()
+                    .url("http://localhost:3040/api/grupo/agregarUsuario")
+                    .method("PUT", body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
             Response response = client.newCall(request).execute();
+
             JSONObject jsonObject= new JSONObject(response.body().string());
 
             if (jsonObject.get("status").toString().equals("OK")){
-                return "redirect:/inicioGrupos";
+                return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
             }else{
                 redirectAttrs
-                        .addFlashAttribute("mensaje", "Grupo ya existente");
-                return "redirect:/inicioGrupos";
+                        .addFlashAttribute("mensaje", jsonObject.get("msj").toString());
+                return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            return "";
+            System.err.println("Exepcion: "+e);
+            return "redirect: /error1";
         }
-        */
     }
 
     @GetMapping("/verUsuario")
@@ -411,5 +401,30 @@ public class ConfigPag {
             return "redirect:/error1";
         }
     }
+
+    @RequestMapping(value="/borrarGrupo",method = { RequestMethod.POST})
+    @PostMapping("/borrarGrupo")
+    public String borrarGrupo(@ModelAttribute(value = "idGrupo") String id,Model model) {
+        //traza
+        System.out.println("Entrando a borrar grupo");
+        try{
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("text/plain");
+            RequestBody body = RequestBody.create(mediaType, "");
+            Request request = new Request.Builder()
+                    .url("http://localhost:3040/api/grupo/borrar/"+id)
+                    .method("DELETE", body)
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            return "redirect:/buscarTodosGrupos";
+
+        }catch (Exception e){
+            System.err.println("Exepcion: "+e);
+            return "redirect:/error1";
+        }
+    }
+
 
 }

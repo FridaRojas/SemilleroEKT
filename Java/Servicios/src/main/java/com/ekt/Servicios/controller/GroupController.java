@@ -35,11 +35,11 @@ public class GroupController {
 
     @PutMapping("/agregarUsuario")
     public ResponseEntity<?> addUserGroup(@RequestBody BodyAddUserGroup bodyAddUserGroup){
-        if(bodyAddUserGroup.getIDUsuario()==null || bodyAddUserGroup.getIDGrupo()==null || bodyAddUserGroup.getIDSuperior()==null||bodyAddUserGroup.getNombreRol()==null){
+        if(bodyAddUserGroup.getIdUsuario()==null || bodyAddUserGroup.getIdGrupo()==null || bodyAddUserGroup.getIdSuperior()==null||bodyAddUserGroup.getNombreRol()==null){
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error  en las llaves",""));
         }else{
-            Group group= groupService.guardarUsuario(bodyAddUserGroup.getIDUsuario(),bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getNombreRol());
-            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIDUsuario()).get(), bodyAddUserGroup.getIDSuperior(), bodyAddUserGroup.getIDGrupo(), bodyAddUserGroup.getNombreRol());
+            Group group= groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(),bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getNombreRol());
+            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getNombreRol());
             if (group==null && user==null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al realizar en la operacion,parametro no valido",""));
             }else{
@@ -69,6 +69,13 @@ public class GroupController {
         }else{
             Optional<Group> grupo= groupService.buscarPorId(id);
             if (grupo.isPresent()){
+                for (User usr:grupo.get().getUsuarios()) {
+                    usr.setIDGrupo("");
+                    usr.setIDSuperiorInmediato("");
+                    usr.setNombreRol("");
+                    userService.save(usr);
+                }
+
                 groupService.borrarPorId(id);
                 System.out.println("Grupo eliminado");
                 return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Grupo eliminado",grupo.get()));
@@ -81,16 +88,16 @@ public class GroupController {
     @DeleteMapping("/borrarUsuarioDeGrupo")
     public ResponseEntity deleteUserFromgroup(@RequestBody BodyAddUserGroup body){
         try {
-            if (body.getIDGrupo()==null || body.getIDUsuario()==null){
+            if (body.getIdGrupo()==null || body.getIdUsuario()==null){
                 System.out.println("Error en las llaves");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
             }else{
-                Optional<Group> grupo= groupService.buscarUsuarioEnGrupo(body.getIDGrupo(),body.getIDUsuario());
-
+                Optional<Group> grupo= groupService.buscarUsuarioEnGrupo(body.getIdGrupo(),body.getIdUsuario());
                 if (grupo.isPresent()){
-                    groupService.borrarUsuarioDeGrupo(body.getIDUsuario(), body.getIDGrupo());
+
+                    groupService.borrarUsuarioDeGrupo(body.getIdUsuario(), body.getIdGrupo());
                     //cambia idSuperior, Rol y idGrupo a ""
-                    Optional<User> us=userService.findById(body.getIDUsuario());
+                    Optional<User> us=userService.findById(body.getIdUsuario());
                     us.get().setIDSuperiorInmediato("");
                     us.get().setIDGrupo("");
                     us.get().setNombreRol("");

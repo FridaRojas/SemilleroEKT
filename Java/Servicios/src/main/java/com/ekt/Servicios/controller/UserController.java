@@ -179,16 +179,16 @@ public class UserController {
         String idGrupo;
         String nombreRol;
         try {
-            Optional<User> user = userService.findById(bodyGroup.getIDUsuario());
+            Optional<User> user = userService.findById(bodyGroup.getIdUsuario());
             if(user.isPresent()) {
-                if (bodyGroup.getIDSuperior() != null && !bodyGroup.getIDSuperior().equals(user.get().getIDSuperiorInmediato())) {
-                    idSuperior = bodyGroup.getIDSuperior();
+                if (bodyGroup.getIdSuperior() != null && !bodyGroup.getIdSuperior().equals(user.get().getIDSuperiorInmediato())) {
+                    idSuperior = bodyGroup.getIdSuperior();
                     bandera = true;
                 }else{
                     idSuperior = user.get().getIDSuperiorInmediato();
                 }
-                if (bodyGroup.getIDGrupo() != null && !bodyGroup.getIDGrupo().equals(user.get().getIDGrupo())) {
-                    idGrupo = bodyGroup.getIDGrupo();
+                if (bodyGroup.getIdGrupo() != null && !bodyGroup.getIdGrupo().equals(user.get().getIDGrupo())) {
+                    idGrupo = bodyGroup.getIdGrupo();
                     bandera = true;
                 }else{
                     idGrupo = user.get().getIDGrupo();

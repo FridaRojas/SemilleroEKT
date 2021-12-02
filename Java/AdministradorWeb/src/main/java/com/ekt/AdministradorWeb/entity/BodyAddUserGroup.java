@@ -9,15 +9,45 @@ public class BodyAddUserGroup {
     private String idSuperior;
     private String nombreRol;
 
-    public String getIDGrupo() { return idGrupo; }
-    public void setIDGrupo(String value) { this.idGrupo = value; }
+    public String getIdUsuario() {
+        return idUsuario;
+    }
 
-    public String getIDUsuario() { return idUsuario; }
-    public void setIDUsuario(String value) { this.idUsuario = value; }
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-    public String getIDSuperior() { return idSuperior; }
-    public void setIDSuperior(String value) { this.idSuperior = value; }
+    public String getIdGrupo() {
+        return idGrupo;
+    }
 
-    public String getNombreRol() { return nombreRol; }
-    public void setNombreRol(String value) { this.nombreRol = value; }
+    public void setIdGrupo(String idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+
+    public String getIdSuperior() {
+        return idSuperior;
+    }
+
+    public void setIdSuperior(String idSuperior) {
+        this.idSuperior = idSuperior;
+    }
+
+    public String getNombreRol() {
+        return nombreRol;
+    }
+
+    public void setNombreRol(String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
+
+    @Override
+    public String toString() {
+        return "BodyAddUserGroup{" +
+                "idUsuario='" + idUsuario + '\'' +
+                ", idGrupo='" + idGrupo + '\'' +
+                ", idSuperior='" + idSuperior + '\'' +
+                ", nombreRol='" + nombreRol + '\'' +
+                '}';
+    }
 }

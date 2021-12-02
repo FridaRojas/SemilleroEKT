@@ -60,7 +60,16 @@ public class GroupServiceImpl implements GroupService{
         Optional<User> user = userService.findById(idUser);
         Optional<User> superior = userService.findById(idSuperior);
 
-        if(group.isPresent() && user.isPresent() && superior.isPresent()){
+        if(group.isPresent() && user.isPresent()){
+            if (!superior.isPresent()){
+                if (idSuperior.equals("")||idSuperior.equals("-1")){
+                    //traza
+                    System.out.println("este chico es jefe o brodcats");
+                }else{
+                    System.out.println("error en el idSuperior");
+                    resGroup=null;
+                }
+            }
             //verificar que el usuario no existe en ningun grupo
             if( !buscarUsuarioEnGrupo(idGrupo,idUser).isPresent()){
                 //actualizar informacion usuario
@@ -90,9 +99,10 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public void borrarPorId(String id) {groupRepository.deleteById(id);
-
+    public void borrarPorId(String id) {
+        groupRepository.deleteById(id);
     }
+
     @Override
     public void borrarUsuarioDeGrupo(String idUser, String idGroup){
         System.out.println("idUser:"+idUser+" idGroup:"+idGroup);

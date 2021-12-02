@@ -102,6 +102,7 @@
             <!-- modal agregar usuarios-->
 
             <div class="col-2">
+                <!--/*@thymesVar id="Group" type="java"*/-->
                 <form th:action="@{/eliminaUsuario}" th:object="${Group}" method="post" >
                     <!-- Button trigger modal -->
                     <button type="button" class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
@@ -129,7 +130,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Agregar usuario a organigrama</h5>
+                    <h5 class="modal-title" id="modalAgregar">Agregar usuario a organigrama</h5>
                 </div>
 
                 <div class="modal-body">
@@ -137,7 +138,7 @@
                     <div class="form-group">
                         <input type="text" name="idGrupo" id="idGrupo" class="form-control" aria-describedby="sizing-addon1" required th:value="${idGrupo}" hidden>
                         <label>Usuario</label>
-                        <select name="idUsuario" id="idUsuario">
+                        <select name="idUsuario">
                             <optgroup>
                                 <p th:each="user: ${listaDisponibles}">
                                     <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
