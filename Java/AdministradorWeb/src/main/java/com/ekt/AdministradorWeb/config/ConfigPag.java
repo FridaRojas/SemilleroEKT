@@ -61,6 +61,51 @@ public class ConfigPag {
         return "paginas/modalEliminaUsuario";
     }
 
+    @PostMapping("/eliminarUsuarioGeneral")
+    public String eliminarUsuario(@ModelAttribute(value = "id") String id,Model model){
+        ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(id);
+        User user = userDAO.buscaID(id);
+
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/delete/"+id)
+                .method("DELETE", body)
+                .build();
+
+        try {
+            //limpia informacion del usuario en la db
+            Response response = client.newCall(request).execute();
+            System.out.println("el id es: "+id+"  eliminado con exito");
+            //Verificar si tiene hijos
+            if(listaSubordinados != null) {
+                ArrayList<User> listaUsuarios = new ArrayList<>();
+                User[] usuarios;
+                usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
+                for (User usuario : usuarios) {
+                    if (!usuario.getID().equals(user.getID())) {
+                        listaUsuarios.add(usuario);
+                    }
+                }
+                model.addAttribute("listaSubordinados", listaSubordinados);
+                model.addAttribute("listaUsuarios", listaUsuarios);
+                model.addAttribute("idUsuario", id);
+                return "paginas/usuarios/ReasignaSuperior";
+            }else{
+
+                return "redirect:/buscarTodosGrupos";
+            }
+
+        }catch (Exception e) {
+            System.out.println("Error al eliminar usuario" +e);
+        }
+        return "redirect:/findAllUsuarios";
+    }
+
+
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
         boolean res=userDAO.validaCorreoPassword(us);
@@ -117,7 +162,7 @@ public class ConfigPag {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\"" +user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\" "+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\" "+user.getCurp()+"\",\r\n    \"rfc\":\" "+user.getRFC()+"\"\r\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\"" +user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\""+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\""+user.getCurp()+"\",\r\n    \"rfc\":\""+user.getRFC()+"\"\r\n}");
         Request request = new Request.Builder()
                 .url("http://localhost:3040/api/user/create")
                 .method("POST", body)
@@ -176,13 +221,12 @@ public class ConfigPag {
         Boolean bandera=false;
         user.setID(id);
 
-        //validar que los datos no existan
-       if (!userDAO.existusuario(user)) {
-           //editar informacion
-           if(userDAO.editarUsuario(user)){
-                bandera=true;
-           }
+        //editar informacion
+        System.out.println("rfc:"+user.getRFC());
+       if(userDAO.editarUsuario(user)){
+            bandera=true;
        }
+
         //si existen retornar error
         if (bandera){
             System.out.println("se modifico con exito");
@@ -231,6 +275,7 @@ public class ConfigPag {
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
             modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
+
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());

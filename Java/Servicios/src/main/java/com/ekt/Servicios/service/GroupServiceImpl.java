@@ -104,11 +104,13 @@ public class GroupServiceImpl implements GroupService{
 
         User[] lista = group.get().getUsuarios();
         User[] lista2 = new User[group.get().getUsuarios().length-1];
+        int j=0;
 
         for(int i=0;i<group.get().getUsuarios().length;i++){
             //si el idUsuario que manda no es igual, lo copia
             if (! idUser.equals(lista[i].getID())){
-                lista2[i]=lista[i];
+                lista2[j]=lista[i];
+                j++;
             }
         }
 
