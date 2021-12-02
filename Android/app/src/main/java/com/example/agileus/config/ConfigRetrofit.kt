@@ -68,11 +68,11 @@ class ConfigRetrofit {
 }
 
 
-fun cliente(tiempo:Long): OkHttpClient {
-    val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(tiempo, TimeUnit.SECONDS)
-        .readTimeout(tiempo, TimeUnit.SECONDS)
-        .writeTimeout(tiempo, TimeUnit.SECONDS)
-        .build()
-    return okHttpClient
-}
+    fun cliente(tiempo:Long): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(tiempo, TimeUnit.SECONDS)
+            .readTimeout(tiempo, TimeUnit.SECONDS)
+            .writeTimeout(tiempo, TimeUnit.SECONDS)
+            .build()
+        return okHttpClient
+    }

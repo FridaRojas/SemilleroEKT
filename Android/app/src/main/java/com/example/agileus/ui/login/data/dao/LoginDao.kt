@@ -14,12 +14,13 @@ fun recuperarUser(lista: ArrayList<User>):ArrayList<User> {
 
     val callRespuesta = InitialApplication.LoginServiceGlobal.getUsers()
     var ResponseDos: Response<ArrayList<User>> = callRespuesta.execute()
-///
+
     var listaconsumida=lista
-    if (ResponseDos.isSuccessful){
-        listaconsumida = ResponseDos.body()!!
+        if (ResponseDos.isSuccessful){
+            listaconsumida = ResponseDos.body()!!
+
+        }
+        return listaconsumida
     }
-    return listaconsumida
-}
 }
 

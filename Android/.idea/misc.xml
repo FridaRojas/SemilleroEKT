@@ -84,8 +84,10 @@
         <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/activity_login.xml" value="0.20481927710843373" />
         <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.17831813576494426" />
+        <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/formu_recupera_pass.xml" value="0.1466565349544073" />
         <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.17831813576494426" />
-        <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/fragment_login.xml" value="0.2558876811594203" />
+        <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/fragment_login.xml" value="0.2446351931330472" />
+        <entry key="..\:/semilleroekt/Android/app/src/main/res/layout/list_contacts_fragment.xml" value="0.10081053698074975" />
       </map>
     </option>
   </component>

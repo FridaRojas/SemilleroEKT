@@ -22,7 +22,6 @@ class LoginViewModel : ViewModel() {
     }
 
 
-
     fun devuelveUser(/* pasar parametros login */) {
         listaConsumida = ArrayList()
         try {
@@ -43,7 +42,7 @@ class LoginViewModel : ViewModel() {
                 }
             }
         }catch (ex: Exception) {
-            Log.e("aqui", ex.message.toString())
+            Log.e("Exception", ex.message.toString())
         }
     }
 }
