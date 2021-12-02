@@ -23,7 +23,7 @@ class LoginDao {
 
            if (responseDos.body() != null){
                 val almacenar:LoginResponse = responseDos.body()!!
-               Log.i("almacenar", "${almacenar.msj}")
+             //  Log.i("almacenar", "${almacenar.msj}")
                return almacenar.status.equals(STATUS_ACCEPTED)
            } else{
                return false

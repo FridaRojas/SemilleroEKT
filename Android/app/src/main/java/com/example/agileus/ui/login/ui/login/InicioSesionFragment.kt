@@ -7,8 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
-import com.example.agileus.R
+import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.ui.login.data.model.Users
 
@@ -29,6 +28,7 @@ class InicioSesionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
+
 
         _binding = InicioSesionFragmentBinding.inflate(inflater, container, false)
 
@@ -61,7 +61,7 @@ class InicioSesionFragment : Fragment() {
         val correo = binding.username.text.toString()
         val password = binding.password.text.toString()
 
-        val usuario= Users("4@gmail.com", 123,"abc")
+        val usuario= Users("4@gmail.com", 123,TOKEN_KEY)
         viewModel.recuperarLogueo(usuario)
 
     }

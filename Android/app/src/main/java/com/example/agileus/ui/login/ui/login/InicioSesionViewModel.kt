@@ -20,7 +20,7 @@ class InicioSesionViewModel : ViewModel() {
     }
 
     fun recuperarLogueo(users: Users): List<LoginResponse>{
-        Log.i("mensaje", "ver")
+        //Log.i("mensaje", "ver")
         try {
             viewModelScope.launch {
                 inicioExitoso.value = withContext(Dispatchers.IO){
@@ -29,7 +29,7 @@ class InicioSesionViewModel : ViewModel() {
             }
         } catch (ex : Exception) {
             inicioExitoso.value = false
-            Log.e("Corroborar Login", ex.message.toString())
+            //Log.e("Corroborar Login", ex.message.toString())
         }
         return emptyList()
     }
