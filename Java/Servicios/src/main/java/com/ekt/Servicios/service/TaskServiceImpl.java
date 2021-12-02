@@ -130,10 +130,10 @@ public class TaskServiceImpl implements TaskService{
         String fechaI = fechaInicial.toString();
         String fechaF = fechaFinal.toString();
 
-        boolean nombreE = Pattern.matches("^[a-zA-Z\\s]*$", nombreEmisor);
-        boolean nombreR = Pattern.matches("^[a-zA-Z\\s]*$", nombreReceptor);
-        boolean tituloT = Pattern.matches("^[a-zA-Z0-9\\s]*$", titulo);
-        boolean descripcionT = Pattern.matches("^[A-Za-z\\s]+[\\.]{0,1}[A-Za-z\\s]*$", descripcion);
+        boolean nombreE = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]*$", nombreEmisor);
+        boolean nombreR = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]*$", nombreReceptor);
+        boolean tituloT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
+        boolean descripcionT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusT = Pattern.matches("^[a-zA-Z]*$", estatus);
         ArrayList<String> errores = new ArrayList<>();
         if (!nombreE) errores.add("nombreEmisor");
@@ -178,10 +178,10 @@ public class TaskServiceImpl implements TaskService{
         String estatus = tarea.getEstatus();
         String observaviones = tarea.getObservaciones();
 
-        boolean observacionesA = Pattern.matches("^[a-zA-Z\\s]*$", observaviones);
+        boolean observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaviones);
         boolean prioridadA = Pattern.matches("^[a-zA-Z\\s]*$", prioridad);
-        boolean tituloA = Pattern.matches("^[a-zA-Z0-9\\s]*$", titulo);
-        boolean descripcionA = Pattern.matches("^[A-Za-z\\s]+[\\.]{0,1}[A-Za-z\\s]*$", descripcion);
+        boolean tituloA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
+        boolean descripcionA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusA = Pattern.matches("^[a-zA-Z]*$", estatus);
         ArrayList<String> erroresActulizar = new ArrayList<>();
         if (!observacionesA) erroresActulizar.add("observaciones");
