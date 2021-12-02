@@ -2,11 +2,11 @@ package com.example.agileus.ui.modulotareas.detalletareas
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.agileus.R
@@ -45,6 +45,7 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             var txtFechaFinD = vista.findViewById<TextView>(R.id.txtFechaFinD)
             var txtObservacionesD = vista.findViewById<TextView>(R.id.txtObservacionesD)
             var btnEstado = vista.findViewById<Button>(R.id.btnCambiarEstadoD)
+            var btnPdf = vista.findViewById<Button>(R.id.btnPdf)
 
             Log.d("Mensaje", dataTask.toString())
 
@@ -81,11 +82,14 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
 ////            txtFechaFinD.text = FechaFinD.toString()
             // txtObservacionesD.text = observacionesD
             this.dialog?.closeOptionsMenu()
+
+            descargarArchivo(btnPdf)
+
             btnEstado.setOnClickListener {
                 if (dataTask.estatus.equals("pendiente")) {
                     dataTask.estatus = "iniciada"
                 } else if (dataTask.estatus.equals("iniciada")) {
-                    dataTask.estatus="revision"
+                    dataTask.estatus = "revision"
                 }
                 if (dataTask.estatus.equals("revision")) {
                     btnEstado.isEnabled = false
@@ -97,6 +101,11 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
 
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
+
+    }
+
+    private fun descargarArchivo(btnPdf: Button) {
+        btnPdf.isVisible = dataTask.archivo == null
 
     }
 }
