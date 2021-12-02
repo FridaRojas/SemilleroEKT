@@ -53,6 +53,9 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
         tabla_contactos.dataSource = self
         tabla_contactos.register(lista_contactos.nib(), forCellReuseIdentifier: lista_contactos.identificador)
     }
+    override func viewDidAppear(_ animated: Bool) {
+        showNavBar()
+    }
     
 
 }

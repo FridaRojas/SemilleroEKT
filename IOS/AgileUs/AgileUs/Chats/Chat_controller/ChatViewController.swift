@@ -4,6 +4,9 @@
 //
 //  autor: Carlos_Adolfo_Hernandez (C_A_H)
 //
+
+// se agrego boton para envio de documentos
+// se agrego validacion para ver si tiene una conversacion o esta vacio la conversacion
 import UIKit
 import MessageKit
 import InputBarAccessoryView
@@ -50,7 +53,7 @@ class ChatViewController:
     MessagesViewController,MessagesDataSource,MessagesLayoutDelegate,InputBarAccessoryViewDelegate,MessageLabelDelegate,MessagesDisplayDelegate,MessageCellDelegate {
     
     //declaramos variables globales
-    let servicio = "http://10.97.6.83:3040/api/mensajes/verConversacion/618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
+   
     var currentUser = Sender(senderId: "user" , displayName: "Carlos") //variables usuario emisor
     var otherUser = Sender(senderId: "other", displayName: "Bops") //variable usuario receptor
     var messages = [MessageType]() //variable del tipo d emensaje
@@ -99,7 +102,7 @@ class ChatViewController:
         inputBar.inputTextView.text = ""
         
         self.messagesCollectionView.reloadData()
-        create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: "", fecha: fecha){
+        create_json(id_emisor: userID, id_receptor: "618b05c12d3d1d235de0ade0", mensaje: mensaje, rutaDocumento: "/", fecha: fecha){
             (exito) in
             print("Exitoso \(userID)")}fallido:{ fallido in
             print("Registro Fallido")
@@ -133,24 +136,22 @@ class ChatViewController:
             UIColor.green.withAlphaComponent(0.3),
             for: .highlighted
         )
-       
         messageInputBar.sendButton.setTitle("Enviar", for: .normal)
+        
         messageInputBar.inputTextView.backgroundColor = .lightGray
         messagesCollectionView.messageCellDelegate = self
-       
+        let items = [makeButton(named: "adjunto_archivo").onTextViewDidChange{ button, textView in
+            button.tintColor = UIColor.green
+            button.isEnabled = textView.text.isEmpty
+        }
+       ]
+        items.forEach{$0.tintColor = .lightGray}
+        messageInputBar.setStackViewItems(items, forStack: .left, animated: false)
+        messageInputBar.setLeftStackViewWidthConstant(to: 45, animated: false)
+        
     }
     
     
-    
-    func boton_cargar()
-    {
-        /*Boton_ver = UIButton(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
-        Boton_ver!.setTitle("MUL", for: .normal)
-        Boton_ver!.setTitleColor(UIColor.blue, for: .normal)
-        Boton_ver!.addTarget(self, action: #selector(ver_contra), for: .touchUpInside)
-        Boton_ver!.backgroundColor = .black
-         */
-    }
     
     func didTapMessage(in cell: MessageCollectionViewCell) {
         print("adentro")
@@ -167,6 +168,20 @@ class ChatViewController:
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         return .bubbleOutline(UIColor.white)
        
+    }
+    func makeButton(named: String) -> InputBarButtonItem{
+        return InputBarButtonItem()
+            .configure{    $0.spacing = .fixed(10)
+                           $0.image = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
+                           $0.setSize(CGSize(width: 30, height: 30), animated: true)
+            }.onSelected{
+                $0.tintColor = UIColor.lightGray
+            }.onDeselected{
+                $0.tintColor = UIColor.green
+            }.onTouchUpInside{ _ in
+                self.simpleAlertMessage(title: "Confirmacion", message: "Archivo Adjunto")
+            }
+        
     }
    
     //funcion para mostrar los mensajes apartir del dia en que se carga la conversacion
@@ -208,11 +223,17 @@ class ChatViewController:
     
     func carga_mensajes()
     {
+        let servicio = "http://10.97.6.83:3040/api/mensajes/verConversacion/618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
             do
             {
+                print("esto es data \(data)")
+                if data == nil
+                {
+                    self.simpleAlertMessage(title: "Aviso", message: "Aun no ha Iniciado conversacion")
+                }
                 self.usuarios = try JSONDecoder().decode([Chats].self, from: data!)
                 DispatchQueue.main.async
                 {
@@ -284,7 +305,7 @@ class ChatViewController:
     {
         let exampleDict: [String: Any] = [
             "idEmisor" : userID,
-                "idReceptor" : id_receptor,
+                "idReceptor" : "618b05c12d3d1d235de0ade0",
                 "texto" : "\(mensaje)",
                 "rutaDocumento" : "\(rutaDocumento)",
                 "fechaCreacion" : "\(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))",

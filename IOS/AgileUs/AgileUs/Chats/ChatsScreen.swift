@@ -50,7 +50,7 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        hideNavBar()
+        showNavBar()
     }
 
 
