@@ -120,7 +120,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
 
         with(binding) {
-            desactivarCampos()
+            desactivarCampos(args)
             btnCancelarTareaF.setOnClickListener {
                 cancelarTarea(args)
             }

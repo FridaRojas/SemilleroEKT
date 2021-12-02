@@ -173,41 +173,6 @@
             app:layout_constraintTop_toBottomOf="@id/btnAdjuntarArchivoF"
             app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/btnAdjuntarArchivoF"
-            style="@style/StyleTextFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            android:drawableLeft="@drawable/iconoadjuntararchivo"
-            android:text="Descargar Archivo PDF"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtObservacionesD" />
-
-        <Button
-            android:id="@+id/btnGuardarTareaF"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/rounded_bg"
-            style="@style/StyleButton"
-            android:text="Guardar"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
-            tools:layout_editor_absoluteX="16dp" />
-   <Button
-            android:id="@+id/btnCancelarEdicion"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/rounded_bg"
-            style="@style/StyleButton"
-            android:text="Cancelar"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/btnGuardarTareaF"
-            tools:layout_editor_absoluteX="16dp" />
             <Button
                 android:id="@+id/btnGuardarTareaF"
                 android:layout_marginTop="20dp"
