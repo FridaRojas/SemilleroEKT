@@ -111,15 +111,15 @@ public class BroadCastControlador {
 			broadCastM.setAsunto(broadCast.getAsunto());
 			broadCastM.setDescripcion(broadCast.getDescripcion());
 			Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-			Optional<User> user2= userRepository.validarUsuario("61a101db174bcf469164d2fd");
-
-			if (user.isPresent()) {
-				broadCastM.setNombreEmisor(user.get().getNombre());
-				broadCastRepositorio.save(broadCastM);
-				notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			Optional<User> user2 = userRepository.validarUsuario("61a101db174bcf469164d2fd");
+			if(user2.get().getNombreRol().equals("BROADCAST") || user2.get().getIDSuperiorInmediato().equals("-1")){
+				if (user.isPresent()) {
+					broadCastM.setNombreEmisor(user.get().getNombre());
+					broadCastRepositorio.save(broadCastM);
+					notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				}
 			}
-
 		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el emisor", ""));
 	}
 	@GetMapping("/mostrarMensajesporID/{idEmisor}")

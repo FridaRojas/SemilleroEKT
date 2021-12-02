@@ -553,7 +553,7 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
 		}
 		Optional<User> user=userRepository.validarUsuario(idEmisor);
-		if(user.isEmpty()){
+		if(!user.isPresent()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no se encuetra el usuario",""));
 		}
 		Iterable<Mensajes> msg= mensajesRepository.findAll();
