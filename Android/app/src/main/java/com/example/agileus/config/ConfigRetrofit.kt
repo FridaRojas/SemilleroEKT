@@ -5,7 +5,10 @@ import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.ui.login.data.service.LoginApi
+import com.example.agileus.utils.Constantes.URL_BASE2
+import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
+import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
 import okhttp3.OkHttpClient
@@ -52,16 +55,6 @@ class ConfigRetrofit {
             .build()
 
         return mRetrofit.create(TasksApi::class.java)
-    }
-
-    fun obtenerConfiguracionRetofitBuzon(): BuzonApi {
-
-        var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE1)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        return mRetrofit.create(BuzonApi::class.java)
     }
 
 
