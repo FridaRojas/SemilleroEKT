@@ -12,6 +12,8 @@ import com.ekt.Servicios.service.BroadCastServicio;
 
 import com.ekt.Servicios.service.MensajesService;
 
+import com.mongodb.MongoException;
+import com.mongodb.MongoSocketOpenException;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -61,89 +63,121 @@ public class BroadCastControlador {
 
 	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
 	public ResponseEntity<?>listarMensajes(@PathVariable (value = "miId")String miId){
-		if(miId.length()<24 || miId.length()>24){
-			ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El tamaño del id no es correcto", ""));
-		}
-		Optional<User> user = userRepository.validarUsuario(miId);
-		if(!user.isPresent()) {
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El usuario no existe",""));
-		}
-		if(user.isPresent()){
-
-			if(user.get().getNombreRol().equals("BROADCAST")) {
-
-				Iterable<BroadCast> brd = broadCastRepositorio.findAll();
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body(brd);
+		try {
+			if(miId.length()<24 || miId.length()>24){
+				ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El tamaño del id no es correcto", ""));
 			}
+			Optional<User> user = userRepository.validarUsuario(miId);
+			if(!user.isPresent()) {
+				ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El usuario no existe",""));
+			}
+			if(user.isPresent()){
+
+				if(user.get().getNombreRol().equals("BROADCAST")) {
+
+					Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+					return ResponseEntity.status(HttpStatus.ACCEPTED).body(brd);
+				}
+			}
+
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El usuario ingresado no es un usuario BROADCAST", ""));
+		}catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 
-
-		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El usuario ingresado no es un usuario BROADCAST", ""));
 	}
 
 	@PostMapping("/crearMensajeBroadcast")
 	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast) {
+			try{
 
-
-			if (broadCast.getIdEmisor() == null || broadCast.getAsunto() == null || broadCast.getDescripcion() == null) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el dato", ""));
-			}
-
-			if (broadCast.getIdEmisor().equals("") || broadCast.getIdEmisor().equals("null")) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El campo idEmisor es no puede estar vacio", ""));
-			}
-			if (broadCast.getIdEmisor().length() < 24 || broadCast.getIdEmisor().length() > 24) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del idEmisor no es valido", ""));
-			}
-
-			if (broadCast.getAsunto().equals("") || broadCast.getAsunto().equals("null")) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El campo Asunto no puede estar vacio", ""));
-			}
-			if (broadCast.getAsunto().length() < 5) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del Asunto no es valido", ""));
-			}
-			if (broadCast.getDescripcion().length() < 10) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del texto descripcion debe ser al menos de 1 caracter", ""));
-			}
-
-			BroadCast broadCastM = new BroadCast();
-			broadCastM.setIdEmisor(broadCast.getIdEmisor());
-			broadCastM.setAsunto(broadCast.getAsunto());
-			broadCastM.setDescripcion(broadCast.getDescripcion());
-			Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-			Optional<User> user2 = userRepository.validarUsuario("61a101db174bcf469164d2fd");
-			if(user2.get().getNombreRol().equals("BROADCAST") || user2.get().getIDSuperiorInmediato().equals("-1")){
-				if (user.isPresent()) {
-					broadCastM.setNombreEmisor(user.get().getNombre());
-					broadCastRepositorio.save(broadCastM);
-					notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
-					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				if (broadCast.getIdEmisor() == null || broadCast.getAsunto() == null || broadCast.getDescripcion() == null) {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el dato", ""));
 				}
+
+				if (broadCast.getIdEmisor().equals("") || broadCast.getIdEmisor().equals("null")) {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El campo idEmisor es no puede estar vacio", ""));
+				}
+				if (broadCast.getIdEmisor().length() < 24 || broadCast.getIdEmisor().length() > 24) {
+					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del idEmisor no es valido", ""));
+				}
+
+				if (broadCast.getAsunto().equals("") || broadCast.getAsunto().equals("null")) {
+					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El campo Asunto no puede estar vacio", ""));
+				}
+				if (broadCast.getAsunto().length() < 5) {
+					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del Asunto no es valido", ""));
+				}
+				if (broadCast.getDescripcion().length() < 10) {
+					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del texto descripcion debe ser al menos de 1 caracter", ""));
+				}
+
+				BroadCast broadCastM = new BroadCast();
+				broadCastM.setIdEmisor(broadCast.getIdEmisor());
+				broadCastM.setAsunto(broadCast.getAsunto());
+				broadCastM.setDescripcion(broadCast.getDescripcion());
+				Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
+				Optional<User> user2 = userRepository.validarUsuario("61a101db174bcf469164d2fd");
+				if(user2.get().getNombreRol().equals("BROADCAST") || user2.get().getIDSuperiorInmediato().equals("-1")){
+					if (user.isPresent()) {
+						broadCastM.setNombreEmisor(user.get().getNombre());
+						broadCastRepositorio.save(broadCastM);
+						notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
+						return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+					}
+				}
+				return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el emisor", ""));
+			}catch (MongoSocketOpenException e) {
+				return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+						.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			} catch (MongoException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			} catch (Exception e) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 			}
-		return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el emisor", ""));
+
 	}
 	@GetMapping("/mostrarMensajesporID/{idEmisor}")
 	public ResponseEntity<?> mostrarMensajes(@PathVariable(value = "idEmisor")String idEmisor){
-
-		if(idEmisor.length() < 24 || idEmisor.length() > 24){
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del id no es correcto", "" ));
-		}
-		Optional<User> user = userRepository.validarUsuario(idEmisor);
-		if(!user.isPresent()){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El Usuario no existe", "" ));
-		}
-		if(user.isPresent()){
-			List<BroadCast> listBrd = new ArrayList<>();
-			Iterable<BroadCast> brd = broadCastRepositorio.findAll();
-			for (BroadCast brd2 : brd) {
-				if(brd2.getIdEmisor().equals(idEmisor)){
-					listBrd.add(brd2);
-				}
+		try{
+			if(idEmisor.length() < 24 || idEmisor.length() > 24){
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del id no es correcto", "" ));
 			}
-			return ResponseEntity.status(HttpStatus.OK).body(listBrd);
+			Optional<User> user = userRepository.validarUsuario(idEmisor);
+			if(!user.isPresent()){
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El Usuario no existe", "" ));
+			}
+			if(user.isPresent()){
+				List<BroadCast> listBrd = new ArrayList<>();
+				Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+				for (BroadCast brd2 : brd) {
+					if(brd2.getIdEmisor().equals(idEmisor)){
+						listBrd.add(brd2);
+					}
+				}
+				return ResponseEntity.status(HttpStatus.OK).body(listBrd);
+			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body((new Response(HttpStatus.NOT_FOUND,"El usuario no tiene mensajes enviados ", "")));
+		}catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body((new Response(HttpStatus.NOT_FOUND,"El usuario no tiene mensajes enviados ", "")));
 	}
 	
 	@PostMapping("/enviarMensaje")
