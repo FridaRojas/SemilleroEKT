@@ -15,6 +15,14 @@ import java.util.concurrent.TimeUnit
 
 
 
+fun cliente(tiempo:Long): OkHttpClient {
+    val okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(tiempo, TimeUnit.SECONDS)
+        .readTimeout(tiempo, TimeUnit.SECONDS)
+        .writeTimeout(tiempo, TimeUnit.SECONDS)
+        .build()
+    return okHttpClient
+}
 
 
 class ConfigRetrofit {
@@ -78,14 +86,24 @@ class ConfigRetrofit {
     }
 
 
-}
 
+    fun obtenerConfiguracionRetofitBuzon(): BuzonApi {
 
-    fun cliente(tiempo:Long): OkHttpClient {
-        val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(tiempo, TimeUnit.SECONDS)
-            .readTimeout(tiempo, TimeUnit.SECONDS)
-            .writeTimeout(tiempo, TimeUnit.SECONDS)
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_BASE2)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(cliente(60))
             .build()
-        return okHttpClient
+        return mRetrofit.create(BuzonApi::class.java)
     }
+
+    fun obtenerConfiguracionRetofitBuzon2(): BuzonApi2 {
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_BASE3)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return mRetrofit.create(BuzonApi2::class.java)
+    }
+
+}
