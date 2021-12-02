@@ -34,4 +34,6 @@ public interface UserRepository extends MongoRepository<User,String> {
     @Query("{ 'idSuperiorInmediato' : ?0}")
     Optional<ArrayList<User>> findChilds(String idPadre);
 
+    @Query(" {$and:[  {$or:[{'correo':?0},{'nombre':?0},{'rfc':?0},{'nombreRol':?0},{'curp':?0},{'numeroEmpleado':?0}]},{statusActivo:'true'} ]}")
+    Optional<ArrayList<User>> busquedaUsuario(String parametro);
 }
