@@ -393,10 +393,11 @@ public class ConfigPag {
 
     }
 
-    @GetMapping("/verUsuario")
+    @PostMapping("/verUsuario")
     public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
         try {
-        User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
+            System.out.println("id:"+id);
+        User user= userDAO.buscaID(id);
             if (user!=null){
                 model.addAttribute("user", user);
                 return "paginas/usuarios/verUsuario";

@@ -149,7 +149,7 @@
                             <label th:text="${user.getNumeroEmpleado()}"></label>
                         </div>
                         <div class="col-sm">
-                            <form th:action="@{/verUsuario(id=${user.getID()})}" method="get">
+                            <form th:action="@{/verUsuario(id=${user.getID()})}" method="post">
                                 <button style="color: #66BB6A; background: white; border-color: white;box-shadow: white">Ver mas...</button>
                             </form>
 
