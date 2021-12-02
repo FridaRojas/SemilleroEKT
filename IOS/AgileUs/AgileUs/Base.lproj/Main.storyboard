@@ -158,7 +158,7 @@
             </objects>
             <point key="canvasLocation" x="2791" y="-324"/>
         </scene>
-        <!--Item-->
+        <!--Tareas-->
         <scene sceneID="TaE-M0-Qa6">
             <objects>
                 <viewController id="4sJ-fV-fcb" customClass="Pantalla_Tareas" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
@@ -205,6 +205,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tareas " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dkU-Z1-2QH">
                                 <rect key="frame" x="37" y="195" width="351" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.48235297199999999" green="0.7254902124" blue="0.44705885649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.21429278309999999" green="0.75773195879999999" blue="0.066361646250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -213,11 +214,12 @@
                         <viewLayoutGuide key="safeArea" id="kRj-r4-fqR"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" image="folder" catalog="system" id="p6z-Y0-fgj"/>
+                    <tabBarItem key="tabBarItem" title="Tareas" image="folder" catalog="system" id="p6z-Y0-fgj"/>
                     <navigationItem key="navigationItem" id="4WR-G4-Q5s"/>
                     <connections>
                         <outlet property="Lista_tareas" destination="3oy-Nj-PhE" id="NLf-AK-rrC"/>
                         <outlet property="menu_clasificador" destination="gya-Hq-vjB" id="ZBs-rE-NLv"/>
+                        <outlet property="titleTaksField" destination="dkU-Z1-2QH" id="jgd-JR-KCu"/>
                         <segue destination="0Cc-Uh-NmK" kind="show" identifier="Formulario" id="uIk-7y-RSb"/>
                         <segue destination="14n-S6-Q1G" kind="show" identifier="trans_edit" id="Zzn-fr-tNa"/>
                     </connections>
@@ -573,6 +575,11 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HpP-Qb-sgW">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.48235297199999999" green="0.7254902124" blue="0.44705885649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

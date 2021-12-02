@@ -44,13 +44,15 @@ struct Datos:Codable{
 class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var menu_clasificador: UICollectionView!
+    @IBOutlet weak var titleTaksField: UILabel!
     
     // nombre para las categorias de pendiente,final,
     var dataSource = [String]()
     
     
-    let servico = "http://18.218.7.148:3040/api/tareas/"
+    //let servico = "http://18.218.7.148:3040/api/tareas/"
     
+    let servico = "http://10.97.3.134:3040/api/tareas/"
     @IBOutlet weak var Lista_tareas: UITableView!
     
     
@@ -85,7 +87,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         ValidarNivelUser()
         //llamar a mi boton
         botonflotante.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
@@ -108,6 +110,8 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         menu_clasificador.dataSource = self
         menu_clasificador.delegate = self
         menu_clasificador.register(ItemMenu.nib(), forCellWithReuseIdentifier: ItemMenu.identificador)
+        
+        titleTaksField.text = nivel != "alto" ? "Tareas Pendientes" : "Asignadas"
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -147,7 +151,6 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
                     self.selestatus = try JSONDecoder().decode(Status.self, from: dataSuccess)
                     
                     print("data*******\(self.selestatus)")
-77
                     DispatchQueue.main.async
                     {
                         //print(self.arrTareas)
@@ -250,12 +253,13 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
       
        if selectedIndex == indexPath.row
         {
-            celda.backgroundColor = UIColor.systemGreen
+           celda.Configure_color(categoria: dataSource[indexPath.row])
+            //celda.backgroundColor = UIColor.systemW
         
             //print("esta es la celda: \(selectedIndex)")
         }
         else{
-        celda.backgroundColor = UIColor .white
+        //celda.backgroundColor = UIColor .white
         }
         
         return celda
@@ -266,29 +270,41 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         
         selectedIndex = indexPath.row
+
         select_estatus = dataSource[indexPath.row]
+        
         var url:String = ""
         //print("******* estatus seleccioando:\(estatus)")
         switch select_estatus {
         case "Iniciadas":
             select_estatus = "iniciada"
             url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            titleTaksField.text = "Tareas Iniciadas"
+
             //print(estatus)
         case "Pendientes":
             select_estatus = "pendiente"
             url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            titleTaksField.text = "Tareas Pendientes"
+
             //print(estatus)
         case "Revisión":
             select_estatus = "revision"
             url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            titleTaksField.text = "Tareas En Revisión"
+
             //print(estatus)
         case "Terminadas":
             select_estatus = "terminada"
             url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            titleTaksField.text = "Tareas Terminadas"
+
             //print(estatus)
         case "Asignadas":
             select_estatus = "Asignadas"
             url = "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+            titleTaksField.text = "Tareas Asignadas"
+
             
         default:
             print("ningun estatus seleccionado")

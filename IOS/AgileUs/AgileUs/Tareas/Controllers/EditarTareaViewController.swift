@@ -37,7 +37,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        Configurar_teclado()
         getTask()
         inputStyleConfig(isEdit: isEdit)
         viewStyleConfig()
@@ -251,11 +251,24 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         let dateEnd = HelpString.removeWord(phrase: dateEndField.text!, word: "Fin: ")
         let priority = HelpString.removeWord(phrase: priortyField.text!, word: "Prioridad: ")
         let status = HelpString.removeWord(phrase: statusField.text!, word: "Estatus: ")
-
-        print(observationField.text)
-        let task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text, prioridad: priority, estatus: status, observaciones: observationField.text!)
+        print(observationField.text!)
+        print("Este es el estatus: \(status) **********")
         
-        Api.shared.updateTask(id: idTask, task: task) {
+        var task: Task?
+        
+        if observationField.text! == "" || observationField.text! == nil {
+            task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status)
+            } else {
+                task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status, observaciones: observationField.text!)
+            }
+
+     
+        
+        
+ 
+//        if status == "Terminada"
+        
+        Api.shared.updateTask(id: idTask, task: task!) {
             (task) in
             DispatchQueue.main.async {
                 
@@ -292,6 +305,21 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
                 self.viewBack.isHidden = true
                 
                 self.altertaMensaje(title: "Error", message: "Hubo un problema, intentelo mas tarde", confirmationMessage: "Ok")
+            }
+        }
+        if status == "Terminada" {
+            Api.shared.changeStatus(id: idTask, status: "terminada") {
+                task in
+                print("Todo cool al actualizar estatus")
+            } failure: { error in
+                print("Todo mal al actualizar estatus")
+            }
+            
+            Api.shared.UpdateFecha(idTask: idTask, ban: false) {
+                respuesta in
+                print("Todo cool al actualizar la fecha")
+            } failure: { error in
+                print("Todo mal al actualizar la fecha")
             }
         }
     }

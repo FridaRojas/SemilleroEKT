@@ -13,9 +13,12 @@ final class Api {
     
     static let shared = Api()
     
-    let url = "http://18.218.7.148:3040/api/tareas"
+    //let url = "http://18.218.7.148:3040/api/tareas"
+    
+    let url = "http://10.97.3.134:3040/api/tareas"
     //prueba de url para personas asignadas
-    let url_personas = "http://18.218.7.148:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
+    //let url_personas = "http://18.218.7.148:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
+    let url_personas = "http://10.97.3.134:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
     let rangeStatusCode200 = 200...299
     let rangeStatusCode400 = 400...499
     let rangeStatusCode500 = 500...599
@@ -60,7 +63,7 @@ final class Api {
                                     archivo: "\(urlText)")
                         
                         let session = URLSession.shared
-                        let urlB = URL(string: "http://18.218.7.148:3040/api/tareas/agregarTarea")!
+                        let urlB = URL(string: "http://10.97.3.134:3040/api/tareas/agregarTarea")!
                         var request = URLRequest(url: urlB)
                         
                         
@@ -292,7 +295,7 @@ final class Api {
                 //                }
                 let dataString = String(data: dataSuccess, encoding: .utf8)
                 success(dataString!)
-                print("Success")
+                print(dataString!)
             }
             
             
@@ -489,7 +492,6 @@ final class Api {
         
         let task = session.dataTask(with: request) {
             (data, response, error) in
-            var persona:FindPersons
             if let httpResponse = response as? HTTPURLResponse,
                   self.rangeStatusCode500.contains(httpResponse.statusCode) {
                   failure("error")
@@ -527,7 +529,7 @@ final class Api {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        var messageS = MessageTask(idEmisor: "618e8743c613329636a769aa", idReceptor: "618b05c12d3d1d235de0ade0", texto: "Se asigno la tarea \(title) a la persona: \(person)", rutaDocumento: "", fechaCreacion: "\(dateFormatter.string(from: date))")
+        var messageS = MessageTask(idEmisor: "618e8743c613329636a769aa", idReceptor: "618e878ec613329636a769ab", texto: "Se asigno la tarea \(title) a la persona: \(person)", rutaDocumento: "", fechaCreacion: "\(dateFormatter.string(from: date))")
         
         
         request.httpMethod = "POST"
@@ -575,6 +577,63 @@ final class Api {
 
         taskSession.resume()
     }
-    
+    func UpdateFecha(idTask: String,ban:Bool, success: @escaping (_ respuesta: String) -> (), failure: @escaping (_ error: String) -> ()){
+       
+        let date = Date()
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let session = URLSession.shared
+        let url = ban != false ? URL(string: "\(url)/actualizarTareaFechaRealIni/\(idTask)")! : URL(string: "\(url)/actualizarTareaFechaRealFin/\(idTask)")!
+        var request = URLRequest(url: url)
+
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        var arreglo: Dictionary<String,String>
+        if ban {
+             arreglo = ["fecha_iniR":"\(dateFormatter.string(from: date))"]
+        } else {
+             arreglo = ["fecha_finR":"\(dateFormatter.string(from: date))"]
+        }
+        
+        print(arreglo)
+        
+        let dataToJson = try! JSONEncoder().encode(arreglo)
+        let taskSession = session.uploadTask(with: request, from: dataToJson) {
+            (data, response, error) in
+
+            if let httpResponse = response as? HTTPURLResponse,
+                  self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    failure("error \(dataString!)")
+                }
+                  return;
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse,
+                  self.rangeStatusCode400.contains(httpResponse.statusCode){
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    failure("error \(dataString!)")
+                }
+                  return;
+            }
+            
+            if error != nil {
+                failure("error actualizar fecha\(error?.localizedDescription)")
+                return;
+            }
+            if let dataSuccess = data,let dataString = String(data: dataSuccess, encoding: .utf8) {
+                print("Todo cool desde actualizacion fechas \(dataString)")
+                success(dataString)
+                
+                //print("Success")
+            }
+       
+        }
+        taskSession.resume()
+    }
 
 }

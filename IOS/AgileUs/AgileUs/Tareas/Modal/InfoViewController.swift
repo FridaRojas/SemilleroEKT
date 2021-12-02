@@ -112,7 +112,20 @@ class InfoViewController: UIViewController {
     
     func CambiarEstatus()
     {
+
         self.MostrarSpinner(onView: self.view)
+         if (estatus == "iniciada")
+        {
+             print("Entro a Actualizar ********************")
+             Api.shared.UpdateFecha(idTask: id_tarea!, ban: true)
+             {
+                 tarea in
+                 print("Se guardo fecha de inicio real")
+             } failure: { error in
+                 print("Error \(error)")
+             }
+        }
+
         Api.shared.UpdateEstatus(idTarea: id_tarea!, estatus: estatus)
         {
             tarea in
@@ -123,7 +136,7 @@ class InfoViewController: UIViewController {
                 self.Estatus.text = "Estatus: \(self.estatus)"
             }
         } failure: { error in
-
+            print("Error")
         }
     }
     

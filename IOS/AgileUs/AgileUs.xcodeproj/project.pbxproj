@@ -232,6 +232,7 @@
 			children = (
 				C927DABF274E93CD00D3C1B7 /* Task.swift */,
 				AE4918ED27570A2D000162AA /* NewTask.swift */,
+				AEF5ADB427548E2800AAC104 /* DataPersonas.swift */,
 				AEB4BFD8275854BA000526F6 /* Message.swift */,
 			);
 			path = Models;
@@ -332,7 +333,6 @@
 				AEA60A95274C5D120087E417 /* Controllers */,
 				AEA60A97274C5D120087E417 /* Extensions */,
 				D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */,
-				AEF5ADB427548E2800AAC104 /* DataPersonas.swift */,
 			);
 			path = Tareas;
 			sourceTree = "<group>";
