@@ -51,8 +51,6 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         super.onViewCreated(view, savedInstanceState)
 
 
-           //    val post=MensajeBodyBroadcaster("2000-01-01T00:00:00.000+00:00","61a101db174bcf469164d2fd","618e8882c613329636a769ad","hola mundo feo 1")
-           //   viewModel.postMensaje(post)
 
         USERTYPE="Broadcast"
             binding.vista2.visibility=View.INVISIBLE
@@ -71,6 +69,7 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         }
 
         if (control == 2) {
+            viewModel.devuelvebuzon2()
             binding.fab.visibility = View.GONE
             binding.fab.setOnClickListener {
                 Toast.makeText(context, "Opción No permitida ", Toast.LENGTH_SHORT).show()

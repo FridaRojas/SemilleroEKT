@@ -24,18 +24,13 @@ interface BuzonApi2 {
     fun getmybuzon(@Path ("id") idUser:String):Call<ArrayList<BuzonResp>>
 
 
+
 //
-
-
     @POST("broadCast/enviarMensaje")
     suspend fun pushpost(@Body Mensaje: MensajeBodyBroadcaster):Response<MensajeBodyBroadcaster>
 
     @POST("broadCast/crearMensajeBroadcast")
     suspend fun pushrequest(@Body Mensaje:MsgBodyUser):Response<MsgBodyUser>
-
-
-
-
 
 //    @GET("mensajes/listaContactos/{id}")
   //  fun getListContacts(@Path("id") idUser: String):Call<ArrayList<Contacts>>

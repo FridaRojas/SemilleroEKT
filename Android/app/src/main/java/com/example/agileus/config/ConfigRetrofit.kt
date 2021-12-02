@@ -4,8 +4,10 @@ package com.example.agileus.config
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_BASE2
+import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
-import com.example.agileus.utils.cliente
+import com.example.agileus.utils.Constantes.URL_Tasks_Personas
+import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
 import okhttp3.OkHttpClient
