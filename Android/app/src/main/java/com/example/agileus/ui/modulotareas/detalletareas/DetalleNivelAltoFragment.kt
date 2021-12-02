@@ -199,9 +199,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         prioridad = args.tareas.prioridad
         estatus = args.tareas.estatus
         descripcion = args.tareas.descripcion
-//        fechaInicio = fechaIn
-//        fechaFin = fechaF
-        Log.d("Mensaje", "fecha inicio $fechaI")
+
         if (args.tareas.observaciones != null) {
             observaciones = args.tareas.observaciones
             binding.txtObservacionesD.setText(observaciones)
@@ -210,6 +208,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             binding.txtObservacionesD.isVisible = false
             observaciones = ""
         }
+
 
         with(binding) {
             txtNombreTareaD.setText(nombreTarea)

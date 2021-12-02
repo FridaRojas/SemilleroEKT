@@ -54,7 +54,6 @@
             android:enabled="false"
             style="@style/StyleTextGray"
             android:layout_marginTop="@dimen/marginFormulario"
-            android:text="Estatus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
 
