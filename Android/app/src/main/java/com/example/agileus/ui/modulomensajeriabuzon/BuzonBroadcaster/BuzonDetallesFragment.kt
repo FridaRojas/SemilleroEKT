@@ -17,7 +17,7 @@ import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragme
 import android.os.CountDownTimer
 import com.example.agileus.models.MensajeBodyBroadcaster
 import com.example.agileus.models.MsgBodyUser
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada1
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
@@ -50,35 +50,22 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-          viewModel.getLista()
 
-//         lista.forEach(){
-  //           Log.d("MAIN",it.nombre.toString())
-    //     }
-//        Log.i("lista",lista.size.toString())
-
-
-               val post=MensajeBodyBroadcaster("2000-01-01T00:00:00.000+00:00","61a101db174bcf469164d2fd","618e8882c613329636a769ad","hola mundo feo 1")
-              viewModel.postMensaje(post)
-
-        val post1=MsgBodyUser("Hola ","61a101db174bcf469164d2fd","618e8882c613329636a769ad")
-        viewModel.postRequest(post1)
-
-
-
-
-
+           //    val post=MensajeBodyBroadcaster("2000-01-01T00:00:00.000+00:00","61a101db174bcf469164d2fd","618e8882c613329636a769ad","hola mundo feo 1")
+           //   viewModel.postMensaje(post)
 
         USERTYPE="Broadcast"
             binding.vista2.visibility=View.INVISIBLE
 
         if (control == 1) {
-            binding.fab.visibility = View.VISIBLE
 
-            binding.fab.setOnClickListener {
-                Log.d("size","${listafiltrada1.size}")
+            viewModel.getLista()
+            viewModel.devuelvebuzon1()
+
+            binding.fab.visibility = View.VISIBLE
+                binding.fab.setOnClickListener {
                 val newFragment =
-                    DialogoSenderBroadcast(this,listafiltrada1) //Se le pasa el dialogolistener con This
+                    DialogoSenderBroadcast(this,listafiltrada) //Se le pasa el dialogolistener con This
                 activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
             }
         }
@@ -90,6 +77,8 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
             }
         }
 
+
+/*
         viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
             if (response.isSuccessful)
             {
@@ -101,7 +90,8 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 Log.d("Main",response.code().toString())
             }
         })
-
+*/
+        /*
         viewModel.myResponse1.observe(viewLifecycleOwner, Observer { response->
             if (response.isSuccessful)
             {
@@ -113,9 +103,10 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 Log.d("Main1",response.code().toString())
             }
         })
-
+*/
 
 //        viewModel.devuelvebuzon()
+
 
             viewModel.adaptador.observe(viewLifecycleOwner, {
                 binding.recyclerBuzon.adapter = it
@@ -164,16 +155,22 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
 
     override fun mensajeBroadcasting1(buzon: MensajeBodyBroadcaster) {
         //viewModel.postMensaje1(buzon)
+       // viewModel.postMensaje(buzon)
 
 
-        viewModel.postMensaje(buzon)
+  Log.d("body","${buzon.fechaCreacion}")
+  Log.d("body","${buzon.idReceptor}")
+  Log.d("body","${buzon.idEmisor}")
+  Log.d("body","${buzon.texto}")
+//        viewModel.postMensaje(buzon)
+
 
         viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
             if (response.isSuccessful)
             {
-                Log.d("Main",response.body().toString())
-                Log.d("Main",response.code().toString())
-                Log.d("Main",response.message().toString())
+                Log.d("Mine",response.body().toString())
+                Log.d("Mine",response.code().toString())
+                Log.d("Mine",response.message().toString())
             }
             else{
                 Log.d("Main",response.code().toString())

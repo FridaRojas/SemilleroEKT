@@ -1,12 +1,7 @@
 package com.example.agileus.webservices.dao
-import com.example.agileus.models.Buzon
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.models.ListaUsers
-import com.example.agileus.models.MensajeBodyBroadcaster
-import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.models.*
 import com.example.agileus.providers.BuzonProviderListener
-import com.example.agileus.utils.Constantes.broadlist
-import retrofit2.Call
 import retrofit2.Response
 
 
@@ -19,12 +14,8 @@ import retrofit2.Response
          return lista2
      }
 
-     override suspend fun recibebuzon(
-         ResponseDos: Response<ArrayList<Buzon>>,
-         lista: ArrayList<Buzon>
-     ): ArrayList<Buzon> {
-
-         var listaconsumida = lista
+     override suspend fun recibebuzon(ResponseDos: Response<ArrayList<Buzon>>, lista: ArrayList<Buzon>
+     ): ArrayList<Buzon> { var listaconsumida = lista
          if (ResponseDos.isSuccessful) {
              listaconsumida = ResponseDos.body()!!
          }

@@ -18,6 +18,7 @@ import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
+import retrofit2.Response
 
 class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
@@ -41,9 +42,25 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         super.onViewCreated(view, savedInstanceState)
 
 
+       val post=MsgBodyUser("Hola ","61a101db174bcf469164d2fd","618e8882c613329636a769ad")
+        viewModel.postRequest(post)
 
 
-            binding.vista2.visibility=View.INVISIBLE
+
+        viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
+            if (response.isSuccessful)
+            {
+                Log.d("Main",response.body().toString())
+                Log.d("Main",response.code().toString())
+                Log.d("Main",response.message().toString())
+            }
+            else{
+                Log.d("Main",response.code().toString())
+            }
+        })
+
+
+        binding.vista2.visibility=View.INVISIBLE
 
         if (BuzonFragment.control == 1) {
             binding.fab.visibility = View.VISIBLE
@@ -61,7 +78,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
             }
         }
 
-        viewModel.devuelvebuzon()
+//        viewModel.devuelvebuzon()
 
 
 
@@ -78,13 +95,17 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
     }
 
     override fun mensajeBroadcasting(buzon: Buzon) {
+        //TODO("Not yet implemented")
+    }
 
-        viewModel.postMensaje(buzon)
+    override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
+
+        viewModel.postRequest(buzon)
         viewModel.myResponse.observe(
             viewLifecycleOwner,
             Observer { response ->
-                if (response.isSuccessful) {
-                    Log.i("response", response.code().toString())
+                 if (response.isSuccessful) {
+                     Log.i("response", response.code().toString())
                 }
             },
         )
@@ -107,9 +128,6 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         }, 3800)
     }
 
-    override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
-        TODO("Not yet implemented")
-    }
 
     fun startTimeCounter() {
         var counter=0
@@ -128,7 +146,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
                 progressBar.progress = counter
             }
             override fun onFinish() {
-                viewModel.devuelvebuzon()
+    //            viewModel.devuelvebuzon()
             }
         }.start()
     }

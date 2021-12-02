@@ -1,29 +1,24 @@
 package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 
-import android.hardware.biometrics.BiometricManager
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.agileus.models.Buzon
 import com.example.agileus.adapters.BuzonAdapter
-import com.example.agileus.models.ListaUsers
-import com.example.agileus.models.MensajeBodyBroadcaster
-import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.models.*
 import com.example.agileus.utils.Constantes.broadlist
-import com.example.agileus.webservices.dao.DaoBuzon
 import com.example.agileus.webservices.dao.ProviderBuzon
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
 import retrofit2.Response
-import kotlin.math.log
 
 class BuzonDetallesViewModel : ViewModel() {
 
-    lateinit var listafiltrada: ArrayList<Buzon>
+    lateinit var listafiltrada1: ArrayList<String>
+    //lateinit var listafiltrada: ArrayList<Buzon>
+    lateinit var listafiltrada2: ArrayList<BuzonResp>
 
     var adaptador = MutableLiveData<BuzonAdapter>()
     //var myResponse: MutableLiveData<Response<Buzon>> = MutableLiveData()
@@ -34,6 +29,7 @@ class BuzonDetallesViewModel : ViewModel() {
     var lista1: DaoBuzon1
 
     lateinit var listaConsumida: ArrayList<Buzon>
+    lateinit var listaConsumida1: ArrayList<BuzonResp>
     lateinit var listausuarios: ArrayList<ListaUsers>
 
     init {
@@ -43,66 +39,12 @@ class BuzonDetallesViewModel : ViewModel() {
 
     companion object {
         var listaus=ArrayList<ListaUsers>()
+        var listaBrd=ArrayList<BuzonResp>()
         var listasize = 0
-        var listafiltrada1= ArrayList<String>()
+        var listafiltrada= ArrayList<String>()
+
     }
 
-    /*
-    fun devuelvebuzon() {
-
-        listaConsumida = ArrayList()
-
-        try {
-            viewModelScope.launch {
-                listaConsumida = withContext(Dispatchers.IO) {
-                        lista.recuperarbuzon(listaConsumida)
-                }
-
-                if (listaConsumida.isNotEmpty()) {
-                    listasize = listaConsumida.size
-                    listafiltrada = ArrayList()
-
-
-                    if (BuzonFragment.control == 1) {
-                        for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Receiverid == "Broadcast") {
-                                listafiltrada.add(listaConsumida[i])
-                            }
-                        }
-                    }
-
-                    if (BuzonFragment.control == 2) {
-                        for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Senderid == "Broadcast") {
-                                listafiltrada.add(listaConsumida[i])
-                            }
-                        }
-                    }
-                    adaptador.value = BuzonAdapter(listafiltrada, BuzonFragment.control)
-                }
-            }
-        } catch (ex: Exception) {
-            Log.e("aqui", ex.message.toString())
-        }
-    }
-
-*/
-    /*
-     fun postMensaje(mypost: Buzon) {
-        mypost.id = (listasize + 1).toString()
-        mypost.Senderid
-
-        try {
-            viewModelScope.launch {
-                val response = lista.pushPost(mypost)
-                 myResponse.value=response
-            }
-        } catch (ex: Exception) {
-            Log.e("aqui", ex.message.toString())
-        }
-
-     }
-*/
 
 
        fun postMensaje(mypost: MensajeBodyBroadcaster) {
@@ -113,27 +55,21 @@ class BuzonDetallesViewModel : ViewModel() {
              }
             }
 
-    fun postRequest(mypost: MsgBodyUser) {
-
-        viewModelScope.launch {
-            val response: Response<MsgBodyUser> = lista1.getcustompush(mypost)
-            myResponse1.value = response
-        }
-    }
-
 
 
     fun getLista():ArrayList<ListaUsers> {
         listausuarios = ArrayList()
         listafiltrada1 = ArrayList()
+
         try {
             viewModelScope.launch {
                 listausuarios = withContext(Dispatchers.IO) {
                     lista1.recuperarListadeContactos(broadlist)
                 }
+                Log.d("tam","${listausuarios.size}")
                 if (listausuarios.isNotEmpty()) {
                     listausuarios.forEach(){
-                        listafiltrada1.add(it.nombre)
+                        listafiltrada.add(it.nombre)
                     }
                 }
             }
@@ -141,5 +77,86 @@ class BuzonDetallesViewModel : ViewModel() {
             Log.e("aqui", ex.message.toString())
         }
         return listausuarios
-    } }
+    }
+
+
+
+    fun devuelvebuzon1() {
+
+        listaConsumida1 = ArrayList()
+        listafiltrada2=  ArrayList()
+        listafiltrada1=  ArrayList()
+
+        try {
+            viewModelScope.launch {
+                listaConsumida1 = withContext(Dispatchers.IO) {
+                    lista1.recuperarMensajesBrd(broadlist)
+                }
+
+                if (listaConsumida1.isNotEmpty()) {
+                    listasize = listaConsumida1.size
+                    listafiltrada2 = ArrayList()
+
+                    if (BuzonFragment.control == 1) {
+                        for (i in 0 until listaConsumida1.size) {
+                        //    if (listaConsumida[i].Receiverid == "Broadcast") {
+                                listafiltrada2.add(listaConsumida1[i])
+                            }
+                        }
+                    }
+
+                    if (BuzonFragment.control == 2) {
+                        for (i in 0 until listaConsumida.size) {
+                            if (listaConsumida[i].Senderid == broadlist) {
+                                listafiltrada2.add(listaConsumida1[i])
+                            }
+                        }
+                    }
+                    adaptador.value = BuzonAdapter(listafiltrada2, BuzonFragment.control)
+                }
+        } catch (ex: Exception) {
+            Log.e("aqui", ex.message.toString())
+        }
+    }
+
+
+    fun devuelvebuzon2() {
+
+        listaConsumida1 = ArrayList()
+        listafiltrada2=  ArrayList()
+        listafiltrada1=  ArrayList()
+
+        try {
+            viewModelScope.launch {
+                listaConsumida1 = withContext(Dispatchers.IO) {
+                    lista1.recuperarMensajesBrd1(broadlist)
+                }
+
+                if (listaConsumida1.isNotEmpty()) {
+                    listasize = listaConsumida1.size
+                    listafiltrada2 = ArrayList()
+
+                    if (BuzonFragment.control == 1) {
+                        for (i in 0 until listaConsumida1.size) {
+                            //    if (listaConsumida[i].Receiverid == "Broadcast") {
+                            listafiltrada2.add(listaConsumida1[i])
+                        }
+                    }
+                }
+
+                if (BuzonFragment.control == 2) {
+                    for (i in 0 until listaConsumida.size) {
+                        if (listaConsumida[i].Senderid == broadlist) {
+                            listafiltrada2.add(listaConsumida1[i])
+                        }
+                    }
+                }
+                adaptador.value = BuzonAdapter(listafiltrada2, BuzonFragment.control)
+            }
+        } catch (ex: Exception) {
+            Log.e("aqui", ex.message.toString())
+        }
+    }
+
+}
 

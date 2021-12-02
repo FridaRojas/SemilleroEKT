@@ -1,10 +1,7 @@
 package com.example.agileus.webservices.dao
 
-import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.Buzon
-import com.example.agileus.models.ListaUsers
 import com.example.agileus.providers.BuzonProviderListener
-import com.example.agileus.utils.Constantes.broadlist
 import retrofit2.Call
 import retrofit2.Response
 

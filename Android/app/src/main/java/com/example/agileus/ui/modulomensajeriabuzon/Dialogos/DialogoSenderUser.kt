@@ -10,9 +10,10 @@ import com.example.agileus.models.Buzon
 import com.example.agileus.R
 import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonUser.BuzonDetallesUserFragment
+import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
 import com.google.android.material.textfield.TextInputEditText
 
-class DialogoSenderUser(val listener: BuzonDetallesUserFragment) : DialogFragment() {
+class DialogoSenderUser(val listener: UserBuzonListener) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {

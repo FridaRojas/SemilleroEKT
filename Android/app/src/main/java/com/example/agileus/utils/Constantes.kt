@@ -22,7 +22,7 @@ object Constantes {
     val URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
     val URL_BASE3 = "http://10.97.6.83:3040/api/"
     val URL_Login = "http://10.97.2.202:3040"
-    val broadlist ="61a101db174bcf469164d2fd"
+    val broadlist = "61a101db174bcf469164d2fd"
 
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)
