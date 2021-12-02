@@ -250,6 +250,15 @@ public class TaskController {
         if (oTarea.isPresent()) {
             tareaService.actualizarEstatus(id_tarea, estatus);
             mensaje = "Estatus actualizado correctamente";
+            Optional<User> usuarioValido = usuarioService.findById(oTarea.get().getId_emisor());
+            if(usuarioValido.isPresent()) {//Si el usuario es valido
+                String token = usuarioValido.get().getToken();
+                if (token != null || token != "") {//Si existe el token o no es vacio
+                    if(estatus.equals("revision")) {
+                        tareaService.notificacion(token, "Entró en "+estatus+" Tarea: " + oTarea.get().getTitulo());
+                    }
+                }
+            }
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje));
         } else {
             mensaje = "Id no encontrado";
