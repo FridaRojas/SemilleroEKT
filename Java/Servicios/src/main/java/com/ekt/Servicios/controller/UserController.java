@@ -340,5 +340,22 @@ public class UserController {
         }
     }
 
+    @GetMapping("/busquedaUsuario/{parametro}")
+    public Response busquedaUsuario(@PathVariable String parametro) {
+        try {
+            if (parametro==null){
+                return new Response(HttpStatus.BAD_REQUEST,"",null);
+            }else{
+                if (userService.busquedaUsuario(parametro).isPresent()){
+                    return new Response(HttpStatus.OK, "Usuario(s) encontrado(s)",userService.busquedaUsuario(parametro).get());
+                }else{
+                    return new Response(HttpStatus.OK, "Usuario(s) no encontrado(s)",userService.busquedaUsuario(parametro).get());
+                }
+            }
+        }catch (Exception e){
+            return new Response(HttpStatus.NOT_FOUND,"",null);
+        }
+    }
+
 
 }
