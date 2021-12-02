@@ -1,9 +1,12 @@
 package com.ekt.Servicios.repository;
 
 import com.ekt.Servicios.entity.Task;
+import com.ekt.Servicios.entity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends MongoRepository<Task,String> {
@@ -34,5 +37,6 @@ public interface TaskRepository extends MongoRepository<Task,String> {
 
     @Query(value = "{'id_emisor': ?0, 'estatus': ?1}")
     Iterable<Task> getAllByIdEmisorAndStatus(String id_emisor, String estatus);
+
 
 }
