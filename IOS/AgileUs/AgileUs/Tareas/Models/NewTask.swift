@@ -38,7 +38,4 @@ struct TaskResponse: Codable {
     var data: Task?
 }
 
-struct TaskRequestEdit {
-    
-}
 

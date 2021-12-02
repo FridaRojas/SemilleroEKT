@@ -30,6 +30,7 @@
 		AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60A9A274C5D120087E417 /* Ext_Button.swift */; };
 		AEA60AA1274D70670087E417 /* Funciones_Generales.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60AA0274D70670087E417 /* Funciones_Generales.swift */; };
 		AEA60AA3274D97530087E417 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA60AA2274D97530087E417 /* Strings.swift */; };
+		AEB4BFD9275854BA000526F6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB4BFD8275854BA000526F6 /* Message.swift */; };
 		AEF5ADB527548E2800AAC104 /* DataPersonas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB427548E2800AAC104 /* DataPersonas.swift */; };
 		C910568F2750145700CA5A89 /* Help_String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C910568E2750145700CA5A89 /* Help_String.swift */; };
 		C9436A762755795A005B1922 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C9436A7527557959005B1922 /* GoogleService-Info.plist */; };
@@ -92,6 +93,7 @@
 		AEA60A9A274C5D120087E417 /* Ext_Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext_Button.swift; sourceTree = "<group>"; };
 		AEA60AA0274D70670087E417 /* Funciones_Generales.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funciones_Generales.swift; sourceTree = "<group>"; };
 		AEA60AA2274D97530087E417 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		AEB4BFD8275854BA000526F6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		AEF5ADB427548E2800AAC104 /* DataPersonas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersonas.swift; sourceTree = "<group>"; };
 		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
 		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 			children = (
 				C927DABF274E93CD00D3C1B7 /* Task.swift */,
 				AE4918ED27570A2D000162AA /* NewTask.swift */,
+				AEB4BFD8275854BA000526F6 /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				491DF31127552F61000BFF52 /* Pantalla_Tareas.swift in Sources */,
 				AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */,
 				AE1D0AC1274EED9A00D3792B /* PickerView.swift in Sources */,
+				AEB4BFD9275854BA000526F6 /* Message.swift in Sources */,
 				AE43C31B275595FC0035A514 /* VisorPDF.swift in Sources */,
 				AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */,
 			);

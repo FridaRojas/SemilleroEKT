@@ -80,8 +80,8 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
         {
         let task = Task(
                 id_grupo: grupoID,
-                id_emisor: "ReceptorAlexis",
-                nombre_emisor: "cristian",
+                id_emisor: "618e8743c613329636a769aa",
+                nombre_emisor: "Armando Manzanero",
                 id_receptor: seleccionado_picker_persona_id,
                 nombre_receptor: personSelectField.text,
                 fecha_ini: dateStartField.text!,

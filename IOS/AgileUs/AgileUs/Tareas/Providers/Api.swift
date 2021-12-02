@@ -47,8 +47,8 @@ final class Api {
                         
                         newTask = Task(
                                     id_grupo: "GRUPOID1",
-                                    id_emisor: "ReceptorAlexis",
-                                    nombre_emisor: "cristian",
+                                    id_emisor: "618e8743c613329636a769aa",
+                                    nombre_emisor: "Armando Manzanero",
                                     id_receptor: task.id_receptor,
                                     nombre_receptor: task.nombre_receptor,
                                     fecha_ini: task.fecha_ini!,
@@ -96,7 +96,10 @@ final class Api {
                             if let data = data {
                                 print(data)
                                 do {
+                                    
+                                    Api.shared.sendMessage(message: "", title: (newTask?.titulo)!, person: (newTask?.nombre_receptor)!)
                                     var task: TaskResponse
+                                    
                                     task = try JSONDecoder().decode(TaskResponse.self, from: data)
                                     success(task)
                                 } catch {
@@ -129,8 +132,8 @@ final class Api {
         } else {
             newTask = Task(
                         id_grupo: "GRUPOID1",
-                        id_emisor: "ReceptorAlexis",
-                        nombre_emisor: "cristian",
+                        id_emisor: "618e8743c613329636a769aa",
+                        nombre_emisor: "Armando Manzanero",
                         id_receptor: task.id_receptor,
                         nombre_receptor: task.nombre_receptor,
                         fecha_ini: task.fecha_ini!,
@@ -176,6 +179,8 @@ final class Api {
                 if let data = data {
                     print(data)
                     do {
+                        Api.shared.sendMessage(message: "", title: task.titulo!, person: task.nombre_receptor!)
+
                         var task: TaskResponse
                         task = try JSONDecoder().decode(TaskResponse.self, from: data)
                         success(task)
@@ -509,6 +514,66 @@ final class Api {
        
         }
         task.resume()
+    }
+    
+    func sendMessage(message: String, title: String, person: String) {
+        
+        let session = URLSession.shared
+        let url = URL(string: "http://10.97.6.83:3040/api/mensajes/crearMensaje")!
+        var request = URLRequest(url: url)
+        
+        let date = Date()
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        var messageS = MessageTask(idEmisor: "618e8743c613329636a769aa", idReceptor: "618b05c12d3d1d235de0ade0", texto: "Se asigno la tarea \(title) a la persona: \(person)", rutaDocumento: "", fechaCreacion: "\(dateFormatter.string(from: date))")
+        
+        
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let dataToJson = try! JSONEncoder().encode(messageS)
+        
+        let taskSession = session.uploadTask(with: request, from: dataToJson) {
+            (data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse,
+               self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    print("error \(dataString!)")
+                }
+                return;
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse,
+               self.rangeStatusCode400.contains(httpResponse.statusCode){
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    print("error \(dataString!)")
+                }
+                return;
+            }
+            
+            if error != nil {
+                print("error message")
+                return;
+            }
+            if let data = data {
+                print(data)
+                do {
+                    var message: messageTaskResponse
+                    message = try JSONDecoder().decode(messageTaskResponse.self, from: data)
+                    print(message)
+                } catch {
+                    print("Error JSONDecoder mensaje")
+                }
+     
+            }
+            
+        }
+
+        taskSession.resume()
     }
     
 
