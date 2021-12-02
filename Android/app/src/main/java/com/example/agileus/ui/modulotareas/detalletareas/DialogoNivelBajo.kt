@@ -92,7 +92,6 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
                 mesI = cal[Calendar.MONTH].toString()
             }
 
-
             if (cal[Calendar.DATE] <= 9) {
                 diaI = "0${cal[Calendar.DATE] + 1}"
                 Log.d("Mensaje", "Dia nuevo $diaI")

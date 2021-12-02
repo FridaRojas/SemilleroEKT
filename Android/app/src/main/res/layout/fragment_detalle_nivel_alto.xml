@@ -104,19 +104,6 @@
             android:hint="Observaciones"
             app:layout_constraintTop_toBottomOf="@+id/txtFechaInicioD" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/btnAdjuntarArchivoF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            style="@style/StyleTextFragment"
-            android:drawableLeft="@drawable/iconoadjuntararchivo"
-            android:layout_marginTop="@dimen/marginFormulario"
-            android:textColor="@color/colorPrimary"
-            android:text="  Adjuntar Archivo PDF"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtObservacionesD"/>
-
         <!--
         <Button
             android:id="@+id/btnAdjuntarArchivoF"
@@ -127,6 +114,19 @@
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
         -->
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/btnAdjuntarArchivoF"
+            style="@style/StyleTextFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/iconoadjuntararchivo"
+            android:text="Descargar Archivo PDF"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtObservacionesD" />
 
         <Button
             android:id="@+id/btnGuardarTareaF"
