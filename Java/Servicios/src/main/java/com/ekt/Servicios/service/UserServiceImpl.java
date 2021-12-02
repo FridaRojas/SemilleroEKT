@@ -132,4 +132,9 @@ public class UserServiceImpl implements UserService{
         return userRepository.findChilds(idPadre);
     }
 
+    @Override
+    public Optional<ArrayList<User>> busquedaUsuario(String parametro) {
+        return userRepository.busquedaUsuario(parametro);
+    }
+
 }

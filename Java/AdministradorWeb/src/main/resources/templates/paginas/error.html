@@ -8,89 +8,38 @@
             width:100%;
 
         }
-        table .resto{
-            padding: 20px;
-            width: 85% ;
+        table .vacio{
+            width: 30% ;
         }
 
-        table .menu{
-            width: 15% ;
-            height: max-content;
-
-
-        }
-        .main {
-            width: 50%;
-            margin: 20px auto;
+        table .imagen{
+            width: 40% ;
         }
 
-        /* Bootstrap 4 text input with search icon */
-
-        .has-search .form-control {
-            padding-left: 2.375rem;
-        }
-
-        .has-search .form-control-feedback {
-            position: absolute;
-            z-index: 2;
-            display: block;
-            width: 2.375rem;
-            height: 2.375rem;
-            line-height: 2.375rem;
-            text-align: right;
-            pointer-events: none;
-            color: #66BB6A;
-        }
-
-        .contenedor{
-            width:90px;
-            height:240px;
-            position:fixed;
-            right:0px;
-            bottom:0px;
-        }
-        .botonF1{
-            width:60px;
-            height:60px;
-            border-radius:100%;
-            background:#66BB6A;
-            right:0;
-            bottom:0;
-            position:absolute;
-            margin-right:16px;
-            margin-bottom:16px;
-            border:none;
-            outline:none;
-            color:#FFF;
-            font-size:36px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-            transition:.3s;
-        }
 
     </style>
 
-    <link
-            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-            rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
     <title>Title</title>
 
 </head>
-<body onload="buscar()">
-<table id="tabla">
-    <td  class="menu">
-        <div th:replace="elementos/menuLateral::menuLateral"></div>
-    </td>
-    <td class="resto" >
-        <div class="row mt-5 px-5">
-            <h2>Pagina no dispopnible temporalmente<br>Intente mas tarde <br>Si el problema persiste contacte al administrador</h2>
-        </div>
-    </td>
+<body onload="buscar()" style="background-color: #D14745">
+    <table style="align-content: center; align-items: center">
+        <td  class="vacio"></td>
+        <td  class="imagen">
+            <div >
+                <img src="/assets/error-icono-dropbox-business.jpg"  height="400"  width="700" >
+                <h2 style="font-family: 'Poppins', sans-serif; text-align: center">Pagina no disponible temporalmente, Intente mas tarde</h2>
+
+            </div>
+        </td>
+        <td  class="vacio"></td>
+
+    </table>
 </table>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
