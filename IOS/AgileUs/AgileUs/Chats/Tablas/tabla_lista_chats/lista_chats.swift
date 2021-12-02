@@ -32,7 +32,7 @@ class lista_chats: UITableViewCell {
     func configurar_celda(Datos : [Any])
     {
         id = Datos[0] as! Int
-        lbl_conversacion.text = "\(Datos[1])"
+        lbl_conversacion.text = "\(Datos[3])"
     }
     func regresa_id() -> Int
     {

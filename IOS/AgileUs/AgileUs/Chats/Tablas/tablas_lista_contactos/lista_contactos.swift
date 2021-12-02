@@ -10,6 +10,8 @@ import UIKit
 class lista_contactos: UITableViewCell {
     
     @IBOutlet weak var lbl_contacto: UILabel!
+    @IBOutlet weak var lbl_puesto: UILabel!
+    
     var id = -1
     static let identificador = "Identificador_Celda"
     
@@ -33,7 +35,8 @@ class lista_contactos: UITableViewCell {
     {
         
         id = Datos[0] as! Int
-        lbl_contacto.text = "\(Datos[1])"
+        lbl_contacto.text = "\(Datos[3])"
+        lbl_puesto.text = "\(Datos[4])"
     }
     
     func regresa_id() -> Int
