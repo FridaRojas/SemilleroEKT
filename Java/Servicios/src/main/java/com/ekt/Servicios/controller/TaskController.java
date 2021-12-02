@@ -49,6 +49,7 @@ public class TaskController {
         }
 
         LocalDateTime date =  LocalDateTime.now();
+        String asunto = "";
         System.out.println("Entramos en agregar tarea");
         ArrayList<String> validarTareas = tareaService.validarTareasCrear(tarea);
         if(validarTareas.size() == 0){
@@ -67,6 +68,9 @@ public class TaskController {
             bitacora.setFecha_actualizacion(newLdt);
             bitacora.setEstatus(tarea.getEstatus());
             bitacoraRepository.save(bitacora);
+
+            tareaService.notificacion(token, asunto);
+
 
             mensaje = "Tarea creada correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tarea));
@@ -91,8 +95,9 @@ public class TaskController {
     public ResponseEntity<?> read(@PathVariable String id){
         Optional<Task> oTarea = tareaService.findById(id);
         String mensaje;
+        //Si el iD no existe
 
-        //Si no hay ninguna tarea o no existe
+        //Si no hay ninguna tarea
         if(!oTarea.isPresent()){
             Map<String, Object> body = new LinkedHashMap<>();//LinkedHashMap conserva el orden de inserción
             Map<String, String> data = new LinkedHashMap<>();
@@ -306,6 +311,32 @@ public class TaskController {
         }
         mensaje = "Tareas que asignó el id: "+id_emisor+" por estatus: "+estatus+ " obtenidas correctamente";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+    }
+
+    @PutMapping("/actualizarTareaFechaRealIni/{id_tarea}")
+    public ResponseEntity<?> actualizarFechaRealTareaIni(@PathVariable String id_tarea,@RequestBody Task tarea) {
+        String mensaje = "";
+        try {
+            tareaService.updateRealDateStart(id_tarea, tarea);
+            mensaje = "Fecha de inicio guardada correctamente";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }catch (Exception e){
+            mensaje = "Error de conexion";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }
+    }
+
+    @PutMapping("/actualizarTareaFechaRealFin/{id_tarea}")
+    public ResponseEntity<?> actualizarFechaRealTareaFin(@PathVariable String id_tarea,@RequestBody Task tarea) {
+        String mensaje = "";
+        try {
+            tareaService.updateRealDateFinish(id_tarea, tarea);
+            mensaje = "Fecha de termino guardada correctamente";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }catch (Exception e){
+            //mensaje = e.getMessage()+" Error de conexion";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getStackTrace().toString()));
+        }
     }
 
 }
