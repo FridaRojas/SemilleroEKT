@@ -157,11 +157,12 @@ public class TaskServiceImpl implements TaskService{
         Request request = new Request.Builder()
                 .url("https://fcm.googleapis.com/fcm/send")
                 .method("POST", body)
-                .addHeader("Authorization", "key=AAAAIITlXUs:APA91bHueyZr0vJFOSo-yLEbRsG20D8rquPQbQJ1C82JTcnaOjB2ghemxgUljAzwE4wsPEzjQZY2GlrNcI1sFx__SuxsGfszskEF2cx5zy3yYFCdiU2681mCoLwMw_fH4TjmocJIQyYx")
+                .addHeader("Authorization", "key=AAAAOMDADOM:APA91bF39PZzaPSPbFgPbEO6KvjsOD-AtfnpwEgNGZ6lMFQyx4xaswBX6HDe3iQfjAPiP5MR32Onws1Ry5diSbVY_PwRBhZLQ0PGJzPFLUk14xR8ELQVyleVG2_z00wdWBqs1inATbLP")
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
             okhttp3.Response response = client.newCall(request).execute();
+            System.out.println(response.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

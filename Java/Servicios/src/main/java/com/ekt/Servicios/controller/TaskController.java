@@ -6,7 +6,9 @@ import com.ekt.Servicios.entity.TaskLog;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.TaskLogRepository;
 import com.ekt.Servicios.repository.TaskRepository;
+import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.TaskServiceImpl;
+import com.ekt.Servicios.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +30,23 @@ public class TaskController {
     @Autowired
     private TaskLogRepository bitacoraRepository;
 
+    @Autowired
+    private UserServiceImpl usuarioService;
+
     @PostMapping("/agregarTarea")   //1. Tareas
     public ResponseEntity<?> create(@RequestBody Task tarea){
         String mensaje = "";
         // Valida que el receptor exista
-        Optional<User> usuarioValido = tareaRepository.validarUsuario(tarea.getId_receptor());
+        Optional<User> usuarioValido = usuarioService.findById(tarea.getId_receptor());
         if(!usuarioValido.isPresent()){
             mensaje = "Usuario receptor con id: "+tarea.getId_receptor()+" invalido";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
         }
         String token = usuarioValido.get().getToken();
+        if(token != null || token!= "") {
+            tareaService.notificacion(token, tarea.getTitulo());
+            System.out.println("Se envio notificacion Token:"+ token);
+        }
 
         LocalDateTime date =  LocalDateTime.now();
         System.out.println("Entramos en agregar tarea");
@@ -176,7 +185,7 @@ public class TaskController {
     public ResponseEntity<?> getUsuarioTareasByPrioridad(@PathVariable String prioridad,@PathVariable String idReceptor) {
         String mensaje;
         // Valida que el receptor exista
-        Optional<User> usuarioValido = tareaRepository.validarUsuario(idReceptor);
+        Optional<User> usuarioValido = usuarioService.findById((idReceptor));
         if(!usuarioValido.isPresent()){
             mensaje = "Usuario receptor con id: "+idReceptor+" invalido";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
