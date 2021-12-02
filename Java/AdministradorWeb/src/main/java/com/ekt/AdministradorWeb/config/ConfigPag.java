@@ -3,7 +3,7 @@ package com.ekt.AdministradorWeb.config;
 
 import com.ekt.AdministradorWeb.DAO.GroupDAO;
 import com.ekt.AdministradorWeb.DAO.UserDAO;
-import com.ekt.AdministradorWeb.entity.User;
+import com.ekt.AdministradorWeb.entity.*;
 import com.google.gson.Gson;
 import okhttp3.*;
 import okhttp3.RequestBody;
@@ -22,7 +22,6 @@ import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
-import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
@@ -298,7 +297,7 @@ public class ConfigPag {
         //añadir lista de usuarios del organigrama
         model.addAttribute("listaUsuariosGrupo",userDAO.listaUsuariosOrganigrama(id));
 
-
+        model.addAttribute("idGrupo",id);
         return "paginas/organigramas/editarOrganigrama";
     }
 
@@ -375,9 +374,22 @@ public class ConfigPag {
     }
 
     @PostMapping("/agregarUsuarioAGrupo")
-    public String agregarUsuarioAGrupo(@ModelAttribute User gr,@ModelAttribute (value="idGrupo")String idGrupo, RedirectAttributes redirectAttrs) {
-        System.out.println(idGrupo);
-        System.out.println(gr.getNombre());
+    public String agregarUsuarioAGrupo(@ModelAttribute BodyAddUserGroup body, RedirectAttributes redirectAttrs) {
+
+        System.out.println("Grupo: "+body.getIDGrupo());
+        System.out.println("Usuario: "+body.getIDUsuario());
+        System.out.println("Rol: "+body.getNombreRol());
+        System.out.println("Superior: "+body.getIDSuperior());
+
+
+
+
+
+
+
+
+        return null;
+        /*
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
@@ -401,7 +413,7 @@ public class ConfigPag {
             System.out.println(e.getMessage());
             return "";
         }
-
+        */
     }
 
     @GetMapping("/verUsuario")
