@@ -30,4 +30,6 @@ public interface GroupService {
 
     Optional<Group> buscarPorNombre(String nombre);
 
+    void actualizaIdSuperior(String idUser, String idSuperior);
+
 }

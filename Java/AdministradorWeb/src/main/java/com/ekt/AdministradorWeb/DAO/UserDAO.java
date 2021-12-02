@@ -26,7 +26,6 @@ public class UserDAO {
             JSONObject jsonObject= new JSONObject(response.body().string());
             if (!jsonObject.get("data").equals("")){
                 JSONArray usuarios = jsonObject.getJSONArray("data");
-
                 for (int i=0;i<usuarios.length();i++){
                     listaUsuarios.add(gson.fromJson(usuarios.getJSONObject(i).toString(), User.class));
                 }
@@ -118,9 +117,24 @@ public class UserDAO {
         return res;
     }
 
-    public boolean actualizaIdSujperior(String idUser, String idSuperior){
-
-        return false;
+    public boolean actualizaIdSuperior(String idUser, String idSuperior){
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"idUsuarios\" : [\""+idUser+"\"],\r\n    \"idSuperiores\" : [\""+idSuperior+"\"]\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/updateIdBoss")
+                .method("PUT", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            System.out.println(jsonObject.toString());
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public ArrayList<User> listaUsuariosDisponibles(){

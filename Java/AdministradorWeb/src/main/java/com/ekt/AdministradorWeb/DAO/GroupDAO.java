@@ -9,11 +9,12 @@ import org.json.JSONObject;
 public class GroupDAO {
 
     public User[] muestraUsuariosGrupo(String idGrupo){
+        System.out.println(idGrupo);
         Gson gson = new Gson();
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/buscar/619d220c3cd67733b375db11" /* + idGrupo */)
+                .url("http://localhost:3040/api/grupo/buscar/" + idGrupo)
                 .method("GET", null)
                 .build();
         try{

@@ -244,7 +244,7 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "paginas/organigramas/editarOrganigrama";
+            return "redirect:/buscarTodosGrupos";
         }
     }
 
@@ -291,11 +291,11 @@ public class ConfigPag {
     }
 
     @PostMapping("/ActualizaElimina")
-    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap){
-        userDAO.actualizaIdSujperior(idUser,idBoss);
-
+    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap, Model model){
+        userDAO.actualizaIdSuperior(idUser,idBoss);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
+        System.out.println(user.getIDGrupo());
         if(listaSubordinados != null) {
             ArrayList<User> listaUsuarios = new ArrayList<>();
             User[] usuarios;
@@ -311,10 +311,8 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "paginas/organigramas/editarOrganigrama";
+            return "redirect:/buscarTodosGrupos";
         }
-
-
     }
 
     @PostMapping("/buscarGrupo")

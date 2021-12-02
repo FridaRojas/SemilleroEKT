@@ -131,10 +131,11 @@ public class UserController {
         try {
             for (int i = 0; i < idUser.length; i++) {
                 userService.updateIdBoss(idUser[i], idBoss[i]);
+                groupService.actualizaIdSuperior(idUser[i], idBoss[i]);
             }
             return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Error desconocido",""));
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,e.getMessage(),""));
         }
     }
 

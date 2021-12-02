@@ -102,13 +102,14 @@
             <!-- modal agregar usuarios-->
 
             <div class="col-2">
-                <button class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
-                    <img src="/assets/--.png" style="max-height: 7vh;"/>
-                    <p>Quitar usuario</p>
-                </button>
+                <form th:action="@{/eliminaUsuario}" th:object="${Group}" method="post" >
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
+                        <img src="/assets/--.png" style="max-height: 7vh;"/>
+                        <p>Quitar usuario</p>
+                    </button>
+                </form>
             </div>
-            <div th:replace="paginas/modalEliminaUsuario::#modalEliminaUsuario"></div>
-
         </div>
     </td>
 </table>
@@ -172,5 +173,35 @@
     </form>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalEliminaUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <form th:action="@{/reasignaSuperior}" method="post" name="reasigna" id="reasigna">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Eliminar usuario</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Seleccione usuario</label>
+                            <select name="idUsuario" id="idUsuario">
+                                <optgroup>
+                                    <p th:each="user: ${listaUsuariosGrupo}">
+                                        <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                    </p>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
