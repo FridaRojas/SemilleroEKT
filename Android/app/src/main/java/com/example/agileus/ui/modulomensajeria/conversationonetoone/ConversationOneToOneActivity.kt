@@ -59,6 +59,15 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             }
         }.start()
 
+        conversationviewModel.actualizar.observe(this,{
+            for( valor in it){
+                if(valor.idemisor!=Constantes.id && valor.statusLeido == false){
+                    conversationviewModel.statusUpdateMessage(StatusRead(valor.id,Constantes.finalDate))
+                }
+            }
+
+        })
+
         conversationviewModel.adaptador.observe(this,{
                     binding.recyclerConversacion.adapter = it
                     binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)

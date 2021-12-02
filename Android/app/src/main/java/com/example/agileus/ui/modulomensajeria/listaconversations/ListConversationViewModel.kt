@@ -23,6 +23,7 @@ class ListConversationViewModel : ViewModel() {
     lateinit var listaConsumidaGrupos:ArrayList<Groups>
     lateinit var listadeChats:ArrayList<Chats>
     var chatsdeUsuario = MutableLiveData<ArrayList<Chats>>()
+    var pruebaArreglo = MutableLiveData<ArrayList<Chats>>()
     init {
         lista = MessageDao()
     }
@@ -37,7 +38,6 @@ class ListConversationViewModel : ViewModel() {
                 if (listaConsumidaGrupos != null){
                     if(listaConsumidaGrupos.isNotEmpty()){
                         adaptadorGrupos.postValue(GroupsAdapter(listaConsumidaGrupos as ArrayList<Groups>))
-
                     }
                 }
             }
@@ -45,6 +45,7 @@ class ListConversationViewModel : ViewModel() {
             Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
+
     fun devuelveListaChats(idUser:String){
         try {
             viewModelScope.launch {
@@ -55,6 +56,7 @@ class ListConversationViewModel : ViewModel() {
                     if(listadeChats.isNotEmpty()){
                         adaptadorChats.postValue(ChatsAdapter(listadeChats as ArrayList<Chats>))
                         chatsdeUsuario.value = listadeChats!!
+                        pruebaArreglo.value = listadeChats!!
                     }
                 }
             }

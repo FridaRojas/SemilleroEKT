@@ -6,6 +6,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.collections.HashMap
 
 object Constantes {
     val URL_ENVIAR_MENSAJE = "http://10.97.6.83:3040/api/"
@@ -33,5 +34,8 @@ object Constantes {
     val formatt: DateFormat = SimpleDateFormat("ZZZZZ", Locale.getDefault())
     val localTime: String = formatt.format(currentLocalTime)
     val finalDate = "$date$localTime"
+
+
+    var arreglo_conversacion = HashMap<String,String>()
 
 }

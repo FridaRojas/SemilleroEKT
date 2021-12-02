@@ -25,6 +25,7 @@ class ConversationViewModel:ViewModel() {
     lateinit var listaConsumida: ArrayList<Conversation>
     lateinit var RespuestaMessage: MessageResponse
     var responseM = MutableLiveData<MessageResponse>()
+    var actualizar = MutableLiveData<ArrayList<Conversation>>()
 
 
     init {
@@ -41,6 +42,7 @@ class ConversationViewModel:ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.postValue(ConversationAdapter(listaConsumida as ArrayList<Conversation>))
+                        actualizar.value = listaConsumida
                     }
                     else{
 
@@ -71,7 +73,6 @@ class ConversationViewModel:ViewModel() {
     }
 
     fun statusUpdateMessage(statusRead: StatusRead){
-
         try {
             viewModelScope.launch {
                 RespuestaMessage = withContext(Dispatchers.IO) {

@@ -10,7 +10,7 @@ data class Conversation(
    @SerializedName("rutaDocumento") val rutaDocumento: String,
    @SerializedName("statusRutaDocumento") val statusRutaDocumento: Boolean,
    @SerializedName("nombreConversacionReceptor") val nombreConversacionReceptor: String,
-   @SerializedName("fechaCreacion") val fechaCreacion: String,
+   @SerializedName("fechaCreacion") var fechaCreacion: String,
    @SerializedName("statusCreado") val statusCreado: Boolean,
    @SerializedName("fechaEnviado") val fechaEnviado: String,
    @SerializedName("statusEnviado") val statusEnviado: Boolean,

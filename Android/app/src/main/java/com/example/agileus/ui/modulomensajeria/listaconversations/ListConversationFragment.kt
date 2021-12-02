@@ -3,9 +3,11 @@ package com.example.agileus.ui.modulomensajeria.listacontactos
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +18,12 @@ import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 
 
 class ListConversationFragment : Fragment() {
 
+    lateinit var arreglo:HashMap <String,String>
     private lateinit var ChatsViewModel: ListConversationViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -53,6 +57,9 @@ class ListConversationFragment : Fragment() {
         })
 
 
+
+
+
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
         }
@@ -80,7 +87,10 @@ class ListConversationFragment : Fragment() {
                         binding.recyclerListGroups.isEnabled = false
                 }
                 })
+
             }
+
+
 
             override fun afterTextChanged(p0: Editable?) {
                 binding.recyclerListGroups.isVisible = true
