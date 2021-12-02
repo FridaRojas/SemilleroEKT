@@ -135,12 +135,15 @@ public class TaskServiceImpl implements TaskService{
         boolean tituloT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
         boolean descripcionT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusT = Pattern.matches("^[a-zA-Z]*$", estatus);
+        boolean prioridadT = Pattern.matches("^[a-zA-Z]*$", prioridad);
+
         ArrayList<String> errores = new ArrayList<>();
         if (!nombreE) errores.add("nombreEmisor");
         if (!nombreR) errores.add("nombreReceptor");
         if (!tituloT) errores.add("titulo");
         if (!descripcionT) errores.add("descripcion");
         if (!estatusT) errores.add("estatus");
+        if (!prioridadT) errores.add("prioridad");
 
         return errores;
     }
@@ -182,7 +185,7 @@ public class TaskServiceImpl implements TaskService{
             observacionesA=true;
         else
             observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaciones);
-        boolean prioridadA = Pattern.matches("^[a-zA-Z\\s]*$", prioridad);
+        boolean prioridadA = Pattern.matches("^[a-zA-Z]*$", prioridad);
         boolean tituloA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
         boolean descripcionA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusA = Pattern.matches("^[a-zA-Z]*$", estatus);
