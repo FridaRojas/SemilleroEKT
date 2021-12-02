@@ -25,7 +25,7 @@ struct User:Codable{
     let numeroEmpleado: String
     let nombre: String
     let nombreRol: String
-    let idsuperiorInmediato: String
+    let idsuperiorInmediato: String?
 }
 
 struct ResponseHierarchy:Codable{
@@ -39,14 +39,6 @@ class LoginScreen: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //self.navigationController?.isNavigationBarHidden = true
-
-
-        //navigationController?.setNavigationBarHidden(false, animated: false)
-        //navigationController?.setN
-        // Do any additional setup after loading the view.
-
         hideNavBar()
         initCustomUIKit()
     }
@@ -97,12 +89,14 @@ class LoginScreen: UIViewController {
 
             if let error = error {
                 print ("error: \(error)")
+                self.simpleAlertMessage(title: "Error!", message: "Error al conectar con el servidor")
                 return
             }
 
             guard let response = response as? HTTPURLResponse,
                 (200...299).contains(response.statusCode) else {
                     print ("Error servidor: \(response)")
+                    self.simpleAlertMessage(title: "Error!", message: "Error de respuesta del servidor")
                 return
             }
 
@@ -116,8 +110,12 @@ class LoginScreen: UIViewController {
                     DispatchQueue.main.async {
                         switch hierarchyData.status{
                             case "OK":
-                            if idsuperiorInmediato.isEmpty {
-                                    hierarchyLevel = 1
+                                if let idSuperiorInmediato = idsuperiorInmediato {
+                                    if !idsuperiorInmediato!.isEmpty{
+                                        hierarchyLevel = 1
+                                    } else {
+                                        hierarchyLevel = 2
+                                    }
                                 } else {
                                     hierarchyLevel = 2
                                 }
@@ -133,7 +131,7 @@ class LoginScreen: UIViewController {
                     }
                 }catch let error_S
                 {
-                    print("Error al conseguir hierarchy level\n\n\(error_S)\n\n********")
+                    print("Error al conseguir hierarchy level\n\n\(error_S)\n\n****")
                 }
             }
         }.resume()
@@ -206,8 +204,8 @@ class LoginScreen: UIViewController {
                         break
                     }
 
-                 }catch{
-                    print("Error")
+                 }catch let error_catch {
+                    print("Error: \(error_catch)")
                     print(data)
                 }
             }
