@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
+import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
@@ -104,6 +105,10 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
             binding.vista1.visibility= View.VISIBLE
             binding.fab.visibility = View.VISIBLE
         }, 3800)
+    }
+
+    override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
+        TODO("Not yet implemented")
     }
 
     fun startTimeCounter() {

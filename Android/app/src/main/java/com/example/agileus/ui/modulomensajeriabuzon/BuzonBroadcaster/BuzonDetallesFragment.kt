@@ -15,6 +15,10 @@ import com.example.agileus.databinding.BuzonDetallesFragmentBinding
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.control
 import android.os.CountDownTimer
+import com.example.agileus.models.MensajeBodyBroadcaster
+import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada1
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
 
@@ -46,12 +50,45 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        var lista=viewModel.getLista()
+          viewModel.getLista()
+
+//         lista.forEach(){
+  //           Log.d("MAIN",it.nombre.toString())
+    //     }
 //        Log.i("lista",lista.size.toString())
 
 
-        //       val post=Buzon("12","Brody","General","hola mundo feo 1","prueba de post")
-   //     viewModel.postMensaje(post)
+               val post=MensajeBodyBroadcaster("2000-01-01T00:00:00.000+00:00","61a101db174bcf469164d2fd","618e8882c613329636a769ad","hola mundo feo 1")
+              viewModel.postMensaje(post)
+
+        val post1=MsgBodyUser("Hola ","61a101db174bcf469164d2fd","618e8882c613329636a769ad")
+        viewModel.postRequest(post1)
+
+
+
+
+
+
+        USERTYPE="Broadcast"
+            binding.vista2.visibility=View.INVISIBLE
+
+        if (control == 1) {
+            binding.fab.visibility = View.VISIBLE
+
+            binding.fab.setOnClickListener {
+                Log.d("size","${listafiltrada1.size}")
+                val newFragment =
+                    DialogoSenderBroadcast(this,listafiltrada1) //Se le pasa el dialogolistener con This
+                activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
+            }
+        }
+
+        if (control == 2) {
+            binding.fab.visibility = View.GONE
+            binding.fab.setOnClickListener {
+                Toast.makeText(context, "Opción No permitida ", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
             if (response.isSuccessful)
@@ -65,27 +102,18 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
             }
         })
 
-
-
-        USERTYPE="Broadcast"
-            binding.vista2.visibility=View.INVISIBLE
-
-        if (control == 1) {
-            binding.fab.visibility = View.VISIBLE
-
-            binding.fab.setOnClickListener {
-                val newFragment =
-                    DialogoSenderBroadcast(this) //Se le pasa el dialogolistener con This
-                activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
+        viewModel.myResponse1.observe(viewLifecycleOwner, Observer { response->
+            if (response.isSuccessful)
+            {
+                Log.d("Main1",response.body().toString())
+                Log.d("Main1",response.code().toString())
+                Log.d("Main1",response.message().toString())
             }
-        }
-
-        if (control == 2) {
-            binding.fab.visibility = View.GONE
-            binding.fab.setOnClickListener {
-                Toast.makeText(context, "Opción No permitida ", Toast.LENGTH_SHORT).show()
+            else{
+                Log.d("Main1",response.code().toString())
             }
-        }
+        })
+
 
 //        viewModel.devuelvebuzon()
 
@@ -104,9 +132,9 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         override fun mensajeBroadcasting(buzon: Buzon) {
 
 
-            viewModel.postMensaje(buzon)
+          //  viewModel.postMensaje(buzon)
 
-
+/*
             viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
                 if (response.isSuccessful)
                 {
@@ -131,8 +159,44 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 binding.vista1.visibility= View.VISIBLE
                 binding.fab.visibility = View.VISIBLE
   }, 3800)
-
+*/
         }
+
+    override fun mensajeBroadcasting1(buzon: MensajeBodyBroadcaster) {
+        //viewModel.postMensaje1(buzon)
+
+
+        viewModel.postMensaje(buzon)
+
+        viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
+            if (response.isSuccessful)
+            {
+                Log.d("Main",response.body().toString())
+                Log.d("Main",response.code().toString())
+                Log.d("Main",response.message().toString())
+            }
+            else{
+                Log.d("Main",response.code().toString())
+            }
+        })
+
+        Handler().postDelayed({
+            binding.vista1.visibility= View.INVISIBLE
+            binding.vista2.visibility = View.VISIBLE
+            binding.fab.visibility = View.INVISIBLE
+        }, 5)
+
+
+        startTimeCounter()
+        ////////////////
+        Handler().postDelayed({
+            Toast.makeText(context, " Mensaje enviado a ${buzon.idReceptor}", Toast.LENGTH_SHORT).show()
+            binding.vista2.visibility = View.INVISIBLE
+            binding.vista1.visibility= View.VISIBLE
+            binding.fab.visibility = View.VISIBLE
+        }, 3800)
+    }
+
     fun startTimeCounter() {
         var counter=0
         val progressBar = binding.progress
@@ -143,7 +207,7 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 progressBar.progress = counter
             }
             override fun onFinish() {
-                viewModel.devuelvebuzon()
+           //     viewModel.devuelvebuzon()
             }
         }.start()
     }

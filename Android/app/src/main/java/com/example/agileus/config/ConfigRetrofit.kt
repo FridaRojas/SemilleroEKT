@@ -1,13 +1,13 @@
 package com.example.agileus.config
 
 
-import com.example.agileus.ui.moduloMensajeriaLogin.LoginApi
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.example.agileus.utils.Constantes.URL_Login
+import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
 import okhttp3.OkHttpClient
@@ -59,23 +59,13 @@ class ConfigRetrofit {
         return mRetrofit.create(BuzonApi::class.java)
     }
 
-    fun obtenerConfiguracionRetofitBuzon2(): BuzonApi {
+    fun obtenerConfiguracionRetofitBuzon2(): BuzonApi2 {
 
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE3)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(cliente(60))
             .build()
-        return mRetrofit.create(BuzonApi::class.java)
+        return mRetrofit.create(BuzonApi2::class.java)
     }
 
-    fun obtenerConfiguracionRetofitLogin(): LoginApi {
-
-        var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_Login)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(cliente(60))
-            .build()
-        return mRetrofit.create(LoginApi::class.java)
-    }
 }
