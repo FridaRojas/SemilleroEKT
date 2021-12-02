@@ -16,6 +16,9 @@ import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
 import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel
 import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel.Companion.status
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TasksAdapter(
@@ -66,8 +69,11 @@ class TasksAdapter(
         fun enlazarItem(dataTask: DataTask) {
             nombreTarea.text = dataTask.titulo
             personaAsignada.text = dataTask.nombreReceptor
-            prioridad.text = dataTask.prioridad
-//          fecha.text = dataTask.fechaIni.toString()
+            prioridad.text = "Prioridad: ${dataTask.prioridad.capitalize()}"
+
+            var fechaInicio = formatoFecha(dataTask.fechaIni)
+            fecha.text = fechaInicio
+
 
             //Log.d("status", status)
             btnAbrirDetallesTarea.setOnClickListener {
@@ -82,6 +88,37 @@ class TasksAdapter(
                     listener.abreDialogo(dataTask)
                 }
             }
+        }
+
+        fun formatoFecha(fecha: Date) : String{
+            var mesI: String = ""
+            var diaI: String = ""
+            var fechaIn: String = ""
+            val sdf3 = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+
+            val cal = Calendar.getInstance()
+            var fechaI = sdf3.parse(fecha.toString())
+
+            cal.time = fechaI
+
+
+            if (cal[Calendar.MONTH] <= 9) {
+                mesI = "0${cal[Calendar.MONTH] + 1}"
+            } else {
+                cal[Calendar.MONTH] + 1
+                mesI = cal[Calendar.MONTH].toString()
+            }
+
+
+            if (cal[Calendar.DATE] <= 9) {
+                diaI = "0${cal[Calendar.DATE] + 1}"
+            } else {
+                cal[Calendar.DATE] + 1
+                diaI = cal[Calendar.DATE].toString()
+            }
+
+            fechaIn = cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
+            return fechaIn
         }
     }
 }

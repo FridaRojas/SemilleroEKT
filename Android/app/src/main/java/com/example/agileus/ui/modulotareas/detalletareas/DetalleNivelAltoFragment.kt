@@ -61,7 +61,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         val args: DetalleNivelAltoFragmentArgs by navArgs()
         setInfo(args)
         with(binding) {
-
+            desactivarCampos()
             btnCancelarTareaF.setOnClickListener {
                 cancelarTarea(args)
             }
@@ -193,11 +193,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
 
 
+        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
+        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
+
 
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
-        prioridad = args.tareas.prioridad
-        estatus = args.tareas.estatus
+        prioridad = prioridadCampo
+        estatus = statusCampo
         descripcion = args.tareas.descripcion
 
         if (args.tareas.observaciones != null) {

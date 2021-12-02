@@ -56,6 +56,8 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
+
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
         //Recycler Status
         var adaptadorStatus = StatusTasksAdapter(listStatus, this)

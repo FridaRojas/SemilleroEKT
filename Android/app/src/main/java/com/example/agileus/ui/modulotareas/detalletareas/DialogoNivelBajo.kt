@@ -24,7 +24,6 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
     DialogFragment() {
 
     private lateinit var estatusD: String
-    private lateinit var observacionesD: String
     private lateinit var fechaFinD: Date
     private lateinit var fechaInicioD: Date
     private lateinit var descripcionD: String
@@ -51,7 +50,7 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             var txtObservacionesD = vista.findViewById<TextView>(R.id.txtObservacionesD)
             var txtEstatusD = vista.findViewById<TextView>(R.id.txtEstatusD)
             var btnEstado = vista.findViewById<Button>(R.id.btnCambiarEstadoD)
-            var btnPdf = vista.findViewById<LinearLayout>(R.id.btnPdf)
+            var btnPdf = vista.findViewById<TextView>(R.id.btnPdf)
 
             Log.d("Mensaje", dataTask.toString())
 
@@ -138,22 +137,24 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             descripcionD = dataTask.descripcion
             fechaInicioD = dataTask.fechaIni
             fechaFinD = dataTask.fechaFin
+            //observacionesD = dataTask.observaciones
 
             txtNombreTareaD.text = nombreTarea
-            txtNombrePersonaD.text = nombrePersonaD
-            txtPrioridadD.text = prioridadD
-            txtDescripcionD.text = descripcionD
-            txtFechaInicioD.text = fechaIn
-            txtFechaFinD.text = fechaFi
-            txtEstatusD.text = estatusD
+            txtNombrePersonaD.text = nombrePersonaD.capitalize()
+            txtPrioridadD.text = "Prioridad: ${prioridadD.capitalize()}"
+            txtDescripcionD.text = "Descripción: $descripcionD"
+            txtFechaInicioD.text = " Inicio: $fechaIn"
+            txtFechaFinD.text = " Fin: $fechaFi"
+            txtEstatusD.text = "Estatus: ${estatusD.capitalize()}"
+            txtObservacionesD.text = "Observaciones: ${dataTask.observaciones}"
 
             if (dataTask.observaciones != null) {
-                observacionesD = dataTask.observaciones
-                txtObservacionesD.setText(observacionesD)
+                //observacionesD = dataTask.observaciones
+                txtObservacionesD.setText(dataTask.observaciones)
                 txtObservacionesD.isVisible = true
             } else {
                 txtObservacionesD.isVisible = false
-                observacionesD = ""
+                dataTask.observaciones = ""
             }
 
             this.dialog?.closeOptionsMenu()
