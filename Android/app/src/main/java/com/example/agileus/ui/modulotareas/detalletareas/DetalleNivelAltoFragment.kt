@@ -1,5 +1,7 @@
 package com.example.agileus.ui.modulotareas.detalletareas
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,21 +9,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
 import com.example.agileus.models.TaskUpdate
+import com.example.agileus.providers.DownloadProvider
+import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
+import com.example.agileus.utils.Constantes
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
+import java.io.FileNotFoundException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
+    lateinit var firebaseProvider: FirebaseProvider
+    lateinit var mStorageInstance: FirebaseStorage
+    lateinit var mStorageReference: StorageReference
+    var uriPost: String = ""
+    var idsuperiorInmediato: String = "618d9c26beec342d91d747d6"
+    lateinit var resultLauncherArchivo: ActivityResultLauncher<Intent>
+
+
     private var anioFin: Int = 0
     private var mesInicio: Int = 0
     private var anioInicio: Int = 0
@@ -59,7 +78,47 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: DetalleNivelAltoFragmentArgs by navArgs()
+
+        firebaseProvider = FirebaseProvider()
+        mStorageInstance =
+            FirebaseStorage.getInstance()                           /*  *** Instancias Fb Storage ***  */
+        mStorageReference = mStorageInstance.getReference("Documentos")
+
+        resultLauncherArchivo =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    if (data != null) {
+                        try {
+                            var returnUri = data?.data!!
+                            val uriString = data.toString()
+                            val myFile = File(uriString).name
+                            //val myFile = getRealPathFromURI(requireContext(), returnUri)
+                            binding.btnAdjuntarArchivoF.text = "Archivo seleccionado"
+                            Log.d("mensaje", "PDF: $myFile")
+                            firebaseProvider.subirPdfFirebase(
+                                returnUri,
+                                Constantes.referenciaTareas,
+                                "tarea$idsuperiorInmediato${(0..999).random()}"
+                            )
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                            Log.e("mensaje", "File not found. ${e.message}");
+                        }
+                    }
+                } else {
+                    Toast.makeText(context, "No se selecciono archivo", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        firebaseProvider.obs.observe(viewLifecycleOwner, {
+            uriPost = it
+        })
+
+
         setInfo(args)
+
+
         with(binding) {
 
             btnCancelarTareaF.setOnClickListener {
@@ -71,11 +130,23 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             }
 
             btnCancelarEdicion.setOnClickListener {
-                desactivarCampos()
+                desactivarCampos(args)
             }
 
             btnAdjuntarArchivoF.setOnClickListener {
-
+                if (binding.btnAdjuntarArchivoF.text.equals("Adjuntar Archivo PDF")) {
+                    val intentPdf = Intent()
+                    intentPdf.setAction(Intent.ACTION_GET_CONTENT)
+                    intentPdf.type =
+                        "application/pdf"                     // Filtra para archivos pdf
+                    resultLauncherArchivo.launch(intentPdf)
+                } else if (binding.btnAdjuntarArchivoF.text.equals("Descargar Archivo PDF")) {
+                    var mDownloadProvider = DownloadProvider()
+                    mDownloadProvider.dowloadFile(
+                        (activity as HomeActivity).applicationContext,
+                        args.tareas.archivo, "archivo"
+                    )
+                }
             }
 
             btnObservacionF.setOnClickListener {
@@ -86,6 +157,10 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             btnGuardarTareaF.setOnClickListener {
                 var obs = binding.txtObservacionesD.text.toString()
                 args.tareas.observaciones = obs
+
+                //todo cuando haya que modificar archivo crear un metodo para subir el archivo
+                //todo si el archivo no es nulo o vacio
+                //todo mandarlo a llamar en esta parte pasandole el parametro del archivo.
 
                 var titulo: String
                 var descripcion: String
@@ -132,6 +207,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     private fun setInfo(args: DetalleNivelAltoFragmentArgs) {
+        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+
+        Log.d("Mensaje", args.tareas.archivo)
+
         var mesI: String = ""
         var diaI: String = ""
         var mesF: String = ""
@@ -146,10 +226,8 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         cal.time = fechaI
 
-
         if (cal[Calendar.MONTH] <= 9) {
             mesI = "0${cal[Calendar.MONTH] + 1}"
-            Log.d("Mensaje", "Mes nuevo $mesI")
         } else {
             cal[Calendar.MONTH] + 1
             mesI = cal[Calendar.MONTH].toString()
@@ -158,7 +236,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         if (cal[Calendar.DATE] <= 9) {
             diaI = "0${cal[Calendar.DATE] + 1}"
-            Log.d("Mensaje", "Dia nuevo $diaI")
         } else {
             cal[Calendar.DATE] + 1
             diaI = cal[Calendar.DATE].toString()
@@ -167,18 +244,15 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         fechaIn =
             cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
 
-        Log.d("Mensaje", "fecha nueva $fechaIn")
 ///////////////////////////////////////////////////////////////777
         cal.time = fechaF
 
         if (cal[Calendar.MONTH] <= 9) {
             mesF = "0${cal[Calendar.MONTH] + 1}"
-            Log.d("Mensaje", "Mes nuevo $mesF")
         } else {
             cal[Calendar.MONTH] + 1
             mesF = cal[Calendar.MONTH].toString()
         }
-
 
         if (cal[Calendar.DATE] <= 9) {
             diaF = "0${cal[Calendar.DATE] + 1}"
@@ -189,26 +263,27 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         fechaFi =
             cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
-        Log.d("Mensaje", "fecha nueva $fechaFi")
-
-
-
 
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
         prioridad = args.tareas.prioridad
         estatus = args.tareas.estatus
         descripcion = args.tareas.descripcion
-//        fechaInicio = fechaIn
-//        fechaFin = fechaF
-        Log.d("Mensaje", "fecha inicio $fechaI")
-        if (args.tareas.observaciones != null) {
+
+        if (!args.tareas.observaciones.isNullOrEmpty()) {
             observaciones = args.tareas.observaciones
             binding.txtObservacionesD.setText(observaciones)
             binding.txtObservacionesD.isVisible = true
         } else {
             binding.txtObservacionesD.isVisible = false
             observaciones = ""
+        }
+
+        if (!args.tareas.archivo.isNullOrEmpty()) {
+            binding.btnAdjuntarArchivoF.isVisible = true
+        } else {
+            binding.btnAdjuntarArchivoF.isVisible = false
+            args.tareas.archivo = ""
         }
 
         with(binding) {
@@ -223,14 +298,20 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         }
     }
 
-    private fun desactivarCampos() {
+    private fun desactivarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
+            Log.d("Mensaje", args.tareas.archivo)
+            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+            if (!args.tareas.archivo.isNullOrEmpty()) {
+                binding.btnAdjuntarArchivoF.setText("Descargar archivo PDF")
+                binding.btnAdjuntarArchivoF.isVisible = true
+            }
             txtDescripcionD.isEnabled = false
             txtDescripcionD.isEnabled = false
             txtFechaInicioD.isEnabled = false
+            btnAdjuntarArchivoF.isEnabled = false
             txtFechaFinD.isEnabled = false
             txtObservacionesD.isEnabled = false
-            btnAdjuntarArchivoF.setText(getString(R.string.AdjuntarArchivo))
             btnEditarTareaF.isVisible = true
             btnCancelarTareaF.isVisible = true
             btnObservacionF.isVisible = true
@@ -241,12 +322,15 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
     private fun activarCampos() {
         with(binding) {
+            //  binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo PDF")
+            btnAdjuntarArchivoF.isVisible = false
+
             txtDescripcionD.isEnabled = true
             txtDescripcionD.isEnabled = true
             txtFechaInicioD.isEnabled = true
+            btnAdjuntarArchivoF.isEnabled = true
             txtFechaFinD.isEnabled = true
             txtObservacionesD.isEnabled = true
-            btnAdjuntarArchivoF.setText(getString(R.string.GuardarTarea))
             btnEditarTareaF.isVisible = false
             btnCancelarTareaF.isVisible = false
             btnObservacionF.isVisible = false

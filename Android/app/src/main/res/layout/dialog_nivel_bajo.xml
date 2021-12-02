@@ -10,35 +10,35 @@
         android:id="@+id/txtNombreTareaD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginFormulario"
         android:text="Nombre de la Tarea"
         android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
         android:textSize="18sp"
-        android:layout_marginTop="@dimen/marginFormulario"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtNombrePersonaD"
+        style="@style/StyleTextFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textStyle="normal"
-        android:textSize="16sp"
-        style="@style/StyleTextFragment"
         android:text="Nombre de la persona"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="normal"
         app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
 
     <TextView
         android:id="@+id/txtPrioridadD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginFormulario"
         android:text="Prioridad"
         android:textColor="@color/colorGray"
-        android:textStyle="normal"
         android:textSize="16sp"
-        android:layout_marginTop="@dimen/marginFormulario"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD">
 
@@ -48,63 +48,62 @@
         android:id="@+id/txtEstatusD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorGray"
-        android:textStyle="normal"
-        android:textSize="16sp"
         android:layout_marginTop="@dimen/marginFormulario"
         android:text="Estatus"
+        android:textColor="@color/colorGray"
+        android:textSize="16sp"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
 
     <TextView
         android:id="@+id/txtDescripcionD"
+        style="@style/StyleTextFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/StyleTextFragment"
         android:layout_marginTop="@dimen/marginFormulario"
-        android:text="Descripcion: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
         app:layout_constraintTop_toBottomOf="@+id/txtPrioridadD" />
 
     <TextView
         android:id="@+id/txtFechaInicioD"
+        style="@style/StyleTextGray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/StyleTextGray"
         android:layout_marginTop="@dimen/marginFormulario"
+        android:drawableLeft="@drawable/iconocalendario"
         android:text="Inicio: 16/01/2021"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD"
-        android:drawableLeft="@drawable/iconocalendario" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
 
 
     <TextView
         android:id="@+id/txtFechaFinD"
+        style="@style/StyleTextGray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/StyleTextGray"
         android:layout_marginTop="@dimen/marginFormulario"
+        android:drawableLeft="@drawable/iconocalendario"
         android:text="Fin: 20/01/2021"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD"
-        android:drawableLeft="@drawable/iconocalendario" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
 
     <TextView
         android:id="@+id/txtObservacionesD"
+        style="@style/StyleTextFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/StyleTextFragment"
         android:layout_marginTop="@dimen/marginFormulario"
         android:text="Observaciones: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
         app:layout_constraintTop_toBottomOf="@+id/txtFechaInicioD" />
 
     <Button
         android:id="@+id/btnCambiarEstadoD"
+        style="@style/StyleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Iniciar Tarea"
         android:layout_marginTop="@dimen/marginFormulario"
         android:background="@drawable/rounded_bg"
-        style="@style/StyleButton"
+        android:text="Iniciar Tarea"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnPdf" />
 
@@ -125,13 +124,12 @@
             app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
 
         <TextView
+            style="@style/StyleTextFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/StyleTextFragment"
-            android:textColor="@color/colorPrimary"
-            android:text="Descargar Archivo"/>
+            android:text="Descargar Archivo"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
