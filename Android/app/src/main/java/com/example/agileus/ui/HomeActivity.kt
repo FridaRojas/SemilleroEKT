@@ -38,7 +38,7 @@ class HomeActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.loginFragment,
+            setOf(R.id.inicioSesionFragment,
                 R.id.navigation_home, R.id.navigation_dashboard,
             )
         )

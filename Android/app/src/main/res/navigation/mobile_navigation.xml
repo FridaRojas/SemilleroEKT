@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/inicioSesionFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -78,14 +78,17 @@
             android:id="@+id/action_formularioCrearTareasFragment_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />
     </fragment>
+
+
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.agileus.ui.login.ui.login.LoginFragment"
-        android:label="@string/Login"
-        tools:layout="@layout/fragment_login" >
+        android:id="@+id/inicioSesionFragment"
+        android:name="com.example.agileus.ui.login.ui.login.InicioSesionFragment"
+        android:label="Inicio de Sesión"
+        tools:layout="@layout/inicio_sesion_fragment" >
         <action
-            android:id="@+id/action_loginFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            android:id="@+id/action_inicioSesionFragment_to_loginFragment"
+            app:destination="@id/inicioSesionFragment" />
     </fragment>
+
 
 </navigation>

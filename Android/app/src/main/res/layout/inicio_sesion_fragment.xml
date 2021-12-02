@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/fragment_horizontal_margin"
-        android:paddingTop="@dimen/fragment_vertical_margin"
-        android:paddingRight="@dimen/fragment_horizontal_margin"
-        android:paddingBottom="@dimen/fragment_vertical_margin"
-        tools:context=".ui.login.ui.login.LoginFragment"
-        android:orientation="vertical"
-        android:padding="@dimen/paddingGeneral">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.login.ui.login.InicioSesionFragment"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingTop="@dimen/fragment_vertical_margin"
+    android:paddingRight="@dimen/fragment_vertical_margin"
+    android:paddingBottom="@dimen/fragment_vertical_margin">
+
 
         <TextView
             android:layout_width="match_parent"
@@ -76,7 +75,6 @@
                 android:selectAllOnFocus="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <!--    -->
 
         <Button
@@ -114,11 +112,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:visibility="gone"/>
-       <!--     app:visible="@{viewModel.progressVisibility}" /> -->
+        <!--     app:visible="@{viewModel.progressVisibility}" /> -->
         <!-- android:visibility="@{ viewModel.progressVisibility ? View.VISIBLE : View.GONE }" -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-    </LinearLayout>
+
+</LinearLayout>
