@@ -176,9 +176,12 @@ public class TaskServiceImpl implements TaskService{
         String descripcion = tarea.getDescripcion();
         String prioridad = tarea.getPrioridad();
         String estatus = tarea.getEstatus();
-        String observaviones = tarea.getObservaciones();
-
-        boolean observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaviones);
+        String observaciones = tarea.getObservaciones();
+        boolean observacionesA;
+        if(observaciones==null)
+            observacionesA=true;
+        else
+            observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaciones);
         boolean prioridadA = Pattern.matches("^[a-zA-Z\\s]*$", prioridad);
         boolean tituloA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
         boolean descripcionA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
