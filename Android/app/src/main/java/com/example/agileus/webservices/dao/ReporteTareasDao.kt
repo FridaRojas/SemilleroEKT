@@ -39,18 +39,22 @@ class ReporteTareasDao {
     lateinit var fechaIniR: ZonedDateTime
 
     var employeeList = ArrayList<Contacts>()
+    var lista = ArrayList<DatosTareas>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosTareas(): ArrayList<Estadisticas> {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas()
-        val ResponseTareas: Response<ArrayList<DatosTareas>> = callRespuesta.execute()
+        val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
 
         var listaRecycler= ArrayList<Estadisticas>()
-        val lista: ArrayList<DatosTareas>
+        //val lista: ArrayList<DatosTareas>
+
 
         if (ResponseTareas.isSuccessful) {
-            lista = ResponseTareas.body()!!
+            val listaDs = ResponseTareas.body()!!
+            lista = listaDs.data
+            Log.e("COMSUMO", lista.size.toString())
 
             val id_receptor = "RECEPT1"                             //TODO id receptor real
                 //lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
@@ -85,24 +89,28 @@ class ReporteTareasDao {
             Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
             lista.forEach {
                 val dateIni = ZonedDateTime.parse(it.fecha_ini)
-                if ((dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha)) &&
+                if (dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha) &&
                     dateIni.isBefore(rangoFinFecha)){
+                    Log.e("RangoIN", "ini:$dateIni")
 
-                    if(id_receptor==it.idReceptor) {
+                    //if(id_receptor==it.idReceptor) {
+                    if(true) {
                         contador_t_totales = contador_t_totales + 1
 
+                        /*
                         if (it.leido) {
                             contador_t_leidas = contador_t_leidas + 1
                         }
+                         */
 
-                        if (it.status.equals("Terminada")) {
+                        if (it.estatus.lowercase().equals("terminada")) {
                             contador_t_terminadas = contador_t_terminadas + 1
                         } else{
-                            if(it.status.equals("Pendiente")) {
+                            if(it.estatus.lowercase().equals("pendiente")) {
                                 contador_t_pendientes = contador_t_pendientes + 1
-                            } else if(it.status.equals("Iniciada")){
+                            } else if(it.estatus.lowercase().equals("iniciada")){
                                 contIniciada =+ 1
-                            } else if(it.status.equals("Revision")){
+                            } else if(it.estatus.lowercase().equals("revision")){
                                 contRevision =+ 1
                             }else{  //Cancelado
                                 contCancelado =+ 1
@@ -110,14 +118,21 @@ class ReporteTareasDao {
                         }
                     }
 
-                    fechaIni = ZonedDateTime.parse(it.fecha_fin)
-                    fechaIniR = ZonedDateTime.parse(it.fecha_finR)
-                    val r = ChronoUnit.MILLIS.between(fechaIniR, fechaIni)
-                    if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
-                        contTareasaTiempo += 1
-                    }else{
-                        contTareasFueraTiempo = contTareasFueraTiempo + 1
+                    try {
+                        fechaIni = ZonedDateTime.parse(it.fecha_fin)
+                        fechaIniR = ZonedDateTime.parse(it.fecha_finR)
+                        if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
+                            contTareasaTiempo += 1
+                        }else{
+                            contTareasFueraTiempo = contTareasFueraTiempo + 1
+                        }
+                    }catch (ex:Exception){
+                        fechaIni = ZonedDateTime.parse("1971-01-01T00:00:00.000+00:00")
+                        fechaIniR = ZonedDateTime.parse("1970-01-01T00:00:00.000+00:00")
                     }
+
+                    //val r = ChronoUnit.MILLIS.between(fechaIniR, fechaIni)
+
 
                     fecha_actual = ZonedDateTime.parse(it.fecha_ini)
                     diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)

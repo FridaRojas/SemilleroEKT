@@ -10,7 +10,6 @@ import com.example.agileus.adapters.ListaDatosAdapter
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.Contacts
-import com.example.agileus.models.EmployeeListByBossID
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.utils.Constantes
 import com.example.agileus.providers.ReportesListener
