@@ -29,7 +29,6 @@
         <item>En Revisión</item>
         <item>Terminadas</item>
         <item>Asignadas</item>
-        <item>Cancelados</item>
     </string-array>
 
     <string-array name="status_array">
@@ -38,7 +37,6 @@
         <item>revision</item>
         <item>terminada</item>
         <item>asignada</item>
-        <item>Cancelado</item>
     </string-array>
 
     <string name="mensaje_nuevo">Mensaje nuevo</string>
@@ -52,7 +50,6 @@
     <string name="titleStatus3">Tareas en Revisión</string>
     <string name="titleStatus4">Tareas Terminadas</string>
     <string name="titleStatus5">Tareas Asignadas</string>
-    <string name="titleStatus6">Tareas Canceladas</string>
     <string name="respAceptar">Aceptar</string>
     <string name="respCancelar">Cancelar</string>
     <string name="GuardarTarea">Guardar Tarea</string>

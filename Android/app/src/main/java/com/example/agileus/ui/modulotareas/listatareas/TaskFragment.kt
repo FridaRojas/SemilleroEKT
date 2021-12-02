@@ -106,10 +106,6 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
                 taskViewModel.statusRecycler.value = listaStatus[4]
                 binding.tituloTareas.text = getString(R.string.titleStatus5)
             }
-            listStatus[5] -> {
-                taskViewModel.statusRecycler.value = listaStatus[5]
-                binding.tituloTareas.text = getString(R.string.titleStatus6)
-            }
         }
 
         //taskViewModel.statusRecycler.value = "Iniciada"
