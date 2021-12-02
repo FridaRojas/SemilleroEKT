@@ -28,8 +28,12 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     @IBOutlet weak var statusField: UITextField!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     @IBOutlet weak var viewBack: UIView!
-    
-    
+    let datePicker = UIDatePicker()
+    var prioridades = ["Alta","Media","Baja"]
+    var seleccionado_picker_estatus = String()
+    var seleccionado_picker_prioridad = String()
+    var selector_Estatus = UIPickerView()
+    var selector_Prioridad = UIPickerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,11 +67,13 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         dateStartField.delegate = self
         dateEndField.delegate = self
         
+        personSelectField.isEnabled = false
+        
         
         
     }
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+/*    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         switch textView.tag {
         case 1: return textView.stopBackspaceIn(word: "Observaciones: ", text: text)
         case 2: return textView.stopBackspaceIn(word: "Descripción: ", text: text)
@@ -88,7 +94,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         }
         return true
         
-    }
+    }*/
 
     func getTask() {
         Api.shared.editTask(id: idTask!) {
@@ -101,15 +107,15 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
                 self.nameTaskField.text = task.titulo!
                 self.personSelectField.text = task.nombre_receptor!
                 self.priortyField.text = "Prioridad: \(task.prioridad!)"
-                self.descriptionText.text =  "Descripción: \(task.descripcion!)"
-                self.dateStartField.text = "Inicio: \(task.fecha_ini!)"
-                self.dateEndField.text = "Fin: \(task.fecha_fin!)"
+                self.descriptionText.text =  "\(task.descripcion!)"
+                self.dateStartField.text = "Inicio: \(HelpString.formatDate(date: task.fecha_ini!))"
+                self.dateEndField.text = "Fin: \(HelpString.formatDate(date: task.fecha_fin!))"
                 self.statusField.text = "Estatus: \(task.estatus!)"
 
           
                 if task.observaciones == nil || task.observaciones == "" {
                 } else {
-                    self.observationField.text = "Observaciones: \(task.observaciones!)"
+                    self.observationField.text = "\(task.observaciones!)"
                 }
                 
                 if task.estatus == "Terminada" || task.estatus == "Cancelado" {
@@ -149,7 +155,6 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     func inputStyleConfig(isEdit: Bool) {
         
         nameTaskField.initStyleEdit(fontSize: 20, fontWeight: .bold, selected: isEdit)
-        personSelectField.initStyleEdit(fontWeight: .bold, colorText: .darkGray, selected: isEdit)
         priortyField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: isEdit)
         statusField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: isEdit)
         descriptionText.initStyleEdit(fontSize: 15, fontWeight: .light, colorText: .black, selected: isEdit)
@@ -172,7 +177,6 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     func inputsEdit(isEdit: Bool) {
         
         nameTaskField.isEnabled = isEdit
-        personSelectField.isEnabled = isEdit
         priortyField.isEnabled = isEdit
         statusField.isEnabled = isEdit
         descriptionText.isEditable = isEdit
@@ -182,7 +186,8 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         
     }
     @IBAction func editBtn(_ sender: Any) {
-        
+        Configurar_Picker_Prioridades()
+        configurar_DatePicker()
         isEdit = !isEdit
         self.inputsEdit(isEdit: isEdit)
         self.inputStyleConfig(isEdit: isEdit)
@@ -190,6 +195,8 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         if task!.estatus != "revision" {
             statusField.isEnabled = false
             statusField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: false)
+        } else {
+            Configurar_Picker_Estatus()
         }
         if !isEdit {
             
@@ -239,14 +246,14 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         self.loader.startAnimating()
         self.viewBack.isHidden = false
         
+        
         let dateStart = HelpString.removeWord(phrase: dateStartField.text!, word: "Inicio: ")
         let dateEnd = HelpString.removeWord(phrase: dateEndField.text!, word: "Fin: ")
         let priority = HelpString.removeWord(phrase: priortyField.text!, word: "Prioridad: ")
         let status = HelpString.removeWord(phrase: statusField.text!, word: "Estatus: ")
-        let description = HelpString.removeWord(phrase: descriptionText.text!, word: "Descripción: ")
-        let observation = HelpString.removeWord(phrase: observationField.text!, word: "Observaciones: ")
-        
-        let task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", id_receptor: "ReceptorAlexis", nombre_receptor: personSelectField.text!, fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: description, prioridad: priority, estatus: status, observaciones: observation)
+
+        print(observationField.text)
+        let task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text, prioridad: priority, estatus: status, observaciones: observationField.text!)
         
         Api.shared.updateTask(id: idTask, task: task) {
             (task) in

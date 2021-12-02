@@ -31,6 +31,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
     var prioridades = ["Alta","Media","Baja"]
     var selector_Persona = UIPickerView()
     var selector_Prioridad = UIPickerView()
+    var grupoID = "GRUPOID1"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +72,19 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
 
     @IBAction func addTask(_ sender: Any) {
 
+        if(nameTaskField.text!.EsVacio || personSelectField.text!.EsVacio || priortyField.text!.EsVacio || dateStartField.text!.EsVacio || dateEndField.text!.EsVacio || descriptionText.text!.EsVacio ) //fileField.text!.EsVacio)
+        {
+           Alerta_CamposVacios(title: "Error", Mensaje: "Faltan campos por llenar")
+        }
+        else
+        {
         let task = Task(
-                id_grupo: "GRUPOID1",
-                id_emisor: "EMIS1",
-                nombre_emisor: "JOSE",
-                id_receptor: "ReceptorAlexis",
-                nombre_receptor: "cristian",
-                fecha_ini: dateEndField.text!,
+                id_grupo: grupoID,
+                id_emisor: "ReceptorAlexis",
+                nombre_emisor: "cristian",
+                id_receptor: seleccionado_picker_persona_id,
+                nombre_receptor: personSelectField.text,
+                fecha_ini: dateStartField.text!,
                 fecha_fin: dateEndField.text!,
                 titulo: nameTaskField.text!,
                 descripcion: descriptionText.text!,
@@ -95,7 +102,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
                 self.altertaMensaje(title: "Error", message: "Hubo un problema, intentelo mas tarde", confirmationMessage: "Ok")
             }
         }
-
+        }
 
     }
 
@@ -142,23 +149,12 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
 
         }
     }
-    @IBAction func Asiginar_tarea(_ sender: UIButton) {
 
 
-        if(nameTaskField.text!.EsVacio || personSelectField.text!.EsVacio || priortyField.text!.EsVacio || dateStartField.text!.EsVacio || dateEndField.text!.EsVacio || descriptionText.text!.EsVacio ) //fileField.text!.EsVacio)
-        {
-           Alerta_CamposVacios(title: "Error", Mensaje: "Faltan campos por llenar")
-        }
-
-
-
-    }
-
-
-        func MostarPersonasAsig()
+func MostarPersonasAsig()
             {
 
-                Api.shared.LoadPersonasAsignadas(idLider: "619c036a755c956b81252e03") {
+                Api.shared.LoadPersonasAsignadas(idLider: "618b05c12d3d1d235de0ade0") {
                     persona in
                     var i = 0
                     for item in persona.data
@@ -167,7 +163,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
                         }
 
                 } failure: { error in
-                    self.Alerta_CamposVacios(title: "Error", Mensaje: "Intente de nuevo")
+                    self.altertaMensaje(title: "Error", message: "Hubo un error, intentelo mas tarde.", confirmationMessage: "Ok", popView: true)
                 }
 
             }

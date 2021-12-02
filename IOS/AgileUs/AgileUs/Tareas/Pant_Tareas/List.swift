@@ -30,8 +30,9 @@ class List: UITableViewCell{
     {
         var info = i as! Datos
         Nametask.text = info.titulo
-        Persona.text = info.id_receptor
-        Fecha.text = info.fecha_ini
+        
+        Persona.text = info.nombre_receptor
+        Fecha.text = HelpString.formatDate(date: info.fecha_ini!)
         Prioridad.text = info.prioridad
      
         

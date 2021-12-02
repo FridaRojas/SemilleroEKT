@@ -25,4 +25,8 @@ class HelpString {
       let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
       return String((0..<length).map{ _ in letters.randomElement()! })
     }
+    
+    static func formatDate(date: String) -> String {
+        return (String(date.prefix(10)))
+    }
 }

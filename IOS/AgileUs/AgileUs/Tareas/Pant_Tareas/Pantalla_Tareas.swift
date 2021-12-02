@@ -16,11 +16,28 @@ struct Status: Codable{
 }
 
 struct Datos:Codable{
-    let fecha_ini:String?
-    let id_receptor: String?
-    let id_tarea: String?
-    let titulo: String?
-    let prioridad: String?
+    var id_tarea: String?
+    var id_grupo: String?
+    var id_emisor: String?
+    var nombre_emisor: String?
+    var id_receptor: String?
+    var nombre_receptor: String?
+    var fecha_ini: String?
+    var fecha_BD: String?
+    var fecha_fin: String?
+    var titulo: String?
+    var descripcion: String?
+    var prioridad: String?
+    var estatus: String?
+    var leido: Bool?
+    var fechaLeido: String?
+    var createdDate: String?
+    var observaciones: String?
+    var archivo: String?
+    var token: String?
+    var fecha_iniR: String?
+    var fecha_finR: String?
+
 }
 
 
@@ -29,10 +46,10 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     @IBOutlet weak var menu_clasificador: UICollectionView!
     
     // nombre para las categorias de pendiente,final,
-    let dataSource = ["Pendientes","Iniciadas","Revisión","Terminada"]
+    var dataSource = [String]()
     
     
-    let servico = "https://firebasestorage.googleapis.com/v0/b/apis-de-prueba-1088e.appspot.com/o/TareasResponse.json?alt=media&token=be446017-4996-4545-8273-005b3f37a77d"
+    let servico = "http://18.218.7.148:3040/api/tareas/"
     
     @IBOutlet weak var Lista_tareas: UITableView!
     
@@ -41,8 +58,11 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     // variables de mi tabla
     var tarea = [Any]()
     var arrTareas = [Datos]()
-    var selestatus = [Status]()
-   
+    var selestatus: Status?
+    let idUser = "618e8743c613329636a769aa"
+    var nivel = "intermedio"
+    var select_estatus:String = ""
+    var id_tarea:String = ""
     //variable para mostrar el colection view
 
     
@@ -66,9 +86,8 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        ValidarNivelUser()
         //llamar a mi boton
-        view.addSubview(botonflotante)
         botonflotante.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         
         // Preparando lista
@@ -77,7 +96,10 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         Lista_tareas.register(List.nib(),forCellReuseIdentifier: List.identificador)
         
         //llama al servico
-        consumir_servicio()
+        var url = nivel != "alto" ? "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&pendiente" : "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+        select_estatus = nivel == "alto" ? "Asignadas" : "pendiente"
+        
+        consumir_servicio(url: url)
         
      // llamar al servico de filtros
         
@@ -100,43 +122,66 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     //funcion  para consumir servicio
-    func consumir_servicio()
+    func consumir_servicio(url: String)
     {
         
-        let url = URL(string: servico)
+        let url = URL(string: url)
         
+        print("URL: \(url)")
         URLSession.shared.dataTask(with: url!){
-            (information,request,error) in
-            
-            print(information!)
-            print(request)
-            print(error)
-            
-            do{
-                print("Iniciando la entrada al try")
-                
-                self.arrTareas = try JSONDecoder().decode([Datos].self, from: information!)
-                DispatchQueue.main.async
-                {
-                    print(self.arrTareas)
-                  
-                    for i in self.arrTareas {
+            (data,response,error) in
+      
+
+            //print(information)
+            //print(request)
+            //print(error)
+            print("************error: \(error)")
+            if let dataSuccess = data {
+                print("************information: \(dataSuccess)")
+
+                do{
+                   // print("Iniciando la entrada al try")
+                    
+                    
+                    
+                    self.selestatus = try JSONDecoder().decode(Status.self, from: dataSuccess)
+                    
+                    print("data*******\(self.selestatus)")
+77
+                    DispatchQueue.main.async
+                    {
+                        //print(self.arrTareas)
                         
-               
-                        print(i.prioridad)
-                        print(i.titulo)
-                        print(i.id_receptor)
-                        print(i.id_tarea)
+                        if self.selestatus?.data == nil {
+                            self.arrTareas.removeAll()
+                            self.Lista_tareas.reloadData()
+                            self.Alerta_CamposVacios(title: "Sin tareas", Mensaje: "Vacia")
+                            return
+                        }
                         
-                        print()
+                        self.arrTareas = (self.selestatus?.data)!
+
                         
-                 }
-                    self.Lista_tareas.reloadData()
-                 
+                        for i in self.arrTareas {
+                            
+                            print(i)
+                   
+                            print(i.prioridad)
+                            print(i.titulo)
+                            print(i.id_receptor)
+                            print(i.id_tarea)
+                            
+                            
+                     }
+                        self.Lista_tareas.reloadData()
+                        
+                    }
+                }catch let error{
+                    print(error)
                 }
-            }catch let error{
-                print(error)
+
             }
+            
             
         }.resume()
         
@@ -153,13 +198,42 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let indice = indexPath.row
         let celda_personalizada = tableView.dequeueReusableCell(withIdentifier: List.identificador, for: indexPath) as! List
-       celda_personalizada.configurar_celda(i: arrTareas[indice])
+        celda_personalizada.configurar_celda(i: arrTareas[indice])
         
         
         return celda_personalizada
         
         
     
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var selectindexLista = arrTareas[indexPath.row]
+        id_tarea = selectindexLista.id_tarea!
+        print("SELECTOR DE ESTATUS:\(select_estatus)")
+        if select_estatus != "Asignadas"
+        {
+            if let infoViewController = storyboard?.instantiateViewController(identifier: "InfoViewController") as? InfoViewController {
+                infoViewController.modalPresentationStyle = .overCurrentContext
+                infoViewController.modalTransitionStyle = .crossDissolve
+                infoViewController.id_tarea = id_tarea
+                present(infoViewController, animated: true)
+                    }
+            
+        }
+        else
+        {
+            performSegue(withIdentifier: "trans_edit", sender: id_tarea)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "trans_edit"
+        {
+            var ventana_edit = segue.destination as! EditarTareaViewController
+            ventana_edit.idTask = id_tarea
+        }
+
     }
     //Metodos para la categoria
     
@@ -171,14 +245,14 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         celda.Configure(categoria: dataSource[indexPath.row])
      
         
-        print(selectedIndex)
+        //print(selectedIndex)
        
       
        if selectedIndex == indexPath.row
         {
             celda.backgroundColor = UIColor.systemGreen
         
-            print("esta es la celda: \(selectedIndex)")
+            //print("esta es la celda: \(selectedIndex)")
         }
         else{
         celda.backgroundColor = UIColor .white
@@ -188,16 +262,62 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        print("Selecccion: \(dataSource[indexPath.row])")
+        //print("Selecccion: \(dataSource[indexPath.row])")
         
         
         selectedIndex = indexPath.row
+        select_estatus = dataSource[indexPath.row]
+        var url:String = ""
+        //print("******* estatus seleccioando:\(estatus)")
+        switch select_estatus {
+        case "Iniciadas":
+            select_estatus = "iniciada"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            //print(estatus)
+        case "Pendientes":
+            select_estatus = "pendiente"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            //print(estatus)
+        case "Revisión":
+            select_estatus = "revision"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            //print(estatus)
+        case "Terminadas":
+            select_estatus = "terminada"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            //print(estatus)
+        case "Asignadas":
+            select_estatus = "Asignadas"
+            url = "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+            
+        default:
+            print("ningun estatus seleccionado")
+        }
+        consumir_servicio(url: url)
         self.menu_clasificador.reloadData()
         
         
 
             }
-    
+    func ValidarNivelUser()
+    {
+        if nivel == "alto"
+        {
+            dataSource.append("Asignadas")
+            view.addSubview(botonflotante)
+
+        }
+        else if nivel == "intermedio"
+        {
+            dataSource.append(contentsOf: ["Pendientes","Iniciadas","Revisión","Terminadas","Asignadas"])
+            view.addSubview(botonflotante)
+
+        }
+        else
+        {
+            dataSource.append(contentsOf: ["Pendientes","Iniciadas","Revisión","Terminadas"])
+        }
+    }
 }
 
 

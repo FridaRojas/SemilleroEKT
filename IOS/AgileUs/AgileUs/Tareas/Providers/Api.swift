@@ -6,46 +6,133 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseStorage
 
 final class Api {
     
     static let shared = Api()
     
-    let url = "http://10.97.3.134:2021/api/tareas"
+    let url = "http://18.218.7.148:3040/api/tareas"
+    //prueba de url para personas asignadas
+    let url_personas = "http://18.218.7.148:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
     let rangeStatusCode200 = 200...299
     let rangeStatusCode400 = 400...499
     let rangeStatusCode500 = 500...599
     
     func createTask(task: Task, file: URL?, success: @escaping (_ task: TaskResponse) -> (), failure: @escaping (_ error: String) -> ()){
         
-        var newTask: Task
+        var newTask: Task?
         
         if file != nil {
-            var filename = "Tarea_\(HelpString.randomString(length: 20))"
+        
+            var filename = "Tarea_Archivo"
+            let bucketRef = Storage.storage().reference(withPath: "Tareas/\(filename)")
+            var urlFile = ""
 
-            newTask = Task(
-                        id_grupo: "GRUPOID1",
-                        id_emisor: "EMIS1",
-                        nombre_emisor: "JOSE",
-                        id_receptor: "ReceptorAlexis",
-                        nombre_receptor: "cristian",
-                        fecha_ini: task.fecha_ini!,
-                        fecha_fin: task.fecha_fin!,
-                        titulo: task.titulo!,
-                        descripcion: task.descripcion!,
-                        prioridad: task.prioridad!,
-                        estatus: "pendiente",
-                        archivo: filename)
+            let tarea_subir = bucketRef.putFile(from: file!, metadata: nil)
+            {
+                matadatos, error in
+                guard let metadatos = matadatos else
+                {
+                    print(error?.localizedDescription)
+                    return
+                }
+                
+                bucketRef.downloadURL(completion: {
+                    url, error in
+                    
+                    if let urlText = url?.absoluteString {
+                       urlFile = "\(urlText)"
+                        
+                        newTask = Task(
+                                    id_grupo: "GRUPOID1",
+                                    id_emisor: "ReceptorAlexis",
+                                    nombre_emisor: "cristian",
+                                    id_receptor: task.id_receptor,
+                                    nombre_receptor: task.nombre_receptor,
+                                    fecha_ini: task.fecha_ini!,
+                                    fecha_fin: task.fecha_fin!,
+                                    titulo: task.titulo!,
+                                    descripcion: task.descripcion!,
+                                    prioridad: task.prioridad!,
+                                    estatus: "pendiente",
+                                    archivo: "\(urlText)")
+                        
+                        let session = URLSession.shared
+                        let urlB = URL(string: "http://18.218.7.148:3040/api/tareas/agregarTarea")!
+                        var request = URLRequest(url: urlB)
+                        
+                        
+                        request.httpMethod = "POST"
+                        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                        let dataToJson = try! JSONEncoder().encode(newTask!)
+                        
+                        let taskSession = session.uploadTask(with: request, from: dataToJson) {
+                            (data, response, error) in
+                            
+                            if let httpResponse = response as? HTTPURLResponse,
+                               self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                                if let dataSuccess = data {
+                                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                                    failure("error \(dataString!)")
+                                }
+                                return;
+                            }
+                            
+                            if let httpResponse = response as? HTTPURLResponse,
+                               self.rangeStatusCode400.contains(httpResponse.statusCode){
+                                if let dataSuccess = data {
+                                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                                    failure("error \(dataString!)")
+                                }
+                                return;
+                            }
+                            
+                            if error != nil {
+                                failure("error \(error?.localizedDescription)")
+                                return;
+                            }
+                            if let data = data {
+                                print(data)
+                                do {
+                                    var task: TaskResponse
+                                    task = try JSONDecoder().decode(TaskResponse.self, from: data)
+                                    success(task)
+                                } catch {
+                                    failure("Error JSONDecoder \(error)")
+                                }
+                     
+                            }
+                            
+                        }
+
+                        taskSession.resume()
+                        
+                        
+                    } else {
+                         print("error subia: \(error) ")
+                    }
+                    
+                    
+                })
+                print("Se subio archivo")
+                
+     
+            }
             
-            ProvFirebase.storageInFirebase(file: file!, filename: filename)
+                
+ 
+
+          
         
         } else {
             newTask = Task(
                         id_grupo: "GRUPOID1",
-                        id_emisor: "EMIS1",
-                        nombre_emisor: "JOSE",
-                        id_receptor: "ReceptorAlexis",
-                        nombre_receptor: "cristian",
+                        id_emisor: "ReceptorAlexis",
+                        nombre_emisor: "cristian",
+                        id_receptor: task.id_receptor,
+                        nombre_receptor: task.nombre_receptor,
                         fecha_ini: task.fecha_ini!,
                         fecha_fin: task.fecha_fin!,
                         titulo: task.titulo!,
@@ -53,58 +140,58 @@ final class Api {
                         prioridad: task.prioridad!,
                         estatus: "pendiente")
             
+            let session = URLSession.shared
+            let url = URL(string: "\(url)/agregarTarea")!
+            var request = URLRequest(url: url)
             
-        }
-        
-        let session = URLSession.shared
-        let url = URL(string: "\(url)/agregarTarea")!
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let dataToJson = try! JSONEncoder().encode(newTask)
-        
-        let taskSession = session.uploadTask(with: request, from: dataToJson) {
-            (data, response, error) in
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            let dataToJson = try! JSONEncoder().encode(newTask!)
             
-            if let httpResponse = response as? HTTPURLResponse,
-               self.rangeStatusCode500.contains(httpResponse.statusCode) {
-                if let dataSuccess = data {
-                    let dataString = String(data: dataSuccess, encoding: .utf8)
-                    failure("error \(dataString!)")
+            let taskSession = session.uploadTask(with: request, from: dataToJson) {
+                (data, response, error) in
+                
+                if let httpResponse = response as? HTTPURLResponse,
+                   self.rangeStatusCode500.contains(httpResponse.statusCode) {
+                    if let dataSuccess = data {
+                        let dataString = String(data: dataSuccess, encoding: .utf8)
+                        failure("error \(dataString!)")
+                    }
+                    return;
                 }
-                return;
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse,
-               self.rangeStatusCode400.contains(httpResponse.statusCode){
-                if let dataSuccess = data {
-                    let dataString = String(data: dataSuccess, encoding: .utf8)
-                    failure("error \(dataString!)")
+                
+                if let httpResponse = response as? HTTPURLResponse,
+                   self.rangeStatusCode400.contains(httpResponse.statusCode){
+                    if let dataSuccess = data {
+                        let dataString = String(data: dataSuccess, encoding: .utf8)
+                        failure("error \(dataString!)")
+                    }
+                    return;
                 }
-                return;
-            }
-            
-            if error != nil {
-                failure("error app")
-                return;
-            }
-            if let data = data {
-                print(data)
-                do {
-                    var task: TaskResponse
-                    task = try JSONDecoder().decode(TaskResponse.self, from: data)
-                    success(task)
-                } catch {
-                    failure("Error JSONDecoder")
+                
+                if error != nil {
+                    failure("error app")
+                    return;
                 }
-     
+                if let data = data {
+                    print(data)
+                    do {
+                        var task: TaskResponse
+                        task = try JSONDecoder().decode(TaskResponse.self, from: data)
+                        success(task)
+                    } catch {
+                        failure("Error JSONDecoder")
+                    }
+         
+                }
+                
             }
-            
-        }
 
-        taskSession.resume()
+            taskSession.resume()
+            
+        }
+        
+        
     }
     
     func editTask(id: String, success: @escaping (_ task: Task) -> (), failure: @escaping (_ error: String) -> ()) {
@@ -304,17 +391,17 @@ final class Api {
         task.resume()
         
     }
-    func LoadTareaModal(idTarea: String, success: @escaping (_ tarea: Tareas) -> (), failure: @escaping (_ error: String) -> ()){
+    func LoadTareaModal(idTarea: String, success: @escaping (_ tarea: Task) -> (), failure: @escaping (_ error: String) -> ()){
        
         let session = URLSession.shared
         let url = URL(string: "\(url)/obtenerTareaPorId/\(idTarea)")!
         var request = URLRequest(url: url)
-        
+        print("URL MODAL:\(url)")
         request.httpMethod = "GET"
         
         let task = session.dataTask(with: request) {
             (data, response, error) in
-            var tarea: Tareas
+            var tarea: TaskResponse
             if let httpResponse = response as? HTTPURLResponse,
                   self.rangeStatusCode500.contains(httpResponse.statusCode) {
                   failure("error")
@@ -334,8 +421,8 @@ final class Api {
             if let dataSuccess = data {
                 do
                 {
-                tarea = try JSONDecoder().decode(Tareas.self, from: dataSuccess)
-                success(tarea)
+                tarea = try JSONDecoder().decode(TaskResponse.self, from: dataSuccess)
+                    success(tarea.data!)
                 print("Success")
                 } catch {failure("Error JSONDecoder")}
             }
@@ -350,9 +437,8 @@ final class Api {
        
         
         let session = URLSession.shared
-        let url = URL(string: url)!
+        let url = URL(string: url_personas)!
         var request = URLRequest(url: url)
-        
         request.httpMethod = "GET"
         
         let task = session.dataTask(with: request) {
@@ -424,4 +510,6 @@ final class Api {
         }
         task.resume()
     }
+    
+
 }

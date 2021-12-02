@@ -39,11 +39,7 @@ class TareasScreen: UIViewController {
 
     @IBAction func Visualizar_tarea(_ sender: UIButton) {
 
-        if let infoViewController = storyboard?.instantiateViewController(identifier: "InfoViewController") {
-            infoViewController.modalPresentationStyle = .overCurrentContext
-            infoViewController.modalTransitionStyle = .crossDissolve
-            present(infoViewController, animated: true)
-                }
+
     }
 
 

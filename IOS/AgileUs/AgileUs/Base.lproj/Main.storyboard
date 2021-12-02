@@ -88,9 +88,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <segue destination="4sJ-fV-fcb" kind="show" id="j0s-t0-Ue0"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GBL-wu-pRm">
                                 <rect key="frame" x="139" y="158" width="122" height="108"/>
@@ -118,13 +115,10 @@
                     <navigationItem key="navigationItem" title="Tareas_2" largeTitleDisplayMode="always" id="Iy7-w9-iaC">
                         <barButtonItem key="backBarButtonItem" title="atras" id="K7t-nN-1Ne"/>
                     </navigationItem>
-                    <connections>
-                        <segue destination="14n-S6-Q1G" kind="show" identifier="viewEditTask" id="qVm-Nq-CMw"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qy3-nT-dvq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3288" y="503"/>
+            <point key="canvasLocation" x="167" y="1974"/>
         </scene>
         <!--Item 1-->
         <scene sceneID="2zx-pR-dO6">
@@ -156,7 +150,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="Srt-5x-2vk" kind="relationship" relationship="viewControllers" id="2Ed-ip-3QO"/>
-                        <segue destination="He9-Ti-izS" kind="relationship" relationship="viewControllers" id="dLZ-U5-Qls"/>
+                        <segue destination="4sJ-fV-fcb" kind="relationship" relationship="viewControllers" id="ZIM-99-maa"/>
                         <segue destination="MVx-7u-DgW" kind="relationship" relationship="viewControllers" id="gA6-tf-IQ3"/>
                     </connections>
                 </tabBarController>
@@ -164,7 +158,7 @@
             </objects>
             <point key="canvasLocation" x="2791" y="-324"/>
         </scene>
-        <!--Pantalla Tareas-->
+        <!--Item-->
         <scene sceneID="TaE-M0-Qa6">
             <objects>
                 <viewController id="4sJ-fV-fcb" customClass="Pantalla_Tareas" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
@@ -219,16 +213,18 @@
                         <viewLayoutGuide key="safeArea" id="kRj-r4-fqR"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" image="folder" catalog="system" id="p6z-Y0-fgj"/>
                     <navigationItem key="navigationItem" id="4WR-G4-Q5s"/>
                     <connections>
                         <outlet property="Lista_tareas" destination="3oy-Nj-PhE" id="NLf-AK-rrC"/>
                         <outlet property="menu_clasificador" destination="gya-Hq-vjB" id="ZBs-rE-NLv"/>
                         <segue destination="0Cc-Uh-NmK" kind="show" identifier="Formulario" id="uIk-7y-RSb"/>
+                        <segue destination="14n-S6-Q1G" kind="show" identifier="trans_edit" id="Zzn-fr-tNa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G8G-jN-48W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3026.0869565217395" y="1206.6964285714284"/>
+            <point key="canvasLocation" x="3425" y="509"/>
         </scene>
         <!--Asignar Tarea-->
         <scene sceneID="Nfb-cs-C0n">
@@ -440,7 +436,7 @@
                                         <connections>
                                             <action selector="Asiginar_tarea:" destination="0Cc-Uh-NmK" eventType="touchUpInside" id="N4I-uF-Uhj"/>
                                             <action selector="VisorPDF:" destination="a4V-Ps-SCr" eventType="touchUpInside" id="z1I-kY-CzP"/>
-                                            <segue destination="K6X-36-kUN" kind="show" id="sok-LM-owg"/>
+                                            <segue destination="K6X-36-kUN" kind="show" identifier="trans_visor" id="sok-LM-owg"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ha4-Vg-Arc">
@@ -492,6 +488,7 @@
                         <viewLayoutGuide key="safeArea" id="hYs-aW-aFz"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <navigationItem key="navigationItem" id="wPI-eP-Vhm"/>
                     <connections>
                         <outlet property="Descripcion" destination="Hw6-X7-kfw" id="v7I-tt-PZ1"/>
                         <outlet property="Estatus" destination="3qF-3S-BZQ" id="Yg5-T9-kMQ"/>
@@ -502,6 +499,7 @@
                         <outlet property="Prioridad" destination="HZ7-ug-DLI" id="KiC-5y-CYP"/>
                         <outlet property="Titulo" destination="2fV-IF-M0D" id="dBG-TX-0dL"/>
                         <outlet property="boton_estatus" destination="TUT-gJ-SW1" id="sDP-QI-WtO"/>
+                        <outlet property="buttonFile" destination="K0J-5P-42v" id="4vO-N2-OR2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4o8-e2-utJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -799,7 +797,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f5S-h0-a1z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3894" y="1878"/>
+            <point key="canvasLocation" x="2496" y="1299"/>
         </scene>
     </scenes>
     <resources>

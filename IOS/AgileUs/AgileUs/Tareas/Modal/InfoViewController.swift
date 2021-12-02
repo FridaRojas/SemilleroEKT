@@ -18,9 +18,10 @@ class InfoViewController: UIViewController {
     @IBOutlet weak var Fecha_fin: UILabel!
     @IBOutlet weak var Observacion: UITextView!
     
-    var id_tarea:String = ""
+    @IBOutlet weak var buttonFile: UIButton!
+    var id_tarea:String?
     var estatus:String = ""
-
+    var url_file:String = ""
     lazy var blurredView: UIView = {
         // Crear containerView
         let containerView = UIView()
@@ -42,7 +43,7 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        MostrarTareaModal()
+        MostrarTareaModal(idtask: id_tarea!)
 
     }
     
@@ -55,18 +56,18 @@ class InfoViewController: UIViewController {
     @IBAction func Cerrar_modal(_ sender: UIButton) {
         dismiss(animated: true)
     }
-    func MostrarTareaModal()
+    func MostrarTareaModal(idtask: String)
     {
         self.MostrarSpinner(onView: self.view)
-        Api.shared.LoadTareaModal(idTarea: "61a6a120516207029a580544") {
+        Api.shared.LoadTareaModal(idTarea: idtask) {
             tarea in
             print("si jalo")
             DispatchQueue.main.async {
                 self.Titulo.text = tarea.titulo
                 self.Nombre.text = tarea.nombre_receptor
-                self.Prioridad.text = "Prioridad: \(tarea.prioridad)"
-                self.Estatus.text = "Estatus: \(tarea.estatus)"
-                self.estatus = tarea.estatus
+                self.Prioridad.text = "Prioridad: \(tarea.prioridad!)"
+                self.Estatus.text = "Estatus: \(tarea.estatus!)"
+                self.estatus = tarea.estatus!
                 self.id_tarea = tarea.id_tarea
                 switch self.estatus
                 {
@@ -83,15 +84,22 @@ class InfoViewController: UIViewController {
                 default:
                     print("sin estatus")
                 }
-                self.Descripcion.text = "Descripcion: \(tarea.descripcion)"
-                self.Fecha_inicio.text = "Fecha inicio: \(String(tarea.fecha_ini.prefix(10)))"
-                self.Fecha_fin.text = "Fecha fin:\(String(tarea.fecha_fin.prefix(10)))"
-                if (self.Observacion.text == "null")
+                self.Descripcion.text = "Descripcion: \(tarea.descripcion!)"
+                self.Fecha_inicio.text = "Fecha inicio: \(HelpString.formatDate(date: tarea.fecha_ini!))"
+                self.Fecha_fin.text = "Fecha fin:\(HelpString.formatDate(date: tarea.fecha_fin!))"
+                if (tarea.observaciones == nil || tarea.observaciones == "")
                 {
-                    self.Observacion.text = String()
+                    self.Observacion.text = "Sin observaciones"
                 }
                 else{
                     self.Observacion.text = "Observaciones: \(tarea.observaciones!)"
+                }
+                if (tarea.archivo == nil || tarea.archivo == "")
+                {
+                    self.buttonFile.isHidden = true
+                }
+                else{
+                    self.url_file = tarea.archivo!
                 }
                 self.RemoverSpinner()
 
@@ -105,7 +113,7 @@ class InfoViewController: UIViewController {
     func CambiarEstatus()
     {
         self.MostrarSpinner(onView: self.view)
-        Api.shared.UpdateEstatus(idTarea: id_tarea, estatus: estatus)
+        Api.shared.UpdateEstatus(idTarea: id_tarea!, estatus: estatus)
         {
             tarea in
             
@@ -124,6 +132,10 @@ class InfoViewController: UIViewController {
         CambiarEstatus()
     }
     @IBAction func VisorPDF(_ sender: UIButton) {
-        
+        performSegue(withIdentifier: "trans_visor", sender: url_file)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var ventana_visor = segue.destination as? VisorPDF
+        ventana_visor?.urlFile = url_file
     }
 }

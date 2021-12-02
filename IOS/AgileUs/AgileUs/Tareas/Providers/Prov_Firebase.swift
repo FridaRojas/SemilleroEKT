@@ -10,10 +10,13 @@ import Firebase
 import FirebaseStorage
 
 final class ProvFirebase {
-    static func storageInFirebase(file: URL, filename: String)
+    static func storageInFirebase(file: URL, filename: String, urlResponse: @escaping (_ url: String) -> () ) -> String
     {
         
+        
+        var urlS: String?
         let bucketRef = Storage.storage().reference(withPath: "Tareas/\(filename)")
+        
 
         let tarea_subir = bucketRef.putFile(from: file, metadata: nil)
         {
@@ -24,9 +27,25 @@ final class ProvFirebase {
                 return
             }
             
+            bucketRef.downloadURL(completion: {
+                url, error in
+                
+                if let urlText = url?.absoluteString {
+                    urlResponse(urlText)
+                    
+                } else {
+                     print("error subia: \(error) ")
+                }
+                
+                
+            })
             print("Se subio archivo")
+            
  
         }
+        return "\(urlS)"
+        
+
         
     }
 

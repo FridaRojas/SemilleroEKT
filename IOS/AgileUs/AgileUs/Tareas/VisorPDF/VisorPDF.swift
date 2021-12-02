@@ -9,8 +9,8 @@ import UIKit
 import PDFKit
 class VisorPDF: UIViewController,CAAnimationDelegate {
 
-    
-    var link = "https://firebasestorage.googleapis.com/v0/b/agileus-55195.appspot.com/o/Tareas%2Ftarea827?alt=media&token=e35b1696-6ce3-4b6f-9173-d8c3c2cea95e"
+    var urlFile:String?
+    //var link = "https://firebasestorage.googleapis.com/v0/b/agileus-55195.appspot.com/o/Tareas%2Ftarea827?alt=media&token=e35b1696-6ce3-4b6f-9173-d8c3c2cea95e"
     var PDF_URL: URL?
     let shapeLayer = CAShapeLayer()
     
@@ -26,7 +26,7 @@ class VisorPDF: UIViewController,CAAnimationDelegate {
     {
 
             visor.autoScales = true
-            PDF_URL = URL(string: self.link)
+            PDF_URL = URL(string: self.urlFile!)
             visor.document = PDFDocument(url: self.PDF_URL!)
             visor.maxScaleFactor = 19.0
             visor.minScaleFactor = visor.scaleFactorForSizeToFit
