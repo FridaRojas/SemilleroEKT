@@ -207,7 +207,8 @@ public class UserDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\": \""+us.getCorreo()+"\",\r\n    \"password\": \""+us.getPassword()+"\",\r\n    \"token\":\"wesasasa\"\r\n}\r\n\r\n\r\n");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/admin/validate")
+                //.url("http://localhost:3040/api/admin/validate")
+                .url("http://localhost:3040/api/user/validate")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
