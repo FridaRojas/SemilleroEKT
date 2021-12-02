@@ -9,28 +9,27 @@ import androidx.fragment.app.DialogFragment
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import java.util.*
 
-class EdtFecha (val listenerFormularioCrear: DialogoFechaListener, b:Int) : DialogFragment(),
-    DatePickerDialog.OnDateSetListener{
+class EdtFecha(val listenerFormularioCrear: DialogoFechaListener, b: Int) : DialogFragment(),
+    DatePickerDialog.OnDateSetListener {
 
     var bandera = b
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val calendar    = Calendar.getInstance()
-        val anio        = calendar.get(Calendar.YEAR)
-        val mes         = calendar.get(Calendar.MONTH)
-        val dia         = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val picker      = DatePickerDialog(activity as Context,this, anio,mes,dia )
+        var calendar = Calendar.getInstance()
+        var anio = calendar.get(Calendar.YEAR)
+        var mes = calendar.get(Calendar.MONTH)
+        var dia = calendar.get(Calendar.DAY_OF_MONTH)
+        var picker = DatePickerDialog(activity as Context, this, anio, mes, dia)
 
         picker.datePicker.minDate = calendar.timeInMillis   // validacion de minima fecha
         return picker
     }
 
     override fun onDateSet(p0: DatePicker?, anio: Int, mes: Int, dia: Int) {
-        if(bandera==1){
+        if (bandera == 1) {
             listenerFormularioCrear.onDateInicioSelected(anio, mes, dia)
-        }else if(bandera==2){
+        } else if (bandera == 2) {
             listenerFormularioCrear.onDateFinSelected(anio, mes, dia)
         }
     }

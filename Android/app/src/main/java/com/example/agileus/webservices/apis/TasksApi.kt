@@ -1,10 +1,7 @@
 package com.example.agileus.webservices.apis
 
 
-import com.example.agileus.models.DataTask
-import com.example.agileus.models.TaskList
-import com.example.agileus.models.PersonasGrupo
-import com.example.agileus.models.Tasks
+import com.example.agileus.models.*
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
 import retrofit2.Call
 import retrofit2.http.*
@@ -31,6 +28,7 @@ interface TasksApi {
     @GET("{idsuperiorInmediato}")
     fun getListaPersonasGrupo(@Path("idsuperiorInmediato") idsuperiorInmediato: String): Call<PersonasGrupo>? // id lider
 
+
     @POST("tareas/agregarTarea")
     fun insertarTarea(@Body t: Tasks): Call<Tasks>
 
@@ -44,8 +42,8 @@ interface TasksApi {
 
     //Editar tarea
     @PUT("tareas/actualizarTarea/{idTarea}")
-    fun editTask(@Body t: DetalleNivelAltoFragmentArgs, @Path("idTarea") idTarea: String)
-            : Call<DataTask>
+    fun editTask(@Body taskUpdate: TaskUpdate, @Path("idTarea") idTarea: String)
+            : Call<TaskList2>
 
     //Actualizar Status
     @PUT("tareas/actulizarEstatus/{param}")
@@ -53,7 +51,7 @@ interface TasksApi {
 
     //Obtener las tareas que asigno el usuario por id, status
     //@GET("tareas/obtenerTareasQueAsignoPorIdYEstatus/{datos}")
-    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
+    @GET("tareas/obtenerTareasQueAsignoPorId/{datos}")
     fun getTasksAssigned(@Path("datos") datos: String): Call<TaskList>?
 
 }

@@ -13,6 +13,9 @@ class InitialApplication : Application() {
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
         lateinit var webServiceGlobalTasksPersonas: TasksApi
 
+        //SharedPreferences
+        lateinit var preferenciasGlobal: MySharedPreferences
+
     }
 
     override fun onCreate() {
@@ -21,6 +24,9 @@ class InitialApplication : Application() {
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
         BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
+
+        //SharedPreferences
+        preferenciasGlobal = MySharedPreferences(applicationContext)
 
     }
 

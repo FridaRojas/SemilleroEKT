@@ -1,20 +1,25 @@
-package com.example.agileus.ui.modulomensajeriabuzon.b
+package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
-import com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment.Companion.control
-import com.example.demoroom.dialogos.DialogoSenderBroadcast
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.control
+import android.os.CountDownTimer
+import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
+import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
 
 
-class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
+class BuzonDetallesFragment: Fragment() , BroadcasterListener {
 
 
     private lateinit var viewModel: BuzonDetallesViewModel
@@ -27,8 +32,19 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+    //    val mypost=Buzon("6","Broadcast","General","hola mundo feo","prueba de post")
+
+
+
+
         viewModel = ViewModelProvider(this)[BuzonDetallesViewModel::class.java]
         _binding = BuzonDetallesFragmentBinding.inflate(inflater, container, false)
+
+
+
+
+
         val root: View = binding.root
         return root
     }
@@ -37,11 +53,8 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.progress.visibility = View.INVISIBLE
-        binding.espera.visibility = View.INVISIBLE
-
-        binding.fab.visibility = View.VISIBLE
-        binding.recyclerBuzon.visibility=View.VISIBLE
+        USERTYPE="Broadcast"
+            binding.vista2.visibility=View.INVISIBLE
 
         if (control == 1) {
             binding.fab.visibility = View.VISIBLE
@@ -59,15 +72,13 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
             }
         }
 
-
-
         viewModel.devuelvebuzon()
 
             viewModel.adaptador.observe(viewLifecycleOwner, {
                 binding.recyclerBuzon.adapter = it
                 binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-            })
 
+            })
         }
 
         override fun onDestroyView() {
@@ -77,16 +88,42 @@ class BuzonDetallesFragment: Fragment() ,BroadcasterListener{
 
         override fun mensajeBroadcasting(buzon: Buzon) {
 
+            viewModel.postMensaje(buzon)
+            viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
+                if (response.isSuccessful)
+                {
+                    Log.i("Code ",response.code().toString())
+                }
+            })
+
             Handler().postDelayed({
-                binding.progress.visibility = View.VISIBLE
-                binding.espera.visibility = View.VISIBLE
-                binding.fab.visibility = View.GONE
+                binding.vista1.visibility= View.INVISIBLE
+                binding.vista2.visibility = View.VISIBLE
+                binding.fab.visibility = View.INVISIBLE
             }, 5)
+            startTimeCounter()
               ////////////////
             Handler().postDelayed({
-                Toast.makeText(context, " Mensaje enviado a ${buzon.receiverId}", Toast.LENGTH_SHORT).show()
-                binding.progress.visibility = View.GONE
-                binding.espera.visibility = View.GONE
-  }, 4000)
+                Toast.makeText(context, " Mensaje enviado a ${buzon.Receiverid}", Toast.LENGTH_SHORT).show()
+                binding.vista2.visibility = View.INVISIBLE
+                binding.vista1.visibility= View.VISIBLE
+                binding.fab.visibility = View.VISIBLE
+  }, 3800)
+
         }
+    fun startTimeCounter() {
+        var counter=0
+        val progressBar = binding.progress
+        progressBar.visibility=View.VISIBLE
+        object : CountDownTimer(3900, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+                counter++
+                progressBar.progress = counter
+            }
+            override fun onFinish() {
+                viewModel.devuelvebuzon()
+            }
+        }.start()
     }
+
+}
