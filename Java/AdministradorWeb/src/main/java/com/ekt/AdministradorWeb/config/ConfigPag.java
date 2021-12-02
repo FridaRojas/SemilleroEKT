@@ -54,12 +54,6 @@ public class ConfigPag {
          return "paginas/login";
     }
 
-    @GetMapping("/inicioUsuarios")
-    public String inicioUsuarios() {
-        //return "paginas/organigrama/InicioOrganigrama";
-        return "paginas/usuarios/InicioUsuarios";
-    }
-
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
         User []usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
@@ -69,21 +63,10 @@ public class ConfigPag {
 
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        System.out.println("correo: "+us.getCorreo()+"  contras: "+us.getPassword());
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\": \""+us.getCorreo()+"\",\r\n    \"password\": \""+us.getPassword()+"\",\r\n    \"token\":\"wesasasa\"\r\n}\r\n\r\n\r\n");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/validate")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        boolean res=userDAO.validaCorreoPassword(us);
         try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject= new JSONObject(response.body().string());
-
-            if (!jsonObject.get("data").toString().equals("")){
+            //si es true, entra a inicio, si es false regresa a login con un mensaje de error
+            if (res){
                 return "redirect:/Inicio";
             }else{
                 redirectAttrs
@@ -92,10 +75,9 @@ public class ConfigPag {
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return "";
+            return "redirect:/error1";
         }
     }
-
 
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
@@ -215,29 +197,20 @@ public class ConfigPag {
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
-        System.out.println(gr.getNombre());
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
-                .method("POST", body)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject= new JSONObject(response.body().string());
 
-            if (jsonObject.get("status").toString().equals("OK")){
-                return "redirect:/inicioGrupos";
+        try {
+            boolean res= groupDAO.crearGrupo(gr);
+            //si es true regresa, si es false regresa con error de grupo ya existente
+            if (res){
+                return "redirect:/buscarTodosGrupos";
             }else{
                 redirectAttrs
                         .addFlashAttribute("mensaje", "Grupo ya existente");
-                return "redirect:/inicioGrupos";
+                return "redirect:/buscarTodosGrupos";
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return "";
+            return "redirect:/error1";
         }
 
     }
@@ -261,13 +234,8 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "paginas/organigramas/editarOrganigrama";
+            return "redirect:/buscarTodosGrupos";
         }
-    }
-
-    @GetMapping("/inicioGrupos")
-    public String inicioGrupos() {
-        return "paginas/organigramas/inicioOrganigramas";
     }
 
     @GetMapping("/buscarTodosGrupos")
@@ -313,11 +281,11 @@ public class ConfigPag {
     }
 
     @PostMapping("/ActualizaElimina")
-    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap){
-        userDAO.actualizaIdSujperior(idUser,idBoss);
-
+    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap, Model model){
+        userDAO.actualizaIdSuperior(idUser,idBoss);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
+        System.out.println(user.getIDGrupo());
         if(listaSubordinados != null) {
             ArrayList<User> listaUsuarios = new ArrayList<>();
             User[] usuarios;
@@ -333,10 +301,8 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "paginas/organigramas/editarOrganigrama";
+            return "redirect:/buscarTodosGrupos";
         }
-
-
     }
 
     @PostMapping("/buscarGrupo")
@@ -377,8 +343,6 @@ public class ConfigPag {
         return "paginas/error.html";
     }
 
-
-
     @GetMapping("/Inicio")
     public String Inicio(){
         return "paginas/Inicio";
@@ -416,7 +380,8 @@ public class ConfigPag {
 
     @GetMapping("/verUsuario")
     public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
-            User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
+        try {
+        User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
             if (user!=null){
                 model.addAttribute("user", user);
                 return "paginas/usuarios/verUsuario";
@@ -425,7 +390,10 @@ public class ConfigPag {
                         .addFlashAttribute("mensaje", "El usuario ya no existe");
                 return "/findAllUsuarios";
             }
-
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return "redirect:/error1";
+        }
     }
 
 }

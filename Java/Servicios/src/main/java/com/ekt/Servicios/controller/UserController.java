@@ -33,20 +33,23 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@Validated @RequestBody User user){
-        if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
-            System.out.println("Error en las llaves");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
-        }else{
-            boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
-            if (us){
-                System.out.println("Error al crear usuario, el usuario existe");
-                return ResponseEntity.ok(new Response(HttpStatus.CONFLICT,"Usuario existente",""));
-            }else {
-                userService.save(user);
-                System.out.println("Usuario Creado");
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Creado",user));
+        try {
+            if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+            }else{
+                boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
+                if (us){
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",""));
+                }else {
+                    userService.save(user);
+                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Creado",user));
+                }
             }
+        }catch (Exception e){
+            System.err.println("Error: "+e);
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
         }
+
     }
 
     @GetMapping("/findAll")
@@ -128,10 +131,11 @@ public class UserController {
         try {
             for (int i = 0; i < idUser.length; i++) {
                 userService.updateIdBoss(idUser[i], idBoss[i]);
+                groupService.actualizaIdSuperior(idUser[i], idBoss[i]);
             }
             return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Error desconocido",""));
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,e.getMessage(),""));
         }
     }
 
@@ -226,17 +230,22 @@ public class UserController {
 
     @PostMapping("/existUser")
     public ResponseEntity<?> existUser(@RequestBody User user){
-        if (user.getCorreo()==null || user.getCurp()==null || user.getRFC()==null || user.getNumeroEmpleado()==null){
-            System.out.println("Error en las llaves");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
-        }else{
-            boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
-            if (us){
-                System.out.println("El usuario existe");
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"El usuario existe","true"));
-            }else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado","false"));
+        try {
+            if (user.getCorreo() == null || user.getCurp() == null || user.getRFC() == null || user.getNumeroEmpleado() == null) {
+                System.out.println("Error en las llaves");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+            } else {
+                boolean us = userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
+                if (us) {
+                    System.out.println("El usuario existe");
+                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "El usuario existe", "true"));
+                } else {
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", "false"));
+                }
             }
+        }catch (Exception e){
+            System.err.println("Error: "+e);
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
         }
     }
 
