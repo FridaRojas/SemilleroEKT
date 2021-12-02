@@ -60,7 +60,16 @@ public class GroupServiceImpl implements GroupService{
         Optional<User> user = userService.findById(idUser);
         Optional<User> superior = userService.findById(idSuperior);
 
-        if(group.isPresent() && user.isPresent() && superior.isPresent()){
+        if(group.isPresent() && user.isPresent()){
+            if (!superior.isPresent()){
+                if (idSuperior.equals("")||idSuperior.equals("-1")){
+                    //traza
+                    System.out.println("este chico es jefe o brodcats");
+                }else{
+                    System.out.println("error en el idSuperior");
+                    resGroup=null;
+                }
+            }
             //verificar que el usuario no existe en ningun grupo
             if( !buscarUsuarioEnGrupo(idGrupo,idUser).isPresent()){
                 //actualizar informacion usuario
@@ -90,9 +99,10 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public void borrarPorId(String id) {groupRepository.deleteById(id);
-
+    public void borrarPorId(String id) {
+        groupRepository.deleteById(id);
     }
+
     @Override
     public void borrarUsuarioDeGrupo(String idUser, String idGroup){
         System.out.println("idUser:"+idUser+" idGroup:"+idGroup);
@@ -104,11 +114,13 @@ public class GroupServiceImpl implements GroupService{
 
         User[] lista = group.get().getUsuarios();
         User[] lista2 = new User[group.get().getUsuarios().length-1];
+        int j=0;
 
         for(int i=0;i<group.get().getUsuarios().length;i++){
             //si el idUsuario que manda no es igual, lo copia
             if (! idUser.equals(lista[i].getID())){
-                lista2[i]=lista[i];
+                lista2[j]=lista[i];
+                j++;
             }
         }
 
@@ -140,7 +152,6 @@ public class GroupServiceImpl implements GroupService{
         boolean bandera = false;
         User []usuarios =null;
         Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(usuario.getIDGrupo(),usuario.getID());
-
         if (grupo.isPresent()){
             usuarios = grupo.get().getUsuarios();
             for(User user:usuarios){
@@ -158,8 +169,6 @@ public class GroupServiceImpl implements GroupService{
                 }
             }
         }
-
-
         if(bandera){
             grupo.get().setUsuarios(usuarios);
             groupRepository.save(grupo.get());
@@ -169,4 +178,24 @@ public class GroupServiceImpl implements GroupService{
         }
     }
 
+    @Override
+    public void actualizaIdSuperior(String idUser, String idSuperior) {
+        boolean bandera = false;
+        User[] usuarios = null;
+        Optional<User> user = userService.findById(idUser);
+        Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(user.get().getIDGrupo(), idUser);
+        if(grupo.isPresent()){
+            usuarios = grupo.get().getUsuarios();
+            for (User usuario : usuarios) {
+                if (usuario.getID().equals(user.get().getID())) {
+                    usuario.setIDSuperiorInmediato(idSuperior);
+                    bandera = true;
+                }
+            }
+        }
+        if(bandera){
+            grupo.get().setUsuarios(usuarios);
+            groupRepository.save(grupo.get());
+        }
+    }
 }

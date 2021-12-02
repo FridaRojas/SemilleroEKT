@@ -26,7 +26,6 @@ public class UserDAO {
             JSONObject jsonObject= new JSONObject(response.body().string());
             if (!jsonObject.get("data").equals("")){
                 JSONArray usuarios = jsonObject.getJSONArray("data");
-
                 for (int i=0;i<usuarios.length();i++){
                     listaUsuarios.add(gson.fromJson(usuarios.getJSONObject(i).toString(), User.class));
                 }
@@ -66,7 +65,6 @@ public class UserDAO {
     }
 
     public Boolean editarUsuario(User user){
-        System.out.println("En editarUsuario "+user.getFechaInicio()+"  "+user.getRFC());
         Boolean res=false;
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -80,8 +78,9 @@ public class UserDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            System.out.println("res de editr: "+jsonObject.toString());
+
             if (jsonObject.get("status").equals("OK")){
+                System.out.println("Usuario editado correctamente");
                 res=true;
             }
         }catch (Exception e){
@@ -103,6 +102,7 @@ public class UserDAO {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
+            System.out.println(user.getCurp()+"  "+user.getRFC()+"   "+user.getCorreo()+"  "+user.getNumeroEmpleado());
             Response response = client.newCall(request).execute();
             JSONObject jsonObject = new JSONObject(response.body().string());
 
@@ -118,9 +118,24 @@ public class UserDAO {
         return res;
     }
 
-    public boolean actualizaIdSujperior(String idUser, String idSuperior){
-
-        return false;
+    public boolean actualizaIdSuperior(String idUser, String idSuperior){
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"idUsuarios\" : [\""+idUser+"\"],\r\n    \"idSuperiores\" : [\""+idSuperior+"\"]\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/updateIdBoss")
+                .method("PUT", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            System.out.println(jsonObject.toString());
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public ArrayList<User> listaUsuariosDisponibles(){
@@ -185,4 +200,90 @@ public class UserDAO {
         return listaUsuariosOrganigrama;
     }
 
+    public boolean validaCorreoPassword(User us){
+        boolean resp;
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\": \""+us.getCorreo()+"\",\r\n    \"password\": \""+us.getPassword()+"\",\r\n    \"token\":\"wesasasa\"\r\n}\r\n\r\n\r\n");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/admin/validate")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            //hace la peticion
+            Response response = client.newCall(request).execute();
+            //convierte la respuesta en Json
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            //si data es diferente de "" --> si coincide, si es igual a "" --> no coincide
+            if (!jsonObject.get("data").toString().equals("")){
+                resp=true;
+            }else{
+                resp=false;
+            }
+        }catch (Exception e){
+            resp=false;
+            System.out.println(e.getMessage());
+        }
+
+        return resp;
+    }
+
+    public JSONArray buscarTodosUsuarios(ArrayList<User> listaUsuarios){
+        //se realiza la peticion al back
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/findAll")
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String res = response.body().string();
+            JSONObject jsonObject= new JSONObject(res);
+
+            if(!jsonObject.get("data").toString().equals("")){
+                JSONArray name1 = jsonObject.getJSONArray("data");
+                return name1;
+            }else{
+                return null;
+            }
+
+
+        }catch (Exception e){
+            System.out.println("Error al realizar la consulta");
+            return null;
+        }
+    }
+
+    public boolean creaUsuario(User user){
+        boolean res;
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\"" +user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\" "+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\" "+user.getCurp()+"\",\r\n    \"rfc\":\" "+user.getRFC()+"\"\r\n}");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/create")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            //si data es diferente de "" --> si coincide, si es igual a "" --> no coincide
+            if (!jsonObject.get("data").toString().equals("")){
+                res=true;
+            }else{
+                res=false;
+            }
+
+        }catch (Exception e){
+            System.out.println("Error al insertar usuario");
+            res=false;
+        }
+
+        return res;
+    }
 }

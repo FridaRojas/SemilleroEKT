@@ -3,9 +3,12 @@ package com.ekt.Servicios.controller;
 import com.ekt.Servicios.entity.ResponseTask;
 import com.ekt.Servicios.entity.Task;
 import com.ekt.Servicios.entity.TaskLog;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.TaskLogRepository;
 import com.ekt.Servicios.repository.TaskRepository;
+import com.ekt.Servicios.repository.UserRepository;
 import com.ekt.Servicios.service.TaskServiceImpl;
+import com.ekt.Servicios.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +30,26 @@ public class TaskController {
     @Autowired
     private TaskLogRepository bitacoraRepository;
 
+    @Autowired
+    private UserServiceImpl usuarioService;
+
     @PostMapping("/agregarTarea")   //1. Tareas
     public ResponseEntity<?> create(@RequestBody Task tarea){
-        LocalDateTime date =  LocalDateTime.now();
         String mensaje = "";
+        // Valida que el receptor exista
+        Optional<User> usuarioValido = usuarioService.findById(tarea.getId_receptor());
+        if(!usuarioValido.isPresent()){
+            mensaje = "Usuario receptor con id: "+tarea.getId_receptor()+" invalido";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
+        String token = usuarioValido.get().getToken();
+        if(token != null || token!= "") {
+            tareaService.notificacion(token, tarea.getTitulo());
+            System.out.println("Se envio notificacion Token:"+ token);
+        }
+
+        LocalDateTime date =  LocalDateTime.now();
+        String asunto = "";
         System.out.println("Entramos en agregar tarea");
         ArrayList<String> validarTareas = tareaService.validarTareasCrear(tarea);
         if(validarTareas.size() == 0){
@@ -49,6 +68,9 @@ public class TaskController {
             bitacora.setFecha_actualizacion(newLdt);
             bitacora.setEstatus(tarea.getEstatus());
             bitacoraRepository.save(bitacora);
+
+            tareaService.notificacion(token, asunto);
+
 
             mensaje = "Tarea creada correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tarea));
@@ -166,9 +188,15 @@ public class TaskController {
 
     @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{idReceptor}") //5. Tareas
     public ResponseEntity<?> getUsuarioTareasByPrioridad(@PathVariable String prioridad,@PathVariable String idReceptor) {
+        String mensaje;
+        // Valida que el receptor exista
+        Optional<User> usuarioValido = usuarioService.findById((idReceptor));
+        if(!usuarioValido.isPresent()){
+            mensaje = "Usuario receptor con id: "+idReceptor+" invalido";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
+        }
         Iterable<Task> tareas = tareaRepository.findIdReceptorTareaByPrioridad(idReceptor, prioridad);
         int nDocumentos = ((Collection<Task>) tareas).size();
-        String mensaje;
         if(nDocumentos == 0){
             mensaje = "No se encontró la tarea";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje));
@@ -227,6 +255,15 @@ public class TaskController {
         if (oTarea.isPresent()) {
             tareaService.actualizarEstatus(id_tarea, estatus);
             mensaje = "Estatus actualizado correctamente";
+            Optional<User> usuarioValido = usuarioService.findById(oTarea.get().getId_emisor());
+            if(usuarioValido.isPresent()) {//Si el usuario es valido
+                String token = usuarioValido.get().getToken();
+                if (token != null || token != "") {//Si existe el token o no es vacio
+                    if(estatus.equals("revision")) {
+                        tareaService.notificacion(token, "Entró en "+estatus+" Tarea: " + oTarea.get().getTitulo());
+                    }
+                }
+            }
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje));
         } else {
             mensaje = "Id no encontrado";
@@ -263,17 +300,43 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
     }
 
-    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}&{estatus}")  //9. Tareas
-    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@PathVariable String id_usuario,@PathVariable String estatus){
-        Iterable<Task> tareas = tareaRepository.getAllByIdEmisorAndStatus(id_usuario,estatus);
+    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_emisor}&{estatus}")  //9. Tareas
+    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@PathVariable String id_emisor,@PathVariable String estatus){
+        Iterable<Task> tareas = tareaRepository.getAllByIdEmisorAndStatus(id_emisor,estatus);
         String mensaje;
         int nDocumentos = ((Collection<Task>) tareas).size();
         if(nDocumentos ==0){
-            mensaje = "No hay tareas que asignó el id: "+id_usuario+" por estatus: "+estatus;
+            mensaje = "No hay tareas que asignó el id: "+id_emisor+" por estatus: "+estatus;
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
         }
-        mensaje = "Tareas que asignó el id: "+id_usuario+" por estatus: "+estatus+ " obtenidas correctamente";
+        mensaje = "Tareas que asignó el id: "+id_emisor+" por estatus: "+estatus+ " obtenidas correctamente";
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+    }
+
+    @PutMapping("/actualizarTareaFechaRealIni/{id_tarea}")
+    public ResponseEntity<?> actualizarFechaRealTareaIni(@PathVariable String id_tarea,@RequestBody Task tarea) {
+        String mensaje = "";
+        try {
+            tareaService.updateRealDateStart(id_tarea, tarea);
+            mensaje = "Fecha de inicio guardada correctamente";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }catch (Exception e){
+            mensaje = "Error de conexion";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }
+    }
+
+    @PutMapping("/actualizarTareaFechaRealFin/{id_tarea}")
+    public ResponseEntity<?> actualizarFechaRealTareaFin(@PathVariable String id_tarea,@RequestBody Task tarea) {
+        String mensaje = "";
+        try {
+            tareaService.updateRealDateFinish(id_tarea, tarea);
+            mensaje = "Fecha de termino guardada correctamente";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }catch (Exception e){
+            //mensaje = e.getMessage()+" Error de conexion";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getStackTrace().toString()));
+        }
     }
 
 }

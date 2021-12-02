@@ -130,10 +130,10 @@ public class TaskServiceImpl implements TaskService{
         String fechaI = fechaInicial.toString();
         String fechaF = fechaFinal.toString();
 
-        boolean nombreE = Pattern.matches("^[a-zA-Z\\s]*$", nombreEmisor);
-        boolean nombreR = Pattern.matches("^[a-zA-Z\\s]*$", nombreReceptor);
-        boolean tituloT = Pattern.matches("^[a-zA-Z0-9\\s]*$", titulo);
-        boolean descripcionT = Pattern.matches("^[A-Za-z\\s]+[\\.]{0,1}[A-Za-z\\s]*$", descripcion);
+        boolean nombreE = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]*$", nombreEmisor);
+        boolean nombreR = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1\\s]*$", nombreReceptor);
+        boolean tituloT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
+        boolean descripcionT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusT = Pattern.matches("^[a-zA-Z]*$", estatus);
         ArrayList<String> errores = new ArrayList<>();
         if (!nombreE) errores.add("nombreEmisor");
@@ -157,11 +157,12 @@ public class TaskServiceImpl implements TaskService{
         Request request = new Request.Builder()
                 .url("https://fcm.googleapis.com/fcm/send")
                 .method("POST", body)
-                .addHeader("Authorization", "key=AAAAIITlXUs:APA91bHueyZr0vJFOSo-yLEbRsG20D8rquPQbQJ1C82JTcnaOjB2ghemxgUljAzwE4wsPEzjQZY2GlrNcI1sFx__SuxsGfszskEF2cx5zy3yYFCdiU2681mCoLwMw_fH4TjmocJIQyYx")
+                .addHeader("Authorization", "key=AAAAOMDADOM:APA91bF39PZzaPSPbFgPbEO6KvjsOD-AtfnpwEgNGZ6lMFQyx4xaswBX6HDe3iQfjAPiP5MR32Onws1Ry5diSbVY_PwRBhZLQ0PGJzPFLUk14xR8ELQVyleVG2_z00wdWBqs1inATbLP")
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
             okhttp3.Response response = client.newCall(request).execute();
+            response.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,10 +178,10 @@ public class TaskServiceImpl implements TaskService{
         String estatus = tarea.getEstatus();
         String observaviones = tarea.getObservaciones();
 
-        boolean observacionesA = Pattern.matches("^[a-zA-Z\\s]*$", observaviones);
+        boolean observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaviones);
         boolean prioridadA = Pattern.matches("^[a-zA-Z\\s]*$", prioridad);
-        boolean tituloA = Pattern.matches("^[a-zA-Z0-9\\s]*$", titulo);
-        boolean descripcionA = Pattern.matches("^[A-Za-z\\s]+[\\.]{0,1}[A-Za-z\\s]*$", descripcion);
+        boolean tituloA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
+        boolean descripcionA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusA = Pattern.matches("^[a-zA-Z]*$", estatus);
         ArrayList<String> erroresActulizar = new ArrayList<>();
         if (!observacionesA) erroresActulizar.add("observaciones");

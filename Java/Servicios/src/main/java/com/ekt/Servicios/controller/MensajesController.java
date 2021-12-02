@@ -626,7 +626,7 @@ public class MensajesController {
 	public ResponseEntity<?> listarMensajesRecividos(@PathVariable (value = "idEmisor")String idEmisor){
 
 		if(idEmisor.length()<24 || idEmisor.length()>24) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Tamaño del id invalido",""));
 		}
 		Optional<User> user=userRepository.validarUsuario(idEmisor);
 		if(!user.isPresent()){
