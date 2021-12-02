@@ -1,8 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="paddingGeneral">16dp</dimen>
+    <dimen name="medida8dp">8dp</dimen>
     <dimen name="cornerRadiusCard">10dp</dimen>
     <dimen name="marginFormulario">15dp</dimen>
     <dimen name="paddingFormulario">20dp</dimen>
@@ -16,5 +15,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
+    <dimen name="margin_bottom_recycler">20dp</dimen>
+    <dimen name="margin_bottom_icon_enviar">20dp</dimen>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.example.agileus.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
@@ -19,6 +20,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -31,6 +33,8 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //Todo Login
+        InitialApplication.preferenciasGlobal.recuperarToken()
 
         val navView: BottomNavigationView = binding.navView
 
@@ -46,9 +50,11 @@ class HomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
-//        val navController = navHostFragment.navController
-  //      findViewById<BottomNavigationView>(R.id.bottom_nav)
-    //        .setupWithNavController(navController)
+
+
+        //        val navController = navHostFragment.navController
+        //      findViewById<BottomNavigationView>(R.id.bottom_nav)
+        //        .setupWithNavController(navController)
 
         //recuperarPublicaciones()
     }

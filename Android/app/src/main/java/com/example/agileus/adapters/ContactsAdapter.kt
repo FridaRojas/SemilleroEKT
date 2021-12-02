@@ -5,34 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Contacts
-import com.example.agileus.models.Conversation
-import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
+import com.example.agileus.utils.Constantes
 
 class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
     RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_contacts_item, viewGroup, false)
-
         return ViewHolder(view)
     }
-
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
         viewHolder.enlazarItem(dataSet[position])
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
     fun update(filtrado: List<Contacts>) {
@@ -41,26 +32,25 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
         this.notifyDataSetChanged()
     }
 
-
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
+        val txtRol:TextView
         val contexto = view.context
+        val myView:View
 
         init {
-            // Define click listener for the ViewHolder's View.
             txtNameContact = view.findViewById(R.id.txtNameContact)
-
+            myView = view.findViewById(R.id.idContact)
+            txtRol= view.findViewById(R.id.txtRol)
         }
-
-
         fun enlazarItem(contacts: Contacts){
             txtNameContact.text = contacts.nombre
+            txtRol.text = contacts.nombreRol
 
-            txtNameContact.setOnClickListener {
+            myView.setOnClickListener {
                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
+                intent.putExtra(Constantes.ID_RECEPTOR, contacts.id)
                 contexto.startActivity(intent)
-
             }
 
         }
