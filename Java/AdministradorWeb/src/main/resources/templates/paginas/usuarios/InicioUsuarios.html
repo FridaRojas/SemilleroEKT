@@ -149,7 +149,7 @@
                             <label th:text="${user.getNumeroEmpleado()}"></label>
                         </div>
                         <div class="col-sm">
-                            <form th:action="@{/verUsuario(id=${user.getID()})}" method="get">
+                            <form th:action="@{/verUsuario(id=${user.getID()})}" method="post">
                                 <button style="color: #66BB6A; background: white; border-color: white;box-shadow: white">Ver mas...</button>
                             </form>
 
@@ -163,7 +163,7 @@
                                         </form>
                                     </div>
                                     <div class="col-sm" style="align-content: center">
-                                        <form method="post"  th:action="@{/eliminarUsuarioGeneral(id=${user.getID()})}" >
+                                        <form method="post"  th:action="@{/reasignaSuperior(idUsuario=${user.getID()})}" >
                                             <button type="submit" value="submit"  style="background: #66BB6A"  class="btn btn-primary" ><i class="fa fa-trash"></i></button>
                                         </form>
                                     </div>
