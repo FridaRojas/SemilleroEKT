@@ -232,11 +232,11 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 	}
 
@@ -279,11 +279,11 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 	}
 
@@ -305,11 +305,11 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 	}
 
@@ -346,11 +346,11 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 		
 	}
@@ -441,11 +441,11 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 	}
 
@@ -472,11 +472,11 @@ public class MensajesController {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
 	}
 
