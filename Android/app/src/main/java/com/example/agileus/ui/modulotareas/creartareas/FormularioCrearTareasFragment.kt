@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
+import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
@@ -233,10 +234,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         asignarTareaViewModel.postTarea(tarea)
 
         // Enviar tarea a la conversacion grupal
-        //val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0-618d9c26beec342d91d747d6-618e8743c613329636a769aa","",
-            //"Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
-        //conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
-        //Log.d("mensaje Tareas","$mensajeTareas")
+        val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0-618d9c26beec342d91d747d6-618e8743c613329636a769aa","",
+            "Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
+        conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
+        Log.d("mensaje Tareas","$mensajeTareas")
 
         //Volver al fragment anterior
         val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
