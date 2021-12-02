@@ -140,7 +140,6 @@ public class GroupServiceImpl implements GroupService{
         boolean bandera = false;
         User []usuarios =null;
         Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(usuario.getIDGrupo(),usuario.getID());
-
         if (grupo.isPresent()){
             usuarios = grupo.get().getUsuarios();
             for(User user:usuarios){
@@ -158,8 +157,6 @@ public class GroupServiceImpl implements GroupService{
                 }
             }
         }
-
-
         if(bandera){
             grupo.get().setUsuarios(usuarios);
             groupRepository.save(grupo.get());
@@ -169,4 +166,24 @@ public class GroupServiceImpl implements GroupService{
         }
     }
 
+    @Override
+    public void actualizaIdSuperior(String idUser, String idSuperior) {
+        boolean bandera = false;
+        User[] usuarios = null;
+        Optional<User> user = userService.findById(idUser);
+        Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(user.get().getIDGrupo(), idUser);
+        if(grupo.isPresent()){
+            usuarios = grupo.get().getUsuarios();
+            for (User usuario : usuarios) {
+                if (usuario.getID().equals(user.get().getID())) {
+                    usuario.setIDSuperiorInmediato(idSuperior);
+                    bandera = true;
+                }
+            }
+        }
+        if(bandera){
+            grupo.get().setUsuarios(usuarios);
+            groupRepository.save(grupo.get());
+        }
+    }
 }

@@ -39,7 +39,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.swing.text.Document;
 
 @Controller
 public class ConfigPag {
@@ -53,12 +57,6 @@ public class ConfigPag {
          return "paginas/login";
     }
 
-    @GetMapping("/inicioUsuarios")
-    public String inicioUsuarios() {
-        //return "paginas/organigrama/InicioOrganigrama";
-        return "paginas/usuarios/InicioUsuarios";
-    }
-
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model){
         User []usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
@@ -68,21 +66,10 @@ public class ConfigPag {
 
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        System.out.println("correo: "+us.getCorreo()+"  contras: "+us.getPassword());
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\": \""+us.getCorreo()+"\",\r\n    \"password\": \""+us.getPassword()+"\",\r\n    \"token\":\"wesasasa\"\r\n}\r\n\r\n\r\n");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/validate")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        boolean res=userDAO.validaCorreoPassword(us);
         try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject= new JSONObject(response.body().string());
-
-            if (!jsonObject.get("data").toString().equals("")){
+            //si es true, entra a inicio, si es false regresa a login con un mensaje de error
+            if (res){
                 return "redirect:/Inicio";
             }else{
                 redirectAttrs
@@ -91,10 +78,9 @@ public class ConfigPag {
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return "";
+            return "redirect:/error1";
         }
     }
-
 
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
@@ -129,7 +115,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/añadirUsuario")
-    public String añadirUsuario(@ModelAttribute User user){
+    public String añadirUsuario(@ModelAttribute User user, RedirectAttributes redirectAttrs){
         //realizar el guardado
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -143,8 +129,18 @@ public class ConfigPag {
         try {
             Response response = client.newCall(request).execute();
 
+            //tratar la respuesta
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            //Separamos la parte de data y la validamos
+            if(jsonObject.getJSONObject("data").equals("")){
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "Error al crear un usuario, existen datos duplicasdos en la base de datos");
+                System.out.println("Error al insertar usuario");
+            }
         }catch (Exception e){
             System.out.println("Error al insertar usuario");
+            redirectAttrs
+                    .addFlashAttribute("mensaje", "Error al crear un usuario, existen datos duplicasdos en la base de datos");
         }
         return "redirect:/findAllUsuarios";
     }
@@ -204,29 +200,20 @@ public class ConfigPag {
 
     @PostMapping("/CrearGrupo")
     public String CrearGrupo(@ModelAttribute Group gr, RedirectAttributes redirectAttrs) {
-        System.out.println(gr.getNombre());
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
-                .method("POST", body)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject= new JSONObject(response.body().string());
 
-            if (jsonObject.get("status").toString().equals("OK")){
-                return "redirect:/inicioGrupos";
+        try {
+            boolean res= groupDAO.crearGrupo(gr);
+            //si es true regresa, si es false regresa con error de grupo ya existente
+            if (res){
+                return "redirect:/buscarTodosGrupos";
             }else{
                 redirectAttrs
                         .addFlashAttribute("mensaje", "Grupo ya existente");
-                return "redirect:/inicioGrupos";
+                return "redirect:/buscarTodosGrupos";
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return "";
+            return "redirect:/error1";
         }
 
     }
@@ -245,18 +232,13 @@ public class ConfigPag {
                 }
             }
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
-            modelMap.addAttribute("listaUsuarios", listaUsuarios);
+        modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "paginas/organigramas/editarOrganigrama";
+            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
-    }
-
-    @GetMapping("/inicioGrupos")
-    public String inicioGrupos() {
-        return "paginas/organigramas/inicioOrganigramas";
     }
 
     @GetMapping("/buscarTodosGrupos")
@@ -288,6 +270,7 @@ public class ConfigPag {
         return "paginas/organigramas/inicioOrganigramas.html";
     }
 
+    @RequestMapping(value="/editarGrupo",method = { RequestMethod.POST, RequestMethod.GET })
     @PostMapping("/editarGrupo")
     public String editarGrupos(@ModelAttribute User user,@ModelAttribute(value = "idGrupo") String id,Model model) {
         System.out.println("id en editar: "+id);
@@ -302,9 +285,8 @@ public class ConfigPag {
     }
 
     @PostMapping("/ActualizaElimina")
-    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap){
-        userDAO.actualizaIdSujperior(idUser,idBoss);
-
+    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap, Model model){
+        userDAO.actualizaIdSuperior(idUser,idBoss);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
         if(listaSubordinados != null) {
@@ -322,10 +304,8 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "paginas/organigramas/editarOrganigrama";
+            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
-
-
     }
 
     @PostMapping("/buscarGrupo")
@@ -365,8 +345,6 @@ public class ConfigPag {
     public String error() {
         return "paginas/error.html";
     }
-
-
 
     @GetMapping("/Inicio")
     public String Inicio(){
@@ -418,7 +396,8 @@ public class ConfigPag {
 
     @GetMapping("/verUsuario")
     public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
-            User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
+        try {
+        User user= userDAO.buscaID("618b05c12d3d1d235de0ade0");
             if (user!=null){
                 model.addAttribute("user", user);
                 return "paginas/usuarios/verUsuario";
@@ -427,7 +406,10 @@ public class ConfigPag {
                         .addFlashAttribute("mensaje", "El usuario ya no existe");
                 return "/findAllUsuarios";
             }
-
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return "redirect:/error1";
+        }
     }
 
 }
