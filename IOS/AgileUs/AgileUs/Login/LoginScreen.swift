@@ -78,7 +78,7 @@ class LoginScreen: UIViewController {
         UserDefaults.standard.setValue(userName, forKey: "userName")
         UserDefaults.standard.setValue(email, forKey: "email")
         UserDefaults.standard.setValue(employeeNumber, forKey: "employeeNumber")
-        UserDefaults.standard.setValue(String(), forKey: "rolName")
+        UserDefaults.standard.setValue(rolName, forKey: "rolName")
 
         UserDefaults.standard.setValue(isLogged, forKey: "isLogged")
 

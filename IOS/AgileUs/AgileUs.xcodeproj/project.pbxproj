@@ -17,6 +17,7 @@
 		D468551727514DF7001A1031 /* ModalForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = D468551627514DF7001A1031 /* ModalForgotPassword.swift */; };
 		D4D46A65274805E3008273D3 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D46A64274805E3008273D3 /* ViewControllerExtension.swift */; };
 		D4D46A672748086A008273D3 /* TextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D46A662748086A008273D3 /* TextFieldExtension.swift */; };
+		D4E352F12759316000970FD7 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E352F02759316000970FD7 /* TabBarController.swift */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
 		D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C792746BD81002121E4 /* SceneDelegate.swift */; };
 		D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C7B2746BD81002121E4 /* ViewController.swift */; };
@@ -30,14 +31,13 @@
 		D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */; };
 		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
 		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
-		F5BAE23274DAD370080C589 /* chat_funciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5BAE22274DAD370080C589 /* chat_funciones.swift */; };
+		D4EDE7492747174E00197CB1 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		DF89B86327517D13000E8DAE /* ContactosScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF89B86227517D13000E8DAE /* ContactosScreen.swift */; };
 		DF89B86827517DBA000E8DAE /* lista_contactos.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF89B86627517DBA000E8DAE /* lista_contactos.swift */; };
 		DF89B86927517DBA000E8DAE /* lista_contactos.xib in Resources */ = {isa = PBXBuildFile; fileRef = DF89B86727517DBA000E8DAE /* lista_contactos.xib */; };
 		DFC33DD4274C54FF00E8DB7D /* lista_chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC33DD2274C54FF00E8DB7D /* lista_chats.swift */; };
 		DFC33DD5274C54FF00E8DB7D /* lista_chats.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFC33DD3274C54FF00E8DB7D /* lista_chats.xib */; };
 		DFC33DD8274C5C0600E8DB7D /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC33DD7274C5C0600E8DB7D /* ChatViewController.swift */; };
-		D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EDE7482747174E00197CB1 /* CampoTexto.swift */; };
 		E47AA9FF27568CFD00B1A213 /* Modulo_Broadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47AA9FE27568CFD00B1A213 /* Modulo_Broadcast.swift */; };
 		E47AAA012756993300B1A213 /* Adaptador_Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47AAA002756993300B1A213 /* Adaptador_Modals.swift */; };
 		E47AAA0D27569C3B00B1A213 /* Modal_Comunicados.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E47AAA0A27569C3B00B1A213 /* Modal_Comunicados.storyboard */; };
@@ -80,6 +80,7 @@
 		D468551627514DF7001A1031 /* ModalForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalForgotPassword.swift; sourceTree = "<group>"; };
 		D4D46A64274805E3008273D3 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		D4D46A662748086A008273D3 /* TextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExtension.swift; sourceTree = "<group>"; };
+		D4E352F02759316000970FD7 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		D4E69C742746BD81002121E4 /* AgileUs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileUs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E69C772746BD81002121E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4E69C792746BD81002121E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,7 +98,6 @@
 		D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportesScreen.swift; sourceTree = "<group>"; };
 		D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TareasScreen.swift; sourceTree = "<group>"; };
 		D4E69CB12746CCEF002121E4 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
-
 		D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DF5BAE22274DAD370080C589 /* chat_funciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat_funciones.swift; sourceTree = "<group>"; };
 		DF89B86227517D13000E8DAE /* ContactosScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactosScreen.swift; sourceTree = "<group>"; };
@@ -211,6 +211,7 @@
 				D4E69C772746BD81002121E4 /* AppDelegate.swift */,
 				D4E69C792746BD81002121E4 /* SceneDelegate.swift */,
 				D4E69C7D2746BD81002121E4 /* Main.storyboard */,
+				D4E352F02759316000970FD7 /* TabBarController.swift */,
 				D4E69C7B2746BD81002121E4 /* ViewController.swift */,
 				D4E69C802746BD83002121E4 /* Assets.xcassets */,
 				D4E69C822746BD83002121E4 /* LaunchScreen.storyboard */,
@@ -239,11 +240,10 @@
 		D4E69CA72746C24E002121E4 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
-			DF5BAE21274DAD140080C589 /* Funciones_chat */,
-			DFC33DD6274C5BAD00E8DB7D /* Chat_controller */,
-			DFC33DD1274C54A300E8DB7D /* Tablas */,
-			D4E69CAA2746C288002121E4 /* ChatsScreen.swift */,
-			DF89B86227517D13000E8DAE /* ContactosScreen.swift */,
+				DF5BAE21274DAD140080C589 /* Funciones_chat */,
+				DFC33DD6274C5BAD00E8DB7D /* Chat_controller */,
+				DFC33DD1274C54A300E8DB7D /* Tablas */,
+				DF89B86227517D13000E8DAE /* ContactosScreen.swift */,
 				E47AAA0327569A3000B1A213 /* Mensajes_Enviados */,
 				E47AAA02275699AA00B1A213 /* Comunicados */,
 				E47AAA002756993300B1A213 /* Adaptador_Modals.swift */,
@@ -600,8 +600,8 @@
 			files = (
 				D4D46A672748086A008273D3 /* TextFieldExtension.swift in Sources */,
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
-				DF5BAE23274DAD370080C589 /* chat_funciones.swift in Sources */,
 				DF89B86327517D13000E8DAE /* ContactosScreen.swift in Sources */,
+				D4E352F12759316000970FD7 /* TabBarController.swift in Sources */,
 				E47AAA0E27569C3B00B1A213 /* Modal_Comunicados.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				E47AAA0F27569C3B00B1A213 /* comunicados.swift in Sources */,
@@ -624,7 +624,7 @@
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
 				E47AAA1427569C7E00B1A213 /* mensajes_Enviados.swift in Sources */,
-				D4EDE7492747174E00197CB1 /* CampoTexto.swift in Sources */,
+				D4EDE7492747174E00197CB1 /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

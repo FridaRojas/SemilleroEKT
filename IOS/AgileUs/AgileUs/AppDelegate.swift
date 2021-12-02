@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         userName = UserDefaults.standard.string(forKey: "userName") ?? String()
         email = UserDefaults.standard.string(forKey: "email") ?? String()
         employeeNumber = UserDefaults.standard.string(forKey: "employeeNumber") ?? String()
-        rolName = UserDefaults.standard.string(forKey: "employeeNumber") ?? String()
+        rolName = UserDefaults.standard.string(forKey: "rolName") ?? String()
         hierarchyLevel = UserDefaults.standard.integer(forKey: "hierarchyLevel")
     }
 

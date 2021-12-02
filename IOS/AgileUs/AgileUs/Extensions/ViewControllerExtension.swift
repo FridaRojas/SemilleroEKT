@@ -71,9 +71,9 @@ extension UIViewController{
     }
     
     func addLogoutButton(){
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 15, height: 15))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         button.center.x = CGFloat(380.0)
-        button.center.y = CGFloat(80.0)
+        button.center.y = CGFloat(50.0)
 
         button.setImage(UIImage(named: "black_logout_icon"), for: .normal)
         button.setTitle("Cerrar Sesion", for: .normal)
@@ -83,6 +83,7 @@ extension UIViewController{
     }
     
     @objc func logOut(sender: UIButton!) {
+        print("CERRAR SESION")
         UserDefaults.standard.setValue(String(), forKey: "userID")
         UserDefaults.standard.setValue(String(), forKey: "userName")
         UserDefaults.standard.setValue(String(), forKey: "email")

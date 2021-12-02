@@ -41,7 +41,7 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        addLogoutButton()
+        //addLogoutButton()
 
         tabla_chats.delegate = self
         tabla_chats.dataSource = self
@@ -50,10 +50,20 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
 
     }
     override func viewDidAppear(_ animated: Bool) {
-        showNavBar()
+        hideNavBar()
+        //addLogoutButton()
     }
 
-
+    @IBAction func cerrarSesion(_ sender: UIButton) {
+        print("CERRAR SESION")
+        UserDefaults.standard.setValue(String(), forKey: "userID")
+        UserDefaults.standard.setValue(String(), forKey: "userName")
+        UserDefaults.standard.setValue(String(), forKey: "email")
+        UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+        UserDefaults.standard.setValue(false, forKey: "isLogged")
+        navigationController?.popViewController(animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return datos.count
