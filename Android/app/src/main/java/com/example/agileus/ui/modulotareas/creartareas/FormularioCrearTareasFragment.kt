@@ -2,7 +2,6 @@ package com.example.agileus.ui.modulotareas.creartareas
 
 import android.app.Activity
 import android.content.Intent
-import android.icu.text.DateFormat
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
-import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
@@ -30,14 +28,10 @@ import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.io.File
 import java.io.FileNotFoundException
-import java.text.Format
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.time.Duration.Companion.days
+import java.io.File
+
 
 class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     private var _binding: FragmentFormularioCrearTareasBinding? = null
@@ -100,16 +94,17 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 val data:Intent?=result.data
                 if(data!= null){
                     try{
+
                         var returnUri = data?.data!!
                         val uriString = data.toString()
-                        val myFile = File(uriString)
+                        val myFile = File(uriString).name
+                        //val myFile = getRealPathFromURI(requireContext(), returnUri)
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado"
-                        Log.d("mensaje","PDF: $uriString")
+                        Log.d("mensaje","PDF: $myFile")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
                         e.printStackTrace()
                         Log.e("mensaje", "File not found. ${e.message}");
-
                     }
                 }
             }else{
@@ -190,6 +185,20 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     }
 
     // *** FUNCIONES ***
+
+    /*fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = context.contentResolver.query(
+            contentUri!!, proj,
+            null, null, null
+        )
+        val column_index = cursor
+            ?.getColumnIndexOrThrow(MediaStore.EXTRA_MEDIA_TITLE)
+        cursor!!.moveToFirst()
+        return cursor.getString(column_index!!)
+        //.Images.Media.DATA
+    }*/
+
     fun operacionIsert(){
         val tarea: Tasks
         val titulo      = binding.edtAgregaTitulo.text

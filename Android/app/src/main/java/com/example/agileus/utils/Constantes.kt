@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 object Constantes {
-    val URL_ENVIAR_MENSAJE = "http://10.97.4.165:3040/api/"
+    val URL_ENVIAR_MENSAJE = "http://10.97.6.83:3040/api/"
     val URL_BUZON_1=""
     val URL_BUZON_2=""
     val URL_Tareas_Enviadas=""
@@ -21,9 +21,9 @@ object Constantes {
     var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
     val URL_BASE_TAREAS = "http://10.97.3.134:2021/api/"
 
-    val URL_Tasks_Personas="http://10.97.3.134:3040/api/user/findByBossId/"
+    val URL_Tasks_Personas="http://18.218.7.148:3040//api/user/findByBossId/"
 
-    val URL_Tasks_Personas2="http://10.97.3.134:3040/api/user/"
+    val URL_Tasks_Personas2="http://18.218.7.148:3040//api/user/"
 
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)
