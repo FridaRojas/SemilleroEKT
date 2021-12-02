@@ -115,7 +115,7 @@ public class GroupController {
                 }
             }
         }catch (Exception e){
-            System.err.println("Error: "+e);
+            System.err.println("Error en eliminar usuario de un grupo: "+e);
             return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
         }
     }

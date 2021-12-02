@@ -40,7 +40,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.swing.text.Document;
 
 @Controller
 public class ConfigPag {
@@ -60,6 +64,51 @@ public class ConfigPag {
         model.addAttribute("usuarios",usuarios);
         return "paginas/modalEliminaUsuario";
     }
+
+    @PostMapping("/eliminarUsuarioGeneral")
+    public String eliminarUsuario(@ModelAttribute(value = "id") String id,Model model){
+        ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(id);
+        User user = userDAO.buscaID(id);
+
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/delete/"+id)
+                .method("DELETE", body)
+                .build();
+
+        try {
+            //limpia informacion del usuario en la db
+            Response response = client.newCall(request).execute();
+            System.out.println("el id es: "+id+"  eliminado con exito");
+            //Verificar si tiene hijos
+            if(listaSubordinados != null) {
+                ArrayList<User> listaUsuarios = new ArrayList<>();
+                User[] usuarios;
+                usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
+                for (User usuario : usuarios) {
+                    if (!usuario.getID().equals(user.getID())) {
+                        listaUsuarios.add(usuario);
+                    }
+                }
+                model.addAttribute("listaSubordinados", listaSubordinados);
+                model.addAttribute("listaUsuarios", listaUsuarios);
+                model.addAttribute("idUsuario", id);
+                return "paginas/usuarios/ReasignaSuperior";
+            }else{
+
+                return "redirect:/buscarTodosGrupos";
+            }
+
+        }catch (Exception e) {
+            System.out.println("Error al eliminar usuario" +e);
+        }
+        return "redirect:/findAllUsuarios";
+    }
+
 
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs) {
@@ -142,13 +191,12 @@ public class ConfigPag {
         Boolean bandera=false;
         user.setID(id);
 
-        //validar que los datos no existan
-       if (!userDAO.existusuario(user)) {
-           //editar informacion
-           if(userDAO.editarUsuario(user)){
-                bandera=true;
-           }
+        //editar informacion
+        System.out.println("rfc:"+user.getRFC());
+       if(userDAO.editarUsuario(user)){
+            bandera=true;
        }
+
         //si existen retornar error
         if (bandera){
             System.out.println("se modifico con exito");
@@ -195,12 +243,13 @@ public class ConfigPag {
                 }
             }
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
-            modelMap.addAttribute("listaUsuarios", listaUsuarios);
+        modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
+
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "redirect:/buscarTodosGrupos";
+            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
     }
 
@@ -233,6 +282,7 @@ public class ConfigPag {
         return "paginas/organigramas/inicioOrganigramas.html";
     }
 
+    @RequestMapping(value="/editarGrupo",method = { RequestMethod.POST, RequestMethod.GET })
     @PostMapping("/editarGrupo")
     public String editarGrupos(@ModelAttribute User user,@ModelAttribute(value = "idGrupo") String id,Model model) {
         System.out.println("id en editar: "+id);
@@ -251,7 +301,6 @@ public class ConfigPag {
         userDAO.actualizaIdSuperior(idUser,idBoss);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
-        System.out.println(user.getIDGrupo());
         if(listaSubordinados != null) {
             ArrayList<User> listaUsuarios = new ArrayList<>();
             User[] usuarios;
@@ -267,7 +316,7 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "redirect:/buscarTodosGrupos";
+            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
     }
 

@@ -128,6 +128,9 @@ public class UserController {
                 User usr = userService.findById(id).get();
                 if(usr.getStatusActivo().equals("true")){
                     usr.setStatusActivo("false");
+                    usr.setNombreRol("");
+                    usr.setIDGrupo("");
+                    usr.setIDSuperiorInmediato("");
                     userService.save(usr);
                     return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario eliminado correctamente",""));
                 }
@@ -167,8 +170,11 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody User userUpdate){
+
         try {
             Optional<User> user = userService.findById(userUpdate.getID());
+            System.out.println("Servicios:"+userUpdate.getRFC());
+            System.out.println("Servicios2 :"+user.get().getRFC());
             if(!user.isPresent()) {
                 return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
             }else {

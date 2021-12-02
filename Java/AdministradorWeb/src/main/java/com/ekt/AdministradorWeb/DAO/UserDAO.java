@@ -65,7 +65,6 @@ public class UserDAO {
     }
 
     public Boolean editarUsuario(User user){
-        System.out.println("En editarUsuario "+user.getFechaInicio()+"  "+user.getRFC());
         Boolean res=false;
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -79,8 +78,9 @@ public class UserDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            System.out.println("res de editr: "+jsonObject.toString());
+
             if (jsonObject.get("status").equals("OK")){
+                System.out.println("Usuario editado correctamente");
                 res=true;
             }
         }catch (Exception e){
@@ -102,6 +102,7 @@ public class UserDAO {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
+            System.out.println(user.getCurp()+"  "+user.getRFC()+"   "+user.getCorreo()+"  "+user.getNumeroEmpleado());
             Response response = client.newCall(request).execute();
             JSONObject jsonObject = new JSONObject(response.body().string());
 
