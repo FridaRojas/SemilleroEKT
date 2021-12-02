@@ -120,7 +120,10 @@
                     Rol
                 </div>
                 <div class="col-sm">
-                    Numero de Emplea
+                    # de Empleado
+                </div>
+                <div class="col-sm">
+                    Ver
                 </div>
                 <div class="col-sm">
                     Acciones
@@ -146,6 +149,12 @@
                             <label th:text="${user.getNumeroEmpleado()}"></label>
                         </div>
                         <div class="col-sm">
+                            <form th:action="@{/verUsuario(id=${user.getID()})}" method="post">
+                                <button style="color: #66BB6A; background: white; border-color: white;box-shadow: white">Ver mas...</button>
+                            </form>
+
+                        </div>
+                        <div class="col-sm">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-sm">
@@ -154,7 +163,7 @@
                                         </form>
                                     </div>
                                     <div class="col-sm" style="align-content: center">
-                                        <form method="post"  th:action="@{/eliminarUsuario(id=${user.getID()})}" >
+                                        <form method="post"  th:action="@{/reasignaSuperior(idUsuario=${user.getID()})}" >
                                             <button type="submit" value="submit"  style="background: #66BB6A"  class="btn btn-primary" ><i class="fa fa-trash"></i></button>
                                         </form>
                                     </div>
@@ -191,14 +200,6 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<script type="text/javascript">
-    $("#modalEditarUsuario").modal("hide");
-
-    function Values(ID) {
-        $("#nombre1").val(ID);
-    }
-</script>
 
 </body>
 </html>
