@@ -23,6 +23,7 @@ object Constantes {
     val ID_RECEPTOR = "ID_RECEPTOR"
     val CHAT_GROUP = "CHAT_GROUP"
     val ID_CHAT = "ID_CHAT"
+    val ROL_USER = "ROL_USER"
     //val idChat = "618e878ec613329636a769ab_618e8821c613329636a769a1"
     val idChat = "2"
     val referenciaMensajeria = "Mensajeria"

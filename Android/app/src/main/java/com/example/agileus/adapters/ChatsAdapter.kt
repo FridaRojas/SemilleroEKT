@@ -51,6 +51,7 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
                 val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
                 intent.putExtra(Constantes.ID_CHAT, chats.idConversacion)
                 intent.putExtra(Constantes.ID_RECEPTOR, chats.idReceptor)
+                intent.putExtra(Constantes.ROL_USER, chats.nombreRol)
                 contexto.startActivity(intent)
             }
 

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerConversacion"
         android:layout_width="match_parent"

@@ -18,7 +18,8 @@
         android:backgroundTint="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="@dimen/margin_bottom_general"
-        android:drawableEnd="@drawable/iconobuscar"/>
+        android:drawableEnd="@drawable/iconobuscar"
+        android:paddingStart="@dimen/margin_end_general"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerListContacts"

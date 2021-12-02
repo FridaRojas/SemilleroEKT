@@ -87,22 +87,4 @@ class ConversationViewModel:ViewModel() {
         }
     }
 
-    fun devuelveListaChats(idUser:String){
-        try {
-            viewModelScope.launch {
-                listadeChats =  withContext(Dispatchers.IO) {
-                    message.recuperarListadeChats(idUser)
-                }
-                if (listadeChats != null){
-                    if(listadeChats.isNotEmpty()){
-                        adaptadorChats.postValue(ChatsAdapter(listadeChats as ArrayList<Chats>))
-                        pruebaArreglo.value = listadeChats
-
-                    }
-                }
-            }
-        }catch (ex:Exception){
-            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
-        }
-    }
 }

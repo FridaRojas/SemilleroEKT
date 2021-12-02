@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -12,12 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.agileus.R
 import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
 import com.example.agileus.models.StatusRead
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
 import java.io.FileNotFoundException
 
@@ -26,6 +25,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
     lateinit var binding:ActivityConversationOneToOneBinding
     lateinit var conversationviewModel:ConversationViewModel
+    lateinit var chatsviewmodel:ListConversationViewModel
     lateinit var resultLauncherArchivo: ActivityResultLauncher<Intent>
     lateinit var firebaseProvider : FirebaseProvider
     lateinit var id_receptor :String
@@ -37,15 +37,28 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseProvider  = FirebaseProvider()
 
+
         conversationviewModel = ViewModelProvider(this).get()
+        chatsviewmodel = ViewModelProvider(this).get()
+
         id_chat = Constantes.idChat
         id_chat = intent.getStringExtra(Constantes.ID_CHAT).toString()
         id_receptor = intent.getStringExtra(Constantes.ID_RECEPTOR).toString()
+        var rol = intent.getStringExtra(Constantes.ROL_USER).toString()
+
+        if(rol.equals("BROADCAST")){
+            binding.btnEnviarMensaje.isEnabled = false
+            binding.btnArchivoAdjunto.isEnabled = false
+            Toast.makeText(applicationContext, "No puedes responder este mensaje",Toast.LENGTH_LONG).show()
+        }else{
+            binding.btnEnviarMensaje.isEnabled = true
+            binding.btnArchivoAdjunto.isEnabled = true
+        }
 
         conversationviewModel.devuelveLista(id_chat)
 
-        conversationviewModel.devuelveListaChats(Constantes.id)
-        conversationviewModel.pruebaArreglo.observe(this,{
+        chatsviewmodel.devuelveListaChats(Constantes.id)
+        chatsviewmodel.chatsdeUsuario.observe(this,{
             for (user in it){
                 if(user.idReceptor.equals(id_receptor)){
                     id_chat = user.idConversacion
@@ -65,7 +78,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
                 while (true){
                     Log.i("chechar","checar")
                     conversationviewModel.devuelveLista(id_chat)
-                    sleep(3000)
+                    sleep(5000)
                 }
             }
         }.start()
@@ -117,8 +130,6 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             intent.type = "application/pdf"
             resultLauncherArchivo.launch(intent)
         }
-
-
 
         binding.btnEnviarMensaje.setOnClickListener {
             try{

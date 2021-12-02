@@ -14,8 +14,10 @@ import com.example.agileus.databinding.ListContactsFragmentBinding
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.isConnectedToThisServer
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import com.example.agileus.models.Chats
 
 
 class ListContactsFragment : Fragment() {
@@ -53,12 +55,18 @@ class ListContactsFragment : Fragment() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                contactsviewModel.devuelveLista(Constantes.id)
-                contactsviewModel.contactos.observe(viewLifecycleOwner,{
-                    var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
-                    contactsviewModel.filtrarContactos(Constantes.id,filtro)
-                })
+
+
+                if(p0.isNullOrEmpty()){
+                    contactsviewModel.devuelveLista(Constantes.id)
+                }else{
+                    var list = contactsviewModel.listaConsumida
+                    var fil = list.filter {  it.nombre.lowercase().contains(p0.toString().lowercase()) }
+                    contactsviewModel.filtrarContactos(Constantes.id, fil)
+
+                }
             }
+
             override fun afterTextChanged(p0: Editable?) {
             }
 
