@@ -7,36 +7,21 @@
 
 import UIKit
 
-struct Usuarios: Codable
+struct Conversaciones: Codable
 {
-    let id: Int
-    let website:String
-    let name:String
+    let idConversacion: String
+    let idReceptor:String
+    let nombreConversacionRecepto:String
+    let nombreRol:String
 
 }
 
 class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource { //se importan las clases abstraptas
 
     @IBOutlet weak var tabla_chats: UITableView!
-    var usuarios = [Usuarios]()
+    var conversaciones = [Conversaciones]()
+    var otrodatos = [Any]()
     //se crea un arreglo para poder simular los datos que nos proporcionara el web service
-    var datos = [
-        [1,"Pancho"],
-        [2,"Maria"],
-        [3,"Peña Nieto"],
-        [4,"Justin Bieber"],
-        [5,"Maluma"],
-        [6,"CR7"],
-        [7,"Messi"],
-        [8,"Pirlo"],
-        [9,"Gera "],
-        [10,"Babo"],
-        [11,"Tio Salinas"],
-        [12,"Coppel"],
-        [13,"Elecktra"],
-        [14,"Banco Azteca"],
-        [15,"aaaaa"]
-    ]
 
     override func viewDidLoad()
     {
@@ -46,12 +31,15 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         tabla_chats.delegate = self
         tabla_chats.dataSource = self
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
-        //consumir_Servicio_web()
-
+        Servicio_web_conversaciones()
     }
     override func viewDidAppear(_ animated: Bool) {
+
+        showNavBar()
+
         hideNavBar()
         //addLogoutButton()
+
     }
 
     @IBAction func cerrarSesion(_ sender: UIButton) {
@@ -66,46 +54,47 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return datos.count
-
-
+        return otrodatos.count
     }
 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let indice = indexPath.row
         var celda_personalizada = tableView.dequeueReusableCell(withIdentifier: lista_chats.identificador, for: indexPath) as! lista_chats
-        //celda_personalizada.textLabel?.text = "Aqui iran las conversaciones"
-        celda_personalizada.configurar_celda(Datos: datos[indice] as! [Any])
+        celda_personalizada.configurar_celda(Datos: otrodatos[indice] as! [Any])
         return celda_personalizada
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let index = indexPath.row
         //pasar a la pantalla de conversacion
         let vc = ChatViewController()
-        vc.title = "Nombre del contacto"
+        
+        vc.title = "\(otrodatos[index])"
         navigationController?.pushViewController(vc, animated: true)
     }
-    func consumir_Servicio_web()
+    
+    
+    func Servicio_web_conversaciones()
     {
-        let servicio = "http://10.97.6.83:3040/api/mensajes/listarConversaciones/618e8821c613329636a769ac"
-        // let servicio = "https://jsonplaceholder.typicode.com/users?id=\(1)" si el api nos pediera parametros solo se le concatena dicho parametro(  ?=\(1)  )
+        let servicio = "http://10.97.6.83:3040/api/mensajes/listarConversaciones/618e878ec613329636a769ab"
         let url = URL(string: servicio)
 
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
             do
             {
-                self.usuarios = try JSONDecoder().decode([Usuarios].self, from: data!)
+                self.conversaciones = try JSONDecoder().decode([Conversaciones].self, from: data!)
                 DispatchQueue.main.async
                 {
                     var cadena = String()
-
-                    for item in self.usuarios
+                    var contador = 1
+                    for item in self.conversaciones
                     {
-                        print("aqui va algo")
+                        self.otrodatos.append([contador,item.idConversacion,item.idReceptor,item.nombreConversacionRecepto,item.nombreRol])
+                        contador = contador + 1
                     }
-                    print("aqui tambien")
+                    self.tabla_chats.reloadData()
                 }
 
             }

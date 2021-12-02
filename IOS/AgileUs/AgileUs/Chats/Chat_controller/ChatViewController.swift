@@ -3,10 +3,8 @@
 //  AgileUs
 //
 //  autor: Carlos_Adolfo_Hernandez (C_A_H)
-//
-
-// se agrego boton para envio de documentos
-// se agrego validacion para ver si tiene una conversacion o esta vacio la conversacion
+//    10.97.6.83:3040/api/mensajes/listarConversaciones/618e878ec613329636a769ab    lista chats
+// 10.97.6.83:3040/api/mensajes/listaContactos/618e878ec613329636a769ab lista contactos
 import UIKit
 import MessageKit
 import InputBarAccessoryView
@@ -102,8 +100,9 @@ class ChatViewController:
         inputBar.inputTextView.text = ""
         
         self.messagesCollectionView.reloadData()
-        create_json(id_emisor: userID, id_receptor: "618b05c12d3d1d235de0ade0", mensaje: mensaje, rutaDocumento: "/", fecha: fecha){
+        create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: "", fecha: fecha){
             (exito) in
+        
             print("Exitoso \(userID)")}fallido:{ fallido in
             print("Registro Fallido")
         }
@@ -223,13 +222,13 @@ class ChatViewController:
     
     func carga_mensajes()
     {
-        let servicio = "http://10.97.6.83:3040/api/mensajes/verConversacion/618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
+        let servicio = "http://10.97.6.83:3040/api/mensajes/verConversacion/\(userID)_618e8743c613329636a769aa"
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
             do
             {
-                print("esto es data \(data)")
+                
                 if data == nil
                 {
                     self.simpleAlertMessage(title: "Aviso", message: "Aun no ha Iniciado conversacion")
@@ -237,25 +236,26 @@ class ChatViewController:
                 self.usuarios = try JSONDecoder().decode([Chats].self, from: data!)
                 DispatchQueue.main.async
                 {
+                    //print(self.usuarios)
                     var cont = 0
                     for item in self.usuarios
                     {
-                        var current_usuario =  item.idemisor
+                       
                         if item.idemisor == userID
                         {
                         //self.cadena = self.cadena + "\(item.texto)"
                             if item.rutaDocumento != ""
                             {
-                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("Documento: \(item.rutaDocumento)")  ))
+                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("Documento: \(item.rutaDocumento)")  ))
                             }else{
-                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
+                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
                             }
                         }else{
                             if item.rutaDocumento != ""
                             {
-                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("Documento: \(item.rutaDocumento)")))
+                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("Documento: \(item.rutaDocumento)")))
                             }else{
-                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
+                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
                             }
                         }
                     }
@@ -305,7 +305,7 @@ class ChatViewController:
     {
         let exampleDict: [String: Any] = [
             "idEmisor" : userID,
-                "idReceptor" : "618b05c12d3d1d235de0ade0",
+                "idReceptor" : id_receptor,
                 "texto" : "\(mensaje)",
                 "rutaDocumento" : "\(rutaDocumento)",
                 "fechaCreacion" : "\(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))",
@@ -318,7 +318,7 @@ class ChatViewController:
                         //print(succes)
                     DispatchQueue.main.async {
                        exito("Registro exitoso")
-                        
+                       print(jsonString)
                     }
                     
                 } fallo: {
