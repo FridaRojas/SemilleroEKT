@@ -13,6 +13,7 @@ class InitialApplication : Application() {
         lateinit var webServiceGlobalTasks: TasksApi
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
         lateinit var webServiceGlobalReportes: ReportesApi
+        lateinit var webServiceGlobalReportesBroadCast: ReportesApi
 
     }
 
@@ -20,8 +21,9 @@ class InitialApplication : Application() {
         super.onCreate()
         webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
-        BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
+        BroadcastServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
+        webServiceGlobalReportesBroadCast = ConfigRetrofit().getBroadCastReportes()
     }
 
 }

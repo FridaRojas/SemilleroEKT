@@ -33,7 +33,7 @@ class ReporteMensajesDao {
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes()
         val ResponseMensajes: Response<ArrayList<Conversation>> = callRespuesta.execute()
 
-        val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportes.getDatosRespuestasBroadcast()
+        val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportesBroadCast.getDatosRespuestasBroadcast("618e8821c613329636a769ac")
         val ResponseMensajesBroadCast: Response<ArrayList<DatosBroadCast>> = callRespuestaBroadCast.execute()
 
         val listaRecycler= ArrayList<Estadisticas>()
@@ -88,7 +88,11 @@ class ReporteMensajesDao {
 
         if(ResponseMensajesBroadCast.isSuccessful){
             lista_B = ResponseMensajesBroadCast.body()!!
-            Log.d("link:",lista_B.toString())
+            lista_B.forEach {
+
+                Log.d("asunto:", it.asunto)
+                Log.d("descripción:", it.descripcion)
+            }
             enviados_al_B = lista_B.size
         }
 

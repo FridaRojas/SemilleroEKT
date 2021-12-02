@@ -56,4 +56,19 @@ class ConfigRetrofit {
         return mRetrofit.create(ReportesApi::class.java)
 
     }
+
+    fun getBroadCastReportes(): ReportesApi{
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl("http://10.97.6.83:3040/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(ReportesApi::class.java)
+
+    }
+
+
+
+
 }
