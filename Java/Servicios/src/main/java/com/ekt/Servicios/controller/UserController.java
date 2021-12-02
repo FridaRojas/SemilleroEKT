@@ -31,17 +31,20 @@ public class UserController {
     @Autowired
     public UserRepository userRepository;
 
-    @PostMapping("/create")
+    @PostMapping("/create")//*
     public ResponseEntity<?> create(@Validated @RequestBody User user){
+        System.out.println(user.getNombre()+"  "+user.getRFC());
         try {
             if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
             }else{
                 boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
                 if (us){
+                    System.out.println("ya existe");
                     return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",""));
                 }else {
                     userService.save(user);
+                    System.out.println("creado");
                     return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Creado",user));
                 }
             }
@@ -52,53 +55,69 @@ public class UserController {
 
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/findAll")//*
     public ResponseEntity<?> findAll(){
-    if (userService.findAll()!=null){
-        return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Lista de usuarios encontrada",userService.findAll()));
-    }else{
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error al buscar los datos",""));
-    }
-    }
-
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> findById(@PathVariable String id){
-        //return userService.findById(id);
-        if(userService.findById(id).isPresent()){
-            return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",userService.findById(id)));
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",""));
+        try{
+            if (userService.findAll()!=null){
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Lista de usuarios encontrada",userService.findAll()));
+            }else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al buscar los datos",""));
+            }
+        }catch (Exception e){
+            System.err.println("Error: "+e);
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
         }
     }
 
-    @PostMapping("/validate")
-        public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
-        if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
-            System.out.println("Error en las llaves");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
-        }else{
-            Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
-            if (user.isPresent()){
-                System.out.println("Login: Usuario encontrado");
-                //actualizar token
-                user.get().setToken(infAcceso.getToken());
-                userService.save(user.get());
-
-                user.get().setFechaInicio(null);
-                user.get().setFechaTermino(null);
-                user.get().setPassword(null);
-                user.get().setIDGrupo(null);
-                user.get().setOpcionales(null);
-                user.get().setIDSuperiorInmediato(null);
-                user.get().setStatusActivo(null);
-                user.get().setCurp(null);
-                user.get().setRFC(null);
-
-
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
+    @GetMapping("/find/{id}")//*
+    public ResponseEntity<?> findById(@PathVariable String id){
+        //return userService.findById(id);
+        try{
+            if(userService.findById(id).isPresent()){
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",userService.findById(id)));
             }else{
-            System.out.println("Login: Usuario no encontrado");
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));}
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",""));
+            }
+        }catch (Exception e){
+            System.err.println("Error: "+e);
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+        }
+    }
+
+    @PostMapping("/validate")//*
+    public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
+        try{
+            if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
+                System.out.println("Error en las llaves");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+            }else{
+                Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
+                if (user.isPresent()){
+                    System.out.println("Login: Usuario encontrado");
+                    //actualizar token
+                    user.get().setToken(infAcceso.getToken());
+                    userService.save(user.get());
+
+                    user.get().setFechaInicio(null);
+                    user.get().setFechaTermino(null);
+                    user.get().setPassword(null);
+                    user.get().setIDGrupo(null);
+                    user.get().setOpcionales(null);
+                    user.get().setIDSuperiorInmediato(null);
+                    user.get().setStatusActivo(null);
+                    user.get().setCurp(null);
+                    user.get().setRFC(null);
+
+
+                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
+                }else{
+                System.out.println("Login: Usuario no encontrado");
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
+                }
+            }
+        }catch (Exception e){
+            System.err.println("Error: "+e);
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
         }
     }
 
@@ -124,18 +143,25 @@ public class UserController {
 
     }
 
-    @PutMapping("/updateIdBoss")
+    @PutMapping("/updateIdBoss")//*
     public ResponseEntity<?> updateIdBoss(@RequestBody BodyUpdateBoss updateBoss){
-        String[] idUser = updateBoss.getIDUsuarios();
-        String[] idBoss = updateBoss.getIDSuperiores();
+
         try {
-            for (int i = 0; i < idUser.length; i++) {
-                userService.updateIdBoss(idUser[i], idBoss[i]);
-                groupService.actualizaIdSuperior(idUser[i], idBoss[i]);
+            if (updateBoss.getIDUsuarios()==null || updateBoss.getIDSuperiores()==null){
+                System.out.println("Error en las llaves");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+            }else{
+                String[] idUser = updateBoss.getIDUsuarios();
+                String[] idBoss = updateBoss.getIDSuperiores();
+                for (int i = 0; i < idUser.length; i++) {
+                    userService.updateIdBoss(idUser[i], idBoss[i]);
+                    groupService.actualizaIdSuperior(idUser[i], idBoss[i]);
+                }
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
             }
-            return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
+
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,e.getMessage(),""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,e.getMessage(),""));
         }
     }
 
@@ -228,7 +254,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/existUser")
+    @PostMapping("/existUser")//*
     public ResponseEntity<?> existUser(@RequestBody User user){
         try {
             if (user.getCorreo() == null || user.getCurp() == null || user.getRFC() == null || user.getNumeroEmpleado() == null) {
@@ -249,22 +275,26 @@ public class UserController {
         }
     }
 
-    @PutMapping("/reasigna")
+    @PutMapping("/reasigna")//*
     public ResponseEntity reasigna(@RequestBody BodyUpdateBoss body){
+        try {
+            if (body.getIDUsuarios() == null || body.getIDSuperiores() == null) {
+                System.out.println("Error en las llaves");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+            } else {
+                String[] Usuarios = body.getIDUsuarios();
+                String[] Superiores = body.getIDSuperiores();
 
-        if (body.getIDUsuarios() == null || body.getIDSuperiores()==null){
-            System.out.println("Error en las llaves");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
-        }else {
-            String[] Usuarios = body.getIDUsuarios();
-            String[] Superiores = body.getIDSuperiores();
+                for (int i = 0; i < Usuarios.length; i++) {
+                    System.out.println("Empleado:" + Usuarios[i] + "  Superior:" + Superiores[i]);
+                }
+                userService.reasignaSuperiores(Usuarios, Superiores);
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Superiores Modificados", ""));
 
-            for (int i=0 ; i<Usuarios.length ; i++){
-                System.out.println("Empleado:"+Usuarios[i]+"  Superior:"+Superiores[i]);
             }
-            userService.reasignaSuperiores(Usuarios, Superiores);
-            return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Superiores Modificados",""));
-
+        }catch (Exception e){
+            System.err.println("Error: "+e);
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
         }
 
     }

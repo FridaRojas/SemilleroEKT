@@ -79,89 +79,65 @@ public class ConfigPag {
         }
     }
 
-    @GetMapping("/findAllUsuarios")
+    @GetMapping("/findAllUsuarios")//*
     public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
         Gson gson = new Gson();
-        //ArrayList<User> listaUsuarios = new ArrayList();
-            //se realiza la peticion al back
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/findAll")
-                .method("GET", null)
-                .build();
         try {
-            Response response = client.newCall(request).execute();
-            String res = response.body().string();
-            JSONObject jsonObject= new JSONObject(res);
-            //Separamos la parte de data
-            JSONArray name1 = jsonObject.getJSONArray("data");
-
-            //prueba de casteo
-
+            JSONArray name1 = userDAO.buscarTodosUsuarios(listaUsuarios);
             for (int i=0;i<name1.length();i++){
                 listaUsuarios.add(gson.fromJson(name1.getJSONObject(i).toString(), User.class));
             }
+            model.addAttribute("listaUsuarios",listaUsuarios);
+            return "paginas/usuarios/InicioUsuarios";
 
         }catch (Exception e){
-            System.out.println("Error al realizar la consulta");
+            System.out.println(e.getMessage());
+            return "redirect:/error1";
         }
-        model.addAttribute("listaUsuarios",listaUsuarios);
-        return "paginas/usuarios/InicioUsuarios";
-        //return listaUsuarios;
     }
 
-    @PostMapping("/añadirUsuario")
-    public String añadirUsuario(@ModelAttribute User user){
-        //realizar el guardado
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\"" +user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\" "+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\" "+user.getCurp()+"\",\r\n    \"rfc\":\" "+user.getRFC()+"\"\r\n}");
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/create")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+    @PostMapping("/añadirUsuario")//*
+    public String añadirUsuario(@ModelAttribute User user,RedirectAttributes redirectAttrs){
+        System.out.println(user.getRFC());
         try {
-            Response response = client.newCall(request).execute();
+            if(userDAO.creaUsuario(user)){
+                System.out.println("creadoo");
+                return "redirect:/findAllUsuarios";
+            }else {
+                System.out.println("no creado :(");
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "El usuario ya existe");
+                return "redirect:/findAllUsuarios";
+            }
 
         }catch (Exception e){
-            System.out.println("Error al insertar usuario");
+            System.out.println(e.getMessage());
+            return "redirect:/error1";
         }
-        return "redirect:/findAllUsuarios";
     }
 
-    @PostMapping("/editarUsuario")
-    public String editarUsuario(@ModelAttribute(value = "id") String id,Model model){
-        //buscar al usuario
-        Gson gson = new Gson();
-        User user = new User();
-
-        System.out.println("el usuarios es: "+id);
-
-        //buscar usuario
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/find/"+id)
-                .method("GET", null)
-                .build();
+    @PostMapping("/editarUsuario")//*
+    public String editarUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
+        User user;
         try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject= new JSONObject(response.body().string());
-            //Separamos la parte de data
-            JSONObject name1 = jsonObject.getJSONObject("data");
-            user =gson.fromJson(name1.toString(), User.class);
-            model.addAttribute("user",user);
+            user=userDAO.buscaID(id);
+            if(user!=null) {
+                model.addAttribute("user", user);
+                return "/paginas/usuarios/EditarUsuario";
+            }else {
+                redirectAttrs
+                        .addFlashAttribute("mensaje", "El usuario no existe");
+                return "redirect:/findAllUsuarios";
+            }
         }catch (Exception e){
-            System.out.println("error al castear el usuario");
+            System.out.println(e.getMessage());
+            return "redirect:/error1";
         }
 
-        return "/paginas/usuarios/EditarUsuario";
+
     }
 
-    @PostMapping ("/editarUsuarioServicio")
+    @PostMapping ("/editarUsuarioServicio")//*
     public String editarUsuarioServicio(@ModelAttribute User user,@ModelAttribute(value = "id") String id,RedirectAttributes redirectAttrs){
         Boolean bandera=false;
         user.setID(id);
