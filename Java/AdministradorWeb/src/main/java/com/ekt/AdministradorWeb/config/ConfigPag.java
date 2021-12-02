@@ -40,7 +40,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.swing.text.Document;
 
 @Controller
 public class ConfigPag {
@@ -273,13 +277,13 @@ public class ConfigPag {
                 }
             }
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
-            modelMap.addAttribute("listaUsuarios", listaUsuarios);
+        modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
 
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "redirect:/buscarTodosGrupos";
+            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
     }
 
@@ -312,6 +316,7 @@ public class ConfigPag {
         return "paginas/organigramas/inicioOrganigramas.html";
     }
 
+    @RequestMapping(value="/editarGrupo",method = { RequestMethod.POST, RequestMethod.GET })
     @PostMapping("/editarGrupo")
     public String editarGrupos(@ModelAttribute User user,@ModelAttribute(value = "idGrupo") String id,Model model) {
         System.out.println("id en editar: "+id);
@@ -330,7 +335,6 @@ public class ConfigPag {
         userDAO.actualizaIdSuperior(idUser,idBoss);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
-        System.out.println(user.getIDGrupo());
         if(listaSubordinados != null) {
             ArrayList<User> listaUsuarios = new ArrayList<>();
             User[] usuarios;
@@ -346,7 +350,7 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            return "redirect:/buscarTodosGrupos";
+            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
     }
 
