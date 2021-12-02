@@ -50,13 +50,13 @@ class Usuarios{
     
     //let serviceUser = "https://firebasestorage.googleapis.com/v0/b/proyectop-50f0b.appspot.com/o/busquedaPorIdJefe2.json?alt=media&token=3a996bbf-398d-4785-8bbf-9931f5eecfe2"
     
-    let serviceUser = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/usuariosEncontrados2.json?alt=media&token=ceb1c36f-e662-484c-9db3-fb33ef0759b0"
+    //  let serviceUser = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/usuariosEncontrados2.json?alt=media&token=ceb1c36f-e662-484c-9db3-fb33ef0759b0"
     
-    //var serviceUser = "http://10.97.2.198:3040/api/user/findByBossId/"
+    var serviceUser = "http://18.218.7.148:3040/api/user/findByBossId/"
     
     func webServiceUsuarios(idUsuario: String) {
         
-        //serviceUser = "\(serviceUser)\(idUsuario)"
+        serviceUser = "\(serviceUser)\(idUsuario)"
                 
         let url = URL(string: serviceUser)
         

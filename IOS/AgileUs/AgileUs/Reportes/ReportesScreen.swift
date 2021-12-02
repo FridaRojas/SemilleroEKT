@@ -213,7 +213,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     func configuracion_cantidades() {
         //Definir primeros datos de los elementos de la lista
         arrDatosLista = [["ic_PieChart", 0, 0, "pieM"], ["ic_Bar", 0, 0, "barM"]]
-        arrCantidadDeTareas = [0,0,0,0]
+        arrCantidadDeTareas = [0,0,0,0,0,0]
         arrTareasTerminadas = [0,0]
         
         //datos = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
