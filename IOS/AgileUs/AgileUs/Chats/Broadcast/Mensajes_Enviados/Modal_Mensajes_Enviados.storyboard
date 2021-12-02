@@ -8,35 +8,19 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Modal Comunicados-->
+        <!--Modal Mensajes Enviados-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="Identificador_Modal_Comunicados" id="Y6W-OH-hqX" customClass="Modal_Comunicados" customModule="modulo_broadcast" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Identificador_Modal_Mensajes_Enviados" id="Y6W-OH-hqX" customClass="Modal_Mensajes_Enviados" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="comunicado_bckgrnd" translatesAutoresizingMaskIntoConstraints="NO" id="ZfX-ZI-Fs8">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="comunicado_bckgrnd" translatesAutoresizingMaskIntoConstraints="NO" id="Rp9-3e-tkq">
                                 <rect key="frame" x="0.0" y="180" width="415" height="520"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Escribir comunicado" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="z94-Vl-iLw">
-                                <rect key="frame" x="50" y="420" width="300" height="150"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Escribir asunto" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="OGg-bJ-tkS">
-                                <rect key="frame" x="50" y="335" width="300" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WT8-dC-Ftp">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7sc-ab-m5L">
                                 <rect key="frame" x="167" y="625" width="80" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
@@ -44,10 +28,10 @@
                                     <backgroundConfiguration key="background" image="cancel_btn"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="Cancelar_Comunicado:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="VV8-w8-ImZ"/>
+                                    <action selector="Cancelar_Envio:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Lj0-Kg-NbX"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xgA-A0-5Th">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bcq-Hi-Are">
                                 <rect key="frame" x="270" y="625" width="80" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
@@ -55,21 +39,37 @@
                                     <backgroundConfiguration key="background" image="enviar_btn"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="Enviar_Comunicado:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="pCh-Hp-yeY"/>
+                                    <action selector="enviar:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="uHy-ZE-8Fn"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Escribe el asunto" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pcj-Kn-leM">
+                                <rect key="frame" x="50" y="335" width="300" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Escribe el mensaje" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IJz-Tb-BmN">
+                                <rect key="frame" x="50" y="420" width="300" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="Asunto_Comunicado" destination="OGg-bJ-tkS" id="MpL-Yt-VZp"/>
-                        <outlet property="Mensaje_Comunicado" destination="z94-Vl-iLw" id="a7W-lN-CgA"/>
+                        <outlet property="Asunto_Mensaje" destination="pcj-Kn-leM" id="yNh-La-d0V"/>
+                        <outlet property="Mensaje_Enviado" destination="IJz-Tb-BmN" id="gGU-OH-d7t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-649" y="81"/>
+            <point key="canvasLocation" x="18.840579710144929" y="97.767857142857139"/>
         </scene>
     </scenes>
     <resources>

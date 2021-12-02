@@ -240,15 +240,12 @@
 		D4E69CA72746C24E002121E4 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
+				E45EE8892759532D000989A3 /* Broadcast */,
 				DF5BAE21274DAD140080C589 /* Funciones_chat */,
 				DFC33DD6274C5BAD00E8DB7D /* Chat_controller */,
 				DFC33DD1274C54A300E8DB7D /* Tablas */,
 				DF89B86227517D13000E8DAE /* ContactosScreen.swift */,
-				E47AAA0327569A3000B1A213 /* Mensajes_Enviados */,
-				E47AAA02275699AA00B1A213 /* Comunicados */,
-				E47AAA002756993300B1A213 /* Adaptador_Modals.swift */,
 				D4E69CAA2746C288002121E4 /* ChatsScreen.swift */,
-				E47AA9FE27568CFD00B1A213 /* Modulo_Broadcast.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -330,6 +327,17 @@
 				DFC33DD7274C5C0600E8DB7D /* ChatViewController.swift */,
 			);
 			path = Chat_controller;
+			sourceTree = "<group>";
+		};
+		E45EE8892759532D000989A3 /* Broadcast */ = {
+			isa = PBXGroup;
+			children = (
+				E47AAA002756993300B1A213 /* Adaptador_Modals.swift */,
+				E47AA9FE27568CFD00B1A213 /* Modulo_Broadcast.swift */,
+				E47AAA0327569A3000B1A213 /* Mensajes_Enviados */,
+				E47AAA02275699AA00B1A213 /* Comunicados */,
+			);
+			path = Broadcast;
 			sourceTree = "<group>";
 		};
 		E47AAA02275699AA00B1A213 /* Comunicados */ = {
