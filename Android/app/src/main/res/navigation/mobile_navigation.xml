@@ -39,20 +39,13 @@
     <fragment
         android:id="@+id/listContactsFragment"
         android:name="com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragment"
-        android:label="@string/name_contactos_fragment"
-        tools:layout="@layout/list_contacts_fragment" >
-        android:label="list_contacts_fragment"
-        tools:layout="@layout/list_contacts_fragment" />
-
-        <fragment
-        android:id="@+id/buzonFragment"
-        android:name="com.example.agileus.ui.modulomensajeriabuzon.b.BuzonFragment"
         android:label="fragment_buzon"
         tools:layout="@layout/fragment_buzon" >
         <action
             android:id="@+id/action_listContactsFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+
     <fragment
         android:id="@+id/buzonDetallesFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesFragment"
@@ -129,6 +122,7 @@
             android:id="@+id/action_inicioSesionFragment_to_loginFragment"
             app:destination="@id/inicioSesionFragment" />
     </fragment>
+
 
 
 </navigation>
