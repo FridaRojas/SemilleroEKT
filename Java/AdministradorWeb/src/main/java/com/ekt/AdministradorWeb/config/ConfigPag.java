@@ -127,17 +127,17 @@ public class ConfigPag {
         }
     }
 
-    @GetMapping("/findAllUsuarios")//*
-    public String findAllUsuarios(@ModelAttribute ArrayList<User> listaUsuarios, ModelMap model) {
+    @GetMapping("/findAllUsuarios")
+    public String findAllUsuarios(ModelMap model) {
         Gson gson = new Gson();
+        ArrayList<User> listaUsuarios = new ArrayList<>();
         try {
             JSONArray name1 = userDAO.buscarTodosUsuarios(listaUsuarios);
-            for (int i=0;i<name1.length();i++){
+            for (int i = 0; i < name1.length(); i++) {
                 listaUsuarios.add(gson.fromJson(name1.getJSONObject(i).toString(), User.class));
             }
-            model.addAttribute("listaUsuarios",listaUsuarios);
+            model.addAttribute("listaUsuarios", listaUsuarios);
             return "paginas/usuarios/InicioUsuarios";
-
         }catch (Exception e){
             System.out.println(e.getMessage());
             return "redirect:/error1";
@@ -164,7 +164,7 @@ public class ConfigPag {
         }
     }
 
-    @RequestMapping(value="/editarUsuario",method = { RequestMethod.POST, RequestMethod.GET })
+    @RequestMapping(value="/editarUsuario",method = {RequestMethod.POST, RequestMethod.GET})
     @PostMapping("/editarUsuario")//*
     public String editarUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
         User user;
@@ -439,5 +439,18 @@ public class ConfigPag {
         }
     }
 
+    @PostMapping("/busquedaUsuario")
+    public String busquedaUsuario(@ModelAttribute(value = "parametro") String parametro, ModelMap modelMap){
+        ArrayList<User> listaUsuarios = userDAO.busqedaUsuarios(parametro);
+        modelMap.addAttribute("listaUsuarios",listaUsuarios);
+        return "paginas/usuarios/InicioUsuarios";
+    }
 
+    @PostMapping("/busquedaOrganigrama")
+    public String busquedaOrganigrama(@ModelAttribute(value = "parametro") String parametro, ModelMap model){
+        ArrayList<Group> listaGrupos = new ArrayList<>();
+        listaGrupos.add(groupDAO.busquedaGrupo(parametro));
+        model.addAttribute("listaGrupos",listaGrupos);
+        return "paginas/organigramas/inicioOrganigramas.html";
+    }
 }

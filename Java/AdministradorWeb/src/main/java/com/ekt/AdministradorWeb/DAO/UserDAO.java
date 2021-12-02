@@ -177,13 +177,10 @@ public class UserDAO {
                 .url("http://localhost:3040/api/grupo/buscar/"+id)
                 .method("GET", null)
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             String res = response.body().string();
-
             JSONObject jsonObject= new JSONObject(res);
-
             JSONObject name1 = jsonObject.getJSONObject("data");
             System.out.println(name1.toString());
             JSONArray users = name1.getJSONArray("usuarios");
@@ -191,8 +188,6 @@ public class UserDAO {
             for (int i=0;i<users.length();i++){
                     listaUsuariosOrganigrama.add(gson.fromJson(users.getJSONObject(i).toString(), User.class));
             }
-            System.out.println("Lista de usuarios en un grupo: "+listaUsuariosOrganigrama.size());
-
         }catch (Exception e){
             System.out.println("Error al hacer la peticion");
         }
@@ -285,5 +280,31 @@ public class UserDAO {
         }
 
         return res;
+    }
+
+    public ArrayList<User> busqedaUsuarios(String parametro) {
+        Gson gson = new Gson();
+        ArrayList<User> listaUsuarios = new ArrayList<>();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/busquedaUsuario/" + parametro)
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            if (!jsonObject.get("data").equals("")){
+                JSONArray usuarios = jsonObject.getJSONArray("data");
+                for (int i=0;i<usuarios.length();i++){
+                    listaUsuarios.add(gson.fromJson(usuarios.getJSONObject(i).toString(), User.class));
+                }
+                return listaUsuarios;
+            }else{
+                return null;
+            }
+        }catch (Exception e){
+            return null;
+        }
     }
 }
