@@ -1,13 +1,11 @@
-package com.example.agileus.ui.modulotareas.detalletareas
+package com.example.agileus.ui.modulotareas.dialogostareas
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +13,7 @@ import com.example.agileus.R
 import com.example.agileus.models.DataTask
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 import java.lang.IllegalStateException
 import java.text.SimpleDateFormat
