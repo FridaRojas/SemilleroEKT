@@ -45,20 +45,32 @@ public class BroadCastControlador {
 
 	@GetMapping("/listaUsuarios/{miId}")
 	public ResponseEntity<?> listaUsuariosGeneral(@PathVariable (value = "miId")String miId){
-		
-		Optional<User> existo = userRepository.validarUsuario(miId);
-		
-		if(!existo.isPresent()) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario Broadcast",""));
+		try{
+			Optional<User> existo = userRepository.validarUsuario(miId);
+
+			if(!existo.isPresent()) {
+				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario Broadcast",""));
+			}
+
+			if(!existo.get().getNombreRol().equals("BROADCAST")) {
+				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
+			}
+
+			Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
+
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(listaUsuarios);
+
+		}catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
-		
-		if(!existo.get().getNombreRol().equals("BROADCAST")) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
-		}
-		
-		Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
-				
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(listaUsuarios);
+
 	}
 
 	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
@@ -128,6 +140,7 @@ public class BroadCastControlador {
 				if(user2.get().getNombreRol().equals("BROADCAST") || user2.get().getIDSuperiorInmediato().equals("-1")){
 					if (user.isPresent()) {
 						broadCastM.setNombreEmisor(user.get().getNombre());
+						broadCastM.setAtendido(false);
 						broadCastRepositorio.save(broadCastM);
 						notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
 						return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -182,79 +195,114 @@ public class BroadCastControlador {
 	
 	@PostMapping("/enviarMensaje")
 	public ResponseEntity<?> enviarMensaje(@RequestBody Mensajes mensajeEntrante){
-		
-		if(mensajeEntrante.getIDEmisor()==null || mensajeEntrante.getIDReceptor()==null || mensajeEntrante.getTexto()==null || mensajeEntrante.getFechaCreacion() ==null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"Campos no validos",""));
-		}
-		
-		if(mensajeEntrante.getIDEmisor().equals("") || mensajeEntrante.getIDEmisor().equals("null")) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idEmisor es no puede estar vacio",""));
-		}
-		if(mensajeEntrante.getIDEmisor().length()<24 || mensajeEntrante.getIDEmisor().length()>24) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idEmisor no es valido",""));
-		}
-		
-		if(mensajeEntrante.getIDReceptor().equals("") || mensajeEntrante.getIDReceptor().equals("null")) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idReceptor es no puede estar vacio",""));
-		}
-		if(mensajeEntrante.getIDReceptor().length()<24 || mensajeEntrante.getIDReceptor().length()>24) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idReceptor no es valido",""));
-		}
-		
-		if(mensajeEntrante.getTexto().equals("") || mensajeEntrante.getTexto().equals("null")) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo texto es no puede estar vacio",""));
-		}
-		if(mensajeEntrante.getTexto().length()<1) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del texto no es debe ser al menos de 1 caracter",""));
-		}
-				
-		Optional<User> existo = userRepository.validarUsuario(mensajeEntrante.getIDEmisor());
-		
-		if(!existo.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no fue encontrado",""));
-		}
-		
-		if(!existo.get().getNombreRol().equals("BROADCAST")) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
-		}
-		
-		Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
-		
-		boolean bandera = false;
-		
-		for(User usuarios : listaUsuarios) {
-			if(mensajeEntrante.getIDReceptor().equals(usuarios.getID())) {
-				bandera = true;
+		try{
+			if(mensajeEntrante.getIDEmisor()==null || mensajeEntrante.getIDReceptor()==null || mensajeEntrante.getTexto()==null || mensajeEntrante.getFechaCreacion() ==null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"Campos no validos",""));
 			}
+
+			if(mensajeEntrante.getIDEmisor().equals("") || mensajeEntrante.getIDEmisor().equals("null")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idEmisor es no puede estar vacio",""));
+			}
+			if(mensajeEntrante.getIDEmisor().length()<24 || mensajeEntrante.getIDEmisor().length()>24) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idEmisor no es valido",""));
+			}
+
+			if(mensajeEntrante.getIDReceptor().equals("") || mensajeEntrante.getIDReceptor().equals("null")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idReceptor es no puede estar vacio",""));
+			}
+			if(mensajeEntrante.getIDReceptor().length()<24 || mensajeEntrante.getIDReceptor().length()>24) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idReceptor no es valido",""));
+			}
+
+			if(mensajeEntrante.getTexto().equals("") || mensajeEntrante.getTexto().equals("null")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo texto es no puede estar vacio",""));
+			}
+			if(mensajeEntrante.getTexto().length()<1) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del texto no es debe ser al menos de 1 caracter",""));
+			}
+
+			Optional<User> existo = userRepository.validarUsuario(mensajeEntrante.getIDEmisor());
+
+			if(!existo.isPresent()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no fue encontrado",""));
+			}
+
+			if(!existo.get().getNombreRol().equals("BROADCAST")) {
+				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
+			}
+
+			Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
+
+			boolean bandera = false;
+
+			for(User usuarios : listaUsuarios) {
+				if(mensajeEntrante.getIDReceptor().equals(usuarios.getID())) {
+					bandera = true;
+				}
+			}
+
+			if(!bandera) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no puede mandar mensaje a la otra persona",""));
+			}
+
+			Mensajes mensaje = new Mensajes();
+
+			mensaje.setIDConversacion(mensajeEntrante.getIDEmisor()+"_"+mensajeEntrante.getIDReceptor());
+			mensaje.setConversacionVisible(true);
+			mensaje.setIDEmisor(mensajeEntrante.getIDEmisor());
+			mensaje.setIDReceptor(mensajeEntrante.getIDReceptor());
+			mensaje.setTexto(mensajeEntrante.getTexto());
+			mensaje.setVisible(false);
+			mensaje.setRutaDocumento(null);
+			mensaje.setNombreConversacionReceptor("Conversacion BroadCast");
+
+			mensaje.setFechaCreacion(mensajeEntrante.getFechaCreacion());
+			mensaje.setStatusCreado(true);
+
+			mensaje.setFechaEnviado(new Date());
+			mensaje.setStatusEnviado(true);
+
+			mensaje.setFechaLeido(new Date(0));
+			mensaje.setStatusLeido(false);
+
+			mensajesService.crearMensaje(mensaje);
+
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED,"Mensaje enviado",mensaje.getIDConversacion()));
+		}catch (MongoSocketOpenException e) {
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
 		}
-		
-		if(!bandera) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no puede mandar mensaje a la otra persona",""));
-		}
-		
-		Mensajes mensaje = new Mensajes();
-		
-		mensaje.setIDConversacion(mensajeEntrante.getIDEmisor()+"_"+mensajeEntrante.getIDReceptor());
-		mensaje.setConversacionVisible(true);
-		mensaje.setIDEmisor(mensajeEntrante.getIDEmisor());
-		mensaje.setIDReceptor(mensajeEntrante.getIDReceptor());
-		mensaje.setTexto(mensajeEntrante.getTexto());
-		mensaje.setVisible(false);
-		mensaje.setRutaDocumento(null);
-		mensaje.setNombreConversacionReceptor("Conversacion BroadCast");
-		
-		mensaje.setFechaCreacion(mensajeEntrante.getFechaCreacion());
-		mensaje.setStatusCreado(true);
-		
-		mensaje.setFechaEnviado(new Date());
-		mensaje.setStatusEnviado(true);
-		
-		mensaje.setFechaLeido(new Date(0));
-		mensaje.setStatusLeido(false);
-		
-		mensajesService.crearMensaje(mensaje);
-		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED,"Mensaje enviado",mensaje.getIDConversacion()));
+
+	}
+
+	@PutMapping("/actualizarAtendido/{miID}")
+	public ResponseEntity<?> actualizarAtendido(@PathVariable (value = "miID")String miID){
+try{
+
+	Optional<BroadCast> opt = broadCastRepositorio.findById(miID);
+	opt.get().setAtendido(true);
+	broadCastRepositorio.save(opt.get());
+
+	return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Se atendio el mesnaje de Usuario",""));
+
+}catch (MongoSocketOpenException e) {
+	return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+			.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+} catch (MongoException e) {
+	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+} catch (Exception e) {
+	return ResponseEntity.status(HttpStatus.NOT_FOUND)
+			.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+}
+
+
 	}
 
 

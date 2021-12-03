@@ -11,6 +11,7 @@ public class BroadCast {
     private String descripcion;
     private String idEmisor;
     private String nombreEmisor;
+	private boolean atendido;
     
 	public String getId() {
 		return id;
@@ -41,5 +42,13 @@ public class BroadCast {
 	}
 	public void setNombreEmisor(String nombreEmisor) {
 		this.nombreEmisor = nombreEmisor;
+	}
+
+	public boolean isAtendido() {
+		return atendido;
+	}
+
+	public void setAtendido(boolean atendido) {
+		this.atendido = atendido;
 	}
 }
