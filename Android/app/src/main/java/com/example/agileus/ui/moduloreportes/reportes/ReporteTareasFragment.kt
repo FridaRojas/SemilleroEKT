@@ -105,6 +105,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChart=binding.barChart
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
         binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
+        binding.txtRangoFechaReportes.isVisible=false
 
         reporteTareasViewModel.devuelvelistaReporte(this)
 
@@ -144,6 +145,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         pieChart=binding.pieChart
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
         binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
+        binding.txtRangoFechaReportes.isVisible=false
 
 
         reporteTareasViewModel.devuelvelistaReporte(this)
@@ -161,8 +163,10 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             binding.txtTercerLegend.text="Revisión"
             binding.txtCuartoLegend.text="Terminadas"
 
-            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
-            binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorGray))
+            binding.colorlegend1.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+            binding.colorlegend2.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorGray))
+            binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
 
             pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
             binding.txtDataPrimerLegend.text = pendientes.toString()
@@ -233,7 +237,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         colors.add(resources.getColor(R.color.colorPrimary))
         colors.add(resources.getColor(R.color.colorSecondary))
         colors.add(resources.getColor(R.color.colorGray))
-        colors.add(resources.getColor(R.color.colorBackground))
+        colors.add(resources.getColor(android.R.color.holo_orange_dark))
 
         val dataSet = PieDataSet(dataEntries, "")
         val data = PieData(dataSet)
@@ -350,7 +354,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
         cambiarGrafica(tipo_grafica)
-        Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
         Log.d("DateFilter",  "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}")
     }
 

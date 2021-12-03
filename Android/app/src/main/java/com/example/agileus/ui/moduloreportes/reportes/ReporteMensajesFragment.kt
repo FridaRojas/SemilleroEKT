@@ -115,6 +115,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend1.isVisible=false
         binding.colorlegend2.isVisible=false
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+        binding.txtRangoFechaReportes.isVisible=false
 
 
         reporteMensajesViewModel.devuelvelistaReporte(this)
@@ -173,6 +174,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+            binding.txtRangoFechaReportes.isVisible=false
 
             binding.txtPrimerLegend.text="Enviados"
             binding.txtSegundoLegend.text="Recibidos"
@@ -327,7 +329,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
         cambiarGrafica(tipo_grafica)
-        Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -37,41 +37,37 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroDia"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Dia"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroMes"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Mes"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroAnio"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Año"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroPersonalizado"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Custom"/>
 
@@ -118,6 +114,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:hint="01/01/2000"
+            android:padding="6dp"
             android:background="@drawable/rounded_bg"
             android:backgroundTint="@color/colorBackground"
             />
@@ -127,10 +124,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
+            android:textAlignment="center"
             android:textSize="18sp"
             android:hint="12/12/2000"
-            android:paddingEnd="10dp"
+            android:padding="6dp"
             android:background="@drawable/rounded_bg"
             android:backgroundTint="@color/colorBackground"
             />
@@ -148,6 +145,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:hint="dia: dd:MM:YYYY"
+            android:padding="6dp"
             android:background="@drawable/rounded_rm"
             android:backgroundTint="@color/colorBackground"
             />
@@ -158,6 +156,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:hint="Enero"
+            android:padding="6dp"
             android:background="@drawable/rounded_rm"
             android:backgroundTint="@color/colorBackground"
             />
@@ -168,6 +167,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:hint="2020"
+            android:padding="6dp"
             android:background="@drawable/rounded_rm"
             android:backgroundTint="@color/colorBackground"
             />
@@ -191,11 +191,11 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:hint="Nombre Usuario"
+            android:padding="6dp"
             android:background="@drawable/rounded_rm"
             android:backgroundTint="@color/colorBackground"
             />
 
     </LinearLayout>
-
 
 </LinearLayout>

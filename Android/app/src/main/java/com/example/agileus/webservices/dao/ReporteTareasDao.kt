@@ -26,14 +26,9 @@ class ReporteTareasDao {
     private var contador_tareas_leidas:Int=0
     private var contador_tareas_totales:Int=0
 
-    private var diferencia_horas: Long = 0
-    private var fecha_actual: ZonedDateTime? = null
     private var fecha_anterior: ZonedDateTime? = null
     private lateinit var rangoIniFecha: ZonedDateTime
     private lateinit var rangoFinFecha: ZonedDateTime
-    private var suma_tiempos:Int=0
-    private var temporal:Int=0
-    private lateinit var promedio_tiempo_respuesta:String
 
     lateinit var fechaIni: ZonedDateTime
     lateinit var fechaIniR: ZonedDateTime
@@ -61,7 +56,6 @@ class ReporteTareasDao {
 
             var contador_t_leidas=0
             var contador_t_totales=0
-            var tiempo_p_respuesta=""
 
             var contador_t_terminadas= 0
             var contador_t_pendientes = 0
@@ -70,10 +64,6 @@ class ReporteTareasDao {
             var contRevision = 0
             var contTareasaTiempo = 0
             var contTareasFueraTiempo = 0
-
-            temporal=0
-            suma_tiempos=0
-            promedio_tiempo_respuesta=""
 
             /*
             Pendientes
@@ -89,9 +79,10 @@ class ReporteTareasDao {
             Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
             lista.forEach {
                 val dateIni = ZonedDateTime.parse(it.fecha_ini)
-                if (dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha) &&
+                if ((dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha)) &&
                     dateIni.isBefore(rangoFinFecha)){
-                    Log.e("RangoIN", "ini:$dateIni")
+
+                    Log.e("RangoIN", "$rangoIniFecha / $dateIni / $rangoFinFecha")
 
                     //if(id_receptor==it.idReceptor) {
                     if(true) {
@@ -131,37 +122,9 @@ class ReporteTareasDao {
                         fechaIniR = ZonedDateTime.parse("1970-01-01T00:00:00.000+00:00")
                     }
 
-                    //val r = ChronoUnit.MILLIS.between(fechaIniR, fechaIni)
-
-
-                    fecha_actual = ZonedDateTime.parse(it.fecha_ini)
-                    diferencia_horas = ChronoUnit.HOURS.between(fecha_anterior, fecha_actual)
-
-                    Log.d("dias","diferencia días: ${diferencia_horas}")
-                    suma_tiempos = suma_tiempos + diferencia_horas.toInt()
-                    Log.d("dias","suma tiempos: ${suma_tiempos}")
-
-                    fecha_anterior = fecha_actual
-
-                    temporal=temporal+1
-
                 }
 
             }
-
-            if(temporal==0)
-                tiempo_p_respuesta = "Sin tiempo de respuesta."
-            else {
-
-                var t_respuesta= ((suma_tiempos) / (temporal - 1)) / 24
-
-                if(t_respuesta==1)
-                tiempo_p_respuesta = "${t_respuesta} día."
-                else
-                tiempo_p_respuesta = "${t_respuesta} días."
-
-            }
-            Log.d("dias","suma tiempos: ${suma_tiempos}")
 
             contador_tareas_terminadas=contador_t_terminadas
             contador_tareas_pendientes=contador_t_pendientes
@@ -171,12 +134,10 @@ class ReporteTareasDao {
             contador_tareas_fueraTiempo=contTareasFueraTiempo
             contador_tareas_totales=contador_t_totales
             contador_tareas_leidas=contador_t_leidas
-            promedio_tiempo_respuesta=tiempo_p_respuesta
 
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
             listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contTareasaTiempo.toString(), R.drawable.ic_bar_chart))
 
-            Log.d("dias","promedio respuesta: ${promedio_tiempo_respuesta}")
         }
 
         return listaRecycler
