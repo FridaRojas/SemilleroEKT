@@ -90,12 +90,32 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     @objc func fecha_inicial_elegida() {
         let fecha = selector_fecha.date
+        
+        if !txtFechaFin.text!.isEmpty {
+            let fechaFin = Date().convertir_string_a_fecha(fecha: txtFechaFin.text!)
+            if fecha > fechaFin {
+                alerta_mensajes(title: "Error", Mensaje: "Revise las fechas")
+                txtFechaIni.text = ""
+                return
+            }
+        }
+            
         txtFechaIni.text = "\(Obtener_valor_fecha(fecha: fecha, estilo: "Fecha_Usuario"))"
         self.view.endEditing(true)
     }
     
     @objc func fecha_final_elegida() {
         let fecha = selector_fecha.date
+        
+        if !txtFechaIni.text!.isEmpty {
+            let fechaIni = Date().convertir_string_a_fecha(fecha: txtFechaIni.text!)
+            if fecha < fechaIni {
+                alerta_mensajes(title: "Error", Mensaje: "Revise las fechas")
+                txtFechaFin.text = ""
+                return
+            }
+            
+        }
         txtFechaFin.text = "\(Obtener_valor_fecha(fecha: fecha, estilo: "Fecha_Usuario"))"
         self.view.endEditing(true)
     }

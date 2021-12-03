@@ -11,38 +11,6 @@ import UIKit
 var arrData: Objeto?
 var idJefe = ""
 
-struct Objeto:Codable{
-    let status:String
-    let msj:String
-    let data:[Usuario]
-}
-
-struct Usuario:Codable{
-    let id:String
-    let nombre:String
-    let fechaInicio:String
-    let fechaTermino:String
-    let nombreRol:String
-    let idgrupo:String
-    let idsuperiorInmediato:String
-    
-    init(id: String,
-         nombre: String,
-         fechaInicio: String,
-         fechaTermino: String,
-         nombreRol: String,
-         idgrupo: String,
-         idsuperiorInmediato: String) {
-        self.id = id
-        self.nombre = nombre
-        self.fechaInicio = fechaInicio
-        self.fechaTermino = fechaTermino
-        self.nombreRol = nombreRol
-        self.idgrupo = idgrupo
-        self.idsuperiorInmediato = idsuperiorInmediato
-    }
-}
-
 class Usuarios{
     
     var webService: ((_ arrDatosUsuario:[Any]) -> Void)?
@@ -52,7 +20,9 @@ class Usuarios{
     
     //  let serviceUser = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/usuariosEncontrados2.json?alt=media&token=ceb1c36f-e662-484c-9db3-fb33ef0759b0"
     
-    var serviceUser = "http://18.218.7.148:3040/api/user/findByBossId/"
+    var serviceUser =  "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/"
+    
+    //var serviceUser = "http://18.218.7.148:3040/api/user/findByBossId/"
     
     func webServiceUsuarios(idUsuario: String) {
         

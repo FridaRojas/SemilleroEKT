@@ -73,10 +73,14 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         //Ejecutar los servicios web
-        ejecucionServicios()
+        //ejecucionServicios()
        
         //Configuraciones
         configuraciones()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        ejecucionServicios()
     }
     
     // Funcion para ejecutar servicios

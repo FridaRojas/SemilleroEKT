@@ -9,42 +9,20 @@ import Foundation
 
 var arrTareas: ObjetoTareas?
 
-
-struct ObjetoTareas:Codable{
-    let estatus: String
-    let mensaje: String
-    let data:[Tareas]
-}
-
-struct Tareas:Codable{
-    
-    //let id_grupo:String
-    //let id_emisor:String
-    //let nombre_emisor:String
-    let nombre_receptor:String?
-    let id_receptor:String?
-    let estatus:String?
-    let leido:Bool?
-    let fecha_ini:String?
-    let fecha_iniR:String?
-    let fecha_fin:String?
-    let fecha_finR:String?
-}
-
 class TareasService{
 
     var webServiceTask: ((_ arrDatosTareas:[Any]) -> Void)?
     
-    let serviceTask = "http://10.97.6.35:2021/api/tareas/obtenerTareasQueLeAsignaronPorId/"
+    let serviceTask = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/obtenerTareasQueLeAsignaronPorId/"
 
-    let serviceTaskBySubordinado = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/tareas.json?alt=media&token=fd5f6b25-d02b-4582-812f-16445b66e553"
+    //let serviceTaskBySubordinado = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/tareas.json?alt=media&token=fd5f6b25-d02b-4582-812f-16445b66e553"
     
-    let serviceTaskByDate = "https://10.97.3.134:2021/api/tareas/obtenerTareas"
+    let serviceTaskByDate = "https://18.218.7.148:3040/api/tareas/obtenerTareas"
     
     func webServiceTareas(){
         let sevice = true
-        //let serviceByID = "\(serviceTask)\(userID)"
-        let serviceByID = "\(serviceTask)ReceptorAlexis"
+        let serviceByID = "\(serviceTask)\(userID)"
+        //let serviceByID = "\(serviceTask)ReceptorAlexis"
         
         print(serviceByID)
         
