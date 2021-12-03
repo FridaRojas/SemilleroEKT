@@ -17,6 +17,7 @@
 		5248E0B911B43788AE8A1B7A /* Pods_AgileUs_AgileUsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */; };
 		8E066BF13FC612289421C728 /* Pods_AgileUsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */; };
 		C1457F2C2750111B007469E1 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1457F2B2750111B007469E1 /* Charts.swift */; };
+		C1457F3027504278007469E1 /* extensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1457F2F27504278007469E1 /* extensionView.swift */; };
 		C1F206F9274D431100C89ABB /* Usuarios.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F206F8274D431100C89ABB /* Usuarios.swift */; };
 		C1F206FB274D6CC900C89ABB /* Mensajes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F206FA274D6CC900C89ABB /* Mensajes.swift */; };
 		C1F206FD274D70E100C89ABB /* Tareas.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F206FC274D70E100C89ABB /* Tareas.swift */; };
@@ -67,6 +68,7 @@
 		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
 		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
 		C1457F2B2750111B007469E1 /* Charts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
+		C1457F2F27504278007469E1 /* extensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensionView.swift; sourceTree = "<group>"; };
 		C1F206F8274D431100C89ABB /* Usuarios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usuarios.swift; sourceTree = "<group>"; };
 		C1F206FA274D6CC900C89ABB /* Mensajes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mensajes.swift; sourceTree = "<group>"; };
 		C1F206FC274D70E100C89ABB /* Tareas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tareas.swift; sourceTree = "<group>"; };
@@ -168,6 +170,22 @@
 			path = Charts;
 			sourceTree = "<group>";
 		};
+		C1457F2D27504249007469E1 /* Extensiones */ = {
+			isa = PBXGroup;
+			children = (
+				C1457F2E27504251007469E1 /* View */,
+			);
+			path = Extensiones;
+			sourceTree = "<group>";
+		};
+		C1457F2E27504251007469E1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C1457F2F27504278007469E1 /* extensionView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		C1F206F7274D42CD00C89ABB /* Servicios */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +274,7 @@
 		D4E69CA82746C256002121E4 /* Reportes */ = {
 			isa = PBXGroup;
 			children = (
+				C1457F2D27504249007469E1 /* Extensiones */,
 				C1457F2A27501109007469E1 /* Charts */,
 				C1F206FE274F03C600C89ABB /* Adaptador */,
 				C1F206F7274D42CD00C89ABB /* Servicios */,
@@ -544,6 +563,7 @@
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */,
 				49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */,
+				C1457F3027504278007469E1 /* extensionView.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				C1457F2C2750111B007469E1 /* Charts.swift in Sources */,
 				C1F206F9274D431100C89ABB /* Usuarios.swift in Sources */,

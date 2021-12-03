@@ -47,15 +47,22 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     let adaptador = Adaptador_Modals()
     //Adaptador de la ejecución de los servicios web
     let adaptadorServicios = AdaptadorServicios()
+    
+    //let configureC = ChartsB()
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurar_pie_chart()
-        configurar_lista()
-        configurar_bar_chart()
-        configuracion_colores()
-        llenar_pie_chart(enviado: 46, recibido: 76, leido: 20)
+        //configurar_pie_chart()
+        //configurar_lista()
+        //configurar_bar_chart()
+        //configuracion_colores()
+        //llenar_pie_chart(enviado: 46, recibido: 76, leido: 20)
+        
+        /*configureC.configureElementsScreen(view: viewChart, imgEncabezado: imgEncabezado, optionstAB: optionstAB, indEnviados: indEnviados, indRecibidos: indRecibidos, piechart: piechart, barchart: barchart, viewChart: indRecibidos, indLeidos: indLeidos, cantEnviados: cantEnviados, cantRecibidos: cantRecibidos, cantLeidos: cantLeidos, cantTotales: cantTotales, lblTotales: lblTotales, lblLeidos: lblLeidos, lblEnviados: lblEnviados, lblRecibidos: lblRecibidos, lblTiempoLeido: lblTiempoLeido, lblTiempoRes: lblTiempoRes, indTotales: indTotales)
+        */
+        
+        
         print("mensaje prueba")
         
        
