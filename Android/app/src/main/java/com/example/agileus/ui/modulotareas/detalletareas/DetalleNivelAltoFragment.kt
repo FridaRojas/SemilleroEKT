@@ -120,7 +120,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
 
         with(binding) {
-
+            desactivarCampos(args)
             btnCancelarTareaF.setOnClickListener {
                 cancelarTarea(args)
             }
@@ -263,11 +263,18 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         fechaFi =
             cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
+        Log.d("Mensaje", "fecha nueva $fechaFi")
+
+
+
+        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
+        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
+
 
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
-        prioridad = args.tareas.prioridad
-        estatus = args.tareas.estatus
+        prioridad = prioridadCampo
+        estatus = statusCampo
         descripcion = args.tareas.descripcion
 
         if (!args.tareas.observaciones.isNullOrEmpty()) {

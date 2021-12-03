@@ -55,5 +55,6 @@
     <string name="GuardarTarea">Guardar Tarea</string>
     <string name="AdjuntarArchivo">Adjuntar Archivo</string>
     <string name="dialogoAceptar">dialogoAceptar</string>
+    <string name="title_tareas_fragment">Lista de Tareas</string>
 
 </resources>

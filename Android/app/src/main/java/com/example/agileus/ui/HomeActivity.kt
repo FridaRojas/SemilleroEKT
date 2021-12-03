@@ -3,6 +3,7 @@ package com.example.agileus.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -50,13 +51,26 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //Ocultar navegación
+        findViewById<BottomNavigationView>(R.id.nav_view)
+            .setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.formularioCrearTareasFragment -> hideBottomNav(navView)
+                R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
+                else -> showBottomNav(navView)
+            }
+        }
 
+    }
 
-        //        val navController = navHostFragment.navController
-        //      findViewById<BottomNavigationView>(R.id.bottom_nav)
-        //        .setupWithNavController(navController)
+    private fun showBottomNav(nav_view:BottomNavigationView) {
+        nav_view.visibility = View.VISIBLE
+    }
 
-        //recuperarPublicaciones()
+    private fun hideBottomNav(nav_view:BottomNavigationView) {
+        nav_view.visibility = View.GONE
+
     }
 }

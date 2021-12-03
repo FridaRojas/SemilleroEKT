@@ -1,13 +1,11 @@
-package com.example.agileus.ui.modulotareas.detalletareas
+package com.example.agileus.ui.modulotareas.dialogostareas
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +13,7 @@ import com.example.agileus.R
 import com.example.agileus.models.DataTask
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 import java.lang.IllegalStateException
 import java.text.SimpleDateFormat
@@ -24,7 +23,6 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
     DialogFragment() {
 
     private lateinit var estatusD: String
-    private lateinit var observacionesD: String
     private lateinit var fechaFinD: Date
     private lateinit var fechaInicioD: Date
     private lateinit var descripcionD: String
@@ -51,7 +49,7 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             var txtObservacionesD = vista.findViewById<TextView>(R.id.txtObservacionesD)
             var txtEstatusD = vista.findViewById<TextView>(R.id.txtEstatusD)
             var btnEstado = vista.findViewById<Button>(R.id.btnCambiarEstadoD)
-            var btnPdf = vista.findViewById<LinearLayout>(R.id.btnPdf)
+            var btnPdf = vista.findViewById<TextView>(R.id.btnPdf)
 
             Log.d("Mensaje", dataTask.toString())
 
@@ -137,22 +135,24 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             descripcionD = dataTask.descripcion
             fechaInicioD = dataTask.fechaIni
             fechaFinD = dataTask.fechaFin
+            //observacionesD = dataTask.observaciones
 
             txtNombreTareaD.text = nombreTarea
-            txtNombrePersonaD.text = nombrePersonaD
-            txtPrioridadD.text = prioridadD
-            txtDescripcionD.text = descripcionD
-            txtFechaInicioD.text = fechaIn
-            txtFechaFinD.text = fechaFi
-            txtEstatusD.text = estatusD
+            txtNombrePersonaD.text = nombrePersonaD.capitalize()
+            txtPrioridadD.text = "Prioridad: ${prioridadD.capitalize()}"
+            txtDescripcionD.text = "Descripción: $descripcionD"
+            txtFechaInicioD.text = " Inicio: $fechaIn"
+            txtFechaFinD.text = " Fin: $fechaFi"
+            txtEstatusD.text = "Estatus: ${estatusD.capitalize()}"
+            txtObservacionesD.text = "Observaciones: ${dataTask.observaciones}"
 
             if (dataTask.observaciones != null) {
-                observacionesD = dataTask.observaciones
-                txtObservacionesD.setText(observacionesD)
+                //observacionesD = dataTask.observaciones
+                txtObservacionesD.setText(dataTask.observaciones)
                 txtObservacionesD.isVisible = true
             } else {
                 txtObservacionesD.isVisible = false
-                observacionesD = ""
+                dataTask.observaciones = ""
             }
 
             this.dialog?.closeOptionsMenu()

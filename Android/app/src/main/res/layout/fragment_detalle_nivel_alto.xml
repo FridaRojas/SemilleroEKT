@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/paddingGeneral"
+    android:layout_marginBottom="60dp"
     tools:context=".ui.modulotareas.detalletareas.DetalleNivelAltoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
         <!-- Nombre de la Tarea -->
         <com.google.android.material.textview.MaterialTextView
@@ -29,6 +30,8 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             style="@style/StyleTextFragment"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
             android:text="Nombre de la persona"
             app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
 
@@ -42,9 +45,8 @@
             android:layout_marginTop="@dimen/marginFormulario"
             android:text="Prioridad"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD">
-
-        </com.google.android.material.textview.MaterialTextView>
+            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD"
+            app:layout_constraintBottom_toTopOf="@id/txtField_descripcion"/>
 
         <!-- Status -->
         <com.google.android.material.textview.MaterialTextView
@@ -52,151 +54,191 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:text="Status"
             style="@style/StyleTextGray"
             android:layout_marginTop="@dimen/marginFormulario"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
+            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD"
+            app:layout_constraintBottom_toTopOf="@id/txtField_descripcion"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtDescripcionD"
+        <!-- Descripción -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtField_descripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            style="@style/StyleTextFragment"
-            android:layout_marginTop="@dimen/marginFormulario"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="Descripción"
-            android:text="Descripción: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
-            app:layout_constraintTop_toBottomOf="@+id/txtPrioridadD" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtFechaInicioD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/iconocalendario"
-            android:layout_marginTop="@dimen/marginFormulario"
-            style="@style/StyleTextGray"
-            android:editable="false"
-            android:enabled="false"
-            android:text="Inicio: 16/01/2021"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtFechaFinD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/iconocalendario"
-            android:layout_marginTop="@dimen/marginFormulario"
-            android:editable="false"
-            style="@style/StyleTextGray"
-            android:enabled="false"
-            android:text="Fin: 20/01/2021"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
+            app:layout_constraintTop_toBottomOf="@id/txtEstatusD"
+            app:layout_constraintBottom_toTopOf="@id/field_fecha_inicio">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtDescripcionD"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:imeOptions="actionDone"
+                android:singleLine="false"
+                android:inputType="textMultiLine"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:gravity="start"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtObservacionesD"
+        <!-- Fecha de Inicio -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_fecha_inicio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Fecha de Inicio"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/field_fecha_fin"
+            app:layout_constraintTop_toBottomOf="@id/txtField_descripcion"
+            app:startIconDrawable="@drawable/iconocalendario"
+            app:layout_constraintBottom_toTopOf="@id/txtField_observacion">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFechaInicioD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Fecha de Fin -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_fecha_fin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Fecha de Fin"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtField_descripcion"
+            app:layout_constraintStart_toEndOf="@id/field_fecha_inicio"
+            app:startIconDrawable="@drawable/iconocalendario"
+            app:layout_constraintBottom_toTopOf="@id/txtField_observacion">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFechaFinD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Observaciones -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtField_observacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginFormulario"
-            style="@style/StyleTextFragment"
-            android:enabled="false"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="Observaciones"
-            app:layout_constraintTop_toBottomOf="@+id/txtFechaInicioD" />
-
-        <!--
-        <Button
-            android:id="@+id/btnAdjuntarArchivoF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBackground"
-            android:text="Adjuntar Archivo"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
-        -->
+            app:layout_constraintTop_toBottomOf="@+id/field_fecha_fin"
+            app:layout_constraintBottom_toTopOf="@id/btnAdjuntarArchivoF">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtObservacionesD"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:imeOptions="actionDone"
+                android:singleLine="false"
+                android:inputType="textMultiLine"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:gravity="start"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/btnAdjuntarArchivoF"
-            style="@style/StyleTextFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
+            android:enabled="false"
+            style="@style/StyleTextFragment"
             android:drawableLeft="@drawable/iconoadjuntararchivo"
-            android:text="Descargar Archivo PDF"
+            android:layout_marginTop="@dimen/marginFormulario"
             android:textColor="@color/colorPrimary"
+            android:text="  Adjuntar Archivo PDF"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtObservacionesD" />
+            app:layout_constraintTop_toBottomOf="@id/txtField_observacion"
+            app:layout_constraintBottom_toTopOf="@id/buttons"/>
 
-        <Button
-            android:id="@+id/btnGuardarTareaF"
-            android:layout_marginTop="20dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttons"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/rounded_bg"
-            style="@style/StyleButton"
-            android:text="Guardar"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
-            tools:layout_editor_absoluteX="16dp" />
-   <Button
-            android:id="@+id/btnCancelarEdicion"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/rounded_bg"
-            style="@style/StyleButton"
-            android:text="Cancelar"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/btnGuardarTareaF"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <Button
-            android:layout_marginTop="20dp"
-            android:id="@+id/btnEditarTareaF"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            style="@style/StyleButton"
-            android:background="@drawable/rounded_bg"
-            android:text="Editar"
-            android:visibility="visible"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnCancelarTareaF"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
-
-        <Button
-            android:id="@+id/btnCancelarTareaF"
-            android:layout_marginTop="20dp"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:text="Cancelar Tarea"
-            android:visibility="visible"
-            android:background="@drawable/rounded_bg"
-            style="@style/StyleButton"
-            android:layout_marginLeft="10dp"
-            app:layout_constraintStart_toEndOf="@+id/btnEditarTareaF"
-            app:layout_constraintEnd_toStartOf="@id/btnObservacionF"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF" />
-
-        <Button
-            android:id="@+id/btnObservacionF"
-            android:layout_marginTop="20dp"
-            android:layout_width="125dp"
-            android:layout_height="60dp"
-            android:background="@drawable/rounded_bg"
-            style="@style/StyleButton"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:text="Agregar Observacion"
-            android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@+id/btnCancelarTareaF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdjuntarArchivoF"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/btnAdjuntarArchivoF"
+            app:layout_constraintBottom_toBottomOf="parent">
 
+            <Button
+                android:id="@+id/btnGuardarTareaF"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_bg"
+                style="@style/StyleButton"
+                android:text="Guardar"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/btnCancelarEdicion"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteX="16dp" />
+            <Button
+                android:id="@+id/btnCancelarEdicion"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_bg"
+                style="@style/StyleButton"
+                android:text="Cancelar"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <Button
+                android:id="@+id/btnEditarTareaF"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                style="@style/StyleButton"
+                android:textSize="14sp"
+                android:background="@drawable/rounded_bg"
+                android:text="Editar Tarea"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnCancelarTareaF"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <Button
+                android:id="@+id/btnCancelarTareaF"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                style="@style/StyleButton"
+                android:textSize="14sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/rounded_bg"
+                android:text="Cancelar Tarea"
+                app:layout_constraintStart_toEndOf="@id/btnEditarTareaF"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <Button
+                android:id="@+id/btnObservacionF"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                style="@style/StyleButton"
+                android:textSize="14sp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rounded_bg"
+                android:text="Agregar Observación"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@id/btnCancelarTareaF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</ScrollView>
+</LinearLayout>
