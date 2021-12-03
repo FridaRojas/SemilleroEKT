@@ -8,10 +8,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.models.Buzon
 import com.example.agileus.R
+import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonUser.BuzonDetallesUserFragment
+import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
 import com.google.android.material.textfield.TextInputEditText
 
-class DialogoSenderUser(val listener: BuzonDetallesUserFragment) : DialogFragment() {
+class DialogoSenderUser(val listener: UserBuzonListener) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -40,8 +42,8 @@ class DialogoSenderUser(val listener: BuzonDetallesUserFragment) : DialogFragmen
                                 Toast.LENGTH_LONG
                             ).show()
                         }else{
-                                listener.mensajeBroadcasting(
-                                    Buzon("","Eduardo","Broadcast",Asunto.text.toString(),Mensaje.text.toString())
+                                listener.mensajeBroadcasting1(
+                                    MsgBodyUser(Asunto.text.toString(),Mensaje.text.toString(),"123")
                                 )
                   }
                     })

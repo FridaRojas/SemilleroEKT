@@ -4,16 +4,14 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/cornerRadiusCard"
-    android:layout_margin="@dimen/paddingGeneral">
+    android:layout_margin="@dimen/medida8dp">
 
     <TextView
         android:id="@+id/statusTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/paddingGeneral"
+        android:padding="10dp"
         android:text="Pendientes"
-        style="@style/textStatus"
-        />
-
+        style="@style/textStatus" />
 
 </androidx.cardview.widget.CardView>
