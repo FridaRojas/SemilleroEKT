@@ -137,4 +137,29 @@ public class GroupDAO {
         }
         return res;
     }
+
+    public Group busquedaGrupo(String parametro){
+        Group grupo;
+        Gson gson = new Gson();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/buscarPorNombre/" + parametro)
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject= new JSONObject(response.body().string());
+            if (!jsonObject.get("data").equals("")) {
+                JSONObject grupoObjeto = jsonObject.getJSONObject("data");
+                grupo = gson.fromJson(grupoObjeto.toString(), Group.class);
+                return grupo;
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            return null;
+        }
+
+    }
 }

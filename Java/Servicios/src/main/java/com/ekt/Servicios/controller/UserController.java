@@ -93,23 +93,28 @@ public class UserController {
             }else{
                 Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
                 if (user.isPresent()){
-                    System.out.println("Login: Usuario encontrado");
-                    //actualizar token
-                    user.get().setToken(infAcceso.getToken());
-                    userService.save(user.get());
+                    System.out.println(user.get().getStatusActivo());
+                    if(user.get().getStatusActivo().equals("true")){
+                        System.out.println("Login: Usuario encontrado");
+                        //actualizar token
+                        user.get().setToken(infAcceso.getToken());
+                        userService.save(user.get());
 
-                    user.get().setFechaInicio(null);
-                    user.get().setFechaTermino(null);
-                    user.get().setPassword(null);
-                    user.get().setIDGrupo(null);
-                    user.get().setOpcionales(null);
-                    user.get().setIDSuperiorInmediato(null);
-                    user.get().setStatusActivo(null);
-                    user.get().setCurp(null);
-                    user.get().setRFC(null);
+                        user.get().setFechaInicio(null);
+                        user.get().setFechaTermino(null);
+                        user.get().setPassword(null);
+                        user.get().setIDGrupo(null);
+                        user.get().setOpcionales(null);
+                        user.get().setIDSuperiorInmediato(null);
+                        user.get().setStatusActivo(null);
+                        user.get().setCurp(null);
+                        user.get().setRFC(null);
+                        return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
 
+                    }else {
+                        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
 
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
+                    }
                 }else{
                 System.out.println("Login: Usuario no encontrado");
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
@@ -357,6 +362,7 @@ public class UserController {
             return new Response(HttpStatus.NOT_FOUND,"",null);
         }
     }
+
 
 
 }
