@@ -215,7 +215,7 @@ extension EditarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegate
         if (indexSelected == 0)
         {
             
-            statusField.text = "Estatus: Terminada"
+            statusField.text = "Estatus: terminada"
         }
 
         else

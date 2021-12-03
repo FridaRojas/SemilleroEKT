@@ -118,7 +118,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
                     self.observationField.text = "\(task.observaciones!)"
                 }
                 
-                if task.estatus == "Terminada" || task.estatus == "Cancelado" {
+                if task.estatus == "terminada" || task.estatus == "Cancelado" {
                     self.addObservationsBtn.isHidden = true
                     self.updateTaskBtn.isHidden = true
                     self.cancelTaskBtn.isHidden = true
@@ -255,11 +255,11 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         print("Este es el estatus: \(status) **********")
         
         var task: Task?
-        
+
         if observationField.text! == "" || observationField.text! == nil {
-            task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status)
+            task = Task(id_grupo: "GRUPOID1", id_emisor: "618d9c26beec342d91d747d6", nombre_emisor: "Armando Manzanero", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status)
             } else {
-                task = Task(id_grupo: "GRUPOID1", id_emisor: "EMIS1", nombre_emisor: "JOSE", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status, observaciones: observationField.text!)
+                task = Task(id_grupo: "GRUPOID1", id_emisor: "618d9c26beec342d91d747d6", nombre_emisor: "Armando Manzanero", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status, observaciones: observationField.text!)
             }
 
      
@@ -273,7 +273,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
             DispatchQueue.main.async {
                 
                 if updateObservation {
-                    Api.shared.changeStatus(id: self.idTask!, status: "Pendiente"){
+                    Api.shared.changeStatus(id: self.idTask!, status: "pendiente"){
                         message in
                         
                         DispatchQueue.main.async {
@@ -298,7 +298,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
             }
         } failure: {
             (error) in
-            print(error)
+            print("erorororor: \(error)")
             DispatchQueue.main.async {
                 
                 self.loader.stopAnimating()
@@ -307,7 +307,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
                 self.altertaMensaje(title: "Error", message: "Hubo un problema, intentelo mas tarde", confirmationMessage: "Ok")
             }
         }
-        if status == "Terminada" {
+        if status == "terminada" {
             Api.shared.changeStatus(id: idTask, status: "terminada") {
                 task in
                 print("Todo cool al actualizar estatus")

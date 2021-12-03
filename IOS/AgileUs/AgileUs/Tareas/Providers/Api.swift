@@ -15,10 +15,10 @@ final class Api {
     
     //let url = "http://18.218.7.148:3040/api/tareas"
     
-    let url = "http://10.97.3.134:3040/api/tareas"
+    let url = "http://10.97.3.129:3040/api/tareas"
     //prueba de url para personas asignadas
     //let url_personas = "http://18.218.7.148:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
-    let url_personas = "http://10.97.3.134:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
+    let url_personas = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/618b05c12d3d1d235de0ade0"
     let rangeStatusCode200 = 200...299
     let rangeStatusCode400 = 400...499
     let rangeStatusCode500 = 500...599
@@ -63,7 +63,7 @@ final class Api {
                                     archivo: "\(urlText)")
                         
                         let session = URLSession.shared
-                        let urlB = URL(string: "http://10.97.3.134:3040/api/tareas/agregarTarea")!
+                        let urlB = URL(string: "http://10.97.3.129:3040/api/tareas/agregarTarea")!
                         var request = URLRequest(url: urlB)
                         
                         
@@ -485,7 +485,7 @@ final class Api {
        
         
         let session = URLSession.shared
-        let url = URL(string: "\(url)/actulizarEstatus/\(idTarea)&\(estatus)")!
+        let url = URL(string: "http://10.97.3.129:3040/api/tareas/actulizarEstatus/\(idTarea)&\(estatus)")!
         var request = URLRequest(url: url)
         
         request.httpMethod = "PUT"
@@ -521,7 +521,7 @@ final class Api {
     func sendMessage(message: String, title: String, person: String) {
         
         let session = URLSession.shared
-        let url = URL(string: "http://10.97.6.83:3040/api/mensajes/crearMensaje")!
+        let url = URL(string: "http://10.97.3.129:3040/api/mensajes/crearMensaje")!
         var request = URLRequest(url: url)
         
         let date = Date()

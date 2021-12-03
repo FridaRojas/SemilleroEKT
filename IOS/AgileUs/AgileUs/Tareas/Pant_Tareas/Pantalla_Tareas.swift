@@ -52,7 +52,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     //let servico = "http://18.218.7.148:3040/api/tareas/"
     
-    let servico = "http://10.97.3.134:3040/api/tareas/"
+    let servico = "http://10.97.3.129:3040/api/tareas/"
     @IBOutlet weak var Lista_tareas: UITableView!
     
     
