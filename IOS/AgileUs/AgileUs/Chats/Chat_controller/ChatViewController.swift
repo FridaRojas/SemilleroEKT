@@ -140,10 +140,10 @@ class ChatViewController:
         messageInputBar.inputTextView.backgroundColor = .lightGray
         messagesCollectionView.messageCellDelegate = self
         let items = [makeButton(named: "adjunto_archivo").onTextViewDidChange{ button, textView in
-            button.tintColor = UIColor.green
-            button.isEnabled = textView.text.isEmpty
-        }
-       ]
+                button.tintColor = UIColor.green
+                button.isEnabled = textView.text.isEmpty
+            }
+        ]
         items.forEach{$0.tintColor = .lightGray}
         messageInputBar.setStackViewItems(items, forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 45, animated: false)
@@ -178,6 +178,8 @@ class ChatViewController:
             }.onDeselected{
                 $0.tintColor = UIColor.green
             }.onTouchUpInside{ _ in
+                
+                
                 self.simpleAlertMessage(title: "Confirmacion", message: "Archivo Adjunto")
             }
         
@@ -222,7 +224,7 @@ class ChatViewController:
     
     func carga_mensajes()
     {
-        let servicio = "http://10.97.6.83:3040/api/mensajes/verConversacion/\(userID)_618e8743c613329636a769aa"
+        let servicio = server + "mensajes/verConversacion/\(userID)_618e8743c613329636a769aa"
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
@@ -270,7 +272,7 @@ class ChatViewController:
     func registro_mensajes(mensaje_json: String, succes: @escaping (_ succes: String) ->(), fallo: @escaping (_ fallo: String) ->() )
     {
         //crea NSURL
-        let requestURL = URL(string: "http://10.97.6.83:3040/api/mensajes/crearMensaje")
+        let requestURL = URL(string: server + "mensajes/crearMensaje")
         
         //crea NSMutableURLRequest  10.97.6.83
         let request = NSMutableURLRequest(url: requestURL! as URL)

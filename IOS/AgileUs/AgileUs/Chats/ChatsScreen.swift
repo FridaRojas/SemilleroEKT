@@ -77,7 +77,7 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     
     func Servicio_web_conversaciones()
     {
-        let servicio = "http://10.97.6.83:3040/api/mensajes/listarConversaciones/618e878ec613329636a769ab"
+        let servicio = server + "mensajes/listarConversaciones/618e878ec613329636a769ab"
         let url = URL(string: servicio)
 
         URLSession.shared.dataTask(with: url!)
