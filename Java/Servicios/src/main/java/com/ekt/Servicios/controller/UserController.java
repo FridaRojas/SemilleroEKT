@@ -183,7 +183,6 @@ public class UserController {
                     System.out.println("1");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", ""));
                 }else
-
                     if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(userUpdate.getCurp())){
                     System.out.println("2");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", ""));
@@ -194,7 +193,9 @@ public class UserController {
                     System.out.println("4");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
                 }else{
-                    groupService.actualizaUsuario(userUpdate);
+
+                        System.out.println(userUpdate.getIDGrupo() + " --- " + userUpdate.getID());
+                        groupService.actualizaUsuario(userUpdate);
                     return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario actualizado correctamente", userService.actualizaUsuario(userUpdate)));
                 }
             }

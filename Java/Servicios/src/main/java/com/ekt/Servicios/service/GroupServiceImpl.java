@@ -151,12 +151,18 @@ public class GroupServiceImpl implements GroupService{
     public boolean actualizaUsuario(User usuario){
         boolean bandera = false;
         User []usuarios =null;
+        System.out.println("usuario.... "+usuario.getNombreRol());
+        System.out.println(usuario.getIDGrupo() + " --- " + usuario.getID());
         Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(usuario.getIDGrupo(),usuario.getID());
         if (grupo.isPresent()){
+            System.out.println(grupo.get().getNombre());
             usuarios = grupo.get().getUsuarios();
             for(User user:usuarios){
                 if(user.getID().equals(usuario.getID())){
+                    System.out.println(user.getNombre());
                     user.setCorreo(usuario.getCorreo());
+                    user.setNombreRol(usuario.getNombreRol());
+                    user.setIDSuperiorInmediato(usuario.getIDSuperiorInmediato());
                     user.setFechaInicio(usuario.getFechaInicio());
                     user.setFechaTermino(usuario.getFechaTermino());
                     user.setNombre(usuario.getNombre());
@@ -174,6 +180,7 @@ public class GroupServiceImpl implements GroupService{
             groupRepository.save(grupo.get());
             return true;
         }else {
+            System.out.println("Error en actualizar en grupo");
             return false;
         }
     }

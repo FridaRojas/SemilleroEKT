@@ -189,11 +189,17 @@ public class ConfigPag {
     @PostMapping ("/editarUsuarioServicio")//*
     public String editarUsuarioServicio(@ModelAttribute User user,@ModelAttribute(value = "id") String id,RedirectAttributes redirectAttrs){
         Boolean bandera=false;
+        User userDb;
+
+        userDb=userDAO.buscaID(id);
         user.setID(id);
+        user.setIDGrupo(userDb.getIDGrupo());
+        System.out.println("en edita usuarioservicio:"+user.getIDGrupo());
 
         //editar informacion
-        System.out.println("rfc:"+user.getRFC());
-       if(userDAO.editarUsuario(user)){
+        //editar usuario en grupo
+
+       if(userDAO.editarUsuario(user) && groupDAO.editarUsuarioGrupo(user) ){
             bandera=true;
        }
 
@@ -230,7 +236,8 @@ public class ConfigPag {
     }
 
     @PostMapping("/reasignaSuperior")
-    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario, Model modelMap){
+    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen, Model modelMap){
+        System.out.println("origen: "+origen);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
         if(listaSubordinados != null) {
@@ -243,11 +250,15 @@ public class ConfigPag {
                 }
             }
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
-        modelMap.addAttribute("listaUsuarios", listaUsuarios);
+            modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
-
+            //Si el origen proviene de vistaUsuarios cambiar el status a false
             return "paginas/usuarios/ReasignaSuperior";
         }else{
+            System.out.println("Entra a desactivar");
+            if(origen.equals("0")){
+                userDAO.desactivarUsuario(idUsuario);
+            }
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
             return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
@@ -315,6 +326,8 @@ public class ConfigPag {
             modelMap.addAttribute("idUsuario", idUsuario);
             return "paginas/usuarios/ReasignaSuperior";
         }else{
+            //Si el origen proviene de vistaUsuarios cambiar el status a false
+            userDAO.desactivarUsuario(idUsuario);
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
             return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
@@ -395,6 +408,30 @@ public class ConfigPag {
             return "redirect: /error1";
         }
     }
+
+    @PostMapping("/editaUsuarioAGrupo")
+    public String editaUsuarioAGrupo(@ModelAttribute(value = "idGrupo") String idGrupo,@ModelAttribute BodyAddUserGroup body, RedirectAttributes redirectAttrs){
+        String respuesta;
+        body.setIdGrupo(idGrupo);
+        System.out.println("config: "+body.getIdGrupo()+"  "+body.getIdUsuario()+"  "+body.getIdSuperior()+"  "+body.getNombreRol());
+        try {
+            respuesta=groupDAO.reasignausuariogrupo(body);
+            if(respuesta.equals("OK")){
+                return "redirect:/editarGrupo/?idGrupo=" + body.getIdGrupo();
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("mensaje", respuesta);
+                return "redirect:/editarGrupo/?idGrupo=" + body.getIdGrupo();
+            }
+        }catch (Exception e){
+            System.err.println("Exepcion: "+e);
+            redirectAttrs
+                    .addFlashAttribute("mensaje", e);
+            return "redirect:/editarGrupo/?idGrupo=" + body.getIdGrupo();
+
+        }
+    }
+
 
     @PostMapping("/verUsuario")
     public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){

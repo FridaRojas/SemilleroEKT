@@ -59,7 +59,7 @@ public class UserDAO {
                 return null;
             }
         }catch (Exception e){
-            System.out.println("Ocurrió un problema");
+            System.out.println("Ocurrió un problema en UserDao busca por id");
             return null;
         }
     }
@@ -140,6 +140,7 @@ public class UserDAO {
 
     public ArrayList<User> listaUsuariosDisponibles(){
         Gson gson = new Gson();
+        User user;
         ArrayList<User> listaUsuarios = new ArrayList();
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -157,7 +158,8 @@ public class UserDAO {
             //prueba de casteo
 
             for (int i=0;i<name1.length();i++){
-                if(gson.fromJson(name1.getJSONObject(i).toString(), User.class).getIDGrupo().equals("")){
+                user=gson.fromJson(name1.getJSONObject(i).toString(), User.class);
+                if(user.getIDGrupo().equals("") && user.getStatusActivo().equals("true")){
                     listaUsuarios.add(gson.fromJson(name1.getJSONObject(i).toString(), User.class));
                 }
             }
@@ -263,7 +265,7 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\"" +user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\" "+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\" "+user.getCurp()+"\",\r\n    \"rfc\":\" "+user.getRFC()+"\"\r\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\""+user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\""+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\""+user.getCurp()+"\",\r\n    \"rfc\":\""+user.getRFC()+"\"\r\n}");
         Request request = new Request.Builder()
                 .url("http://localhost:3040/api/user/create")
                 .method("POST", body)
@@ -284,6 +286,27 @@ public class UserDAO {
             res=false;
         }
 
+        return res;
+    }
+
+    public boolean desactivarUsuario(String id){
+        Boolean res=false;
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/user/delete/"+id)
+                .method("DELETE", body)
+                .build();
+        try {
+            //limpia informacion del usuario en la db
+            Response response = client.newCall(request).execute();
+            res=true;
+            System.out.println("el id es: " + id + "  eliminado con exito");
+        }catch (Exception e){
+            System.out.println("Error  al eliminar usuario : "+e.getMessage());
+        }
         return res;
     }
 }
