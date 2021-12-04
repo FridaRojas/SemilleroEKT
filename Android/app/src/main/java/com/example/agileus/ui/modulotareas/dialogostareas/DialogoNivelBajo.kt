@@ -171,8 +171,6 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
                 btnPdf.isVisible = false
             }
 
-
-
             btnEstado.setOnClickListener {
                 if (dataTask.estatus.equals("pendiente")) {
                     dataTask.estatus = "iniciada"

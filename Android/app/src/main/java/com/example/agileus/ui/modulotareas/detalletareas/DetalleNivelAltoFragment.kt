@@ -207,8 +207,8 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     private fun setInfo(args: DetalleNivelAltoFragmentArgs) {
-        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
-        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
 
         Log.d("Mensaje", args.tareas.archivo)
 
@@ -306,13 +306,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private fun desactivarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
             Log.d("Mensaje", args.tareas.archivo)
-            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
             if (!args.tareas.archivo.isNullOrEmpty()) {
                 binding.btnDescargarArchivoFF.isVisible = true
             }
             txtDescripcionD.isEnabled = false
             txtDescripcionD.isEnabled = false
             txtFechaInicioD.isEnabled = false
+            btnAdjuntarArchivoF.isVisible = false
             txtFechaFinD.isEnabled = false
             txtObservacionesD.isEnabled = false
             btnEditarTareaF.isVisible = true
@@ -326,8 +327,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private fun activarCampos() {
         with(binding) {
             //  binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo PDF")
-            btnAdjuntarArchivoF.isVisible = true
 
+            btnAdjuntarArchivoF.isVisible = true
+            btnDescargarArchivoFF.isVisible = false
             txtDescripcionD.isEnabled = true
             txtDescripcionD.isEnabled = true
             txtFechaInicioD.isEnabled = true
