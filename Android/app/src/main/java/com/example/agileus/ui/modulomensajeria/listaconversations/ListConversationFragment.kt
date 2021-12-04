@@ -16,6 +16,7 @@ import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class ListConversationFragment : Fragment() {
@@ -34,6 +35,11 @@ class ListConversationFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        //AGREGADA
+        //val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        //navBar.isVisible = true
+
         return root
     }
 
