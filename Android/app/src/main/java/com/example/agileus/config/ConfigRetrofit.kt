@@ -1,11 +1,12 @@
 package com.example.agileus.config
 
 
+import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
+import com.example.agileus.ui.login.data.service.LoginApi
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
-import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
 import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
@@ -28,11 +29,19 @@ fun cliente(tiempo:Long): OkHttpClient {
 
 
 class ConfigRetrofit {
-
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE
+    //val URL_LOGIN = Constantes.URL_LOGIN
+    val URL_Login = Constantes.URL_Login
 
-   fun obtenerConfiguracionRetofitMessage(): MessageApi {
-       val mRetrofit = Retrofit.Builder()
+    //todo Falta editar el url para las tareas
+    val URL_BASE_TAREAS =
+        "http://10.97.5.172:2021/api/"
+
+
+
+
+    fun obtenerConfiguracionRetofitMessage(): MessageApi {
+        var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -40,19 +49,23 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi{
-
-        /*val clientBuilder = OkHttpClient.Builder()
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        clientBuilder.addInterceptor(loggingInterceptor)*/
-
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
-           // .client(clientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return mRetrofit.create(TasksApi::class.java)
+    }
+
+
+    fun obtenerConfiguracionRetofitLogin(): LoginApi {
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_Login)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(cliente(60))
+            .build()
+        return mRetrofit.create(LoginApi::class.java)
     }
 
     fun obtenerConfiguracionRetofitPersonasTasks(): TasksApi {
@@ -64,6 +77,8 @@ class ConfigRetrofit {
 
         return mRetrofit.create(TasksApi::class.java)
     }
+
+
 
     fun obtenerConfiguracionRetofitBuzon(): BuzonApi {
 

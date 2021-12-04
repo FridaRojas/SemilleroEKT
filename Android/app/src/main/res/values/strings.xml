@@ -59,4 +59,18 @@
     <string name="AdjuntarArchivo">Adjuntar Archivo</string>
     <string name="dialogoAceptar">dialogoAceptar</string>
 
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="login_login_button">Iniciar sesión</string>
+    <string name="login_olvidado">¿Olvidaste tu contraseña?</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="action_sign_in_short">SignIn</string>
+    <string name="Login">fragment_login</string>
+
+
 </resources>
