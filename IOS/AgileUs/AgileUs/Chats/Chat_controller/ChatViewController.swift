@@ -22,6 +22,7 @@ struct Chats: Codable
     let idemisor: String
     let fechaCreacion = Date()
     let rutaDocumento: String
+    
 }
 
 //estructura del mensaje
@@ -50,7 +51,7 @@ struct Message: MessageType
 class ChatViewController:
     MessagesViewController,MessagesDataSource,MessagesLayoutDelegate,InputBarAccessoryViewDelegate,MessageLabelDelegate,MessagesDisplayDelegate,MessageCellDelegate {
     
-    //declaramos variables globales
+    //declaramos variables 
    
     var currentUser = Sender(senderId: "user" , displayName: "Carlos") //variables usuario emisor
     var otherUser = Sender(senderId: "other", displayName: "Bops") //variable usuario receptor
@@ -59,6 +60,8 @@ class ChatViewController:
     var mensaje = ""
     var lastDisplayedSentDate: Date?
     var Boton_ver:UIButton?
+    var Datos_chats: Any?
+    var Datos_contacto: Any?
 
     override func viewDidLoad()
     {
@@ -70,7 +73,8 @@ class ChatViewController:
         messageInputBar.delegate = self
         configureMessageInputBar()
         //create_json()
-       carga_mensajes()
+        carga_mensajes()
+        print(Datos_contacto)
        
     }
   
@@ -78,6 +82,7 @@ class ChatViewController:
         auto_scroll()
         showNavBar()
     }
+    
     //creacion de funciones
     //funcion que retornar el usuario remitente
     func currentSender() -> SenderType
@@ -98,13 +103,22 @@ class ChatViewController:
                                      kind: .text("\(mensaje)")))
         var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
-        
         self.messagesCollectionView.reloadData()
-        create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: "", fecha: fecha){
-            (exito) in
         
-            print("Exitoso \(userID)")}fallido:{ fallido in
-            print("Registro Fallido")
+        var receptor = ""
+        if Datos_chats != nil
+        {
+             var  dato_chat = Datos_chats as! [Any]
+             receptor = "\(dato_chat[2])"
+        }else{
+            var  dato_chat = Datos_contacto as! [Any]
+            receptor = "\(dato_chat[2])"
+        }
+        create_json(id_emisor: userID, id_receptor: receptor, mensaje: mensaje, rutaDocumento: "", fecha: fecha){
+            (exito) in
+            //print("Exito")
+        }fallido:{ fallido in
+           //print("Registro Fallido")
         }
     }
     //detectamos los URL y los hashtag
@@ -168,6 +182,9 @@ class ChatViewController:
         return .bubbleOutline(UIColor.white)
        
     }
+    
+    
+    
     func makeButton(named: String) -> InputBarButtonItem{
         return InputBarButtonItem()
             .configure{    $0.spacing = .fixed(10)
@@ -206,6 +223,15 @@ class ChatViewController:
                 return 0
             }
         }
+    //funcion para agregar label cuando el mensaje ha sido leido
+    func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        return NSAttributedString(string: "Read", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10), NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+    }
+    //tamaño de la celda de leido
+    func cellBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        return 10
+    }
+    
     //funcion para dar tamaño en la fecha que pone cuando se envia el mensaje
     func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
             return 16
@@ -222,7 +248,19 @@ class ChatViewController:
     
     func carga_mensajes()
     {
-        let servicio = "http://10.97.6.83:3040/api/mensajes/verConversacion/\(userID)_618e8743c613329636a769aa"
+        
+        //print( dato[3] as! String  )
+       
+        var servicio = ""
+        if Datos_chats != nil
+        {
+             let dato_chat = Datos_chats as! [Any]
+             servicio = server + "mensajes/verConversacion/\(userID)_\(dato_chat[2])"
+        }else{
+            let dato_contacto = Datos_contacto as! [Any]
+            servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[2])"
+        }
+        
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
@@ -236,7 +274,6 @@ class ChatViewController:
                 self.usuarios = try JSONDecoder().decode([Chats].self, from: data!)
                 DispatchQueue.main.async
                 {
-                    //print(self.usuarios)
                     var cont = 0
                     for item in self.usuarios
                     {
@@ -250,14 +287,26 @@ class ChatViewController:
                             }else{
                                 self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
                             }
+                            //print(item.id)
                         }else{
                             if item.rutaDocumento != ""
                             {
                                 self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("Documento: \(item.rutaDocumento)")))
                             }else{
                                 self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
+                                self.jsonMensajeLeido(id: item.id){
+                                    (exito) in
+                                
+                                   // print("Exitoso \(item.id)")
+                                    
+                                }fallido:{ fallido in
+                                   // print("Registro Fallido")
+                                }
+                                
                             }
+                           
                         }
+                       
                     }
                     self.messagesCollectionView.reloadData()
                 }
@@ -266,11 +315,44 @@ class ChatViewController:
         }.resume()
     }
 
+    //funcion para registrar mensajes leidos
+    func mensajesLeidos(mensaje_leido: String, succes: @escaping (_ succes: String) ->(), fallo: @escaping (_ fallo: String) ->() )
+    {
+        //crea NSURL
+        let requestURL = URL(string: server + "mensajes/actualizarLeido")
+        
+        //crea NSMutableURLRequest  10.97.6.83
+        let request = NSMutableURLRequest(url: requestURL! as URL)
+        //configura el método de envío
+        request.httpMethod = "POST";
+        //parámetros a enviar
+        let postParameters = mensaje_leido;
+        //agrega los parámetros a la petición
+        request.httpBody = postParameters.data(using: String.Encoding.utf8)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        //request.
+        //crea una tarea que envía la petición post
+        let task = URLSession.shared.dataTask(with:request as URLRequest){
+            data, response, error in
+            //si ocurre algún error sale
+            if error != nil{
+                fallo("Error")
+                return;
+            }
+            else{
+                succes("successsss")
+                
+            }
+        }
+        //ejecuta la tarea
+        task.resume()
+    }
+    
     //funcion para hacer petcion post al servidor
     func registro_mensajes(mensaje_json: String, succes: @escaping (_ succes: String) ->(), fallo: @escaping (_ fallo: String) ->() )
     {
         //crea NSURL
-        let requestURL = URL(string: "http://10.97.6.83:3040/api/mensajes/crearMensaje")
+        let requestURL = URL(string: server + "mensajes/crearMensaje")
         
         //crea NSMutableURLRequest  10.97.6.83
         let request = NSMutableURLRequest(url: requestURL! as URL)
@@ -298,7 +380,36 @@ class ChatViewController:
         //ejecuta la tarea
         task.resume()
     }
-
+//creacion de json para marcar como leido
+    func jsonMensajeLeido(id: String, exito: @escaping (_ exito: String) ->(), fallido: @escaping (_ fallido: String) ->() )
+    {
+        let exampleLeido: [String: Any] = [
+            "id" : id,
+            "fechaLeido" : "\(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))",
+                                        ]
+            if let jsonLeido = JSONStringEncoder().encode(exampleLeido) {
+                mensajesLeidos(mensaje_leido: jsonLeido){
+                    (succes) in
+                        //print(succes)
+                    DispatchQueue.main.async {
+                       exito("Registro exitoso")
+                      // print(jsonLeido)
+                    }
+                    
+                } fallo: {
+                    fallo in
+                    DispatchQueue.main.async {
+                    fallido("Servidor Abajo")
+                    }
+                   
+                }
+                
+            } else {
+                print("fallo la codificacion")
+            }
+        
+    }
+        
 
     //funcion para crear json personalizado
     func create_json(id_emisor: String, id_receptor: String, mensaje: String,rutaDocumento : String, fecha: String, exito: @escaping (_ exito: String) ->(), fallido: @escaping (_ fallido: String) ->() )
@@ -310,8 +421,6 @@ class ChatViewController:
                 "rutaDocumento" : "\(rutaDocumento)",
                 "fechaCreacion" : "\(Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))",
                                         ]
-
-
             if let jsonString = JSONStringEncoder().encode(exampleDict) {
                 registro_mensajes(mensaje_json: jsonString) {
                     (succes) in

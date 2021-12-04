@@ -27,7 +27,6 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     {
         super.viewDidLoad()
         //addLogoutButton()
-
         tabla_chats.delegate = self
         tabla_chats.dataSource = self
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
@@ -70,14 +69,17 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         //pasar a la pantalla de conversacion
         let vc = ChatViewController()
         
-        vc.title = "\(otrodatos[index])"
+        var  titulo = otrodatos[index]
+        var titulo_chat = titulo as! [Any]
+        vc.title = "\(titulo_chat[3])"
+        vc.Datos_chats = otrodatos[index] 
         navigationController?.pushViewController(vc, animated: true)
     }
     
     
     func Servicio_web_conversaciones()
     {
-        let servicio = "http://10.97.6.83:3040/api/mensajes/listarConversaciones/618e878ec613329636a769ab"
+        let servicio = server + "mensajes/listarConversaciones/\(userID)"
         let url = URL(string: servicio)
 
         URLSession.shared.dataTask(with: url!)

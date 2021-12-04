@@ -30,17 +30,21 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
         let indice = indexPath.row
         let celda_personalizada = tableView.dequeueReusableCell(withIdentifier:  lista_contactos.identificador, for: indexPath) as! lista_contactos
         celda_personalizada.configurar_celda(Datos: otroscontactos[indice] as! [Any])
-        print(otroscontactos)
         return celda_personalizada
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let index = indexPath.row
+        
         //pasar a la pantalla de conversacion
         let vc = ChatViewController()
-        vc.title = "\(otroscontactos[index])"
+        var  titulo = otroscontactos[index]
+        var titulo_chat = titulo as! [Any]
+        vc.title = "\(titulo_chat[3])"
+        vc.Datos_contacto = otroscontactos[index]
         navigationController?.pushViewController(vc, animated: true)
+         
     }
     
 
@@ -57,8 +61,7 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
     
     func Servicio_web_contactos()
     {
-        let servicio = "http://10.97.6.83:3040/api/mensajes/listaContactos/\(userID)"
-        // let servicio = "https://jsonplaceholder.typicode.com/users?id=\(1)" si el api nos pediera parametros solo se le concatena dicho parametro(  ?=\(1)  )
+        let servicio = server + "mensajes/listaContactos/\(userID)"
         let url = URL(string: servicio)
 
         URLSession.shared.dataTask(with: url!)
