@@ -68,13 +68,6 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
             }
         }
 
-        if (control == 2) {
-            viewModel.devuelvebuzon2()
-            binding.fab.visibility = View.GONE
-            binding.fab.setOnClickListener {
-                Toast.makeText(context, "Opción No permitida ", Toast.LENGTH_SHORT).show()
-            }
-        }
 
 
 /*

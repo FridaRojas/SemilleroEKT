@@ -20,3 +20,12 @@ data class BuzonResp(
     @SerializedName ("nombreEmisor") var Asunto:String
 )
 
+
+data class BuzonComunicados(
+    @SerializedName("id") val id: String,
+    @SerializedName("conversacionVisible") val conversacionVisible: Boolean,
+    @SerializedName("texto") val texto: String,
+    @SerializedName("nombreConversacionReceptor") val nombreConversacionReceptor: String,
+    @SerializedName("idreceptor") val idreceptor: String,
+    @SerializedName("idemisor") val idemisor: String,
+)

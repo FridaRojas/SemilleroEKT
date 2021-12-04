@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.BuzonAdapter
+import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.models.*
 import com.example.agileus.utils.Constantes.broadlist
 import com.example.agileus.webservices.dao.ProviderBuzon
@@ -40,22 +41,11 @@ class BuzonDetallesViewModel : ViewModel() {
     companion object {
         var listaus=ArrayList<ListaUsers>()
         var listaBrd=ArrayList<BuzonResp>()
+
         var listasize = 0
         var listafiltrada= ArrayList<String>()
 
     }
-
-
-
-       fun postMensaje(mypost: MensajeBodyBroadcaster) {
-
-           viewModelScope.launch {
-                 val response: Response<MensajeBodyBroadcaster> = lista1.getcustompost(mypost)
-                 myResponse.value = response
-             }
-            }
-
-
 
     fun getLista():ArrayList<ListaUsers> {
         listausuarios = ArrayList()
@@ -120,43 +110,6 @@ class BuzonDetallesViewModel : ViewModel() {
     }
 
 
-    fun devuelvebuzon2() {
-
-        listaConsumida1 = ArrayList()
-        listafiltrada2=  ArrayList()
-        listafiltrada1=  ArrayList()
-
-        try {
-            viewModelScope.launch {
-                listaConsumida1 = withContext(Dispatchers.IO) {
-                    lista1.recuperarMensajesBrd1(broadlist)
-                }
-
-                if (listaConsumida1.isNotEmpty()) {
-                    listasize = listaConsumida1.size
-                    listafiltrada2 = ArrayList()
-
-                    if (BuzonFragment.control == 1) {
-                        for (i in 0 until listaConsumida1.size) {
-                            //    if (listaConsumida[i].Receiverid == "Broadcast") {
-                            listafiltrada2.add(listaConsumida1[i])
-                        }
-                    }
-                }
-
-                if (BuzonFragment.control == 2) {
-                    for (i in 0 until listaConsumida.size) {
-                        if (listaConsumida[i].Senderid == broadlist) {
-                            listafiltrada2.add(listaConsumida1[i])
-                        }
-                    }
-                }
-                adaptador.value = BuzonAdapter(listafiltrada2, BuzonFragment.control)
-            }
-        } catch (ex: Exception) {
-            Log.e("aqui", ex.message.toString())
-        }
-    }
 
 }
 

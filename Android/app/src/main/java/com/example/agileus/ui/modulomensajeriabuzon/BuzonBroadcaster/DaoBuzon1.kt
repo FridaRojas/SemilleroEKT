@@ -1,13 +1,12 @@
 package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 
 import android.util.Log
+import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.models.BuzonResp
-import com.example.agileus.models.ListaUsers
-import com.example.agileus.models.MensajeBodyBroadcaster
-import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.models.*
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.listaBrd1
 import retrofit2.Response
 
 class DaoBuzon1 {
@@ -37,7 +36,6 @@ class DaoBuzon1 {
     suspend fun recuperarMensajesBrd (idUser: String): ArrayList<BuzonResp> {
         listaBrd = ArrayList()
         try {
-            Log.i("hola", "paso2")
             val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getbuzon(idUser)
             var ResponseDos: Response<ArrayList<BuzonResp>> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
@@ -58,19 +56,18 @@ class DaoBuzon1 {
         return listaBrd
     }
 
-    suspend fun recuperarMensajesBrd1 (idUser: String): ArrayList<BuzonResp> {
+    suspend fun recuperarMensajesBrd1 (idUser: String): ArrayList<BuzonComunicados> {
         listaBrd = ArrayList()
         try {
             Log.i("hola", "paso2")
             val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getmybuzon(idUser)
-            var ResponseDos: Response<ArrayList<BuzonResp>> = callRespuesta.execute()
+            var ResponseDos: Response<ArrayList<BuzonComunicados>> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
 
-                Log.i("hola", "paso3")
 
-                listaBrd = ResponseDos.body()!!
-                listaBrd.forEach {
-                    Log.d("asu", it.Asunto.toString())
+                listaBrd1 = ResponseDos.body()!!
+                listaBrd1.forEach {
+                    Log.d("asu", it.texto.toString())
                 }
             } else {
                 Log.i("ERROR", ResponseDos.code().toString())
@@ -79,8 +76,9 @@ class DaoBuzon1 {
         } catch (ex: Exception) {
             Log.i("ERROR", "${ex.toString()}")
         }
-        return listaBrd
+        return listaBrd1
     }
+
 
 
     suspend fun getcustompost(post: MensajeBodyBroadcaster):Response<MensajeBodyBroadcaster> {
