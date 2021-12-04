@@ -134,19 +134,19 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             }
 
             btnAdjuntarArchivoF.setOnClickListener {
-                if (binding.btnAdjuntarArchivoF.text.equals("Adjuntar Archivo PDF")) {
-                    val intentPdf = Intent()
-                    intentPdf.setAction(Intent.ACTION_GET_CONTENT)
-                    intentPdf.type =
-                        "application/pdf"                     // Filtra para archivos pdf
-                    resultLauncherArchivo.launch(intentPdf)
-                } else if (binding.btnAdjuntarArchivoF.text.equals("Descargar Archivo PDF")) {
-                    var mDownloadProvider = DownloadProvider()
-                    mDownloadProvider.dowloadFile(
-                        (activity as HomeActivity).applicationContext,
-                        args.tareas.archivo, "archivo"
-                    )
-                }
+                val intentPdf = Intent()
+                intentPdf.setAction(Intent.ACTION_GET_CONTENT)
+                intentPdf.type =
+                    "application/pdf"                     // Filtra para archivos pdf
+                resultLauncherArchivo.launch(intentPdf)
+            }
+
+            btnDescargarArchivoFF.setOnClickListener {
+                var mDownloadProvider = DownloadProvider()
+                mDownloadProvider.dowloadFile(
+                    (activity as HomeActivity).applicationContext,
+                    args.tareas.archivo, "archivo"
+                )
             }
 
             btnObservacionF.setOnClickListener {
@@ -285,9 +285,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         }
 
         if (!args.tareas.archivo.isNullOrEmpty()) {
-            binding.btnAdjuntarArchivoF.isVisible = true
+            binding.btnDescargarArchivoFF.isVisible = true
         } else {
-            binding.btnAdjuntarArchivoF.isVisible = false
+            binding.btnDescargarArchivoFF.isVisible = false
             args.tareas.archivo = ""
         }
 
@@ -308,13 +308,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             Log.d("Mensaje", args.tareas.archivo)
             Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
             if (!args.tareas.archivo.isNullOrEmpty()) {
-                binding.btnAdjuntarArchivoF.setText("Descargar archivo PDF")
-                binding.btnAdjuntarArchivoF.isVisible = true
+                binding.btnDescargarArchivoFF.isVisible = true
             }
             txtDescripcionD.isEnabled = false
             txtDescripcionD.isEnabled = false
             txtFechaInicioD.isEnabled = false
-            btnAdjuntarArchivoF.isEnabled = false
             txtFechaFinD.isEnabled = false
             txtObservacionesD.isEnabled = false
             btnEditarTareaF.isVisible = true
@@ -328,12 +326,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private fun activarCampos() {
         with(binding) {
             //  binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo PDF")
-            btnAdjuntarArchivoF.isVisible = false
+            btnAdjuntarArchivoF.isVisible = true
 
             txtDescripcionD.isEnabled = true
             txtDescripcionD.isEnabled = true
             txtFechaInicioD.isEnabled = true
-            btnAdjuntarArchivoF.isEnabled = true
             txtFechaFinD.isEnabled = true
             txtObservacionesD.isEnabled = true
             btnEditarTareaF.isVisible = false
