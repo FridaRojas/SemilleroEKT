@@ -15,7 +15,7 @@ final class Api {
     
     //let url = "http://18.218.7.148:3040/api/tareas"
     
-    let url = "http://10.97.3.129:3040/api/tareas"
+    let url = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/tareas"
     //prueba de url para personas asignadas
     //let url_personas = "http://18.218.7.148:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
     let url_personas = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/618b05c12d3d1d235de0ade0"
@@ -404,7 +404,7 @@ final class Api {
         let session = URLSession.shared
         let url = URL(string: "\(url)/obtenerTareaPorId/\(idTarea)")!
         var request = URLRequest(url: url)
-        print("URL MODAL:\(url)")
+        //print("URL MODAL:\(url)")
         request.httpMethod = "GET"
         
         let task = session.dataTask(with: request) {

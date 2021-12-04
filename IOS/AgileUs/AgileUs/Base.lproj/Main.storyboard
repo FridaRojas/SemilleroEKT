@@ -161,7 +161,7 @@
         <!--Tareas-->
         <scene sceneID="TaE-M0-Qa6">
             <objects>
-                <viewController id="4sJ-fV-fcb" customClass="Pantalla_Tareas" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Pantalla_Tareas" id="4sJ-fV-fcb" customClass="Pantalla_Tareas" customModule="AgileUs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="e6N-yT-qXs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -416,7 +416,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TUT-gJ-SW1">
-                                        <rect key="frame" x="8" y="357" width="153" height="41"/>
+                                        <rect key="frame" x="8" y="357" width="248" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Cambiar a iniciada">
@@ -441,20 +441,6 @@
                                             <segue destination="K6X-36-kUN" kind="show" identifier="trans_visor" id="sok-LM-owg"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ha4-Vg-Arc">
-                                        <rect key="frame" x="4" y="222" width="173" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2L-iL-FsP">
-                                        <rect key="frame" x="203" y="222" width="162" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="OyD-rg-f2H">
                                         <rect key="frame" x="0.0" y="247" width="365" height="95"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -483,19 +469,31 @@
                                             <action selector="Cerrar_modal:" destination="a4V-Ps-SCr" eventType="touchUpInside" id="uNk-XK-TWv"/>
                                         </connections>
                                     </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fy6-cy-IKI">
+                                        <rect key="frame" x="0.0" y="222" width="169" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WNq-3O-yeh">
+                                        <rect key="frame" x="189" y="222" width="185" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hYs-aW-aFz"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.40000003579999999" green="0.40000003579999999" blue="0.40000003579999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
                     <navigationItem key="navigationItem" id="wPI-eP-Vhm"/>
                     <connections>
                         <outlet property="Descripcion" destination="Hw6-X7-kfw" id="v7I-tt-PZ1"/>
                         <outlet property="Estatus" destination="3qF-3S-BZQ" id="Yg5-T9-kMQ"/>
-                        <outlet property="Fecha_fin" destination="A2L-iL-FsP" id="Upm-oP-1HP"/>
-                        <outlet property="Fecha_inicio" destination="Ha4-Vg-Arc" id="v8d-ju-tUz"/>
+                        <outlet property="Fecha_fin" destination="WNq-3O-yeh" id="KCw-Mb-4bh"/>
+                        <outlet property="Fecha_inicio" destination="fy6-cy-IKI" id="DVm-vE-eFm"/>
                         <outlet property="Nombre" destination="riA-uV-loG" id="vXE-du-s0P"/>
                         <outlet property="Observacion" destination="OyD-rg-f2H" id="sdx-2j-cCg"/>
                         <outlet property="Prioridad" destination="HZ7-ug-DLI" id="KiC-5y-CYP"/>
@@ -506,7 +504,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4o8-e2-utJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4332" y="1163"/>
+            <point key="canvasLocation" x="4331.884057971015" y="1162.5"/>
         </scene>
         <!--VisorPDF-->
         <scene sceneID="TX6-gL-eTG">

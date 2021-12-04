@@ -14,8 +14,10 @@ class InfoViewController: UIViewController {
     @IBOutlet weak var Prioridad: UILabel!
     @IBOutlet weak var Estatus: UILabel!
     @IBOutlet weak var Descripcion: UITextView!
-    @IBOutlet weak var Fecha_inicio: UILabel!
-    @IBOutlet weak var Fecha_fin: UILabel!
+
+    @IBOutlet weak var Fecha_inicio: UITextField!
+
+    @IBOutlet weak var Fecha_fin: UITextField!
     @IBOutlet weak var Observacion: UITextView!
     
     @IBOutlet weak var buttonFile: UIButton!
@@ -44,9 +46,16 @@ class InfoViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         MostrarTareaModal(idtask: id_tarea!)
+        Fecha_inicio.initStyleEdit(fontSize: 12, fontWeight: .light, colorText: .darkGray, imageName: "calendarIcon", selected: false)
+        Fecha_fin.initStyleEdit(fontSize: 12, fontWeight: .light, colorText: .darkGray, imageName: "calendarIcon", selected: false)
+
 
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presentingViewController?.viewWillAppear(true)
+    }
+
     func setupView() {
         //Agregar blur view y mandarlo de regreso
         view.addSubview(blurredView)
@@ -54,7 +63,10 @@ class InfoViewController: UIViewController {
     }
     
     @IBAction func Cerrar_modal(_ sender: UIButton) {
-        dismiss(animated: true)
+       navigationController?.popViewController(animated: true)
+
+        dismiss(animated: true, completion: nil)
+
     }
     func MostrarTareaModal(idtask: String)
     {
@@ -63,8 +75,8 @@ class InfoViewController: UIViewController {
             tarea in
             print("si jalo")
             DispatchQueue.main.async {
-                self.Titulo.text = tarea.titulo
-                self.Nombre.text = tarea.nombre_receptor
+                self.Titulo.text = tarea.titulo?.uppercased()
+                self.Nombre.text = tarea.nombre_receptor?.uppercased()
                 self.Prioridad.text = "Prioridad: \(tarea.prioridad!)"
                 self.Estatus.text = "Estatus: \(tarea.estatus!)"
                 self.estatus = tarea.estatus!
@@ -85,8 +97,8 @@ class InfoViewController: UIViewController {
                     print("sin estatus")
                 }
                 self.Descripcion.text = "Descripcion: \(tarea.descripcion!)"
-                self.Fecha_inicio.text = "Fecha inicio: \(HelpString.formatDate(date: tarea.fecha_ini!))"
-                self.Fecha_fin.text = "Fecha fin:\(HelpString.formatDate(date: tarea.fecha_fin!))"
+                self.Fecha_inicio.text = "Inicio: \(HelpString.formatDate(date: tarea.fecha_ini!))"
+                self.Fecha_fin.text = "Fin:\(HelpString.formatDate(date: tarea.fecha_fin!))"
                 if (tarea.observaciones == nil || tarea.observaciones == "")
                 {
                     self.Observacion.text = "Sin observaciones"
@@ -116,11 +128,12 @@ class InfoViewController: UIViewController {
         self.MostrarSpinner(onView: self.view)
          if (estatus == "iniciada")
         {
-             print("Entro a Actualizar ********************")
+             //print("Entro a Actualizar ********************")
              Api.shared.UpdateFecha(idTask: id_tarea!, ban: true)
              {
                  tarea in
-                 print("Se guardo fecha de inicio real")
+                 
+               //  print("Se guardo fecha de inicio real")
              } failure: { error in
                  print("Error \(error)")
              }

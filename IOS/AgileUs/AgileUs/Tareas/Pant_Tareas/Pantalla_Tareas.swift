@@ -52,7 +52,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     //let servico = "http://18.218.7.148:3040/api/tareas/"
     
-    let servico = "http://10.97.3.129:3040/api/tareas/"
+    let servico = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
     @IBOutlet weak var Lista_tareas: UITableView!
     
     
@@ -65,6 +65,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var nivel = "intermedio"
     var select_estatus:String = ""
     var id_tarea:String = ""
+    var url:String = ""
     //variable para mostrar el colection view
 
     
@@ -97,21 +98,32 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         Lista_tareas.dataSource = self
         Lista_tareas.register(List.nib(),forCellReuseIdentifier: List.identificador)
         
-        //llama al servico
-        var url = nivel != "alto" ? "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&pendiente" : "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+
         select_estatus = nivel == "alto" ? "Asignadas" : "pendiente"
-        
-        consumir_servicio(url: url)
-        
      // llamar al servico de filtros
-        
-        
         // llamada de menu
         menu_clasificador.dataSource = self
         menu_clasificador.delegate = self
         menu_clasificador.register(ItemMenu.nib(), forCellWithReuseIdentifier: ItemMenu.identificador)
         
         titleTaksField.text = nivel != "alto" ? "Tareas Pendientes" : "Asignadas"
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        //llama al servico
+
+        if select_estatus == "Asignadas"
+        {
+            url =  "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+        }
+        else
+        {
+            url = nivel != "alto" ? "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)" : "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+            
+        }
+        print("*****************si entre al guilappear")
+        consumir_servicio(url: url)
+
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -131,7 +143,8 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         let url = URL(string: url)
         
-        print("URL: \(url)")
+        //print("URL: \(url)")
+        self.MostrarSpinner(onView: self.view)
         URLSession.shared.dataTask(with: url!){
             (data,response,error) in
       
@@ -139,10 +152,10 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
             //print(information)
             //print(request)
             //print(error)
-            print("************error: \(error)")
+            //print("************error: \(error)")
             if let dataSuccess = data {
-                print("************information: \(dataSuccess)")
-
+                //print("************information: \(dataSuccess)")
+                
                 do{
                    // print("Iniciando la entrada al try")
                     
@@ -150,7 +163,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
                     
                     self.selestatus = try JSONDecoder().decode(Status.self, from: dataSuccess)
                     
-                    print("data*******\(self.selestatus)")
+                   // print("data*******\(self.selestatus)")
                     DispatchQueue.main.async
                     {
                         //print(self.arrTareas)
@@ -182,7 +195,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
                 }catch let error{
                     print(error)
                 }
-
+                self.RemoverSpinner()
             }
             
             
@@ -209,16 +222,18 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         
     
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var selectindexLista = arrTareas[indexPath.row]
         id_tarea = selectindexLista.id_tarea!
-        print("SELECTOR DE ESTATUS:\(select_estatus)")
+        //print("SELECTOR DE ESTATUS:\(select_estatus)")
         if select_estatus != "Asignadas"
         {
             if let infoViewController = storyboard?.instantiateViewController(identifier: "InfoViewController") as? InfoViewController {
-                infoViewController.modalPresentationStyle = .overCurrentContext
-                infoViewController.modalTransitionStyle = .crossDissolve
+
+                infoViewController.modalPresentationStyle = .fullScreen
+                //infoViewController.modalPresentationStyle = .overCurrentContext
+                //infoViewController.modalTransitionStyle = .crossDissolve
                 infoViewController.id_tarea = id_tarea
                 present(infoViewController, animated: true)
                     }
