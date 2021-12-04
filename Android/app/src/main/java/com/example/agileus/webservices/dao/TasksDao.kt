@@ -121,7 +121,7 @@ class TasksDao : DialogoConfirmacionListener {
                 } else {
                     listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
                 }
-            }else{
+            } else {
                 listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
             }
         } catch (e: Exception) {
@@ -152,19 +152,22 @@ class TasksDao : DialogoConfirmacionListener {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
         val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate, idTarea)
-        callback.enqueue(object : Callback<TaskList2> {
-            override fun onResponse(call: Call<TaskList2>, response: Response<TaskList2>) {
+        callback.enqueue(object : Callback<TaskList> {
+            override fun onResponse(call: Call<TaskList>, response: Response<TaskList>) {
                 if (response.code() == 400) {
                     Log.d("Error code 400", response.errorBody()!!.string());
                 }
                 if (response.isSuccessful) {
-                   Log.d("Mensaje", "Tarea editada")
+                    Log.d("Mensaje", "Tarea editada")
                 } else {
-                    Log.d("Mensaje", "No se Edito tarea ${response.code()}")
+                    Log.d(
+                        "Mensaje",
+                        "No se Edito tarea ${response.code()} . ${response.errorBody().toString()}"
+                    )
                 }
             }
 
-            override fun onFailure(call: Call<TaskList2>, t: Throwable) {
+            override fun onFailure(call: Call<TaskList>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }
         })

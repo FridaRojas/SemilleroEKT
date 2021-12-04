@@ -226,18 +226,17 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         cal.time = fechaI
 
-        if (cal[Calendar.MONTH] <= 9) {
-            mesI = "0${cal[Calendar.MONTH] + 1}"
+        cal[Calendar.MONTH] + 1
+//        cal[Calendar.DATE] + 1
+        if (cal[Calendar.MONTH] < 10) {
+            mesI = "0${cal[Calendar.MONTH]}"
         } else {
-            cal[Calendar.MONTH] + 1
             mesI = cal[Calendar.MONTH].toString()
         }
 
-
-        if (cal[Calendar.DATE] <= 9) {
-            diaI = "0${cal[Calendar.DATE] + 1}"
+        if (cal[Calendar.DATE] < 10) {
+            diaI = "0${cal[Calendar.DATE]}"
         } else {
-            cal[Calendar.DATE] + 1
             diaI = cal[Calendar.DATE].toString()
         }
 
@@ -247,24 +246,23 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 ///////////////////////////////////////////////////////////////777
         cal.time = fechaF
 
-        if (cal[Calendar.MONTH] <= 9) {
-            mesF = "0${cal[Calendar.MONTH] + 1}"
+        cal[Calendar.MONTH] + 1
+//        cal[Calendar.DATE] + 1
+        if (cal[Calendar.MONTH] < 10) {
+            mesF = "0${cal[Calendar.MONTH]}"
         } else {
-            cal[Calendar.MONTH] + 1
             mesF = cal[Calendar.MONTH].toString()
         }
 
-        if (cal[Calendar.DATE] <= 9) {
-            diaF = "0${cal[Calendar.DATE] + 1}"
+        if (cal[Calendar.DATE] < 10) {
+            diaF = "0${cal[Calendar.DATE]}"
         } else {
-            cal[Calendar.DATE] + 1
             diaF = cal[Calendar.DATE].toString()
         }
 
         fechaFi =
             cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
         Log.d("Mensaje", "fecha nueva $fechaFi")
-
 
 
         var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
