@@ -154,10 +154,10 @@ class ChatViewController:
         messageInputBar.inputTextView.backgroundColor = .lightGray
         messagesCollectionView.messageCellDelegate = self
         let items = [makeButton(named: "adjunto_archivo").onTextViewDidChange{ button, textView in
-            button.tintColor = UIColor.green
-            button.isEnabled = textView.text.isEmpty
-        }
-       ]
+                button.tintColor = UIColor.green
+                button.isEnabled = textView.text.isEmpty
+            }
+        ]
         items.forEach{$0.tintColor = .lightGray}
         messageInputBar.setStackViewItems(items, forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 45, animated: false)
@@ -195,6 +195,8 @@ class ChatViewController:
             }.onDeselected{
                 $0.tintColor = UIColor.green
             }.onTouchUpInside{ _ in
+                
+                
                 self.simpleAlertMessage(title: "Confirmacion", message: "Archivo Adjunto")
             }
         
@@ -260,7 +262,7 @@ class ChatViewController:
             let dato_contacto = Datos_contacto as! [Any]
             servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[2])"
         }
-        
+
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
