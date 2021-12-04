@@ -12,21 +12,33 @@
 
 import UIKit
 
-struct mensajes_Broadcast: Codable
+struct lista_de_usuarios: Codable
 {
-    let id: String
-    let Senderid: String
-    let Receiverid: String
-    let Asunto: String
-    let Message: String
+    let nombre: String
+    let token: String
 }
 
 
 class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return lista_usuarios.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        let indice = indexPath.row
+        let celda = tableView.dequeueReusableCell(withIdentifier: celda_msjs_enviados.identificador, for: indexPath) as! celda_msjs_enviados
+        celda.Configurar_Celda_Mensajes(Datos: usuarios [indice] as! Any)
+        
+        return celda
+    }
+    
     let controlador_modal1 = Adaptador_Modals()
-    var usuarios = ["Adonay", "Georgina", "Israel", "Jorge"]
-    var mensajes_Enviados = [mensajes_Broadcast]()
+    var lista_usuarios = [lista_de_usuarios]()
+    var usuarios = [Any]()
+
     
     @IBOutlet weak var lista_mensajes_eniados: UITableView!
 
@@ -36,6 +48,7 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
         
         lista_mensajes_eniados.delegate = self
         lista_mensajes_eniados.dataSource = self
+        lista_mensajes_eniados.register(celda_msjs_enviados.nib(), forCellReuseIdentifier: celda_msjs_enviados.identificador)
 
     }
     
@@ -44,19 +57,6 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
         //consumir_mensajes_enviados()
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        return usuarios.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        let celda = tableView.dequeueReusableCell(withIdentifier: "celda_msjs_enviados", for: indexPath)
-        
-        celda.textLabel?.text = usuarios[indexPath.row]
-        
-        return celda
-    }
     
     @IBAction func Enviar_Mensaje(_ sender: Any)
     {
@@ -71,27 +71,32 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
         present(Modal_Mensajes, animated: true)
     }
     
-    /*func consumir_mensajes_enviados()
+    func consumir_mensajes_enviados()
     {
-        let servicio = ""
+        let servicio = "https://firebasestorage.googleapis.com/v0/b/nombre-7ec89.appspot.com/o/BroadCastListaDeUsuarios.json?alt=media&token=585ce09f-5972-4661-bcfe-73063b4aafaa"
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {(data, response, error) in
             do
             {
-                self.usuarios = try
-                JSONDecoder().decode([].self, from: data!)
+                self.lista_usuarios = try
+                JSONDecoder().decode([lista_de_usuarios].self, from: data!)
                 DispatchQueue.main.async {
-                    var cadena = String()
-                    for item in self.usuarios
+                    var indice = 1
+                    for item in self.lista_usuarios
                     {
-                        cade
+                        print(item.nombre)
+                        print(item.token)
+                        
+                        /*self.lista_usuarios.append([item.nombre, item.token])
+                         */
+                        indice = indice + 1
                     }
-                    //aquí va donde llena la lista
+                    Self.lista_mensajes_eniados.reloadData()
                 }
             }catch{print("Error")}
         }.resume()
     
-    }*/
+    }
 
 }
