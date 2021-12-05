@@ -20,6 +20,7 @@ class InitialApplication : Application() {
         //SharedPreferences
         lateinit var preferenciasGlobal: MySharedPreferences
 
+        //Logueo
         lateinit var LoginServiceGlobal : LoginApi
 
     }
@@ -30,6 +31,7 @@ class InitialApplication : Application() {
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
         BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
 
+        //Logueo
         LoginServiceGlobal=ConfigRetrofit().obtenerConfiguracionRetofitLogin()
 
         BroadcastServiceGlobalTasks2=ConfigRetrofit().obtenerConfiguracionRetofitBuzon2()

@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.constraintlayout.motion.widget.TransitionBuilder.validate
 import androidx.core.util.PatternsCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
@@ -29,6 +32,9 @@ class InicioSesionFragment : Fragment() {
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
 
+    //shared
+    //lateinit var navController: NavController
+    //val inicioSesionViewModel: InicioSesionViewModel by viewModels()
 
     companion object {
         fun newInstance() = InicioSesionFragment()
@@ -58,19 +64,19 @@ class InicioSesionFragment : Fragment() {
 
         //PROGRESS
 
-            binding.btnLogin.setOnClickListener {
-                val visibility = if (binding.progressLoading.visibility == View.GONE){
-                    View.VISIBLE
-                }else
-                    View.GONE
-                binding.progressLoading.visibility = visibility
+        binding.btnLogin.setOnClickListener {
+            val visibility = if (binding.progressLoading.visibility == View.GONE) {
+                View.VISIBLE
+            } else
+                View.GONE
+            binding.progressLoading.visibility = visibility
 
             val correo = binding.username.text.toString().trim()
             val password = binding.password.text.toString().trim()
             //validar password con caracteres epeciales
 
 
-            if (correo.isEmpty() ) {
+            if (correo.isEmpty()) {
                 binding.username.error = "Se requiere ingresar un correo valido"
                 binding.username.requestFocus()
                 return@setOnClickListener
@@ -81,19 +87,35 @@ class InicioSesionFragment : Fragment() {
                 binding.password.requestFocus()
                 return@setOnClickListener
             } else {
-                    /*if (correo.isNotEmpty() && password.isNotEmpty()) {
+                /*if (correo.isNotEmpty() && password.isNotEmpty()) {
                     TextUtils.isEmpty(correo) && Patterns.EMAIL_ADDRESS.matcher(correo)
                         .matches() && password!!.length > 6
                     Toast.makeText(activity, "Inicio Exitoso", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
 
                  */
-                    val usuario = Users(correo, password.toInt(), TOKEN_KEY)
-                    viewModel.recuperarLogueo(usuario)
-                    findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
+                val usuario = Users(correo, password.toInt(), TOKEN_KEY)
+                viewModel.recuperarLogueo(usuario)
+                findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
 
-                }
             }
+        }
+
+        //login con shared
+    /*    binding.btnLogin.setOnClickListener {
+            var correo = requireView().findViewById<EditText>(R.id.username).text.toString()
+            var password = requireView().findViewById<EditText>(R.id.password).text.toString()
+        }
+    }
+    if InicioSesionViewModel.InicioSesionFragment(correo, password)
+    {
+        findNavController().navigate(R.id.navigation_home)
+    }
+}
+     */
+
+
+
         }
     }
 

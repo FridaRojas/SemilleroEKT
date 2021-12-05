@@ -14,17 +14,6 @@ interface LoginApi {
    @POST("api/user/validate")
     fun iniciarSesionLogin(@Body usuario:Users) : Call<LoginResponse>
 
-    @FormUrlEncoded
-    @POST("api/user/validate")
-    fun userLogin(
-        @Field("id") id:String,
-        @Field("nombre") nombre:String,
-        @Field("nombreRol") nombreRol:String,
-        @Field("token") token:String,
-        @Field("idgrupo") idgrupo:String,
-        @Field("idsuperiorInmediato") idsuperiorInmediato:String
-
-        ) : Call<Data>
 
 
 }
