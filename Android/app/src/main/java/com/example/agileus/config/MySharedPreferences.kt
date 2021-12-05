@@ -13,7 +13,6 @@ class MySharedPreferences(contexto: Context) {
 
     fun recuperarToken() : String{
         return sharedPreferences.getString(TOKEN_KEY, "")!!
-
     }
 
 }

@@ -134,19 +134,19 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             }
 
             btnAdjuntarArchivoF.setOnClickListener {
-                if (binding.btnAdjuntarArchivoF.text.equals("Adjuntar Archivo PDF")) {
-                    val intentPdf = Intent()
-                    intentPdf.setAction(Intent.ACTION_GET_CONTENT)
-                    intentPdf.type =
-                        "application/pdf"                     // Filtra para archivos pdf
-                    resultLauncherArchivo.launch(intentPdf)
-                } else if (binding.btnAdjuntarArchivoF.text.equals("Descargar Archivo PDF")) {
-                    var mDownloadProvider = DownloadProvider()
-                    mDownloadProvider.dowloadFile(
-                        (activity as HomeActivity).applicationContext,
-                        args.tareas.archivo, "archivo"
-                    )
-                }
+                val intentPdf = Intent()
+                intentPdf.setAction(Intent.ACTION_GET_CONTENT)
+                intentPdf.type =
+                    "application/pdf"                     // Filtra para archivos pdf
+                resultLauncherArchivo.launch(intentPdf)
+            }
+
+            btnDescargarArchivoFF.setOnClickListener {
+                var mDownloadProvider = DownloadProvider()
+                mDownloadProvider.dowloadFile(
+                    (activity as HomeActivity).applicationContext,
+                    args.tareas.archivo, "archivo"
+                )
             }
 
             btnObservacionF.setOnClickListener {
@@ -207,8 +207,8 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     private fun setInfo(args: DetalleNivelAltoFragmentArgs) {
-        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
-        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
 
         Log.d("Mensaje", args.tareas.archivo)
 
@@ -226,18 +226,17 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         cal.time = fechaI
 
-        if (cal[Calendar.MONTH] <= 9) {
-            mesI = "0${cal[Calendar.MONTH] + 1}"
+        cal[Calendar.MONTH] + 1
+//        cal[Calendar.DATE] + 1
+        if (cal[Calendar.MONTH] < 10) {
+            mesI = "0${cal[Calendar.MONTH]}"
         } else {
-            cal[Calendar.MONTH] + 1
             mesI = cal[Calendar.MONTH].toString()
         }
 
-
-        if (cal[Calendar.DATE] <= 9) {
-            diaI = "0${cal[Calendar.DATE] + 1}"
+        if (cal[Calendar.DATE] < 10) {
+            diaI = "0${cal[Calendar.DATE]}"
         } else {
-            cal[Calendar.DATE] + 1
             diaI = cal[Calendar.DATE].toString()
         }
 
@@ -247,24 +246,23 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 ///////////////////////////////////////////////////////////////777
         cal.time = fechaF
 
-        if (cal[Calendar.MONTH] <= 9) {
-            mesF = "0${cal[Calendar.MONTH] + 1}"
+        cal[Calendar.MONTH] + 1
+//        cal[Calendar.DATE] + 1
+        if (cal[Calendar.MONTH] < 10) {
+            mesF = "0${cal[Calendar.MONTH]}"
         } else {
-            cal[Calendar.MONTH] + 1
             mesF = cal[Calendar.MONTH].toString()
         }
 
-        if (cal[Calendar.DATE] <= 9) {
-            diaF = "0${cal[Calendar.DATE] + 1}"
+        if (cal[Calendar.DATE] < 10) {
+            diaF = "0${cal[Calendar.DATE]}"
         } else {
-            cal[Calendar.DATE] + 1
             diaF = cal[Calendar.DATE].toString()
         }
 
         fechaFi =
             cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
         Log.d("Mensaje", "fecha nueva $fechaFi")
-
 
 
         var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
@@ -287,9 +285,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         }
 
         if (!args.tareas.archivo.isNullOrEmpty()) {
-            binding.btnAdjuntarArchivoF.isVisible = true
+            binding.btnDescargarArchivoFF.isVisible = true
         } else {
-            binding.btnAdjuntarArchivoF.isVisible = false
+            binding.btnDescargarArchivoFF.isVisible = false
             args.tareas.archivo = ""
         }
 
@@ -308,15 +306,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private fun desactivarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
             Log.d("Mensaje", args.tareas.archivo)
-            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
             if (!args.tareas.archivo.isNullOrEmpty()) {
-                binding.btnAdjuntarArchivoF.setText("Descargar archivo PDF")
-                binding.btnAdjuntarArchivoF.isVisible = true
+                binding.btnDescargarArchivoFF.isVisible = true
             }
             txtDescripcionD.isEnabled = false
             txtDescripcionD.isEnabled = false
             txtFechaInicioD.isEnabled = false
-            btnAdjuntarArchivoF.isEnabled = false
+            btnAdjuntarArchivoF.isVisible = false
             txtFechaFinD.isEnabled = false
             txtObservacionesD.isEnabled = false
             btnEditarTareaF.isVisible = true
@@ -330,12 +327,12 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private fun activarCampos() {
         with(binding) {
             //  binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo PDF")
-            btnAdjuntarArchivoF.isVisible = false
 
+            btnAdjuntarArchivoF.isVisible = true
+            btnDescargarArchivoFF.isVisible = false
             txtDescripcionD.isEnabled = true
             txtDescripcionD.isEnabled = true
             txtFechaInicioD.isEnabled = true
-            btnAdjuntarArchivoF.isEnabled = true
             txtFechaFinD.isEnabled = true
             txtObservacionesD.isEnabled = true
             btnEditarTareaF.isVisible = false

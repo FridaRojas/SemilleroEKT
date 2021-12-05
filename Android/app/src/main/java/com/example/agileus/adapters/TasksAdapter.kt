@@ -68,7 +68,6 @@ class TasksAdapter(
         }
 
 
-
         fun enlazarItem(dataTask: DataTask) {
             nombreTarea.text = dataTask.titulo
             personaAsignada.text = dataTask.nombreReceptor
@@ -93,7 +92,8 @@ class TasksAdapter(
             }
         }
 
-        fun formatoFecha(fecha: Date) : String{
+        fun formatoFecha(fecha: Date): String {
+
             var mesI: String = ""
             var diaI: String = ""
             var fechaIn: String = ""
@@ -104,23 +104,23 @@ class TasksAdapter(
 
             cal.time = fechaI
 
-
-            if (cal[Calendar.MONTH] <= 9) {
-                mesI = "0${cal[Calendar.MONTH] + 1}"
+            cal[Calendar.MONTH] + 1
+//        cal[Calendar.DATE] + 1
+            if (cal[Calendar.MONTH] < 10) {
+                mesI = "0${cal[Calendar.MONTH]}"
             } else {
-                cal[Calendar.MONTH] + 1
                 mesI = cal[Calendar.MONTH].toString()
             }
 
-
-            if (cal[Calendar.DATE] <= 9) {
-                diaI = "0${cal[Calendar.DATE] + 1}"
+            if (cal[Calendar.DATE] < 10) {
+                diaI = "0${cal[Calendar.DATE]}"
             } else {
-                cal[Calendar.DATE] + 1
                 diaI = cal[Calendar.DATE].toString()
             }
 
-            fechaIn = cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
+            fechaIn =
+                cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
+
             return fechaIn
         }
     }

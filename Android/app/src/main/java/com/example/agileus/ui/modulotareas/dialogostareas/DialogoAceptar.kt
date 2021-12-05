@@ -41,13 +41,11 @@ class DialogoAceptar(var args: DetalleNivelAltoFragmentArgs) :
             builder.setMessage("Desea eliminar tarea ${args.tareas.titulo}?")
                 .setPositiveButton(R.string.respAceptar,
                     DialogInterface.OnClickListener { dialog, id ->
-                        // FIRE ZE MISSILES!
                         detalleNivelAltoViewModel.cancelarTarea(args)
 
                     })
                 .setNegativeButton(R.string.respCancelar,
                     DialogInterface.OnClickListener { dialog, id ->
-                        // User cancelled the dialog
                     })
             // Create the AlertDialog object and return it
             builder.create()
