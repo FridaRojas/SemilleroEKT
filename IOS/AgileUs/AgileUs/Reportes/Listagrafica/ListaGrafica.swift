@@ -45,7 +45,7 @@ class ListaGrafica: UITableViewCell {
     func configurar_etiquetas(tipo: String) {
         if (tipo == "pieM") {
             txtTitulo.text = "Enviados"
-            //lblRecibidos.text = "Recibidos"
+            lblRecibidos.text = "Recibidos"
             lblTiempo.isHidden = true
         } else if (tipo == "barM") {
             txtTitulo.isHidden = true
@@ -61,7 +61,6 @@ class ListaGrafica: UITableViewCell {
             txtTitulo.isHidden = true
             lblCantEnviados.isHidden = true
             lblRecibidos.isHidden = true
-            //lblCantRecibidos.text = taskTimeEnd
         }
     }
     
