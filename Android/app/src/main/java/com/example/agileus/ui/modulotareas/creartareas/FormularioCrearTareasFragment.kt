@@ -1,5 +1,6 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -40,14 +41,14 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var conversationviewModel  : ConversationViewModel
-    lateinit var asignarTareaViewModel  : CrearTareasViewModel
-    /*  *** Fb Storage ***  */
+    lateinit var conversationviewModel  : ConversationViewModel         // ViewModel
+    lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
+    /*  *** Firebase Storage ***  */
     lateinit var firebaseProvider       : FirebaseProvider
     lateinit var mStorageInstance       : FirebaseStorage
     lateinit var mStorageReference      : StorageReference
     lateinit var resultLauncherArchivo  : ActivityResultLauncher<Intent>
-    /*  *** Fb Storage ***  */
+    /*  *** Firebase Storage ***  */
 
     lateinit var listaPersonas              : ArrayList<DataPersons>
     lateinit var personasAsignadasAdapter   : ArrayAdapter<String>
@@ -61,7 +62,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
-    var uriPost             : String = ""
+    var urlPost             : String = ""
     var anioInicio          : Int? = null
     var anioFin             : Int? = null
     var mesInicio           : Int? = null
@@ -79,16 +80,16 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
         return root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listaPrioridades = resources.getStringArray(R.array.prioridad_array)    // spiner lista de prioridades archivo strings.xml
-        asignarTareaViewModel = ViewModelProvider(this).get()
-        conversationviewModel = ViewModelProvider(this).get()
+        listaPrioridades = resources.getStringArray(R.array.prioridad_array)          // spiner lista de prioridades archivo strings.xml
+        asignarTareaViewModel = ViewModelProvider(this).get()                   // ViewModel
+        conversationviewModel = ViewModelProvider(this).get()                   // ViewModel
         firebaseProvider  = FirebaseProvider()
-        mStorageInstance = FirebaseStorage.getInstance()                           /*  *** Instancias Fb Storage ***  */
-        mStorageReference = mStorageInstance.getReference("Documentos")     /*  *** Instancias Fb Storage ***  */
-
+        mStorageInstance = FirebaseStorage.getInstance()                              /*  *** Instancias Firebase Storage ***  */
+        mStorageReference = mStorageInstance.getReference("Documentos")        /*  *** Instancias Firebase Storage ***  */
 
         setUpUiAsignarTareas() /*  *** spiners ***  */
 
@@ -101,9 +102,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
                         var returnUri = data?.data!!
                         val uriString = data.toString()
                         val myFile = File(uriString).name
+                        //val myFile2 = data.data!!.lastPathSegment
                         //val myFile = getRealPathFromURI(requireContext(), returnUri)
-                        binding.btnAdjuntarArchivo.text= "Archivo seleccionado"
-                        Log.d("mensaje","PDF: $myFile")
+                        binding.btnAdjuntarArchivo.text= "Archivo seleccionado: ${data.data!!.lastPathSegment} "
+                        Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
                         e.printStackTrace()
@@ -115,7 +117,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
             }
         }
         firebaseProvider.obs.observe(viewLifecycleOwner,{
-            uriPost = it
+            urlPost = it
         })
 
         /* Boton Crear tarea  */
@@ -226,7 +228,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
             descripcion.toString(),             // Descripcion
             prioridadAsignada,                  // Prioridad
             "pendiente",
-            uriPost                            // Url de archivo pdf subido a firebase
+            urlPost                            // Url de archivo pdf subido a firebase
         )
 
         /*Toast.makeText(activity as HomeActivity,
