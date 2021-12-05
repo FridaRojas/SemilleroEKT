@@ -29,7 +29,8 @@ class InicioSesionFragment : Fragment() {
     private lateinit var viewModel: InicioSesionViewModel
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
@@ -37,27 +38,50 @@ class InicioSesionFragment : Fragment() {
 
         _binding = InicioSesionFragmentBinding.inflate(inflater, container, false)
 
-        val view:View = binding.root
-
-        //AGREGADA
-        //val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-        //navBar.isVisible = false
-
+        val view: View = binding.root
         return view
-
 
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
+        //AGREGADA
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navBar.isVisible = false
 
         binding.btnLogin.setOnClickListener {
-            goToLogin()
+            val correo = binding.username.text.toString()
+            val password = binding.password.text.toString()
+
+            //val usuario = Users(correo, password.toInt(), TOKEN_KEY)
+            //viewModel.recuperarLogueo(usuario)
+
+            val visibility = if (binding.progressLoading.visibility == View.GONE) {
+                View.VISIBLE
+            } else
+                View.GONE
+            binding.progressLoading.visibility = visibility
+
+
+            if (correo.isEmpty()) {
+                binding.username.error = "Se requiere ingresar un correo valido"
+                binding.username.requestFocus()
+                return@setOnClickListener
+
+            }
+            if (password.isEmpty()) {
+                binding.password.error = "Se requiere ingresar una contraseña valida"
+                binding.password.requestFocus()
+                return@setOnClickListener
+            } else {
+                Toast.makeText(activity, "Exitoso", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
+
+            }
         }
 
-
-        viewModel.inicioExitoso.observe(viewLifecycleOwner, Observer{
+    /*    viewModel.inicioExitoso.observe(viewLifecycleOwner, Observer {
             if (it) {
 
                 Toast.makeText(activity, "Exitoso", Toast.LENGTH_SHORT).show()
@@ -67,17 +91,8 @@ class InicioSesionFragment : Fragment() {
                 Toast.makeText(activity, "Fallido", Toast.LENGTH_SHORT).show()
             }
         })
+     */
 
     }
-
-
-    private fun goToLogin() {
-        val correo = binding.username.text.toString()
-        val password = binding.password.text.toString()
-
-        val usuario= Users(correo,password.toInt(), TOKEN_KEY)
-        viewModel.recuperarLogueo(usuario)
-
-    }
-
 }
+
