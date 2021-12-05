@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,7 @@ class TasksAdapter(
 
         private lateinit var taskViewModel: TaskViewModel
 
+        var cardTarea: ConstraintLayout
         var nombreTarea: TextView
         var personaAsignada: TextView
         var fecha: TextView
@@ -62,6 +64,7 @@ class TasksAdapter(
             prioridad = view.findViewById(R.id.txtPrioridad)
             fecha = view.findViewById(R.id.txtFecha)
             btnAbrirDetallesTarea = view.findViewById(R.id.iconoAbrirDetallesTarea)
+            cardTarea = view.findViewById(R.id.cardTarea)
         }
 
 
@@ -76,7 +79,7 @@ class TasksAdapter(
 
 
             //Log.d("status", status)
-            btnAbrirDetallesTarea.setOnClickListener {
+            cardTarea.setOnClickListener {
                 if (status == "asignada") {
                     var action: NavDirections
                     action =

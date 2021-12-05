@@ -39,6 +39,11 @@ class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDi
 
             statusTextView.setOnClickListener {
                 listener.getTaskByStatus(datos)
+/*
+                if(datos == "pendiente"){
+                    statusTextView.setTextColor(Color.WHITE)
+                    statusTextView.setTextColor()
+                }*/
                  //statusTextView.setTextColor(Color.parseColor("#66BB6A"))
             }
 
