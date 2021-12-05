@@ -12,21 +12,26 @@ extension UITextField {
     
     func initStyle(placeholder: String, imageName: String = ""){
         
-        self.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 137/255, green: 139/255, blue: 140/255, alpha: 1)])
- 
+        self.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 107/255, green: 107/255, blue: 107/255, alpha: 1)])
+        self.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
         self.backgroundColor = UIColor.white
-
-        self.layer.cornerRadius = 12.0
-        self.layer.borderColor = CGColor(red: 255, green: 255, blue: 255, alpha: 0)
-        self.layer.borderWidth = 1.0
+       
+        // Border
+        self.borderStyle = .none
+        self.layer.cornerRadius = 5.0
+        self.layer.borderColor = CGColor(red: 107/255, green: 107/255, blue: 107/255, alpha: 1)
+        self.layer.borderWidth = 0.5
         self.clipsToBounds = true
+        self.textAlignment = .left
         
-        
+        /*
+        // Sombra
         self.layer.masksToBounds = false
         self.layer.shadowRadius = 1.0
         self.layer.shadowColor = UIColor.gray.cgColor
         self.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         self.layer.shadowOpacity = 0.2
+         */
         
         if imageName != "" {
             self.setIcon(image: UIImage(named: imageName)!)

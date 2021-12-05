@@ -18,8 +18,8 @@ extension AsignarTareaViewController
             datePicker.preferredDatePickerStyle = .wheels
             datePicker.locale = loc
             datePicker.minimumDate = Date()
-            dateStartField.textAlignment = .center
-            dateEndField.textAlignment = .center
+            dateStartField.textAlignment = .left
+            dateEndField.textAlignment = .left
             let toolBar = UIToolbar()
             toolBar.sizeToFit()
             
@@ -72,8 +72,8 @@ extension EditarTareaViewController
             datePicker.preferredDatePickerStyle = .wheels
             datePicker.locale = loc
             datePicker.minimumDate = Date()
-            dateStartField.textAlignment = .center
-            dateEndField.textAlignment = .center
+            dateStartField.textAlignment = .left
+            dateEndField.textAlignment = .left
             let toolBar = UIToolbar()
             toolBar.sizeToFit()
             

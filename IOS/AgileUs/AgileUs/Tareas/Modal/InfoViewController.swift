@@ -46,8 +46,10 @@ class InfoViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         MostrarTareaModal(idtask: id_tarea!)
-        Fecha_inicio.initStyleEdit(fontSize: 12, fontWeight: .light, colorText: .darkGray, imageName: "calendarIcon", selected: false)
-        Fecha_fin.initStyleEdit(fontSize: 12, fontWeight: .light, colorText: .darkGray, imageName: "calendarIcon", selected: false)
+        
+        Titulo.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
+        Fecha_inicio.initStyleEdit(fontSize: 15.0, fontWeight: .regular, colorText: .lightGray, imageName: "calendarIcon", selected: false)
+        Fecha_fin.initStyleEdit(fontSize: 15.0, fontWeight: .regular, colorText: .lightGray, imageName: "calendarIcon", selected: false)
 
 
     }
@@ -98,7 +100,7 @@ class InfoViewController: UIViewController {
                 }
                 self.Descripcion.text = "Descripcion: \(tarea.descripcion!)"
                 self.Fecha_inicio.text = "Inicio: \(HelpString.formatDate(date: tarea.fecha_ini!))"
-                self.Fecha_fin.text = "Fin:\(HelpString.formatDate(date: tarea.fecha_fin!))"
+                self.Fecha_fin.text = "Fin: \(HelpString.formatDate(date: tarea.fecha_fin!))"
                 if (tarea.observaciones == nil || tarea.observaciones == "")
                 {
                     self.Observacion.text = "Sin observaciones"

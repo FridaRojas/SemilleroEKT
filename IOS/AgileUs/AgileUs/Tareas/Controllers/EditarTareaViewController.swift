@@ -154,18 +154,18 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     }
     func inputStyleConfig(isEdit: Bool) {
         
-        nameTaskField.initStyleEdit(fontSize: 20, fontWeight: .bold, selected: isEdit)
-        priortyField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: isEdit)
-        statusField.initStyleEdit(fontWeight: .light, colorText: .darkGray, selected: isEdit)
-        descriptionText.initStyleEdit(fontSize: 15, fontWeight: .light, colorText: .black, selected: isEdit)
-        dateStartField.initStyleEdit(fontSize: 12, fontWeight: .light, colorText: .darkGray, imageName: "calendarIcon", selected: isEdit)
-        dateEndField.initStyleEdit(fontSize: 12, fontWeight: .light, colorText: .darkGray, imageName: "calendarIcon", selected: isEdit)
+        nameTaskField.initStyleEdit(fontSize: 20, fontWeight: .bold, colorText: UIColor(red: 123/255, green: 185/255, blue: 114/255, alpha: 1), selected: isEdit)
+        priortyField.initStyleEdit(fontSize: 16.0,fontWeight: .regular, colorText: .lightGray, selected: isEdit)
+        statusField.initStyleEdit(fontSize: 16.0, fontWeight: .regular, colorText: .lightGray, selected: isEdit)
+        descriptionText.initStyleEdit(fontSize: 15.0, fontWeight: .light, colorText: .black, selected: isEdit)
+        dateStartField.initStyleEdit(fontSize: 16.0, fontWeight: .regular, colorText: .lightGray, imageName: "calendarIcon", selected: isEdit)
+        dateEndField.initStyleEdit(fontSize: 16.0, fontWeight: .regular, colorText: .lightGray, imageName: "calendarIcon", selected: isEdit)
  
         
-        updateTaskBtn.initStyle(text: "Editar")
-        cancelTaskBtn.initStyle(text: "Cancelar")
+        updateTaskBtn.initStyle(text: "Editar Tarea")
+        cancelTaskBtn.initStyle(text: "Cancelar Tarea")
         
-        addObservationsBtn.initStyle(text: "Observaciones")
+        addObservationsBtn.initStyle(text: "Agregar Observaciones")
         addObservationsBtn.titleLabel?.numberOfLines = 2; // Dynamic number of lines
         addObservationsBtn.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping;
     }

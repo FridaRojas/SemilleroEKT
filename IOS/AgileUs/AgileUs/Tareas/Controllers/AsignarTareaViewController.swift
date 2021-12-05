@@ -44,7 +44,6 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
         Configurar_Picker_PersonasAsignadas()
         Configurar_Picker_Prioridades()
         MostarPersonasAsig()
-        nameTaskField.textAlignment = .center
         //fileField.textAlignment = .center
 
 
@@ -67,7 +66,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
         dateEndField.initStyle(placeholder: "Fecha Fin", imageName: "calendarIcon")
         fileField.styleTypeInput(title: "Archivo Adjunto")
         descriptionText.initStyle(placeholder: "Descripcion")
-        addTaskBtn.initStyle(text: "Asignar Tarea")
+        addTaskBtn.initStyle(text: "Crear Tarea")
     }
 
     @IBAction func addTask(_ sender: Any) {

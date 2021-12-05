@@ -55,7 +55,7 @@ extension AsignarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegat
     
     func Configurar_Picker_PersonasAsignadas()
     {
-        personSelectField.textAlignment = .center
+        personSelectField.textAlignment = .left
         selector_Persona.delegate = self
         selector_Persona.dataSource = self
         let barra_de_herramientaas = UIToolbar()
@@ -69,7 +69,7 @@ extension AsignarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegat
     }
     func Configurar_Picker_Prioridades()
     {
-        priortyField.textAlignment = .center
+        priortyField.textAlignment = .left
         selector_Prioridad.delegate = self
         selector_Prioridad.dataSource = self
         let barra_de_herramientaas = UIToolbar()
@@ -164,7 +164,7 @@ extension EditarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegate
     
     func Configurar_Picker_Prioridades()
     {
-        //priortyField.textAlignment = .center
+        //priortyField.textAlignment = .left
         selector_Prioridad.delegate = self
         selector_Prioridad.dataSource = self
         let barra_de_herramientaas = UIToolbar()
@@ -195,7 +195,7 @@ extension EditarTareaViewController: UIPickerViewDataSource,UIPickerViewDelegate
     }
     func Configurar_Picker_Estatus()
     {
-        //statusField.textAlignment = .center
+        //statusField.textAlignment = .left
         selector_Estatus.delegate = self
         selector_Estatus.dataSource = self
         let barra_de_herramientaas = UIToolbar()
