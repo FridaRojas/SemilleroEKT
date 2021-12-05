@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
+import com.example.agileus.models.DataTask
 import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.providers.FirebaseProvider
@@ -170,14 +171,21 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                 var estatus: String
                 var observaciones: String
 
-
                 titulo = txtNombreTareaD.text.toString()
                 descripcion = txtDescripcionD.text.toString()
                 fecha_ini = txtFechaFinD.text.toString()
                 fecha_fin = txtFechaInicioD.text.toString()
                 prioridad = txtPrioridadD.text.toString()
-                estatus = txtEstatusD.text.toString()
+                //estatus = txtEstatusD.text.toString()
                 observaciones = obs
+
+
+                if(observaciones.isNullOrEmpty()){
+                    estatus = "terminado"
+                }else{
+                    estatus = "pendiente"
+                }
+
 
                 var update = TaskUpdate(
                     titulo,
@@ -190,6 +198,58 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                 )
 
                 detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
+
+                if(update.observaciones.isNullOrEmpty()){
+                    val updateEstatus = DataTask(   // recuperar dataTask.idTarea y dataTask.estatus
+                        args.tareas.idTarea,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        fechaInicio,
+                        fechaFin,
+                        fechaInicio,
+                        fechaFin,
+                        titulo,
+                        descripcion,
+                        "terminado",
+                        true,
+                        fechaInicio,
+                        prioridad,
+                        "",
+                        observaciones,
+                        "",
+                        "",
+                    )
+                    detalleNivelAltoViewModel.actualizarEstatus(updateEstatus)
+
+                }else{
+                    val updateEstatus = DataTask(   // recuperar dataTask.idTarea y dataTask.estatus
+                        args.tareas.idTarea,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        fechaInicio,
+                        fechaFin,
+                        fechaInicio,
+                        fechaFin,
+                        titulo,
+                        descripcion,
+                        "pendiente",
+                        true,
+                        fechaInicio,
+                        prioridad,
+                        "",
+                        observaciones,
+                        "",
+                        "",
+                    )
+                    detalleNivelAltoViewModel.actualizarEstatus(updateEstatus)
+                }
+
             }
 
         }
