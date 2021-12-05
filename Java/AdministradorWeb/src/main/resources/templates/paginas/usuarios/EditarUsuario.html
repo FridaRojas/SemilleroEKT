@@ -84,7 +84,7 @@
     </td>
 
     <td class="resto" >
-        <div  class="alert alert-danger" th:if="${mensaje != null}" th:text="${mensaje}"> </div>
+        <div  th:classappend="'alert-' + (${status != null} ? ${status} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert"></div>
         <div class="titulo" align="center" a >
             <h3 >Editar Usuario</h3>
         </div>

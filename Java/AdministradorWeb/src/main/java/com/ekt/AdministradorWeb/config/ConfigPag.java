@@ -115,7 +115,7 @@ public class ConfigPag {
         try {
             //si es true, entra a inicio, si es false regresa a login con un mensaje de error
             if (res){
-                return "redirect:/Inicio";
+                return "redirect:/findAllUsuarios";
             }else{
                 redirectAttrs
                         .addFlashAttribute("mensaje", "Usuario o contrasena incorrectos");
@@ -149,11 +149,14 @@ public class ConfigPag {
         System.out.println(user.getRFC());
         try {
             if(userDAO.creaUsuario(user)){
-                System.out.println("creadoo");
+                redirectAttrs
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Usuario Creado Correctamente");
                 return "redirect:/findAllUsuarios";
             }else {
                 System.out.println("no creado :(");
                 redirectAttrs
+                        .addFlashAttribute("status", "danger")
                         .addFlashAttribute("mensaje", "El usuario ya existe");
                 return "redirect:/findAllUsuarios";
             }
@@ -175,7 +178,8 @@ public class ConfigPag {
                 return "/paginas/usuarios/EditarUsuario";
             }else {
                 redirectAttrs
-                        .addFlashAttribute("mensaje", "El usuario ya existe");
+                        .addFlashAttribute("status", "danger")
+                        .addFlashAttribute("mensaje", "El usuario no existe");
                 return "redirect:/findAllUsuarios";
             }
         }catch (Exception e){
@@ -194,7 +198,6 @@ public class ConfigPag {
         userDb=userDAO.buscaID(id);
         user.setID(id);
         user.setIDGrupo(userDb.getIDGrupo());
-        System.out.println("en edita usuarioservicio:"+user.getIDGrupo());
 
         //editar informacion
         //editar usuario en grupo
@@ -205,12 +208,14 @@ public class ConfigPag {
 
         //si existen retornar error
         if (bandera){
-            System.out.println("se modifico con exito");
+            redirectAttrs
+                    .addFlashAttribute("status", "success")
+                    .addFlashAttribute("mensaje", "Usuario modificado con exito");
             return "redirect:/findAllUsuarios";
         }else{
-            System.out.println("Error al modificar usuario");
             redirectAttrs
-                    .addFlashAttribute("mensaje", "Error al editar usuario, existen datos duplicasdos en la base de datos");
+                    .addFlashAttribute("status", "danger")
+                    .addFlashAttribute("mensaje", "Error al editar usuario, existen datos duplicados en la base de datos");
             return "redirect:/editarUsuario/?id="+user.getID();
         }
     }
@@ -222,9 +227,13 @@ public class ConfigPag {
             boolean res= groupDAO.crearGrupo(gr);
             //si es true regresa, si es false regresa con error de grupo ya existente
             if (res){
+                redirectAttrs
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Grupo creado correctamente");
                 return "redirect:/buscarTodosGrupos";
             }else{
                 redirectAttrs
+                        .addFlashAttribute("status", "danger")
                         .addFlashAttribute("mensaje", "Grupo ya existente");
                 return "redirect:/buscarTodosGrupos";
             }
@@ -236,11 +245,12 @@ public class ConfigPag {
     }
 
     @PostMapping("/reasignaSuperior")
-    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen, Model modelMap){
+    public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen, Model modelMap,RedirectAttributes redirectAttrs){
         System.out.println("origen: "+origen);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
         if(listaSubordinados != null) {
+            //si tiene suboordinados, redirecciona a vista de reasignar superior
             ArrayList<User> listaUsuarios = new ArrayList<>();
             User[] usuarios;
             usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
@@ -255,11 +265,15 @@ public class ConfigPag {
             //Si el origen proviene de vistaUsuarios cambiar el status a false
             return "paginas/usuarios/ReasignaSuperior";
         }else{
+            //si no tiene suboordinados, elimina y redirecciona a editarGrupo
             System.out.println("Entra a desactivar");
             if(origen.equals("0")){
                 userDAO.desactivarUsuario(idUsuario);
             }
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
+            redirectAttrs
+                    .addFlashAttribute("status", "success")
+                    .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
             return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
     }
@@ -308,7 +322,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/ActualizaElimina")
-    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap, Model model){
+    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap, Model model,RedirectAttributes redirectAttrs){
         userDAO.actualizaIdSuperior(idUser,idBoss);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
@@ -329,6 +343,9 @@ public class ConfigPag {
             //Si el origen proviene de vistaUsuarios cambiar el status a false
             userDAO.desactivarUsuario(idUsuario);
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
+            redirectAttrs
+                    .addFlashAttribute("status", "success")
+                    .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
             return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
         }
     }
@@ -371,11 +388,6 @@ public class ConfigPag {
         return "paginas/error.html";
     }
 
-    @GetMapping("/Inicio")
-    public String Inicio(){
-        return "paginas/Inicio";
-    }
-
     @PostMapping("/agregarUsuarioAGrupo")
     public String agregarUsuarioAGrupo(@ModelAttribute BodyAddUserGroup bodyAdd, RedirectAttributes redirectAttrs) {
         try{
@@ -400,7 +412,8 @@ public class ConfigPag {
                 return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
             }else{
                 redirectAttrs
-                        .addFlashAttribute("mensaje", jsonObject.get("msj").toString());
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Usuario agregado correctamente");
                 return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
             }
         }catch (Exception e){
@@ -417,10 +430,14 @@ public class ConfigPag {
         try {
             respuesta=groupDAO.reasignausuariogrupo(body);
             if(respuesta.equals("OK")){
+                redirectAttrs
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Usuario editado correctamente");
                 return "redirect:/editarGrupo/?idGrupo=" + body.getIdGrupo();
             }else{
                 redirectAttrs
-                        .addFlashAttribute("mensaje", respuesta);
+                        .addFlashAttribute("status", "danger")
+                        .addFlashAttribute("mensaje", "Hubo un problema al editar al usuario");
                 return "redirect:/editarGrupo/?idGrupo=" + body.getIdGrupo();
             }
         }catch (Exception e){
@@ -431,7 +448,6 @@ public class ConfigPag {
 
         }
     }
-
 
     @PostMapping("/verUsuario")
     public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs){
