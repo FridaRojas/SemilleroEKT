@@ -25,7 +25,6 @@ import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
 
 
 class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {

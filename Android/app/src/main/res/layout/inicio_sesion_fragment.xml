@@ -58,6 +58,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:padding="@dimen/margin_top_general"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null"
             app:startIconDrawable="@drawable/vector_icon"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

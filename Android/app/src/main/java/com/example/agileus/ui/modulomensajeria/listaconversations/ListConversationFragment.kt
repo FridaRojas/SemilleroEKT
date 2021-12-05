@@ -58,6 +58,9 @@ class ListConversationFragment : Fragment() {
             binding.recyclerListChats.layoutManager = LinearLayoutManager(activity)
         })
 
+        binding.cerrarSesion.setOnClickListener {
+            findNavController().navigate(R.id.inicioSesionFragment)
+        }
 
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)

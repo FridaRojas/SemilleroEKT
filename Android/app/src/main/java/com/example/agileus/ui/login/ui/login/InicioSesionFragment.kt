@@ -22,6 +22,7 @@ class InicioSesionFragment : Fragment() {
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
 
+
     companion object {
         fun newInstance() = InicioSesionFragment()
     }
@@ -78,21 +79,30 @@ class InicioSesionFragment : Fragment() {
                 Toast.makeText(activity, "Exitoso", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
 
+
+                viewModel.inicioExitoso.observe(viewLifecycleOwner, Observer {
+                    if (it) {
+
+                        Toast.makeText(activity, "Exitoso", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
+                    } else {
+
+                        Toast.makeText(activity, "Fallido", Toast.LENGTH_SHORT).show()
+                    }
+                })
+
             }
-        }
 
-    /*    viewModel.inicioExitoso.observe(viewLifecycleOwner, Observer {
-            if (it) {
 
-                Toast.makeText(activity, "Exitoso", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
-            } else {
+            /*private fun goToLogin() {
+        val correo = binding.username.text.toString()
+        val password = binding.password.text.toString()
 
-                Toast.makeText(activity, "Fallido", Toast.LENGTH_SHORT).show()
-            }
-        })
-     */
+        val usuario= Users(correo,password.toInt(), TOKEN_KEY)
+        viewModel.recuperarLogueo(usuario)
 
     }
+*/
+        }
+    }
 }
-
