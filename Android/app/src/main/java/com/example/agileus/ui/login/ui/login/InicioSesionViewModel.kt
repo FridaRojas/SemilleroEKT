@@ -1,6 +1,7 @@
 package com.example.agileus.ui.login.ui.login
 
 import android.util.Log
+import android.widget.ProgressBar
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import com.example.agileus.ui.login.data.dao.LoginDao
 import com.example.agileus.ui.login.data.model.LoginResponse
 import com.example.agileus.ui.login.data.model.Users
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -18,6 +20,7 @@ class InicioSesionViewModel : ViewModel() {
     init {
         list = LoginDao()
     }
+
 
     fun recuperarLogueo(users: Users): List<LoginResponse>{
         //Log.i("mensaje", "ver")

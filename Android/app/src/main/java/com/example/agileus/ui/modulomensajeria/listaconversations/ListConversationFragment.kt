@@ -37,8 +37,8 @@ class ListConversationFragment : Fragment() {
         val root: View = binding.root
 
         //AGREGADA
-        //val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-        //navBar.isVisible = true
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navBar.isVisible = true
 
         return root
     }
