@@ -1,62 +1,55 @@
 package com.example.agileus.config
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.agileus.ui.login.data.model.Data
 
 class MySharedPreferences(contexto: Context) {
 
-    companion object{
+    companion object {
         val TOKEN_KEY = "TOKEN_KEY"
         val SESSION_TOKEN = "TOKEN"
 
         //
-        val id = "id"
-        val correo = "correo"
-        val password = "password"
-        val nombre = "nombre"
-        val nombreRol = "nombreRol"
-        val token = "token"
-        val idgrupo = "idgrupo"
-        val idsuperiorInmediato = "idsuperiorInmediato"
+        //val BASE_DATOS_KEY = "BD_PREFERENCIAS_DOS"
+        val CORREO_KEY = "CORREO_KEY"
+        val PASSWORD_KEY = "PASWORD_KEY"
+
 
     }
 
     val sharedPreferences = contexto.getSharedPreferences(SESSION_TOKEN, Context.MODE_PRIVATE)
-
-    //
-    val preferences = contexto.getSharedPreferences(id, Context.MODE_PRIVATE)
+    private lateinit var editor : SharedPreferences.Editor
 
 
-    fun recuperarToken() : String{
+    fun recuperarToken(): String {
         return sharedPreferences.getString(TOKEN_KEY, "")!!
-
     }
 
-    //LOGIN         // id:String, nombre:String , nombreRol:String, token:String, idgrupo:String, idsuperiorInmediato:String
-    fun setUserPass(correo:String, password:String){
-        //preferences.edit().putString("id", id).apply()
-        preferences.edit().putString("correo", correo).apply()
-        preferences.edit().putString("password", password).apply()
-        //preferences.edit().putString("nombre", nombre).apply()
-        //preferences.edit().putString("nombreRol", nombreRol).apply()
-        //preferences.edit().putString("token", token).apply()
-        //preferences.edit().putString("idgrupo", idgrupo).apply()
-        //preferences.edit().putString("idsuperiorIntermedio", idsuperiorInmediato).apply()
+    //LOGIN WITH SHARED
+    fun iniciarSesion(correo:String, password:String, sesion:Boolean){
+        with(sharedPreferences.edit()){
+            putString(CORREO_KEY, correo)
+            putString(PASSWORD_KEY, password)
+            putBoolean(SESSION_TOKEN, sesion)
+            editor.commit()
+        }
     }
-    fun getUserName():String?{
-        return preferences.getString("correo", "4@gmail.com")
+    fun recuperaNombre():String{
+        return sharedPreferences.getString(CORREO_KEY," ")!!
     }
-    fun getPassword(): String?{
-        return preferences.getString("password", "123")
+    fun recuperaPassword():String{
+        return sharedPreferences.getString(PASSWORD_KEY," ")!!
     }
- /*   fun recuperarUser(): String {
-        return sharedPreferences.getString(id, " ")!!
-        return sharedPreferences.getString(nombre, " ")!!
-        return sharedPreferences.getString(nombreRol, " ")!!
-        return sharedPreferences.getString(token, " ")!!
-        return sharedPreferences.getString(idgrupo, " ")!!
-        return sharedPreferences.getString(idsuperiorInmediato, " ")!!
+
+    fun validaSesionIniciada():Boolean{
+        return sharedPreferences.getBoolean(SESSION_TOKEN,false)
     }
-  */
+
+    fun cerrarSesion(){
+        //BORRA TODO LO QUE ESTA GUARDADO
+        sharedPreferences.edit().clear().apply()
+    }
+
 
 }

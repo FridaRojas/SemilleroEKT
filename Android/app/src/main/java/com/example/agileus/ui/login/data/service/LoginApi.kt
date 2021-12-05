@@ -15,6 +15,5 @@ interface LoginApi {
     fun iniciarSesionLogin(@Body usuario:Users) : Call<LoginResponse>
 
 
-
 }
 

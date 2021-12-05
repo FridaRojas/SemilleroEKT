@@ -17,10 +17,13 @@ import androidx.core.util.PatternsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.data.model.Users
 import com.example.agileus.ui.modulomensajeria.listacontactos.ListConversationFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,9 +35,6 @@ class InicioSesionFragment : Fragment() {
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
 
-    //shared
-    //lateinit var navController: NavController
-    //val inicioSesionViewModel: InicioSesionViewModel by viewModels()
 
     companion object {
         fun newInstance() = InicioSesionFragment()
@@ -52,6 +52,9 @@ class InicioSesionFragment : Fragment() {
         _binding = InicioSesionFragmentBinding.inflate(inflater, container, false)
 
         val view: View = binding.root
+
+        //Instanciar shared preferences
+
         return view
     }
 
@@ -62,29 +65,34 @@ class InicioSesionFragment : Fragment() {
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
 
-        //PROGRESS
 
         binding.btnLogin.setOnClickListener {
-            val visibility = if (binding.progressLoading.visibility == View.GONE) {
-                View.VISIBLE
-            } else
-                View.GONE
-            binding.progressLoading.visibility = visibility
 
             val correo = binding.username.text.toString().trim()
             val password = binding.password.text.toString().trim()
-            //validar password con caracteres epeciales
+
+            //progresbar
+            val visibility = if (binding.progressLoading.visibility == View.VISIBLE) {
+                View.VISIBLE
+            } else
+                View.INVISIBLE
+            binding.progressLoading.visibility = visibility
+
+            //SHARED PREFERENCS CONSULTAR
 
 
             if (correo.isEmpty()) {
+                //preferenciasGlobal.iniciarSesion(correo, password, true)
                 binding.username.error = "Se requiere ingresar un correo valido"
                 binding.username.requestFocus()
                 return@setOnClickListener
 
             }
             if (password.isEmpty()) {
+                //preferenciasGlobal.iniciarSesion(password, password, true)
                 binding.password.error = "Se requiere ingresar una contraseña valida"
                 binding.password.requestFocus()
+                //SHARED
                 return@setOnClickListener
             } else {
                 /*if (correo.isNotEmpty() && password.isNotEmpty()) {
@@ -94,12 +102,18 @@ class InicioSesionFragment : Fragment() {
                     findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
 
                  */
-                val usuario = Users(correo, password.toInt(), TOKEN_KEY)
+                val usuario = Users(id, correo, password.toInt(), TOKEN_KEY)
                 viewModel.recuperarLogueo(usuario)
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
-
             }
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+
 
         //login con shared
     /*    binding.btnLogin.setOnClickListener {
@@ -115,9 +129,6 @@ class InicioSesionFragment : Fragment() {
      */
 
 
-
-        }
-    }
 
 
 

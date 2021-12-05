@@ -43,8 +43,10 @@ object Constantes {
     val localTime: String = formatt.format(currentLocalTime)
     val finalDate = "$date$localTime"
 
+    //Login
     val URL_LOGIN = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"
     val URL_Login = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
+
 
 
 }

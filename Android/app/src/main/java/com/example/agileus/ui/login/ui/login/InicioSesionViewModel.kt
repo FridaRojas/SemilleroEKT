@@ -1,9 +1,14 @@
 package com.example.agileus.ui.login.ui.login
 
 
+import android.content.Intent
+import android.view.View
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.data.dao.LoginDao
 import com.example.agileus.ui.login.data.model.LoginResponse
 import com.example.agileus.ui.login.data.model.Users
@@ -17,17 +22,16 @@ class InicioSesionViewModel : ViewModel() {
     var inicioExitoso = MutableLiveData<Boolean>()
 
     //shared
-    private var userList = mutableListOf<Users>()
-    var usuariosShared = MutableLiveData<List<Users>>()
-    private val repository = Repository()
+    //private var userList = mutableListOf<Users>()
+    //var usuariosShared = MutableLiveData<List<Users>>()
+    //private val repository = Repository()
 
 
     init {
         list = LoginDao()
 
         //shared
-       // userList.add(Repository.getUserName(), Repository.getPassword()))
-       // usuariosShared.value = userList
+
 
     }
 
@@ -59,4 +63,6 @@ class InicioSesionViewModel : ViewModel() {
         }
         return emptyList()
     }
+
+
 }

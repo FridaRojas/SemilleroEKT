@@ -4,17 +4,26 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_auth.xml" value="0.17" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_conversation_one_to_one.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_formulario_recupera_pass.xml" value="0.22" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.16" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.12590579710144928" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_password_recup.xml" value="0.14427083333333332" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_user_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/buzon_user_fragment.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/conversation_emisor_item.xml" value="0.1" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/conversation_receptor_item.xml" value="0.1" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/dialog_nivel_bajo.xml" value="0.1" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/dialogo_tarea_creada.xml" value="0.1" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/formu_recupera_pass.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/formulario_recupera_pass.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_buzon.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.14427083333333332" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_detalle_nivel_alto.xml" value="0.1" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_formulario_crear_tareas.xml" value="0.184375" />
-        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.2896341463414634" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_login.xml" value="0.12719298245614036" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_sign_in.xml" value="0.1" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_sign_out.xml" value="0.1703125" />
@@ -23,6 +32,14 @@
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/item_buzon.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/list_contacts_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/list_contacts_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/list_item.xml" value="0.1" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/login_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/mensaje_broadcasting.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/mensaje_broadcasting_user.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/status_task_item.xml" value="0.1" />
+        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/task_item.xml" value="0.22" />
         <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.14427083333333332" />
         <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.12708333333333333" />
         <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_user_fragment.xml" value="0.12708333333333333" />

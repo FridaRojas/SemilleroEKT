@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.view.WindowManager
 import android.widget.ProgressBar
 import com.example.agileus.R
 import com.example.agileus.databinding.ActivityLoginBinding
@@ -18,5 +20,6 @@ class LoginActivity : AppCompatActivity() {
            super.onCreate(savedInstanceState)
            setContentView(R.layout.activity_login)
 
-        }
+    }
+
 }

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
@@ -58,7 +59,9 @@ class ListConversationFragment : Fragment() {
             binding.recyclerListChats.layoutManager = LinearLayoutManager(activity)
         })
 
-
+        binding.cerrarSesion.setOnClickListener {
+            findNavController().navigate(R.id.inicioSesionFragment)
+        }
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
         }
@@ -98,6 +101,7 @@ class ListConversationFragment : Fragment() {
         })
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
