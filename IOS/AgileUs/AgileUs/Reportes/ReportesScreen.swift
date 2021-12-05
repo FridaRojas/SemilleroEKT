@@ -54,7 +54,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //arreglo de cantidad de tareas
     var arrTareas:[Any]?
     var arrCantidadDeTareas = [Int]()
-    var arrTareasTerminadas = [Int]()
     
     // adaptadores
     let adaptadorModal = Adaptador_Modals()
@@ -86,7 +85,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     // Funcion para ejecutar servicios
     func ejecucionServicios(){
         serviciosMensajes(idUsuario: userID)
-        serviciosTareas()
+        serviciosTareas(idUsuario: userID)
         serviciosUsuarios()
         serviciosBroadcast(idUsuario: userID)
     }
@@ -102,14 +101,14 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func serviciosTareas(){
-        let _ = adaptadorServicios.servicioWebTareasAdapter{
+    func serviciosTareas(idUsuario: String){
+        let _ = adaptadorServicios.servicioWebTareasAdapter(idUsuario: idUsuario){
             [self] (Datos) -> Void in
             
             arrTareas = Datos
 
             //Cantidad de tareas
-            arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: "ReceptorAlexis")
+            arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: idUsuario)
         }
     }
     
@@ -146,7 +145,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         adaptadorServicios.servicioWebTareasAdapter(idUsuario: filtros[2]){
             [self] (Datos) -> Void in
             arrTareas = Datos
-            arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: filtros[2], fechaInicio: filtros[0], fechaFin: filtros[1])
+            arrCantidadDeTareas = cantidadDeTareasPorFecha(tareas: arrTareas! as! [Tareas], idUsuario: filtros[2], fechaInicio: filtros[0], fechaFin: filtros[1])
             llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
         }
     }
@@ -218,7 +217,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         //Definir primeros datos de los elementos de la lista
         arrDatosLista = [["ic_PieChart", 0, 0, "pieM"], ["ic_Bar", 0, 0, "barM"]]
         arrCantidadDeTareas = [0,0,0,0,0,0]
-        arrTareasTerminadas = [0,0]
         
         //datos = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
         cantidad_mensajes = [0,0,0]

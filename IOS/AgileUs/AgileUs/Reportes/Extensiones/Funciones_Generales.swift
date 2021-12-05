@@ -264,7 +264,7 @@ extension UIViewController {
         
         
     //ESTADISTICAS DE FECHAS PERSONALIZADAS, O ESTADISTICAS DE FECHAS POR DEFECTO
-    func cantidadDeTareas(tareas:[Tareas], idUsuario:String, fechaInicio:String?, fechaFin:String? ) -> [Int]{
+    func cantidadDeTareasPorFecha(tareas:[Tareas], idUsuario:String, fechaInicio:String, fechaFin:String ) -> [Int]{
         
         var pendientes = 0
         var terminadas = 0
@@ -279,49 +279,57 @@ extension UIViewController {
         var sinLeer = 0
         
         var arrTareas = [Int]()
-
-        //Rango de fechas personalizadas
-        let fechaI = Date().convertir_string_a_fecha(fecha: String((fechaInicio!).prefix(10)))
-        let fechaF = Date().convertir_string_a_fecha(fecha: String((fechaFin!).prefix(10)))
-        
-        
+                
         //Recorrer el arreglo de Fechas
         for i in tareas{
             
+            print("ID Usuario: \(idUsuario)")
+            print("ID Receptor: \(i.id_receptor!)")
             //Filtrar las tareas por id de usuario
-            if idUsuario == i.id_receptor{
+            
+            if idUsuario == i.id_receptor!{
+                
+                if !fechaInicio.isEmpty || !fechaFin.isEmpty{
+                    //Cantidad de Tareas por el rango de fechas
+                    print("1")
+                    if "\(i.estatus!.lowercased())" == "pendiente"{
+                        pendientes += 1
+                    }
+                    
+                    if "\(i.estatus!.lowercased())" == "iniciada"{
+                        iniciada += 1
+                        
+                    }
+                    
+                    if "\(i.estatus!.lowercased())" == "revision"{
+                        revision += 1
+                    }
+                    
+                    if "\(i.estatus!.lowercased())" == "terminada"{
+                        terminadas += 1
+                    }
+                    
+                    if "\(i.estatus!.lowercased())" == "cancelado"{
+                        canceladas += 1
+                    }
+                }else{
+                    print("2")
+                }
                 
                 if i.fecha_iniR == nil || i.fecha_finR == nil{
-                    print("Hay fechas nulas")
-                }else{
-                    
-                    //Formatear las fechas
-                    let fechaIniJ = Date().convertir_string_a_fecha(fecha: "\((i.fecha_ini!).prefix(10))")
-                    let fechaFinJ = Date().convertir_string_a_fecha(fecha: "\((i.fecha_finR!).prefix(10))")
-                    
+                    print("Hay fechas nulas, no se pueden determinar la cantidad de tareas realizadas")
+                }else {
+                   
                     //Filtrar por rango de fechas
-                    if fechaI <= fechaIniJ  && fechaF <= fechaFinJ{
+                    if fechaInicio <= i.fecha_iniR!  && fechaFin <= i.fecha_finR!{
                         
-                        //Cantidad de Tareas por el rango de fechas
-                        if "\(i.estatus!)" == "Pendiente"{
-                            pendientes += 1
-                        }
-                        
-                        if "\(i.estatus!)" == "Iniciada"{
-                            iniciada += 1
-                            
-                        }
-                        
-                        if "\(i.estatus!)" == "Revision"{
-                            revision += 1
-                        }
-                        
-                        if "\(i.estatus!)" == "Terminada"{
-                            terminadas += 1
-                        }
-                        
-                        if "\(i.estatus!)" == "Cancelado"{
-                            canceladas += 1
+                        //cantidad de tareas en fechas de término
+                        if i.fecha_fin! < i.fecha_finR!{
+                            print("La tarea no fué culminada en tiempo y forma")
+                            tareasDesTimempo += 1
+                        }else if i.fecha_fin! >= i.fecha_finR!{
+                            print("La tarea se cumplio en tiempo y forma")
+                            tareasaTiempo += 1
                         }
                         
                         //Contar las tareas leidas por el rango de fechas
@@ -329,20 +337,16 @@ extension UIViewController {
                             
                             leidas += 1
                             
-                            //cantidad de tareas en fechas de término
-                            if i.fecha_fin! < i.fecha_finR!{
-                                print("La tarea no fué culminada en tiempo y forma")
-                                tareasDesTimempo += 1
-                            }else if i.fecha_fin! >= i.fecha_finR!{
-                                print("La tarea se cumplio en tiempo y forma")
-                                tareasaTiempo += 1
-                            }
-                            
                         }else{
                             sinLeer += 1
                         }
+                        
                     }
+                    
                 }
+                
+            }else{
+                print("Los usuarios no coinciden")
             }
         }
         arrTareas = [pendientes, iniciada, revision, terminadas, tareasaTiempo, tareasDesTimempo]
