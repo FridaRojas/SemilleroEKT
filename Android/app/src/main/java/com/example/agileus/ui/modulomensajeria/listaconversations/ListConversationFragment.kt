@@ -18,6 +18,7 @@ import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 
 
@@ -37,6 +38,11 @@ class ListConversationFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        //AGREGADA
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navBar.isVisible = true
+
         return root
     }
 
@@ -55,6 +61,9 @@ class ListConversationFragment : Fragment() {
             binding.recyclerListChats.layoutManager = LinearLayoutManager(activity)
         })
 
+        binding.cerrarSesion.setOnClickListener {
+            findNavController().navigate(R.id.inicioSesionFragment)
+        }
 
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
@@ -69,6 +78,9 @@ class ListConversationFragment : Fragment() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                ChatsViewModel.devuelveListaChats(Constantes.id)
+
+                ChatsViewModel.chatsdeUsuario.observe(viewLifecycleOwner,{
 
               if(p0.isNullOrEmpty()){
                   binding.recyclerListGroups.isVisible = true
