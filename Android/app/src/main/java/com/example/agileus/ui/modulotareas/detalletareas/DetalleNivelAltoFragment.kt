@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
@@ -20,8 +21,7 @@ import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
-import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
+import com.example.agileus.ui.modulotareas.dialogostareas.*
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
@@ -32,7 +32,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
+class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
+    DialogoTareaCreadaExitosamente.NoticeDialogListener {
     lateinit var firebaseProvider: FirebaseProvider
     lateinit var mStorageInstance: FirebaseStorage
     lateinit var mStorageReference: StorageReference
@@ -100,6 +101,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                                 returnUri,
                                 Constantes.referenciaTareas,
                                 "tarea$idsuperiorInmediato${(0..999).random()}"
+
                             )
                         } catch (e: FileNotFoundException) {
                             e.printStackTrace()
@@ -117,7 +119,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
 
         setInfo(args)
-
 
         with(binding) {
             desactivarCampos(args)
@@ -189,7 +190,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                     observaciones
                 )
 
-                detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
+                desactivarCampos(args)
+
+                val newFragment2 = DialogoActualizarTarea(update, args.tareas.idTarea)
+                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+
             }
 
         }
@@ -265,14 +270,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         Log.d("Mensaje", "fecha nueva $fechaFi")
 
 
-        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
-        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
+//        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
+//        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
 
 
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
-        prioridad = prioridadCampo
-        estatus = statusCampo
+        prioridad = args.tareas.prioridad
+        estatus = args.tareas.estatus
         descripcion = args.tareas.descripcion
 
         if (!args.tareas.observaciones.isNullOrEmpty()) {
@@ -344,7 +349,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
-        val dialogoAceptar = DialogoAceptar(args)
+        val dialogoAceptar = DialogoEliminarTarea(args)
         dialogoAceptar.show(
             (activity as HomeActivity).supportFragmentManager,
             getString(R.string.dialogoAceptar)
@@ -396,6 +401,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         val fechaObtenida = "$anio-$mesString-$diaString"
         fecha.setText(fechaObtenida)
 
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        Toast.makeText(context, "Anuma si va a jalar :0", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        TODO("Not yet implemented")
     }
 
 }

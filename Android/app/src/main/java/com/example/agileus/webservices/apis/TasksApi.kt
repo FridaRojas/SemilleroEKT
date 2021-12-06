@@ -43,7 +43,7 @@ interface TasksApi {
     //Editar tarea
     @PUT("tareas/actualizarTarea/{idTarea}")
     fun editTask(@Body taskUpdate: TaskUpdate, @Path("idTarea") idTarea: String)
-            : Call<TaskList>
+            : Call<TaskList2>
 
     //Actualizar Status
     @PUT("tareas/actulizarEstatus/{param}")
