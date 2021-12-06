@@ -58,7 +58,7 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
     func Servicio_web_contactos()
     {
         let servicio = "http://10.97.6.83:3040/api/mensajes/listaContactos/\(userID)"
-        // let servicio = "https://jsonplaceholder.typicode.com/users?id=\(1)" si el api nos pediera parametros solo se le concatena dicho parametro(  ?=\(1)  )
+        //  si el api nos pediera parametros solo se le concatena dicho parametro(  ?=\(1)  )
         let url = URL(string: servicio)
 
         URLSession.shared.dataTask(with: url!)

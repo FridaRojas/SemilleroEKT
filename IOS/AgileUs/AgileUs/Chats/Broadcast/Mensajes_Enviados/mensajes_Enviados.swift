@@ -30,7 +30,7 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
     {
         let indice = indexPath.row
         let celda = tableView.dequeueReusableCell(withIdentifier: celda_msjs_enviados.identificador, for: indexPath) as! celda_msjs_enviados
-        celda.Configurar_Celda_Mensajes(Datos: usuarios [indice] as! Any)
+        celda.Configurar_Celda_Mensajes(Datos: usuarios [indice] as! [Any])
         
         return celda
     }
@@ -73,7 +73,7 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func consumir_mensajes_enviados()
     {
-        let servicio = "https://firebasestorage.googleapis.com/v0/b/nombre-7ec89.appspot.com/o/BroadCastListaDeUsuarios.json?alt=media&token=585ce09f-5972-4661-bcfe-73063b4aafaa"
+        let servicio = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast/listaUsuarios/61a101db174bcf469164d2fd"
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {(data, response, error) in
@@ -86,17 +86,13 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
                     for item in self.lista_usuarios
                     {
                         print(item.nombre)
-                        print(item.token)
-                        
-                        /*self.lista_usuarios.append([item.nombre, item.token])
-                         */
                         indice = indice + 1
                     }
-                    Self.lista_mensajes_eniados.reloadData()
+                    self.lista_mensajes_eniados.reloadData()
                 }
-            }catch{print("Error")}
-        }.resume()
-    
+            }
+            catch{print("Error")}
+        }
+        .resume()
     }
-
 }

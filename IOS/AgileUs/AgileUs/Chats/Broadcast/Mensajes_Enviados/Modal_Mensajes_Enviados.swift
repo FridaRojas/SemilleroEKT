@@ -16,6 +16,7 @@ class Modal_Mensajes_Enviados: UIViewController
     var accion_confirmacion: ((_ datos: [Any]) -> Void)?
     var asunto: String?
     var mensaje: String?
+    guard let Url_Post_Comunicado = URL(string: "")
     
     override func viewDidLoad()
     {
@@ -38,5 +39,7 @@ class Modal_Mensajes_Enviados: UIViewController
         self.accion_confirmacion? (arreglo)
         dismiss(animated: true, completion: nil)
     }
+    
+    
     
 }
