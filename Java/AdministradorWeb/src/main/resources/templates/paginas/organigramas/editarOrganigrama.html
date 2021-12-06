@@ -90,8 +90,7 @@
         <div th:replace="elementos/menuLateral::menuLateral"></div>
     </td>
     <td class="resto" >
-        <div  class="alert alert-danger" th:if="${mensaje != null}" th:text="${mensaje}"> </div>
-
+        <div  th:classappend="'alert-' + (${status != null} ? ${status} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert"></div>
         <div class="row justify-content-center" style="height: 75vh;overflow: auto;">
             <div th:insert="elementos/Organigrama::organigrama"></div>
         </div>
