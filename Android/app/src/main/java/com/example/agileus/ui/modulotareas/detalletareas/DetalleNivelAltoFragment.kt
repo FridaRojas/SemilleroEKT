@@ -229,21 +229,24 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         var fechaI = sdf3.parse(args.tareas.fechaIni.toString())
         var fechaF = sdf3.parse(args.tareas.fechaFin.toString())
 
+
         cal.time = fechaI
 
-        cal[Calendar.MONTH] + 1
-        cal[Calendar.DATE] + 1
-        if (cal[Calendar.MONTH] < 10) {
-            mesI = "0${cal[Calendar.MONTH]}"
+        var anio = cal[Calendar.YEAR] + 1
+        var mes = cal[Calendar.MONTH] + 1
+        var dia = cal[Calendar.DATE] + 1
+        if (mes < 10) {
+            mesI = "0$mes"
         } else {
-            mesI = cal[Calendar.MONTH].toString()
+            mesI = mes.toString()
         }
 
-        if (cal[Calendar.DATE] < 10) {
-            diaI = "0${cal[Calendar.DATE]}"
+        if (dia < 10) {
+            diaI = "0$dia"
         } else {
-            diaI = cal[Calendar.DATE].toString()
+            diaI = dia.toString()
         }
+
 
         fechaIn =
             cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
@@ -251,18 +254,18 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 ///////////////////////////////////////////////////////////////777
         cal.time = fechaF
 
-        cal[Calendar.MONTH] + 1
-       cal[Calendar.DATE] + 1
-        if (cal[Calendar.MONTH] < 10) {
-            mesF = "0${cal[Calendar.MONTH]}"
+        mes = cal[Calendar.MONTH] + 1
+        dia = cal[Calendar.DATE] + 1
+        if (mes < 10) {
+            mesF = "0$mes"
         } else {
-            mesF = cal[Calendar.MONTH].toString()
+            mesF = mes.toString()
         }
 
-        if (cal[Calendar.DATE] < 10) {
-            diaF = "0${cal[Calendar.DATE]}"
+        if (dia < 10) {
+            diaF = "0$dia"
         } else {
-            diaF = cal[Calendar.DATE].toString()
+            diaF = dia.toString()
         }
 
         fechaFi =
