@@ -174,8 +174,8 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
                 titulo = txtNombreTareaD.text.toString()
                 descripcion = txtDescripcionD.text.toString()
-                fecha_ini = txtFechaFinD.text.toString()
-                fecha_fin = txtFechaInicioD.text.toString()
+                fecha_ini = txtFechaInicioD.text.toString()
+                fecha_fin = txtFechaFinD.text.toString()
                 prioridad = txtPrioridadD.text.toString()
                 estatus = txtEstatusD.text.toString()
                 observaciones = obs
@@ -232,7 +232,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         cal.time = fechaI
 
         cal[Calendar.MONTH] + 1
-//        cal[Calendar.DATE] + 1
+        cal[Calendar.DATE] + 1
         if (cal[Calendar.MONTH] < 10) {
             mesI = "0${cal[Calendar.MONTH]}"
         } else {
@@ -252,7 +252,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         cal.time = fechaF
 
         cal[Calendar.MONTH] + 1
-//        cal[Calendar.DATE] + 1
+       cal[Calendar.DATE] + 1
         if (cal[Calendar.MONTH] < 10) {
             mesF = "0${cal[Calendar.MONTH]}"
         } else {
