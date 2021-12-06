@@ -105,7 +105,7 @@ class TasksAdapter(
             cal.time = fechaI
 
             cal[Calendar.MONTH] + 1
-//        cal[Calendar.DATE] + 1
+        cal[Calendar.DATE] + 1
             if (cal[Calendar.MONTH] < 10) {
                 mesI = "0${cal[Calendar.MONTH]}"
             } else {
