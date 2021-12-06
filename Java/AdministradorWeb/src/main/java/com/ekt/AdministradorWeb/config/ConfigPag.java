@@ -358,6 +358,11 @@ public class ConfigPag {
                     listaUsuarios.add(usuario);
                 }
             }
+            if(user.getIDSuperiorInmediato().equals("")){
+                modelMap.addAttribute("userDelete",true);
+            }else{
+                modelMap.addAttribute("userDelete",false);
+            }
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
             modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
@@ -628,8 +633,10 @@ public class ConfigPag {
     @PostMapping("/busquedaOrganigrama")
     public String busquedaOrganigrama(@ModelAttribute(value = "parametro") String parametro, ModelMap model){
         ArrayList<Group> listaGrupos = new ArrayList<>();
-        listaGrupos.add(groupDAO.busquedaGrupo(parametro));
-        model.addAttribute("listaGrupos",listaGrupos);
+        if(groupDAO.busquedaGrupo(parametro)!=null) {
+            listaGrupos.add(groupDAO.busquedaGrupo(parametro));
+            model.addAttribute("listaGrupos", listaGrupos);
+        }
         return "paginas/organigramas/inicioOrganigramas.html";
     }
 }
