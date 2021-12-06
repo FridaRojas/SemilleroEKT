@@ -33,11 +33,10 @@ class DialogoActualizarTarea(var args: TaskUpdate, var idTarea: String) :
             detalleNivelAltoViewModel =
                 ViewModelProvider(this).get(DetalleNivelAltoViewModel::class.java)
             val builder = AlertDialog.Builder(it)
-            builder.setMessage("Desea cancelar tarea ${args.titulo}?")
+            builder.setMessage("Desea actualizar tarea ${args.titulo}?")
                 .setPositiveButton(R.string.respAceptar,
                     DialogInterface.OnClickListener { dialog, id ->
                         detalleNivelAltoViewModel.editarTarea(args, idTarea)
-
                         val newFragment = DialogoAceptar("Tarea ${args.titulo} editada")
                         newFragment.show(
                             (activity as HomeActivity).supportFragmentManager,
