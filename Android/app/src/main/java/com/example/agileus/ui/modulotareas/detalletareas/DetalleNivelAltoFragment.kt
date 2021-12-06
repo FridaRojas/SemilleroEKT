@@ -182,11 +182,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 observaciones = obs
 
 
-                if(observaciones.isNullOrEmpty()){
+                /*if (observaciones.isNullOrEmpty()) {
                     estatus = "terminado"
-                }else{
+                } else {
                     estatus = "pendiente"
-                }
+                }*/
 
 
                 var update = TaskUpdate(
@@ -206,56 +206,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
                 detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
 
-                if(update.observaciones.isNullOrEmpty()){
-                    val updateEstatus = DataTask(   // recuperar dataTask.idTarea y dataTask.estatus
-                        args.tareas.idTarea,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        fechaInicio,
-                        fechaFin,
-                        fechaInicio,
-                        fechaFin,
-                        titulo,
-                        descripcion,
-                        "terminado",
-                        true,
-                        fechaInicio,
-                        prioridad,
-                        "",
-                        observaciones,
-                        "",
-                        "",
-                    )
-                    detalleNivelAltoViewModel.actualizarEstatus(updateEstatus)
 
-                }else{
-                    val updateEstatus = DataTask(   // recuperar dataTask.idTarea y dataTask.estatus
-                        args.tareas.idTarea,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        fechaInicio,
-                        fechaFin,
-                        fechaInicio,
-                        fechaFin,
-                        titulo,
-                        descripcion,
-                        "pendiente",
-                        true,
-                        fechaInicio,
-                        prioridad,
-                        "",
-                        observaciones,
-                        "",
-                        "",
-                    )
-                    detalleNivelAltoViewModel.actualizarEstatus(updateEstatus)
-                }
 
             }
 

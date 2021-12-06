@@ -102,8 +102,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
                         var returnUri = data?.data!!
                         val uriString = data.toString()
                         val myFile = File(uriString).name
-                        //val myFile2 = data.data!!.lastPathSegment
-                        //val myFile = getRealPathFromURI(requireContext(), returnUri)
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado: ${data.data!!.lastPathSegment} "
                         Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
@@ -125,7 +123,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
             // Guardar datos
             nombrePersonaAsignada = (binding.spinnerPersonaAsignada.getEditText() as AutoCompleteTextView).text.toString()
             prioridadAsignada = (binding.spinnerPrioridad.getEditText() as AutoCompleteTextView).text.toString()
-            //Toast.makeText(activity, "$nombrePersonaAsignada & $prioridadAsignada", Toast.LENGTH_SHORT).show()
 
             // Obtiene el numero de empleado de la persona seleccionada
             listaPersonas.forEach(){
@@ -193,20 +190,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     }
 
     // *** FUNCIONES ***
-
-    /*fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = context.contentResolver.query(
-            contentUri!!, proj,
-            null, null, null
-        )
-        val column_index = cursor
-            ?.getColumnIndexOrThrow(MediaStore.EXTRA_MEDIA_TITLE)
-        cursor!!.moveToFirst()
-        return cursor.getString(column_index!!)
-        //.Images.Media.DATA
-    }*/
-
     fun confirmarTarea(){
         val newFragment = DialogoConfirmOp (this)
         newFragment.show(parentFragmentManager, "Confirmacion")

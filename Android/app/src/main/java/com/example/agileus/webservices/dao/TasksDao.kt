@@ -41,7 +41,7 @@ class TasksDao {
             Log.e("error", e.toString())
         }*/
 
-        /*callInserta.enqueue(object : Callback<Tasks> {
+        callInserta.enqueue(object : Callback<Tasks> {
             override fun onResponse(call: Call<Tasks>, response: Response<Tasks>) {
 
                 if (response.isSuccessful) {
@@ -62,7 +62,7 @@ class TasksDao {
             }
 
             override fun onFailure(call: Call<Tasks>, t: Throwable) {}
-        })*/
+        })
     }
 
     //Obtener tareas por status

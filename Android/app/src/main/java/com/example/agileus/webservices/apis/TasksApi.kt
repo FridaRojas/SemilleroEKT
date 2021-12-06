@@ -30,8 +30,8 @@ interface TasksApi {
 
 
     @POST("tareas/agregarTarea")
-    //fun insertarTarea(@Body t: Tasks): Call<Tasks>
-    fun insertarTarea(@Body t: Tasks)
+    fun insertarTarea(@Body t: Tasks): Call<Tasks>
+
 
     //Obtener lista por id, status
     @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
