@@ -54,7 +54,6 @@ public class UserDAO {
             if (!jsonObject.get("data").equals("")){
                 JSONObject usuarios = jsonObject.getJSONObject("data");
                 usuario = gson.fromJson(usuarios.toString(), User.class);
-                System.out.println("daaaaoooo:"+usuarios.toString());
                 return usuario;
             }else{
                 return null;
@@ -330,4 +329,22 @@ public class UserDAO {
             return null;
         }
     }
+
+    public boolean buscarOrigenUsuario(String id){
+        Boolean res=false;
+
+        //dos casos
+        ArrayList<User> listaDisponibles =listaUsuariosDisponibles();
+
+        //fuera del organigrama
+        for (User use :listaDisponibles) {
+            if (use.getID().equals(id)){
+                System.out.println("el usuario se encuentra en disponibles");
+                res=true;
+            }
+        }
+
+        return res;
+    }
+
 }

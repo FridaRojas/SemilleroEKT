@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -258,6 +259,90 @@ public class ConfigPag {
 
     }
 
+
+    @PostMapping("/remplazaUsuario")
+    public String remplazaUsuario(@ModelAttribute(value = "idUsuarioMenos") String idUsuarioMenos,@ModelAttribute(value = "idUsuarioMas") String idUsuarioMas, Model modelMap,RedirectAttributes redirectAttrs){
+
+        System.out.println("USUARIOmENOS: "+idUsuarioMenos+"   mas: "+idUsuarioMas);
+        User userNuevo,userViejo;
+        //dos casos
+        userViejo=userDAO.buscaID(idUsuarioMenos);
+        userNuevo=userDAO.buscaID(idUsuarioMas);
+
+        //fuera del organigrama
+
+        if (userDAO.buscarOrigenUsuario(idUsuarioMas)) {
+            System.out.println("entra a caso fuera del organigrama");
+            //añadir informacion inicial al que se queda
+
+            //guardar en grupo y en lista genersl
+            groupDAO.añadeUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo(), userViejo.getIDSuperiorInmediato(), userViejo.getNombreRol());
+
+            //falta reasignar hijos
+            if (userDAO.muestraSubordinados(idUsuarioMenos)!=null){
+                for (User us : userDAO.muestraSubordinados(idUsuarioMenos)) {
+                    userDAO.actualizaIdSuperior(us.getID(), idUsuarioMas);
+                }
+            }
+            //eliminar al viejo
+            groupDAO.eliminaUsuarioGrupo(userViejo.getID(), userViejo.getIDGrupo());
+
+            redirectAttrs
+                    .addFlashAttribute("status", "success")
+                    .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+            return "redirect:/editarGrupo?idGrupo=" + userViejo.getIDGrupo();
+        }else{
+            //reasigna los hijos de los dos
+
+            //falta reasignar hijos
+            ArrayList<User> listUserMas=userDAO.muestraSubordinados(idUsuarioMas);
+            ArrayList<User> lisyUserMenos=userDAO.muestraSubordinados(idUsuarioMenos);
+
+            //falta reasignar hijos
+            if (lisyUserMenos!=null){
+                for (User us : userDAO.muestraSubordinados(idUsuarioMenos)) {
+                    System.out.println("Entra a actualizar hijos de menos");
+                    userDAO.actualizaIdSuperior(us.getID(), idUsuarioMas);
+                }
+            }
+
+            if (listUserMas!=null){
+                for (User us : userDAO.muestraSubordinados(idUsuarioMas)) {
+                    System.out.println("Entra a actualizar hijos de mas");
+                    userDAO.actualizaIdSuperior(us.getID(), idUsuarioMas);
+                }
+            }
+
+            //eliminar
+            groupDAO.eliminaUsuarioGrupo(idUsuarioMenos, userViejo.getIDGrupo());
+            groupDAO.eliminaUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo());
+
+            //guardar en grupo y en lista genersl
+            if (idUsuarioMas.equals(userViejo.getIDSuperiorInmediato())){
+                System.out.println("entra al caso 1");
+                groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userNuevo.getIDGrupo(), userNuevo.getIDSuperiorInmediato(), userNuevo.getNombreRol());
+                groupDAO.añadeUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo(), idUsuarioMenos, userViejo.getNombreRol());
+            }else{
+                if(userNuevo.getIDSuperiorInmediato().equals(idUsuarioMenos)){
+                    System.out.println("entra al caso 2");
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userNuevo.getIDGrupo(), userNuevo.getIDSuperiorInmediato(), userNuevo.getNombreRol());
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo(), idUsuarioMenos, userViejo.getNombreRol());
+                }else{
+                    System.out.println("entra al caso 3");
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMenos,userNuevo.getIDGrupo(),userNuevo.getIDSuperiorInmediato(),userNuevo.getNombreRol());
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMas,userNuevo.getIDGrupo(),userViejo.getIDSuperiorInmediato(),userViejo.getNombreRol());
+                }
+            }
+
+
+
+            redirectAttrs
+                    .addFlashAttribute("status", "success")
+                    .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+            return "redirect:/editarGrupo?idGrupo=" + userViejo.getIDGrupo();
+        }
+    }
+
     @PostMapping("/reasignaSuperior")
     public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen, Model modelMap,RedirectAttributes redirectAttrs){
         System.out.println("origen: "+origen);
@@ -286,8 +371,8 @@ public class ConfigPag {
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             //si no tiene suboordinados, elimina y redirecciona a editarGrupo
-            System.out.println("Entra a desactivar");
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
+            //se añade nuevo usuario al grupo
             if(origen.equals("0")){
                 //Si el origen proviene de vistaUsuarios cambiar el status a false y redirecciona a findallusuarios
                 userDAO.desactivarUsuario(idUsuario);
@@ -338,7 +423,14 @@ public class ConfigPag {
     @RequestMapping(value="/editarGrupo",method = { RequestMethod.POST, RequestMethod.GET })
     @PostMapping("/editarGrupo")
     public String editarGrupos(@ModelAttribute User user,@ModelAttribute(value = "idGrupo") String id,Model model) {
-        System.out.println("id en editar: "+id);
+
+        //añadir usuarios con los que se pueden sutituir
+        ArrayList<User> posiblesSustituir = new ArrayList();
+        posiblesSustituir.addAll(userDAO.listaUsuariosDisponibles());
+        //posiblesSustituir.addAll(userDAO.listaUsuariosOrganigrama(id));
+
+        model.addAttribute("listaSustitucion",posiblesSustituir);
+
         //añadir la lista de usuarios sin grupo
         model.addAttribute("listaDisponibles",userDAO.listaUsuariosDisponibles());
 

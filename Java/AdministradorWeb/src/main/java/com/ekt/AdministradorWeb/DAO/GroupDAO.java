@@ -161,4 +161,34 @@ public class GroupDAO {
         }
 
     }
+
+    public Boolean añadeUsuarioGrupo(String IdUsuario,String IdGrupo,String IdSuperior,String NombreRol){
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType,
+                "{\r\n    \"idUsuario\":\""+IdUsuario+
+                        "\",\r\n    \"idGrupo\":\""+IdGrupo+
+                        "\",\r\n    \"idSuperior\":\""+IdSuperior+
+                        "\",\r\n    \"nombreRol\":\""+NombreRol+"\"\r\n}\r\n\r\n");
+        Request request = new Request.Builder()
+                .url("http://localhost:3040/api/grupo/agregarUsuario")
+                .method("PUT", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            JSONObject jsonObject = new JSONObject(response.body().string());
+
+            if (jsonObject.get("status").toString().equals("OK")) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+            System.out.println("Error al agregar usuario a grupo");
+            return false;
+        }
+    }
 }

@@ -91,21 +91,27 @@
     </td>
     <td class="resto" >
         <div  th:classappend="'alert-' + (${status != null} ? ${status} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert"></div>
-        <div class="row justify-content-center" style="height: 75vh;overflow: auto;">
+        <div class="row justify-content-center" style="height: 75vh;overflow: auto;width: 165vh">
             <div th:insert="elementos/Organigrama::organigrama"></div>
         </div>
-        <div class="row d-flex justify-content-around" style="min-height: 20vh; ">
+        <div class="row d-flex justify-content-around" style="min-height: 20vh;">
             <!-- boton de agregar usuarios-->
             <div class="col-2">
                 <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalAgregarUsuarioAGrupo">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Agregar usuario</p>
+                    <p>Agregar </p>
+                </button>
+            </div>
+            <div class="col-2">
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalSustituirUsuario">
+                    <img src="/assets/++.png" style="max-height: 7vh;"/>
+                    <p>Sustituir</p>
                 </button>
             </div>
             <div class="col-2">
                 <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalEditarUsuario">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Editar usuario</p>
+                    <p>Editar </p>
                 </button>
             </div>
 
@@ -115,7 +121,7 @@
                     <!-- Button trigger modal -->
                     <button type="button" class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
                         <img src="/assets/--.png" style="max-height: 7vh;"/>
-                        <p>Quitar usuario</p>
+                        <p>Eliminar</p>
                     </button>
                 </form>
             </div>
@@ -154,7 +160,7 @@
                             </optgroup>
                         </select>
                     </div>
-                    <input type="text" name="idSuperior" class="form-control" value="" style="display:inline" th:if="${listaUsuariosGrupo.isEmpty()}"  id="idSupCrear" hidden>
+                    <input type="text" name="idSuperior" class="form-control" value="" th:if="${listaUsuariosGrupo.isEmpty()}" hidden>
                     <div class="form-group" th:if="!${listaUsuariosGrupo.isEmpty()}">
                         <label>Jefe directo</label>
                         <select name="idSuperior" id="idSuperior">
@@ -166,9 +172,9 @@
                         </select>
                     </div>
 
-                    <div class="form-group" >
+                    <div class="form-group">
                         <label>Asigne Rol</label>
-                        <input type="text" name="nombreRol" style="display:inline" id="nombreRolCrear" class="form-control" aria-describedby="sizing-addon1" required>
+                        <input type="text" name="nombreRol" id="nombreRol" class="form-control" aria-describedby="sizing-addon1" required>
                     </div>
 
                 </div>
@@ -256,6 +262,46 @@
     </form>
 </div>
 
+<div class="modal fade" id="modalSustituirUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <form th:action="@{/remplazaUsuario(idGrupo=${idGrupo})}" method="post" name="reasigna" id="reasigna">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Sustituir Usuario</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Seleccione usuario</label>
+                            <select name="idUsuarioMenos" id="idUsuarioMenos">
+                                <optgroup>
+                                    <p th:each="user: ${listaUsuariosGrupo}">
+                                        <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                    </p>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group" th:if="!${listaUsuariosGrupo.isEmpty()}">
+                            <label>Seleccionar Usuario de remplazo</label>
+                            <select name="idUsuarioMas" id="idUsuarioMas">
+                                <optgroup>
+                                    <p th:each="user: ${listaSustitucion}">
+                                        <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                    </p>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Editar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
