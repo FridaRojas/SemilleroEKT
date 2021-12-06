@@ -168,8 +168,6 @@ class TasksDao : DialogoConfirmacionListener {
                     Log.d("Mensaje", e.message.toString())
                 }
             }
-
-
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }

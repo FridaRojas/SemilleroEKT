@@ -115,18 +115,18 @@ class TasksAdapter(
 
             cal.time = fechaI
 
-            cal[Calendar.MONTH] + 1
-        cal[Calendar.DATE] + 1
-            if (cal[Calendar.MONTH] < 10) {
-                mesI = "0${cal[Calendar.MONTH]}"
+            var mes = cal[Calendar.MONTH] + 1
+            var dia = cal[Calendar.DATE] + 1
+            if (mes < 10) {
+                mesI = "0$mes"
             } else {
-                mesI = cal[Calendar.MONTH].toString()
+                mesI = mes.toString()
             }
 
-            if (cal[Calendar.DATE] < 10) {
-                diaI = "0${cal[Calendar.DATE]}"
+            if (dia < 10) {
+                diaI = "0$dia"
             } else {
-                diaI = cal[Calendar.DATE].toString()
+                diaI = dia.toString()
             }
 
             fechaIn =
