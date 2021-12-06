@@ -21,7 +21,19 @@ class List: UITableViewCell{
    static func nib() -> UINib { return UINib(nibName: "List", bundle: nil)}
     
     override func awakeFromNib() {
-        super.awakeFromNib()}
+        super.awakeFromNib()
+        
+        self.clipsToBounds = false
+//        
+        self.layer.masksToBounds = true
+        self.layer.shadowRadius = 1.0
+        self.layer.shadowColor = UIColor.gray.cgColor
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        self.layer.shadowOpacity = 0.5
+//        self.layer.cornerCurve = CALayerCornerCurve.circular
+
+        
+    }
     
         //  Metodos
     override func setSelected(_ selected: Bool, animated: Bool) {super.setSelected(selected, animated: animated)}
@@ -37,6 +49,21 @@ class List: UITableViewCell{
      
         
     }
+    
+    override open var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set (newFrame) {
+            var frame =  newFrame
+            frame.origin.y += 10
+            frame.origin.x += 10
+            frame.size.height -= 15
+            frame.size.width -= 2 * 10
+            super.frame = frame
+        }
+    }
+
     
 }
 
