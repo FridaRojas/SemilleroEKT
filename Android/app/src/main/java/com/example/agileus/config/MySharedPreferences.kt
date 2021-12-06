@@ -26,9 +26,9 @@ class MySharedPreferences(contexto: Context) {
 
     }
 
-    fun guardarDatos(id:Int, nombre:String, nombreRol:String, correo:String, idgrupo:String, idsuperiorInmediato:String, sesion:Boolean) {
+    fun guardarDatos(id:String, nombre:String, nombreRol:String, correo:String, idgrupo:String, idsuperiorInmediato:String, sesion:Boolean) {
         with(sharedPreferences.edit()){
-            putInt(ID_USER_KEY, id)
+            putString(ID_USER_KEY, id)
             putString(FIRST_NAME_KEY, nombre)
             putString(NOMBRE_ROL_KEY, nombreRol)
             putString(EMAIL_KEY, correo)

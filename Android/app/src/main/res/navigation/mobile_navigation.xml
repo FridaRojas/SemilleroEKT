@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/buzonDetallesFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesFragment"
-        android:label="buzon_detalles_fragment"
+        android:label="Buzon"
         tools:layout="@layout/buzon_detalles_fragment" />
 
     <fragment
@@ -105,7 +105,7 @@
     <fragment
         android:id="@+id/buzonDetallesUserFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.BuzonUser.BuzonDetallesUserFragment"
-        android:label="buzon_detalles_user_fragment"
+        android:label="Buzon"
         tools:layout="@layout/buzon_detalles_user_fragment" />
     <fragment
         android:id="@+id/detalleNivelAltoFragment"

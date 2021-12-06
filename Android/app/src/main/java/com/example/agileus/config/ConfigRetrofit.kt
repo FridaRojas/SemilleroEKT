@@ -1,7 +1,5 @@
 package com.example.agileus.config
 
-
-import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.ui.login.data.service.LoginApi
@@ -16,8 +14,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
-
 fun cliente(tiempo:Long): OkHttpClient {
     val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(tiempo, TimeUnit.SECONDS)
@@ -26,7 +22,6 @@ fun cliente(tiempo:Long): OkHttpClient {
         .build()
     return okHttpClient
 }
-
 
 class ConfigRetrofit {
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE

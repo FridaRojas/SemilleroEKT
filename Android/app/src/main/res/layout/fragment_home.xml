@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/paddingGeneral"
     android:background="@color/colorBackground"
     tools:context=".ui.modulomensajeria.listaconversations.ListConversationFragment">
 
@@ -15,8 +14,8 @@
         android:background="@drawable/rounded_bg"
         android:backgroundTint="@color/white"
         android:drawableEnd="@drawable/iconobuscar"
-        app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/StyleSearchEditText"
         android:layout_marginBottom="@dimen/paddingGeneral"
@@ -32,13 +31,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/et_search_conversation"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cerrarSesion"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/iconobroadcast"
         android:layout_marginStart="@dimen/margin_start_general"
         android:layout_marginTop="@dimen/paddingGeneral"
-        android:layout_marginEnd="@dimen/paddingGeneral"/>
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="@dimen/margin_start_general"
+        app:layout_constraintHorizontal_weight="1"
+    />
+
+    <ImageView
+        android:id="@+id/cerrarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgBroadcast"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/paddingGeneral"
+        android:layout_marginEnd="@dimen/paddingGeneral"
+
+        />
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerListGroups"
