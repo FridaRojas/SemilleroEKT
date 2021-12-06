@@ -19,9 +19,11 @@ class TaskViewModel() : ViewModel() {
 
     companion object{
         var status = "pendiente"
+        var statusList = "Pendientes"
     }
 
     var statusRecycler = MutableLiveData<String>()
+    var statusListRecycler = MutableLiveData<String>()
     var adaptador = MutableLiveData<TasksAdapter>()
 
     var lista: TasksDao = TasksDao()
@@ -55,6 +57,7 @@ class TaskViewModel() : ViewModel() {
 
     fun devolverListaPorStatus(listener: TaskListListener){
         status = statusRecycler.value.toString()
+        statusList = statusListRecycler.value.toString()
         viewModelScope.launch {
             listaTask = withContext(Dispatchers.IO){
                 if(statusRecycler.value.toString() == "asignada"){

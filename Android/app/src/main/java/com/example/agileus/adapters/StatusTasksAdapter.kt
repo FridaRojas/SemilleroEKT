@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
+import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel.Companion.statusList
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 
 class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDialogListener) :
@@ -27,7 +29,9 @@ class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDi
     override fun getItemCount() = dataSet.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        //var listaRecyclerStatus = context.resources.getStringArray(R.array.statusRecycler_array)
         val statusTextView: TextView
+        val context = view.context
 
         init {
             statusTextView = view.findViewById(R.id.statusTextView)
@@ -39,11 +43,12 @@ class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDi
 
             statusTextView.setOnClickListener {
                 listener.getTaskByStatus(datos)
-/*
+
+
                 if(datos == "pendiente"){
-                    statusTextView.setTextColor(Color.WHITE)
-                    statusTextView.setTextColor()
-                }*/
+                    //statusTextView.setTextColor(Color.WHITE)
+                    //statusTextView.setTextColor()
+                }
                  //statusTextView.setTextColor(Color.parseColor("#66BB6A"))
             }
 

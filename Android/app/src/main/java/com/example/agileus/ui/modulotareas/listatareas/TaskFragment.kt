@@ -78,25 +78,31 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     override fun getTaskByStatus(status: String) {
         binding.progressUno.visibility = View.VISIBLE
         var listaStatus = resources.getStringArray(R.array.status_array)
+        var listaRecyclerStatus = resources.getStringArray(R.array.statusRecycler_array)
         when (status) {
             listStatus[0] -> {
                 taskViewModel.statusRecycler.value = listaStatus[0]
+                taskViewModel.statusListRecycler.value = listaRecyclerStatus[0]
                 binding.tituloTareas.text = getString(R.string.titleStatus1)
             }
             listStatus[1] -> {
                 taskViewModel.statusRecycler.value = listaStatus[1]
+                taskViewModel.statusListRecycler.value = listaRecyclerStatus[1]
                 binding.tituloTareas.text = getString(R.string.titleStatus2)
             }
             listStatus[2] -> {
                 taskViewModel.statusRecycler.value = listaStatus[2]
+                taskViewModel.statusListRecycler.value = listaRecyclerStatus[2]
                 binding.tituloTareas.text = getString(R.string.titleStatus3)
             }
             listStatus[3] -> {
                 taskViewModel.statusRecycler.value = listaStatus[3]
+                taskViewModel.statusListRecycler.value = listaRecyclerStatus[3]
                 binding.tituloTareas.text = getString(R.string.titleStatus4)
             }
             listStatus[4] -> {
                 taskViewModel.statusRecycler.value = listaStatus[4]
+                taskViewModel.statusListRecycler.value = listaRecyclerStatus[4]
                 binding.tituloTareas.text = getString(R.string.titleStatus5)
             }
         }
