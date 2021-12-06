@@ -1,17 +1,17 @@
 <style>
-
 </style>
 
 
 <div th:fragment="organigrama" class="container pr-5">
 
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript"
+		src="https://www.gstatic.com/charts/loader.js"></script>
 	<div id="organigrama" class="row justify-content-center">
-  		<h1 class="col-auto" id="nombreOrganigrama" ></h1>
+		<h1 class="col-auto" id="nombreOrganigrama"></h1>
 	</div>
-  <div id="chart_div"></div>
+	<div id="chart_div"></div>
 
-  <script>
+	<script>
     google.charts.load('current', { packages: ["orgchart"] });
     google.charts.setOnLoadCallback(pruebas);
 
@@ -40,12 +40,18 @@
       let req = await
               fetch("http://localhost:3040/api/grupo/buscar/"+valor, requestOptions)
       let grupo = await req.json()
-
+		
+      
+      aux="";
       let organi=[];
       for(let user of grupo.data.usuarios){
+	 	  aux=user.idsuperiorInmediato;
+	 	  if(aux=="-1"){
+	 		  aux="";
+	 	  }
         organi.push([
           {'v':user.id,'f': user.nombre+'<div style="color:red; font-style:italic">'+user.nombreRol+'</div>'},
-          user.idsuperiorInmediato,
+          aux,
           user.nombre
         ]);
       }
@@ -70,9 +76,6 @@
         return null;
     }
   </script>
-
-
-
 </div>
 
 

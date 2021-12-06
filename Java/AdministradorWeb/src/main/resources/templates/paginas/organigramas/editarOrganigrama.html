@@ -154,7 +154,7 @@
                             </optgroup>
                         </select>
                     </div>
-                    <input type="text" name="idSuperior" class="form-control" value="" th:if="${listaUsuariosGrupo.isEmpty()}" hidden>
+                    <input type="text" name="idSuperior" class="form-control" value="" style="display:inline" th:if="${listaUsuariosGrupo.isEmpty()}"  id="idSupCrear" hidden>
                     <div class="form-group" th:if="!${listaUsuariosGrupo.isEmpty()}">
                         <label>Jefe directo</label>
                         <select name="idSuperior" id="idSuperior">
@@ -166,9 +166,9 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label>Asigne Rol</label>
-                        <input type="text" name="nombreRol" id="nombreRol" class="form-control" aria-describedby="sizing-addon1" required>
+                        <input type="text" name="nombreRol" style="display:inline" id="nombreRolCrear" class="form-control" aria-describedby="sizing-addon1" required>
                     </div>
 
                 </div>
@@ -255,5 +255,7 @@
         </div>
     </form>
 </div>
+
+
 </body>
 </html>
