@@ -9,10 +9,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
+import com.example.agileus.models.DataTask
 import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel.Companion.statusList
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 
-class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDialogListener) :
+class StatusTasksAdapter(private var dataSet: Array<String>, val listener:TaskDialogListener) :
     RecyclerView.Adapter<StatusTasksAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -28,8 +29,12 @@ class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDi
 
     override fun getItemCount() = dataSet.size
 
+    fun update(filtro: ArrayList<String>) {
+        dataSet = filtro as Array<String>
+        this.notifyDataSetChanged()
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        //var listaRecyclerStatus = context.resources.getStringArray(R.array.statusRecycler_array)
         val statusTextView: TextView
         val context = view.context
 
@@ -45,15 +50,19 @@ class StatusTasksAdapter(private val dataSet: Array<String>, val listener:TaskDi
                 listener.getTaskByStatus(datos)
 
 
-                if(datos == "pendiente"){
-                    //statusTextView.setTextColor(Color.WHITE)
-                    //statusTextView.setTextColor()
-                }
-                 //statusTextView.setTextColor(Color.parseColor("#66BB6A"))
             }
 
         }
 
+        fun statusSelected(status: String, listener: TaskDialogListener) {
+            var listaRecyclerStatus = context.resources.getStringArray(R.array.statusRecycler_array)
+
+            if(status == listaRecyclerStatus[0]){
+                statusTextView.setTextColor(context.resources.getColor(R.color.white))
+                statusTextView.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+            }
+
+        }
     }
 
 }

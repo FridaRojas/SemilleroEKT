@@ -22,6 +22,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
+    lateinit var adaptador : StatusTasksAdapter
 
     private lateinit var taskViewModel: TaskViewModel
 
@@ -60,6 +61,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             binding.recyclerTareas.adapter = it
             binding.recyclerTareas.layoutManager = LinearLayoutManager(activity)
         })
+
 
         //Btn Crear tareas
         binding.btnCrearTarea.setOnClickListener {
