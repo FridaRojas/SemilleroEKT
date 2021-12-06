@@ -33,8 +33,23 @@ class List: UITableViewCell{
         
         Persona.text = info.nombre_receptor
         Fecha.text = HelpString.formatDate(date: info.fecha_ini!)
-        Prioridad.text = info.prioridad
-     
+        Prioridad.text = "Prioridad: \(info.prioridad!)"
+        if info.prioridad! == "Alta"
+        {
+            print("entre a la alta")
+            Prioridad.textColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1)
+            
+            
+        }
+        else if info.prioridad! == "Media"
+        {
+            Prioridad.textColor = UIColor(red: 255/255, green: 179/255, blue: 0/255, alpha: 1)
+        }
+        else
+        {
+            Prioridad.textColor = UIColor(red: 67/255, green: 160/255, blue: 71/255, alpha: 1)
+        }
+        
         
     }
     
