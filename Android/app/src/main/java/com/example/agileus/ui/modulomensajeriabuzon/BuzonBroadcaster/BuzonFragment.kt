@@ -46,9 +46,9 @@ companion object{
             findNavController().navigate(R.id.action_buzonFragment_to_buzonDetallesFragment)
         }
 
-        binding.mensajescomunicados .setOnClickListener {
-             control =2
-            findNavController().navigate(R.id.action_buzonFragment_to_buzonDetallesFragment)
+        binding.mensajescomunicados.setOnClickListener {
+            // control =2
+            findNavController().navigate(R.id.action_buzonFragment_to_receiverBuzonBroadcastFragment)
         }
 
 

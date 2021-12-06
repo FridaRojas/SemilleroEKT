@@ -1,6 +1,7 @@
 package com.example.agileus.webservices.apis
 
 
+import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.models.*
 import com.example.agileus.utils.Constantes.id
 import retrofit2.Call
@@ -20,8 +21,8 @@ interface BuzonApi2 {
     @GET("broadCast/mostarMensajesdelBroadcast/{id}")
     fun getbuzon(@Path ("id") idUser:String):Call<ArrayList<BuzonResp>>
 
-    @GET("broadCast/mostrarMensajesporID/{id}")
-    fun getmybuzon(@Path ("id") idUser:String):Call<ArrayList<BuzonResp>>
+    @GET("mensajes/listarConversaciones/{id}")
+    fun getmybuzon(@Path ("id") idUser:String):Call<ArrayList<BuzonComunicados>>
 
 
 

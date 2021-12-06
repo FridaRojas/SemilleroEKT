@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
+import com.example.agileus.models.BuzonComunicados
 import com.example.agileus.models.BuzonResp
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 
-class BuzonAdapter(private var dataSet: ArrayList<BuzonResp>, var tipo: Int) :
-    RecyclerView.Adapter<BuzonAdapter.ViewHolder>() {
+class BuzonAdapterResponse(private var dataSet: ArrayList<BuzonComunicados>, var tipo: Int) :
+    RecyclerView.Adapter<BuzonAdapterResponse.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
@@ -40,28 +41,12 @@ class BuzonAdapter(private var dataSet: ArrayList<BuzonResp>, var tipo: Int) :
 
         val buzon = dataSet[position]
 
-        if(tipo==1) {
-            if(USERTYPE == "Broadcast" ) {
-                viewHolder.textView.text = "Mensaje enviado por :Broadcast "
-            }
-            else {
-                viewHolder.textView.text = "Mensaje enviado a : Broadcast"
-            }
-            viewHolder.textView1.text = "Asunto:  ${buzon.Asunto}"
-            viewHolder.textView2.text = "Mensaje: \n ${buzon.Message}"
+//        viewHolder.textView.text = "Mensaje enviado a a Broadcast"
+             viewHolder.textView.text =   "Mensaje enviado por ${buzon.idemisor}"
+             viewHolder.textView1.text =  "Asunto: N/A "
+             viewHolder.textView2.text =  "Mensaje: \n ${buzon.texto}"
         }
-        if(tipo==2) {
 
-            if (USERTYPE == "Broadcast") {
-                viewHolder.textView.text = "Mensaje enviado a :${buzon.Receiverid} "
-            }
-            if(buzon.Receiverid =="General"){
-                viewHolder.textView.text = "Comunicado:    ${buzon.Receiverid}"
-            }
-            viewHolder.textView1.text = "Asunto:    ${buzon.Asunto}"
-            viewHolder.textView2.text = "Mensaje: \n${buzon.Message}"
-        }
-    }
     override fun getItemCount(): Int {
         return dataSet.size
     }

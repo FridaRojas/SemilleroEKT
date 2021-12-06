@@ -101,6 +101,9 @@
         <action
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
             app:destination="@id/buzonDetallesFragment" />
+        <action
+            android:id="@+id/action_buzonFragment_to_receiverBuzonBroadcastFragment"
+            app:destination="@id/receiverBuzonBroadcastFragment" />
     </fragment>
     <fragment
         android:id="@+id/buzonDetallesUserFragment"
@@ -116,6 +119,11 @@
             android:name="tareas"
             app:argType="com.example.agileus.models.DataTask" />
     </fragment>
+    <fragment
+        android:id="@+id/receiverBuzonBroadcastFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastFragment"
+        android:label="receiver_buzon_broadcast_fragment"
+        tools:layout="@layout/receiver_buzon_broadcast_fragment" />
 
 
     <fragment
