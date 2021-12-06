@@ -133,7 +133,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
 
             if(fechaInicio=="" || fechaFin=="" ||
                 binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
-                binding.edtDescripcion.text.toString().isNullOrEmpty()){
+                binding.edtDescripcion.text.toString().isNullOrEmpty()||
+                    nombrePersonaAsignada.toString().isNullOrEmpty()){
                     Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
