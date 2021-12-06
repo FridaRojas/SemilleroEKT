@@ -44,19 +44,26 @@ public class BroadCastControlador {
 	@GetMapping("/listaUsuarios/{miId}")
 	public ResponseEntity<?> listaUsuariosGeneral(@PathVariable (value = "miId")String miId){
 		
+		List<User> usuarios = new ArrayList<>();
 		Optional<User> existo = userRepository.validarUsuario(miId);
 		
 		if(!existo.isPresent()) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario Broadcast",""));
 		}
 		
-		if(!existo.get().getNombreRol().equals("BROADCAST")) {
+		if(!existo.get().getNombreRol().equals("BROADCAST") && !existo.get().getIDSuperiorInmediato().equals("-1") && existo.get().getStatusActivo().equals("false")) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
 		}
-		
+				
 		Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
 				
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(listaUsuarios);
+		for(User usuario : listaUsuarios) {
+			if(!usuario.getID().equals(miId) && usuario.getStatusActivo().equals("true") && usuario.getIDGrupo().equals(existo.get().getIDGrupo())) {
+				usuarios.add(usuario);
+			}
+		}
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarios);
 	}
 
 	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
