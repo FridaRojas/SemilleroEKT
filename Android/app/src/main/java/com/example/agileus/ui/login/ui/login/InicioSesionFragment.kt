@@ -10,17 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
-import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
-import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
-import com.example.agileus.ui.login.data.model.Data
-import com.example.agileus.ui.login.data.model.Users
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -31,8 +23,6 @@ class InicioSesionFragment : Fragment() {
 
     companion object {
         fun newInstance() = InicioSesionFragment()
-        var idClienteSesion: Int = 0
-        var nameClienteSesion: String = " "
     }
 
     private lateinit var viewModel: InicioSesionViewModel
