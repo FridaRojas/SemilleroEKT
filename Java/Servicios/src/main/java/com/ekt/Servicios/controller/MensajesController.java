@@ -367,44 +367,60 @@ public class MensajesController {
 	}
 	
 	List<User> myArregloUsuario = new ArrayList<>();
-	public List<User> listaConversacion(String miId){
+
+	public List<User> listaConversacion(String miId) {
 		List<User> listaConversacion = new ArrayList<>();
-		
+		listaConversacion.clear();
+
 		Optional<User> existo = userRepository.validarUsuario(miId);
-		
+
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
-		
-		if (jefe.isPresent()) {
+
+		if (jefe.isPresent() && jefe.get().getStatusActivo().equals("true")) {
 			jefe.ifPresent(listaConversacion::add);
 		}
 
 		Iterable<User> hermanos = userRepository.findByBossId(existo.get().getIDSuperiorInmediato());
-		for(User hermano : hermanos) {
-			if(!hermano.getID().equals(miId)) {
+		for (User hermano : hermanos) {
+			if (!hermano.getID().equals(miId) && !hermano.getIDSuperiorInmediato().equals("")
+					&& !hermano.getIDGrupo().equals("") && hermano.getIDGrupo().equals(existo.get().getIDGrupo())
+					&& hermano.getStatusActivo().equals("true")) {
 				listaConversacion.add(hermano);
 			}
 		}
 
-		Iterable<User> misHijos = userRepository.findByBossId(existo.get().getID());
-		
+		Iterable<User> misHijos = userRepository.findByBossId(miId);
+		List<User> hijosValidos = new ArrayList<>();
+
+		for (User hijo : misHijos) {
+			if (hijo.getIDGrupo().equals(existo.get().getIDGrupo()) && hijo.getStatusActivo().equals("true")
+					&& !hijo.getIDSuperiorInmediato().equals("")) {
+				hijosValidos.add(hijo);
+			}
+		}
+
 		lista(misHijos);
-		
-		for(User usuariosHijos : this.myArregloUsuario) {
+
+		for (User usuariosHijos : this.myArregloUsuario) {
 			listaConversacion.add(usuariosHijos);
 		}
-		
+
+		this.myArregloUsuario.clear();
+
 		return listaConversacion;
 	}
-	
-	
-	public void lista(Iterable<User> listaHijos){
+
+	public void lista(Iterable<User> listaHijos) {
 		List<User> contenedor = new ArrayList<>();
-		for(User usuario : listaHijos) {
-			this.myArregloUsuario.add(usuario);
-			Iterable<User> listaNietos = userRepository.findByBossId(usuario.getID());
-			listaNietos.forEach(contenedor::add);
-			if(contenedor.size()>0) {
-				lista(listaNietos);
+		for (User usuario : listaHijos) {
+			if (!usuario.getIDSuperiorInmediato().equals("") && !usuario.getIDGrupo().equals("")
+					&& usuario.getStatusActivo().equals("true")) {
+				this.myArregloUsuario.add(usuario);
+				Iterable<User> listaNietos = userRepository.findByBossId(usuario.getID());
+				listaNietos.forEach(contenedor::add);
+				if (contenedor.size() > 0) {
+					lista(listaNietos);
+				}
 			}
 		}
 	}
