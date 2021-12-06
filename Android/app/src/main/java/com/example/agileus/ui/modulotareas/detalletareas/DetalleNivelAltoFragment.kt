@@ -128,7 +128,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             }
 
             btnEditarTareaF.setOnClickListener {
-                activarCampos()
+                activarCampos(args)
             }
 
             btnCancelarEdicion.setOnClickListener {
@@ -160,6 +160,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 var obs = binding.txtObservacionesD.text.toString()
                 args.tareas.observaciones = obs
 
+
                 //todo cuando haya que modificar archivo crear un metodo para subir el archivo
                 //todo si el archivo no es nulo o vacio
                 //todo mandarlo a llamar en esta parte pasandole el parametro del archivo.
@@ -173,20 +174,26 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 var observaciones: String
 
 
+
                 titulo = txtNombreTareaD.text.toString()
                 descripcion = txtDescripcionD.text.toString()
                 fecha_ini = txtFechaInicioD.text.toString()
                 fecha_fin = txtFechaFinD.text.toString()
                 prioridad = txtPrioridadD.text.toString()
-                estatus = txtEstatusD.text.toString()
                 observaciones = obs
 
 
-                /*if (observaciones.isNullOrEmpty()) {
-                    estatus = "terminado"
+                if (btnGuardarTareaF.text.equals("Validar")) {
+                    if (observaciones.isNullOrEmpty() && btnGuardarTareaF.text.equals("Validar")) {
+                        estatus = "terminada"
+                        //todo no entra condicion en terminada
+                        //todo el api de editar no acepta blancos, por eso no cambia de estado a editada
+                    } else {
+                        estatus = "pendiente"
+                    }
                 } else {
-                    estatus = "pendiente"
-                }*/
+                    estatus = txtEstatusD.text.toString()
+                }
 
 
                 var update = TaskUpdate(
@@ -204,8 +211,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 val newFragment2 = DialogoActualizarTarea(update, args.tareas.idTarea)
                 newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
 
-                detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
-
+                //   detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
 
 
             }
@@ -253,7 +259,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         } else {
             mesI = mes.toString()
         }
-
         if (dia < 10) {
             diaI = "0$dia"
         } else {
@@ -345,9 +350,13 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         }
     }
 
-    private fun activarCampos() {
+    private fun activarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
             //  binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo PDF")
+            Toast.makeText(context, "Estatus: ${args.tareas.estatus}", Toast.LENGTH_SHORT).show()
+            if (args.tareas.estatus.equals("revision")) {
+                btnGuardarTareaF.setText("Validar")
+            }
 
             btnAdjuntarArchivoF.isVisible = true
             btnDescargarArchivoFF.isVisible = false
