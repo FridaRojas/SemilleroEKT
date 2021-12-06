@@ -382,22 +382,10 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     }
 
     override fun onDateInicioSelected(anio: Int, mes:String, dia:String) {
-        val diaString: String
-        val mesString: String
         anioInicio = anio
         mesInicio = mes
         diaInicio = dia
 
-        /*if (dia < 10) {
-            diaString = "0$dia"
-        } else {
-            diaString = "$dia"
-        }
-        if (mes + 1 < 10) {
-            mesString = "0$mesInicio"
-        } else {
-            mesString = "${mes + 1}"
-        }*/
 
         val fecha = binding.txtFechaInicioD
         val fechaObtenida = "$anio-$mes-$dia"
@@ -405,22 +393,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     }
 
     override fun onDateFinSelected(anio: Int, mes:String, dia:String) {
-        val diaString: String
-        val mesString: String
         anioFin = anio
         mesFin = mes
         diaFin = dia
-
-        /*if (dia < 10) {
-            diaString = "0$dia"
-        } else {
-            diaString = "$dia"
-        }
-        if (mes + 1 < 10) {
-            mesString = "0$mesFin"
-        } else {
-            mesString = "${mes + 1}"
-        }*/
 
         val fecha = binding.txtFechaFinD
         val fechaObtenida = "$anio-$mes-$dia"
