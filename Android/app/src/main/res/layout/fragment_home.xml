@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/paddingGeneral"
     android:background="@color/colorBackground"
     tools:context=".ui.modulomensajeria.listaconversations.ListConversationFragment">
 
@@ -12,15 +11,15 @@
         android:id="@+id/et_search_conversation"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_search"
-        android:background="@drawable/rounded_bg"
-        android:backgroundTint="@color/white"
-        android:drawableEnd="@drawable/iconobuscar"
         app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        style="@style/StyleSearchEditText"
         android:layout_marginBottom="@dimen/paddingGeneral"
         android:layout_marginEnd="@dimen/margin_end_general"
-        android:paddingStart="@dimen/margin_end_general">
+        android:layout_marginStart="@dimen/paddingGeneral"
+        android:layout_marginTop="@dimen/paddingGeneral"
+       >
 
     </EditText>
 
@@ -32,7 +31,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/iconobroadcast"
-        android:layout_marginStart="@dimen/margin_start_general"/>
+        android:layout_marginStart="@dimen/margin_start_general"
+        android:layout_marginTop="@dimen/paddingGeneral"
+        android:layout_marginEnd="@dimen/paddingGeneral"/>
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerListGroups"
@@ -60,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="70dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/paddingGeneral"
         android:src="@drawable/iconoagregar"
         />
 

@@ -7,10 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.GroupsAdapter
 import com.example.agileus.models.Chats
-import com.example.agileus.models.Contacts
 import com.example.agileus.models.Groups
-import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsViewModel
-import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

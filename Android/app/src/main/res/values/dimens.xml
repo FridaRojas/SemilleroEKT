@@ -17,5 +17,6 @@
     <dimen name="fragment_vertical_margin">16dp</dimen>
     <dimen name="margin_bottom_recycler">20dp</dimen>
     <dimen name="margin_bottom_icon_enviar">20dp</dimen>
+    <dimen name="corner_radius_card_contacts">5dp</dimen>
 
 </resources>

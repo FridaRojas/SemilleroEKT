@@ -20,18 +20,11 @@
 
         <TextView
             android:id="@+id/txtNameContact"
-            style="@style/titleCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nombre del usuario"
+            style="@style/textCardGroups"
             />
-
-        <TextView
-            android:id="@+id/txtRol"
-            style="@style/textCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-           />
 
     </LinearLayout>
 

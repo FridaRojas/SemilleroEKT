@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="com.example.agileus.ui.modulomensajeria.listacontactos.ListConversationFragment"
         android:label="@string/title_mensajes"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_listContactsFragment"
             app:destination="@id/listContactsFragment" />
@@ -39,14 +39,16 @@
         android:name="com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragment"
         android:label="Notificaciones"
         tools:layout="@layout/reporte_mensajes_fragment" />
+
     <fragment
         android:id="@+id/listContactsFragment"
         android:name="com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragment"
-        android:label="fragment_buzon"
+        android:label="Contactos"
         tools:layout="@layout/fragment_buzon" >
         <action
             android:id="@+id/action_listContactsFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
+
     </fragment>
 
     <fragment

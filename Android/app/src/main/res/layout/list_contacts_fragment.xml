@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/paddingGeneral"
     android:background="@color/colorBackground"
     tools:context=".ui.modulomensajeria.listcontacts.ListContactsFragment">
+
 
     <EditText
         android:id="@+id/et_search_contact"
@@ -14,12 +14,9 @@
         android:layout_height="@dimen/height_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_bg"
-        android:backgroundTint="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="@dimen/margin_bottom_general"
-        android:drawableEnd="@drawable/iconobuscar"
-        android:paddingStart="@dimen/margin_end_general"/>
+        android:layout_margin="@dimen/paddingGeneral"
+        style="@style/StyleSearchEditText"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerListContacts"
@@ -28,6 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_search_contact"
-        android:layout_marginTop="@dimen/paddingGeneral"/>
+        android:layout_marginTop="@dimen/paddingGeneral"
+        android:layout_marginBottom="@dimen/paddingGeneral"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

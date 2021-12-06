@@ -10,7 +10,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.R
 import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
 import com.example.agileus.models.StatusRead
@@ -44,6 +49,9 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         id_chat = Constantes.idChat
         id_chat = intent.getStringExtra(Constantes.ID_CHAT).toString()
         id_receptor = intent.getStringExtra(Constantes.ID_RECEPTOR).toString()
+        var name_receptor = intent.getStringExtra(Constantes.NAME_RECEPTOR)
+
+        this.setTitle(name_receptor)
         var rol = intent.getStringExtra(Constantes.ROL_USER).toString()
 
         if(rol.equals("BROADCAST")){

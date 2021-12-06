@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setupActionBarWithNavController(findNavController(R.id.nav_host_fragment_activity_home))
 
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
