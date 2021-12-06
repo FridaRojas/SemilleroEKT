@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -23,8 +24,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.ActivityHomeBinding
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), DialogoTareaCreadaExitosamente.NoticeDialogListener {
 
   lateinit var binding: ActivityHomeBinding
 
@@ -72,5 +74,12 @@ class HomeActivity : AppCompatActivity() {
     private fun hideBottomNav(nav_view:BottomNavigationView) {
         nav_view.visibility = View.GONE
 
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -148,7 +149,7 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             }
 
             this.dialog?.closeOptionsMenu()
-
+            Toast.makeText(context, dataTask.archivo, Toast.LENGTH_SHORT).show()
             if (!dataTask.archivo.isNullOrEmpty()) {
                 btnPdf.isVisible = true
                 btnPdf.setOnClickListener {

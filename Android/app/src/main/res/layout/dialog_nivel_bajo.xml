@@ -132,12 +132,11 @@
             android:id="@+id/btnPdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
             style="@style/StyleTextFragment"
             android:drawableLeft="@drawable/iconoadjuntararchivo"
             android:layout_marginTop="@dimen/marginFormulario"
             android:textColor="@color/colorPrimary"
-            android:text="  Descargar Archivo PDF"
+            android:text="Descargar Archivo PDF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtObservacionesD"/>
 
