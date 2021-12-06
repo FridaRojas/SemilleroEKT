@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
+import com.example.agileus.utils.Constantes.id
 
 class RecuperaPasswordDialog (val listener:DialogoListen) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

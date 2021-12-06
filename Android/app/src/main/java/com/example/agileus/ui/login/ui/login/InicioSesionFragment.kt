@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.InicioSesionFragmentBinding
+import com.example.agileus.utils.Constantes.id
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
