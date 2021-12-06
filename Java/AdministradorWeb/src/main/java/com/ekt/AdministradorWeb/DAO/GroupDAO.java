@@ -47,7 +47,6 @@ public class GroupDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            System.out.println(jsonObject);
             return true;
         }catch (Exception e){
             return false;

@@ -3,6 +3,8 @@ package com.ekt.AdministradorWeb.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Arrays;
+
 @Document("Usuarios")
 public class User {
 
@@ -19,10 +21,29 @@ public class User {
     private Object[] opcionales;
     private String token;
     private String telefono;
-    private String idSuperiorInmediato;
+    private String idsuperiorInmediato;
     private String statusActivo;
     private String curp;
     private String rfc;
+
+    public User() {
+        this.id = "";
+        this.correo = "";
+        this.fechaInicio = "";
+        this.fechaTermino = "";
+        this.numeroEmpleado = "";
+        this.nombre = "";
+        this.password = "";
+        this.nombreRol = "";
+        this.idgrupo = "";
+        this.opcionales = null;
+        this.token = "";
+        this.telefono = "";
+        this.idsuperiorInmediato = "";
+        this.statusActivo = "";
+        this.curp = "";
+        this.rfc = "";
+    }
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -60,8 +81,8 @@ public class User {
     public String getTelefono() { return telefono; }
     public void setTelefono(String value) { this.telefono = value; }
 
-    public String getIDSuperiorInmediato() { return idSuperiorInmediato; }
-    public void setIDSuperiorInmediato(String value) { this.idSuperiorInmediato = value; }
+    public String getIDSuperiorInmediato() { return idsuperiorInmediato; }
+    public void setIDSuperiorInmediato(String value) { this.idsuperiorInmediato = value; }
 
     public String getStatusActivo() { return statusActivo; }
     public void setStatusActivo(String value) { this.statusActivo = value; }
@@ -71,4 +92,26 @@ public class User {
 
     public String getRFC() { return rfc; }
     public void setRFC(String value) { this.rfc = value; }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", correo='" + correo + '\'' +
+                ", fechaInicio='" + fechaInicio + '\'' +
+                ", fechaTermino='" + fechaTermino + '\'' +
+                ", numeroEmpleado='" + numeroEmpleado + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", password='" + password + '\'' +
+                ", nombreRol='" + nombreRol + '\'' +
+                ", idgrupo='" + idgrupo + '\'' +
+                ", opcionales=" + Arrays.toString(opcionales) +
+                ", token='" + token + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", idSuperiorInmediato='" + idsuperiorInmediato + '\'' +
+                ", statusActivo='" + statusActivo + '\'' +
+                ", curp='" + curp + '\'' +
+                ", rfc='" + rfc + '\'' +
+                '}';
+    }
 }

@@ -69,7 +69,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/find/{id}")//*
+        @GetMapping("/find/{id}")//*
     public ResponseEntity<?> findById(@PathVariable String id){
         //return userService.findById(id);
         try{
@@ -178,12 +178,10 @@ public class UserController {
 
         try {
             Optional<User> user = userService.findById(userUpdate.getID());
-            System.out.println("Servicios:"+userUpdate.getRFC());
-            System.out.println("Servicios2 :"+user.get().getRFC());
+
             if(!user.isPresent()) {
                 return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
             }else {
-                System.out.println("0");
                 if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(userUpdate.getCorreo())){
                     System.out.println("1");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", ""));
@@ -198,9 +196,11 @@ public class UserController {
                     System.out.println("4");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
                 }else{
+                        //si tien grupo actualizamos informacion personal
+                        if(!userUpdate.getIDGrupo().equals("")){
+                            groupService.actualizaUsuario(userUpdate);
+                        }
 
-                        System.out.println(userUpdate.getIDGrupo() + " --- " + userUpdate.getID());
-                        groupService.actualizaUsuario(userUpdate);
                     return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario actualizado correctamente", userService.actualizaUsuario(userUpdate)));
                 }
             }

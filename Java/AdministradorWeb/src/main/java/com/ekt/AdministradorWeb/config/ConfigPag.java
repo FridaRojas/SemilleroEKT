@@ -191,21 +191,33 @@ public class ConfigPag {
         Boolean bandera=false;
         User userDb;
 
+        //se guarda la informacion para que se mande completa
         userDb=userDAO.buscaID(id);
-        user.setID(id);
+        System.out.println("userdao111: "+userDb.toString());
+        user.setID(userDb.getID());
         user.setIDGrupo(userDb.getIDGrupo());
-        System.out.println("en edita usuarioservicio:"+user.getIDGrupo());
+        user.setNombreRol(userDb.getNombreRol());
+        user.setIDSuperiorInmediato(userDb.getIDSuperiorInmediato());
 
-        //editar informacion
-        //editar usuario en grupo
+        System.out.println("user: "+user.toString());
+        System.out.println("userdao: "+userDb.toString());
 
-       if(userDAO.editarUsuario(user) && groupDAO.editarUsuarioGrupo(user) ){
-            bandera=true;
-       }
+        //vefiricar si tiene un grupo asignado para editarlo tambien
+        if (!userDb.getIDGrupo().equals("")){
+            System.out.println("Entra a grupo lleno");
+            if(userDAO.editarUsuario(user) && groupDAO.editarUsuarioGrupo(user) ){
+                bandera=true;
+            }
+        }else{
+            System.out.println("Entra a grupo vacio");
+            if(userDAO.editarUsuario(user)){
+                bandera=true;
+            }
+        }
 
         //si existen retornar error
         if (bandera){
-            System.out.println("se modifico con exito");
+            System.out.println("se modifico usuario con exito");
             return "redirect:/findAllUsuarios";
         }else{
             System.out.println("Error al modificar usuario");

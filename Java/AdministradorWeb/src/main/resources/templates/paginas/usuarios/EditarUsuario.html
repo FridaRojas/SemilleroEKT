@@ -154,7 +154,7 @@
                         <div class="form-group">
                             <label for="uname">CURP:</label> <input type="text"
                                                                     th:value="${user.getCurp()}"
-                                                                    title="Solo mayusculas y numeros, lonitud de 23" minlength="23" maxlength="23"
+                                                                    title="Solo mayusculas y numeros, lonitud de 18" minlength="18" maxlength="18"
                                                                     class="form-control" id="uname" placeholder="Ingrese su curp"
                                                                     name="curp" required pattern="[A-Z0-9]+">
                             <div class="valid-feedback">Valid.</div>
@@ -182,6 +182,8 @@
                             <label for="uname">Password:</label> <input type="password"
                                                                                      th:value="${user.getPassword()}"
                                                                                      class="form-control"
+                                                                        title="10 caracteres sin signos" maxlength="10" minlength="10"
+                                                                        pattern="[A-Za-z0-9]+"
                                                                                      placeholder="Ingrese la fecha de contrato" name="password"
                                                                                      required>
                             <div class="valid-feedback">Valid.</div>

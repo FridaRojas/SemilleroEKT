@@ -185,9 +185,7 @@ public class UserDAO {
             String res = response.body().string();
             JSONObject jsonObject= new JSONObject(res);
             JSONObject name1 = jsonObject.getJSONObject("data");
-            System.out.println(name1.toString());
             JSONArray users = name1.getJSONArray("usuarios");
-            System.out.println(users.toString());
             for (int i=0;i<users.length();i++){
                     listaUsuariosOrganigrama.add(gson.fromJson(users.getJSONObject(i).toString(), User.class));
             }
