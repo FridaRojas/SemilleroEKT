@@ -39,19 +39,23 @@ class MensajesService {
             
             (informacion, response, error) in
             
-            do{
-                arrMensajes = try JSONDecoder().decode([Mensajes].self, from: informacion!)
-                DispatchQueue.main.async {
-                    
-                    if service == true {
-                        self.webServiceMessage?(arrMensajes!)
-                    }
-                }
+            if informacion == nil{
+                print("Está vacia la informacion del servicio de Mensajes")
+            }else{
                 
-            }catch{
-                print("Error al leer el archivo Mensajes")
+                do{
+                    arrMensajes = try JSONDecoder().decode([Mensajes].self, from: informacion!)
+                    DispatchQueue.main.async {
+                        
+                        if service == true {
+                            self.webServiceMessage?(arrMensajes!)
+                        }
+                    }
+                    
+                }catch{
+                    print("Error al leer el archivo Mensajes")
+                }
             }
-            
         }.resume()
         
     }
@@ -65,19 +69,22 @@ class MensajesService {
             
             (info, response, error) in
             
-            do {
-                arrBroadcast = try JSONDecoder().decode([Broadcast].self, from: info!)
-                
-                DispatchQueue.main.async {
-                    if service == true {
-                        self.webServiceBroad?(arrBroadcast!)
+            if info == nil{
+                print("La información del servicio del broadcast está vacia")
+            }else{
+                do {
+                    arrBroadcast = try JSONDecoder().decode([Broadcast].self, from: info!)
+                    
+                    DispatchQueue.main.async {
+                        if service == true {
+                            self.webServiceBroad?(arrBroadcast!)
+                        }
                     }
+                
+                } catch {
+                    print("Error al leer broadcast")
                 }
-            
-            } catch {
-                print("Error al leer broadcast")
             }
-            
         }.resume()
     }
     

@@ -372,14 +372,25 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // Modal filtros
     @IBAction func abrirFiltros(_ sender: Any) {
+        if arrUsuarios == nil{
+            print("El arreglo de los usuarios está vacio")
+            arrUsuarios = ["SinUsuario"]
+        }
         let modal_form = adaptadorModal.crear_modal_funcion(datos: arrUsuarios!, Accion_Confirmacion_completion: {
             [self](Filtro) -> Void in
               
             lblNombreu.text = (Filtro[3] as! String)
                     
-        serviciosTareasFiltrado(filtros: Filtro as! [String])
-        serviciosMensajesFiltrado(filtros: Filtro as! [String])
-        serviciosBroadcast(idUsuario: Filtro[2] as! String)
+            serviciosTareasFiltrado(filtros: Filtro as! [String])
+            serviciosMensajesFiltrado(filtros: Filtro as! [String])
+            serviciosBroadcast(idUsuario: Filtro[2] as! String)
+            
+            //Regresar al menu de mensajes
+            optionstAB.selectedSegmentIndex = 0
+            llenar_pie_chart(mensajes: cantidad_mensajes)
+            configuracion_etiquetasPieMensajes()
+            ocultar_etiquetas(tipo: false)
+            graficoMensajes = true
             
         })
         present(modal_form, animated: true)

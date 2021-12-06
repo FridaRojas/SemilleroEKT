@@ -38,7 +38,7 @@ class TareasService{
             
             //print(informacion!)
             //print(response!)
-            //print(error)
+            print(error)
             
             do{
                 
@@ -74,24 +74,24 @@ class TareasService{
             
             (informacion, response, error) in
             
-            //print(informacion!)
-            //print(response!)
-            //print(error)
-            
-            do{
+            if informacion == nil {
+                print("La información del servicio de tarea esta vacia")
+            }else{
                 
-                arrTareas = try JSONDecoder().decode(ObjetoTareas.self, from: informacion!)
-                DispatchQueue.main.async {
-                                        
-                    if sevice == true{
-                        self.webServiceTask?(arrTareas!.data)
-                    }
-                    //print(arrTareas!)
+                do{
                     
+                    arrTareas = try JSONDecoder().decode(ObjetoTareas.self, from: informacion!)
+                    DispatchQueue.main.async {
+                                            
+                        if sevice == true{
+                            self.webServiceTask?(arrTareas!.data)
+                        }
+                    }
+                    
+                }catch{
+                    print("Error al leer el archivo Tareas")
                 }
                 
-            }catch{
-                print("Error al leer el archivo Tareas")
             }
             
         }.resume()

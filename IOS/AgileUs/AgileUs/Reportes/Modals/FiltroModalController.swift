@@ -224,9 +224,11 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let usuarioL = Usuario(id: userID, nombre: userName, fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "")
      
         opciones_usuario.append(usuarioL)
-        let lista_usuarios = usuarios as! [Usuario]
-        for i in lista_usuarios {
-            opciones_usuario.append(i)
+        
+        if let lista_usuarios = (usuarios as? [Usuario]){
+            for i in lista_usuarios {
+                opciones_usuario.append(i)
+            }
         }
     }
     

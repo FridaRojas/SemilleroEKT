@@ -34,25 +34,29 @@ class Usuarios{
         URLSession.shared.dataTask(with: url!) {
             
             (informacion, response, error) in
-     
-            do{
-                //Añadir los datos del Json en el array de datos
-                arrData = try JSONDecoder().decode(Objeto.self, from: informacion!)
-
-                DispatchQueue.main.async { [self] in
-                    
-                    let estatus = arrData!.status
-
-                    if "\(estatus)" == "OK"{
-                        self.webService?(arrData!.data)
-                    }
-                    filtroDeUsuariosPorJefe(idJefe: idJefe)
-                }
-                
-            } catch {
-                print("Error al leer el archivo")
-            }
             
+            if informacion == nil {
+                print("La informacion del servicio de Usuarios está vacia")
+            }else{
+                do{
+                    //Añadir los datos del Json en el array de datos
+                    arrData = try JSONDecoder().decode(Objeto.self, from: informacion!)
+
+                    DispatchQueue.main.async { [self] in
+                        
+                        let estatus = arrData!.status
+
+                        if "\(estatus)" == "OK"{
+                            self.webService?(arrData!.data)
+                        }
+                        filtroDeUsuariosPorJefe(idJefe: idJefe)
+                    }
+                    
+                } catch {
+                    print("Error al leer el archivo")
+                }
+            }
+     
         }.resume()
 
     }
