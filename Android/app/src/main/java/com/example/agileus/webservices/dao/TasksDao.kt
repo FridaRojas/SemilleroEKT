@@ -16,7 +16,7 @@ class TasksDao {
     fun postTasks(t: Tasks) {
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
 
-        /*val Response = callInserta?.execute()
+        val Response = callInserta?.execute()
         try {
             if(Response != null) {
                 if (Response.isSuccessful) {
@@ -30,16 +30,13 @@ class TasksDao {
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
                     Log.d("Mensaje", mensaje)
-
-                    //val newFragment = DialogoTareaCreadaExitosamente(this)
-                    //newFragment.show(, "Confirmacion")
                 }else {
                     Log.d("Mensaje", "No se creo la tarea ${Response.code()}")
                 }
             }
         }catch (e:Exception){
             Log.e("error", e.toString())
-        }*/
+        }
 
         callInserta.enqueue(object : Callback<Tasks> {
             override fun onResponse(call: Call<Tasks>, response: Response<Tasks>) {

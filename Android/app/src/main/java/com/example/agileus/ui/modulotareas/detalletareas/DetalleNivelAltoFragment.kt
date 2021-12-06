@@ -44,11 +44,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
 
     private var anioFin: Int = 0
-    private var mesInicio: Int = 0
+    private var mesInicio: String = ""
     private var anioInicio: Int = 0
-    private var diaInicio = 0
-    private var diaFin = 0
-    private var mesFin = 0
+    private var diaInicio : String = ""
+    private var diaFin : String = ""
+    private var mesFin : String = ""
     private var _binding: FragmentDetalleNivelAltoBinding? = null
     private val binding get() = _binding!!
     private lateinit var observaciones: String
@@ -381,14 +381,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         )
     }
 
-    override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
+    override fun onDateInicioSelected(anio: Int, mes:String, dia:String) {
         val diaString: String
         val mesString: String
         anioInicio = anio
-        mesInicio = mes + 1
+        mesInicio = mes
         diaInicio = dia
 
-        if (dia < 10) {
+        /*if (dia < 10) {
             diaString = "0$dia"
         } else {
             diaString = "$dia"
@@ -397,21 +397,21 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             mesString = "0$mesInicio"
         } else {
             mesString = "${mes + 1}"
-        }
+        }*/
 
         val fecha = binding.txtFechaInicioD
-        val fechaObtenida = "$anio-$mesString-$diaString"
+        val fechaObtenida = "$anio-$mes-$dia"
         fecha.setText(fechaObtenida)
     }
 
-    override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
+    override fun onDateFinSelected(anio: Int, mes:String, dia:String) {
         val diaString: String
         val mesString: String
         anioFin = anio
-        mesFin = mes + 1
+        mesFin = mes
         diaFin = dia
 
-        if (dia < 10) {
+        /*if (dia < 10) {
             diaString = "0$dia"
         } else {
             diaString = "$dia"
@@ -420,10 +420,10 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             mesString = "0$mesFin"
         } else {
             mesString = "${mes + 1}"
-        }
+        }*/
 
         val fecha = binding.txtFechaFinD
-        val fechaObtenida = "$anio-$mesString-$diaString"
+        val fechaObtenida = "$anio-$mes-$dia"
         fecha.setText(fechaObtenida)
 
     }
