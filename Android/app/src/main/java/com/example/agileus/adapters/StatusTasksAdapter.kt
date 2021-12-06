@@ -16,23 +16,23 @@ import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 class StatusTasksAdapter(private var dataSet: Array<String>, val listener:TaskDialogListener) :
     RecyclerView.Adapter<StatusTasksAdapter.ViewHolder>() {
 
+    var isSelected:Boolean = false
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.status_task_item, viewGroup, false)
         return ViewHolder(view)
+
+
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.enlazarItem(dataSet[position], listener)
-
     }
 
     override fun getItemCount() = dataSet.size
 
-    fun update(filtro: ArrayList<String>) {
-        dataSet = filtro as Array<String>
-        this.notifyDataSetChanged()
-    }
+
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val statusTextView: TextView
@@ -49,20 +49,47 @@ class StatusTasksAdapter(private var dataSet: Array<String>, val listener:TaskDi
             statusTextView.setOnClickListener {
                 listener.getTaskByStatus(datos)
 
-
             }
 
         }
 
-        fun statusSelected(status: String, listener: TaskDialogListener) {
+
+        fun statusSelected() {
             var listaRecyclerStatus = context.resources.getStringArray(R.array.statusRecycler_array)
 
-            if(status == listaRecyclerStatus[0]){
-                statusTextView.setTextColor(context.resources.getColor(R.color.white))
-                statusTextView.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+            when (statusList) {
+                listaRecyclerStatus[0] -> {
+                    statusTextView.setTextColor(context.resources.getColor(R.color.white))
+                    statusTextView.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+                }
+                listaRecyclerStatus[1] -> {
+                    statusTextView.setTextColor(context.resources.getColor(R.color.white))
+                    statusTextView.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+                }
+                listaRecyclerStatus[2] -> {
+                    statusTextView.setTextColor(context.resources.getColor(R.color.white))
+                    statusTextView.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+                }
+                listaRecyclerStatus[3] -> {
+                    statusTextView.setTextColor(context.resources.getColor(R.color.white))
+                    statusTextView.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+                }
+                listaRecyclerStatus[4] -> {
+                    statusTextView.setTextColor(context.resources.getColor(R.color.white))
+                    statusTextView.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+                }
+                else -> {
+                    statusTextView.setTextColor(context.resources.getColor(R.color.black))
+                    statusTextView.setBackgroundColor(context.resources.getColor(R.color.white))
+                }
             }
 
         }
+    }
+
+    fun update(filtro: ArrayList<String>) {
+        dataSet = filtro as Array<String>
+        this.notifyDataSetChanged()
     }
 
 }
