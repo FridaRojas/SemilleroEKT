@@ -1,5 +1,6 @@
 package com.example.agileus.webservices.dao
 
+import android.provider.ContactsContract
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
@@ -117,7 +118,7 @@ class TasksDao {
                 } else {
                     listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
                 }
-            }else{
+            } else {
                 listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
             }
         } catch (e: Exception) {
@@ -148,21 +149,27 @@ class TasksDao {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
         val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate, idTarea)
-        callback.enqueue(object : Callback<TaskList2> {
-            override fun onResponse(call: Call<TaskList2>, response: Response<TaskList2>) {
-                if (response.code() == 400) {
-                    Log.d("Error code 400", response.errorBody()!!.string());
-                }
-                if (response.isSuccessful) {
-                   Log.d("Mensaje", "Tarea editada")
-                } else {
-                    Log.d("Mensaje", "No se Edito tarea ${response.code()}")
+        callback.enqueue(object : Callback<DataTask> {
+            override fun onResponse(
+                call: Call<DataTask>,
+                response: Response<DataTask>
+            ) {
+                try {
+                    if (response.isSuccessful) {
+                        Log.d("Mensaje", "Tarea Editada ${response.body()?.estatus}")
+                    } else {
+                        Log.d("Mensaje", "Tarea no Editada")
+                    }
+                } catch (e: Exception) {
+                    Log.d("Mensaje", e.message.toString())
                 }
             }
 
-            override fun onFailure(call: Call<TaskList2>, t: Throwable) {
+
+            override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }
+
         })
     }
 

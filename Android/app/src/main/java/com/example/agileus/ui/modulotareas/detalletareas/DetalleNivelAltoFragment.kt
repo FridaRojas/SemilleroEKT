@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
@@ -21,8 +22,7 @@ import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
-import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
+import com.example.agileus.ui.modulotareas.dialogostareas.*
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
@@ -33,7 +33,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
+class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
+    DialogoTareaCreadaExitosamente.NoticeDialogListener {
     lateinit var firebaseProvider: FirebaseProvider
     lateinit var mStorageInstance: FirebaseStorage
     lateinit var mStorageReference: StorageReference
@@ -101,6 +102,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                                 returnUri,
                                 Constantes.referenciaTareas,
                                 "tarea$idsuperiorInmediato${(0..999).random()}"
+
                             )
                         } catch (e: FileNotFoundException) {
                             e.printStackTrace()
@@ -119,7 +121,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         setInfo(args)
 
-
         with(binding) {
             desactivarCampos(args)
             btnCancelarTareaF.setOnClickListener {
@@ -135,19 +136,19 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
             }
 
             btnAdjuntarArchivoF.setOnClickListener {
-                if (binding.btnAdjuntarArchivoF.text.equals("Adjuntar Archivo PDF")) {
-                    val intentPdf = Intent()
-                    intentPdf.setAction(Intent.ACTION_GET_CONTENT)
-                    intentPdf.type =
-                        "application/pdf"                     // Filtra para archivos pdf
-                    resultLauncherArchivo.launch(intentPdf)
-                } else if (binding.btnAdjuntarArchivoF.text.equals("Descargar Archivo PDF")) {
-                    var mDownloadProvider = DownloadProvider()
-                    mDownloadProvider.dowloadFile(
-                        (activity as HomeActivity).applicationContext,
-                        args.tareas.archivo, "archivo"
-                    )
-                }
+                val intentPdf = Intent()
+                intentPdf.setAction(Intent.ACTION_GET_CONTENT)
+                intentPdf.type =
+                    "application/pdf"                     // Filtra para archivos pdf
+                resultLauncherArchivo.launch(intentPdf)
+            }
+
+            btnDescargarArchivoFF.setOnClickListener {
+                var mDownloadProvider = DownloadProvider()
+                mDownloadProvider.dowloadFile(
+                    (activity as HomeActivity).applicationContext,
+                    args.tareas.archivo, "archivo"
+                )
             }
 
             btnObservacionF.setOnClickListener {
@@ -171,12 +172,13 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                 var estatus: String
                 var observaciones: String
 
+
                 titulo = txtNombreTareaD.text.toString()
                 descripcion = txtDescripcionD.text.toString()
-                fecha_ini = txtFechaFinD.text.toString()
-                fecha_fin = txtFechaInicioD.text.toString()
+                fecha_ini = txtFechaInicioD.text.toString()
+                fecha_fin = txtFechaFinD.text.toString()
                 prioridad = txtPrioridadD.text.toString()
-                //estatus = txtEstatusD.text.toString()
+                estatus = txtEstatusD.text.toString()
                 observaciones = obs
 
 
@@ -196,6 +198,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
                     estatus,
                     observaciones
                 )
+
+                desactivarCampos(args)
+
+                val newFragment2 = DialogoActualizarTarea(update, args.tareas.idTarea)
+                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
 
                 detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
 
@@ -267,8 +274,8 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     private fun setInfo(args: DetalleNivelAltoFragmentArgs) {
-        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
-        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
 
         Log.d("Mensaje", args.tareas.archivo)
 
@@ -286,18 +293,17 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 
         cal.time = fechaI
 
-        if (cal[Calendar.MONTH] <= 9) {
-            mesI = "0${cal[Calendar.MONTH] + 1}"
+        cal[Calendar.MONTH] + 1
+        cal[Calendar.DATE] + 1
+        if (cal[Calendar.MONTH] < 10) {
+            mesI = "0${cal[Calendar.MONTH]}"
         } else {
-            cal[Calendar.MONTH] + 1
             mesI = cal[Calendar.MONTH].toString()
         }
 
-
-        if (cal[Calendar.DATE] <= 9) {
-            diaI = "0${cal[Calendar.DATE] + 1}"
+        if (cal[Calendar.DATE] < 10) {
+            diaI = "0${cal[Calendar.DATE]}"
         } else {
-            cal[Calendar.DATE] + 1
             diaI = cal[Calendar.DATE].toString()
         }
 
@@ -307,17 +313,17 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
 ///////////////////////////////////////////////////////////////777
         cal.time = fechaF
 
-        if (cal[Calendar.MONTH] <= 9) {
-            mesF = "0${cal[Calendar.MONTH] + 1}"
+        cal[Calendar.MONTH] + 1
+       cal[Calendar.DATE] + 1
+        if (cal[Calendar.MONTH] < 10) {
+            mesF = "0${cal[Calendar.MONTH]}"
         } else {
-            cal[Calendar.MONTH] + 1
             mesF = cal[Calendar.MONTH].toString()
         }
 
-        if (cal[Calendar.DATE] <= 9) {
-            diaF = "0${cal[Calendar.DATE] + 1}"
+        if (cal[Calendar.DATE] < 10) {
+            diaF = "0${cal[Calendar.DATE]}"
         } else {
-            cal[Calendar.DATE] + 1
             diaF = cal[Calendar.DATE].toString()
         }
 
@@ -326,15 +332,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         Log.d("Mensaje", "fecha nueva $fechaFi")
 
 
-
-        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
-        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
+//        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
+//        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
 
 
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
-        prioridad = prioridadCampo
-        estatus = statusCampo
+        prioridad = args.tareas.prioridad
+        estatus = args.tareas.estatus
         descripcion = args.tareas.descripcion
 
         if (!args.tareas.observaciones.isNullOrEmpty()) {
@@ -347,9 +352,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         }
 
         if (!args.tareas.archivo.isNullOrEmpty()) {
-            binding.btnAdjuntarArchivoF.isVisible = true
+            binding.btnDescargarArchivoFF.isVisible = true
         } else {
-            binding.btnAdjuntarArchivoF.isVisible = false
+            binding.btnDescargarArchivoFF.isVisible = false
             args.tareas.archivo = ""
         }
 
@@ -368,15 +373,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private fun desactivarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
             Log.d("Mensaje", args.tareas.archivo)
-            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
             if (!args.tareas.archivo.isNullOrEmpty()) {
-                binding.btnAdjuntarArchivoF.setText("Descargar archivo PDF")
-                binding.btnAdjuntarArchivoF.isVisible = true
+                binding.btnDescargarArchivoFF.isVisible = true
             }
             txtDescripcionD.isEnabled = false
             txtDescripcionD.isEnabled = false
             txtFechaInicioD.isEnabled = false
-            btnAdjuntarArchivoF.isEnabled = false
+            btnAdjuntarArchivoF.isVisible = false
             txtFechaFinD.isEnabled = false
             txtObservacionesD.isEnabled = false
             btnEditarTareaF.isVisible = true
@@ -390,12 +394,12 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     private fun activarCampos() {
         with(binding) {
             //  binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo PDF")
-            btnAdjuntarArchivoF.isVisible = false
 
+            btnAdjuntarArchivoF.isVisible = true
+            btnDescargarArchivoFF.isVisible = false
             txtDescripcionD.isEnabled = true
             txtDescripcionD.isEnabled = true
             txtFechaInicioD.isEnabled = true
-            btnAdjuntarArchivoF.isEnabled = true
             txtFechaFinD.isEnabled = true
             txtObservacionesD.isEnabled = true
             btnEditarTareaF.isVisible = false
@@ -407,7 +411,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
     }
 
     private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
-        val dialogoAceptar = DialogoAceptar(args)
+        val dialogoAceptar = DialogoEliminarTarea(args)
         dialogoAceptar.show(
             (activity as HomeActivity).supportFragmentManager,
             getString(R.string.dialogoAceptar)
@@ -459,6 +463,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener {
         val fechaObtenida = "$anio-$mesString-$diaString"
         fecha.setText(fechaObtenida)
 
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        Toast.makeText(context, "Anuma si va a jalar :0", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        TODO("Not yet implemented")
     }
 
 }

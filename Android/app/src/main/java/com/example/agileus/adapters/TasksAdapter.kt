@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,7 @@ class TasksAdapter(
 
         private lateinit var taskViewModel: TaskViewModel
 
+        var cardTarea: ConstraintLayout
         var nombreTarea: TextView
         var personaAsignada: TextView
         var fecha: TextView
@@ -62,8 +64,8 @@ class TasksAdapter(
             prioridad = view.findViewById(R.id.txtPrioridad)
             fecha = view.findViewById(R.id.txtFecha)
             btnAbrirDetallesTarea = view.findViewById(R.id.iconoAbrirDetallesTarea)
+            cardTarea = view.findViewById(R.id.cardTarea)
         }
-
 
 
         fun enlazarItem(dataTask: DataTask) {
@@ -76,7 +78,7 @@ class TasksAdapter(
 
 
             //Log.d("status", status)
-            btnAbrirDetallesTarea.setOnClickListener {
+            cardTarea.setOnClickListener {
                 if (status == "asignada") {
                     var action: NavDirections
                     action =
@@ -90,7 +92,8 @@ class TasksAdapter(
             }
         }
 
-        fun formatoFecha(fecha: Date) : String{
+        fun formatoFecha(fecha: Date): String {
+
             var mesI: String = ""
             var diaI: String = ""
             var fechaIn: String = ""
@@ -101,23 +104,23 @@ class TasksAdapter(
 
             cal.time = fechaI
 
-
-            if (cal[Calendar.MONTH] <= 9) {
-                mesI = "0${cal[Calendar.MONTH] + 1}"
+            cal[Calendar.MONTH] + 1
+        cal[Calendar.DATE] + 1
+            if (cal[Calendar.MONTH] < 10) {
+                mesI = "0${cal[Calendar.MONTH]}"
             } else {
-                cal[Calendar.MONTH] + 1
                 mesI = cal[Calendar.MONTH].toString()
             }
 
-
-            if (cal[Calendar.DATE] <= 9) {
-                diaI = "0${cal[Calendar.DATE] + 1}"
+            if (cal[Calendar.DATE] < 10) {
+                diaI = "0${cal[Calendar.DATE]}"
             } else {
-                cal[Calendar.DATE] + 1
                 diaI = cal[Calendar.DATE].toString()
             }
 
-            fechaIn = cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
+            fechaIn =
+                cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
+
             return fechaIn
         }
     }
