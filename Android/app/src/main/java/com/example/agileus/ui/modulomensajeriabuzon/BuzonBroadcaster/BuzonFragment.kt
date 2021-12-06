@@ -12,6 +12,10 @@ import com.example.agileus.databinding.FragmentBuzonBinding
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.app.AppCompatActivity
+
+
+
 
 class BuzonFragment : Fragment() {
 
@@ -29,6 +33,7 @@ companion object{
         savedInstanceState: Bundle?
     ): View? {
 
+
         _binding = FragmentBuzonBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -38,8 +43,11 @@ companion object{
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
+        super.onViewCreated(view, savedInstanceState)
+//        getActivity()?.setTitle("Buzon Broadcaster");
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title =
+            "Buzon Broadcast"
 
         binding.mensajesrecibidos.setOnClickListener {
              control = 1

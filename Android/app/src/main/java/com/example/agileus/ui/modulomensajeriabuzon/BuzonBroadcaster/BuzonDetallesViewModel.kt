@@ -31,7 +31,6 @@ class BuzonDetallesViewModel : ViewModel() {
 
     lateinit var listaConsumida: ArrayList<Buzon>
     lateinit var listaConsumida1: ArrayList<BuzonResp>
-    lateinit var listausuarios: ArrayList<ListaUsers>
 
     init {
         lista = ProviderBuzon()
@@ -39,26 +38,24 @@ class BuzonDetallesViewModel : ViewModel() {
     }
 
     companion object {
-        var listaus=ArrayList<ListaUsers>()
+        var listaus=ArrayList<Contacts>()
         var listaBrd=ArrayList<BuzonResp>()
-
         var listasize = 0
         var listafiltrada= ArrayList<String>()
-
     }
 
-    fun getLista():ArrayList<ListaUsers> {
-        listausuarios = ArrayList()
-        listafiltrada1 = ArrayList()
+    fun getLista():ArrayList<Contacts> {
+        listafiltrada = ArrayList()
 
         try {
             viewModelScope.launch {
-                listausuarios = withContext(Dispatchers.IO) {
+                listaus = withContext(Dispatchers.IO) {
                     lista1.recuperarListadeContactos(broadlist)
                 }
-                Log.d("tam","${listausuarios.size}")
-                if (listausuarios.isNotEmpty()) {
-                    listausuarios.forEach(){
+                Log.d("tama","${listaus.size}")
+                if (listaus.isNotEmpty()) {
+                    listaus.forEach(){
+                        if(it.nombreRol != "BROADCAST")
                         listafiltrada.add(it.nombre)
                     }
                 }
@@ -66,7 +63,7 @@ class BuzonDetallesViewModel : ViewModel() {
         } catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
         }
-        return listausuarios
+        return listaus
     }
 
 
@@ -107,6 +104,19 @@ class BuzonDetallesViewModel : ViewModel() {
         } catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
         }
+    }
+
+    fun postMensaje(mypost: MensajeBodyBroadcaster) {
+
+        try {
+            viewModelScope.launch {
+                val response : Response<MensajeBodyBroadcaster> = lista1.getcustompost(mypost)
+                myResponse.value=response
+            }
+        } catch (ex: Exception) {
+            Log.e("aqui", ex.message.toString())
+        }
+
     }
 
 

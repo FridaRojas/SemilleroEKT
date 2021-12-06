@@ -71,6 +71,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="action_sign_in_short">SignIn</string>
     <string name="Login">fragment_login</string>
+    <string name="mensaje1">Estamos enviando el comunicado , Espere por favor</string>
 
 
 </resources>

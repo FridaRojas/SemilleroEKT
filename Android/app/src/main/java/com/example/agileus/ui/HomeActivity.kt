@@ -38,24 +38,17 @@ class HomeActivity : AppCompatActivity() {
         InitialApplication.preferenciasGlobal.recuperarToken()
 
         val navView: BottomNavigationView = binding.navView
-        binding.navView.visibility= View.GONE
+//        binding.navView.visibility= View.GONE
 
 
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
          val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.inicioSesionFragment,
-                R.id.navigation_home, R.id.navigation_dashboard,
-            )
+            setOf(R.id.inicioSesionFragment,R.id.navigation_home, R.id.navigation_dashboard)
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
-
-
-        //        val navController = navHostFragment.navController
-        //      findViewById<BottomNavigationView>(R.id.bottom_nav)
-        //        .setupWithNavController(navController)
 
         //recuperarPublicaciones()
     }
