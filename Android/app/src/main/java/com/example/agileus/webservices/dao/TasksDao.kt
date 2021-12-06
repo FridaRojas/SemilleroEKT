@@ -153,10 +153,10 @@ class TasksDao : DialogoConfirmacionListener {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
         val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate, idTarea)
-        callback.enqueue(object : Callback<DataTask> {
+        callback.enqueue(object : Callback<TaskList2> {
             override fun onResponse(
-                call: Call<DataTask>,
-                response: Response<DataTask>
+                call: Call<TaskList2>,
+                response: Response<TaskList2>
             ) {
                 try {
                     if (response.isSuccessful) {
@@ -170,7 +170,7 @@ class TasksDao : DialogoConfirmacionListener {
             }
 
 
-            override fun onFailure(call: Call<DataTask>, t: Throwable) {
+            override fun onFailure(call: Call<TaskList2>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }
 

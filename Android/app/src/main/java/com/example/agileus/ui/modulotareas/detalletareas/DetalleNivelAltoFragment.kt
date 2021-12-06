@@ -103,6 +103,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                                 returnUri,
                                 Constantes.referenciaTareas,
                                 "tarea$idsuperiorInmediato${(0..999).random()}"
+
                             )
                         } catch (e: FileNotFoundException) {
                             e.printStackTrace()
