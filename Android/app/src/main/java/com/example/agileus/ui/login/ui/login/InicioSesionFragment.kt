@@ -1,5 +1,6 @@
 package com.example.agileus.ui.login.ui.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,10 +11,15 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
+import com.example.agileus.ui.login.data.model.Data
 import com.example.agileus.ui.login.data.model.Users
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -25,6 +31,8 @@ class InicioSesionFragment : Fragment() {
 
     companion object {
         fun newInstance() = InicioSesionFragment()
+        var idClienteSesion: Int = 0
+        var nameClienteSesion: String = " "
     }
 
     private lateinit var viewModel: InicioSesionViewModel
@@ -58,25 +66,24 @@ class InicioSesionFragment : Fragment() {
             //val usuario = Users(correo, password.toInt(), TOKEN_KEY)
             //viewModel.recuperarLogueo(usuario)
 
-            val visibility = if (binding.progressLoading.visibility == View.GONE) {
-                View.VISIBLE
-            } else
-                View.GONE
-            binding.progressLoading.visibility = visibility
-
 
             if (correo.isEmpty()) {
-                binding.username.error = "Se requiere ingresar un correo valido"
+                binding.username.error = "Por favor, ingrese un correo"
                 binding.username.requestFocus()
                 return@setOnClickListener
 
             }
             if (password.isEmpty()) {
-                binding.password.error = "Se requiere ingresar una contraseña valida"
+                binding.password.error = "Por favor, ingrese una contraseña"
                 binding.password.requestFocus()
                 return@setOnClickListener
             } else {
                 Toast.makeText(activity, "Exitoso", Toast.LENGTH_SHORT).show()
+                val visibility = if (binding.progressLoading.visibility == View.GONE) {
+                    View.VISIBLE
+                } else
+                    View.GONE
+                binding.progressLoading.visibility = visibility
                 findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
 
 
@@ -94,15 +101,7 @@ class InicioSesionFragment : Fragment() {
             }
 
 
-            /*private fun goToLogin() {
-        val correo = binding.username.text.toString()
-        val password = binding.password.text.toString()
-
-        val usuario= Users(correo,password.toInt(), TOKEN_KEY)
-        viewModel.recuperarLogueo(usuario)
-
-    }
-*/
         }
     }
 }
+
