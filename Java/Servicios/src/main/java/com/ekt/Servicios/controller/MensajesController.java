@@ -527,7 +527,7 @@ public class MensajesController {
 		Optional<User> existo = userRepository.validarUsuario(miId);
 
 		Optional<User> jefe = userRepository.validarUsuario(existo.get().getIDSuperiorInmediato());
-
+		
 		// Crear lista padre
 		if (jefe.isPresent()) {
 			List<User> listaPadre = new ArrayList<>();
@@ -547,14 +547,14 @@ public class MensajesController {
 				for (User hijos : listaPadre) {
 					idConversacionPadre.append("-" + hijos.getID());
 				}
+				
+				conversacion.setIdConversacion(idConversacionPadre.toString());
+				conversacion.setIdReceptor(idConversacionPadre.toString());
+				conversacion.setNombreConversacionRecepto(
+						"Chat grupal con " + jefe.get().getNombreRol() + " " + jefe.get().getNombre());
+
+				grupos.add(conversacion);
 			}
-
-			conversacion.setIdConversacion(idConversacionPadre.toString());
-			conversacion.setIdReceptor(idConversacionPadre.toString());
-			conversacion.setNombreConversacionRecepto(
-					"Chat Padre " + jefe.get().getNombreRol() + " " + jefe.get().getNombre());
-
-			grupos.add(conversacion);
 		}
 
 		List<User> listaHijos = new ArrayList<>();
@@ -580,13 +580,14 @@ public class MensajesController {
 			miConversacion.setIdConversacion(idMiConversacion.toString());
 			miConversacion.setIdReceptor(idMiConversacion.toString());
 			miConversacion.setNombreConversacionRecepto(
-					"Chat Mio " + existo.get().getNombreRol() + " " + existo.get().getNombre());
+					"Chat grupal con " + existo.get().getNombreRol() + " " + existo.get().getNombre());
 
 			grupos.add(miConversacion);
 		}
 
 		return grupos;
 	}
+
 
 	@GetMapping("/listarConversaciones/{idEmisor}")
 	public ResponseEntity<?> listarConversaciones(@PathVariable(value ="idEmisor")String idEmisor){
