@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
+import com.example.agileus.models.DataTask
 import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.providers.FirebaseProvider
@@ -180,6 +181,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 estatus = txtEstatusD.text.toString()
                 observaciones = obs
 
+
+                /*if (observaciones.isNullOrEmpty()) {
+                    estatus = "terminado"
+                } else {
+                    estatus = "pendiente"
+                }*/
+
+
                 var update = TaskUpdate(
                     titulo,
                     descripcion,
@@ -194,6 +203,10 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
                 val newFragment2 = DialogoActualizarTarea(update, args.tareas.idTarea)
                 newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+
+                detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
+
+
 
             }
 

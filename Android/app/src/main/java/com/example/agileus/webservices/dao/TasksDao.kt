@@ -11,8 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class TasksDao : DialogoConfirmacionListener {
-
+class TasksDao {
     //Agregar nueva tarea
     fun postTasks(t: Tasks) {
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
@@ -56,9 +55,6 @@ class TasksDao : DialogoConfirmacionListener {
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
                     Log.d("Mensaje", mensaje)
-
-                    //val newFragment = DialogoTareaCreadaExitosamente(this)
-                    //newFragment.show(this, "Confirmacion")
 
                 } else {
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
@@ -228,7 +224,4 @@ class TasksDao : DialogoConfirmacionListener {
         return listaPersonsDatos
     }
 
-    override fun onTaskCreated() {
-        TODO("Not yet implemented")
-    }
 }

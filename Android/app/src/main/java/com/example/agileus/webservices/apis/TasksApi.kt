@@ -32,6 +32,7 @@ interface TasksApi {
     @POST("tareas/agregarTarea")
     fun insertarTarea(@Body t: Tasks): Call<Tasks>
 
+
     //Obtener lista por id, status
     @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
     fun getTasksByStatus(@Path("datos") datos: String): Call<TaskList>?
