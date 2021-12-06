@@ -434,10 +434,10 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaGrupos/{miId}")
-	public ResponseEntity<?> listaGrupos(@RequestHeader("tokenID")String tokenID ,@PathVariable(value = "miId") String miId) {
-		if(!tokenID.equals("12345")) {
+	public ResponseEntity<?> listaGrupos(/*@RequestHeader("tokenID")String tokenID ,*/@PathVariable(value = "miId") String miId) {
+		/*if(!tokenID.equals("12345")) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"Token incorrecto",null));
-		}
+		}*/
 		try {
 			if(miId.length()<24 || miId.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id incorrecto",""));
@@ -527,7 +527,7 @@ public class MensajesController {
 			conversacion.setIdConversacion(idConversacionPadre.toString());
 			conversacion.setIdReceptor(idConversacionPadre.toString());
 			conversacion.setNombreConversacionRecepto(
-					"Chat Padre " + jefe.get().getNombreRol() + " " + jefe.get().getNombre());
+					"Chat grupal con " + jefe.get().getNombreRol() + " " + jefe.get().getNombre());
 
 			grupos.add(conversacion);
 		}
@@ -555,7 +555,7 @@ public class MensajesController {
 			miConversacion.setIdConversacion(idMiConversacion.toString());
 			miConversacion.setIdReceptor(idMiConversacion.toString());
 			miConversacion.setNombreConversacionRecepto(
-					"Chat Mio " + existo.get().getNombreRol() + " " + existo.get().getNombre());
+					"Chat grupal con " + existo.get().getNombreRol() + " " + existo.get().getNombre());
 
 			grupos.add(miConversacion);
 		}
