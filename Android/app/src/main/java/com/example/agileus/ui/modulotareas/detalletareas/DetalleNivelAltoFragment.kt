@@ -21,9 +21,7 @@ import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
-import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
-import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
+import com.example.agileus.ui.modulotareas.dialogostareas.*
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
@@ -192,9 +190,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                     observaciones
                 )
 
-                detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
-                val newFragment = DialogoTareaCreadaExitosamente()
-                newFragment.show((activity as HomeActivity).supportFragmentManager, "missiles")
+                desactivarCampos(args)
+
+                val newFragment2 = DialogoActualizarTarea(update, args.tareas.idTarea)
+                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+
             }
 
         }
@@ -349,7 +349,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     }
 
     private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
-        val dialogoAceptar = DialogoAceptar(args)
+        val dialogoAceptar = DialogoEliminarTarea(args)
         dialogoAceptar.show(
             (activity as HomeActivity).supportFragmentManager,
             getString(R.string.dialogoAceptar)
