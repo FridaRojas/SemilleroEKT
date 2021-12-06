@@ -65,10 +65,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     var urlPost             : String = ""
     var anioInicio          : Int? = null
     var anioFin             : Int? = null
-    var mesInicio           : Int? = null
-    var mesFin              : Int? = null
-    var diaInicio           : Int? = null
-    var diaFin              : Int? = null
+    var mesInicio           : String = ""
+    var mesFin              : String = ""
+    var diaInicio           : String = ""
+    var diaFin              : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -214,17 +214,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
             urlPost                            // Url de archivo pdf subido a firebase
         )
 
-        /*Toast.makeText(activity as HomeActivity,
-            "Datos to POST = " +
-                "Titulo: $titulo, " +
-                "Prioridad: ${mPrioridad.toString().lowercase()}, " +
-                "Nombre persona asignada: $nombrePersonaAsignada, " +
-                "Fecha inicio: $fechaInicio, " +
-                "Fecha fin: $fechaFin, "+
-                "Url pdf: $uriPost, "+
-                "Descripcion: $descripcion ",
-            Toast.LENGTH_LONG).show()*/
-
         asignarTareaViewModel.postTarea(tarea)
 
         // Enviar tarea a la conversacion grupal
@@ -276,51 +265,25 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     // *** FUNCIONES ***
 
     // *** INTERFACES ***
-    override fun onDateInicioSelected(anio: Int, mes: Int, dia: Int) {
-        val diaString : String
-        val mesString : String
+    override fun onDateInicioSelected(anio: Int, mes:String, dia:String) {
         anioInicio  = anio
-        mesInicio   = mes+1
+        mesInicio   = mes
         diaInicio   = dia
 
-        if(dia<10){
-            diaString = "0$dia"
-        }else{
-            diaString = "$dia"
-        }
-        if(mes+1<10){
-            mesString = "0$mesInicio"
-        }else{
-            mesString = "${mes+1}"
-        }
-
         val fecha=binding.edtFechaInicio
-        val fechaObtenida = "$anio-$mesString-$diaString"
+        val fechaObtenida = "$anio-$mes-$dia"
         fecha.setText(fechaObtenida)
         fechaInicio = fecha.text.toString()
         Log.e("Mensaje", "Fecha Inicio $fechaInicio")
 
     }
-    override fun onDateFinSelected(anio: Int, mes: Int, dia: Int) {
-        val diaString : String
-        val mesString : String
+    override fun onDateFinSelected(anio: Int, mes:String, dia:String) {
         anioFin  = anio
-        mesFin   = mes+1
+        mesFin   = mes
         diaFin   = dia
 
-        if(dia<10){
-            diaString = "0$dia"
-        }else{
-            diaString = "$dia"
-        }
-        if(mes+1<10){
-            mesString = "0$mesFin"
-        }else{
-            mesString = "${mes+1}"
-        }
-
         val fecha=binding.edtFechaFin
-        val fechaObtenida = "$anio-$mesString-$diaString"
+        val fechaObtenida = "$anio-$mes-$dia"
         fecha.setText(fechaObtenida)
         fechaFin = fecha.text.toString()
         Log.e("Mensaje", "Fecha Fin $fechaFin")
