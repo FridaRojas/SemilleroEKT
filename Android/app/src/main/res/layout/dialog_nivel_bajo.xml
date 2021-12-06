@@ -128,6 +128,7 @@
             style="@style/StyleTextFragment"
             app:layout_constraintTop_toBottomOf="@id/txtFechaInicioD"/>
 
+        <!--
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/btnPdf"
             android:layout_width="wrap_content"
@@ -139,17 +140,31 @@
             android:text="Descargar Archivo PDF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtObservacionesD"/>
+        -->
+
 
         <Button
             android:id="@+id/btnCambiarEstadoD"
             style="@style/StyleButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/marginFormulario"
             android:background="@drawable/rounded_bg"
             android:text="Iniciar Tarea"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnPdf" />
+            app:layout_constraintEnd_toStartOf="@id/btnPdf"
+            app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
+
+        <ImageView
+            android:id="@+id/btnPdf"
+            android:src="@drawable/pdf"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:layout_marginStart="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnCambiarEstadoD"
+            app:layout_constraintTop_toBottomOf="@id/txtObservacionesD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

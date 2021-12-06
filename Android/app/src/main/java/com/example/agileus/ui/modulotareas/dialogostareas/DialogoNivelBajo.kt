@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -50,7 +51,7 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             var txtObservacionesD = vista.findViewById<TextView>(R.id.txtObservacionesD)
             var txtEstatusD = vista.findViewById<TextView>(R.id.txtEstatusD)
             var btnEstado = vista.findViewById<Button>(R.id.btnCambiarEstadoD)
-            var btnPdf = vista.findViewById<TextView>(R.id.btnPdf)
+            var btnPdf = vista.findViewById<ImageView>(R.id.btnPdf)
 
             Log.d("Mensaje", dataTask.toString())
 

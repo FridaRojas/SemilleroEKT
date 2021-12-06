@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
-
 import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentTaskBinding
 import com.example.agileus.models.DataTask
@@ -20,8 +19,6 @@ import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
 
 class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
-
-
 
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!

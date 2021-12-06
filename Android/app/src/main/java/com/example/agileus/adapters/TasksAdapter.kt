@@ -89,7 +89,7 @@ class TasksAdapter(
 
             //Log.d("status", status)
             cardTarea.setOnClickListener {
-                Toast.makeText(context, "${prioridad.text}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, "${prioridad.text}", Toast.LENGTH_SHORT).show()
                 if (status == "asignada") {
                     var action: NavDirections
                     action =
