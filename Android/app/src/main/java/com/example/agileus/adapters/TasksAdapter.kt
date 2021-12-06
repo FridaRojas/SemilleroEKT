@@ -57,6 +57,7 @@ class TasksAdapter(
         var prioridad: TextView
         var btnAbrirDetallesTarea: ImageView
         var nivelUsuario: String = ""
+        var context = view.context
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
@@ -76,9 +77,19 @@ class TasksAdapter(
             var fechaInicio = formatoFecha(dataTask.fechaIni)
             fecha.text = fechaInicio
 
+            if(dataTask.prioridad.capitalize() == "Alta"){
+                prioridad.setTextColor(context.resources.getColor(R.color.colorRed))
+            } else if(dataTask.prioridad.capitalize() == "Media"){
+                prioridad.setTextColor(context.resources.getColor(R.color.colorYellow))
+            } else if(dataTask.prioridad.capitalize() == "Baja"){
+                prioridad.setTextColor(context.resources.getColor(R.color.colorGreen))
+            }
+
+
 
             //Log.d("status", status)
             cardTarea.setOnClickListener {
+                Toast.makeText(context, "${prioridad.text}", Toast.LENGTH_SHORT).show()
                 if (status == "asignada") {
                     var action: NavDirections
                     action =
