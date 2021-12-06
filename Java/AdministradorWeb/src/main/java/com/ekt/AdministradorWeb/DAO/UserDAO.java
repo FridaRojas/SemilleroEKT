@@ -54,6 +54,7 @@ public class UserDAO {
             if (!jsonObject.get("data").equals("")){
                 JSONObject usuarios = jsonObject.getJSONObject("data");
                 usuario = gson.fromJson(usuarios.toString(), User.class);
+                System.out.println("daaaaoooo:"+usuarios.toString());
                 return usuario;
             }else{
                 return null;

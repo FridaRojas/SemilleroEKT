@@ -262,19 +262,28 @@ public class ConfigPag {
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
             modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
-            //Si el origen proviene de vistaUsuarios cambiar el status a false
+            modelMap.addAttribute("origen", origen);
+
             return "paginas/usuarios/ReasignaSuperior";
         }else{
             //si no tiene suboordinados, elimina y redirecciona a editarGrupo
             System.out.println("Entra a desactivar");
-            if(origen.equals("0")){
-                userDAO.desactivarUsuario(idUsuario);
-            }
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            redirectAttrs
-                    .addFlashAttribute("status", "success")
-                    .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
-            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
+            if(origen.equals("0")){
+                //Si el origen proviene de vistaUsuarios cambiar el status a false y redirecciona a findallusuarios
+                userDAO.desactivarUsuario(idUsuario);
+                redirectAttrs
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+                return "redirect:/findAllUsuarios";
+            }else{
+                //si origen proviene de grupos, redirecciona a edita grupo
+                redirectAttrs
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+                return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
+            }
+
         }
     }
 
@@ -322,7 +331,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/ActualizaElimina")
-    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario, @ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap, Model model,RedirectAttributes redirectAttrs){
+    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen,@ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap, Model model,RedirectAttributes redirectAttrs){
         userDAO.actualizaIdSuperior(idUser,idBoss);
         ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
         User user = userDAO.buscaID(idUsuario);
@@ -338,15 +347,26 @@ public class ConfigPag {
             modelMap.addAttribute("listaSubordinados", listaSubordinados);
             modelMap.addAttribute("listaUsuarios", listaUsuarios);
             modelMap.addAttribute("idUsuario", idUsuario);
+            modelMap.addAttribute("origen", origen);
             return "paginas/usuarios/ReasignaSuperior";
         }else{
-            //Si el origen proviene de vistaUsuarios cambiar el status a false
-            userDAO.desactivarUsuario(idUsuario);
+            //si no tiene suboordinados, elimina y redirecciona a editarGrupo
+            System.out.println("Entra a desactivar");
             groupDAO.eliminaUsuarioGrupo(idUsuario,user.getIDGrupo());
-            redirectAttrs
-                    .addFlashAttribute("status", "success")
-                    .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
-            return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
+            if(origen.equals("0")){
+                //Si el origen proviene de vistaUsuarios cambiar el status a false y redirecciona a findallusuarios
+                userDAO.desactivarUsuario(idUsuario);
+                redirectAttrs
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+                return "redirect:/findAllUsuarios";
+            }else{
+                //si origen proviene de grupos, redirecciona a edita grupo
+                redirectAttrs
+                        .addFlashAttribute("status", "success")
+                        .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+                return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
+            }
         }
     }
 

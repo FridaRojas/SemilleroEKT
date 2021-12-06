@@ -108,7 +108,7 @@
     <!--/*@thymesVar id="BodyUpdateBoss" type="java"*/-->
             <!-- Seccion que se va a iterar -->
             <div class="item" th:each="user: ${listaSubordinados}">
-                <form th:action="@{/ActualizaElimina(idUsuario=${idUsuario})}" method="post">
+                <form th:action="@{/ActualizaElimina(idUsuario=${idUsuario}, origen=${origen})}" method="post">
                     <div class="container">
                         <div class="row">
                             <div class="col-sm">
