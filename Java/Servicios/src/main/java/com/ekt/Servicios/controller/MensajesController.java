@@ -590,14 +590,14 @@ public class MensajesController {
 				for (User hijos : listaHijos) {
 					idMiConversacion.append("-" + hijos.getID());
 				}
+				
+				miConversacion.setIdConversacion(idMiConversacion.toString());
+				miConversacion.setIdReceptor(idMiConversacion.toString());
+				miConversacion.setNombreConversacionRecepto(
+						"Chat grupal con " + existo.get().getNombreRol() + " " + existo.get().getNombre());
+
+				grupos.add(miConversacion);
 			}
-
-			miConversacion.setIdConversacion(idMiConversacion.toString());
-			miConversacion.setIdReceptor(idMiConversacion.toString());
-			miConversacion.setNombreConversacionRecepto(
-					"Chat grupal con " + existo.get().getNombreRol() + " " + existo.get().getNombre());
-
-			grupos.add(miConversacion);
 		}
 
 		return grupos;
