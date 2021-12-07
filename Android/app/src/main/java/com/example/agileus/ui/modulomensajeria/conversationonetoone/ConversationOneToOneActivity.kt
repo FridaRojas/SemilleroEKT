@@ -105,7 +105,8 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         conversationviewModel.adaptador.observe(this,{
                     binding.recyclerConversacion.adapter = it
                     binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)
-                    binding.recyclerConversacion.getLayoutManager()?.scrollToPosition(conversationviewModel.listaConsumida.size-1)
+            binding.recyclerConversacion.getLayoutManager()?.scrollToPosition(conversationviewModel.listaConsumida.size-1)
+
         })
 
 
