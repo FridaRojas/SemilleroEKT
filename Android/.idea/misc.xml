@@ -51,6 +51,7 @@
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.16621376811594202" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.16621376811594202" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/status_task_item.xml" value="0.16621376811594202" />
+        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/status_task_item_noselect.xml" value="0.2259963768115942" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/task_item.xml" value="0.4" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.259375" />
         <entry key="..\:/Users/deivi/Desktop/Semillero EKT - Android/semilleroekt/Android/app/src/main/res/layout/fragment_dashboard.xml" value="0.33666969972702454" />
@@ -87,7 +88,6 @@
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.13854166666666667" />
         <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/dialog_nivel_aceptar.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/dialog_nivel_bajo.xml" value="0.43798882681564244" />
         <entry key="..\:/Users/lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/dialog_nivel_bajo.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_detalle_nivel_alto.xml" value="0.2927215189873418" />
         <entry key="..\:/Users/lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_formulario_crear_tareas.xml" value="0.20416666666666666" />
