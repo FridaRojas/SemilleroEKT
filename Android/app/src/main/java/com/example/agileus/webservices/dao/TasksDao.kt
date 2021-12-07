@@ -145,15 +145,15 @@ class TasksDao {
     fun editTask(taskUpdate: TaskUpdate, idTarea: String, idUsuario: String) {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
-        /*  val callback = InitialApplication.webServiceGlobalTasksPrueba.editTaskPrueba(
+          val callback = InitialApplication.webServiceGlobalTasksPrueba.editTaskPrueba(
               taskUpdate,
               idTarea,
               idUsuario
-          )*/
-        val callback = InitialApplication.webServiceGlobalTasks.editTask(
+          )
+        /*val callback = InitialApplication.webServiceGlobalTasks.editTask(
             taskUpdate,
             idTarea
-        )
+        )*/
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(
                 call: Call<DataTask>,
@@ -163,8 +163,11 @@ class TasksDao {
                     if (response.isSuccessful) {
                         Log.d(
                             "Mensaje",
-                            "Tarea Editada ${response.body()?.estatus}"
+                            "Tarea Editada ${response.message()}"
+
                         )
+
+
 
                     } else {
                         Log.d("Mensaje", "Tarea no Editada")

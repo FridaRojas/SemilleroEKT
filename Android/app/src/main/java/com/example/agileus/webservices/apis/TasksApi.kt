@@ -37,12 +37,12 @@ interface TasksApi {
     fun editTask(@Body taskUpdate: TaskUpdate, @Path("idTarea") idTarea: String)
             : Call<DataTask>
 
-   /* @PUT("tareas/actualizarTarea/{idTarea}/{idUsuario}")
+    @PUT("tareas/actualizarTarea/{idTarea}/{idUsuario}")
     fun editTaskPrueba(
-        @Body taskUpdate: TaskUpdate, @Path("idTarea") idTarea: String,
+        @Body taskUpdate: TaskUpdate,
+        @Path("idTarea") idTarea: String,
         @Path("idUsuario") idUsuario: String
-    )
-            : Call<DataTask>*/
+    ): Call<DataTask>
 
 
     //Actualizar Status
