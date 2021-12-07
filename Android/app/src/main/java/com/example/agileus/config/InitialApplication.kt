@@ -7,11 +7,12 @@ import com.example.agileus.webservices.apis.TasksApi
 
 class InitialApplication : Application() {
 
-    companion object{
+    companion object {
         lateinit var webServiceMessage: MessageApi
         lateinit var webServiceGlobalTasks: TasksApi
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
         lateinit var webServiceGlobalTasksPersonas: TasksApi
+       // lateinit var webServiceGlobalTasksPrueba: TasksApi
 
         //SharedPreferences
         lateinit var preferenciasGlobal: MySharedPreferences
@@ -22,8 +23,10 @@ class InitialApplication : Application() {
         super.onCreate()
         webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
-        BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
+        BroadcastServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
+       // webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
+
 
         //SharedPreferences
         preferenciasGlobal = MySharedPreferences(applicationContext)

@@ -30,23 +30,39 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
-
-        val httpClient = OkHttpClient()
-        httpClient.networkInterceptors().add(Interceptor { chain ->
-            val requestBuilder: Request.Builder = chain.request().newBuilder()
-            requestBuilder.header("token_sesion", "12345")
-            chain.proceed(requestBuilder.build())
-        })
+        var http = OkHttpClient().newBuilder().addInterceptor(
+            Interceptor { chain ->
+                val requestBuilder: Request.Builder = chain.request().newBuilder()
+                requestBuilder.header("token_sesion", "12345")
+                chain.proceed(requestBuilder.build())
+            }).build()
 
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
-            .client(httpClient)
-            // .client(clientBuilder.build())
+            .client(http)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return mRetrofit.create(TasksApi::class.java)
     }
+
+    /*  fun obtenerConfiguracionRetofitTasksPrueba(): TasksApi {
+          var http = OkHttpClient().newBuilder().addInterceptor(
+              Interceptor { chain ->
+                  val requestBuilder: Request.Builder = chain.request().newBuilder()
+                  requestBuilder.header("token_sesion", "12345")
+                  chain.proceed(requestBuilder.build())
+              }).build()
+
+          var mRetrofit = Retrofit.Builder()
+              .baseUrl("http://10.97.3.24:3040/api/")
+              .client(http)
+              .addConverterFactory(GsonConverterFactory.create())
+              .build()
+
+          return mRetrofit.create(TasksApi::class.java)
+      }*/
+
 
     fun obtenerConfiguracionRetofitPersonasTasks(): TasksApi {
         var mRetrofit = Retrofit.Builder()

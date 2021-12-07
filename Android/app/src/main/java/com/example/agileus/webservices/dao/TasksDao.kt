@@ -18,23 +18,23 @@ class TasksDao {
 
         val Response = callInserta?.execute()
         try {
-            if(Response != null) {
+            if (Response != null) {
                 if (Response.isSuccessful) {
                     val nuevaTarea: Tasks = Response.body()!!
                     var mensaje =
                         "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
                     mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
-                    mensaje+= ", Numero de empleado:${nuevaTarea.idReceptor}"
+                    mensaje += ", Numero de empleado:${nuevaTarea.idReceptor}"
                     mensaje += ", Descripcion:${nuevaTarea.descripcion}"
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
                     Log.d("Mensaje", mensaje)
-                }else {
+                } else {
                     Log.d("Mensaje", "No se creo la tarea ${Response.code()}")
                 }
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             Log.e("error", e.toString())
         }
 
@@ -142,10 +142,18 @@ class TasksDao {
     }
 
 
-    fun editTask(taskUpdate: TaskUpdate, idTarea: String) {
+    fun editTask(taskUpdate: TaskUpdate, idTarea: String, idUsuario: String) {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
-        val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate, idTarea)
+        /*  val callback = InitialApplication.webServiceGlobalTasksPrueba.editTaskPrueba(
+              taskUpdate,
+              idTarea,
+              idUsuario
+          )*/
+        val callback = InitialApplication.webServiceGlobalTasks.editTask(
+            taskUpdate,
+            idTarea
+        )
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(
                 call: Call<DataTask>,
@@ -153,7 +161,11 @@ class TasksDao {
             ) {
                 try {
                     if (response.isSuccessful) {
-                        Log.d("Mensaje", "Tarea Editada ${response.body()?.estatus}")
+                        Log.d(
+                            "Mensaje",
+                            "Tarea Editada ${response.body()?.estatus}"
+                        )
+
                     } else {
                         Log.d("Mensaje", "Tarea no Editada")
                     }
@@ -161,6 +173,7 @@ class TasksDao {
                     Log.d("Mensaje", e.message.toString())
                 }
             }
+
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }

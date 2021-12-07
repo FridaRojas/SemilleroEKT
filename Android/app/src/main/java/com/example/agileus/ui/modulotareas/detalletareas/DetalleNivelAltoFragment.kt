@@ -46,9 +46,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     private var anioFin: Int = 0
     private var mesInicio: String = ""
     private var anioInicio: Int = 0
-    private var diaInicio : String = ""
-    private var diaFin : String = ""
-    private var mesFin : String = ""
+    private var diaInicio: String = ""
+    private var diaFin: String = ""
+    private var mesFin: String = ""
     private var _binding: FragmentDetalleNivelAltoBinding? = null
     private val binding get() = _binding!!
     private lateinit var observaciones: String
@@ -208,7 +208,8 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
                 desactivarCampos(args)
 
-                val newFragment2 = DialogoActualizarTarea(update, args.tareas.idTarea)
+                val newFragment2 =
+                    DialogoActualizarTarea(update, args.tareas.idTarea, args.tareas.idEmisor)
                 newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
 
                 //   detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
@@ -381,7 +382,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         )
     }
 
-    override fun onDateInicioSelected(anio: Int, mes:String, dia:String) {
+    override fun onDateInicioSelected(anio: Int, mes: String, dia: String) {
         anioInicio = anio
         mesInicio = mes
         diaInicio = dia
@@ -391,7 +392,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         fecha.setText(fechaObtenida)
     }
 
-    override fun onDateFinSelected(anio: Int, mes:String, dia:String) {
+    override fun onDateFinSelected(anio: Int, mes: String, dia: String) {
         anioFin = anio
         mesFin = mes
         diaFin = dia
