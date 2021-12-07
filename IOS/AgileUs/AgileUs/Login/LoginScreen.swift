@@ -206,6 +206,7 @@ class LoginScreen: UIViewController {
 
                  }catch let error_catch {
                     print("Error: \(error_catch)")
+                    self.simpleAlertMessage(title: "AgileUS", message: "Usuario o contrasena incorrectas")
                     print(data)
                 }
             }

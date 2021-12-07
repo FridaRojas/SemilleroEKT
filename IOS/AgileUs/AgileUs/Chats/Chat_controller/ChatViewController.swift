@@ -3,26 +3,28 @@
 //  AgileUs
 //
 //  autor: Carlos_Adolfo_Hernandez (C_A_H)
-//    10.97.6.83:3040/api/mensajes/listarConversaciones/618e878ec613329636a769ab    lista chats
-// 10.97.6.83:3040/api/mensajes/listaContactos/618e878ec613329636a769ab lista contactos
+
 import UIKit
 import MessageKit
 import InputBarAccessoryView
-
+import MobileCoreServices
+import Firebase
+import FirebaseStorage
 
 //declaramos Structuras
 //estructura para codear json de api del servicio web
 //con los datos que vamos a ocupar
 struct Chats: Codable
 {
-    let id: String
+    let id:String
     let texto: String
     let idconversacion: String
     let idreceptor: String
     let idemisor: String
     let fechaCreacion = Date()
     let rutaDocumento: String
-    
+    let fechaEnviado: String
+    let statusLeido: Bool
 }
 
 //estructura del mensaje
@@ -49,9 +51,9 @@ struct Message: MessageType
 
 
 class ChatViewController:
-    MessagesViewController,MessagesDataSource,MessagesLayoutDelegate,InputBarAccessoryViewDelegate,MessageLabelDelegate,MessagesDisplayDelegate,MessageCellDelegate {
+    MessagesViewController,MessagesDataSource,MessagesLayoutDelegate,InputBarAccessoryViewDelegate,MessageLabelDelegate,MessagesDisplayDelegate,MessageCellDelegate, UIDocumentPickerDelegate {
     
-    //declaramos variables 
+    //declaramos variables
    
     var currentUser = Sender(senderId: "user" , displayName: "Carlos") //variables usuario emisor
     var otherUser = Sender(senderId: "other", displayName: "Bops") //variable usuario receptor
@@ -62,24 +64,30 @@ class ChatViewController:
     var Boton_ver:UIButton?
     var Datos_chats: Any?
     var Datos_contacto: Any?
-
+    var url_Documento = ""
+    var fecha_mensaje = ""
+    var urlFile: URL?
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         //inicializamos las clases
+        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
+        
         configureMessageInputBar()
-        //create_json()
-        carga_mensajes()
-        print(Datos_contacto)
-       
+        //carga_mensajes()
+        showNavBar()
     }
   
     override func viewDidAppear(_ animated: Bool) {
-        auto_scroll()
+        DispatchQueue.global(qos: .background).async {
+            self.carga_mensajes()
+
+        }
         showNavBar()
     }
     
@@ -104,7 +112,10 @@ class ChatViewController:
         var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
         self.messagesCollectionView.reloadData()
-        
+
+        DispatchQueue.main.async {
+            self.messagesCollectionView.scrollToItem(at: IndexPath(row:0, section: self.messages.count - 1 ),at: .top, animated: false)
+        }
         var receptor = ""
         if Datos_chats != nil
         {
@@ -112,15 +123,22 @@ class ChatViewController:
              receptor = "\(dato_chat[2])"
         }else{
             var  dato_chat = Datos_contacto as! [Any]
-            receptor = "\(dato_chat[2])"
+            receptor = "\(dato_chat[1])"
         }
-        create_json(id_emisor: userID, id_receptor: receptor, mensaje: mensaje, rutaDocumento: "", fecha: fecha){
-            (exito) in
-            //print("Exito")
-        }fallido:{ fallido in
-           //print("Registro Fallido")
+        
+        if urlFile != nil {
+            uploadFile(id_receptor: receptor, mensaje: mensaje, fecha: fecha)
+        } else {
+            create_json(id_emisor: userID, id_receptor: receptor, mensaje: mensaje, rutaDocumento: "", fecha: fecha){
+                (exito) in
+               
+            }fallido:{ fallido in
+                self.simpleAlertMessage(title: "Atencion", message: "Verifica tu Conexion a internet")
+            }
         }
+        
     }
+    
     //detectamos los URL y los hashtag
     func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
         return [.url, .hashtag]
@@ -145,33 +163,32 @@ class ChatViewController:
         messageInputBar.delegate = self
         messageInputBar.inputTextView.tintColor = .black
         messageInputBar.sendButton.setTitleColor(.blue, for: .normal)
-        messageInputBar.sendButton.setTitleColor(
-            UIColor.green.withAlphaComponent(0.3),
-            for: .highlighted
-        )
+        messageInputBar.sendButton.setTitleColor(UIColor.gray.withAlphaComponent(0.3),for: .highlighted)
         messageInputBar.sendButton.setTitle("Enviar", for: .normal)
-        
-        messageInputBar.inputTextView.backgroundColor = .lightGray
+        messageInputBar.inputTextView.backgroundColor = UIColor(red: 0.10, green: 0.20, blue: 0.10, alpha: 0.1)
+        messageInputBar.inputTextView.layer.cornerRadius = 10
         messagesCollectionView.messageCellDelegate = self
         let items = [makeButton(named: "adjunto_archivo").onTextViewDidChange{ button, textView in
-                button.tintColor = UIColor.green
+            button.tintColor = UIColor.gray
                 button.isEnabled = textView.text.isEmpty
             }
         ]
         items.forEach{$0.tintColor = .lightGray}
         messageInputBar.setStackViewItems(items, forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 45, animated: false)
-        
+        auto_scroll()
     }
     
     
     
     func didTapMessage(in cell: MessageCollectionViewCell) {
-        print("adentro")
+        let fileUrl = URL(string: self.url_Documento)
+        UIApplication.shared.openURL(fileUrl!)
+        
     }
     //funcion para modificar el avatar de la conversacion
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        avatarView.isHidden = false
+        avatarView.isHidden = true
     }
     //funcion para modificar tamaño el avatar
     func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
@@ -179,8 +196,8 @@ class ChatViewController:
     }
     //funcion para modificar el estilo del mensaje
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+        
         return .bubbleOutline(UIColor.white)
-       
     }
     
     
@@ -193,11 +210,19 @@ class ChatViewController:
             }.onSelected{
                 $0.tintColor = UIColor.lightGray
             }.onDeselected{
-                $0.tintColor = UIColor.green
+                $0.tintColor = UIColor.gray
             }.onTouchUpInside{ _ in
-                
-                
-                self.simpleAlertMessage(title: "Confirmacion", message: "Archivo Adjunto")
+                print("DOCUMENT PICKER")
+                let fileTypes = [
+                    String(kUTTypePDF)
+                ]
+
+                let viewPickerFile = UIDocumentPickerViewController(documentTypes: fileTypes, in: .import)
+
+                viewPickerFile.delegate = self
+
+                self.present(viewPickerFile, animated: true, completion: nil)
+                //self.simpleAlertMessage(title: "Confirmacion", message: "Archivo Adjunto")
             }
         
     }
@@ -213,7 +238,7 @@ class ChatViewController:
     }
    //funcion para poner fecha de envio del mensaje
     func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        let dateString = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_Usuario")
+        let dateString = self.fecha_mensaje
         return NSAttributedString(string: dateString , attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
     }
   
@@ -247,20 +272,35 @@ class ChatViewController:
         
     }
     
+    func ultimo_mensaje(){
+        DispatchQueue.global().sync
+        {
+            self.messagesCollectionView.reloadData()
+            if self.messages.count == 0
+            {
+                
+            }else{
+                self.messagesCollectionView.scrollToItem(at: IndexPath(row:0, section: self.messages.count - 1 ),at: .top, animated: false)
+                
+            }
+            
+        
+        }
+    }
+    
     
     func carga_mensajes()
     {
-        
-        //print( dato[3] as! String  )
-       
         var servicio = ""
         if Datos_chats != nil
         {
+            
              let dato_chat = Datos_chats as! [Any]
              servicio = server + "mensajes/verConversacion/\(userID)_\(dato_chat[2])"
+            servicio = server + "mensajes/verConversacion/\(dato_chat[1])"
         }else{
             let dato_contacto = Datos_contacto as! [Any]
-            servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[2])"
+            servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
         }
 
         let url = URL(string: servicio)
@@ -279,31 +319,39 @@ class ChatViewController:
                     var cont = 0
                     for item in self.usuarios
                     {
-                       
+                        self.fecha_mensaje = item.fechaEnviado
                         if item.idemisor == userID
                         {
-                        //self.cadena = self.cadena + "\(item.texto)"
+                            
                             if item.rutaDocumento != ""
                             {
-                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("Documento: \(item.rutaDocumento)")  ))
+                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion ,kind: .text("Documento: 📄📝")  ))
+                                self.url_Documento = item.rutaDocumento
+                               
                             }else{
                                 self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
                             }
-                            //print(item.id)
+                            
                         }else{
                             if item.rutaDocumento != ""
                             {
-                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("Documento: \(item.rutaDocumento)")))
-                            }else{
-                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
-                                self.jsonMensajeLeido(id: item.id){
-                                    (exito) in
                                 
-                                   // print("Exitoso \(item.id)")
-                                    
-                                }fallido:{ fallido in
-                                   // print("Registro Fallido")
-                                }
+                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion ,kind: .text("Documento: 📄📝")))
+                                self.url_Documento = item.rutaDocumento
+                            }else
+                            {
+                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
+                                if item.statusLeido == false
+                                    {
+                                        self.jsonMensajeLeido(id: item.id)
+                                            {
+                                                (exito) in
+                                                print("mensaje:\(item.id) status\(item.statusLeido) ")
+                                            }
+                                            fallido:{ fallido in
+                                                        print("Fallo La Carga de Mensajes: \(fallido)")
+                                                    }
+                                    }
                                 
                             }
                            
@@ -311,9 +359,10 @@ class ChatViewController:
                        
                     }
                     self.messagesCollectionView.reloadData()
+                    self.ultimo_mensaje()
                 }
             }
-            catch{print("Servidor Abajo")}
+            catch{print("Servidor Abajo\(error)")}
         }.resume()
     }
 
@@ -332,7 +381,6 @@ class ChatViewController:
         //agrega los parámetros a la petición
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.
         //crea una tarea que envía la petición post
         let task = URLSession.shared.dataTask(with:request as URLRequest){
             data, response, error in
@@ -343,7 +391,6 @@ class ChatViewController:
             }
             else{
                 succes("successsss")
-                
             }
         }
         //ejecuta la tarea
@@ -376,7 +423,6 @@ class ChatViewController:
             }
             else{
                 succes("successsss")
-                
             }
         }
         //ejecuta la tarea
@@ -395,13 +441,13 @@ class ChatViewController:
                         //print(succes)
                     DispatchQueue.main.async {
                        exito("Registro exitoso")
-                      // print(jsonLeido)
                     }
                     
                 } fallo: {
                     fallo in
                     DispatchQueue.main.async {
                     fallido("Servidor Abajo")
+                        
                     }
                    
                 }
@@ -426,10 +472,8 @@ class ChatViewController:
             if let jsonString = JSONStringEncoder().encode(exampleDict) {
                 registro_mensajes(mensaje_json: jsonString) {
                     (succes) in
-                        //print(succes)
                     DispatchQueue.main.async {
                        exito("Registro exitoso")
-                       print(jsonString)
                     }
                     
                 } fallo: {
@@ -444,5 +488,66 @@ class ChatViewController:
             }
         
     }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if controller.documentPickerMode == .import {
+            guard let url = urls.first else {
+                return
+            }
+            do {
+                if let filename = urls.first?.lastPathComponent {
+                    urlFile = url
+                    print(filename)
+                    messageInputBar.inputTextView.text = filename
+                    controller.dismiss(animated: true, completion: nil)
+                }
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
+    
+    func uploadFile(id_receptor: String, mensaje: String, fecha: String) {
+        var documentRoute = ""
+        
+        var file = urlFile
+        var filename = "archivo"
+        let storageReference = Storage.storage().reference(withPath: "Chats/\(filename)")
+        
+        let tarea_subir = storageReference.putFile(from: file!, metadata: nil)
+        {
+            matadatos, error in
+            guard let metadatos = matadatos else
+            {
+                print(error?.localizedDescription)
+                return
+            }
+            
+            storageReference.downloadURL(completion: {
+                url, error in
+                
+                if let urlText = url?.absoluteString {
+                    documentRoute = urlText
+                    
+                    
+                    self.create_json(id_emisor: userID, id_receptor: id_receptor, mensaje: mensaje, rutaDocumento: documentRoute, fecha: fecha){
+                        (exito) in
+                        print("/****************************************************************/")
+                        print("Exitoso \(userID)")}fallido:{ fallido in
+                        print("Registro Fallido")
+                    }
+                    
+                    print(urlText)
+                    print("Se subio archivo")
+                } else {
+                     print("error subia: \(error) ")
+                }
+                
+            })
+
+        }
+    }
 
 }
+

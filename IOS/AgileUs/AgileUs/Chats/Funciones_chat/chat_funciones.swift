@@ -17,6 +17,20 @@ func Obtener_valor_fecha(fecha: Date, stilo: String) -> String
     }
     return formatter.string(from: fecha)
 }
+func Obtener_fecha(fecha: String, stilo: String) -> Date
+{
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "es_419")
+    switch stilo
+    {
+    case "Fecha_Usuario": formatter.dateFormat = "dd/MMMM/yyyy"
+    case "Fecha_Base_datos": formatter.dateFormat = "yyyy/MM/dd"
+    case "Fecha_mongo": formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+    default: formatter.dateFormat = "dd/MM/yyyy hh:mm a"
+    }
+    return formatter.date(from: fecha)
+}
+
 
 //Estructura para crear un json personalizado
 struct JSONStringEncoder {

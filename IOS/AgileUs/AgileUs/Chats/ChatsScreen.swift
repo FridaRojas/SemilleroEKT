@@ -15,17 +15,25 @@ struct Conversaciones: Codable
     let nombreRol:String
 
 }
+struct Grupos:Codable
+{
+    let idConversacion:String
+    let idReceptor:String
+    let nombreConversacionRecepto:String
+
+}
 
 class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource { //se importan las clases abstraptas
 
     @IBOutlet weak var tabla_chats: UITableView!
     var conversaciones = [Conversaciones]()
+    var grupos = [Grupos]()
     var otrodatos = [Any]()
     //se crea un arreglo para poder simular los datos que nos proporcionara el web service
-    
+
     let controlador_modal2 = Adaptador_Modals()
     //constante de interfaz
-    
+
 
     override func viewDidLoad()
     {
@@ -34,7 +42,9 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         tabla_chats.delegate = self
         tabla_chats.dataSource = self
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
+        Servicio_web_grupos()
         Servicio_web_conversaciones()
+
     }
     override func viewDidAppear(_ animated: Bool) {
 
@@ -54,7 +64,7 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         UserDefaults.standard.setValue(false, forKey: "isLogged")
         navigationController?.popViewController(animated: true)
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return otrodatos.count
@@ -72,19 +82,51 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         let index = indexPath.row
         //pasar a la pantalla de conversacion
         let vc = ChatViewController()
-        
+
         var  titulo = otrodatos[index]
         var titulo_chat = titulo as! [Any]
         vc.title = "\(titulo_chat[3])"
-        vc.Datos_chats = otrodatos[index] 
+        vc.Datos_chats = otrodatos[index]
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
+    func Servicio_web_grupos()
+    {
+        let servicio_grupos = server + "mensajes/listaGrupos/\(userID)"
+
+        let url = URL(string: servicio_grupos)
+
+        URLSession.shared.dataTask(with: url!)
+        {data,response,error in
+            do
+            {
+                self.grupos = try JSONDecoder().decode([Grupos].self, from: data!)
+                DispatchQueue.main.async
+                {
+                    var cadena = String()
+                    var contador = 1
+                    for item in self.grupos
+                    {
+                        self.otrodatos.append([contador,item.idConversacion,item.idReceptor,item.nombreConversacionRecepto,"grupo"])
+                        contador = contador + 1
+                    }
+                    self.tabla_chats.reloadData()
+
+                }
+
+            }
+            catch{print("Errorrrrrr\(error)")}
+        }.resume()
+
+    }
+
+
+
     func Servicio_web_conversaciones()
     {
 
         let servicio = server + "mensajes/listarConversaciones/\(userID)"
-       
+
         let url = URL(string: servicio)
 
         URLSession.shared.dataTask(with: url!)
@@ -109,21 +151,21 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         }.resume()
 
     }
-    
-    
+
+
     @IBAction func Usuario_Envia_Broadcast(_ sender: Any)
     {
         let Modal_Broadcast_Usuario = controlador_modal2.crear_modal_mensajes_enviados(Accion_Confirmacion_Completion: {[self](Datos) -> Void in
-            
+
             var asunto = [Datos] as! Any
             var mensaje = [Datos] as! Any
-        
+
             self.dismiss(animated: true, completion: nil)
-            
+
         })
         present(Modal_Broadcast_Usuario, animated: true)
     }
-    
+
 
 
 
