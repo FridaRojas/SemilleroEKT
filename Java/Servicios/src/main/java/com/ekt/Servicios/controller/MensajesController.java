@@ -6,6 +6,7 @@ import java.util.*;
 import com.ekt.Servicios.entity.*;
 import com.ekt.Servicios.repository.MensajesRepository;
 import com.mongodb.MongoException;
+import com.mongodb.MongoSocketException;
 import com.mongodb.MongoSocketOpenException;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
@@ -41,28 +42,28 @@ public class MensajesController {
 	MongoTemplate monogoTemplate;
 
 	@PostMapping("crearMensaje")
-	public ResponseEntity<?> crearMensaje(@RequestBody Mensajes mensajes) {
+	public ResponseEntity<?> crearMensaje(/*@RequestHeader("tokenSesion")String tokenSesion,*/ @RequestBody Mensajes mensajes) {
 		try {
 
 			if (mensajes.getIDEmisor() == null || mensajes.getIDReceptor() == null || mensajes.getTexto() == null
 					|| mensajes.getRutaDocumento() == null || mensajes.getFechaCreacion() == null) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new Response(HttpStatus.BAD_REQUEST, "Cuerpo de Json incorrecto", ""));
+						.body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Cuerpo de Json incorrecto", null));
 			}
 
 			if (mensajes.getIDEmisor().length() < 24 || mensajes.getIDEmisor().length() > 24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idEmisor no es correcto", ""));
+						.body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del idEmisor no es correcto", null));
 			}
 
 			if (mensajes.getIDReceptor().length() < 24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new Response(HttpStatus.BAD_REQUEST, "El tamaño del idReceptor no es correcto", ""));
+						.body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del idReceptor no es correcto", null));
 			}
 
 			if (mensajes.getTexto().length() < 1) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,
-						"El texto del mensaje debe ser de al menos 1 caracter", ""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+						"El texto del mensaje debe ser de al menos 1 caracter", null));
 			}
 
 			Optional<User> emisor = userRepository.validarUsuario(mensajes.getIDEmisor());
@@ -71,18 +72,11 @@ public class MensajesController {
 			List<User> listaConversacion = new ArrayList<>();
 			List<Conversacion> listaGrupo = new ArrayList<>();
 
-			/*
-			 * if (!receptor.isPresent()) { return
-			 * ResponseEntity.status(HttpStatus.NOT_FOUND).body(new
-			 * Response(HttpStatus.NOT_FOUND, "No existe el receptor en la base de datos",
-			 * mensajes.getIDReceptor())); }
-			 */
-
 			if (emisor.isPresent()) {
 				listaConversacion = listaConversacion(emisor.get().getID());
 				listaGrupo = grupos(mensajes.getIDEmisor());
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
 						"No existe el emisor en la base de datos", mensajes.getIDEmisor()));
 			}
 
@@ -135,18 +129,14 @@ public class MensajesController {
 				}
 
 				if (mensajes.getTexto().equals("Documento")) {
-					// notificacion2("Nuevo Mensaje de "+emisor.get().getNombre()+" a
-					// "+mensajes.getNombreConversacionReceptor(),"Nuevo documento",
-					// receptor.get().getToken());
-					// notificacion2(titulo, asunto, token);
 					for (User usuario : usuarios) {
 						notificacion2(
 								"Nuevo Mensaje de " + emisor.get().getNombre() + " a: "
 										+ mensajes.getNombreConversacionReceptor(),
 								"Nuevo documento", usuario.getToken());
 					}
-					return ResponseEntity.status(HttpStatus.CREATED)
-							.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+					return ResponseEntity.status(HttpStatus.OK)
+							.body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()), "Documento", mensajes.getIDConversacion()));
 				}
 
 				for (User usuario : usuarios) {
@@ -155,10 +145,8 @@ public class MensajesController {
 									+ mensajes.getNombreConversacionReceptor(),
 							mensajes.getTexto(), usuario.getToken());
 				}
-				// notificacion2("Nuevo Mensaje de
-				// "+emisor.get().getNombre(),mensajes.getTexto(), receptor.get().getToken());
-				return ResponseEntity.status(HttpStatus.CREATED).body(
-						new Response(HttpStatus.CREATED, "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
+				return ResponseEntity.status(HttpStatus.OK).body(
+						new ResponseMensajes(String.valueOf(HttpStatus.OK.value()), "Se creo el mensaje a grupo", mensajes.getIDConversacion()));
 			}
 
 			// Comparar receptor en lista de contactos
@@ -216,31 +204,30 @@ public class MensajesController {
 				if (mensajes.getTexto().equals("Documento")) {
 					notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), "Nuevo documento",
 							receptor.get().getToken());
-					return ResponseEntity.status(HttpStatus.CREATED)
-							.body(new Response(HttpStatus.CREATED, "Documento", mensajes.getIDConversacion()));
+					return ResponseEntity.status(HttpStatus.OK)
+							.body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()), "Documento", mensajes.getIDConversacion()));
 				}
 
 				notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), mensajes.getTexto(),
 						receptor.get().getToken());
-				return ResponseEntity.status(HttpStatus.CREATED)
-						.body(new Response(HttpStatus.CREATED, "Se creo el mensaje", mensajes.getIDConversacion()));
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()), "Se creo el mensaje", mensajes.getIDConversacion()));
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
 						"No puedes mandarle mensaje a este receptor", mensajes.getIDReceptor()));
 			}
-		} catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoSocketException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 	}
 
-	// ver conversacion
 	@GetMapping("/verConversacion/{idConversacion}")
 	public ResponseEntity<?> verConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		try{
@@ -264,63 +251,70 @@ public class MensajesController {
 
 	}
 
-	// eliminar mensaje(cambiar estado) ?
-	@PutMapping("eliminarMensaje/{idMensaje}")
-	public ResponseEntity<?> borrarMensaje(@PathVariable(value = "idMensaje") String idMensaje) {
+	@PutMapping("eliminarMensaje/{idMensaje}") //&{idXD}
+	public ResponseEntity<?> borrarMensaje(/*@RequestHeader("tokenSesion")String tokenSesion,*/ @PathVariable(value = "idMensaje") String idMensaje/*, @PathVariable(value = "idXD") String idXD*/) {
 		try {
 			if(idMensaje.length()<24 || idMensaje.length()>24) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.NOT_FOUND,"Tamaño del id del mensaje invalido",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
+						,"Tamaño del id del mensaje invalido",null));
 			}
 			
 			Optional<Mensajes> mensaje = mensajesService.buscarMensaje(idMensaje);
 
 			if (!mensaje.isPresent()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El mensaje no fue encontrado",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
+						,"El mensaje no fue encontrado",null));
 			}
 			if(!mensaje.get().getVisible()) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El mensaje ya se elimino",""));
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value())
+						,"El mensaje se elimino anteriormente",null));
 			}
 
 			mensaje.get().setVisible(false);
 
 			mensajesService.save(mensaje.get());
 
-			return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Se borro el mensaje",mensaje.get().getID()));
-		} catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),
+					"Se borro el mensaje",mensaje.get().getID()));
+		} catch (MongoSocketException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 	}
 
 	@GetMapping("listaContactos/{miId}")
-	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) { // 618d9c26beec342d91d747d6
+	public ResponseEntity<?> verListaContactos(@PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id invalido",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+						"Tamaño del id invalido",null));
 			}
 			
 			Optional<User> existo = userRepository.validarUsuario(miId);
 			
 			if(!existo.isPresent()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario no existe en la base de datos",miId));
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())
+						,"El usuario no existe en la base de datos",miId));
 			}
 			
 			return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId));
-		} catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			/*return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value())
+					,"Lista de contactos",listaConversacion(miId)));*/
+		} catch (MongoSocketException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 	}
 
@@ -328,42 +322,46 @@ public class MensajesController {
 	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) {
 		try {
 			if(mensajes.getID()==null) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error en el Json de entrada",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+						"Error en el Json de entrada",null));
 			}
 			
 			if(mensajes.getID().length()<24 || mensajes.getID().length()>24) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id mensaje incorrecto",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
+						,"Tamaño del id mensaje incorrecto",null));
 			}
 			
 			Optional<Mensajes> mensaje = mensajesService.buscarMensaje(mensajes.getID());
 
 			if(!mensaje.isPresent()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro un mensaje",""));
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+						"El mensaje no existe en la base de datos",mensajes.getID()));
 			}
 			
 			if (mensaje.get().isStatusLeido()) {
-				return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"El status ya es verdadero",""));
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),
+						"El mensaje ya fue leido anteriormente",mensaje.get().getID()));
 			} else {
 				
 				mensaje.get().setFechaLeido(mensajes.getFechaLeido());
 
 				mensaje.get().setStatusLeido(true);
 
-				mensajesService.save(mensaje.get());
+				mensajesService.save(mensaje.get()); 
 
-				return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Actualizado",mensaje.get().getID()));
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),
+						"Actualizado",mensaje.get().getID()));
 			}
-		} catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+		} catch (MongoSocketException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
-		
 	}
 	
 	List<User> myArregloUsuario = new ArrayList<>();
@@ -465,27 +463,31 @@ public class MensajesController {
 	public ResponseEntity<?> listaGrupos(@PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Tamaño del id incorrecto",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+						"Tamaño del id incorrecto",null));
 			}
 			
 			Optional<User> existo = userRepository.validarUsuario(miId);
 			
 			if(!existo.isPresent()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario en la base de datos",miId));
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+						"No se encontro usuario en la base de datos",miId));
 			}
 			
 			List<Conversacion> grupos = grupos(miId);
 
 			return ResponseEntity.status(HttpStatus.OK).body(grupos);
-		} catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			/*return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),
+					"Lista de grupos",grupos));*/
+		} catch (MongoSocketException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 	}
 
@@ -493,7 +495,8 @@ public class MensajesController {
 	public ResponseEntity<?> listaDePersonasEnGrupo(@PathVariable(value = "idGrupo") String idGrupo) {
 		try {
 			if(idGrupo.length()<74) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"No es un chat de grupo",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+						"No es un chat de grupo",null));
 			}
 			
 			List<User> usuarios = new ArrayList<>();
@@ -508,15 +511,17 @@ public class MensajesController {
 			}
 
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarios);
-		} catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			/*return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),
+					"Lista de personas en grupo",usuarios));*/
+		} catch (MongoSocketException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 	}
 
