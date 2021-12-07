@@ -24,7 +24,7 @@ struct Chats: Codable
     let fechaCreacion = Date()
     let rutaDocumento: String
     let fechaEnviado: String
-    
+    let statusLeido: Bool
 }
 
 //estructura del mensaje
@@ -81,7 +81,6 @@ class ChatViewController:
         configureMessageInputBar()
         //carga_mensajes()
         showNavBar()
-       
     }
   
     override func viewDidAppear(_ animated: Bool) {
@@ -89,7 +88,6 @@ class ChatViewController:
             self.carga_mensajes()
 
         }
-        ultimo_mensaje()
         showNavBar()
     }
     
@@ -340,14 +338,20 @@ class ChatViewController:
                                 
                                 self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion ,kind: .text("Documento: 📄📝")))
                                 self.url_Documento = item.rutaDocumento
-                            }else{
+                            }else
+                            {
                                 self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
-                                self.jsonMensajeLeido(id: item.id){
-                                    (exito) in
-                                    print("Carga de Mensajes Exitosa")
-                                }fallido:{ fallido in
-                                  print("Fallo La Carga de Mensajes: \(fallido)")
-                                }
+                                if item.statusLeido == false
+                                    {
+                                        self.jsonMensajeLeido(id: item.id)
+                                            {
+                                                (exito) in
+                                                print("mensaje:\(item.id) status\(item.statusLeido) ")
+                                            }
+                                            fallido:{ fallido in
+                                                        print("Fallo La Carga de Mensajes: \(fallido)")
+                                                    }
+                                    }
                                 
                             }
                            
@@ -355,6 +359,7 @@ class ChatViewController:
                        
                     }
                     self.messagesCollectionView.reloadData()
+                    self.ultimo_mensaje()
                 }
             }
             catch{print("Servidor Abajo\(error)")}
