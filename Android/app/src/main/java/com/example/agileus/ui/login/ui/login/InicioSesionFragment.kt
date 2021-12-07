@@ -31,6 +31,9 @@ class InicioSesionFragment : Fragment() {
           var correoLogin : String=""
           var passwordLogin : String=""
           var status:Boolean=false
+          var idUser:String=""
+          var rol:String = ""
+          var idnombre:String=""
 
     }
 
@@ -69,8 +72,7 @@ class InicioSesionFragment : Fragment() {
     private fun validate() {
 
         var result = arrayOf(validateEmail(), validatePassword())
-        Log.d("Login", correoLogin)
-        Log.d("Login", passwordLogin)
+
         if (false in result) {
             return
         }
@@ -78,14 +80,22 @@ class InicioSesionFragment : Fragment() {
         viewModel.recuperarLogueo(usuario)
 
         if (status) {
+
+            Log.d("Login", InicioSesionFragment.correoLogin)
+            Log.d("Login", InicioSesionFragment.passwordLogin)
+            Log.d("Login", idUser)
+
             trigger = 0
             Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
+            if(correoLogin != "rogelioL@gmail.com")
+                findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
+            else
+            {findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2) }
         }
 
         if (!status)
-        {   if(trigger == 0 )
-
+        {
+            if(trigger == 0 )
            {Toast.makeText(activity, "Presiona de nuevo para confirmar", Toast.LENGTH_SHORT).show()
                 }
             if (trigger >1 && !status) {
@@ -129,7 +139,7 @@ class InicioSesionFragment : Fragment() {
         val passwordRegex = Pattern.compile(
             "^" +   // declaración de inicio
                 "(?=.*[0-9])" +                     //Contener al menos un dígito
-                "(?=.*[a-z])" +                     //Contener al menos ua letra minúscula
+                //"(?=.*[a-z])" +                     //Contener al menos ua letra minúscula
                 //"(?=.*[A-Z])" +                     //Contener al menos una letra mayúscula
                 //"(?=.*[@#$%^&+=])" +                //Contener al menos un caracter especial
                 "(?=\\S+$)" +                       //No tener espacios vacios o blancos

@@ -8,4 +8,4 @@ data class Chats (
     @SerializedName("nombreConversacionRecepto") val nombreConversacionRecepto: String,
     @SerializedName("idEmisor") val idEmisor: String,
     @SerializedName("nombreRol") val nombreRol: String
-        )
+    )
