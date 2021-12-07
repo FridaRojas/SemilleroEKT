@@ -8,7 +8,9 @@
 import UIKit
 import MessageKit
 import InputBarAccessoryView
-
+import MobileCoreServices
+import Firebase
+import FirebaseStorage
 
 //declaramos Structuras
 //estructura para codear json de api del servicio web
@@ -48,7 +50,7 @@ struct Message: MessageType
 
 
 class ChatViewController:
-    MessagesViewController,MessagesDataSource,MessagesLayoutDelegate,InputBarAccessoryViewDelegate,MessageLabelDelegate,MessagesDisplayDelegate,MessageCellDelegate {
+    MessagesViewController,MessagesDataSource,MessagesLayoutDelegate,InputBarAccessoryViewDelegate,MessageLabelDelegate,MessagesDisplayDelegate,MessageCellDelegate, UIDocumentPickerDelegate {
     
     //declaramos variables globales
    
@@ -64,10 +66,12 @@ class ChatViewController:
     {
         super.viewDidLoad()
         //inicializamos las clases
+        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
+        
         configureMessageInputBar()
         //create_json()
        carga_mensajes()
@@ -100,13 +104,82 @@ class ChatViewController:
         inputBar.inputTextView.text = ""
         
         self.messagesCollectionView.reloadData()
-        create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: "", fecha: fecha){
-            (exito) in
         
-            print("Exitoso \(userID)")}fallido:{ fallido in
-            print("Registro Fallido")
+        //Ver si hay un archivo a enviar
+        if urlFile != nil {
+            uploadFile(mensaje: mensaje, fecha: fecha)
+        } else {
+            create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: "", fecha: fecha){
+                (exito) in
+                print("/****************************************************************/")
+                print("Exitoso \(userID)")}fallido:{ fallido in
+                print("Registro Fallido")
+            }
+        }
+        
+    }
+    
+    var urlFile: URL?
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if controller.documentPickerMode == .import {
+            guard let url = urls.first else {
+                return
+            }
+            do {
+                if let filename = urls.first?.lastPathComponent {
+                    urlFile = url
+                    print(filename)
+                    messageInputBar.inputTextView.text = filename
+                    controller.dismiss(animated: true, completion: nil)
+                }
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
         }
     }
+    
+    func uploadFile(mensaje: String, fecha: String) {
+        var documentRoute = ""
+        
+        var file = urlFile
+        var filename = "archivo"
+        let storageReference = Storage.storage().reference(withPath: "Chats/\(filename)")
+        
+        let tarea_subir = storageReference.putFile(from: file!, metadata: nil)
+        {
+            matadatos, error in
+            guard let metadatos = matadatos else
+            {
+                print(error?.localizedDescription)
+                return
+            }
+            
+            storageReference.downloadURL(completion: {
+                url, error in
+                
+                if let urlText = url?.absoluteString {
+                    documentRoute = urlText
+                    
+                    
+                    self.create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: documentRoute, fecha: fecha){
+                        (exito) in
+                        print("/****************************************************************/")
+                        print("Exitoso \(userID)")}fallido:{ fallido in
+                        print("Registro Fallido")
+                    }
+                    
+                    print(urlText)
+                    print("Se subio archivo")
+                } else {
+                     print("error subia: \(error) ")
+                }
+                
+            })
+        }
+    }
+    
+    
     //detectamos los URL y los hashtag
     func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
         return [.url, .hashtag]
@@ -178,9 +251,17 @@ class ChatViewController:
             }.onDeselected{
                 $0.tintColor = UIColor.green
             }.onTouchUpInside{ _ in
-                
-                
-                self.simpleAlertMessage(title: "Confirmacion", message: "Archivo Adjunto")
+                print("DOCUMENT PICKER")
+                let fileTypes = [
+                    String(kUTTypePDF)
+                ]
+
+                let viewPickerFile = UIDocumentPickerViewController(documentTypes: fileTypes, in: .import)
+
+                viewPickerFile.delegate = self
+
+                self.present(viewPickerFile, animated: true, completion: nil)
+                //self.simpleAlertMessage(title: "Confirmacion", message: "Archivo Adjunto")
             }
         
     }
