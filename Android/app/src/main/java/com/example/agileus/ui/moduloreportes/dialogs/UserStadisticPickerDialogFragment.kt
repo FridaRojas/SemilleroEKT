@@ -23,9 +23,10 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
 
             //MySharedPreferences.empleadoUsuario[0].nombre
             var listaNombres = arrayListOf<String>()
-            listaNombres.add(MySharedPreferences.idUsuario)
-            MySharedPreferences.empleadoUsuario.forEach {
-                listaNombres.add(it.nombre)
+            //listaNombres.add(MySharedPreferences.idUsuario)
+            MySharedPreferences.dataEmpleadoUsuario.forEach {
+                listaNombres.add(it.name)
+                Log.d("UserListDialog", it.name)
             }
 
             val userPicker = vista.findViewById<NumberPicker>(R.id.picker_year_month)
@@ -33,7 +34,7 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             txtTitulo.setText("Usuarios")
             userPicker.setMinValue(0)
             try {
-                userPicker.setMaxValue(MySharedPreferences.empleadoUsuario.size)
+                userPicker.setMaxValue(MySharedPreferences.dataEmpleadoUsuario.size-1)
                 userPicker.setValue(0)
                 userPicker.displayedValues = listaNombres.toTypedArray()
             }catch (ex:Exception){

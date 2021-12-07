@@ -35,21 +35,48 @@ class ReporteTareasDao {
 
     var employeeList = ArrayList<Contacts>()
     var lista = ArrayList<DatosTareas>()
+    var stadisticEmployeesList = ArrayList<UserTaskListDetail>()
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun recuperardatosTareas(): ArrayList<Estadisticas> {
+    fun recuperardatosTareas(idBusqueda: String): ArrayList<Estadisticas> {
 
-        val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas()
-        val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
+        val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
+        // val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
         var listaRecycler= ArrayList<Estadisticas>()
 
-        if (ResponseTareas.isSuccessful) {
+        val taskSelectedDetail = recoverUserTaskDetails(idBusqueda)
+
+        contador_tareas_terminadas=taskSelectedDetail.finished
+        contador_tareas_pendientes=taskSelectedDetail.pendings
+        contador_tareas_revision=taskSelectedDetail.revision
+        contador_tareas_iniciada=taskSelectedDetail.started
+        contador_tareas_aTiempo=taskSelectedDetail.onTime
+        contador_tareas_fueraTiempo=taskSelectedDetail.outTime
+        contador_tareas_totales=taskSelectedDetail.totals
+
+        listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
+        listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contador_tareas_aTiempo.toString(), R.drawable.ic_bar_chart))
+
+        return listaRecycler
+    }
+
+    fun recoverUserTaskDetails(idBusqueda: String):UserTaskListDetail{
+
+        val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
+        val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
+        var taskDetail= UserTaskListDetail()
+
+        if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
+            taskDetail = MySharedPreferences.dataEmpleadoUsuario[MySharedPreferences.dataEmpleadoUsuario.size-1]
+        }else if (ResponseTareas.isSuccessful) {
             val listaDs = ResponseTareas.body()!!
             lista = listaDs.data
-            Log.e("COMSUMO", lista.size.toString())
+            Log.e("CONSUMO", lista.size.toString())
 
             val id_receptor = "RECEPT1"                             //TODO id receptor real
-                //lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
+            //lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
 
             var contador_t_leidas=0
             var contador_t_totales=0
@@ -88,16 +115,16 @@ class ReporteTareasDao {
 
                         if (it.estatus.lowercase().equals("terminada")) {
                             contador_t_terminadas = contador_t_terminadas + 1
-                        } else{
-                            if(it.estatus.lowercase().equals("pendiente")) {
-                                contador_t_pendientes = contador_t_pendientes + 1
-                            } else if(it.estatus.lowercase().equals("iniciada")){
-                                contIniciada =+ 1
-                            } else if(it.estatus.lowercase().equals("revision")){
-                                contRevision =+ 1
-                            }else{  //Cancelado
-                                contCancelado =+ 1
-                            }
+                        } else if(it.estatus.lowercase().equals("pendiente")) {
+                            contador_t_pendientes = contador_t_pendientes + 1
+                        } else if(it.estatus.lowercase().equals("iniciada")){
+                            contIniciada =+ 1
+                        } else if(it.estatus.lowercase().equals("revision")){
+                            contRevision =+ 1
+                        }else if(it.estatus.lowercase().equals("cancelado")){  //Cancelado
+                            contCancelado =+ 1
+                        }else{
+                            Log.e("taskStatusFormatERROR", "find: ${it.estatus}")
                         }
                     }
 
@@ -113,24 +140,28 @@ class ReporteTareasDao {
                         fechaFin = ZonedDateTime.parse("1971-01-01T00:00:00.000+00:00")
                         fechaFinR = ZonedDateTime.parse("1970-01-01T00:00:00.000+00:00")
                     }
-
                 }
-
             }
-
-            contador_tareas_terminadas=contador_t_terminadas
-            contador_tareas_pendientes=contador_t_pendientes
-            contador_tareas_revision=contRevision
-            contador_tareas_iniciada=contIniciada
-            contador_tareas_aTiempo=contTareasaTiempo
-            contador_tareas_fueraTiempo=contTareasFueraTiempo
-            contador_tareas_totales=contador_t_totales
-            contador_tareas_leidas=contador_t_leidas
-
-            listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
-            listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contTareasaTiempo.toString(), R.drawable.ic_bar_chart))
+            taskDetail = UserTaskListDetail(
+                listaDs.data[0].idReceptor,
+                listaDs.data[0].nombre_receptor,
+                contador_t_totales,
+                contador_t_terminadas,
+                0,
+                0,
+                0,
+                contador_t_pendientes,
+                contCancelado,
+                contIniciada,
+                contRevision,
+                contTareasaTiempo,
+                contTareasFueraTiempo
+            )
+            Log.d("DetailsTASK", "D: ${taskDetail}")
         }
-        return listaRecycler
+
+        Log.d("DetailsTASK2", taskDetail.toString())
+        return taskDetail
     }
 
     fun obtenerTareasTerminadas():String{
@@ -165,23 +196,91 @@ class ReporteTareasDao {
         return contador_tareas_leidas.toString()
     }
 
-    fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
+    fun obtenerListaSubContactos(idUser:String): ArrayList<UserTaskListDetail> {
         try{
             //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
-            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
             var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
 
             if (ResponseDos.isSuccessful){
                 val listaConsumida = ResponseDos.body()!!
                 employeeList = listaConsumida.dataEmployees
+
+                stadisticEmployeesList.add(recoverUserTaskDetails(idUser))
+
+                //Obtencion de estadisticas de los empleados
+                if(employeeList.isNotEmpty()){
+                    employeeList.forEach {
+                        stadisticEmployeesList.add(recoverUserTaskDetails(it.id))
+                        Log.d("ListaSubConacts", "Nombre: ${it.nombre}")
+                    }
+                    stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
+                    stadisticEmployeesList.forEach {
+                        Log.d("ListaSubConactsDetail", "id: ${it.id}")
+                        Log.d("ListaSubConactsDetail", "Nombre: ${it.name}")
+                        Log.d("ListaSubConactsDetail", "pendings: ${it.pendings}")
+                        Log.d("ListaSubConactsDetail", "started: ${it.started}")
+                        Log.d("ListaSubConactsDetail", "revision: ${it.revision}")
+                        Log.d("ListaSubConactsDetail", "finished: ${it.finished}")
+                        Log.d("ListaSubConactsDetail", "totals: ${it.totals}")
+                    }
+                }
+
+                Log.d("ListaSubConactsSIZE", "SIZE: ${stadisticEmployeesList.size}")
             }else{
-                Log.e("ERROR SubContactos", ResponseDos.code().toString())
+                Log.e("ERROR SubContactos", "Respuesta fallida:" + ResponseDos.code().toString())
             }
 
         }catch (ex:Exception){
-            Log.e("ERROR SubContactos", "")
+            Log.e("ERROR SubContactos", "Error al iniciar servicio")
         }
-        return employeeList
+        return stadisticEmployeesList
+    }
+
+    fun totalGroupEstadisticsBYBoss(dataValues: ArrayList<UserTaskListDetail>): UserTaskListDetail{
+        var totals=0
+        var finished = 0
+        var lowPriority = 0
+        var mediumPriority = 0
+        var highPriority = 0
+        var pendings = 0
+        var canceled: Int = 0
+        var started: Int = 0
+        var revision: Int = 0
+        var onTime: Int = 0
+        var outTime: Int = 0
+
+        for (data in dataValues.slice(1..(dataValues.size - 1))){
+            Log.d("GROP", data.name)
+            totals      = totals        + data.totals
+            finished    = finished      + data.finished
+            lowPriority = lowPriority   +   data.lowPriority
+            mediumPriority  = mediumPriority    + data.mediumPriority
+            highPriority    = highPriority      + data.highPriority
+            pendings    = pendings  +   data.pendings
+            canceled    = canceled  + data.canceled
+            started     = started   + data.started
+            revision    = revision  + data.revision
+            outTime     = outTime   + data.outTime
+            onTime      = onTime    + data.onTime
+        }
+        var groupStadistic = UserTaskListDetail(
+            "TEAM_ID_CREATED_BY_MOD_REPORT",
+            "Mi equipo",
+            totals,
+            finished,
+            lowPriority,
+            mediumPriority,
+            highPriority,
+            pendings,
+            canceled,
+            started,
+            revision,
+            outTime,
+            onTime
+        )
+        return groupStadistic
+
     }
 
 

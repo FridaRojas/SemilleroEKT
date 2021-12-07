@@ -17,6 +17,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.dataEmpleadoUsuario
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
@@ -73,11 +75,12 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //binding.txtNombreReportes.setText(MySharedPreferences.dataEmpleadoUsuario[0].name)
 
         reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
         binding.btnFiltroReportes.setOnClickListener {
             reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
-                MySharedPreferences.empleadoUsuario = list
+                MySharedPreferences.dataEmpleadoUsuario = list
             })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
@@ -96,11 +99,18 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
         pieChart=binding.pieChart
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+
+        dataEmpleadoUsuario.forEach {
+            if (idUsuarioEstadisticas == it.id){
+                binding.txtNombreReportes.setText(it.name)
+                Log.d("idUsuarioEstadisticas", it.id)
+            }
+        }
+
         binding.txtRangoFechaReportes.isVisible=false
         binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
 
-        reporteTareasViewModel.devuelvelistaReporte(this)
+        reporteTareasViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
@@ -152,11 +162,17 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private fun mostrargraficaBarras() {
 
         barChart=binding.barChart
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+
+        try {
+            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+        }catch (e: Exception){
+
+        }
+
         binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
         binding.txtRangoFechaReportes.isVisible=false
 
-        reporteTareasViewModel.devuelvelistaReporte(this)
+        reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it

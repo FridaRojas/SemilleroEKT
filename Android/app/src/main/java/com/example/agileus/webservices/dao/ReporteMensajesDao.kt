@@ -88,11 +88,13 @@ class ReporteMensajesDao {
 
         if(ResponseMensajesBroadCast.isSuccessful){
             lista_B = ResponseMensajesBroadCast.body()!!
+            /*
             lista_B.forEach {
 
                 Log.d("asunto:", it.asunto)
                 Log.d("descripción:", it.descripcion)
             }
+             */
             enviados_al_B = lista_B.size
         }
 
@@ -126,7 +128,7 @@ class ReporteMensajesDao {
     fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
         try{
             //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
-            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
             var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
 
             if (ResponseDos.isSuccessful){

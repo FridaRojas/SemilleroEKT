@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
 import com.example.agileus.models.Contacts
 import com.example.agileus.models.Estadisticas
+import com.example.agileus.models.UserTaskListDetail
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteTareasDao
 import kotlinx.coroutines.Dispatchers
@@ -45,13 +46,13 @@ class ReporteTareasViewModel: ViewModel() {
     }
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
-    lateinit var listaHijosConsumida:ArrayList<Contacts>
+    lateinit var listaHijosConsumida:ArrayList<UserTaskListDetail>
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun devuelvelistaReporte(listener: ReportesListener){
+    fun devuelvelistaReporte( listener: ReportesListener, id:String){
         viewModelScope.launch {
             listaConsumida =  withContext(Dispatchers.IO) {
-                lista.recuperardatosTareas()
+                lista.recuperardatosTareas(id)
             }
             if(listaConsumida.isNotEmpty()){
                 adaptador.value = ListaDatosAdapter(listaConsumida,listener)
@@ -71,7 +72,7 @@ class ReporteTareasViewModel: ViewModel() {
             }
         }
     }
-    var listaEmpleadosAux = MutableLiveData<ArrayList<Contacts>>()
+    var listaEmpleadosAux = MutableLiveData<ArrayList<UserTaskListDetail>>()
 
     fun devuelveListaEmpleados(idUser:String){
         try {
@@ -89,7 +90,7 @@ class ReporteTareasViewModel: ViewModel() {
                     listaEmpleadosAux.value = listaHijosConsumida
                 }
                 listaEmpleadosAux.value?.forEach {
-                    Log.e("Hijos", it.nombre)
+                    Log.e("Hijos", it.name)
                 }
 
                 Log.i("AuxList", "${listaEmpleadosAux.value}")

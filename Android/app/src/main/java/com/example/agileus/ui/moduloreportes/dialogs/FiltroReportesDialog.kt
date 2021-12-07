@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.R.*
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.dataEmpleadoUsuario
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuario
 import com.example.agileus.databinding.DialogFiltroReportesBinding
@@ -323,13 +324,18 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     }
 
     override fun onUserSelected(user: Int) {
+            txtUsuario.setText(dataEmpleadoUsuario[user].name)
+            userIdSelected = dataEmpleadoUsuario[user].id
+        /*
+
         if (user == 0){
             txtUsuario.setText(idUsuario)
             userIdSelected = idUsuario
         }else{
-            txtUsuario.setText(empleadoUsuario[user-1].nombre)
-            userIdSelected = empleadoUsuario[user-1].id
+            txtUsuario.setText(dataEmpleadoUsuario[user-1].name)
+            userIdSelected = dataEmpleadoUsuario[user-1].id
         }
+         */
     }
 
     fun resRangeValues(){
