@@ -5,6 +5,8 @@ import com.example.agileus.config.InitialApplication
 import com.example.agileus.ui.login.data.model.*
 import com.example.agileus.ui.login.data.service.LoginApi
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idnombre
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.rol
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
 import retrofit2.Call
 import retrofit2.Response
@@ -17,7 +19,7 @@ class LoginDao {
     fun iniciarSesion(usuario: Users): Boolean {
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
-        lateinit var user:LoginResponse
+       // lateinit var user:LoginResponse
         if (responseDos.isSuccessful) {
 
             if (responseDos.body() != null) {
@@ -30,6 +32,8 @@ class LoginDao {
                     STATUS=true
 //                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
                     idUser = almacenar.data.id.toString()
+                    rol=almacenar.data.nombreRol.toString()
+                    idnombre=almacenar.data.nombre.toString()
                 }
                 if (almacenar.status =="BAD_REQUEST")
                 {

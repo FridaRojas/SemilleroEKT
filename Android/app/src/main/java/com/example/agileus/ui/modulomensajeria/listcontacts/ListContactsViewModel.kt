@@ -22,6 +22,8 @@ class ListContactsViewModel : ViewModel() {
         lista = MessageDao()
     }
 
+
+
     fun devuelveLista(idUser:String){
         try {
             viewModelScope.launch {

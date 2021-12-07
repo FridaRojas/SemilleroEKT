@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.ActivityHomeBinding
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 
 /*class HomeActivity : AppCompatActivity() {
@@ -61,9 +62,13 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d("Login", InicioSesionFragment.correoLogin)
+        Log.d("Login", InicioSesionFragment.passwordLogin)
+        Log.d("Login", idUser)
 
 
         val navView: BottomNavigationView = binding.navView
@@ -78,6 +83,8 @@ class HomeActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
 
 
 //        val navController = navHostFragment.navController
