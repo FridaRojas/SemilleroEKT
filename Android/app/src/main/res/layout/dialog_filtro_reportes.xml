@@ -16,7 +16,7 @@
         android:textSize="32sp"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:gravity="bottom"
+        android:gravity="center"
         android:padding="8dp"/>
 
     <HorizontalScrollView
@@ -37,41 +37,37 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroDia"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Dia"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroMes"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Mes"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroAnio"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Año"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFiltroPersonalizado"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:textAlignment="center"
-                android:textSize="12sp"
                 app:chipCornerRadius="0dp"
                 android:text="Custom"/>
 
@@ -82,8 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:paddingHorizontal="16dp">
+        android:layout_marginHorizontal="8dp">
 
         <TextView
             android:id="@+id/txtFechaInicio"
@@ -110,67 +105,104 @@
         android:orientation="horizontal"
         android:paddingHorizontal="8dp">
 
-        <TextView
-            android:id="@+id/txtNumeroFechaInicio"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNumeroFechaInicio"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:hint="01/01/2000"
-            android:background="@drawable/rounded_bg"
-            android:backgroundTint="@color/colorBackground"
-            />
+            android:padding="@dimen/margin_top_general"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconTint="@color/colorPrimary">
 
-        <TextView
-            android:id="@+id/txtNumeroFechaFin"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtNumeroFechaInicio"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNumeroFechaFin"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="textEnd"
-            android:textSize="18sp"
-            android:hint="12/12/2000"
-            android:paddingEnd="10dp"
-            android:background="@drawable/rounded_bg"
-            android:backgroundTint="@color/colorBackground"
-            />
+            android:padding="@dimen/margin_top_general"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtNumeroFechaFin"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp">
-        <TextView
-            android:id="@+id/txtFiltroDia"
+        android:padding="8dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFiltroDia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:hint="dia: dd:MM:YYYY"
-            android:background="@drawable/rounded_rm"
-            android:backgroundTint="@color/colorBackground"
-            />
-        <TextView
-            android:id="@+id/txtFiltroMes"
+            android:padding="@dimen/margin_top_general"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/iconocalendario"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFiltroDia"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFiltroMes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:hint="Enero"
-            android:background="@drawable/rounded_rm"
-            android:backgroundTint="@color/colorBackground"
-            />
-        <TextView
-            android:id="@+id/txtFiltroAnio"
+            android:padding="@dimen/margin_top_general"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/iconocalendario"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFiltroMes"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFiltroAnio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:hint="2020"
-            android:background="@drawable/rounded_rm"
-            android:backgroundTint="@color/colorBackground"
-            />
+            android:padding="@dimen/margin_top_general"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/iconocalendario"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFiltroAnio"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -184,18 +216,24 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="Usuario:"/>
-        <TextView
-            android:id="@+id/txtFiltroUsuario"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:hint="Nombre Usuario"
-            android:background="@drawable/rounded_rm"
-            android:backgroundTint="@color/colorBackground"
-            />
+            android:padding="@dimen/margin_top_general"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/user_icon"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFiltroUsuario"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

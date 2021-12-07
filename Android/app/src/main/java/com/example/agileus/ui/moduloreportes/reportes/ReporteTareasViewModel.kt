@@ -31,7 +31,6 @@ class ReporteTareasViewModel: ViewModel() {
 
 
     init {
-
         lista = ReporteTareasDao()
         terminadas.value = "0"
         pendientes.value =  "0"
@@ -50,7 +49,6 @@ class ReporteTareasViewModel: ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte(listener: ReportesListener){
-
         viewModelScope.launch {
             listaConsumida =  withContext(Dispatchers.IO) {
                 lista.recuperardatosTareas()
@@ -71,9 +69,7 @@ class ReporteTareasViewModel: ViewModel() {
                     cargaDatosExitosa.value = true
                 }
             }
-
         }
-
     }
     var listaEmpleadosAux = MutableLiveData<ArrayList<Contacts>>()
 

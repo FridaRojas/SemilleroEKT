@@ -60,7 +60,7 @@ class ConfigRetrofit {
     fun getBroadCastReportes(): ReportesApi{
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl("http://10.97.6.83:3040/")
+            .baseUrl("http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

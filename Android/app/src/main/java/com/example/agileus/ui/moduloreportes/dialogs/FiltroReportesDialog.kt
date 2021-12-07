@@ -14,8 +14,12 @@ import com.example.agileus.R.*
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuario
+import com.example.agileus.databinding.DialogFiltroReportesBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import java.time.ZonedDateTime
 import java.util.*
 
 class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFragment(),
@@ -23,10 +27,19 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
         MonthPickerDialogFragment.MonthPickerDialogListener,
         YearPickerDialogFragment.YearPickerDialogListener,
         UserStadisticPickerDialogFragment.UserStadistickPickerDialogListener{
+
+    private var _binding:DialogFiltroReportesBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var tilFechaInicio: TextInputLayout
     private lateinit var txtFechaInicio: TextView
+    private lateinit var tilFechaFin: TextInputLayout
     private lateinit var txtFechaFin: TextView
-    private lateinit var txtDia: TextView
+    private lateinit var tilDia: TextInputLayout
+    private lateinit var txtDia: TextInputEditText
+    private lateinit var tilMes: TextInputLayout
     private lateinit var txtMes: TextView
+    private lateinit var tilAnio: TextInputLayout
     private lateinit var txtAnio: TextView
     private lateinit var txtTitulo: TextView
     private lateinit var txtUsuario: TextView
@@ -57,6 +70,11 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             txtTitulo = vista.findViewById(R.id.txtFiltroNombre)
             txtDia = vista.findViewById(R.id.txtFiltroDia)
             txtUsuario = vista.findViewById(R.id.txtFiltroUsuario)
+            tilDia = vista.findViewById(R.id.tilFiltroDia)
+            tilMes = vista.findViewById(R.id.tilFiltroMes)
+            tilAnio = vista.findViewById(R.id.tilFiltroAnio)
+            tilFechaInicio = vista.findViewById(R.id.tilNumeroFechaInicio)
+            tilFechaFin = vista.findViewById(R.id.tilNumeroFechaFin)
 
             val chipGroup = vista.findViewById<ChipGroup>(R.id.group)
 
@@ -75,6 +93,10 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             txtFechaInicio.visibility =View.GONE
             txtDia.setText(formatoDiaSelected(actualDay, actualMonth, actualYear, fechaActual))
             resRangeValues()
+            tilFechaInicio.visibility = View.GONE
+            tilFechaFin.visibility = View.GONE
+            tilMes.visibility = View.GONE
+            tilAnio.visibility = View.GONE
 
             iniStringDate = dataBaseFormatoFecha(actualDay, actualMonth-1, actualYear)
             endStringDate = dataBaseFormatoFecha(actualDay+1, actualMonth-1, actualYear)
@@ -89,7 +111,12 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         txtMes.visibility =View.GONE
                         txtAnio.visibility =View.GONE
                         txtFechaFin.setText(fechaActual)
-                        resRangeValues()
+                        //resRangeValues()
+                        tilDia.visibility = View.VISIBLE
+                        tilFechaInicio.visibility = View.GONE
+                        tilFechaFin.visibility = View.GONE
+                        tilMes.visibility = View.GONE
+                        tilAnio.visibility = View.GONE
 
                         txtInicio.setText("Dia:")
                         txtDia.visibility = View.VISIBLE
@@ -105,11 +132,16 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         txtFechaInicio.visibility =View.GONE
                         txtAnio.visibility =View.GONE
                         txtDia.visibility = View.GONE
+                        tilDia.visibility = View.GONE
                         txtFechaFin.setText(dmyFormatoFecha(1, actualMonth-1, actualYear))
-                        resRangeValues()
+                        //resRangeValues()
+                        tilAnio.visibility = View.GONE
+                        tilFechaInicio.visibility = View.GONE
+                        tilFechaFin.visibility = View.GONE
 
                         txtInicio.setText("Mes:")
                         txtMes.visibility =View.VISIBLE
+                        tilMes.visibility = View.VISIBLE
                         iniStringDate = dataBaseFormatoFecha(1, actualMonth-1, actualYear)
                         endStringDate = dataBaseFormatoFecha(1, actualMonth, actualYear)
 
@@ -120,12 +152,17 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         txtFechaFin.visibility =View.GONE
                         txtFechaInicio.visibility =View.GONE
                         txtMes.visibility =View.GONE
-                        txtAnio.visibility =View.VISIBLE
                         txtDia.visibility = View.GONE
                         txtFechaFin.setText(dmyFormatoFecha(1, 0, actualYear))
-                        resRangeValues()
+                        //resRangeValues()
+                        tilDia.visibility = View.GONE
+                        tilMes.visibility = View.GONE
+                        tilFechaInicio.visibility = View.GONE
+                        tilFechaFin.visibility = View.GONE
 
                         txtInicio.setText("Año:")
+                        txtAnio.visibility =View.VISIBLE
+                        tilAnio.visibility =View.VISIBLE
                         txtAnio.setText(actualYear.toString())
                         iniStringDate = dataBaseFormatoFecha(1, 0, actualYear)
                         endStringDate = dataBaseFormatoFecha(1, 0, actualYear+1)
@@ -138,13 +175,18 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         txtMes.visibility =View.GONE
                         txtAnio.visibility =View.GONE
                         txtDia.visibility = View.GONE
-                        resRangeValues()
+                        //resRangeValues()
+                        tilDia.visibility = View.GONE
+                        tilMes.visibility = View.GONE
+                        tilAnio.visibility = View.GONE
 
                         txtInicio.setText("Fecha de inicio:")
+                        tilFechaFin.visibility =View.VISIBLE
+                        tilFechaInicio.visibility = View.VISIBLE
                         txtFechaInicio.setText(fechaActual)
-                        txtFechaFin.setText(fechaActual)
+                        txtFechaFin.setText(dmyFormatoFecha(actualDay, actualMonth-1, actualYear))
                         iniStringDate = dataBaseFormatoFecha(actualDay, actualMonth-1, actualYear)
-                        endStringDate = dataBaseFormatoFecha(actualDay, actualMonth-1, actualYear)
+                        endStringDate = dataBaseFormatoFecha(actualDay+1, actualMonth-1, actualYear)
                     }
                     else -> opcionFiltro = 5
                 }
@@ -219,7 +261,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
         val dateFormat = SimpleDateFormat("MMMM", Locale.forLanguageTag("Spanish"))
         val asMonth: String = dateFormat.format(dt)
 
-        return asMonth
+        return asMonth.replaceFirstChar {  it.uppercaseChar() }
     }
 
     fun dmyFormatoFecha(dia: Int, mes: Int, anio: Int):String{
@@ -237,24 +279,32 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     }
 
     fun formatoDiaSelected(dia: Int, mes: Int, anio: Int, currentDF: String): String{
-        return "${nombreDiaDelAnio(dia, mes, anio)}: ${currentDF} "
+        return "${nombreDiaDelAnio(dia, mes, anio).replaceFirstChar {  it.uppercaseChar() }}: ${currentDF} "
     }
 
     override fun onDateFiltroReportesSelected(anio: Int, mes: Int, dia: Int){
         val currentDate = dmyFormatoFecha(dia, mes, anio)//= sdf.format(d)
         txtDia.setText(formatoDiaSelected(dia, mes+1, anio, currentDate))
-
-        if (dateSelected == 0){
+        if(dateSelected == 0 && opcionFiltro == 4){
+            if(ZonedDateTime.parse(endStringDate).isAfter(ZonedDateTime.parse(dataBaseFormatoFecha(dia, mes, anio)))){
+                txtFechaInicio.setText(currentDate)
+                iniStringDate = dataBaseFormatoFecha(dia, mes, anio)
+                //endStringDate = dataBaseFormatoFecha(actualDay+1, actualMonth-1, actualYear)
+            }else{
+                Toast.makeText(context, "La fecha debe ser anterior a la final", Toast.LENGTH_SHORT).show()
+            }
+        }else if (dateSelected == 0){
             txtFechaInicio.setText(formatoDiaSelected(dia, mes, anio, currentDate))
             iniStringDate = dataBaseFormatoFecha(dia, mes, anio)
             endStringDate = dataBaseFormatoFecha(dia+1, mes, anio)
-            if(opcionFiltro == 4){
-                txtFechaInicio.setText(currentDate)
-                iniStringDate = dataBaseFormatoFecha(dia, mes, anio)
-            }
         }else{
-            txtFechaFin.setText(currentDate)
-            endStringDate = dataBaseFormatoFecha(dia, mes, anio)
+            if(ZonedDateTime.parse(iniStringDate).isBefore(ZonedDateTime.parse(dataBaseFormatoFecha(dia+1, mes, anio))) ){
+                //Toast.makeText(context, "ini: $iniStringDate , fin ${ZonedDateTime.parse(dataBaseFormatoFecha(dia + 1, mes, anio))}", Toast.LENGTH_LONG).show()
+                txtFechaFin.setText(currentDate)
+                endStringDate = dataBaseFormatoFecha(dia+1, mes, anio)
+            }else{
+                Toast.makeText(context, "La fecha debe ser posterior a la de inicio", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
