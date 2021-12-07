@@ -207,12 +207,17 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public ArrayList<String> validarSesion(String token_sesion, String id_usuario){
         ArrayList<String> data = new ArrayList<>();
-        String token_valido = "12345";// buscar en BD
         Optional<User> usuarioValido = usuarioService.findById(id_usuario);
-            if(!token_sesion.equals(token_valido))
+        String token_valido;// buscar en BD
+        if(usuarioValido.isPresent()) {
+            token_valido = usuarioValido.get().getTokenAuth();
+            if (token_valido == null || token_valido == "")
+                data.add("No existe el token en la BD");
+            if (!token_sesion.equals(token_valido))
                 data.add("Token de sesión invalido");
-            if (!usuarioValido.isPresent())
+        }else{
                 data.add("Usuario invalido");
-            return data;
+        }
+        return data;
     }
 }
