@@ -25,6 +25,15 @@ public class User {
     private String statusActivo;
     private String curp;
     private String rfc;
+    private String tokenAuth;
+
+    public String getTokenAuth() {
+        return tokenAuth;
+    }
+
+    public void setTokenAuth(String tokenAuth) {
+        this.tokenAuth = tokenAuth;
+    }
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -73,4 +82,7 @@ public class User {
 
     public String getRFC() { return rfc; }
     public void setRFC(String value) { this.rfc = value; }
+
+
+
 }

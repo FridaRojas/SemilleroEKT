@@ -2,6 +2,9 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-image: url("../assets/1920x1080_px_minimalism_Tatof_Techno-541441.png");
+    background-size: cover !important;
+    background-repeat: no-repeat;
+    height: 100%;
 
 }
 
