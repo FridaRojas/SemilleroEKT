@@ -249,8 +249,8 @@ public class MensajesController {
 		}
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 
-			return ResponseEntity.status(HttpStatus.OK).body(iter.iterator());
-
+			//return ResponseEntity.status(HttpStatus.OK).body(iter.iterator());
+			return ResponseEntity.status(HttpStatus.OK).body(new RespuestaMensajes(String.valueOf(HttpStatus.ACCEPTED.value()),"Mensajes",iter.iterator()));
 	}
 
 	// eliminar mensaje(cambiar estado) ?
@@ -300,7 +300,9 @@ public class MensajesController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario no existe en la base de datos",miId));
 			}
 			
-			return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId));
+			//return ResponseEntity.status(HttpStatus.OK).body(listaConversacion(miId));
+			
+			return ResponseEntity.status(HttpStatus.OK).body(new RespuestaMensajes(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de contactos",listaConversacion(miId)));
 		} catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
@@ -451,7 +453,9 @@ public class MensajesController {
 			
 			List<Conversacion> grupos = grupos(miId);
 
-			return ResponseEntity.status(HttpStatus.OK).body(grupos);
+			//return ResponseEntity.status(HttpStatus.OK).body(grupos);
+			return ResponseEntity.status(HttpStatus.OK).body(new RespuestaMensajes(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de grupos",grupos));
+			
 		} catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
@@ -482,7 +486,8 @@ public class MensajesController {
 
 			}
 
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarios);
+			//return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarios);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new RespuestaMensajes(String.valueOf(HttpStatus.ACCEPTED.value()),"Usuarios en un grupo",usuarios));
 		} catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
@@ -634,7 +639,8 @@ public class MensajesController {
 				lConversacion3.add(conv2);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(lConversacion3);
+		//return ResponseEntity.status(HttpStatus.OK).body(lConversacion3);
+		return ResponseEntity.status(HttpStatus.OK).body(new RespuestaMensajes(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de conversaciones",lConversacion3));
 	}
 
 	@GetMapping("listarMensajesRecividos/{idEmisor}")
@@ -655,7 +661,8 @@ public class MensajesController {
 				lMensajes.add(msg2);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(lMensajes);
+		//return ResponseEntity.status(HttpStatus.OK).body(lMensajes);
+		return ResponseEntity.status(HttpStatus.OK).body(new RespuestaMensajes(String.valueOf(HttpStatus.ACCEPTED.value()),"Listar mensajes recibidos",lMensajes));
 	}
 
 
