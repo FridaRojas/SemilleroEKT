@@ -45,10 +45,16 @@ public class BroadCastControlador {
 	private MensajesService mensajesService;
 
 	@GetMapping("/listaUsuarios/{miId}")
-	public ResponseEntity<?> listaUsuariosGeneral(@PathVariable (value = "miId")String miId){
+	public ResponseEntity<?> listaUsuariosGeneral(@RequestHeader(value = "tokenAuth")String tokenAuth,
+												  @PathVariable (value = "miId")String miId){
 		try{
 			Optional<User> existo = userRepository.validarUsuario(miId);
-
+			if(existo.get().getTokenAuth()== null){
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
+			}
+			if(!existo.get().getTokenAuth().equals(tokenAuth)){
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no coincide",""));
+			}
 			if(!existo.isPresent()) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"No se encontro usuario Broadcast",""));
 			}
@@ -74,7 +80,8 @@ public class BroadCastControlador {
 	}
 
 	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
-	public ResponseEntity<?>listarMensajes(@RequestHeader(value = "TOKEN2")String TOKEN2,@PathVariable (value = "miId")String miId){
+	public ResponseEntity<?>listarMensajes(@RequestHeader(value = "tokenAuth")String tokenAuth,
+										   @PathVariable (value = "miId")String miId){
 		try {
 
 			if(miId.length()<24 || miId.length()>24){
@@ -84,7 +91,13 @@ public class BroadCastControlador {
 			if(!user.isPresent()) {
 				ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "El usuario no existe",""));
 			}
-			if(user.isPresent()){
+			if(user.get().getTokenAuth()== null){
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
+			}
+			if(!user.get().getTokenAuth().equals(tokenAuth)){
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no coincide",""));
+			}if(user.isPresent()){
+
 
 				if(user.get().getNombreRol().equals("BROADCAST") || user.get().getIDSuperiorInmediato().equals("-1")) {
 
@@ -107,21 +120,21 @@ public class BroadCastControlador {
 		}
 	}
 
-	@PostMapping("/crearMensajeBroadcast")
-	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast) {
+	@PostMapping("/crearMensajeBroadcast/{miID}")
+	public ResponseEntity<?> crearMensajeBroadCast(@RequestHeader("tokenAuth")String tokenAuth,
+												   @RequestBody BroadCast broadCast,
+												   @PathVariable  (value = "miID")String miID) {
 			try{
 
 				if (broadCast.getIdEmisor() == null || broadCast.getAsunto() == null || broadCast.getDescripcion() == null) {
 					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "No se encuentra el dato", ""));
 				}
-
 				if (broadCast.getIdEmisor().equals("") || broadCast.getIdEmisor().equals("null")) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El campo idEmisor es no puede estar vacio", ""));
 				}
 				if (broadCast.getIdEmisor().length() < 24 || broadCast.getIdEmisor().length() > 24) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del idEmisor no es valido", ""));
 				}
-
 				if (broadCast.getAsunto().equals("") || broadCast.getAsunto().equals("null")) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El campo Asunto no puede estar vacio", ""));
 				}
@@ -136,11 +149,25 @@ public class BroadCastControlador {
 				broadCastM.setIdEmisor(broadCast.getIdEmisor());
 				broadCastM.setAsunto(broadCast.getAsunto());
 				broadCastM.setDescripcion(broadCast.getDescripcion());
-				Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-				Optional<User> user2 = userRepository.validarUsuario("61ad370537670e5060dc060e");
-				//Optional<User> user3 = userRepository.validarUsuario(user2.get().getID());
+				Optional<User> user = userRepository.findById(miID);
+
+				Iterable<User> iter= userRepository.findByGroupID(user.get().getIDGrupo());
+				List<User> lista= new ArrayList<>();
+				for (User  usuario: iter) {
+					if(!usuario.getStatusActivo().equals("false")&&usuario.getNombreRol().equals("BROADCAST")){
+						lista.add(usuario);
+					}
+				}
+				Optional<User> user2 = userRepository.validarUsuario(lista.get(0).getID());
+				if(user.get().getTokenAuth()== null){
+					return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
+				}
+				if(!user.get().getTokenAuth().equals(tokenAuth)) {
+					return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), "Token no coincide", ""));
+				}
 				if(user2.get().getNombreRol().equals("BROADCAST") || user2.get().getIDSuperiorInmediato().equals("-1")){
-					if (user.isPresent()) {
+					if (user.get().getID().equals(miID)) {
+
 						broadCastM.setNombreEmisor(user.get().getNombre());
 						broadCastM.setAtendido(false);
 						broadCastRepositorio.save(broadCastM);
@@ -148,21 +175,23 @@ public class BroadCastControlador {
 						return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBroadcast(String.valueOf(HttpStatus.CREATED.value()), "Se creo el Mensaje a BROADCAST", "Usuario: "+broadCastM.getNombreEmisor()));
 					}
 				}
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "No se encuentra el emisor", ""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "No se encuentra el usuario BROADCAST", ""));
 			}catch (MongoSocketOpenException e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), e.getMessage(), e.getCause()));
 			} catch (MongoException e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), e.getMessage(), e.getCause()));
 			} catch (Exception e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), e.getMessage(), e.getCause()));
 			}
 
 	}
-	@GetMapping("/mostrarMensajesporID/{idEmisor}")
-	public ResponseEntity<?> mostrarMensajes(@PathVariable(value = "idEmisor")String idEmisor){
+	@GetMapping("/mostrarMensajesporID/{miID}/{idEmisor}")
+	public ResponseEntity<?> mostrarMensajes(@RequestHeader(value = "tokenAuth")String tokenAuth,
+											 @PathVariable (value  ="miID") String miID,
+											 @PathVariable(value = "idEmisor")String idEmisor){
 		try{
 			if(idEmisor.length() < 24 || idEmisor.length() > 24){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del id no es correcto", "" ));
@@ -170,6 +199,12 @@ public class BroadCastControlador {
 			Optional<User> user = userRepository.validarUsuario(idEmisor);
 			if(!user.isPresent()){
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "El Usuario no existe", "" ));
+			}
+			if(user.get().getTokenAuth()== null){
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
+			}
+			if(!user.get().getTokenAuth().equals(tokenAuth)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), "Token no coincide", ""));
 			}
 			if(user.isPresent()){
 				List<BroadCast> listBrd = new ArrayList<>();
@@ -196,7 +231,8 @@ public class BroadCastControlador {
 	}
 	
 	@PostMapping("/enviarMensaje")
-	public ResponseEntity<?> enviarMensaje(@RequestBody Mensajes mensajeEntrante){
+	public ResponseEntity<?> enviarMensaje(@RequestHeader(value = "tokenAuth")String tokenAuth,
+										   @RequestBody Mensajes mensajeEntrante){
 		try{
 			if(mensajeEntrante.getIDEmisor()==null || mensajeEntrante.getIDReceptor()==null || mensajeEntrante.getTexto()==null || mensajeEntrante.getFechaCreacion() ==null) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Campos no validos",""));
@@ -231,6 +267,12 @@ public class BroadCastControlador {
 
 			if(!existo.get().getNombreRol().equals("BROADCAST")) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"No es un usuario BROADCAST",""));
+			}
+			if(existo.get().getTokenAuth()== null){
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
+			}
+			if(!existo.get().getTokenAuth().equals(tokenAuth)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), "Token no coincide", ""));
 			}
 
 			Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
@@ -283,15 +325,24 @@ public class BroadCastControlador {
 
 	}
 
-	@PutMapping("/actualizarAtendido/{miID}")
-	public ResponseEntity<?> actualizarAtendido(@PathVariable (value = "miID")String miID){
+	@PutMapping("/actualizarAtendido/{miID}/{miIDmensaje}")
+	public ResponseEntity<?> actualizarAtendido(@RequestHeader(value = "tokenAuth")String tokenAuth,
+												@PathVariable (value = "miID")String miID,
+												@PathVariable (value = "miIDmensaje")String miIDmensaje){
 try{
-	if(miID.length()<24 ||miID.length()>24){
+	if(miIDmensaje.length()<24 ||miIDmensaje.length()>24){
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del id no es valido", ""));
 	}
-	Optional<BroadCast> opt = broadCastRepositorio.findById(miID);
+	Optional<BroadCast> opt = broadCastRepositorio.findById(miIDmensaje);
+	Optional<User> user = userRepository.validarUsuario(miID);
 	if(!opt.isPresent()){
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El mensaje a atrender no existe",""));
+	}
+	if(user.get().getTokenAuth()== null){
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
+	}
+	if(!user.get().getTokenAuth().equals(tokenAuth)) {
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), "Token no coincide", ""));
 	}
 	opt.get().setAtendido(true);
 	broadCastRepositorio.save(opt.get());
