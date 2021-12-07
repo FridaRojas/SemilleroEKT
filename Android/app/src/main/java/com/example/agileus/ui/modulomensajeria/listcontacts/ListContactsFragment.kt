@@ -48,8 +48,7 @@ class ListContactsFragment : Fragment() {
 
 
 
-
-
+        Constantes.id=idUser
 
         contactsviewModel.devuelveLista(Constantes.id)
 
