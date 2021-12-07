@@ -1,17 +1,17 @@
 package com.ekt.Servicios.entity;
 
-public class RespponseMensajes {
+public class ResponseMensajes {
     String estatus;
     String mensaje;
     Object data;
 
-    public RespponseMensajes() {
+    public ResponseMensajes() {
     }
-    public RespponseMensajes(String estatus, String mensaje) {
+    public ResponseMensajes(String estatus, String mensaje) {
         this.estatus = estatus;
         this.mensaje = mensaje;
     }
-    public RespponseMensajes(String estatus, String mensaje, Object data) {
+    public ResponseMensajes(String estatus, String mensaje, Object data) {
         this.estatus = estatus;
         this.mensaje = mensaje;
         this.data = data;
