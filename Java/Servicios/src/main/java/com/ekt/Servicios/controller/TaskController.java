@@ -308,7 +308,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{id_usuario}") //5. Tareas
+    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}/{id_usuario}") //5. Tareas
     public ResponseEntity<?> getUsuarioTareasByPrioridad(@RequestHeader("token_sesion") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
         try {
             String mensaje;
@@ -399,7 +399,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}&{id_usuario}")    //Reportes
+    @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}/{id_usuario}")    //Reportes
     public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario){
         try {
             String mensaje;
@@ -427,7 +427,7 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actulizarEstatus/{id_tarea}&{estatus}")   //6. Tareas
+    @PutMapping("/actulizarEstatus/{id_tarea}/{estatus}")   //6. Tareas
     public ResponseEntity<?> actualizarEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea, @PathVariable String estatus) {
         try {
             String mensaje = "";
@@ -498,7 +498,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}&{estatus}") //8. Tareas
+    @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}/{estatus}") //8. Tareas
     public ResponseEntity<?> obtenerTareasQueLeAsignaronPorIdYEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
 
         String mensaje;
@@ -517,7 +517,7 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
     }
 
-    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}&{estatus}")  //9. Tareas
+    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}/{estatus}")  //9. Tareas
     public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
         try {
             String mensaje;
