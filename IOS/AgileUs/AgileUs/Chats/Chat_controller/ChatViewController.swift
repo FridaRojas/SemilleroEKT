@@ -372,17 +372,17 @@ class ChatViewController:
         //crea NSURL
         let requestURL = URL(string: server + "mensajes/actualizarLeido")
         
-        //crea NSMutableURLRequest  10.97.6.83
-        let request = NSMutableURLRequest(url: requestURL! as URL)
+        //crea NSMutableURLRequest
+        let requeste = NSMutableURLRequest(url: requestURL! as URL)
         //configura el método de envío
-        request.httpMethod = "POST";
+        requeste.httpMethod = "PUT";
         //parámetros a enviar
         let postParameters = mensaje_leido;
         //agrega los parámetros a la petición
-        request.httpBody = postParameters.data(using: String.Encoding.utf8)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        requeste.httpBody = postParameters.data(using: String.Encoding.utf8)
+        requeste.setValue("application/json", forHTTPHeaderField: "Content-Type")
         //crea una tarea que envía la petición post
-        let task = URLSession.shared.dataTask(with:request as URLRequest){
+        let task = URLSession.shared.dataTask(with:requeste as URLRequest){
             data, response, error in
             //si ocurre algún error sale
             if error != nil{
@@ -391,6 +391,8 @@ class ChatViewController:
             }
             else{
                 succes("successsss")
+                print(response)
+                print(postParameters)
             }
         }
         //ejecuta la tarea
