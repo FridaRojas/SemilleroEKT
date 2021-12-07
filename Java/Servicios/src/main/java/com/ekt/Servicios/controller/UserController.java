@@ -98,9 +98,10 @@ public class UserController {
                         System.out.println("Login: Usuario encontrado");
                         //actualizar token
                         user.get().setToken(infAcceso.getToken());
-                        userService.save(user.get());
-
                         user.get().setTokenAuth(userService.guardarTokenAuth(user.get().getID()).get());
+                        userService.save(user.get());
+                        groupService.actualizaUsuario(user.get());
+
 
                         user.get().setFechaInicio(null);
                         user.get().setFechaTermino(null);

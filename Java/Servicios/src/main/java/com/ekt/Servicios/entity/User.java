@@ -83,6 +83,26 @@ public class User {
     public String getRFC() { return rfc; }
     public void setRFC(String value) { this.rfc = value; }
 
-
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", correo='" + correo + '\'' +
+                ", fechaInicio='" + fechaInicio + '\'' +
+                ", fechaTermino='" + fechaTermino + '\'' +
+                ", numeroEmpleado='" + numeroEmpleado + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", password='" + password + '\'' +
+                ", nombreRol='" + nombreRol + '\'' +
+                ", idGrupo='" + idGrupo + '\'' +
+                ", opcionales=" + Arrays.toString(opcionales) +
+                ", token='" + token + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", idSuperiorInmediato='" + idSuperiorInmediato + '\'' +
+                ", statusActivo='" + statusActivo + '\'' +
+                ", curp='" + curp + '\'' +
+                ", rfc='" + rfc + '\'' +
+                ", tokenAuth='" + tokenAuth + '\'' +
+                '}';
+    }
 }
