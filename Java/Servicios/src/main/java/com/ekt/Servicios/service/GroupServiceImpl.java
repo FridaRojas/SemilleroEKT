@@ -172,6 +172,8 @@ public class GroupServiceImpl implements GroupService{
                     user.setCurp(usuario.getCurp());
                     user.setNumeroEmpleado(user.getNumeroEmpleado());
                     user.setTelefono(usuario.getTelefono());
+                    user.setTokenAuth(usuario.getTokenAuth());
+                    user.setToken(usuario.getToken());
                     bandera = true;
                 }
             }
