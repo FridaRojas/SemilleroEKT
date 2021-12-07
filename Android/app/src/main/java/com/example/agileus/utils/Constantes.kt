@@ -26,7 +26,7 @@ object Constantes {
     val URL_BASE3 = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/"
     val broadlist = "61a101db174bcf469164d2fd"
     val userlistbuzon="618e8821c613329636a769ac"
-    val CURRENT_USER ="618e8743c613329636a769aa"
+    var CURRENT_USER ="618e8743c613329636a769aa"
     //var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
     val ID_RECEPTOR = "ID_RECEPTOR"
     val CHAT_GROUP = "CHAT_GROUP"

@@ -10,6 +10,7 @@ import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.models.BuzonComunicados
 import com.example.agileus.models.BuzonResp
 import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listasize
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.control
@@ -62,6 +63,7 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
     fun devuelvebuzon() {
 
+        CURRENT_USER=idUser
         listaConsumida1 = ArrayList()
         listafiltrada2=  ArrayList()
         listafiltrada1=  ArrayList()
