@@ -104,7 +104,9 @@ class ChatViewController:
         var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
         self.messagesCollectionView.reloadData()
-        
+        DispatchQueue.main.async {
+            self.messagesCollectionView.scrollToItem(at: IndexPath(row:0, section: self.messages.count - 1 ),at: .top, animated: false)
+        }
         var receptor = ""
         if Datos_chats != nil
         {
@@ -112,7 +114,7 @@ class ChatViewController:
              receptor = "\(dato_chat[2])"
         }else{
             var  dato_chat = Datos_contacto as! [Any]
-            receptor = "\(dato_chat[2])"
+            receptor = "\(dato_chat[1])"
         }
         create_json(id_emisor: userID, id_receptor: receptor, mensaje: mensaje, rutaDocumento: "", fecha: fecha){
             (exito) in
@@ -250,9 +252,6 @@ class ChatViewController:
     
     func carga_mensajes()
     {
-        
-        //print( dato[3] as! String  )
-       
         var servicio = ""
         if Datos_chats != nil
         {
@@ -260,7 +259,7 @@ class ChatViewController:
              servicio = server + "mensajes/verConversacion/\(userID)_\(dato_chat[2])"
         }else{
             let dato_contacto = Datos_contacto as! [Any]
-            servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[2])"
+            servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
         }
 
         let url = URL(string: servicio)
@@ -299,7 +298,7 @@ class ChatViewController:
                                 self.jsonMensajeLeido(id: item.id){
                                     (exito) in
                                 
-                                   // print("Exitoso \(item.id)")
+                                   print("Exitoso \(item.id)")
                                     
                                 }fallido:{ fallido in
                                    // print("Registro Fallido")
