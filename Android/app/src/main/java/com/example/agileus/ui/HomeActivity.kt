@@ -23,7 +23,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ActivityHomeBinding
+import com.example.agileus.ui.login.ui.login.InicioSesionViewModel.Companion.usersByBoss
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
 
 class HomeActivity : AppCompatActivity(), DialogoTareaCreadaExitosamente.NoticeDialogListener {
@@ -62,7 +65,6 @@ class HomeActivity : AppCompatActivity(), DialogoTareaCreadaExitosamente.NoticeD
                 else -> showBottomNav(navView)
             }
         }
-
     }
 
     private fun showBottomNav(nav_view:BottomNavigationView) {

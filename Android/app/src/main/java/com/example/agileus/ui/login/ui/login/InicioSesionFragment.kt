@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.ui.login.data.model.Users
+import com.example.agileus.ui.login.ui.login.InicioSesionViewModel.Companion.usersByBoss
 
 //, DialogoListen
 
@@ -37,6 +39,14 @@ class InicioSesionFragment : Fragment() {
         val view:View = binding.root
         return view
         //return inflater.inflate(R.layout.inicio_sesion_fragment, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getUsersByBoss()
+        //Nivel usuario
+
 
     }
 
@@ -66,6 +76,7 @@ class InicioSesionFragment : Fragment() {
 
         val usuario= Users(correo,password.toInt(), TOKEN_KEY)
         viewModel.recuperarLogueo(usuario)
+
 
     }
 
