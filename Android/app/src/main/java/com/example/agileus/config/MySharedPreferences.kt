@@ -24,4 +24,9 @@ class MySharedPreferences(contexto: Context) {
         }
     }
 
+    fun recuperarNivelUsuario() : String{
+        return sharedPreferences.getString(NIVEL_USER, "")!!
+    }
+
+
 }

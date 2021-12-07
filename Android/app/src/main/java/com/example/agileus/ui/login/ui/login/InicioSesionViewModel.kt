@@ -49,10 +49,10 @@ class InicioSesionViewModel : ViewModel() {
 
         viewModelScope.launch {
             listUsers = withContext(Dispatchers.IO){
-                //true "Si tiene hijos"
+                //true "Si tiene hijos" -> alto
                 list.getUsersByBoss("618d9c26beec342d91d747d6")
 
-                //false "No tiene hijos"
+                //false "No tiene hijos" -> bajo
                 //list.getUsersByBoss("61a83c49d036090b8e8db3c5")
 
             }
