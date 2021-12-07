@@ -14,6 +14,7 @@ class InitialApplication : Application() {
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
         lateinit var webServiceGlobalReportes: ReportesApi
         lateinit var webServiceGlobalReportesBroadCast: ReportesApi
+        lateinit var webServiceGlobalReportesTareas: ReportesApi
 
     }
 
@@ -24,6 +25,7 @@ class InitialApplication : Application() {
         BroadcastServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
         webServiceGlobalReportesBroadCast = ConfigRetrofit().getBroadCastReportes()
+        webServiceGlobalReportesTareas = ConfigRetrofit().getTareasporId()
     }
 
 }

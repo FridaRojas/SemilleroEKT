@@ -1,18 +1,14 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,14 +16,14 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
 import com.github.mikephil.charting.animation.Easing
@@ -35,14 +31,6 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.components.LegendEntry
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.time.temporal.ChronoUnit
-import javax.xml.datatype.DatatypeConstants.DAYS
-
 
 
 class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener {
@@ -71,17 +59,17 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        //instanciación del viewModel
         reporteMensajesViewModel = ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
+
         _binding = ReporteMensajesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        //MySharedPreferences.idUsuarioEstadisticas = MySharedPreferences.idUsuario
 
         return root
     }
@@ -90,7 +78,18 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+            obtenerListaEmpleados()
+            funcionSwitch()
+            cambiarGrafica(tipo_grafica)
+
+}
+
+    private fun obtenerListaEmpleados() {
+        //extraer lista de empleados
         reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
+    }
+
+    private fun funcionSwitch() {
 
         binding.btnFiltroReportes.setOnClickListener {
             reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
@@ -105,28 +104,78 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             val extras = FragmentNavigatorExtras(binding.btnReportesMensajes to "report_slide")
             findNavController().navigate(action,  extras)
         }
+    }
 
-            cambiarGrafica(tipo_grafica)
-}
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras() {
+        mostrarLista()
+        cargardatosgraficaBarras()
+    }
 
-        barChart=binding.barChart
-        binding.colorlegend1.isVisible=false
-        binding.colorlegend2.isVisible=false
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun mostrargraficaPie() {
 
+        mostrarLista()
+        cargardatosgraficaPie()
+    }
 
-        reporteMensajesViewModel.devuelvelistaReporte(this)
-
+    private fun mostrarLista() {
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onDateFilterSelected() {
+        cambiarGrafica(tipo_grafica)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun cambiarGrafica(valor:Int) {
+
+        when (valor) {
+
+            0 -> {
+                mostrargraficaPie()
+                binding.pieChart.isVisible=true
+                binding.barChart.isVisible=false
+                vista = 0
+                tipo_grafica=0
+            }
+            1 -> {
+                mostrargraficaBarras()
+                binding.barChart.isVisible=true
+                binding.pieChart.isVisible=false
+                vista = 1
+                tipo_grafica=1
+
+            }
+
+            else -> {
+                mostrargraficaPie()
+                binding.pieChart.isVisible=true
+                binding.barChart.isVisible=false
+                vista=0
+            }
+        }
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun cargardatosgraficaBarras() {
+        barChart=binding.barChart
+        binding.colorlegend1.isVisible=false
+        binding.colorlegend2.isVisible=false
+        binding.txtNombreReportes.setText(idUsuarioEstadisticas)
+
+        reporteMensajesViewModel.devuelvelistaReporte(this)
+
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-
+            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
 
             binding.txtDataPrimerLegend.text=""
 
@@ -144,7 +193,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
             binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
 
-
             binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados.value.toString()
             enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
 
@@ -152,27 +200,25 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
 
             initBarChart(enviados.toFloat(),recibidos.toFloat())//inicializacion de la grafica de barras
-        // y se agregan los valores porcentuales para su visualización
+            // y se agregan los valores porcentuales para su visualización
 
         })
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun mostrargraficaPie() {
+    private fun cargardatosgraficaPie() {
+
+        reporteMensajesViewModel.devuelvelistaReporte(this)
+
         pieChart=binding.pieChart
         binding.colorlegend1.isVisible=true
         binding.colorlegend2.isVisible=true
+        binding.txtNombreReportes.setText(idUsuarioEstadisticas)
 
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        reporteMensajesViewModel.devuelvelistaReporte(this)
-
-        reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.RecyclerLista.adapter = it
-            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
-        })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
 
             binding.txtPrimerLegend.text="Enviados"
             binding.txtSegundoLegend.text="Recibidos"
@@ -236,9 +282,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private fun setDataToPieChart(enviados:Float,recibidos:Float,leidos:Float){
         pieChart.setUsePercentValues(true)
         val dataEntries = ArrayList<PieEntry>()
-        dataEntries.add(PieEntry(enviados, "Enviados"))
-        dataEntries.add(PieEntry(recibidos, "Recibidos"))
-        dataEntries.add(PieEntry(leidos, "Leídos"))
+        dataEntries.add(PieEntry(enviados, ""))
+        dataEntries.add(PieEntry(recibidos, ""))
+        dataEntries.add(PieEntry(leidos, ""))
 
         val colors: ArrayList<Int> = ArrayList()
         colors.add(resources.getColor(R.color.colorPrimary))
@@ -275,12 +321,10 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         entries.add(BarEntry(.5f, recibidos))
 
         val barDataSet = BarDataSet(entries, "")
-        //barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
 
         val colors: ArrayList<Int> = ArrayList()
         colors.add(resources.getColor(R.color.colorPrimary))
         colors.add(resources.getColor(R.color.colorSecondary))
-
 
         val data = BarData(barDataSet)
         barChart.data = data
@@ -288,13 +332,13 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barDataSet.colors = colors
         data.setValueTextSize(0f)
 
-        //hide grid lines
+        //esconder cuadrícula
         barChart.axisLeft.setDrawGridLines(true)
         barChart.xAxis.setDrawGridLines(true)
         barChart.xAxis.setDrawAxisLine(true)
         barChart.xAxis.isEnabled=false
 
-        //remove right y-axis
+        //remover y-axis
         barChart.axisRight.isEnabled = false
         barChart.axisLeft.isEnabled = true
 
@@ -305,16 +349,15 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         barChart.setTouchEnabled(false)
 
-        //remove legend
+        //remove legenda
         barChart.legend.isEnabled = false
-        //remove description label
+        //remover etiqueta de descripción
         barChart.description.isEnabled = false
 
-
-        //add animation
+        //agregar animación
         barChart.animateY(1000)
 
-        //draw chart
+        //dibujar gráfica
         barChart.invalidate()
 
     }
@@ -322,41 +365,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onDateFilterSelected() {
-        cambiarGrafica(tipo_grafica)
-        Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun cambiarGrafica(valor:Int) {
-
-        when (valor) {
-
-            0 -> {
-                mostrargraficaPie()
-                binding.pieChart.isVisible=true
-                binding.barChart.isVisible=false
-                vista = 0
-                tipo_grafica=0
-            }
-            1 -> {
-
-                mostrargraficaBarras()
-                binding.barChart.isVisible=true
-                binding.pieChart.isVisible=false
-                vista = 1
-                tipo_grafica=1
-
-            }
-
-            else -> {
-                mostrargraficaPie()
-                vista=0
-            }
-        }
     }
 
 }

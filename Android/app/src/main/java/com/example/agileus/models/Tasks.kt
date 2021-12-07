@@ -16,5 +16,8 @@ data class Tasks(
     @SerializedName("prioridad") var prioridad: String,
     @SerializedName("leido") var leido: Boolean,
     @SerializedName("createdDate") var createdDate: String
-)
+
+
+
+    )
 

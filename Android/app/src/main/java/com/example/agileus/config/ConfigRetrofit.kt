@@ -69,6 +69,18 @@ class ConfigRetrofit {
     }
 
 
+    fun getTareasporId(): ReportesApi{
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl("http://18.218.7.148:3040//")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(ReportesApi::class.java)
+
+    }
+
+
 
 
 }
