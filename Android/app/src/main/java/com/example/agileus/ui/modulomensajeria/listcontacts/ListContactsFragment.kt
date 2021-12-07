@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
 import com.example.agileus.utils.Constantes
-import com.example.agileus.utils.isConnectedToThisServer
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R

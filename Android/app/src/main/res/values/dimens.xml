@@ -12,6 +12,9 @@
     <dimen name="margin_start_general">4dp</dimen>
     <dimen name="padding_message_writer">4dp</dimen>
     <dimen name="height_view_write_mesage">66dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fragment_horizontal_margin">16dp</dimen>
+    <dimen name="fragment_vertical_margin">16dp</dimen>
     <dimen name="margin_bottom_recycler">20dp</dimen>
     <dimen name="margin_bottom_icon_enviar">20dp</dimen>
 

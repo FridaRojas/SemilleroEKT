@@ -14,9 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
+import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
+import retrofit2.Response
 
 class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
@@ -40,9 +42,25 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         super.onViewCreated(view, savedInstanceState)
 
 
+       val post=MsgBodyUser("Hola ","61a101db174bcf469164d2fd","618e8882c613329636a769ad")
+        viewModel.postRequest(post)
 
 
-            binding.vista2.visibility=View.INVISIBLE
+
+        viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
+            if (response.isSuccessful)
+            {
+                Log.d("Main",response.body().toString())
+                Log.d("Main",response.code().toString())
+                Log.d("Main",response.message().toString())
+            }
+            else{
+                Log.d("Main",response.code().toString())
+            }
+        })
+
+
+        binding.vista2.visibility=View.INVISIBLE
 
         if (BuzonFragment.control == 1) {
             binding.fab.visibility = View.VISIBLE
@@ -60,7 +78,9 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
             }
         }
 
-        viewModel.devuelvebuzon()
+//        viewModel.devuelvebuzon()
+
+
 
         viewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerBuzon.adapter = it
@@ -74,16 +94,18 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         _binding = null
     }
 
-    override fun mensajeBroadcasting(buzon: Buzon) {
 
-        viewModel.postMensaje(buzon)
-        viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
-            if (response.isSuccessful)
-            {
-                Log.i("response",response.code().toString())
-            }}
+    override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
+
+        viewModel.postRequest(buzon)
+        viewModel.myResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                 if (response.isSuccessful) {
+                     Log.i("response", response.code().toString())
+                }
+            },
         )
-
 
     Handler().postDelayed({
             binding.vista1.visibility= View.INVISIBLE
@@ -103,6 +125,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         }, 3800)
     }
 
+
     fun startTimeCounter() {
         var counter=0
         binding.vista1.visibility= View.INVISIBLE
@@ -120,7 +143,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
                 progressBar.progress = counter
             }
             override fun onFinish() {
-                viewModel.devuelvebuzon()
+    //            viewModel.devuelvebuzon()
             }
         }.start()
     }
