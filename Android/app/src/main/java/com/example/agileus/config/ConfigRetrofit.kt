@@ -12,16 +12,16 @@ import com.example.agileus.webservices.apis.TasksApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
-
-
+import okhttp3.Interceptor
+import okhttp3.Request
 
 
 class ConfigRetrofit {
 
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE
 
-   fun obtenerConfiguracionRetofitMessage(): MessageApi {
-       val mRetrofit = Retrofit.Builder()
+    fun obtenerConfiguracionRetofitMessage(): MessageApi {
+        val mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)
             .client(cliente(60))
             .addConverterFactory(GsonConverterFactory.create())
@@ -29,16 +29,19 @@ class ConfigRetrofit {
         return mRetrofit.create(MessageApi::class.java)
     }
 
-    fun obtenerConfiguracionRetofitTasks(): TasksApi{
+    fun obtenerConfiguracionRetofitTasks(): TasksApi {
 
-        /*val clientBuilder = OkHttpClient.Builder()
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        clientBuilder.addInterceptor(loggingInterceptor)*/
+        val httpClient = OkHttpClient()
+        httpClient.networkInterceptors().add(Interceptor { chain ->
+            val requestBuilder: Request.Builder = chain.request().newBuilder()
+            requestBuilder.header("token_sesion", "12345")
+            chain.proceed(requestBuilder.build())
+        })
 
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
-           // .client(clientBuilder.build())
+            .client(httpClient)
+            // .client(clientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -64,7 +67,6 @@ class ConfigRetrofit {
             .build()
         return mRetrofit.create(BuzonApi::class.java)
     }
-
 
 
 }

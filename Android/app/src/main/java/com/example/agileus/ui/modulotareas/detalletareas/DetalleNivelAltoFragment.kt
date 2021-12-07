@@ -386,7 +386,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         mesInicio = mes
         diaInicio = dia
 
-
         val fecha = binding.txtFechaInicioD
         val fechaObtenida = "$anio-$mes-$dia"
         fecha.setText(fechaObtenida)
