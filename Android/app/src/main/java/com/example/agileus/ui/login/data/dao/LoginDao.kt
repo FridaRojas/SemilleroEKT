@@ -15,7 +15,7 @@ class LoginDao {
 
     fun iniciarSesion(usuario: Users): Boolean {
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
-        var responseDos: Response<LoginResponse> = callRespuesta.execute()
+        val responseDos: Response<LoginResponse> = callRespuesta.execute()
 
         if (responseDos.isSuccessful) {
 

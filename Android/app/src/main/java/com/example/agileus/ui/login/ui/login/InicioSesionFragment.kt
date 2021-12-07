@@ -55,6 +55,7 @@ class InicioSesionFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
+
         //AGREGADA para ocultar BottonNavigationView
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
