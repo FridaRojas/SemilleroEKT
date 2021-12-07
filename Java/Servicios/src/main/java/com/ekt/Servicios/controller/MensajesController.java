@@ -232,21 +232,21 @@ public class MensajesController {
 	public ResponseEntity<?> verConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		try{
 			if(idConversacion.length()<49){
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id de la convbersacion no contiene los caracteres neesarios", ""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El id de la convbersacion no contiene los caracteres neesarios", ""));
 			}
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 
-			return ResponseEntity.status(HttpStatus.OK).body(iter.iterator());
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),"Lista de mensajes de conversacion: "+ idConversacion,iter.iterator()));
 
 		}catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 
 	}
@@ -439,7 +439,7 @@ public class MensajesController {
 	public ResponseEntity<?> cambiarStatusConversacion(@PathVariable(value = "idConversacion") String idConversacion) {
 		try{
 			if(idConversacion.length()<49) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El id de la conversacion no contiene los caracteres neesarios", ""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El id de la conversacion no contiene los caracteres neesarios", ""));
 			}
 
 			List<Mensajes> list = new ArrayList<>();
@@ -447,26 +447,26 @@ public class MensajesController {
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 			iter.forEach(list::add);
 			if(list.size()<1) {
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Response(HttpStatus.NO_CONTENT, "No existe la conversacion",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "No existe la conversacion",""));
 			}
 			if(!list.get(0).isConversacionVisible()) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "La conversacion ya se elimino anteriormente",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "La conversacion ya se elimino anteriormente",""));
 			}
 			for (Mensajes msg : iter) {
 				msg.setConversacionVisible(false);
 				mensajesService.save(msg);
 			}
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "Se elimino la conversacion",""));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMensajes(String.valueOf(HttpStatus.CREATED.value()), "Se elimino la conversacion",""));
 
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 
 	}
@@ -608,17 +608,15 @@ public class MensajesController {
 	public ResponseEntity<?> listarConversaciones(@PathVariable(value ="idEmisor")String idEmisor){
 		try{
 			if(idEmisor.length()<24 || idEmisor.length()>24){
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El id del usuario no tiene los caracteres necesarios",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El id del usuario no tiene los caracteres necesarios",""));
 			}
 			Optional<User> user = userRepository.validarUsuario(idEmisor);
 			if (!user.isPresent()){
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"No se encuentra este usuario",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"No se encuentra este usuario",""));
 			}
-			List<String> mensajesList = new ArrayList<>();
 			MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
 			DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
 			MongoCursor mongoCursor = distinctIterable.iterator();
-
 
 			List<Conversacion> lConversacion = new ArrayList<>();
 			List<Conversacion> lConversacion2 = new ArrayList<>();
@@ -626,7 +624,6 @@ public class MensajesController {
 			while (mongoCursor.hasNext()) {
 
 				Conversacion mConv = new Conversacion();
-
 				String idConversacion = (String) mongoCursor.next();
 				mConv.setIdConversacion(idConversacion);
 				Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
@@ -651,35 +648,44 @@ public class MensajesController {
 						mConv.setIdEmisor(mensajes.getIDEmisor());
 					}
 				}
+				//lConversacion.add(mConv);
+				if(/*conv.getIdEmisor().equals(idEmisor) &&*/ mConv.getIdConversacion().contains(idEmisor)){
+					if(mConv.getIdConversacion().length()<50){
+						if(mConv.getIdReceptor() !=null ) {
+							Optional<User> user2 = userRepository.validarUsuario(mConv.getIdReceptor());
 
-				lConversacion.add(mConv);
-			}
-
-			for (Conversacion conv: lConversacion){
-				if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor)){
-					lConversacion2.add(conv);
-				}
-			}
-			for (Conversacion conv2: lConversacion2){
-				if(conv2.getIdConversacion().length()<50){
-					if(conv2.getIdReceptor() !=null ) {
-						Optional<User> user2 = userRepository.validarUsuario(conv2.getIdReceptor());
-
-						conv2.setNombreRol(user2.get().getNombreRol());
+							mConv.setNombreRol(user2.get().getNombreRol());
+						}
+						lConversacion3.add(mConv);
 					}
-					lConversacion3.add(conv2);
 				}
 			}
-			return ResponseEntity.status(HttpStatus.OK).body(lConversacion3);
+
+//			for (Conversacion conv: lConversacion){
+//				if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor)){
+//					lConversacion2.add(conv);
+//				}
+//			}
+//			for (Conversacion conv2: lConversacion2){
+//				if(conv2.getIdConversacion().length()<50){
+//					if(conv2.getIdReceptor() !=null ) {
+//						Optional<User> user2 = userRepository.validarUsuario(conv2.getIdReceptor());
+//
+//						conv2.setNombreRol(user2.get().getNombreRol());
+//					}
+//					lConversacion3.add(conv2);
+//				}
+//			}
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),"Lista de conversaciones",lConversacion3));
 		}catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 
 
@@ -689,11 +695,11 @@ public class MensajesController {
 	public ResponseEntity<?> listarMensajesRecividos(@PathVariable (value = "idEmisor")String idEmisor){
 		try{
 			if(idEmisor.length()<24 || idEmisor.length()>24) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Tamaño del id invalido",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tamaño del id invalido",""));
 			}
 			Optional<User> user=userRepository.validarUsuario(idEmisor);
 			if(!user.isPresent()){
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"no se encuetra el usuario",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"no se encuetra el usuario",""));
 			}
 			Iterable<Mensajes> msg= mensajesRepository.findAll();
 			List<Mensajes> lMensajes = new ArrayList<>();
@@ -703,16 +709,16 @@ public class MensajesController {
 					lMensajes.add(msg2);
 				}
 			}
-			return ResponseEntity.status(HttpStatus.OK).body(lMensajes);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),"Lista de mensajes",lMensajes));
 		}catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 	}
 

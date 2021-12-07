@@ -18,4 +18,5 @@ public interface TaskService {
     public ArrayList<String> validarTareasCrear(Task tarea);
     public void notificacion(String token, String asunto);
     public ArrayList<String> validarTareasActualizar(Task tarea);
+    public ArrayList<String> validarSesion(String token_sesion, String id_usuario);
 }
