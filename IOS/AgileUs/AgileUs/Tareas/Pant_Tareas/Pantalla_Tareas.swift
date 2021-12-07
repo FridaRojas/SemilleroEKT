@@ -169,8 +169,8 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
                         //print(self.arrTareas)
                         
                         if self.selestatus?.data == nil {
-                            self.arrTareas.removeAll()
-                            self.Lista_tareas.reloadData()
+                            self.arrTareas.removeAll()  // llenar loz datoz
+                            self.Lista_tareas.reloadData() // recarga la lizta
                             self.Alerta_CamposVacios(title: "Sin tareas", Mensaje: "Vacia")
                             return
                         }
