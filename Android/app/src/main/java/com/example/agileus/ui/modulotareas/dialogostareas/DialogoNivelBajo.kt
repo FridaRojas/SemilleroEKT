@@ -150,7 +150,7 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             }
 
             this.dialog?.closeOptionsMenu()
-            Toast.makeText(context, dataTask.archivo, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, dataTask.archivo, Toast.LENGTH_SHORT).show()
             if (!dataTask.archivo.isNullOrEmpty()) {
                 btnPdf.isVisible = true
                 btnPdf.setOnClickListener {
