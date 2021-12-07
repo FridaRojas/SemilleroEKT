@@ -16,11 +16,14 @@ class MessageDao {
         try{
             val callRespuesta =
                 InitialApplication.webServiceMessage.getConversationOnetoOne(idChat)
-            var ResponseDos: Response<ArrayList<Conversation>> = callRespuesta.execute()
+            val ResponseDos: Response<ArrayList<Conversation>> = callRespuesta.execute()
 
 
             if (ResponseDos.isSuccessful) {
                 listaMensajes = ResponseDos.body()!!
+            }
+            listaMensajes.forEach {
+                Log.d("sala" ,it.id)
             }
 
         }catch (ex:Exception){

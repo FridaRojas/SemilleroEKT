@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.BuzonComunicados
 import com.example.agileus.models.BuzonResp
+import com.example.agileus.models.Chats
+import com.example.agileus.models.Contacts
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 
-class BuzonAdapterResponse(private var dataSet: ArrayList<BuzonComunicados>, var tipo: Int) :
-    RecyclerView.Adapter<BuzonAdapterResponse.ViewHolder>() {
+class TarjetasAdapter(private var dataSet: ArrayList<Contacts>, var tipo: Int) :
+    RecyclerView.Adapter<TarjetasAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
@@ -21,10 +23,10 @@ class BuzonAdapterResponse(private var dataSet: ArrayList<BuzonComunicados>, var
 
         init {
             // Define click listener for the ViewHolder's View.
-            textView = view.findViewById(R.id.dueño)
+            textView =  view.findViewById(R.id.dueño)
             textView1 = view.findViewById(R.id.msgcontenido)
             textView2 = view.findViewById(R.id.status)
-            textview3 =view.findViewById(R.id.DetalleActividad)
+            textview3 = view.findViewById(R.id.DetalleActividad)
         }
     }
 
@@ -42,9 +44,10 @@ class BuzonAdapterResponse(private var dataSet: ArrayList<BuzonComunicados>, var
         val buzon = dataSet[position]
 
 //        viewHolder.textView.text = "Mensaje enviado a a Broadcast"
-             viewHolder.textView.text =   "Mensaje enviado por ${buzon.idemisor}"
-             viewHolder.textView1.text =  "Contenido: ${buzon.texto}  "
-             viewHolder.textView2.text =  "Mensaje enviado a ${buzon.idreceptor} "
+             viewHolder.textView.text =   "Usuario ${buzon.nombre}"
+             viewHolder.textView1.text =  "Id: ${buzon.id}  "
+             viewHolder.textView2.text =  "Rol ${buzon.nombreRol} "
+
         }
 
     override fun getItemCount(): Int {

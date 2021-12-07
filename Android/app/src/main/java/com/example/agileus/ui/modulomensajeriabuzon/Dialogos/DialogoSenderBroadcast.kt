@@ -8,13 +8,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.models.Buzon
 import com.example.agileus.R
 import com.example.agileus.models.MensajeBodyBroadcaster
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
 import com.google.android.material.textfield.TextInputEditText
 
-class DialogoSenderBroadcast(val listener: BroadcasterListener,val lista:ArrayList<String>) : DialogFragment() {
+import android.widget.AutoCompleteTextView
+import com.example.agileus.utils.Constantes.broadlist
+
+
+class DialogoSenderBroadcast(val listener: BroadcasterListener, val lista: ArrayList<String>) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -27,10 +30,16 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener,val lista:ArrayLi
             val Mensaje         = vista.findViewById<TextInputEditText>(R.id.Mensajes1)
 
 
-            val items = listOf("Option 1", "Option 2", "Option 3", "Option 4","General")///lista a consumir
+
             val adapter = ArrayAdapter(requireContext(), R.layout.list_item, lista)
             val Destinatario =vista.findViewById<AutoCompleteTextView>(R.id.Responsable)
+            val Rolx =vista.findViewById<TextInputEditText>(R.id.txtRol)
+
+
+
+
             Destinatario.setAdapter(adapter)
+
             if(vista.isFocusable == true ){
                 hideSoftKeyboard(activity as Activity)
             }
@@ -39,16 +48,20 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener,val lista:ArrayLi
                 .setPositiveButton(
                     "Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
-                        if(Asunto.toString().isEmpty() || Mensaje.toString().isEmpty() ) {
+                        if(Asunto.toString().length<5 || Mensaje.toString().length<5 ) {
                             Toast.makeText(activity,
                                 "Accion no permitida",
                                 Toast.LENGTH_LONG
                             ).show()
                         }else {
-                            listener.mensajeBroadcasting1(
+                            var mensaje="Asunto : "+Asunto.text.toString()+"| Mensaje : "+Mensaje.text.toString()
+                            listener.mensajeBroadcasting(
                                 MensajeBodyBroadcaster(
-                                "2000-01-01T00:00:00.000+00:00","Broadcast",Destinatario.text.toString(),Mensaje.text.toString())
-                            )
+                                    "2000-01-01T00:00:00.000+00:00",
+                                    broadlist,
+                                    Destinatario.text.toString(),
+                                    mensaje
+                                ))
                         }
                     })
                 .setNegativeButton("Cancelar",
