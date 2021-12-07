@@ -27,10 +27,11 @@ class DetalleNivelAltoViewModel : ViewModel() {
 
     }
 
-    fun editarTarea(dataTask: TaskUpdate, idTarea: String) {
+    fun editarTarea(dataTask: TaskUpdate, idTarea: String, idUsuario: String) {
         try {
             viewModelScope.launch {
-                taskDao.editTask(dataTask, idTarea)
+//                taskDao.editTask(dataTask, idTarea, idUsuario)
+                taskDao.editTask(dataTask, idTarea, idUsuario)
             }
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())

@@ -15,7 +15,7 @@ import com.example.agileus.webservices.dao.TasksDao
 import java.lang.IllegalStateException
 import java.util.*
 
-class DialogoActualizarTarea(var args: TaskUpdate, var idTarea: String) :
+class DialogoActualizarTarea(var args: TaskUpdate, var idTarea: String, var idUsuario: String) :
     DialogFragment() {
 
     private lateinit var detalleNivelAltoViewModel: DetalleNivelAltoViewModel
@@ -36,7 +36,7 @@ class DialogoActualizarTarea(var args: TaskUpdate, var idTarea: String) :
             builder.setMessage("Desea actualizar tarea ${args.titulo}?")
                 .setPositiveButton(R.string.respAceptar,
                     DialogInterface.OnClickListener { dialog, id ->
-                        detalleNivelAltoViewModel.editarTarea(args, idTarea)
+                        detalleNivelAltoViewModel.editarTarea(args, idTarea, idUsuario)
                         val newFragment = DialogoAceptar("Tarea ${args.titulo} editada")
                         newFragment.show(
                             (activity as HomeActivity).supportFragmentManager,
