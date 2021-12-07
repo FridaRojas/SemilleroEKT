@@ -1,6 +1,7 @@
 package com.example.agileus.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.ActivityHomeBinding
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 
 /*class HomeActivity : AppCompatActivity() {
 
@@ -61,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
 
         val navView: BottomNavigationView = binding.navView

@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.ui.login.data.model.*
 import com.example.agileus.ui.login.data.service.LoginApi
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
 import retrofit2.Call
 import retrofit2.Response
@@ -21,8 +22,8 @@ class LoginDao {
 
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
-                Log.d("almacenar", "${almacenar.status}")
-
+                Log.d("almacenar", "${almacenar.data.id}")
+                idUser= almacenar.data.id.toString()
                 if (almacenar.status == "ACCEPTED")
                     STATUS=true
                 if (almacenar.status =="BAD_REQUEST")

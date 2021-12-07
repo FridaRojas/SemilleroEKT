@@ -16,7 +16,7 @@ object Constantes {
     val URL_BUZON_2=""
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
-    val id = "618e8743c613329636a769aa"
+    var id = "618e8743c613329636a769aa"
     val idChat = "618e8743c613329636a769aa_618b05c12d3d1d235de0ade0"
     val referenciaMensajeria = "Mensajeria"
     val referenciaTareas= "Tareas"

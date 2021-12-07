@@ -31,6 +31,7 @@ class InicioSesionFragment : Fragment() {
           var correoLogin : String=""
           var passwordLogin : String=""
           var status:Boolean=false
+          var idUser:String=""
 
     }
 

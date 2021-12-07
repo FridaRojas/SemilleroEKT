@@ -49,6 +49,7 @@ class InicioSesionViewModel : ViewModel() {
                     list.iniciarSesion(users)
                 }!!
             }
+
             Log.d("status","$status")
         } catch (ex : Exception) {
             inicioExitoso.value = false

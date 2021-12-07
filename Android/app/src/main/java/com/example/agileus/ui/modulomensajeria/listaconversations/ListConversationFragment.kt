@@ -3,6 +3,7 @@ package com.example.agileus.ui.modulomensajeria.listacontactos
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,8 @@ import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.login.dialog.DialogoListen
 import com.example.agileus.ui.login.dialog.RecuperaPasswordDialog
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -50,6 +53,10 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("usuario pasado", "${InicioSesionFragment.idUser}")
+
+        Constantes.id=idUser
 
         ChatsViewModel.devuelveListaGrupos(Constantes.id)
         ChatsViewModel.devuelveListaChats(Constantes.id)
