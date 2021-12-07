@@ -391,8 +391,8 @@ class ChatViewController:
             }
             else{
                 succes("successsss")
-                print(response)
-                print(postParameters)
+                //print(response)
+                //print(postParameters)
             }
         }
         //ejecuta la tarea

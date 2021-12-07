@@ -42,7 +42,7 @@
                 <outlet property="lbl_contacto" destination="7Da-vZ-F3Y" id="fgk-fW-L1A"/>
                 <outlet property="lbl_puesto" destination="AMk-hF-zXg" id="g9B-zf-kUs"/>
             </connections>
-            <point key="canvasLocation" x="139" y="100"/>
+            <point key="canvasLocation" x="137.68115942028987" y="99.776785714285708"/>
         </tableViewCell>
     </objects>
     <resources>
