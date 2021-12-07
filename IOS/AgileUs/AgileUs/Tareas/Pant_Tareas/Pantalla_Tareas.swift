@@ -66,6 +66,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var select_estatus:String = ""
     var id_tarea:String = ""
     var url:String = ""
+    let cellSpacingHeight: CGFloat = 5
     //variable para mostrar el colection view
 
     
@@ -111,7 +112,6 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
 
     override func viewWillAppear(_ animated: Bool) {
         //llama al servico
-
         if select_estatus == "Asignadas"
         {
             url =  "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
@@ -121,7 +121,6 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
             url = nivel != "alto" ? "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)" : "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
             
         }
-        print("*****************si entre al guilappear")
         consumir_servicio(url: url)
 
     }
@@ -212,10 +211,10 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let indice = indexPath.row
         let celda_personalizada = tableView.dequeueReusableCell(withIdentifier: List.identificador, for: indexPath) as! List
         celda_personalizada.configurar_celda(i: arrTareas[indice])
-        
         
         return celda_personalizada
         
@@ -349,6 +348,11 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
             dataSource.append(contentsOf: ["Pendientes","Iniciadas","Revisión","Terminadas"])
         }
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.contentView.layer.masksToBounds = true
+    }
+
 }
 
 
