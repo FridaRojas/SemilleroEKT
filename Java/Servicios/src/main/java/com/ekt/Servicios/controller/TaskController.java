@@ -308,17 +308,22 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{idReceptor}") //5. Tareas
-    public ResponseEntity<?> getUsuarioTareasByPrioridad(@PathVariable String prioridad,@PathVariable String idReceptor) {
+    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{id_usuario}") //5. Tareas
+    public ResponseEntity<?> getUsuarioTareasByPrioridad(@RequestHeader("token_sesion") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
         try {
             String mensaje;
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
             // Valida que el receptor exista
-            Optional<User> usuarioValido = usuarioService.findById((idReceptor));
+            Optional<User> usuarioValido = usuarioService.findById((id_usuario));
             if (!usuarioValido.isPresent()) {
-                mensaje = "Usuario receptor con id: " + idReceptor + " invalido";
+                mensaje = "Usuario receptor con id: " + id_usuario + " invalido";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
-            Iterable<Task> tareas = tareaRepository.findIdReceptorTareaByPrioridad(idReceptor, prioridad);
+            Iterable<Task> tareas = tareaRepository.findIdReceptorTareaByPrioridad(id_usuario, prioridad);
             int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
                 mensaje = "No se encontró la tarea";
@@ -336,12 +341,17 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje,e.getStackTrace()));
         }
     }
-    @GetMapping("/obtenerTareasQueAsignoPorId/{id}")    //REPORTES
-    public ResponseEntity<?> getAllTareasOutByUserId(@PathVariable String id){
+    @GetMapping("/obtenerTareasQueAsignoPorId/{id_usuario}")    //REPORTES
+    public ResponseEntity<?> getAllTareasOutByUserId(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario){
         try {
-            Iterable<Task> tareas = tareaRepository.getAllOutByUserId(id);
-            int nDocumentos = ((Collection<Task>) tareas).size();
             String mensaje;
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            Iterable<Task> tareas = tareaRepository.getAllOutByUserId(id_usuario);
+            int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
                 mensaje = "No se encontraron tareas";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
@@ -359,13 +369,18 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareasQueLeAsignaronPorId/{id}") //REPORTES
-    public ResponseEntity<?> getAllTareasInByUserId(@PathVariable String id){
+    @GetMapping("/obtenerTareasQueLeAsignaronPorId/{id_usuario}") //REPORTES
+    public ResponseEntity<?> getAllTareasInByUserId(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario){
         try {
+            String mensaje;
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
             //Validar Id en la BD
             //Validar tareas !=0
-            Iterable<Task> tareas = tareaRepository.getAllInByUserId(id);
-            String mensaje;
+            Iterable<Task> tareas = tareaRepository.getAllInByUserId(id_usuario);
             int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
                 mensaje = "No se encontraron tareas";
@@ -384,11 +399,16 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}&{id_emisor}")    //Reportes
-    public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@PathVariable String id_grupo,@PathVariable String id_emisor){
+    @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}&{id_usuario}")    //Reportes
+    public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario){
         try {
-            Iterable<Task> tareas = tareaRepository.getAllByGroupAndIdEmisor(id_grupo, id_emisor);
             String mensaje;
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            Iterable<Task> tareas = tareaRepository.getAllByGroupAndIdEmisor(id_grupo, id_usuario);
             int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
                 mensaje = "No se encontraron tareas";
@@ -408,17 +428,22 @@ public class TaskController {
     }
 
     @PutMapping("/actulizarEstatus/{id_tarea}&{estatus}")   //6. Tareas
-    public ResponseEntity<?> actualizarEstatus(@PathVariable String id_tarea, @PathVariable String estatus) {
+    public ResponseEntity<?> actualizarEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea, @PathVariable String estatus) {
         try {
+            String mensaje = "";
             //Validar Id tarea
             //Validar estatus
-            String mensaje = "";
             Optional<Task> oTarea = tareaService.findById(id_tarea);
             if (oTarea.isPresent()) {
                 tareaService.actualizarEstatus(id_tarea, estatus);
                 mensaje = "Estatus actualizado correctamente";
                 Optional<User> usuarioValido = usuarioService.findById(oTarea.get().getId_emisor());
                 if (usuarioValido.isPresent()) {//Si el usuario es valido
+                    ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,oTarea.get().getId_emisor());
+                    if(!erroresSesion.isEmpty()) {
+                        mensaje = "Error al procesar solicitud";
+                        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+                    }
                     String token = usuarioValido.get().getToken();
                     if (token != null || token != "") {//Si existe el token o no es vacio
                         if (estatus.equals("revision")) {
@@ -444,11 +469,16 @@ public class TaskController {
     }
 
     @PutMapping("/actualizarLeidoPorIdTarea/{id_tarea}")    //7. Tarea
-    public ResponseEntity<?> actualizaLeidoPorIdTarea(@PathVariable String id_tarea){
+    public ResponseEntity<?> actualizaLeidoPorIdTarea(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea){
         try {
             String mensaje;
             Optional<Task> oTarea = tareaService.findById(id_tarea);
             if (oTarea.isPresent()) {
+                ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,oTarea.get().getId_emisor());
+                if(!erroresSesion.isEmpty()) {
+                    mensaje = "Error al procesar solicitud";
+                    return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+                }
                 tareaService.actualizaLeido(id_tarea, true);
                 mensaje = "Actualizacion Leído de tarea con id " + id_tarea;
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje));
@@ -469,10 +499,16 @@ public class TaskController {
     }
 
     @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}&{estatus}") //8. Tareas
-    public ResponseEntity<?> obtenerTareasQueLeAsignaronPorIdYEstatus(@PathVariable String id_usuario,@PathVariable String estatus){
+    public ResponseEntity<?> obtenerTareasQueLeAsignaronPorIdYEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
+
+        String mensaje;
+        ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+        if(!erroresSesion.isEmpty()) {
+            mensaje = "Error al procesar solicitud";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+        }
         Iterable<Task> tareas = tareaRepository.getAllByIdReceptorAndStatus(id_usuario,estatus);
         int nDocumentos = ((Collection<Task>) tareas).size();
-        String mensaje;
         if(nDocumentos==0){
             mensaje = "No hay tareas que le asignaron al id: "+id_usuario+" por estatus: "+estatus;
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
@@ -481,17 +517,22 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
     }
 
-    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_emisor}&{estatus}")  //9. Tareas
-    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@PathVariable String id_emisor,@PathVariable String estatus){
+    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}&{estatus}")  //9. Tareas
+    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
         try {
-            Iterable<Task> tareas = tareaRepository.getAllByIdEmisorAndStatus(id_emisor, estatus);
             String mensaje;
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            Iterable<Task> tareas = tareaRepository.getAllByIdEmisorAndStatus(id_usuario, estatus);
             int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
-                mensaje = "No hay tareas que asignó el id: " + id_emisor + " por estatus: " + estatus;
+                mensaje = "No hay tareas que asignó el id: " + id_usuario + " por estatus: " + estatus;
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
-            mensaje = "Tareas que asignó el id: " + id_emisor + " por estatus: " + estatus + " obtenidas correctamente";
+            mensaje = "Tareas que asignó el id: " + id_usuario + " por estatus: " + estatus + " obtenidas correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
         }catch (MongoException m){
             String mensaje;
@@ -504,10 +545,15 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actualizarTareaFechaRealIni/{id_tarea}")
-    public ResponseEntity<?> actualizarFechaRealTareaIni(@PathVariable String id_tarea,@RequestBody Task tarea) {
+    @PutMapping("/actualizarTareaFechaRealIni/{id_tarea}/{id_usuario}")
+    public ResponseEntity<?> actualizarFechaRealTareaIni(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
         String mensaje = "";
         try {
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
             tareaService.updateRealDateStart(id_tarea, tarea);
             mensaje = "Fecha de inicio guardada correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
@@ -520,10 +566,15 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actualizarTareaFechaRealFin/{id_tarea}")
-    public ResponseEntity<?> actualizarFechaRealTareaFin(@PathVariable String id_tarea,@RequestBody Task tarea) {
+    @PutMapping("/actualizarTareaFechaRealFin/{id_tarea}/{id_usuario}")
+    public ResponseEntity<?> actualizarFechaRealTareaFin(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
         String mensaje = "";
         try {
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
             tareaService.updateRealDateFinish(id_tarea, tarea);
             mensaje = "Fecha de termino guardada correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
