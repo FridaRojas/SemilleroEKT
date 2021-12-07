@@ -15,11 +15,19 @@ struct Conversaciones: Codable
     let nombreRol:String
 
 }
+struct Grupos:Codable
+{
+    let idConversacion:String
+    let idReceptor:String
+    let nombreConversacionRecepto:String
+    
+}
 
 class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource { //se importan las clases abstraptas
 
     @IBOutlet weak var tabla_chats: UITableView!
     var conversaciones = [Conversaciones]()
+    var grupos = [Grupos]()
     var otrodatos = [Any]()
     //se crea un arreglo para poder simular los datos que nos proporcionara el web service
 
@@ -30,7 +38,9 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         tabla_chats.delegate = self
         tabla_chats.dataSource = self
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
+        Servicio_web_grupos()
         Servicio_web_conversaciones()
+      
     }
     override func viewDidAppear(_ animated: Bool) {
 
@@ -76,6 +86,37 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    func Servicio_web_grupos()
+    {
+        let servicio_grupos = server + "mensajes/listaGrupos/\(userID)"
+       
+        let url = URL(string: servicio_grupos)
+
+        URLSession.shared.dataTask(with: url!)
+        {data,response,error in
+            do
+            {
+                self.grupos = try JSONDecoder().decode([Grupos].self, from: data!)
+                DispatchQueue.main.async
+                {
+                    var cadena = String()
+                    var contador = 1
+                    for item in self.grupos
+                    {
+                        self.otrodatos.append([contador,item.idConversacion,item.idReceptor,item.nombreConversacionRecepto,"grupo"])
+                        contador = contador + 1
+                    }
+                    self.tabla_chats.reloadData()
+                    
+                }
+
+            }
+            catch{print("Errorrrrrr\(error)")}
+        }.resume()
+
+    }
+
+    
     
     func Servicio_web_conversaciones()
     {
@@ -106,10 +147,5 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         }.resume()
 
     }
-
-
-
-
-
 
 }

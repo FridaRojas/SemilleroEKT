@@ -32,6 +32,13 @@ class lista_chats: UITableViewCell {
     func configurar_celda(Datos : [Any])
     {
         id = Datos[0] as! Int
+        //var check = "\(Datos[3])"
+        if Datos[4] as! String == "grupo"
+        {
+            lbl_conversacion.textColor = UIColor(red:0, green:0.255,blue:0.100,alpha:0.5)
+            //lbl_conversacion.bounds
+            lbl_conversacion.text = "\(Datos[3])"
+        }
         lbl_conversacion.text = "\(Datos[3])"
     }
     func regresa_id() -> Int
