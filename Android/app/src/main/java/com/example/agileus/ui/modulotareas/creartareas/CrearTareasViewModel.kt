@@ -30,7 +30,6 @@ class CrearTareasViewModel: ViewModel() {
                 val listaGrupoPersonas = withContext(Dispatchers.IO) {
                     personasGetDao .getPersonsGroup(idsuperiorInmediato)
                 }
-                Log.d("Mensaje", "listaGrupoPersonas CrearTareasViewModel: ${listaGrupoPersonas.size} ")
                 personasGrupoLista.value = listaGrupoPersonas
             }
         }
