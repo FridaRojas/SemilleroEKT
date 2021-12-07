@@ -70,8 +70,8 @@ class TasksAdapter(
 
 
         fun enlazarItem(dataTask: DataTask) {
-            nombreTarea.text = dataTask.titulo
-            personaAsignada.text = dataTask.nombreReceptor
+            nombreTarea.text = dataTask.titulo.capitalize()
+            personaAsignada.text = dataTask.nombreReceptor.capitalize()
             prioridad.text = "Prioridad: ${dataTask.prioridad.capitalize()}"
 
             var fechaInicio = formatoFecha(dataTask.fechaIni)

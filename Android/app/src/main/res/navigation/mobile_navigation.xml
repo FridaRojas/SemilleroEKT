@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/inicioSesionFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_buzonUserFragment"
             app:destination="@id/buzonUserFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_inicioSesionFragment"
+            app:destination="@id/inicioSesionFragment" />
     </fragment>
 
     <fragment
@@ -39,12 +42,13 @@
     <fragment
         android:id="@+id/listContactsFragment"
         android:name="com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragment"
-        android:label="@string/name_contactos_fragment"
-        tools:layout="@layout/list_contacts_fragment" >
+        android:label="fragment_buzon"
+        tools:layout="@layout/fragment_buzon" >
         <action
             android:id="@+id/action_listContactsFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+
     <fragment
         android:id="@+id/buzonDetallesFragment"
         android:name="com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesFragment"
@@ -95,6 +99,9 @@
         <action
             android:id="@+id/action_buzonFragment_to_buzonDetallesFragment"
             app:destination="@id/buzonDetallesFragment" />
+        <action
+            android:id="@+id/action_buzonFragment_to_receiverBuzonBroadcastFragment"
+            app:destination="@id/receiverBuzonBroadcastFragment" />
     </fragment>
     <fragment
         android:id="@+id/buzonDetallesUserFragment"
@@ -110,5 +117,26 @@
             android:name="tareas"
             app:argType="com.example.agileus.models.DataTask" />
     </fragment>
+    <fragment
+        android:id="@+id/receiverBuzonBroadcastFragment"
+        android:name="com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastFragment"
+        android:label="receiver_buzon_broadcast_fragment"
+        tools:layout="@layout/receiver_buzon_broadcast_fragment" />
+
+
+    <fragment
+        android:id="@+id/inicioSesionFragment"
+        android:name="com.example.agileus.ui.login.ui.login.InicioSesionFragment"
+        android:label="Inicio de Sesión"
+        tools:layout="@layout/inicio_sesion_fragment" >
+        <action
+            android:id="@+id/action_inicioSesionFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/inicioSesionFragment"/>
+
+    </fragment>
+
+
 
 </navigation>

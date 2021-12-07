@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.models.Buzon
 import com.example.agileus.adapters.BuzonAdapter
+import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listasize
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.control
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.DaoBuzon1
 import com.example.agileus.webservices.dao.ProviderBuzon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,17 +18,18 @@ import retrofit2.Response
 
 class BuzonDetallesUserViewModel : ViewModel() {
 
-    lateinit var listafiltrada: ArrayList<Buzon>
-    var myResponse :MutableLiveData<Response<Buzon>> = MutableLiveData()
+//    lateinit var listafiltrada: ArrayList<Buzon>
+    var myResponse :MutableLiveData<Response<MsgBodyUser>> = MutableLiveData()
     var adaptador = MutableLiveData<BuzonAdapter>()
-    var lista : ProviderBuzon
+    var lista : DaoBuzon1
     lateinit var listaConsumida:ArrayList<Buzon>
 
 
     init {
-        lista = ProviderBuzon()
+        lista =DaoBuzon1()
     }
 
+    /*
     fun devuelvebuzon(){
 
         var Actuser:String
@@ -66,8 +69,17 @@ class BuzonDetallesUserViewModel : ViewModel() {
         }catch (ex:Exception){
             Log.e("aqui", ex.message.toString())
         }
+*/
+    fun postRequest(mypost: MsgBodyUser) {
+        viewModelScope.launch {
+            val response: Response<MsgBodyUser> = lista.getcustompush(mypost)
+            myResponse.value = response
+        }
     }
+}
 
+
+    /*
     fun postMensaje(mypost: Buzon) {
 
         mypost.id=(listasize +1).toString()
@@ -85,5 +97,4 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
     }
 
-
-}
+*/

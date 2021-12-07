@@ -10,10 +10,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.models.Buzon
 import com.example.agileus.R
+import com.example.agileus.models.MensajeBodyBroadcaster
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
 import com.google.android.material.textfield.TextInputEditText
 
-class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment() {
+class DialogoSenderBroadcast(val listener: BroadcasterListener,val lista:ArrayList<String>) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -27,7 +28,7 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
 
 
             val items = listOf("Option 1", "Option 2", "Option 3", "Option 4","General")///lista a consumir
-            val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+            val adapter = ArrayAdapter(requireContext(), R.layout.list_item, lista)
             val Destinatario =vista.findViewById<AutoCompleteTextView>(R.id.Responsable)
             Destinatario.setAdapter(adapter)
             if(vista.isFocusable == true ){
@@ -40,13 +41,14 @@ class DialogoSenderBroadcast(val listener: BroadcasterListener) : DialogFragment
                     DialogInterface.OnClickListener { dialog, id ->
                         if(Asunto.toString().isEmpty() || Mensaje.toString().isEmpty() ) {
                             Toast.makeText(activity,
-                                "",
+                                "Accion no permitida",
                                 Toast.LENGTH_LONG
                             ).show()
-                        }else{
-                                listener.mensajeBroadcasting(
-                                    Buzon("","Broadcast",Destinatario.text.toString(),Asunto.text.toString(),Mensaje.text.toString())
-                                )
+                        }else {
+                            listener.mensajeBroadcasting1(
+                                MensajeBodyBroadcaster(
+                                "2000-01-01T00:00:00.000+00:00","Broadcast",Destinatario.text.toString(),Mensaje.text.toString())
+                            )
                         }
                     })
                 .setNegativeButton("Cancelar",

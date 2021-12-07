@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.agileus.models.Buzon
 import com.example.agileus.R
+import com.example.agileus.models.BuzonResp
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 
-class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
+class BuzonAdapter(private var dataSet: ArrayList<BuzonResp>, var tipo: Int) :
     RecyclerView.Adapter<BuzonAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -42,7 +42,7 @@ class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
 
         if(tipo==1) {
             if(USERTYPE == "Broadcast" ) {
-                viewHolder.textView.text = "Mensaje enviado por :${buzon.Senderid} "
+                viewHolder.textView.text = "Mensaje enviado por :Broadcast "
             }
             else {
                 viewHolder.textView.text = "Mensaje enviado a : Broadcast"
@@ -58,12 +58,9 @@ class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
             if(buzon.Receiverid =="General"){
                 viewHolder.textView.text = "Comunicado:    ${buzon.Receiverid}"
             }
-
             viewHolder.textView1.text = "Asunto:    ${buzon.Asunto}"
-
             viewHolder.textView2.text = "Mensaje: \n${buzon.Message}"
         }
-
     }
     override fun getItemCount(): Int {
         return dataSet.size
