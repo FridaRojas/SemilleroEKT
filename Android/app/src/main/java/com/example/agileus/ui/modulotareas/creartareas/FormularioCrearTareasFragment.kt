@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
+import com.example.agileus.models.DataTask
 import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
@@ -134,7 +135,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
             if(fechaInicio=="" || fechaFin=="" ||
                 binding.edtAgregaTitulo.text.toString().isNullOrEmpty()||
                 binding.edtDescripcion.text.toString().isNullOrEmpty()||
-                    nombrePersonaAsignada.toString().isNullOrEmpty()){
+                listaPersonas.isNullOrEmpty()||
+                    nombrePersonaAsignada.isNullOrEmpty()){
                     Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
@@ -142,25 +144,22 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
 
                     if(anioInicio!!<anioFin!!){                     // 2021 < 2022
                         confirmarTarea()
-                        //operacionIsert()
                     }
 
                     if(anioInicio==anioFin){                        // 2021 == 2021
                         if (mesInicio==mesFin){                     // Si mes inicio es igual a mes fin del mismo año
-                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
+                            if (diaInicio<=diaFin){             // Es un dia menor o igual del mismo mes
                                 confirmarTarea()
-                                //operacionIsert()
-                            }else if(diaInicio!!>diaFin!!){
+                            }else if(diaInicio>diaFin){
                                 Toast.makeText( context,
                                     "Fecha de inicio no puede ser mayor a fecha de vencimiento",
                                     Toast.LENGTH_SHORT).show()
                             }
                         }
 
-                        if(mesInicio!!<mesFin!!){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
+                        if(mesInicio<mesFin){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
                             confirmarTarea()
-                            //operacionIsert()
-                        }else if (mesInicio!!>mesFin!!){
+                        }else if (mesInicio>mesFin){
                             Toast.makeText( context,
                                 "Fecha de inicio no puede ser mayor a fecha de vencimiento",
                                 Toast.LENGTH_SHORT).show()
@@ -250,6 +249,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
 
             }else{
                 Toast.makeText(activity , "No se encontraron personas en el grupo", Toast.LENGTH_LONG).show()
+                listaPersonas= emptyList<DataPersons>() as ArrayList<DataPersons>
             }
         })
 
