@@ -49,16 +49,16 @@ public class BroadCastControlador {
 			Optional<User> existo = userRepository.validarUsuario(miId);
 
 			if(!existo.isPresent()) {
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No se encontro usuario Broadcast",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"No se encontro usuario Broadcast",""));
 			}
 
 			if(!existo.get().getNombreRol().equals("BROADCAST")) {
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"No es un usuario BROADCAST",""));
 			}
 
 			Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
 
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(listaUsuarios);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de usuarios",listaUsuarios));
 
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
@@ -77,22 +77,23 @@ public class BroadCastControlador {
 	public ResponseEntity<?>listarMensajes(@PathVariable (value = "miId")String miId){
 		try {
 			if(miId.length()<24 || miId.length()>24){
-				ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El tamaño del id no es correcto", ""));
+				ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del id no es correcto", ""));
 			}
 			Optional<User> user = userRepository.validarUsuario(miId);
 			if(!user.isPresent()) {
-				ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El usuario no existe",""));
+				ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "El usuario no existe",""));
 			}
 			if(user.isPresent()){
 
 				if(user.get().getNombreRol().equals("BROADCAST")) {
 
 					Iterable<BroadCast> brd = broadCastRepositorio.findAll();
-					return ResponseEntity.status(HttpStatus.ACCEPTED).body(brd);
+					return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de mensajes del Broadcast",brd));
+
 				}
 			}
 
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"El usuario ingresado no es un usuario BROADCAST", ""));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario ingresado no es un usuario BROADCAST", ""));
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
@@ -106,29 +107,29 @@ public class BroadCastControlador {
 
 	}
 
-	@PostMapping("/crearMensajeBroadcast")
-	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast) {
+	@PostMapping("/crearMensajeBroadcast/{miId}")
+	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast, @PathVariable(value = "miId")String miId) {
 			try{
 
 				if (broadCast.getIdEmisor() == null || broadCast.getAsunto() == null || broadCast.getDescripcion() == null) {
-					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el dato", ""));
+					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "No se encuentra el dato", ""));
 				}
 
 				if (broadCast.getIdEmisor().equals("") || broadCast.getIdEmisor().equals("null")) {
-					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El campo idEmisor es no puede estar vacio", ""));
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El campo idEmisor es no puede estar vacio", ""));
 				}
 				if (broadCast.getIdEmisor().length() < 24 || broadCast.getIdEmisor().length() > 24) {
-					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del idEmisor no es valido", ""));
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del idEmisor no es valido", ""));
 				}
 
 				if (broadCast.getAsunto().equals("") || broadCast.getAsunto().equals("null")) {
-					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El campo Asunto no puede estar vacio", ""));
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El campo Asunto no puede estar vacio", ""));
 				}
 				if (broadCast.getAsunto().length() < 5) {
-					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del Asunto no es valido", ""));
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del Asunto no es valido", ""));
 				}
 				if (broadCast.getDescripcion().length() < 10) {
-					return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del texto descripcion debe ser al menos de 1 caracter", ""));
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del texto descripcion debe ser al menos de 1 caracter", ""));
 				}
 
 				BroadCast broadCastM = new BroadCast();
@@ -136,7 +137,7 @@ public class BroadCastControlador {
 				broadCastM.setAsunto(broadCast.getAsunto());
 				broadCastM.setDescripcion(broadCast.getDescripcion());
 				Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-				Optional<User> user2 = userRepository.validarUsuario("61a101db174bcf469164d2fd");
+				Optional<User> user2 = userRepository.validarUsuario(miId);
 				if(user2.get().getNombreRol().equals("BROADCAST") || user2.get().getIDSuperiorInmediato().equals("-1")){
 					if (user.isPresent()) {
 						broadCastM.setNombreEmisor(user.get().getNombre());
@@ -146,7 +147,7 @@ public class BroadCastControlador {
 						return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 					}
 				}
-				return ResponseEntity.status(HttpStatus.CREATED).body(new Response(HttpStatus.NOT_FOUND, "No se encuentra el emisor", ""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "No se encuentra el emisor", ""));
 			}catch (MongoSocketOpenException e) {
 				return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 						.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
@@ -163,11 +164,11 @@ public class BroadCastControlador {
 	public ResponseEntity<?> mostrarMensajes(@PathVariable(value = "idEmisor")String idEmisor){
 		try{
 			if(idEmisor.length() < 24 || idEmisor.length() > 24){
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "El tamaño del id no es correcto", "" ));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El tamaño del id no es correcto", "" ));
 			}
 			Optional<User> user = userRepository.validarUsuario(idEmisor);
 			if(!user.isPresent()){
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "El Usuario no existe", "" ));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "El Usuario no existe", "" ));
 			}
 			if(user.isPresent()){
 				List<BroadCast> listBrd = new ArrayList<>();
@@ -177,9 +178,9 @@ public class BroadCastControlador {
 						listBrd.add(brd2);
 					}
 				}
-				return ResponseEntity.status(HttpStatus.OK).body(listBrd);
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponseBroadcast(String.valueOf(HttpStatus.OK.value()),"Lista de Mensajes de: " + user.get().getNombre(),listBrd));
 			}
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body((new Response(HttpStatus.NOT_FOUND,"El usuario no tiene mensajes enviados ", "")));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body((new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario no tiene mensajes enviados ", "")));
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
@@ -197,38 +198,38 @@ public class BroadCastControlador {
 	public ResponseEntity<?> enviarMensaje(@RequestBody Mensajes mensajeEntrante){
 		try{
 			if(mensajeEntrante.getIDEmisor()==null || mensajeEntrante.getIDReceptor()==null || mensajeEntrante.getTexto()==null || mensajeEntrante.getFechaCreacion() ==null) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"Campos no validos",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Campos no validos",""));
 			}
 
 			if(mensajeEntrante.getIDEmisor().equals("") || mensajeEntrante.getIDEmisor().equals("null")) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idEmisor es no puede estar vacio",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El campo idEmisor es no puede estar vacio",""));
 			}
 			if(mensajeEntrante.getIDEmisor().length()<24 || mensajeEntrante.getIDEmisor().length()>24) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idEmisor no es valido",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del idEmisor no es valido",""));
 			}
 
 			if(mensajeEntrante.getIDReceptor().equals("") || mensajeEntrante.getIDReceptor().equals("null")) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo idReceptor es no puede estar vacio",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El campo idReceptor es no puede estar vacio",""));
 			}
 			if(mensajeEntrante.getIDReceptor().length()<24 || mensajeEntrante.getIDReceptor().length()>24) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del idReceptor no es valido",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del idReceptor no es valido",""));
 			}
 
 			if(mensajeEntrante.getTexto().equals("") || mensajeEntrante.getTexto().equals("null")) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El campo texto es no puede estar vacio",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El campo texto es no puede estar vacio",""));
 			}
 			if(mensajeEntrante.getTexto().length()<1) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El tamaño del texto no es debe ser al menos de 1 caracter",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del texto no es debe ser al menos de 1 caracter",""));
 			}
 
 			Optional<User> existo = userRepository.validarUsuario(mensajeEntrante.getIDEmisor());
 
 			if(!existo.isPresent()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no fue encontrado",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario broadcast no fue encontrado",""));
 			}
 
 			if(!existo.get().getNombreRol().equals("BROADCAST")) {
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.NOT_FOUND,"No es un usuario BROADCAST",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"No es un usuario BROADCAST",""));
 			}
 
 			Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
@@ -242,7 +243,7 @@ public class BroadCastControlador {
 			}
 
 			if(!bandera) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"El usuario broadcast no puede mandar mensaje a la otra persona",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario broadcast no puede mandar mensaje a la otra persona",""));
 			}
 
 			Mensajes mensaje = new Mensajes();
@@ -267,7 +268,7 @@ public class BroadCastControlador {
 
 			mensajesService.crearMensaje(mensaje);
 
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.CREATED,"Mensaje enviado",mensaje.getIDConversacion()));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.CREATED.value()),"Mensaje enviado",mensaje.getIDConversacion()));
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
@@ -289,7 +290,7 @@ try{
 	opt.get().setAtendido(true);
 	broadCastRepositorio.save(opt.get());
 
-	return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Se atendio el mesnaje de Usuario",""));
+	return ResponseEntity.status(HttpStatus.OK).body(new ResponseBroadcast(String.valueOf(HttpStatus.OK.value()),"Se atendio el mesnaje de Usuario: " + opt.get().getNombreEmisor(),""));
 
 }catch (MongoSocketOpenException e) {
 	return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
