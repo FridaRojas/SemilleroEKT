@@ -127,7 +127,7 @@ class ChatViewController:
         }
         
         if urlFile != nil {
-            uploadFile(mensaje: mensaje, fecha: fecha)
+            uploadFile(id_receptor: receptor, mensaje: mensaje, fecha: fecha)
         } else {
             create_json(id_emisor: userID, id_receptor: receptor, mensaje: mensaje, rutaDocumento: "", fecha: fecha){
                 (exito) in
@@ -508,7 +508,7 @@ class ChatViewController:
         }
     }
     
-    func uploadFile(mensaje: String, fecha: String) {
+    func uploadFile(id_receptor: String, mensaje: String, fecha: String) {
         var documentRoute = ""
         
         var file = urlFile
@@ -531,7 +531,7 @@ class ChatViewController:
                     documentRoute = urlText
                     
                     
-                    self.create_json(id_emisor: userID, id_receptor: "618e8743c613329636a769aa", mensaje: mensaje, rutaDocumento: documentRoute, fecha: fecha){
+                    self.create_json(id_emisor: userID, id_receptor: id_receptor, mensaje: mensaje, rutaDocumento: documentRoute, fecha: fecha){
                         (exito) in
                         print("/****************************************************************/")
                         print("Exitoso \(userID)")}fallido:{ fallido in
