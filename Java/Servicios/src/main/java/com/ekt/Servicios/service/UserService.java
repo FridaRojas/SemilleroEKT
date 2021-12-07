@@ -33,4 +33,5 @@ public interface UserService {
     Optional<ArrayList<User>> findChilds(String idPadre);
 
     Optional<ArrayList<User>> busquedaUsuario(String parametro);
+    Optional<String> guardarTokenAuth(String id);
 }

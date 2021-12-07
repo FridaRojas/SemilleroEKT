@@ -100,6 +100,8 @@ public class UserController {
                         user.get().setToken(infAcceso.getToken());
                         userService.save(user.get());
 
+                        user.get().setTokenAuth(userService.guardarTokenAuth(user.get().getID()).get());
+
                         user.get().setFechaInicio(null);
                         user.get().setFechaTermino(null);
                         user.get().setPassword(null);
@@ -362,6 +364,29 @@ public class UserController {
             return new Response(HttpStatus.NOT_FOUND,"",null);
         }
     }
+
+    @PostMapping("/logout/{idUser}")
+    public Response logout(@PathVariable String idUser){
+        try{
+            if (userService.findById(idUser).isPresent()){
+                User usr = userService.findById(idUser).get();
+                usr.setTokenAuth("");
+                User tmp=userService.save(usr);
+                if (tmp.getTokenAuth().length()==0){
+                    return new Response(HttpStatus.OK,"Deslogeado correctamente","");
+                }
+                else{
+                    return  new Response(HttpStatus.BAD_REQUEST,"Error al deslogear","");
+                }
+            }else{
+                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+idUser+" no existe","");
+            }
+        }catch (Exception e){
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",e);
+        }
+    }
+
+
 
 
 
