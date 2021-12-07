@@ -3,40 +3,45 @@
 //  modulo_broadcast
 //
 //  Created by user205703 on 23/11/21.
-// url para la lista de usuarios para el broadcast
-// https://firebasestorage.googleapis.com/v0/b/nombre-7ec89.appspot.com/o/BroadCastListaDeUsuarios.json?alt=media&token=585ce09f-5972-4661-bcfe-73063b4aafaa
-//mensajes del broadcast
-// https://firebasestorage.googleapis.com/v0/b/nombre-7ec89.appspot.com/o/BroadCastTodosLosMensajes.json?alt=media&token=c987c8ce-37ed-46e9-8a28-89a09093d274
-
 
 
 import UIKit
 
-struct lista_de_usuarios: Codable
+struct lista_de_mensajes: Codable
 {
-    let nombre: String
-    let token: String
+    let id: String
+    let asunto: String
+    let descripcion: String
+    let idEmisor: String
+    let nombreEmisor: String
 }
-
 
 class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return lista_usuarios.count
+        return lista_mensajes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let indice = indexPath.row
+        var Indice = indexPath.row
         let celda = tableView.dequeueReusableCell(withIdentifier: celda_msjs_enviados.identificador, for: indexPath) as! celda_msjs_enviados
-        celda.Configurar_Celda_Mensajes(Datos: usuarios [indice] as! [Any])
-        
+        celda.Configurar_Celda_Mensajes(Datos: usuarios[Indice] as! [Any])
         return celda
     }
     
+    /*func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        let index = indexPath.row
+        let interfaz = mensajes_Enviados()
+        
+        var mensaje = usuarios[index]
+        var Mensaje_Broadcast = mensaje as! [Any]
+    }*/
+    
     let controlador_modal1 = Adaptador_Modals()
-    var lista_usuarios = [lista_de_usuarios]()
+    var lista_mensajes = [lista_de_mensajes]()
     var usuarios = [Any]()
 
     
@@ -54,7 +59,7 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
     
     override func viewDidAppear(_ animated: Bool)
     {
-        //consumir_mensajes_enviados()
+        consumir_mensajes_enviados()
     }
     
     
@@ -73,19 +78,34 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func consumir_mensajes_enviados()
     {
-        let servicio = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast/listaUsuarios/61a101db174bcf469164d2fd"
+        let servicio =  "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast/mostarMensajesdelBroadcast/61ad370537670e5060dc060e"
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {(data, response, error) in
+            if let error = error {
+                print ("error: \(error)")
+                self.simpleAlertMessage(title: "Error!", message: "Error al conectar con el servidor")
+                return
+            }
+
+            guard let response = response as? HTTPURLResponse,
+                (200...299).contains(response.statusCode) else {
+                    print ("Error servidor: \(response)")
+                    self.simpleAlertMessage(title: "Error!", message: "Error de respuesta del servidor")
+                return
+            }
+
             do
             {
-                self.lista_usuarios = try
-                JSONDecoder().decode([lista_de_usuarios].self, from: data!)
+                print(data)
+                print(error)
+                self.lista_mensajes = try
+                JSONDecoder().decode([lista_de_mensajes].self, from: data!)
                 DispatchQueue.main.async {
                     var indice = 1
-                    for item in self.lista_usuarios
+                    for item in self.lista_mensajes
                     {
-                        print(item.nombre)
+                        print(item.nombreEmisor, item.asunto)
                         indice = indice + 1
                     }
                     self.lista_mensajes_eniados.reloadData()

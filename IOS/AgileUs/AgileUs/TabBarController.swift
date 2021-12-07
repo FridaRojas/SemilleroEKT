@@ -12,19 +12,11 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        //print(rolName)
-        //print("/*****************************/")
-        var indexToRemove = 0
         if rolName == "BROADCAST" {
             viewControllers?.remove(at: 0)
         } else {
             viewControllers?.remove(at: 1)
-        }
+        }        // Do any additional setup after loading the view.
     }
 
     /*

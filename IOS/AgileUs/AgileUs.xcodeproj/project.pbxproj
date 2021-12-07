@@ -48,6 +48,8 @@
 		E47AAA1327569C7E00B1A213 /* Modal_Mensajes_Enviados.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47AAA1027569C7E00B1A213 /* Modal_Mensajes_Enviados.swift */; };
 		E47AAA1427569C7E00B1A213 /* mensajes_Enviados.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47AAA1127569C7E00B1A213 /* mensajes_Enviados.swift */; };
 		E47AAA1527569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E47AAA1227569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard */; };
+		E4821A0F275FBC0E001AEC19 /* Celda_Comunicados.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4821A0D275FBC0E001AEC19 /* Celda_Comunicados.swift */; };
+		E4821A10275FBC0E001AEC19 /* Celda_Comunicados.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +120,8 @@
 		E47AAA1027569C7E00B1A213 /* Modal_Mensajes_Enviados.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal_Mensajes_Enviados.swift; sourceTree = "<group>"; };
 		E47AAA1127569C7E00B1A213 /* mensajes_Enviados.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mensajes_Enviados.swift; sourceTree = "<group>"; };
 		E47AAA1227569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Modal_Mensajes_Enviados.storyboard; sourceTree = "<group>"; };
+		E4821A0D275FBC0E001AEC19 /* Celda_Comunicados.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Celda_Comunicados.swift; sourceTree = "<group>"; };
+		E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Celda_Comunicados.xib; sourceTree = "<group>"; };
 		E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -211,6 +215,7 @@
 				D4E69CB02746CCCE002121E4 /* Login */,
 				D4E69CA92746C25E002121E4 /* Tareas */,
 				D4E69CA82746C256002121E4 /* Reportes */,
+				E45EE8892759532D000989A3 /* Broadcast */,
 				D4E69CA72746C24E002121E4 /* Chats */,
 				D4E69C772746BD81002121E4 /* AppDelegate.swift */,
 				D4E69C792746BD81002121E4 /* SceneDelegate.swift */,
@@ -244,7 +249,6 @@
 		D4E69CA72746C24E002121E4 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
-				E45EE8892759532D000989A3 /* Broadcast */,
 				DF5BAE21274DAD140080C589 /* Funciones_chat */,
 				DFC33DD6274C5BAD00E8DB7D /* Chat_controller */,
 				DFC33DD1274C54A300E8DB7D /* Tablas */,
@@ -356,6 +360,7 @@
 		E47AAA02275699AA00B1A213 /* Comunicados */ = {
 			isa = PBXGroup;
 			children = (
+				E4821A0C275FBBC1001AEC19 /* Lista_Comunicados */,
 				E47AAA0C27569C3B00B1A213 /* comunicados.swift */,
 				E47AAA0A27569C3B00B1A213 /* Modal_Comunicados.storyboard */,
 				E47AAA0B27569C3B00B1A213 /* Modal_Comunicados.swift */,
@@ -372,6 +377,15 @@
 				E47AAA1027569C7E00B1A213 /* Modal_Mensajes_Enviados.swift */,
 			);
 			path = Mensajes_Enviados;
+			sourceTree = "<group>";
+		};
+		E4821A0C275FBBC1001AEC19 /* Lista_Comunicados */ = {
+			isa = PBXGroup;
+			children = (
+				E4821A0D275FBC0E001AEC19 /* Celda_Comunicados.swift */,
+				E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */,
+			);
+			path = Lista_Comunicados;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -486,6 +500,7 @@
 				D4E69C842746BD83002121E4 /* LaunchScreen.storyboard in Resources */,
 				E401ADE1275BFE10000E2A54 /* celda_msjs_enviados.xib in Resources */,
 				DF89B86927517DBA000E8DAE /* lista_contactos.xib in Resources */,
+				E4821A10275FBC0E001AEC19 /* Celda_Comunicados.xib in Resources */,
 				D4E69C812746BD83002121E4 /* Assets.xcassets in Resources */,
 				D43CCF02275544DE00E2271F /* GoogleService-Info.plist in Resources */,
 				D468551527514DB4001A1031 /* ModalForgotPassword.storyboard in Resources */,
@@ -628,6 +643,7 @@
 				E47AAA0E27569C3B00B1A213 /* Modal_Comunicados.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				E47AAA0F27569C3B00B1A213 /* comunicados.swift in Sources */,
+				E4821A0F275FBC0E001AEC19 /* Celda_Comunicados.swift in Sources */,
 				E47AAA1327569C7E00B1A213 /* Modal_Mensajes_Enviados.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,

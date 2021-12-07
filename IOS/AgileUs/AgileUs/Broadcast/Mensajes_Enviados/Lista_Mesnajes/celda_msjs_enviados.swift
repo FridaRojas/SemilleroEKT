@@ -9,7 +9,11 @@ import UIKit
 
 class celda_msjs_enviados: UITableViewCell
 {
-
+    
+    @IBOutlet weak var nombre_lbl_celda: UILabel!
+    
+    @IBOutlet weak var area_Lbl_Celda: UILabel!
+    
     static let identificador = "Identificador_Celda_Lista"
     var nombre = "Adonay Matehuala Corona"
     var area = "Sistemas"
@@ -19,7 +23,8 @@ class celda_msjs_enviados: UITableViewCell
         return UINib(nibName: "celda_msjs_enviados", bundle: nil)
     }
     
-    override func awakeFromNib() {
+    override func awakeFromNib()
+    {
         super.awakeFromNib()
         // Initialization code
     }
