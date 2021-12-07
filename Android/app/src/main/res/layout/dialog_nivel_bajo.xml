@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:text="Detalle Tarea"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
