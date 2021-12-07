@@ -108,7 +108,7 @@ class ChatViewController:
                                      kind: .text("\(mensaje)")))
         var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
-        
+        self.messagesCollectionView.reloadData()
         DispatchQueue.main.async {
             self.messagesCollectionView.scrollToItem(at: IndexPath(row:0, section: self.messages.count - 1 ),at: .top, animated: false)
         }
@@ -123,7 +123,7 @@ class ChatViewController:
         }
         create_json(id_emisor: userID, id_receptor: receptor, mensaje: mensaje, rutaDocumento: "", fecha: fecha){
             (exito) in
-            self.messagesCollectionView.reloadData()
+           
         }fallido:{ fallido in
             self.simpleAlertMessage(title: "Atencion", message: "Verifica tu Conexion a internet")
         }
