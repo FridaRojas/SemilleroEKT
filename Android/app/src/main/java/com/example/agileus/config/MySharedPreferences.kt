@@ -12,6 +12,7 @@ class MySharedPreferences(contexto: Context) {
 
         //
         //val BASE_DATOS_KEY = "BD_PREFERENCIAS_DOS"
+        //val ID_KEY = "ID_KEY"
         val CORREO_KEY = "CORREO_KEY"
         val PASSWORD_KEY = "PASWORD_KEY"
 
@@ -29,9 +30,10 @@ class MySharedPreferences(contexto: Context) {
     //LOGIN WITH SHARED
     fun iniciarSesion(correo:String, password:String, sesion:Boolean){
         with(sharedPreferences.edit()){
+            //putString(ID_KEY, id)
             putString(CORREO_KEY, correo)
             putString(PASSWORD_KEY, password)
-            putBoolean(SESSION_TOKEN, sesion)
+            putBoolean(TOKEN_KEY, sesion)
             editor.commit()
         }
     }

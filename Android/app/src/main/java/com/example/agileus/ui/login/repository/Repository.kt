@@ -7,30 +7,21 @@ import java.security.Provider
 import android.preference.PreferenceManager
 
 import android.content.SharedPreferences
+import com.example.agileus.ui.login.data.model.UserUno
+import com.example.agileus.ui.login.data.sharedpreferencesuno.ProviderUno
 import com.example.agileus.utils.Constantes
 import com.google.android.gms.common.internal.Constants
 
 
 class Repository {
 
+    private val sharedPreferences = ProviderUno
+
+    fun addUser(user: UserUno) {
+        sharedPreferences.setUserPass(user.username, user.pass)
     }
 
-
-
-
-
-
-
-
-
-
- /*   private val sharedPreferences = MySharedPreferences
-
-    fun addUser(user: dataUser){
-        sharedPreferences.(user.correo, user.password)
-    }
     fun getUserName() = sharedPreferences.getUserName()
-    fun getPassword() = sharedPreferences.fetPassword()
+    fun getPassword() = sharedPreferences.getPassword()
 
-  */
-
+}

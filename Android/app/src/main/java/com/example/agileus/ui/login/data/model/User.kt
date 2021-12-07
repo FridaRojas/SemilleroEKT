@@ -7,9 +7,10 @@ data class LoginResponse (
 
     @SerializedName("status" ) var status : String? = null,
     @SerializedName("msj"    ) var msj    : String? = null,
- //   @SerializedName("data"   ) var data   : Data?   = Data()
+ //   @SerializedName("data"   ) var data   : Data
 
 )
+
 
 data class Data (
 
@@ -28,7 +29,7 @@ data class Data (
     @SerializedName("curp"                ) var curp                : String? = null,
     @SerializedName("rfc"                 ) var rfc                 : String? = null,
     @SerializedName("idgrupo"             ) var idgrupo             : String? = null,//
-    @SerializedName("idsuperiorInmediato" ) var idsuperiorInmediato : String? = null //
-
+    @SerializedName("idsuperiorInmediato" ) var idsuperiorInmediato : String? = null, //
+    @SerializedName("tokenAuth" )           var tokenAuth           : String? = null    //
 )
 

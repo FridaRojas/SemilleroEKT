@@ -8,7 +8,36 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 
-class RecuperaPasswordDialog (val listener:DialogoListen) : DialogFragment() {
+
+class RecuperaPasswordDialog (val objeto : DialogoListen) : DialogFragment() {
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            // Use the Builder class for convenient dialog construction
+            val builder = AlertDialog.Builder(it)
+            builder.setMessage("¿Desea salir de la sesión?")
+                .setPositiveButton("Sí",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        objeto.siDisparar("Sesión Finalizada")
+                    })
+                .setNegativeButton("Cancelar", DialogInterface.OnClickListener { dialog, id ->
+                    objeto.noDisparar("Opción cancelada")
+                })
+            // Create the AlertDialog object and return it
+            builder.create()
+        } ?: throw IllegalStateException("Activity cannot be null")
+    }
+}
+
+
+
+
+
+
+
+
+
+/*class RecuperaPasswordDialog (val listener:DialogoListen) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
@@ -33,3 +62,4 @@ class RecuperaPasswordDialog (val listener:DialogoListen) : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }
+ */
