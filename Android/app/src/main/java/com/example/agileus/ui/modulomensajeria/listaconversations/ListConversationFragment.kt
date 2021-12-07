@@ -10,24 +10,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
-import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
-import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.login.dialog.DialogoListen
+import com.example.agileus.ui.login.dialog.RecuperaPasswordDialog
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 
 
-class ListConversationFragment : Fragment() {
+class ListConversationFragment : Fragment(), DialogoListen {
 
     private lateinit var ChatsViewModel: ListConversationViewModel
-    lateinit var sharedPref : MySharedPreferences
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -52,8 +54,9 @@ class ListConversationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPref = MySharedPreferences(activity as HomeActivity)
-        val id_user = sharedPref.sharedPreferences.getString((MySharedPreferences.ID_USER_KEY),"")
+        Log.d("usuario pasado", "${InicioSesionFragment.idUser}")
+
+        Constantes.id=idUser
 
         ChatsViewModel.devuelveListaGrupos(Constantes.id)
         ChatsViewModel.devuelveListaChats(Constantes.id)
@@ -62,14 +65,16 @@ class ListConversationFragment : Fragment() {
             binding.recyclerListGroups.adapter = it
             binding.recyclerListGroups.layoutManager = LinearLayoutManager(activity)
         })
-        ChatsViewModel.adaptadorChats.observe(viewLifecycleOwner,{
+        ChatsViewModel.adaptadorChats.observe(viewLifecycleOwner, {
             binding.recyclerListChats.adapter = it
             binding.recyclerListChats.layoutManager = LinearLayoutManager(activity)
         })
 
         binding.cerrarSesion.setOnClickListener {
-            findNavController().navigate(R.id.inicioSesionFragment)
+            val newFragment = RecuperaPasswordDialog(this)
+            activity?.supportFragmentManager?.let { it -> newFragment.show(it, "Destino") }
         }
+
 
         binding.btnListContacts.setOnClickListener {
             findNavController().navigate(R.id.listContactsFragment)
@@ -91,31 +96,43 @@ class ListConversationFragment : Fragment() {
                     if (p0.isNullOrEmpty()) {
                         binding.recyclerListGroups.isVisible = true
                         binding.recyclerListGroups.isEnabled = true
-                        ChatsViewModel.devuelveListaChats(Constantes.id)
                     } else {
-                        var list = ChatsViewModel.listadeChats
-                        var fil = list.filter {
+                        var filtrada = it.filter {
                             it.nombreConversacionRecepto.lowercase()
                                 .contains(p0.toString().lowercase())
                         }
-                        ChatsViewModel.filtrarChats(Constantes.id, fil as ArrayList<Chats>)
+                        ChatsViewModel.filtrarChats(Constantes.id, filtrada as ArrayList<Chats>)
                         binding.recyclerListGroups.isVisible = false
                         binding.recyclerListGroups.isEnabled = false
-                    }
+                }
                 })
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                binding.recyclerListGroups.isVisible = true
+                binding.recyclerListGroups.isEnabled = true
 
-                }
 
+            }
 
         })
 
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun siDisparar(motivo: String) {
+        findNavController().navigate(R.id.inicioSesionFragment)
+        //Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun noDisparar(motivo: String) {
+        Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
+
+
     }
 }
