@@ -85,7 +85,7 @@ public class MensajesController {
 						,"Usuario invalido",null));
 			}
 			
-			if(!emisor.get().getTokenAuth().equals(tokenSesion)) {
+			if(!emisor.get().getTokenAuth().equals(tokenSesion) || emisor.get().getTokenAuth() == null || emisor.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -282,7 +282,7 @@ public class MensajesController {
 						,"Usuario invalido",null));
 			}
 			
-			if(!usuario.get().getTokenAuth().equals(tokenSesion)) {
+			if(!usuario.get().getTokenAuth().equals(tokenSesion) || usuario.get().getTokenAuth() == null || usuario.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -329,7 +329,7 @@ public class MensajesController {
 						,"Usuario invalido",miId));
 			}
 			
-			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+			if(!existo.get().getTokenAuth().equals(tokenSesion) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -373,7 +373,7 @@ public class MensajesController {
 						,"Usuario invalido",idUsuario));
 			}
 			
-			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+			if(!existo.get().getTokenAuth().equals(tokenSesion) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -521,7 +521,7 @@ public class MensajesController {
 						"Usuario invalido",miId));
 			}
 			
-			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+			if(!existo.get().getTokenAuth().equals(tokenSesion) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
