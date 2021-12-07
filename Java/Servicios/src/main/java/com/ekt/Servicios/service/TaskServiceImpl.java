@@ -1,12 +1,16 @@
 package com.ekt.Servicios.service;
 
+import com.ekt.Servicios.entity.ResponseTask;
 import com.ekt.Servicios.entity.Task;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.TaskRepository;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +39,9 @@ public class TaskServiceImpl implements TaskService{
     public Iterable<Task> findAll() {
         return tareaRepository.findAll();
     }
+
+    @Autowired
+    private UserServiceImpl usuarioService;
 
     @Override
     public void  deleteById(String id){
@@ -181,7 +188,7 @@ public class TaskServiceImpl implements TaskService{
         String estatus = tarea.getEstatus();
         String observaciones = tarea.getObservaciones();
         boolean observacionesA;
-        if(observaciones==null)
+        if(observaciones==null||observaciones.equals(""))
             observacionesA=true;
         else
             observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaciones);
@@ -196,5 +203,16 @@ public class TaskServiceImpl implements TaskService{
         if (!descripcionA) erroresActulizar.add("descripcion");
         if (!estatusA) erroresActulizar.add("estatus");
         return erroresActulizar;
+    }
+    @Override
+    public ArrayList<String> validarSesion(String token_sesion, String id_usuario){
+        ArrayList<String> data = new ArrayList<>();
+        String token_valido = "12345";// buscar en BD
+        Optional<User> usuarioValido = usuarioService.findById(id_usuario);
+            if(!token_sesion.equals(token_valido))
+                data.add("Token de sesión invalido");
+            if (!usuarioValido.isPresent())
+                data.add("Usuario invalido");
+            return data;
     }
 }

@@ -35,9 +35,17 @@ public class TaskController {
     private UserServiceImpl usuarioService;
 
     @PostMapping("/agregarTarea")   //1. Tareas
-    public ResponseEntity<?> create(@RequestBody Task tarea){
+    public ResponseEntity<?> create(@RequestHeader("token_sesion") String token_sesion,@RequestBody Task tarea){
         try {
             String mensaje;
+
+            //Validar sesión
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,tarea.getId_emisor());
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+
             // Valida que el receptor exista
             Optional<User> usuarioValido = usuarioService.findById(tarea.getId_receptor());
             if (!usuarioValido.isPresent()) {
@@ -51,6 +59,7 @@ public class TaskController {
             }
 
             LocalDateTime date = LocalDateTime.now();
+            System.out.println(date.toString());
             String asunto = "";
             System.out.println("Entramos en agregar tarea");
             ArrayList<String> validarTareas = tareaService.validarTareasCrear(tarea);
@@ -63,7 +72,7 @@ public class TaskController {
                 LocalDateTime ldt = date
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
-                Date newLdt = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+                Date newLdt = Date.from(ldt.atZone(ZoneId.of("UTC")).toInstant());
 
                 tarea.setFecha_BD(newLdt);
                 tareaService.save(tarea);
@@ -90,11 +99,18 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareas")   //10. Reportes
-    public ResponseEntity<?> readAll(){
+    @GetMapping("/obtenerTareas/{id_usuario}")   //10. Reportes
+    public ResponseEntity<?> readAll(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario){
         try {
-            Iterable<Task> tareas = tareaService.findAll();
             String mensaje;
+            //Validar sesión
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            //Traer todas las tareas
+            Iterable<Task> tareas = tareaService.findAll();
             int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
                 mensaje = "No se encontraron tareas";
@@ -113,21 +129,27 @@ public class TaskController {
         }
     }
 
-    @GetMapping(value="/obtenerTareaPorId/{id}")    //2. Tareas
-    public ResponseEntity<?> read(@PathVariable String id){
+    @GetMapping(value="/obtenerTareaPorId/{id_tarea}/{id_usuario}")    //2. Tareas
+    public ResponseEntity<?> read(@RequestHeader("token_sesion") String token_sesion, @PathVariable String id_tarea,@PathVariable String id_usuario){
         try {
-            Optional<Task> oTarea = tareaService.findById(id);
+            Optional<Task> oTarea = tareaService.findById(id_tarea);
             String mensaje;
-            //Si el iD no existe
+
+            //Validar sesión
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
 
             //Si no hay ninguna tarea
             if (!oTarea.isPresent()) {
                 Map<String, Object> body = new LinkedHashMap<>();//LinkedHashMap conserva el orden de inserción
                 Map<String, String> data = new LinkedHashMap<>();
                 body.put("statusCode", String.valueOf(HttpStatus.NOT_FOUND.value()));
-                data.put("Tarea", "No existe la tarea con Id: " + id);
+                data.put("Tarea", "No existe la tarea con Id: " + id_tarea);
                 body.put("Data", data);
-                mensaje = "No existe tarea con id: " + id;
+                mensaje = "No existe tarea con id: " + id_tarea;
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
             mensaje = "Se encontró una tarea";
@@ -143,11 +165,18 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actualizarTarea/{id_tarea}")  //3. Tareas
-    public ResponseEntity<?> updateById(@PathVariable String id_tarea,@RequestBody Task tarea){
+    @PutMapping("/actualizarTarea/{id_tarea}/{id_usuario}")  //3. Tareas
+    public ResponseEntity<?> updateById(@RequestHeader("token_sesion") String token_sesion, @PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario){
         try {
-            Optional<Task> oTarea = tareaService.findById(id_tarea);
             String mensaje = "";
+            //Validar sesión
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            //Buscar tarea
+            Optional<Task> oTarea = tareaService.findById(id_tarea);
             if (oTarea.isPresent()) {
                 ArrayList<String> validarActualizacion = tareaService.validarTareasActualizar(tarea);
                 if (validarActualizacion.size() == 0) {
@@ -186,17 +215,23 @@ public class TaskController {
         }
     }
 
-    @DeleteMapping("/cancelarTarea/{id}") //4. Tareas
-    public ResponseEntity<?> deleteById(@PathVariable String id){
+    @DeleteMapping("/cancelarTarea/{id_tarea}/{id_usuario}") //4. Tareas
+    public ResponseEntity<?> deleteById(@RequestHeader("token_sesion") String token_sesion, @PathVariable String id_tarea, @PathVariable String id_usuario){
         try {
-            String mensaje;
-            Optional<Task> oTarea = tareaService.findById(id);
+            String mensaje ="";
+            //Validar sesión
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            Optional<Task> oTarea = tareaService.findById(id_tarea);
             if (oTarea.isPresent()) {
-                tareaService.deleteById(id);
-                mensaje = "Tarea con id: " + id + " cancelada";
+                tareaService.deleteById(id_tarea);
+                mensaje = "Tarea con id: " + id_tarea + " cancelada";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje));
             } else {
-                mensaje = "Tarea con Id: " + id + " no encontrado";
+                mensaje = "Tarea con Id: " + id_tarea + " no encontrado";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
         }catch (MongoException m){
@@ -210,15 +245,23 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/filtrarTareasPorPrioridad/{prioridad}")//Reportes
-    public ResponseEntity<?> getTareasByPrioridad(@PathVariable String prioridad) {
+    @GetMapping("/filtrarTareasPorPrioridad/{prioridad}/{id_usuario}")//Reportes
+    public ResponseEntity<?> getTareasByPrioridad(@RequestHeader("token_sesion") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
         try {
+            String mensaje;
+            //Validar sesión
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
             Iterable<Task> tareas = tareaRepository.findByPriority(prioridad);
             int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(tareas.iterator());
+            mensaje = "Se obtuvieron las tareas";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -230,11 +273,17 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/filtrarTareasPorGrupo/{id_grupo}")// Reportes
-    public ResponseEntity<?> getTareasByGrupo(@PathVariable String id_grupo) {
+    @GetMapping("/filtrarTareasPorGrupo/{id_grupo}/{id_usuario}")// Reportes
+    public ResponseEntity<?> getTareasByGrupo(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario) {
         try {
-            Iterable<Task> tareas = tareaRepository.findByIdGrupo(id_grupo);
             String mensaje;
+            //Validar sesión
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            Iterable<Task> tareas = tareaRepository.findByIdGrupo(id_grupo);
             //Si no existe el id_grupo
             int nDocumentos = ((Collection<Task>) tareas).size();
             if (nDocumentos == 0) {
