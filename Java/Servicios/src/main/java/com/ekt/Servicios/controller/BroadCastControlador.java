@@ -10,6 +10,7 @@ import com.ekt.Servicios.entity.*;
 import com.ekt.Servicios.repository.BroadCastRepositorio;
 import com.ekt.Servicios.service.BroadCastServicio;
 
+import com.ekt.Servicios.service.BroadCastServicioImpl;
 import com.ekt.Servicios.service.MensajesService;
 
 import com.mongodb.MongoException;
@@ -32,8 +33,8 @@ public class BroadCastControlador {
 
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired(required = false)
-	private BroadCastServicio broadCastServicio;
+
+	BroadCastServicioImpl broadCastServicio = new BroadCastServicioImpl();
 	@Autowired
 	private BroadCastRepositorio broadCastRepositorio;
 
@@ -61,21 +62,21 @@ public class BroadCastControlador {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de usuarios",listaUsuarios));
 
 		}catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
-
 	}
 
 	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
-	public ResponseEntity<?>listarMensajes(@PathVariable (value = "miId")String miId){
+	public ResponseEntity<?>listarMensajes(@RequestHeader(value = "TOKEN2")String TOKEN2,@PathVariable (value = "miId")String miId){
 		try {
+
 			if(miId.length()<24 || miId.length()>24){
 				ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del id no es correcto", ""));
 			}
@@ -85,7 +86,7 @@ public class BroadCastControlador {
 			}
 			if(user.isPresent()){
 
-				if(user.get().getNombreRol().equals("BROADCAST")) {
+				if(user.get().getNombreRol().equals("BROADCAST") || user.get().getIDSuperiorInmediato().equals("-1")) {
 
 					Iterable<BroadCast> brd = broadCastRepositorio.findAll();
 					return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de mensajes del Broadcast",brd));
@@ -95,20 +96,19 @@ public class BroadCastControlador {
 
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario ingresado no es un usuario BROADCAST", ""));
 		}catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
-
 	}
 
-	@PostMapping("/crearMensajeBroadcast/{miId}")
-	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast, @PathVariable(value = "miId")String miId) {
+	@PostMapping("/crearMensajeBroadcast")
+	public ResponseEntity<?> crearMensajeBroadCast(@RequestBody BroadCast broadCast) {
 			try{
 
 				if (broadCast.getIdEmisor() == null || broadCast.getAsunto() == null || broadCast.getDescripcion() == null) {
@@ -137,26 +137,27 @@ public class BroadCastControlador {
 				broadCastM.setAsunto(broadCast.getAsunto());
 				broadCastM.setDescripcion(broadCast.getDescripcion());
 				Optional<User> user = userRepository.findById(broadCast.getIdEmisor());
-				Optional<User> user2 = userRepository.validarUsuario(miId);
+				Optional<User> user2 = userRepository.validarUsuario("61ad370537670e5060dc060e");
+				//Optional<User> user3 = userRepository.validarUsuario(user2.get().getID());
 				if(user2.get().getNombreRol().equals("BROADCAST") || user2.get().getIDSuperiorInmediato().equals("-1")){
 					if (user.isPresent()) {
 						broadCastM.setNombreEmisor(user.get().getNombre());
 						broadCastM.setAtendido(false);
 						broadCastRepositorio.save(broadCastM);
-						notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
-						return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+						broadCastServicio.notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
+						return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBroadcast(String.valueOf(HttpStatus.CREATED.value()), "Se creo el Mensaje a BROADCAST", "Usuario: "+broadCastM.getNombreEmisor()));
 					}
 				}
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "No se encuentra el emisor", ""));
 			}catch (MongoSocketOpenException e) {
-				return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-						.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 			} catch (MongoException e) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 			} catch (Exception e) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND)
-						.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 			}
 
 	}
@@ -182,14 +183,14 @@ public class BroadCastControlador {
 			}
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body((new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario no tiene mensajes enviados ", "")));
 		}catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 
 	}
@@ -270,14 +271,14 @@ public class BroadCastControlador {
 
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.CREATED.value()),"Mensaje enviado",mensaje.getIDConversacion()));
 		}catch (MongoSocketOpenException e) {
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-					.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 
 	}
@@ -285,50 +286,28 @@ public class BroadCastControlador {
 	@PutMapping("/actualizarAtendido/{miID}")
 	public ResponseEntity<?> actualizarAtendido(@PathVariable (value = "miID")String miID){
 try{
-
+	if(miID.length()<24 ||miID.length()>24){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del id no es valido", ""));
+	}
 	Optional<BroadCast> opt = broadCastRepositorio.findById(miID);
+	if(!opt.isPresent()){
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El mensaje a atrender no existe",""));
+	}
 	opt.get().setAtendido(true);
 	broadCastRepositorio.save(opt.get());
 
 	return ResponseEntity.status(HttpStatus.OK).body(new ResponseBroadcast(String.valueOf(HttpStatus.OK.value()),"Se atendio el mesnaje de Usuario: " + opt.get().getNombreEmisor(),""));
 
 }catch (MongoSocketOpenException e) {
-	return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-			.body(new Response(HttpStatus.REQUEST_TIMEOUT, e.getMessage(), e.getCause()));
+	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 } catch (MongoException e) {
-	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-			.body(new Response(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause()));
+	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 } catch (Exception e) {
-	return ResponseEntity.status(HttpStatus.NOT_FOUND)
-			.body(new Response(HttpStatus.NOT_FOUND, e.getMessage(), e.getCause()));
+	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.body(new ResponseBroadcast(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 }
-
-
-	}
-
-
-	public void notificacion2(String title, String asunto, String token){
-		OkHttpClient client = new OkHttpClient().newBuilder().build();
-		MediaType mediaType = MediaType.parse("application/json");
-		okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\n    \"to\": \""+ token +"\",\n    " +
-				"\"notification\": {\n        " +
-				"\"body\": \""+ asunto +"\",\n        " +
-				"\"title\": \""+ title +"\"\n    }\n}");
-
-		Request request = new Request.Builder()
-				.url("https://fcm.googleapis.com/fcm/send")
-				.method("POST", body)
-				.addHeader("Authorization", "key=AAAAOMDADOM:APA91bF39PZzaPSPbFgPbEO6KvjsOD-AtfnpwEgNGZ6lMFQyx4xaswBX6HDe3iQfjAPiP5MR32Onws1Ry5diSbVY_PwRBhZLQ0PGJzPFLUk14xR8ELQVyleVG2_z00wdWBqs1inATbLP")
-				.addHeader("Content-Type", "application/json")
-				.build();
-		try {
-			okhttp3.Response response = client.newCall(request).execute();
-		} catch (IOException e) {
-			e.printStackTrace();
-
-
-			
-		}
 	}
 }
 

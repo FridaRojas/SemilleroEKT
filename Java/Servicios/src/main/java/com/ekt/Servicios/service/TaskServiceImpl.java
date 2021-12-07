@@ -1,12 +1,16 @@
 package com.ekt.Servicios.service;
 
+import com.ekt.Servicios.entity.ResponseTask;
 import com.ekt.Servicios.entity.Task;
+import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.TaskRepository;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +39,9 @@ public class TaskServiceImpl implements TaskService{
     public Iterable<Task> findAll() {
         return tareaRepository.findAll();
     }
+
+    @Autowired
+    private UserServiceImpl usuarioService;
 
     @Override
     public void  deleteById(String id){
@@ -135,12 +142,15 @@ public class TaskServiceImpl implements TaskService{
         boolean tituloT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
         boolean descripcionT = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusT = Pattern.matches("^[a-zA-Z]*$", estatus);
+        boolean prioridadT = Pattern.matches("^[a-zA-Z]*$", prioridad);
+
         ArrayList<String> errores = new ArrayList<>();
         if (!nombreE) errores.add("nombreEmisor");
         if (!nombreR) errores.add("nombreReceptor");
         if (!tituloT) errores.add("titulo");
         if (!descripcionT) errores.add("descripcion");
         if (!estatusT) errores.add("estatus");
+        if (!prioridadT) errores.add("prioridad");
 
         return errores;
     }
@@ -176,10 +186,13 @@ public class TaskServiceImpl implements TaskService{
         String descripcion = tarea.getDescripcion();
         String prioridad = tarea.getPrioridad();
         String estatus = tarea.getEstatus();
-        String observaviones = tarea.getObservaciones();
-
-        boolean observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaviones);
-        boolean prioridadA = Pattern.matches("^[a-zA-Z\\s]*$", prioridad);
+        String observaciones = tarea.getObservaciones();
+        boolean observacionesA;
+        if(observaciones==null||observaciones.equals(""))
+            observacionesA=true;
+        else
+            observacionesA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", observaciones);
+        boolean prioridadA = Pattern.matches("^[a-zA-Z]*$", prioridad);
         boolean tituloA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", titulo);
         boolean descripcionA = Pattern.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d10-9\\s]*$", descripcion);
         boolean estatusA = Pattern.matches("^[a-zA-Z]*$", estatus);
@@ -190,5 +203,21 @@ public class TaskServiceImpl implements TaskService{
         if (!descripcionA) erroresActulizar.add("descripcion");
         if (!estatusA) erroresActulizar.add("estatus");
         return erroresActulizar;
+    }
+    @Override
+    public ArrayList<String> validarSesion(String token_sesion, String id_usuario){
+        ArrayList<String> data = new ArrayList<>();
+        Optional<User> usuarioValido = usuarioService.findById(id_usuario);
+        String token_valido;// buscar en BD
+        if(usuarioValido.isPresent()) {
+            token_valido = usuarioValido.get().getTokenAuth();
+            if (token_valido == null || token_valido == "")
+                data.add("No existe el token en la BD");
+            if (!token_sesion.equals(token_valido))
+                data.add("Token de sesión invalido");
+        }else{
+                data.add("Usuario invalido");
+        }
+        return data;
     }
 }

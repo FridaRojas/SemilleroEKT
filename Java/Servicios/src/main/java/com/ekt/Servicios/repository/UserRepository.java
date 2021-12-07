@@ -47,4 +47,7 @@ public interface UserRepository extends MongoRepository<User,String> {
     @Query("{'nombreRol' : ?0")
     Optional<User> findRol(String nombreRol);
 
+    @Query("{'nombreRol' : ?0")
+    Iterable<User> findRolL(String nombreRol);
+
 }

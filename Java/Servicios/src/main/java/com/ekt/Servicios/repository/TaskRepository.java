@@ -38,5 +38,8 @@ public interface TaskRepository extends MongoRepository<Task,String> {
     @Query(value = "{'id_emisor': ?0, 'estatus': ?1}")
     Iterable<Task> getAllByIdEmisorAndStatus(String id_emisor, String estatus);
 
+    @Query(value = "{\"$orderby\", { 'fecha_ini' : -1 }}")
+    Iterable<Task> getAllOrderedTask();
+
 
 }
