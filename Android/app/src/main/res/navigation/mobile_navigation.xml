@@ -126,6 +126,9 @@
             app:destination="@id/navigation_home"
             app:popUpToInclusive="true"
             app:popUpTo="@+id/inicioSesionFragment"/>
+        <action
+            android:id="@+id/action_inicioSesionFragment_to_buzonFragment"
+            app:destination="@id/buzonFragment" />
 
     </fragment>
 

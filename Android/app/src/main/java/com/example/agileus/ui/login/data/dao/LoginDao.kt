@@ -17,17 +17,26 @@ class LoginDao {
     fun iniciarSesion(usuario: Users): Boolean {
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
-
+        lateinit var user:LoginResponse
         if (responseDos.isSuccessful) {
 
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
-                Log.d("almacenar", "${almacenar.data.id}")
-                idUser= almacenar.data.id.toString()
+                //Log.d("almacenar", "${almacenar.data.id}")
+                //idUser= almacenar.data.id.toString()
+                //rol= almacenar.data.nombreRol.toString()
                 if (almacenar.status == "ACCEPTED")
+                {
                     STATUS=true
+                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
+                    idUser = (almacenar.data as Data).id.toString()
+                }
                 if (almacenar.status =="BAD_REQUEST")
+                {
+                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
                     STATUS=false
+
+                }
                 status=STATUS
             }
         }
