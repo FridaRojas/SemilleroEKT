@@ -24,7 +24,7 @@ import com.example.agileus.ui.HomeActivity
 class ListContactsFragment : Fragment() {
 
     private lateinit var contactsviewModel: ListContactsViewModel
-    lateinit var shared:MySharedPreferences
+
 
     private var _binding: ListContactsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -44,8 +44,7 @@ class ListContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        shared = MySharedPreferences(activity as HomeActivity)
-        val id_user = shared.sharedPreferences.getString((MySharedPreferences.ID_USER_KEY),"")
+
         contactsviewModel.devuelveLista(Constantes.id)
 
 
