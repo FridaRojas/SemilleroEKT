@@ -2,6 +2,7 @@ package com.ekt.Servicios.service;
 
 
 import com.ekt.Servicios.entity.User;
+import com.ekt.Servicios.repository.GroupRepository;
 import com.ekt.Servicios.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,11 +11,19 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
 
 
@@ -137,4 +146,30 @@ public class UserServiceImpl implements UserService{
         return userRepository.busquedaUsuario(parametro);
     }
 
+    @Override
+    public Optional<String> guardarTokenAuth(String id) {
+        User usr = userRepository.findById(id).get();
+        String ret = crearTokenAuth();
+        usr.setTokenAuth(ret);
+        userRepository.save(usr);
+        return Optional.ofNullable(ret);
+    }
+
+    public String crearTokenAuth(){
+        try {
+            String numero="";
+            for (int i=0;i<50;i++){
+                numero+=String.valueOf(Math.random());
+            }
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            BigInteger number = new BigInteger(1, md.digest(numero.getBytes(StandardCharsets.UTF_8)));
+            StringBuilder hexString = new StringBuilder(number.toString(16));
+            while (hexString.length() < 32){
+                hexString.insert(0, '0');
+            }
+            return hexString.toString();
+        }catch (Exception e){
+            return null;
+        }
+    }
 }

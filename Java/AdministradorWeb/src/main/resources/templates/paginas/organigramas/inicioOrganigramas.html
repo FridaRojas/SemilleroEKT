@@ -93,19 +93,21 @@
     </td>
 
     <td class="resto" >
-        <div  class="alert alert-danger" th:if="${mensaje != null}" th:text="${mensaje}">
+        <div  th:classappend="'alert-' + (${status != null} ? ${status} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert">
         </div>
 
         <div class="main" >
 
 
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar Usuario" >
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
+                    <form method="POST" th:action="@{/busquedaOrganigrama}">
+                        <div class="input-group-append">
+                            <input type="text" class="form-control" th:name="parametro" placeholder="Buscar Organigrama" required>
+                            <button class="btn btn-success" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
 
@@ -148,13 +150,38 @@
                                 <div class="col-sm">
                                     <form method="POST" th:action="@{/editarGrupo(idGrupo=${grupo.getId()})}">
                                     <button type="submit"  value="submit" style="background-color: #66BB6A" class="btn btn-primary"  ><i class="fa fa-edit"></i></button>
+
+
                                     </form>
                                 </div>
                                 <div class="col-sm" style="align-content: center">
-                                    <form method="POST"
-                                          th:action="@{/borrarGrupo(idGrupo=${grupo.getId()})}">
-                                        <button type="submit" style="background-color: #66BB6A"  class="btn btn-primary" ><i class="fa fa-trash"></i></button>
-                                    </form>
+
+                                        <button type="button" style="background-color: #66BB6A"  class="btn btn-primary" data-toggle="modal" data-target="#"
+                                              th:attrappend="data-target=${grupo.getId()}"  ><i class="fa fa-trash"></i></button>
+                                        <div class="modal fade" th:id="${grupo.getId()}" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <form method="POST"
+                                                  th:action="@{/borrarGrupo(idGrupo=${grupo.getId()})}">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalAgregar">Eliminar Organigrama</h5>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4 th:text="${grupo.getNombre()}">Boorar </h4>
+                                                            <h4></h4>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
                                 </div>
                             </div>
                         </div>
