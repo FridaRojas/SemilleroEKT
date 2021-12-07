@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
@@ -16,6 +17,7 @@ import com.example.agileus.databinding.ReceiverBuzonBroadcastFragmentBinding
 import com.example.agileus.models.Contacts
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ReceiverBuzonBroadcastFragment : Fragment() {
 
@@ -28,6 +30,7 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
     companion object{
         var  listas=ArrayList<Contacts>()
     }
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,19 +52,17 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ReceiverBuzonBroadcastViewModel::class.java)
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navBar.isVisible = false
+
+    viewModel = ViewModelProvider(this).get(ReceiverBuzonBroadcastViewModel::class.java)
 
         listas=viewModel.getLista()
 
         Log.d("tamaño",listas.size.toString())
 
-        //var lista=viewModel.getLista()
-       // Log.d("Body user",listafiltrada.size.toString())
-
 
             viewModel.devuelvebuzon2()
-//            viewModel.getEnviados()
-
 
            viewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerBuzon.adapter = it
@@ -74,4 +75,7 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+
+
 }

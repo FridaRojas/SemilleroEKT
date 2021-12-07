@@ -16,11 +16,14 @@ import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragme
 import android.os.CountDownTimer
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.example.agileus.R
 import com.example.agileus.models.MensajeBodyBroadcaster
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class BuzonDetallesFragment: Fragment() , BroadcasterListener {
@@ -51,7 +54,6 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
             "Buzon Recibidos Broadcast"
-
 
 
 
@@ -160,8 +162,11 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         }.start()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        getActivity()?.getWindow()?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navBar.isVisible = false
+
     }
 }
