@@ -30,8 +30,8 @@ class ReporteTareasDao {
     private lateinit var rangoIniFecha: ZonedDateTime
     private lateinit var rangoFinFecha: ZonedDateTime
 
-    lateinit var fechaIni: ZonedDateTime
-    lateinit var fechaIniR: ZonedDateTime
+    lateinit var fechaFin: ZonedDateTime
+    lateinit var fechaFinR: ZonedDateTime
 
     var employeeList = ArrayList<Contacts>()
     var lista = ArrayList<DatosTareas>()
@@ -41,10 +41,7 @@ class ReporteTareasDao {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas()
         val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
-
         var listaRecycler= ArrayList<Estadisticas>()
-        //val lista: ArrayList<DatosTareas>
-
 
         if (ResponseTareas.isSuccessful) {
             val listaDs = ResponseTareas.body()!!
@@ -58,20 +55,15 @@ class ReporteTareasDao {
             var contador_t_totales=0
 
             var contador_t_terminadas= 0
+            //Parametros de tareas
             var contador_t_pendientes = 0
             var contCancelado = 0
             var contIniciada = 0
             var contRevision = 0
+
             var contTareasaTiempo = 0
             var contTareasFueraTiempo = 0
 
-            /*
-            Pendientes
-            Cancelado
-            Iniciada
-            Revision
-            Terminada
-             */
             fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
             rangoIniFecha = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas) // primera fecha para comparar
             rangoFinFecha = ZonedDateTime.parse(MySharedPreferences.fechaFinEstadisticas) // segunda fecha para comparar
@@ -80,7 +72,7 @@ class ReporteTareasDao {
             lista.forEach {
                 val dateIni = ZonedDateTime.parse(it.fecha_ini)
                 if ((dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha)) &&
-                    dateIni.isBefore(rangoFinFecha)){
+                    (dateIni.isBefore(rangoFinFecha) || dateIni.isEqual(rangoFinFecha)) ){
 
                     Log.e("RangoIN", "$rangoIniFecha / $dateIni / $rangoFinFecha")
 
@@ -110,16 +102,16 @@ class ReporteTareasDao {
                     }
 
                     try {
-                        fechaIni = ZonedDateTime.parse(it.fecha_fin)
-                        fechaIniR = ZonedDateTime.parse(it.fecha_finR)
-                        if (fechaIniR.isBefore(fechaIni) || fechaIniR.isEqual(fechaIni)){
+                        fechaFin = ZonedDateTime.parse(it.fecha_fin)
+                        fechaFinR = ZonedDateTime.parse(it.fecha_finR)
+                        if (fechaFinR.isBefore(fechaFin) || fechaFinR.isEqual(fechaFin)){
                             contTareasaTiempo += 1
                         }else{
                             contTareasFueraTiempo = contTareasFueraTiempo + 1
                         }
                     }catch (ex:Exception){
-                        fechaIni = ZonedDateTime.parse("1971-01-01T00:00:00.000+00:00")
-                        fechaIniR = ZonedDateTime.parse("1970-01-01T00:00:00.000+00:00")
+                        fechaFin = ZonedDateTime.parse("1971-01-01T00:00:00.000+00:00")
+                        fechaFinR = ZonedDateTime.parse("1970-01-01T00:00:00.000+00:00")
                     }
 
                 }
@@ -137,12 +129,9 @@ class ReporteTareasDao {
 
             listaRecycler.add(Estadisticas("Terminadas",contador_tareas_terminadas.toString(),"Pendientes",contador_tareas_pendientes.toString(), R.drawable.ic_pie_chart))
             listaRecycler.add(Estadisticas("Tareas culminadas a tiempo:","","",contTareasaTiempo.toString(), R.drawable.ic_bar_chart))
-
         }
-
         return listaRecycler
     }
-
 
     fun obtenerTareasTerminadas():String{
         return contador_tareas_terminadas.toString()
@@ -190,7 +179,7 @@ class ReporteTareasDao {
             }
 
         }catch (ex:Exception){
-
+            Log.e("ERROR SubContactos", "")
         }
         return employeeList
     }

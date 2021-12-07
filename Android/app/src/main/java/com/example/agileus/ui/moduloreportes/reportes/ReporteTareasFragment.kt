@@ -57,7 +57,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
@@ -65,9 +64,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        reporteTareasViewModel =
-            ViewModelProvider(this).get(ReporteTareasViewModel::class.java)
-
+        reporteTareasViewModel = ViewModelProvider(this).get(ReporteTareasViewModel::class.java)
         _binding = ReporteTareasFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -92,61 +89,16 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             findNavController().navigate(action,  extras)
         }
 
-
         cambiarGrafica(tipo_grafica)
-
-
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun mostrargraficaBarras() {
-
-        barChart=binding.barChart
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
-        binding.txtRangoFechaReportes.isVisible=false
-
-        reporteTareasViewModel.devuelvelistaReporte(this)
-
-        reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.RecyclerLista.adapter = it
-            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
-        })
-
-        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtPrimerLegend.text="Finalizadas a tiempo"
-            binding.txtDataPrimerLegend.text=""
-
-            binding.colorlegend2.isVisible = false
-            binding.txtSegundoLegend.text = reporteTareasViewModel.aTiempo.value.toString()
-            binding.txtDataSegundoLegend.text = ""
-
-            binding.txtTercerLegend.text="Finalizadas fuera de tiempo"
-            binding.txtDataTercerLegend.text=""
-            //binding.txtDataTercerLegend.text = reporteTareasViewModel.terminadas.value.toString()
-            //terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
-            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorSecondary))
-
-            binding.txtDataCuartoLegend.text = ""
-            binding.colorlegend4.isVisible = false
-            binding.txtCuartoLegend.text = reporteTareasViewModel.fueraTiempo.value.toString()
-
-            pendientes = reporteTareasViewModel.aTiempo.value.toString().toInt()
-            terminadas = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
-            initBarChart(terminadas.toFloat(),pendientes.toFloat())//inicializacion de la grafica de barras
-            // y se agregan los valores porcentuales para su visualización
-
-        })
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
         pieChart=binding.pieChart
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
         binding.txtRangoFechaReportes.isVisible=false
-
+        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
 
         reporteTareasViewModel.devuelvelistaReporte(this)
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
@@ -194,8 +146,47 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             setDataToPieChart(porcentaje_pendientes, porcentaje_iniciada, porcentaje_revision, porcentaje_termidas)
 
         })
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun mostrargraficaBarras() {
 
+        barChart=binding.barChart
+        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
+        binding.txtRangoFechaReportes.isVisible=false
+
+        reporteTareasViewModel.devuelvelistaReporte(this)
+
+        reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
+            binding.RecyclerLista.adapter = it
+            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
+        })
+
+        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+            binding.txtPrimerLegend.text="Finalizadas a tiempo"
+            binding.txtDataPrimerLegend.text=""
+
+            binding.colorlegend2.isVisible = false
+            binding.txtSegundoLegend.text = reporteTareasViewModel.aTiempo.value.toString()
+            binding.txtDataSegundoLegend.text = ""
+
+            binding.txtTercerLegend.text="Finalizadas fuera de tiempo"
+            binding.txtDataTercerLegend.text=""
+            //binding.txtDataTercerLegend.text = reporteTareasViewModel.terminadas.value.toString()
+            //terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
+            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+
+            binding.txtDataCuartoLegend.text = ""
+            binding.colorlegend4.isVisible = false
+            binding.txtCuartoLegend.text = reporteTareasViewModel.fueraTiempo.value.toString()
+
+            pendientes = reporteTareasViewModel.aTiempo.value.toString().toInt()
+            terminadas = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
+            initBarChart(terminadas.toFloat(),pendientes.toFloat())//inicializacion de la grafica de barras
+            // y se agregan los valores porcentuales para su visualización
+
+        })
     }
 
     //funcion regla de 3 para obtener un porcentage proporcional
@@ -315,40 +306,24 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun cambiarGrafica(valor:Int) {
 
         when (valor) {
-
-            0 -> {
+            1 -> {
+                mostrargraficaBarras()
+                binding.barChart.isVisible=true
+                binding.pieChart.isVisible=false
+                vista = 1
+                tipo_grafica=1
+            }else -> {
                 mostrargraficaPie()
                 binding.pieChart.isVisible=true
                 binding.barChart.isVisible=false
                 vista = 0
                 tipo_grafica=0
             }
-            1 -> {
-
-                mostrargraficaBarras()
-                binding.barChart.isVisible=true
-                binding.pieChart.isVisible=false
-                vista = 1
-                tipo_grafica=1
-
-            }
-
-            else -> {
-                mostrargraficaPie()
-            }
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -356,6 +331,11 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         cambiarGrafica(tipo_grafica)
         //Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
         Log.d("DateFilter",  "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

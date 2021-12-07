@@ -17,3 +17,19 @@ class TaskListByID(
     @SerializedName("mensaje") val mensaje: String,
     @SerializedName("data") val data: ArrayList<DatosTareas>
 )
+
+class TaskListDetailByBossID(
+    val id: String,
+    val name: String,
+    val totals: String,
+    val finihed: Int,
+    val lowPriority: Int,
+    val mediumPriority: Int,
+    val highPriority: Int,
+    val pendings: Int,
+    val canceled: Int,
+    val started: Int,
+    val revision: Int,
+    val onTime: Int,
+    val outTime: Int
+)
