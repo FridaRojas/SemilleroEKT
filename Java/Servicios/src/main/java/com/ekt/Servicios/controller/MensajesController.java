@@ -42,7 +42,7 @@ public class MensajesController {
 	MongoTemplate monogoTemplate;
 
 	@PostMapping("crearMensaje")
-	public ResponseEntity<?> crearMensaje(/*@RequestHeader("tokenSesion")String tokenSesion,*/ @RequestBody Mensajes mensajes) {
+	public ResponseEntity<?> crearMensaje(@RequestHeader("tokenSesion")String tokenSesion, @RequestBody Mensajes mensajes) {
 		try {
 
 			if (mensajes.getIDEmisor() == null || mensajes.getIDReceptor() == null || mensajes.getTexto() == null
@@ -78,6 +78,16 @@ public class MensajesController {
 			} else {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
 						"No existe el emisor en la base de datos", mensajes.getIDEmisor()));
+			}
+			
+			if (emisor.get().getStatusActivo().equals("false")) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
+						,"Usuario invalido",null));
+			}
+			
+			if(!emisor.get().getTokenAuth().equals(tokenSesion)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
+						,"Token invalido",null));
 			}
 
 			boolean existeEnListaGrupo = false;
@@ -251,28 +261,31 @@ public class MensajesController {
 
 	}
 
-	@PutMapping("eliminarMensaje/{idMensaje}") //&{idUsuario}
-	public ResponseEntity<?> borrarMensaje(/*@RequestHeader("tokenSesion")String tokenSesion,*/ @PathVariable(value = "idMensaje") String idMensaje/*, @PathVariable(value = "idUsuario") String idUsuario*/) {
+	@PutMapping("eliminarMensaje/{idMensaje}/{idUsuario}") //&{idUsuario}
+	public ResponseEntity<?> borrarMensaje(@RequestHeader("tokenSesion")String tokenSesion, @PathVariable(value = "idMensaje") String idMensaje, @PathVariable(value = "idUsuario") String idUsuario) {
 		try {
-			//String tokenSesionLocal = "12345";
-			
 			if(idMensaje.length()<24 || idMensaje.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
 						,"Tamaño del id del mensaje invalido",null));
 			}
 			
-			/*if(idUsuario.length()<24 || idUsuario.length()>24) {
+			if(idUsuario.length()<24 || idUsuario.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
 						,"Usuario invalido",null));
-			}*/
+			}
 			
-			//Optional<User> usuario = userRepository.findById(idUsuario);
+			Optional<User> usuario = userRepository.findById(idUsuario);
 			Optional<Mensajes> mensaje = mensajesService.buscarMensaje(idMensaje);
-
-			/*if (!usuario.isPresent() || usuario.get().getStatusActivo().equals("false") /*|| !usuario.get().getTokenSesion.equals(tokenSesion) || !tokenSesionLocal.equals(tokenSesion)) {
+			
+			if (!usuario.isPresent() || usuario.get().getStatusActivo().equals("false")) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
 						,"Usuario invalido",null));
-			}*/
+			}
+			
+			if(!usuario.get().getTokenAuth().equals(tokenSesion)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
+						,"Token invalido",null));
+			}
 			
 			if (!mensaje.isPresent()) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
@@ -302,7 +315,7 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaContactos/{miId}")
-	public ResponseEntity<?> verListaContactos(/*@RequestHeader("tokenSesion")String tokenSesion,*/@PathVariable(value = "miId") String miId) {
+	public ResponseEntity<?> verListaContactos(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -313,7 +326,12 @@ public class MensajesController {
 			
 			if(!existo.isPresent() || existo.get().getStatusActivo().equals("false")) {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())
-						,"El usuario no existe en la base de datos",miId));
+						,"Usuario invalido",miId));
+			}
+			
+			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
+						,"Token invalido",null));
 			}
 			
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value())
@@ -330,8 +348,8 @@ public class MensajesController {
 		}
 	}
 
-	@PutMapping("actualizarLeido")
-	public ResponseEntity<?> actualizarLeido(@RequestBody Mensajes mensajes) {
+	@PutMapping("actualizarLeido/{idUsuario}")
+	public ResponseEntity<?> actualizarLeido(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "idUsuario") String idUsuario,@RequestBody Mensajes mensajes) {
 		try {
 			if(mensajes.getID()==null) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -341,6 +359,23 @@ public class MensajesController {
 			if(mensajes.getID().length()<24 || mensajes.getID().length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
 						,"Tamaño del id mensaje incorrecto",null));
+			}
+			
+			if(idUsuario.length()<24 || idUsuario.length()>24) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
+						,"El id del usuario no es valido",null));
+			}
+			
+			Optional<User> existo = userRepository.validarUsuario(idUsuario);
+			
+			if(!existo.isPresent() || existo.get().getStatusActivo().equals("false")) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())
+						,"Usuario invalido",idUsuario));
+			}
+			
+			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
+						,"Token invalido",null));
 			}
 			
 			Optional<Mensajes> mensaje = mensajesService.buscarMensaje(mensajes.getID());
@@ -472,7 +507,7 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaGrupos/{miId}")
-	public ResponseEntity<?> listaGrupos(@PathVariable(value = "miId") String miId) {
+	public ResponseEntity<?> listaGrupos(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -481,9 +516,14 @@ public class MensajesController {
 			
 			Optional<User> existo = userRepository.validarUsuario(miId);
 			
-			if(!existo.isPresent()) {
+			if(!existo.isPresent() || existo.get().getStatusActivo().equals("false")) {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
-						"No se encontro usuario en la base de datos",miId));
+						"Usuario invalido",miId));
+			}
+			
+			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
+						,"Token invalido",null));
 			}
 			
 			List<Conversacion> grupos = grupos(miId);
@@ -502,21 +542,34 @@ public class MensajesController {
 		}
 	}
 
-	@GetMapping("listaPersonasGrupo/{idGrupo}")
-	public ResponseEntity<?> listaDePersonasEnGrupo(@PathVariable(value = "idGrupo") String idGrupo) {
+	@GetMapping("listaPersonasGrupo/{idGrupo}/{idUsuario}")
+	public ResponseEntity<?> listaDePersonasEnGrupo(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "idGrupo") String idGrupo,@PathVariable(value = "idUsuario")String idUsuario) {
 		try {
 			if(idGrupo.length()<74) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
 						"No es un chat de grupo",null));
 			}
 			
+			Optional<User> existo = userRepository.validarUsuario(idUsuario);
+			
+			if(!existo.isPresent() || existo.get().getStatusActivo().equals("false")) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+						"Usuario invalido",null));
+			}
+			
+			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
+						,"Token invalido",null));
+			}
+			
+			
 			List<User> usuarios = new ArrayList<>();
 
 			String[] lenguajesComoArreglo = idGrupo.split("-");
 
-			for (String idUsuario : lenguajesComoArreglo) {
+			for (String idUsuarios : lenguajesComoArreglo) {
 
-				Optional<User> usuario = userRepository.validarUsuario(idUsuario);
+				Optional<User> usuario = userRepository.validarUsuario(idUsuarios);
 				usuario.ifPresent(usuarios::add);
 
 			}
