@@ -2,6 +2,7 @@ package com.example.agileus.ui.login.ui.login
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
+import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.login.data.model.Users
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
@@ -86,12 +88,16 @@ class InicioSesionFragment : Fragment() {
            {Toast.makeText(activity, "Presiona de nuevo para confirmar", Toast.LENGTH_SHORT).show()
                 }
             if (trigger >1 && !status) {
-                //Toast.makeText(activity, "$trigger", Toast.LENGTH_LONG).show()
-                Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
 
-                if(trigger >2 )
+                if(trigger >3 )
                     {
-                        Toast.makeText(activity, "Demasiado Intentos, Cerrando Applicación", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "Demasiado Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
+
+                        Handler().postDelayed({
+                            activity?.finish()
+                        }, 3000)
+
 
                 }
 
