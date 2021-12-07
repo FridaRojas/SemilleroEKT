@@ -3,14 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.14492753623188406" />
-        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_sign_in.xml" value="0.1" />
-        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/fragment_task.xml" value="0.14492753623188406" />
-        <entry key="..\:/Users/aries/Videos/CloneWhatsSemillero/semilleroekt/Android/app/src/main/res/layout/inicio_sesion_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/drawable/circular_shape.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/drawable/cliente_backgroud.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/drawable/rounded_bg.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.24615384615384617" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_user_fragment.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/fragment_buzon.xml" value="0.25" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/fragment_detalle_nivel_alto.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/fragment_sign_in.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/item_buzon.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/login_fragment.xml" value="0.264" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/mensaje_broadcasting.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/mensaje_broadcasting_user.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/layout/receiver_buzon_broadcast_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/ecube/proyecto/semilleroekt/Android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.264" />
+        <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.13854166666666667" />
+        <entry key="..\:/Users/jorge/Desktop/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.18" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
 </project>

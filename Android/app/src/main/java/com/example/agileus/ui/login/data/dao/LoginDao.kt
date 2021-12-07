@@ -28,12 +28,12 @@ class LoginDao {
                 if (almacenar.status == "ACCEPTED")
                 {
                     STATUS=true
-                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
-                    idUser = (almacenar.data as Data).id.toString()
+//                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
+                    idUser = almacenar.data.id.toString()
                 }
                 if (almacenar.status =="BAD_REQUEST")
                 {
-                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
+                 //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
                     STATUS=false
 
                 }
