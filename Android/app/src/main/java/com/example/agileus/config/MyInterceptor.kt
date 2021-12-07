@@ -8,9 +8,8 @@ class MyInterceptor: Interceptor {
 
         val request = chain.request()
             .newBuilder()
-            .addHeader("Content-Type","")
+            .addHeader("token_sesion","12345")
             .build()
-
 
         return chain.proceed(request)
     }

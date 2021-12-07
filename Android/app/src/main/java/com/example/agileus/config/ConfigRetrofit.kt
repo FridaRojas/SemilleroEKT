@@ -19,6 +19,9 @@ import okhttp3.Request
 class ConfigRetrofit {
 
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE
+    var client = OkHttpClient.Builder().apply {
+        addInterceptor(MyInterceptor())
+    }.build()
 
     fun obtenerConfiguracionRetofitMessage(): MessageApi {
         val mRetrofit = Retrofit.Builder()
@@ -30,16 +33,18 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
-        var http = OkHttpClient().newBuilder().addInterceptor(
-            Interceptor { chain ->
-                val requestBuilder: Request.Builder = chain.request().newBuilder()
-                requestBuilder.header("token_sesion", "12345")
-                chain.proceed(requestBuilder.build())
-            }).build()
+        /*   var http = OkHttpClient().newBuilder().addInterceptor(
+               Interceptor { chain ->
+                   val requestBuilder: Request.Builder = chain.request().newBuilder()
+                   requestBuilder.header("token_sesion", "12345")
+                   chain.proceed(requestBuilder.build())
+
+               }).build()*/
+
 
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
-            .client(http)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
