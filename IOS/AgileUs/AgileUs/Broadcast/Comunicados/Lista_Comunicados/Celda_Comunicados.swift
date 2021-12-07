@@ -9,7 +9,7 @@ import UIKit
 
 class Celda_Comunicados: UITableViewCell {
 
-    static let identificador = "Identificador_Celda_Comunicado"
+    static let identificador_celda_comunicados = "Identificador_Celda_Comunicado"
     var asunto = "Comunicado general"
     var fecha = "28/09/2021"
     var id = -1

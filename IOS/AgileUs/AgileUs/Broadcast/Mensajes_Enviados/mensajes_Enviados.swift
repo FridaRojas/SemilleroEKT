@@ -7,17 +7,23 @@
 
 import UIKit
 
-struct lista_de_mensajes: Codable
+var arrListaMensajes = [Any]()
+
+struct Mensajes: Codable
 {
-    let id: String
-    let asunto: String
-    let descripcion: String
-    let idEmisor: String
-    let nombreEmisor: String
+    let id: String?
+    let asunto: String?
+    let descripcion: String?
+    let idEmisor: String?
+    let nombreEmisor: String?
 }
 
 class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
+    let controlador_modal1 = Adaptador_Modals()
+    var lista_mensajes = [Mensajes]()
+    //var usuarios = [Any]()
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return lista_mensajes.count
@@ -27,23 +33,12 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
     {
         var Indice = indexPath.row
         let celda = tableView.dequeueReusableCell(withIdentifier: celda_msjs_enviados.identificador, for: indexPath) as! celda_msjs_enviados
-        celda.Configurar_Celda_Mensajes(Datos: usuarios[Indice] as! [Any])
+        print(Indice)
+        celda.Configurar_Celda_Mensajes(Datos: lista_mensajes[Indice] as! [Any])
+        print(" es el indice \(Indice)")
+        print(lista_mensajes)
         return celda
     }
-    
-    /*func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
-    {
-        let index = indexPath.row
-        let interfaz = mensajes_Enviados()
-        
-        var mensaje = usuarios[index]
-        var Mensaje_Broadcast = mensaje as! [Any]
-    }*/
-    
-    let controlador_modal1 = Adaptador_Modals()
-    var lista_mensajes = [lista_de_mensajes]()
-    var usuarios = [Any]()
-
     
     @IBOutlet weak var lista_mensajes_eniados: UITableView!
 
@@ -54,12 +49,8 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
         lista_mensajes_eniados.delegate = self
         lista_mensajes_eniados.dataSource = self
         lista_mensajes_eniados.register(celda_msjs_enviados.nib(), forCellReuseIdentifier: celda_msjs_enviados.identificador)
-
-    }
-    
-    override func viewDidAppear(_ animated: Bool)
-    {
         consumir_mensajes_enviados()
+
     }
     
     
@@ -82,25 +73,38 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
         let url = URL(string: servicio)
         URLSession.shared.dataTask(with: url!)
         {(data, response, error) in
+           
+            
             if let error = error {
                 print ("error: \(error)")
-                self.simpleAlertMessage(title: "Error!", message: "Error al conectar con el servidor")
+                
                 return
             }
 
             guard let response = response as? HTTPURLResponse,
                 (200...299).contains(response.statusCode) else {
                     print ("Error servidor: \(response)")
-                    self.simpleAlertMessage(title: "Error!", message: "Error de respuesta del servidor")
+                    
                 return
             }
-
+            
+            print(data)
+            
+            
             do
-            {
-                print(data)
-                print(error)
+            { //error
+                print("Entrando al do")
+                //print(self.lista_mensajes)
+                
+                //Errores
+                
+                var variable_de_apoyo: [Mensajes]
+                
                 self.lista_mensajes = try
-                JSONDecoder().decode([lista_de_mensajes].self, from: data!)
+                JSONDecoder().decode([Mensajes].self, from: data!)
+                // print("es el arreglo \(variable_de_apoyo)")
+                
+                
                 DispatchQueue.main.async {
                     var indice = 1
                     for item in self.lista_mensajes
@@ -111,7 +115,7 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
                     self.lista_mensajes_eniados.reloadData()
                 }
             }
-            catch{print("Error")}
+            catch{print("Error en el try \(error)")}
         }
         .resume()
     }
