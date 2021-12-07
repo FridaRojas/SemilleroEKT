@@ -15,7 +15,7 @@ class TasksDao {
     //Agregar nueva tarea
     fun postTasks(t: Tasks) {
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
-
+/*
         val Response = callInserta?.execute()
         try {
             if(Response != null) {
@@ -36,7 +36,8 @@ class TasksDao {
             }
         }catch (e:Exception){
             Log.e("error", e.toString())
-        }
+        }*/
+
 
         callInserta.enqueue(object : Callback<Tasks> {
             override fun onResponse(call: Call<Tasks>, response: Response<Tasks>) {

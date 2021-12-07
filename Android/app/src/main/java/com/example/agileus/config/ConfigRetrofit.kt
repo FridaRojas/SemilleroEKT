@@ -31,16 +31,8 @@ class ConfigRetrofit {
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
 
-        val httpClient = OkHttpClient()
-        httpClient.networkInterceptors().add(Interceptor { chain ->
-            val requestBuilder: Request.Builder = chain.request().newBuilder()
-            requestBuilder.header("token_sesion", "12345")
-            chain.proceed(requestBuilder.build())
-        })
-
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
-            .client(httpClient)
             // .client(clientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
