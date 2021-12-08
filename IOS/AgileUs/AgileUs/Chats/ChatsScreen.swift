@@ -63,6 +63,8 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
         UserDefaults.standard.setValue(false, forKey: "isLogged")
         navigationController?.popViewController(animated: true)
+        UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+        UserDefaults.standard.setValue(String(), forKey: "idGrupo")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -125,14 +127,13 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     func Servicio_web_conversaciones()
     {
 
-        let servicio = server + "mensajes/listarConversaciones/\(userID)"
-
+       let servicio = server + "mensajes/listarConversaciones/\(userID)"
+        print("Este es un toke \(tokenAuth)")
         let url = URL(string: servicio)
-        let urll = NSMutableURLRequest(url: url! as URL)
-        urll.httpMethod = "GET";
-        urll.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let requeste = NSMutableURLRequest(url: url! as URL)
+        requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "token_session")
         
-        URLSession.shared.dataTask(with: url!)
+        URLSession.shared.dataTask(with: requeste as URLRequest)
         {data,response,error in
             do
             {
