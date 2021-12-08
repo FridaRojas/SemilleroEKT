@@ -35,7 +35,7 @@ public class TaskController {
     private UserServiceImpl usuarioService;
 
     @PostMapping("/agregarTarea")   //1. Tareas
-    public ResponseEntity<?> create(@RequestHeader("token_sesion") String token_sesion,@RequestBody Task tarea){
+    public ResponseEntity<?> create(@RequestHeader("tokenAuth") String token_sesion,@RequestBody Task tarea){
         try {
             String mensaje;
 
@@ -100,7 +100,7 @@ public class TaskController {
     }
 
     @GetMapping("/obtenerTareas/{id_usuario}")   //10. Reportes
-    public ResponseEntity<?> readAll(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario){
+    public ResponseEntity<?> readAll(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario){
         try {
             String mensaje;
             //Validar sesión
@@ -130,7 +130,7 @@ public class TaskController {
     }
 
     @GetMapping(value="/obtenerTareaPorId/{id_tarea}/{id_usuario}")    //2. Tareas
-    public ResponseEntity<?> read(@RequestHeader("token_sesion") String token_sesion, @PathVariable String id_tarea,@PathVariable String id_usuario){
+    public ResponseEntity<?> read(@RequestHeader("tokenAuth") String token_sesion, @PathVariable String id_tarea,@PathVariable String id_usuario){
         try {
             Optional<Task> oTarea = tareaService.findById(id_tarea);
             String mensaje;
@@ -166,7 +166,7 @@ public class TaskController {
     }
 
     @PutMapping("/actualizarTarea/{id_tarea}/{id_usuario}")  //3. Tareas
-    public ResponseEntity<?> updateById(@RequestHeader("token_sesion") String token_sesion, @PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario){
+    public ResponseEntity<?> updateById(@RequestHeader("tokenAuth") String token_sesion, @PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario){
         try {
             String mensaje = "";
             //Validar sesión
@@ -216,7 +216,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/cancelarTarea/{id_tarea}/{id_usuario}") //4. Tareas
-    public ResponseEntity<?> deleteById(@RequestHeader("token_sesion") String token_sesion, @PathVariable String id_tarea, @PathVariable String id_usuario){
+    public ResponseEntity<?> deleteById(@RequestHeader("tokenAuth") String token_sesion, @PathVariable String id_tarea, @PathVariable String id_usuario){
         try {
             String mensaje ="";
             //Validar sesión
@@ -246,7 +246,7 @@ public class TaskController {
     }
 
     @GetMapping("/filtrarTareasPorPrioridad/{prioridad}/{id_usuario}")//Reportes
-    public ResponseEntity<?> getTareasByPrioridad(@RequestHeader("token_sesion") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
+    public ResponseEntity<?> getTareasByPrioridad(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
         try {
             String mensaje;
             //Validar sesión
@@ -274,7 +274,7 @@ public class TaskController {
     }
 
     @GetMapping("/filtrarTareasPorGrupo/{id_grupo}/{id_usuario}")// Reportes
-    public ResponseEntity<?> getTareasByGrupo(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario) {
+    public ResponseEntity<?> getTareasByGrupo(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario) {
         try {
             String mensaje;
             //Validar sesión
@@ -308,8 +308,8 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}&{id_usuario}") //5. Tareas
-    public ResponseEntity<?> getUsuarioTareasByPrioridad(@RequestHeader("token_sesion") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
+    @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}/{id_usuario}") //5. Tareas
+    public ResponseEntity<?> getUsuarioTareasByPrioridad(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
         try {
             String mensaje;
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
@@ -341,8 +341,8 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje,e.getStackTrace()));
         }
     }
-    @GetMapping("/obtenerTareasQueAsignoPorId/{id_usuario}")    //REPORTES
-    public ResponseEntity<?> getAllTareasOutByUserId(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario){
+    @GetMapping("/obtenerTareasQueAsignoPorId/{id_usuario}")    // 13
+    public ResponseEntity<?> getAllTareasOutByUserId(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario){
         try {
             String mensaje;
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
@@ -370,7 +370,7 @@ public class TaskController {
     }
 
     @GetMapping("/obtenerTareasQueLeAsignaronPorId/{id_usuario}") //REPORTES
-    public ResponseEntity<?> getAllTareasInByUserId(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario){
+    public ResponseEntity<?> getAllTareasInByUserId(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario){
         try {
             String mensaje;
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
@@ -399,8 +399,8 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}&{id_usuario}")    //Reportes
-    public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario){
+    @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}/{id_usuario}")    //Reportes
+    public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario){
         try {
             String mensaje;
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
@@ -427,8 +427,8 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actulizarEstatus/{id_tarea}&{estatus}")   //6. Tareas
-    public ResponseEntity<?> actualizarEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea, @PathVariable String estatus) {
+    @PutMapping("/actulizarEstatus/{id_tarea}/{estatus}")   //6. Tareas
+    public ResponseEntity<?> actualizarEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea, @PathVariable String estatus) {
         try {
             String mensaje = "";
             //Validar Id tarea
@@ -469,7 +469,7 @@ public class TaskController {
     }
 
     @PutMapping("/actualizarLeidoPorIdTarea/{id_tarea}")    //7. Tarea
-    public ResponseEntity<?> actualizaLeidoPorIdTarea(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea){
+    public ResponseEntity<?> actualizaLeidoPorIdTarea(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea){
         try {
             String mensaje;
             Optional<Task> oTarea = tareaService.findById(id_tarea);
@@ -498,8 +498,8 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}&{estatus}") //8. Tareas
-    public ResponseEntity<?> obtenerTareasQueLeAsignaronPorIdYEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
+    @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}/{estatus}") //8. Tareas
+    public ResponseEntity<?> obtenerTareasQueLeAsignaronPorIdYEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
 
         String mensaje;
         ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
@@ -517,8 +517,8 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
     }
 
-    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}&{estatus}")  //9. Tareas
-    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
+    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}/{estatus}")  //9. Tareas
+    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
         try {
             String mensaje;
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
@@ -545,8 +545,8 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actualizarTareaFechaRealIni/{id_tarea}/{id_usuario}")
-    public ResponseEntity<?> actualizarFechaRealTareaIni(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
+    @PutMapping("/actualizarTareaFechaRealIni/{id_tarea}/{id_usuario}") //11
+    public ResponseEntity<?> actualizarFechaRealTareaIni(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
         String mensaje = "";
         try {
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
@@ -566,8 +566,8 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/actualizarTareaFechaRealFin/{id_tarea}/{id_usuario}")
-    public ResponseEntity<?> actualizarFechaRealTareaFin(@RequestHeader("token_sesion") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
+    @PutMapping("/actualizarTareaFechaRealFin/{id_tarea}/{id_usuario}") //12
+    public ResponseEntity<?> actualizarFechaRealTareaFin(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
         String mensaje = "";
         try {
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
