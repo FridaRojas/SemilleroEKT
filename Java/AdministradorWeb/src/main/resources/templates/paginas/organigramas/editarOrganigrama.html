@@ -96,22 +96,22 @@
         </div>
         <div class="row d-flex justify-content-around" style="min-height: 20vh;">
             <!-- boton de agregar usuarios-->
-            <div class="col-2">
-                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalAgregarUsuarioAGrupo">
+            <div class="col-2" >
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalAgregarUsuarioAGrupo" style="background-color:rgba(255,255,255,.5); border-radius: 30%;border-color: gainsboro">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Agregar </p>
+                    <p style="color: black">Agregar </p>
                 </button>
             </div>
             <div class="col-2">
-                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalSustituirUsuario">
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalSustituirUsuario" style="background-color:rgba(255,255,255,.5); border-radius: 30%; border-color: gainsboro" >
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Sustituir</p>
+                    <p style="color: black">Sustituir</p>
                 </button>
             </div>
             <div class="col-2">
-                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalEditarUsuario">
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalEditarUsuario" style="background-color:rgba(255,255,255,.5); border-radius: 30%;border-color: gainsboro">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Editar </p>
+                    <p style="color: black">Editar </p>
                 </button>
             </div>
 
@@ -119,9 +119,9 @@
                 <!--/*@thymesVar id="Group" type="java"*/-->
                 <form th:action="@{/eliminaUsuario}" th:object="${Group}" method="post" >
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
+                    <button type="button" class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario" style="background-color:rgba(255,255,255,.5); border-radius: 30%; border-color: gainsboro">
                         <img src="/assets/--.png" style="max-height: 7vh;"/>
-                        <p>Eliminar</p>
+                        <p style="color: black">Eliminar</p>
                     </button>
                 </form>
             </div>
