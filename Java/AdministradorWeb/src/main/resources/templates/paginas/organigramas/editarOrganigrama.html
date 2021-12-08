@@ -166,7 +166,9 @@
                         <select name="idSuperior" id="idSuperior" th:onchange="desactivaNombreRol()">
                             <optgroup>
                                 <p th:each="user: ${listaUsuariosGrupo}">
+                                    <th:block th:if="${user.getNombreRol() != 'BROADCAST'}">
                                     <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                    </th:block>
                                 </p>
                                 <option th:text="BROADCAST" th:value="BROADCAST"></option>
                             </optgroup>
