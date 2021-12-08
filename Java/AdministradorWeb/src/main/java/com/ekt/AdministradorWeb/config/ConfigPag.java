@@ -30,7 +30,6 @@ public class ConfigPag {
 
     @GetMapping("/login")
     public String login() {
-        //return "paginas/organigrama/InicioOrganigrama";
          return "paginas/login";
     }
 
@@ -50,8 +49,6 @@ public class ConfigPag {
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")){
             ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(id);
             User user = userDAO.buscaID(id);
-
-
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("text/plain");
@@ -60,7 +57,6 @@ public class ConfigPag {
                     .url("http://localhost:3040/api/user/delete/" + id)
                     .method("DELETE", body)
                     .build();
-
             try {
                 //limpia informacion del usuario en la db
                 Response response = client.newCall(request).execute();
@@ -80,10 +76,8 @@ public class ConfigPag {
                     model.addAttribute("idUsuario", id);
                     return "paginas/usuarios/ReasignaSuperior";
                 } else {
-
                     return "redirect:/buscarTodosGrupos";
                 }
-
             } catch (Exception e) {
                 System.out.println("Error al eliminar usuario" + e);
             }
@@ -138,10 +132,9 @@ public class ConfigPag {
 
     @PostMapping("/añadirUsuario")//*
     public String añadirUsuario(@ModelAttribute User user, RedirectAttributes redirectAttrs, HttpSession session){
-        System.out.println(user.getRFC());
         try {
             if (session.getAttribute("user") != null && (boolean) session.getAttribute("user")) {
-                if (userDAO.creaUsuario(user)) {
+                if(userDAO.creaUsuario(user)) {
                     redirectAttrs
                             .addFlashAttribute("status", "success")
                             .addFlashAttribute("mensaje", "Usuario Creado Correctamente");
@@ -163,7 +156,7 @@ public class ConfigPag {
     }
 
     @RequestMapping(value="/editarUsuario",method = {RequestMethod.POST, RequestMethod.GET})
-    @PostMapping("/editarUsuario")//*
+    @PostMapping("/editarUsuario")
     public String editarUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs, HttpSession session){
         User user;
         try {
@@ -200,10 +193,8 @@ public class ConfigPag {
             user.setIDGrupo(userDb.getIDGrupo());
             user.setNombreRol(userDb.getNombreRol());
             user.setIDSuperiorInmediato(userDb.getIDSuperiorInmediato());
-
             //editar informacion
             //editar usuario en grupo
-
             //vefiricar si tiene un grupo asignado para editarlo tambien
             if (!userDb.getIDGrupo().equals("")) {
                 System.out.println("Entra a grupo lleno");
@@ -216,7 +207,6 @@ public class ConfigPag {
                     bandera = true;
                 }
             }
-
             //si existen retornar error
             if (bandera) {
                 System.out.println("se modifico usuario con exito");
@@ -260,31 +250,22 @@ public class ConfigPag {
             System.out.println(e.getMessage());
             return "redirect:/error1";
         }
-
     }
-
 
     @PostMapping("/remplazaUsuario")
     public String remplazaUsuario(@ModelAttribute(value = "idUsuarioMenos") String idUsuarioMenos,@ModelAttribute(value = "idUsuarioMas") String idUsuarioMas, Model modelMap,RedirectAttributes redirectAttrs, HttpSession session){
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-
-            System.out.println("USUARIOmENOS: "+idUsuarioMenos+"   mas: "+idUsuarioMas);
             User userMas,userMenos;
             //dos casos
             userMenos=userDAO.buscaID(idUsuarioMenos);
             userMas=userDAO.buscaID(idUsuarioMas);
             System.out.println("mas:"+userMas.toString());
             System.out.println("menos:"+userMenos.toString());
-
             //fuera del organigrama
-
             if (userDAO.buscarOrigenUsuario(idUsuarioMas)) {
-                System.out.println("entra a caso fuera del organigrama");
                 //añadir informacion inicial al que se queda
-
                 //guardar en grupo y en lista genersl
                 groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), userMenos.getIDSuperiorInmediato(), userMenos.getNombreRol());
-
                 //falta reasignar hijos
                 if (userDAO.muestraSubordinados(idUsuarioMenos)!=null){
                     for (User us : userDAO.muestraSubordinados(idUsuarioMenos)) {
@@ -293,55 +274,42 @@ public class ConfigPag {
                 }
                 //eliminar al viejo
                 groupDAO.eliminaUsuarioGrupo(userMenos.getID(), userMenos.getIDGrupo());
-
                 redirectAttrs
                         .addFlashAttribute("status", "success")
                         .addFlashAttribute("mensaje", "Usuario remplazado correctamente");
                 return "redirect:/editarGrupo?idGrupo=" + userMenos.getIDGrupo();
             }else{
                 //reasigna los hijos de los dos
-
                 //falta reasignar hijos
                 ArrayList<User> listUserMas=userDAO.muestraSubordinados(idUsuarioMas);
                 ArrayList<User> lisyUserMenos=userDAO.muestraSubordinados(idUsuarioMenos);
-
                 //falta reasignar hijos
                 if (lisyUserMenos!=null){
                     for (User us : userDAO.muestraSubordinados(idUsuarioMenos)) {
-                        System.out.println("Entra a actualizar hijos de menos");
                         userDAO.actualizaIdSuperior(us.getID(), idUsuarioMas);
                     }
                 }
-
                 if (listUserMas!=null){
                     for (User us : userDAO.muestraSubordinados(idUsuarioMas)) {
-                        System.out.println("Entra a actualizar hijos de mas");
                         userDAO.actualizaIdSuperior(us.getID(), idUsuarioMas);
                     }
                 }
-
                 //eliminar
                 groupDAO.eliminaUsuarioGrupo(idUsuarioMenos, userMenos.getIDGrupo());
                 groupDAO.eliminaUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo());
-
                 //guardar en grupo y en lista genersl
                 if (idUsuarioMas.equals(userMenos.getIDSuperiorInmediato())){
-                    System.out.println("entra al caso 1");
                     groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userMas.getIDGrupo(), userMas.getIDSuperiorInmediato(), userMas.getNombreRol());
                     groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), idUsuarioMenos, userMenos.getNombreRol());
                 }else{
                     if(userMas.getIDSuperiorInmediato().equals(idUsuarioMenos)){
-                        System.out.println("entra al caso 2");
                         groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userMas.getIDGrupo(), userMas.getIDSuperiorInmediato(), userMas.getNombreRol());
                         groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), idUsuarioMenos, userMenos.getNombreRol());
                     }else{
-                        System.out.println("entra al caso 3");
                         groupDAO.añadeUsuarioGrupo(idUsuarioMenos,userMas.getIDGrupo(),userMas.getIDSuperiorInmediato(),userMas.getNombreRol());
                         groupDAO.añadeUsuarioGrupo(idUsuarioMas,userMas.getIDGrupo(),userMenos.getIDSuperiorInmediato(),userMenos.getNombreRol());
                     }
                 }
-
-
                 redirectAttrs
                         .addFlashAttribute("status", "success")
                         .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
@@ -355,7 +323,6 @@ public class ConfigPag {
     @PostMapping("/reasignaSuperior")
     public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen, Model modelMap,RedirectAttributes redirectAttrs, HttpSession session){
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-            System.out.println("origen: " + origen);
             ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
             User user = userDAO.buscaID(idUsuario);
             if (listaSubordinados != null) {
@@ -377,7 +344,6 @@ public class ConfigPag {
                 modelMap.addAttribute("listaUsuarios", listaUsuarios);
                 modelMap.addAttribute("idUsuario", idUsuario);
                 modelMap.addAttribute("origen", origen);
-
                 return "paginas/usuarios/ReasignaSuperior";
             } else {
                 //si no tiene suboordinados, elimina y redirecciona a editarGrupo
@@ -397,7 +363,6 @@ public class ConfigPag {
                             .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
                     return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
                 }
-
             }
         }else {
             return "redirect:/login";
@@ -417,20 +382,15 @@ public class ConfigPag {
             try {
                 Response response = client.newCall(request).execute();
                 String res = response.body().string();
-
                 JSONObject jsonObject = new JSONObject(res);
-
                 JSONArray name1 = jsonObject.getJSONArray("data");
-
                 for (int i = 0; i < name1.length(); i++) {
                     listaGrupos.add(gson.fromJson(name1.getJSONObject(i).toString(), Group.class));
                 }
-
             } catch (Exception e) {
                 System.out.println("Error al realizar la consulta");
             }
             model.addAttribute("listaGrupos", listaGrupos);
-
             return "paginas/organigramas/inicioOrganigramas.html";
         }else {
             return "redirect:/login";
@@ -445,15 +405,11 @@ public class ConfigPag {
             ArrayList<User> posiblesSustituir = new ArrayList();
             posiblesSustituir.addAll(userDAO.listaUsuariosDisponibles());
             //posiblesSustituir.addAll(userDAO.listaUsuariosOrganigrama(id));
-
             model.addAttribute("listaSustitucion", posiblesSustituir);
-
             //añadir la lista de usuarios sin grupo
             model.addAttribute("listaDisponibles", userDAO.listaUsuariosDisponibles());
-
             //añadir lista de usuarios del organigrama
             model.addAttribute("listaUsuariosGrupo", userDAO.listaUsuariosOrganigrama(id));
-
             model.addAttribute("idGrupo", id);
             return "paginas/organigramas/editarOrganigrama";
         }else{
@@ -485,7 +441,6 @@ public class ConfigPag {
                 return "paginas/usuarios/ReasignaSuperior";
             } else {
                 //si no tiene suboordinados, elimina y redirecciona a editarGrupo
-                System.out.println("Entra a desactivar");
                 groupDAO.eliminaUsuarioGrupo(idUsuario, user.getIDGrupo());
                 if (origen.equals("0")) {
                     //Si el origen proviene de vistaUsuarios cambiar el status a false y redirecciona a findallusuarios
@@ -517,18 +472,11 @@ public class ConfigPag {
                         .url("http://localhost:3040/api/grupo/buscarPorNombre/" + nombre)
                         .method("GET", null)
                         .build();
-
                 Response response = client.newCall(request).execute();
-
                 String res = response.body().string();
-
-
                 JSONObject jsonObject = new JSONObject(res);
-
                 //JSONArray name1 = jsonObject.getJSONArray("data");
-
                 //listaGrupos.add(gson.fromJson(name1.getJSONObject(0).toString(), Group.class));
-
                 System.out.println(jsonObject.toString());
             }else {
                 return "redirect:/login";
@@ -537,7 +485,6 @@ public class ConfigPag {
             System.err.println("Exception"+e);
             return "/error1";
         }
-
         return null;
     }
 
@@ -564,9 +511,7 @@ public class ConfigPag {
                         .addHeader("Content-Type", "application/json")
                         .build();
                 Response response = client.newCall(request).execute();
-
                 JSONObject jsonObject = new JSONObject(response.body().string());
-
                 if (jsonObject.get("status").toString().equals("ACCEPTED")){
                     redirectAttrs
                             .addFlashAttribute("status", "success")
@@ -592,7 +537,6 @@ public class ConfigPag {
             ,RedirectAttributes redirectAttrs, HttpSession session){
         String respuesta;
         body.setIdGrupo(idGrupo);
-        System.out.println("config: "+body.getIdGrupo()+"  "+body.getIdUsuario()+"  "+body.getIdSuperior()+"  "+body.getNombreRol());
         try {
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
                 respuesta = groupDAO.reasignausuariogrupo(body);
@@ -615,7 +559,6 @@ public class ConfigPag {
             redirectAttrs
                     .addFlashAttribute("mensaje", e);
             return "redirect:/editarGrupo/?idGrupo=" + body.getIdGrupo();
-
         }
     }
 
@@ -623,7 +566,6 @@ public class ConfigPag {
     public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs, HttpSession session){
         try {
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-                System.out.println("id:" + id);
                 User user = userDAO.buscaID(id);
                 if (user != null) {
                     model.addAttribute("user", user);
@@ -645,8 +587,6 @@ public class ConfigPag {
     @RequestMapping(value="/borrarGrupo",method = { RequestMethod.POST})
     @PostMapping("/borrarGrupo")
     public String borrarGrupo(@ModelAttribute(value = "idGrupo") String id,Model model, HttpSession session) {
-        //traza
-        System.out.println("Entrando a borrar grupo");
         try{
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
                 OkHttpClient client = new OkHttpClient().newBuilder()
@@ -658,7 +598,6 @@ public class ConfigPag {
                         .method("DELETE", body)
                         .build();
                 Response response = client.newCall(request).execute();
-
                 return "redirect:/buscarTodosGrupos";
             }else {
                 return "redirect:/login";
@@ -682,7 +621,6 @@ public class ConfigPag {
         }catch (Exception e){
             return "redirect:/error1";
         }
-
     }
 
     @PostMapping("/busquedaOrganigrama")
