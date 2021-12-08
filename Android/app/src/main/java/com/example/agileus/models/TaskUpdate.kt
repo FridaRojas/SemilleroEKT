@@ -9,5 +9,5 @@ data class TaskUpdate(
     @SerializedName("fecha_fin") var fecha_fin: String,
     @SerializedName("prioridad") var prioridad: String,
     @SerializedName("estatus") var estatus: String,
-    @SerializedName("observaciones") var observaciones: String,
+    @SerializedName("observaciones") var observaciones: String
 )

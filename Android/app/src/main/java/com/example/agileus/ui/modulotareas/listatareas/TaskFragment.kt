@@ -1,39 +1,29 @@
 package com.example.agileus.ui.modulotareas.listatareas
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
-
 import com.example.agileus.adapters.StatusTasksAdapter
 import com.example.agileus.databinding.FragmentTaskBinding
 import com.example.agileus.models.DataTask
+import com.example.agileus.models.Status
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.modulotareas.detalletareas.DialogoNivelBajo
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
 
 
 class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
-
-
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
+    lateinit var adaptador : StatusTasksAdapter
 
     private lateinit var taskViewModel: TaskViewModel
 
@@ -56,9 +46,13 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
+
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
         //Recycler Status
-        var adaptadorStatus = StatusTasksAdapter(listStatus, this)
+        var adaptadorStatus = StatusTasksAdapter(Status.obtenerLista(), this)
+
+       // var adaptadorStatus = StatusTasksAdapter(listStatus, this)
         binding.recyclerStatusTareas.adapter = adaptadorStatus
         binding.recyclerStatusTareas.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -70,6 +64,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             binding.recyclerTareas.adapter = it
             binding.recyclerTareas.layoutManager = LinearLayoutManager(activity)
         })
+
 
         //Btn Crear tareas
         binding.btnCrearTarea.setOnClickListener {
@@ -105,10 +100,6 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             listStatus[4] -> {
                 taskViewModel.statusRecycler.value = listaStatus[4]
                 binding.tituloTareas.text = getString(R.string.titleStatus5)
-            }
-            listStatus[5] -> {
-                taskViewModel.statusRecycler.value = listaStatus[5]
-                binding.tituloTareas.text = getString(R.string.titleStatus6)
             }
         }
 

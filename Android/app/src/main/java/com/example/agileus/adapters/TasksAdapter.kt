@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,9 @@ import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
 import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel
 import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel.Companion.status
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TasksAdapter(
@@ -46,12 +50,14 @@ class TasksAdapter(
 
         private lateinit var taskViewModel: TaskViewModel
 
+        var cardTarea: ConstraintLayout
         var nombreTarea: TextView
         var personaAsignada: TextView
         var fecha: TextView
         var prioridad: TextView
         var btnAbrirDetallesTarea: ImageView
         var nivelUsuario: String = ""
+        var context = view.context
 
         init {
             nombreTarea = view.findViewById(R.id.txtNombreTarea)
@@ -59,18 +65,31 @@ class TasksAdapter(
             prioridad = view.findViewById(R.id.txtPrioridad)
             fecha = view.findViewById(R.id.txtFecha)
             btnAbrirDetallesTarea = view.findViewById(R.id.iconoAbrirDetallesTarea)
+            cardTarea = view.findViewById(R.id.cardTarea)
         }
 
 
-
         fun enlazarItem(dataTask: DataTask) {
-            nombreTarea.text = dataTask.titulo
-            personaAsignada.text = dataTask.nombreReceptor
-            prioridad.text = dataTask.prioridad
-//          fecha.text = dataTask.fechaIni.toString()
+            nombreTarea.text = dataTask.titulo.capitalize()
+            personaAsignada.text = dataTask.nombreReceptor.capitalize()
+            prioridad.text = "Prioridad: ${dataTask.prioridad.capitalize()}"
+
+            var fechaInicio = formatoFecha(dataTask.fechaIni)
+            fecha.text = fechaInicio
+
+            if(dataTask.prioridad.capitalize() == "Alta"){
+                prioridad.setTextColor(context.resources.getColor(R.color.colorRed))
+            } else if(dataTask.prioridad.capitalize() == "Media"){
+                prioridad.setTextColor(context.resources.getColor(R.color.colorYellow))
+            } else if(dataTask.prioridad.capitalize() == "Baja"){
+                prioridad.setTextColor(context.resources.getColor(R.color.colorGreen))
+            }
+
+
 
             //Log.d("status", status)
-            btnAbrirDetallesTarea.setOnClickListener {
+            cardTarea.setOnClickListener {
+                //Toast.makeText(context, "${prioridad.text}", Toast.LENGTH_SHORT).show()
                 if (status == "asignada") {
                     var action: NavDirections
                     action =
@@ -82,6 +101,38 @@ class TasksAdapter(
                     listener.abreDialogo(dataTask)
                 }
             }
+        }
+
+        fun formatoFecha(fecha: Date): String {
+
+            var mesI: String = ""
+            var diaI: String = ""
+            var fechaIn: String = ""
+            val sdf3 = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+
+            val cal = Calendar.getInstance()
+            var fechaI = sdf3.parse(fecha.toString())
+
+            cal.time = fechaI
+
+            var mes = cal[Calendar.MONTH] + 1
+            var dia = cal[Calendar.DATE] + 1
+            if (mes < 10) {
+                mesI = "0$mes"
+            } else {
+                mesI = mes.toString()
+            }
+
+            if (dia < 10) {
+                diaI = "0$dia"
+            } else {
+                diaI = dia.toString()
+            }
+
+            fechaIn =
+                cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
+
+            return fechaIn
         }
     }
 }

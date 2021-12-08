@@ -1,5 +1,6 @@
 package com.example.agileus.webservices.dao
 
+import android.provider.ContactsContract
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
@@ -10,34 +11,30 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class TasksDao : DialogoConfirmacionListener {
-
+class TasksDao {
     //Agregar nueva tarea
     fun postTasks(t: Tasks) {
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
 
         /*val Response = callInserta?.execute()
         try {
-            if(Response != null) {
+            if (Response != null) {
                 if (Response.isSuccessful) {
                     val nuevaTarea: Tasks = Response.body()!!
                     var mensaje =
                         "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
                     mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
-                    mensaje+= ", Numero de empleado:${nuevaTarea.idReceptor}"
+                    mensaje += ", Numero de empleado:${nuevaTarea.idReceptor}"
                     mensaje += ", Descripcion:${nuevaTarea.descripcion}"
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
                     Log.d("Mensaje", mensaje)
-
-                    //val newFragment = DialogoTareaCreadaExitosamente(this)
-                    //newFragment.show(, "Confirmacion")
-                }else {
+                } else {
                     Log.d("Mensaje", "No se creo la tarea ${Response.code()}")
                 }
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             Log.e("error", e.toString())
         }*/
 
@@ -55,9 +52,6 @@ class TasksDao : DialogoConfirmacionListener {
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
                     Log.d("Mensaje", mensaje)
-
-                    //val newFragment = DialogoTareaCreadaExitosamente(this)
-                    //newFragment.show(this, "Confirmacion")
 
                 } else {
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
@@ -121,7 +115,7 @@ class TasksDao : DialogoConfirmacionListener {
                 } else {
                     listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
                 }
-            }else{
+            } else {
                 listaTareasAsignadas = emptyList<DataTask>() as ArrayList<DataTask>
             }
         } catch (e: Exception) {
@@ -148,25 +142,45 @@ class TasksDao : DialogoConfirmacionListener {
     }
 
 
-    fun editTask(taskUpdate: TaskUpdate, idTarea: String) {
+    fun editTask(taskUpdate: TaskUpdate, idTarea: String, idUsuario: String) {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
-        val callback = InitialApplication.webServiceGlobalTasks.editTask(taskUpdate, idTarea)
-        callback.enqueue(object : Callback<TaskList2> {
-            override fun onResponse(call: Call<TaskList2>, response: Response<TaskList2>) {
-                if (response.code() == 400) {
-                    Log.d("Error code 400", response.errorBody()!!.string());
-                }
-                if (response.isSuccessful) {
-                   Log.d("Mensaje", "Tarea editada")
-                } else {
-                    Log.d("Mensaje", "No se Edito tarea ${response.code()}")
+          val callback = InitialApplication.webServiceGlobalTasksPrueba.editTaskPrueba(
+              taskUpdate,
+              idTarea,
+              idUsuario
+          )
+        /*val callback = InitialApplication.webServiceGlobalTasks.editTask(
+            taskUpdate,
+            idTarea
+        )*/
+        callback.enqueue(object : Callback<DataTask> {
+            override fun onResponse(
+                call: Call<DataTask>,
+                response: Response<DataTask>
+            ) {
+                try {
+                    if (response.isSuccessful) {
+                        Log.d(
+                            "Mensaje",
+                            "Tarea Editada ${response.message()}"
+
+                        )
+
+
+
+                    } else {
+                        Log.d("Mensaje", "Tarea no Editada")
+                    }
+                } catch (e: Exception) {
+                    Log.d("Mensaje", e.message.toString())
                 }
             }
 
-            override fun onFailure(call: Call<TaskList2>, t: Throwable) {
+            override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
             }
+
         })
     }
 
@@ -219,11 +233,8 @@ class TasksDao : DialogoConfirmacionListener {
         } catch (e: Exception) {
             Log.e("error", e.toString())
         }
-        Log.d("Mensaje", "listaPersonsDatos: ${listaPersonsDatos.size} ")
+        Log.d("Mensaje", "listaPersonsDatos size: ${listaPersonsDatos.size} ")
         return listaPersonsDatos
     }
 
-    override fun onTaskCreated() {
-        TODO("Not yet implemented")
-    }
 }
