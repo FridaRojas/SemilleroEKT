@@ -24,7 +24,6 @@ import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUs
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Todo Login
         InitialApplication.preferenciasGlobal.recuperarToken()
 
         val navView: BottomNavigationView = binding.navView

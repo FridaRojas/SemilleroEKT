@@ -20,6 +20,7 @@ import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
 import com.example.agileus.models.StatusRead
 import com.example.agileus.providers.FirebaseProvider
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
@@ -46,22 +47,14 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         conversationviewModel = ViewModelProvider(this).get()
         chatsviewmodel = ViewModelProvider(this).get()
 
-        id_chat = Constantes.idChat
+        Constantes.id= InicioSesionFragment.idUser
+
         id_chat = intent.getStringExtra(Constantes.ID_CHAT).toString()
         id_receptor = intent.getStringExtra(Constantes.ID_RECEPTOR).toString()
         var name_receptor = intent.getStringExtra(Constantes.NAME_RECEPTOR)
 
         this.setTitle(name_receptor)
         var rol = intent.getStringExtra(Constantes.ROL_USER).toString()
-
-        if(rol.equals("BROADCAST")){
-            binding.btnEnviarMensaje.isEnabled = false
-            binding.btnArchivoAdjunto.isEnabled = false
-            Toast.makeText(applicationContext, "No puedes responder este mensaje",Toast.LENGTH_LONG).show()
-        }else{
-            binding.btnEnviarMensaje.isEnabled = true
-            binding.btnArchivoAdjunto.isEnabled = true
-        }
 
         conversationviewModel.devuelveLista(id_chat)
 

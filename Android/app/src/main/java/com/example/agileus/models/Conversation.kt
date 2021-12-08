@@ -16,7 +16,14 @@ data class Conversation(
    @SerializedName("statusEnviado") val statusEnviado: Boolean,
    @SerializedName("fechaLeido") val fechaLeido: String,
    @SerializedName("statusLeido") val statusLeido: Boolean,
-   @SerializedName("idreceptor") val idreceptor: String,
-   @SerializedName("idemisor") val idemisor: String,
    @SerializedName("idconversacion") val idconversacion: String,
+   @SerializedName("idreceptor") val idreceptor: String,
+   @SerializedName("idemisor") val idemisor: String
+
+)
+
+data class ResponseConversation(
+   @SerializedName("status") val status:String,
+   @SerializedName("msj") val msj:String,
+   @SerializedName("data") var data:ArrayList<Conversation>
 )

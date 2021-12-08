@@ -9,3 +9,9 @@ data class Chats (
     @SerializedName("idEmisor") val idEmisor: String,
     @SerializedName("nombreRol") val nombreRol: String
     )
+
+data class ResponseChats(
+    @SerializedName("status") val status:String,
+    @SerializedName("msj") val msj:String,
+    @SerializedName("data") var data:ArrayList<Chats>
+)

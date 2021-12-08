@@ -11,16 +11,16 @@ interface MessageApi {
     fun mandarMensaje(@Body body:Message):Call<MessageResponse>
 
     @GET("mensajes/verConversacion/{id}")
-    fun getConversationOnetoOne(@Path("id") idChat: String):Call<ArrayList<Conversation>>
+    fun getConversationOnetoOne(@Path("id") idChat: String):Call<ResponseConversation>
 
     @GET("mensajes/listaContactos/{id}")
-    fun getListContacts(@Path("id") idUser: String):Call<ArrayList<Contacts>>
+    fun getListContacts(@Path("id") idUser: String):Call<ResponseContacts>
 
     @GET("mensajes/listarConversaciones/{id}")
-    fun getListChats(@Path("id") idUser: String):Call<ArrayList<Chats>>
+    fun getListChats(@Path("id") idUser: String):Call<ResponseChats>?
 
     @GET("mensajes/listaGrupos/{id}")
-    fun getListGroups(@Path("id") idUser: String):Call<ArrayList<Groups>>
+    fun getListGroups(@Path("id") idUser: String):Call<ResponseGroups>
 
     @PUT("mensajes/actualizarLeido")
     fun statusUpdate(@Body body:StatusRead):Call<MessageResponse>
