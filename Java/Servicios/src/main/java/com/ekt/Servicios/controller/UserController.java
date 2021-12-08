@@ -43,6 +43,9 @@ public class UserController {
                     System.out.println("ya existe");
                     return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",""));
                 }else {
+                    String psw= userService.cifrar(user.getPassword());
+                    user.setPassword(psw);
+                    user.setTokenAuth("");
                     userService.save(user);
                     System.out.println("creado");
                     return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Creado",user));
@@ -69,7 +72,7 @@ public class UserController {
         }
     }
 
-        @GetMapping("/find/{id}")//*
+    @GetMapping("/find/{id}")//*
     public ResponseEntity<?> findById(@PathVariable String id){
         //return userService.findById(id);
         try{
@@ -91,16 +94,17 @@ public class UserController {
                 System.out.println("Error en las llaves");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
             }else{
-                Optional<User> user=userService.userValidate(infAcceso.getCorreo(),infAcceso.getPassword());
+                String psw=userService.cifrar(infAcceso.getPassword());
+                Optional<User> user=userService.userValidate(infAcceso.getCorreo(),psw);
                 if (user.isPresent()){
                     System.out.println(user.get().getStatusActivo());
                     if(user.get().getStatusActivo().equals("true")){
                         System.out.println("Login: Usuario encontrado");
-                        //actualizar token
                         user.get().setToken(infAcceso.getToken());
-                        userService.save(user.get());
-
                         user.get().setTokenAuth(userService.guardarTokenAuth(user.get().getID()).get());
+                        userService.save(user.get());
+                        groupService.actualizaUsuario(user.get());
+
 
                         user.get().setFechaInicio(null);
                         user.get().setFechaTermino(null);
@@ -198,6 +202,10 @@ public class UserController {
                     System.out.println("4");
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
                 }else{
+                        if (!userUpdate.getPassword().equals(user.get().getPassword())){
+                            String pwd=userService.cifrar(userUpdate.getPassword());
+                            userUpdate.setPassword(pwd);
+                        }
                         //si tien grupo actualizamos informacion personal
                         if(!userUpdate.getIDGrupo().equals("")){
                             groupService.actualizaUsuario(userUpdate);
