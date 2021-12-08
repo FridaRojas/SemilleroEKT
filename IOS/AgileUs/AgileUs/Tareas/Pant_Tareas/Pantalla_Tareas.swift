@@ -17,9 +17,9 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var dataSource = [String]()
     
     
-    //let servico = "http://18.218.7.148:3040/api/tareas/"
+    let servico = "http://10.97.3.24:3040/api/tareas/"
     
-    let servico = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
+//    let servico = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
     @IBOutlet weak var Lista_tareas: UITableView!
     
     
@@ -28,12 +28,13 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var tarea = [Any]()
     var arrTareas = [Datos]()
     var selestatus: Status?
-    let idUser = "618e8743c613329636a769aa"
+    let idUser = "61a83bbad036090b8e8db3c2"
     var nivel = "intermedio"
     var select_estatus:String = ""
     var id_tarea:String = ""
     var url:String = ""
     let cellSpacingHeight: CGFloat = 5
+    let token = "5ae7d87c088ea2187b0531d7172616f3147d7736a7a125dac893d8de2bc5068a"
     //variable para mostrar el colection view
 
     
@@ -85,7 +86,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         else
         {
-            url = nivel != "alto" ? "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)" : "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+            url = nivel != "alto" ? "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)" : "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
             
         }
         consumir_servicio(url: url)
@@ -108,31 +109,35 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     {
         
         let url = URL(string: url)
+        var request = URLRequest(url: url!)
         
-        //print("URL: \(url)")
+        // Token Config
+        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        
+        print(request)
+        print(self.token)
         self.MostrarSpinner(onView: self.view)
-        URLSession.shared.dataTask(with: url!){
+        
+        URLSession.shared.dataTask(with: request){
             (data,response,error) in
-      
-
-            //print(information)
-            //print(request)
-            //print(error)
-            //print("************error: \(error)")
+            print(response)
+            if let httpResponse = response as? HTTPURLResponse,
+               (400...499).contains(httpResponse.statusCode){
+                if let dataSuccess = data {
+                    let dataString = String(data: dataSuccess, encoding: .utf8)
+                    print("400-------\(dataString)")
+                }
+                return;
+            }
             if let dataSuccess = data {
-                //print("************information: \(dataSuccess)")
+                print("************information: \(dataSuccess)")
                 
                 do{
-                   // print("Iniciando la entrada al try")
-                    
                     
                     
                     self.selestatus = try JSONDecoder().decode(Status.self, from: dataSuccess)
-                    
-                   // print("data*******\(self.selestatus)")
                     DispatchQueue.main.async
                     {
-                        //print(self.arrTareas)
                         
                         if self.selestatus?.data == nil {
                             self.arrTareas.removeAll()  // llenar loz datoz
@@ -259,25 +264,25 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         switch select_estatus {
         case "Iniciadas":
             select_estatus = "iniciada"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
             titleTaksField.text = "Tareas Iniciadas"
 
             //print(estatus)
         case "Pendientes":
             select_estatus = "pendiente"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
             titleTaksField.text = "Tareas Pendientes"
 
             //print(estatus)
         case "Revisión":
             select_estatus = "revision"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
             titleTaksField.text = "Tareas En Revisión"
 
             //print(estatus)
         case "Terminadas":
             select_estatus = "terminada"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)&\(select_estatus)"
+            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
             titleTaksField.text = "Tareas Terminadas"
 
             //print(estatus)

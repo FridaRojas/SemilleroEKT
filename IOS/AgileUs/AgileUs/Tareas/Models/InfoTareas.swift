@@ -1,5 +1,5 @@
 //
-//  Infotarea.swift
+//  InfoTareas.swift
 //  AgileUs
 //
 //  Created by user203844 on 07/12/21.
@@ -7,14 +7,15 @@
 
 import Foundation
 
-struct Status: Codable{
-    let estatus: String
-    let mensaje: String
-    let data: [Datos]?
 
+
+struct Status: Codable {
+    var estatus: String?
+    var mensaje: String?
+    var data: [Datos]?
 }
-
-struct Datos:Codable{
+struct Datos: Codable {
+    
     var id_tarea: String?
     var id_grupo: String?
     var id_emisor: String?
@@ -38,3 +39,4 @@ struct Datos:Codable{
     var fecha_finR: String?
 
 }
+
