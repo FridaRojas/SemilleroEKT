@@ -14,7 +14,7 @@ data class Conversation(
    @SerializedName("fechaEnviado") val fechaEnviado:String,
    @SerializedName("statusEnviado") val statusEnviado:Boolean,
    @SerializedName("fechaLeido") val fechaLeido:String,
-   @SerializedName("statusLeido") val statusLeido:String,
+   @SerializedName("statusLeido") val statusLeido:Boolean,
    @SerializedName("idemisor") val idemisor:String,
    @SerializedName("idconversacion") val idconversacion:String,
    @SerializedName("idreceptor") val idreceptor:String,

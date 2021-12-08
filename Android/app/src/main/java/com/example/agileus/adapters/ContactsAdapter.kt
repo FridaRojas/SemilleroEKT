@@ -5,12 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Contacts
-import com.example.agileus.models.Conversation
-import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 
 class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
@@ -58,7 +55,7 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
             txtNameContact.text = contacts.nombre
 
             txtNameContact.setOnClickListener {
-               val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
+               val intent = Intent(contexto, ConversationOneToOneActivity::class.java)
                 contexto.startActivity(intent)
 
             }
