@@ -1,19 +1,14 @@
 package com.example.agileus.webservices.dao
 
-import android.content.Context
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.*
-import com.example.agileus.ui.HomeActivity
 import retrofit2.Response
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 
 class ReporteTareasDao {
 
@@ -46,6 +41,7 @@ class ReporteTareasDao {
         if (ResponseTareas.isSuccessful) {
             val listaDs = ResponseTareas.body()!!
             lista = listaDs.data
+            //lista = ResponseTareas.body()!!
             Log.e("COMSUMO", lista.size.toString())
 
             val id_receptor = "RECEPT1"                             //TODO id receptor real

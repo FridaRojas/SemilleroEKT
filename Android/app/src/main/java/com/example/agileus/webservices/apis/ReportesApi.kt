@@ -11,11 +11,12 @@ interface ReportesApi {
     //@GET("Task.json?alt=media&token=bb6a2086-2e39-411a-8385-2294dabcc2d5")
 
     //@GET("tareas.json?alt=media&token=4aac6ac6-b294-4366-896b-59ac573f15ab")
+    @GET("taskByIDFinalModel.json?alt=media&token=e35282ae-48aa-404f-a462-b8ebdba598f5")
     //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
     //@GET("TareasFechas.json?alt=media&token=70ef0428-836f-421f-a9ef-cc6563b64819")
-    @GET("tareas/obtenerTareasQueLeAsignaronPorId/618b05c12d3d1d235de0ade0")
+    //@GET("tareas/obtenerTareasQueLeAsignaronPorId/618b05c12d3d1d235de0ade0")
     fun getDatosReporteTareas(): Call<TaskListByID>
-    //fun getDatosReporteTareas(): Call<ArrayList<Tasks>>
+    //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
 
     //@GET("Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928")
     @GET("Messages.json?alt=media&token=39312937-7454-48f1-aa82-5ba279dee438")

@@ -14,7 +14,6 @@ import java.time.ZonedDateTime
 
 class ReporteMensajesDao {
 
-
     private var contador_mensajes_enviados:Int = 0
     private var contador_mensajes_recibidos:Int = 0
     private var recibidos_broadcast:Int=0
