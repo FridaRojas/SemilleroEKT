@@ -67,8 +67,7 @@ class TasksDao {
         var listaTareas = ArrayList<DataTask>()
         lateinit var taskList: TaskList
 
-        var datos = "$id&$status"
-        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksByStatus(datos)
+        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksByStatus(id, status)
         var response = callRespuesta?.execute()
 
         Log.d("tareas", listaTareas.toString())

@@ -25,8 +25,11 @@ interface TasksApi {
     fun insertarTarea(@Body t: Tasks): Call<Tasks>
 
     //Obtener lista por id, status
-    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
-    fun getTasksByStatus(@Path("datos") datos: String): Call<TaskList>?
+    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{idUsuario}/{estatus}")
+    fun getTasksByStatus(
+        @Path("idUsuario") idUsuario: String,
+        @Path("estatus") estatus: String
+    ): Call<TaskList>?
 
     //Cancelar tarea
     @DELETE("tareas/cancelarTarea/{idTarea}")
@@ -51,7 +54,7 @@ interface TasksApi {
 
     //Obtener las tareas que asigno el usuario por id, status
     //@GET("tareas/obtenerTareasQueAsignoPorIdYEstatus/{datos}")
-    @GET("tareas/obtenerTareasQueAsignoPorId/{datos}")
-    fun getTasksAssigned(@Path("datos") datos: String): Call<TaskList>?
+    @GET("tareas/obtenerTareasQueAsignoPorId/{idUsuario}")
+    fun getTasksAssigned(@Path("idUsuario") idUsuario: String): Call<TaskList>?
 
 }
