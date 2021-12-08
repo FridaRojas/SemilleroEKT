@@ -19,7 +19,7 @@ object Constantes {
     val referenciaMensajeria = "Mensajeria"
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
 
-    var URL_REPORTES="https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
+    var URL_REPORTES="http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/"
     //var URL_REPORTES="http://10.97.6.35:2021/api/"
 
     var URL_BASE2 = "https://firebasestorage.googleapis.com/v0/b/minichat-8a171.appspot.com/o/"
@@ -27,6 +27,7 @@ object Constantes {
     val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
     @RequiresApi(Build.VERSION_CODES.O)
     val date: LocalDateTime = LocalDateTime.now()
+    @RequiresApi(Build.VERSION_CODES.O)
     val zonedDate: ZonedDateTime = ZonedDateTime.now()
     val currentLocalTime = calendar.time
     val formatt: DateFormat = SimpleDateFormat("ZZZZZ", Locale.getDefault())

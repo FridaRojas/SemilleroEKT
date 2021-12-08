@@ -13,7 +13,7 @@ interface ReportesApi {
     //@GET("tareas.json?alt=media&token=4aac6ac6-b294-4366-896b-59ac573f15ab")
     //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
     //@GET("TareasFechas.json?alt=media&token=70ef0428-836f-421f-a9ef-cc6563b64819")
-    @GET("taskByIDFinalModel.json?alt=media&token=e35282ae-48aa-404f-a462-b8ebdba598f5")
+    @GET("tareas/obtenerTareasQueLeAsignaronPorId/618b05c12d3d1d235de0ade0")
     fun getDatosReporteTareas(): Call<TaskListByID>
     //fun getDatosReporteTareas(): Call<ArrayList<Tasks>>
 
@@ -21,7 +21,7 @@ interface ReportesApi {
     @GET("Messages.json?alt=media&token=39312937-7454-48f1-aa82-5ba279dee438")
     fun getDatosReporteMensajes(): Call<ArrayList<Conversation>>
 
-    @GET("api/broadCast/mostrarMensajesporID/{id}")
+    @GET("{id}")
     fun getDatosRespuestasBroadcast(@Path("id") idBusqueda:String): Call<ArrayList<DatosBroadCast>>
 
     //Busqueda por Id de jefe

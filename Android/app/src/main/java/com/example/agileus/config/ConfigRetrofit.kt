@@ -49,7 +49,7 @@ class ConfigRetrofit {
     fun getConfigReportes(): ReportesApi{
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_REPORTES)
+            .baseUrl(URL_BASE1)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -60,7 +60,7 @@ class ConfigRetrofit {
     fun getBroadCastReportes(): ReportesApi{
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl("http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/")
+            .baseUrl("http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast/mostrarMensajesporID/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -72,7 +72,7 @@ class ConfigRetrofit {
     fun getTareasporId(): ReportesApi{
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl("http://18.218.7.148:3040//")
+            .baseUrl("http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
