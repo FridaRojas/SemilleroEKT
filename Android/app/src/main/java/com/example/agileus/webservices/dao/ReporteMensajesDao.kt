@@ -33,7 +33,7 @@ class ReporteMensajesDao {
     fun recuperardatosMensajes(idBusqueda: String): ArrayList<Estadisticas> {
 
         val listaRecycler= ArrayList<Estadisticas>()
-        val messageSelectedStadistic = recoverUserMessageStadistic(idBusqueda)
+        val messageSelectedStadistic = recoverUserMessageStadistic(idBusqueda, MySharedPreferences.idUsuarioEstadisticas)
 
         contador_mensajes_enviados= messageSelectedStadistic.send
         contador_mensajes_recibidos=messageSelectedStadistic.received
@@ -51,10 +51,10 @@ class ReporteMensajesDao {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun recoverUserMessageStadistic(idBusqueda: String): UserMessageDetailReports {
+    fun recoverUserMessageStadistic(idBusqueda: String, searchName: String): UserMessageDetailReports {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(idBusqueda)
-        val ResponseMensajes: Response<ArrayList<Conversation>> = callRespuesta.execute()
+        val ResponseMensajes: Response<conversartionListByID> = callRespuesta.execute()
 
         val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportesBroadCast.getDatosRespuestasBroadcast(idBusqueda)
         val ResponseMensajesBroadCast: Response<ArrayList<DatosBroadCast>> = callRespuestaBroadCast.execute()
@@ -66,9 +66,12 @@ class ReporteMensajesDao {
         //Fechas por día, mes, año, custom y default
         fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
         fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
+        if (idBusqueda == "TEAM_MESSAGES_ID_CREATED_BY_MOD_REPORT"){
+            messageDetail = MySharedPreferences.empleadoUsuario[MySharedPreferences.empleadoUsuario.size-1]
+        }else if (ResponseMensajes.isSuccessful && ResponseMensajesBroadCast.isSuccessful) {
+            val listaDS = ResponseMensajes.body()!!
+            lista = listaDS.data
 
-        if (ResponseMensajes.isSuccessful && ResponseMensajesBroadCast.isSuccessful) {
-            lista = ResponseMensajes.body()!!
             val id_usuario_actual = idUsuarioEstadisticas //Aquí se coloca el id del emisor deseado
             var contador_m_enviados= 0
             var contador_m_recibidos = 0
@@ -106,13 +109,62 @@ class ReporteMensajesDao {
             lista_B = ResponseMensajesBroadCast.body()!!
 
             messageDetail = UserMessageDetailReports(
-                lista[0].id,
-                lista[0].nombreConversacionReceptor,
+                idBusqueda,
+                searchName,
                 contador_m_enviados,
                 contador_m_recibidos,
                 contador_m_leidos,
                 contador_m_totales,
                 lista_B.size,
+                contador_recibidos_B
+            )
+        }else if (ResponseMensajes.isSuccessful) {
+            val listaDS = ResponseMensajes.body()!!
+            lista = listaDS.data
+
+            val id_usuario_actual = idUsuarioEstadisticas //Aquí se coloca el id del emisor deseado
+            var contador_m_enviados= 0
+            var contador_m_recibidos = 0
+            var contador_m_leidos=0
+            var contador_m_totales=0
+            //val id_BroadCast = id_broadcast// id del Broadcast
+            var contador_recibidos_B = 0
+
+            lista.forEach {
+
+                fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
+
+                if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
+                    (fecha_actual.isBefore(fecha_fin))) {
+                    contador_m_totales = contador_m_totales + 1
+
+                    if (id_usuario_actual == it.idemisor) {
+                        contador_m_enviados = contador_m_enviados + 1
+                    }
+                    if (id_usuario_actual == it.idreceptor){
+                        contador_m_recibidos = contador_m_recibidos + 1
+                    }
+
+                    if (it.statusLeido == "true") {
+                        contador_m_leidos = contador_m_leidos + 1
+                    }
+
+                    if (it.idemisor == id_broadcast) {
+                        contador_recibidos_B += 1
+                    }
+                }
+            }
+
+            //Mensajes enviados al Broadcast por Usuario
+
+            messageDetail = UserMessageDetailReports(
+                idBusqueda,
+                searchName,
+                contador_m_enviados,
+                contador_m_recibidos,
+                contador_m_leidos,
+                contador_m_totales,
+                0,
                 contador_recibidos_B
             )
         }
@@ -150,14 +202,23 @@ class ReporteMensajesDao {
                 val listaConsumida = ResponseDos.body()!!
                 employeeList = listaConsumida.dataEmployees
 
-                stadisticEmployeesList.add(recoverUserMessageStadistic(idUser))
+                stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, "Mi información"))
 
                 //Obtencion de estadisticas de los empleados
                 if(employeeList.isNotEmpty()){
                     employeeList.forEach {
-                        stadisticEmployeesList.add(recoverUserMessageStadistic(it.id))
+                        stadisticEmployeesList.add(recoverUserMessageStadistic(it.id, it.nombre))
+                        Log.d("ListaSubConacts", "id: ${it.id}")
+                        Log.d("ListaSubConacts", "Nombre: ${it.nombre}")
                     }
                     stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
+                    stadisticEmployeesList.forEach {
+                        Log.d("ListaSubConactsDetailm", "id: ${it.id}")
+                        Log.d("ListaSubConactsDetailm", "Nombre: ${it.name}")
+                        Log.d("ListaSubConactsDetailm", "send: ${it.send}")
+                        Log.d("ListaSubConactsDetailm", "received: ${it.received}")
+                        Log.d("ListaSubConactsDetailm", "total: ${it.total}")
+                    }
                 }
 
                 Log.d("ListaSubConactsSIZE", "SIZE: ${stadisticEmployeesList.size}")
@@ -166,7 +227,7 @@ class ReporteMensajesDao {
             }
 
         }catch (ex:Exception){
-
+            Log.e("ERROR SubContactos", "Error al iniciar servicio")
         }
         return stadisticEmployeesList
     }

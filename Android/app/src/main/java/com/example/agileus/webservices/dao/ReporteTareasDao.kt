@@ -46,7 +46,7 @@ class ReporteTareasDao {
         // val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
         var listaRecycler= ArrayList<Estadisticas>()
 
-        val taskSelectedDetail = recoverUserTaskDetails(idBusqueda)
+        val taskSelectedDetail = recoverUserTaskDetails(idBusqueda, MySharedPreferences.idUsuarioEstadisticas)
 
         contador_tareas_terminadas=taskSelectedDetail.finished
         contador_tareas_pendientes=taskSelectedDetail.pendings
@@ -62,7 +62,7 @@ class ReporteTareasDao {
         return listaRecycler
     }
 
-    fun recoverUserTaskDetails(idBusqueda: String):UserTaskListDetail{
+    fun recoverUserTaskDetails(idBusqueda: String, nombreBusqueda: String):UserTaskListDetail{
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
         val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
@@ -143,8 +143,8 @@ class ReporteTareasDao {
                 }
             }
             taskDetail = UserTaskListDetail(
-                listaDs.data[0].idReceptor,
-                listaDs.data[0].nombre_receptor,
+                idBusqueda,
+                nombreBusqueda,
                 contador_t_totales,
                 contador_t_terminadas,
                 0,
@@ -158,6 +158,23 @@ class ReporteTareasDao {
                 contTareasFueraTiempo
             )
             Log.d("DetailsTASK", "D: ${taskDetail}")
+        }else{
+            taskDetail = UserTaskListDetail(
+                idBusqueda,
+                nombreBusqueda,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            )
+
         }
 
         Log.d("DetailsTASK2", taskDetail.toString())
@@ -206,12 +223,13 @@ class ReporteTareasDao {
                 val listaConsumida = ResponseDos.body()!!
                 employeeList = listaConsumida.dataEmployees
 
-                stadisticEmployeesList.add(recoverUserTaskDetails(idUser))
+                stadisticEmployeesList.add(recoverUserTaskDetails(idUser, "Mi información"))
 
                 //Obtencion de estadisticas de los empleados
                 if(employeeList.isNotEmpty()){
                     employeeList.forEach {
-                        stadisticEmployeesList.add(recoverUserTaskDetails(it.id))
+                        stadisticEmployeesList.add(recoverUserTaskDetails(it.id, it.nombre))
+                        Log.d("ListaSubConacts", "id: ${it.id}")
                         Log.d("ListaSubConacts", "Nombre: ${it.nombre}")
                     }
                     stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))

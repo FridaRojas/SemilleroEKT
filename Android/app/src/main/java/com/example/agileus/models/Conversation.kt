@@ -20,3 +20,8 @@ data class Conversation(
    @SerializedName("idreceptor") val idreceptor:String,
 
 )
+class conversartionListByID(
+   @SerializedName("estatus") val estatus: String,
+   @SerializedName("mensaje") val mensaje: String,
+   @SerializedName("data") val data: ArrayList<Conversation>
+)

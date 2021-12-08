@@ -19,7 +19,7 @@ interface ReportesApi {
 
     //@GET("Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928")
     @GET("mensajes/listarMensajesRecividos/{id}")
-    fun getDatosReporteMensajes(@Path("id") idBusqueda:String): Call<ArrayList<Conversation>>
+    fun getDatosReporteMensajes(@Path("id") idBusqueda:String): Call<conversartionListByID>
 
     @GET("broadCast/mostrarMensajesporID/{id}")
     fun getDatosRespuestasBroadcast(@Path("id") idBusqueda:String): Call<ArrayList<DatosBroadCast>>

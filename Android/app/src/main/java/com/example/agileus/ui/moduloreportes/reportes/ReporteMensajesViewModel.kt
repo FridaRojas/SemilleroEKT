@@ -53,6 +53,7 @@ class ReporteMensajesViewModel: ViewModel() {
                     listaConsumida =  withContext(Dispatchers.IO) {
                         lista.recuperardatosMensajes(id)
                     }
+                    Log.d("VM devuelveListaReporte", "tam: ${listaConsumida.size}")
                     if(listaConsumida.isNotEmpty()){
                         adaptador.value = ListaDatosAdapter(listaConsumida,listener)
                         enviados.value = lista.obtenerMensajesEnviados()
@@ -67,7 +68,7 @@ class ReporteMensajesViewModel: ViewModel() {
                     }
 
                 }catch (ex:Exception){
-                    Log.e("Error de conexion Mensajes", ex.toString())
+                    Log.e("Error de conexion MensajesVM", ex.toString())
                 }
             }
     }
