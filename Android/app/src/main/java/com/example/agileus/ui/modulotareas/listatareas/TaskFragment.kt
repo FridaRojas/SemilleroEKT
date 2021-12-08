@@ -70,7 +70,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
         }
 
         var nivel = preferenciasGlobal.recuperarNivelUsuario()
-        compararNivel(nivel)
+        //compararNivel(nivel)
 
 
         //RecyclerListaTareas
@@ -80,16 +80,18 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             binding.recyclerTareas.layoutManager = LinearLayoutManager(activity)
         })
 
-
+        binding.btnCrearTarea.setOnClickListener {
+            it.findNavController().navigate(R.id.formularioCrearTareasFragment)
+        }
         //Btn Crear tareas
-        if(nivel == "alto"){
+        /*if(nivel == "alto"){
             binding.btnCrearTarea.isVisible = true
             binding.btnCrearTarea.setOnClickListener {
                 it.findNavController().navigate(R.id.formularioCrearTareasFragment)
             }
         }else{
             binding.btnCrearTarea.isVisible = false
-        }
+        }*/
 
     }
 

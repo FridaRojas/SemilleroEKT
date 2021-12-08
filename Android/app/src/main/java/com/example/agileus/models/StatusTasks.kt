@@ -7,6 +7,11 @@ class StatusTasks(var status : String = "",
         var lista = ArrayList<StatusTasks>()
 
         fun obtenerLista() : ArrayList<StatusTasks>{
+            lista.add(StatusTasks("Pendientes",true))
+            lista.add(StatusTasks("Iniciadas",false))
+            lista.add(StatusTasks("En Revisión",false))
+            lista.add(StatusTasks("Terminadas",false))
+            lista.add(StatusTasks("Asignadas",false))
             return lista
         }
     }
