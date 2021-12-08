@@ -6,6 +6,7 @@ import java.util.*;
 import com.ekt.Servicios.entity.*;
 import com.ekt.Servicios.repository.GruposMensajeriaRepository;
 import com.ekt.Servicios.repository.MensajesRepository;
+import com.ekt.Servicios.service.MensajesServiceImpl;
 import com.mongodb.MongoException;
 import com.mongodb.MongoSocketException;
 import com.mongodb.MongoSocketOpenException;
@@ -32,6 +33,8 @@ import com.ekt.Servicios.service.MensajesService;
 public class MensajesController {
 	@Autowired
 	private MensajesService mensajesService;
+
+	MensajesServiceImpl mensajesServiceImpl = new MensajesServiceImpl();
 
 	@Autowired
 	private UserRepository userRepository;
@@ -144,7 +147,7 @@ public class MensajesController {
 
 				if (mensajes.getTexto().equals("Documento")) {
 					for (User usuario : usuarios) {
-						notificacion2(
+						mensajesServiceImpl.notificacion2(
 								"Nuevo Mensaje de " + emisor.get().getNombre() + " a: "
 										+ mensajes.getNombreConversacionReceptor(),
 								"Nuevo documento", usuario.getToken());
@@ -154,7 +157,7 @@ public class MensajesController {
 				}
 
 				for (User usuario : usuarios) {
-					notificacion2(
+					mensajesServiceImpl.notificacion2(
 							"Nuevo Mensaje de " + emisor.get().getNombre() + " a: "
 									+ mensajes.getNombreConversacionReceptor(),
 							mensajes.getTexto(), usuario.getToken());
@@ -216,13 +219,13 @@ public class MensajesController {
 				mensajesService.crearMensaje(mensajes);
 
 				if (mensajes.getTexto().equals("Documento")) {
-					notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), "Nuevo documento",
+					mensajesServiceImpl.notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), "Nuevo documento",
 							receptor.get().getToken());
 					return ResponseEntity.status(HttpStatus.OK)
 							.body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()), "Documento", mensajes.getIDConversacion()));
 				}
 
-				notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), mensajes.getTexto(),
+				mensajesServiceImpl.notificacion2("Nuevo Mensaje de " + emisor.get().getNombre(), mensajes.getTexto(),
 						receptor.get().getToken());
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()), "Se creo el mensaje", mensajes.getIDConversacion()));
@@ -278,8 +281,10 @@ public class MensajesController {
 	}
 
 
-	@PutMapping("eliminarMensaje/{idMensaje}/{idUsuario}") //&{idUsuario}
-	public ResponseEntity<?> borrarMensaje(@RequestHeader("tokenSesion")String tokenSesion, @PathVariable(value = "idMensaje") String idMensaje, @PathVariable(value = "idUsuario") String idUsuario) {
+	@PutMapping("eliminarMensaje/{idMensaje}/{idUsuario}")
+	public ResponseEntity<?> borrarMensaje(@RequestHeader("tokenSesion")String tokenSesion,
+										   @PathVariable(value = "idMensaje") String idMensaje,
+										   @PathVariable(value = "idUsuario") String idUsuario) {
 		try {
 			if(idMensaje.length()<24 || idMensaje.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
@@ -332,7 +337,8 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaContactos/{miId}")
-	public ResponseEntity<?> verListaContactos(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "miId") String miId) {
+	public ResponseEntity<?> verListaContactos(@RequestHeader("tokenSesion")String tokenSesion,
+											   @PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -366,7 +372,9 @@ public class MensajesController {
 	}
 
 	@PutMapping("actualizarLeido/{idUsuario}")
-	public ResponseEntity<?> actualizarLeido(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "idUsuario") String idUsuario,@RequestBody Mensajes mensajes) {
+	public ResponseEntity<?> actualizarLeido(@RequestHeader("tokenSesion")String tokenSesion,
+											 @PathVariable(value = "idUsuario") String idUsuario,
+											 @RequestBody Mensajes mensajes) {
 		try {
 			if(mensajes.getID()==null) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -533,7 +541,8 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaGrupos/{miId}")
-	public ResponseEntity<?> listaGrupos(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "miId") String miId) {
+	public ResponseEntity<?> listaGrupos(@RequestHeader("tokenSesion")String tokenSesion,
+										 @PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -569,7 +578,9 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaPersonasGrupo/{idGrupo}/{idUsuario}")
-	public ResponseEntity<?> listaDePersonasEnGrupo(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "idGrupo") String idGrupo,@PathVariable(value = "idUsuario")String idUsuario) {
+	public ResponseEntity<?> listaDePersonasEnGrupo(@RequestHeader("tokenSesion")String tokenSesion,
+													@PathVariable(value = "idGrupo") String idGrupo,
+													@PathVariable(value = "idUsuario")String idUsuario) {
 		try {
 			if(idGrupo.length()<74) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -738,7 +749,8 @@ public class MensajesController {
 
 
 	@GetMapping("/listarConversaciones/{idEmisor}")
-	public ResponseEntity<?> listarConversaciones(@RequestHeader(value = "tokenAuth")String tokenAuth,@PathVariable(value ="idEmisor")String idEmisor){
+	public ResponseEntity<?> listarConversaciones(@RequestHeader(value = "tokenAuth")String tokenAuth,
+												  @PathVariable(value ="idEmisor")String idEmisor){
 		try{
 			if(idEmisor.length()<24 || idEmisor.length()>24){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El id del usuario no tiene los caracteres necesarios",""));
@@ -747,13 +759,18 @@ public class MensajesController {
 			if (!user.isPresent()){
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"No se encuentra este usuario",""));
 			}
+			if(user.get().getStatusActivo().equals("false")){
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El usuario esta inactivo",""));
+
+			}
+			if(!user.get().getTokenAuth().equals(tokenAuth)){
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Token invalido",""));
+			}
 
 			MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
 			DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
 			MongoCursor mongoCursor = distinctIterable.iterator();
 
-			List<Conversacion> lConversacion = new ArrayList<>();
-			List<Conversacion> lConversacion2 = new ArrayList<>();
 			List<Conversacion> lConversacion3 = new ArrayList<>();
 			if(user.get().getTokenAuth().equals(tokenAuth)){
 				while (mongoCursor.hasNext()) {
@@ -767,7 +784,7 @@ public class MensajesController {
 					while (cursor.hasNext()) {
 
 						Mensajes mensajes = cursor.next();
-						if (/*!mensajes.getIDEmisor().equals(idEmisor) ||*/ !mensajes.getIDReceptor().equals(idEmisor)  ) {
+						if ( !mensajes.getIDReceptor().equals(idEmisor)  ) {
 
 							mConv.setIdReceptor(mensajes.getIDReceptor());
 							mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
@@ -783,8 +800,7 @@ public class MensajesController {
 							mConv.setIdEmisor(mensajes.getIDEmisor());
 						}
 					}
-					//lConversacion.add(mConv);
-					if(/*conv.getIdEmisor().equals(idEmisor) &&*/ mConv.getIdConversacion().contains(idEmisor)){
+					if( mConv.getIdConversacion().contains(idEmisor)){
 						if(mConv.getIdConversacion().length()<50){
 							if(mConv.getIdReceptor() !=null ) {
 								Optional<User> user2 = userRepository.validarUsuario(mConv.getIdReceptor());
@@ -796,21 +812,6 @@ public class MensajesController {
 					}
 				}
 			}
-//			for (Conversacion conv: lConversacion){
-//				if(/*conv.getIdEmisor().equals(idEmisor) &&*/ conv.getIdConversacion().contains(idEmisor)){
-//					lConversacion2.add(conv);
-//				}
-//			}
-//			for (Conversacion conv2: lConversacion2){
-//				if(conv2.getIdConversacion().length()<50){
-//					if(conv2.getIdReceptor() !=null ) {
-//						Optional<User> user2 = userRepository.validarUsuario(conv2.getIdReceptor());
-//
-//						conv2.setNombreRol(user2.get().getNombreRol());
-//					}
-//					lConversacion3.add(conv2);
-//				}
-//			}
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),"Lista de conversaciones",lConversacion3));
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -863,30 +864,6 @@ public class MensajesController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
-		}
-	}
-
-	public void notificacion2(String title, String asunto, String token){
-		OkHttpClient client = new OkHttpClient().newBuilder().build();
-		MediaType mediaType = MediaType.parse("application/json");
-		okhttp3.RequestBody body = okhttp3.RequestBody.create(mediaType, "{\n    \"to\": \""+ token +"\",\n    " +
-				"\"notification\": {\n        " +
-				"\"body\": \""+ asunto +"\",\n        " +
-				"\"title\": \""+ title +"\"\n    }\n}");
-
-		Request request = new Request.Builder()
-				.url("https://fcm.googleapis.com/fcm/send")
-				.method("POST", body)
-				.addHeader("Authorization", "key=AAAAOMDADOM:APA91bF39PZzaPSPbFgPbEO6KvjsOD-AtfnpwEgNGZ6lMFQyx4xaswBX6HDe3iQfjAPiP5MR32Onws1Ry5diSbVY_PwRBhZLQ0PGJzPFLUk14xR8ELQVyleVG2_z00wdWBqs1inATbLP")
-				.addHeader("Content-Type", "application/json")
-				.build();
-		try {
-			okhttp3.Response response = client.newCall(request).execute();
-		} catch (IOException e) {
-			e.printStackTrace();
-
-
-			
 		}
 	}
 }

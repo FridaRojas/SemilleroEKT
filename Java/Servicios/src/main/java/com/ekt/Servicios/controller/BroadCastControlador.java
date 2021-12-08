@@ -345,14 +345,20 @@ try{
 	}
 	Optional<BroadCast> opt = broadCastRepositorio.findById(miIDmensaje);
 	Optional<User> user = userRepository.validarUsuario(miID);
-	if(!opt.isPresent()){
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El mensaje a atrender no existe",""));
+	if(!user.isPresent()){
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario no existe",""));
+	}
+	if(!user.get().getNombreRol().equals("BROADCAST")){
+		return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El usuario no es usuario BROADCAST",""));
 	}
 	if(user.get().getTokenAuth()== null){
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
 	}
 	if(!user.get().getTokenAuth().equals(tokenAuth)) {
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), "Token no coincide", ""));
+	}
+	if(!opt.isPresent()){
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El mensaje no existe",""));
 	}
 	opt.get().setAtendido(true);
 	broadCastRepositorio.save(opt.get());
