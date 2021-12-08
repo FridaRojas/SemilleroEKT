@@ -11,7 +11,7 @@ import java.util.*
 
 object Constantes {
    // val URL_BASE_TAREAS = "http://10.97.5.172:2021/api/"
-    val URL_ENVIAR_MENSAJE = "http://10.97.1.178:3040/api/"
+    val URL_ENVIAR_MENSAJE = "http://10.97.7.15:3040/api/"
     val URL_BUZON_1=""
     val URL_BUZON_2=""
     val URL_Tareas_Enviadas=""

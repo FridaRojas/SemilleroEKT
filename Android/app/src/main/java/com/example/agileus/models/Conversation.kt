@@ -22,8 +22,3 @@ data class Conversation(
 
 )
 
-data class ResponseConversation(
-   @SerializedName("status") val status:String,
-   @SerializedName("msj") val msj:String,
-   @SerializedName("data") var data:ArrayList<Conversation>
-)

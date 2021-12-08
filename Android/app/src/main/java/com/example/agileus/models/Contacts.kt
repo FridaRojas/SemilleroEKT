@@ -17,8 +17,4 @@ class Contacts (
     @SerializedName("token")val token: String
         )
 
-data class ResponseContacts(
-    @SerializedName("status") val status:String,
-    @SerializedName("msj") val msj:String,
-    @SerializedName("data") var data:ArrayList<Contacts>
-)
+

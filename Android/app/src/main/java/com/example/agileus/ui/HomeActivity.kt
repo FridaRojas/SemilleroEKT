@@ -74,8 +74,4 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment) {
-
-        //recuperarPublicaciones()
-    }
 }

@@ -8,9 +8,5 @@ data class Groups (
     @SerializedName("nombreConversacionRecepto") val nombreConversacionRecepto: String
         )
 
-data class ResponseGroups(
-    @SerializedName("status") val status:String,
-    @SerializedName("msj") val msj:String,
-    @SerializedName("data") var data:ArrayList<Groups>
-)
+
 
