@@ -44,12 +44,12 @@ class ReporteMensajesViewModel: ViewModel() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun devuelvelistaReporte(listener: ReportesListener){
+    fun devuelvelistaReporte(listener: ReportesListener, id: String){
 
             viewModelScope.launch {
                 try {
                     listaConsumida =  withContext(Dispatchers.IO) {
-                        lista.recuperardatosMensajes()
+                        lista.recuperardatosMensajes(id)
                     }
                     if(listaConsumida.isNotEmpty()){
                         adaptador.value = ListaDatosAdapter(listaConsumida,listener)

@@ -168,9 +168,9 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         }catch (e: Exception){
 
         }
-
+        binding.txtRangoFechaReportes.isVisible=true
         binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
-        binding.txtRangoFechaReportes.isVisible=false
+
 
         reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 

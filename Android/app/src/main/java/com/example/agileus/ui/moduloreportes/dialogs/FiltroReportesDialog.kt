@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.R.*
@@ -46,6 +47,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     private lateinit var txtUsuario: TextView
     private lateinit var iniStringDate: String
     private lateinit var endStringDate: String
+    private lateinit var switchNoDateRange: SwitchCompat
     private var dateSelected = 0
     private var opcionFiltro = 0
     private var userIdSelected = MySharedPreferences.idUsuarioEstadisticas
@@ -76,6 +78,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             tilAnio = vista.findViewById(R.id.tilFiltroAnio)
             tilFechaInicio = vista.findViewById(R.id.tilNumeroFechaInicio)
             tilFechaFin = vista.findViewById(R.id.tilNumeroFechaFin)
+            switchNoDateRange = vista.findViewById(R.id.switchFilterAllDataByID)
 
             val chipGroup = vista.findViewById<ChipGroup>(R.id.group)
 
@@ -227,6 +230,11 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                 .setPositiveButton("Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
 
+                        if (switchNoDateRange.isChecked){
+                            iniStringDate = "1900-01-01T00:00:00.000+00:00"
+                            endStringDate = "2100-01-01T00:00:00.000+00:00"
+                            Toast.makeText(context, "Activado", Toast.LENGTH_SHORT).show()
+                        }
                         MySharedPreferences.fechaIniEstadisticas = iniStringDate
                         MySharedPreferences.fechaFinEstadisticas = endStringDate
                         MySharedPreferences.idUsuarioEstadisticas = userIdSelected
