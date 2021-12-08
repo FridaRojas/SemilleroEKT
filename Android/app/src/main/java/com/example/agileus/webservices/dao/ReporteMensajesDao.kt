@@ -63,50 +63,59 @@ class ReporteMensajesDao {
         var lista_B: ArrayList<DatosBroadCast>
         var messageDetail = UserMessageDetailReports()
 
+        val id_usuario_actual = idBusqueda //Aquí se coloca el id del emisor deseado
+        var contador_m_enviados= 0
+        var contador_m_recibidos = 0
+        var contador_m_leidos=0
+        var contador_m_totales=0
+        //val id_BroadCast = id_broadcast// id del Broadcast
+        var contador_recibidos_B = 0
+        var broadcastSize = 0
+
         //Fechas por día, mes, año, custom y default
         fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
         fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
-        if (idBusqueda == "TEAM_MESSAGES_ID_CREATED_BY_MOD_REPORT"){
+        if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
             messageDetail = MySharedPreferences.empleadoUsuario[MySharedPreferences.empleadoUsuario.size-1]
-        }else if (ResponseMensajes.isSuccessful && ResponseMensajesBroadCast.isSuccessful) {
-            val listaDS = ResponseMensajes.body()!!
-            lista = listaDS.data
+        }else if (ResponseMensajes.isSuccessful || ResponseMensajesBroadCast.isSuccessful) {
+            Log.d("messageORbroadcast", "Success")
+            try {
+                val listaDS = ResponseMensajes.body()!!
+                lista = listaDS.data
+                lista.forEach {
 
-            val id_usuario_actual = idUsuarioEstadisticas //Aquí se coloca el id del emisor deseado
-            var contador_m_enviados= 0
-            var contador_m_recibidos = 0
-            var contador_m_leidos=0
-            var contador_m_totales=0
-            //val id_BroadCast = id_broadcast// id del Broadcast
-            var contador_recibidos_B = 0
+                    fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
+                    if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
+                        (fecha_actual.isBefore(fecha_fin))) {
+                        contador_m_totales = contador_m_totales + 1
 
-            lista.forEach {
+                        if (id_usuario_actual == it.idemisor) {
+                            contador_m_enviados = contador_m_enviados + 1
+                        }
+                        if (id_usuario_actual == it.idreceptor){
+                            contador_m_recibidos = contador_m_recibidos + 1
+                        }
 
-                fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
+                        if (it.statusLeido == "true") {
+                            contador_m_leidos = contador_m_leidos + 1
+                        }
 
-                if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
-                    (fecha_actual.isBefore(fecha_fin))) {
-                    contador_m_totales = contador_m_totales + 1
-
-                    if (id_usuario_actual == it.idemisor) {
-                        contador_m_enviados = contador_m_enviados + 1
-                    }
-                    if (id_usuario_actual == it.idreceptor){
-                        contador_m_recibidos = contador_m_recibidos + 1
-                    }
-
-                    if (it.statusLeido == "true") {
-                        contador_m_leidos = contador_m_leidos + 1
-                    }
-
-                    if (it.idemisor == id_broadcast) {
-                        contador_recibidos_B += 1
+                        if (it.idemisor == id_broadcast) {
+                            contador_recibidos_B += 1
+                        }
                     }
                 }
+            }catch (ex: java.lang.Exception){
+                Log.d("RMDao NoMessageConexion", ex.toString())
             }
 
             //Mensajes enviados al Broadcast por Usuario
-            lista_B = ResponseMensajesBroadCast.body()!!
+            try {
+                lista_B = ResponseMensajesBroadCast.body()!!
+                broadcastSize = lista_B.size
+            }catch (ex: java.lang.Exception){
+                Log.d("RMDao NoBroadcastConexion", ex.toString())
+            }
 
             messageDetail = UserMessageDetailReports(
                 idBusqueda,
@@ -115,20 +124,15 @@ class ReporteMensajesDao {
                 contador_m_recibidos,
                 contador_m_leidos,
                 contador_m_totales,
-                lista_B.size,
+                broadcastSize,
                 contador_recibidos_B
             )
-        }else if (ResponseMensajes.isSuccessful) {
+        }
+        /*
+
+        else if (ResponseMensajes.isSuccessful) {
             val listaDS = ResponseMensajes.body()!!
             lista = listaDS.data
-
-            val id_usuario_actual = idUsuarioEstadisticas //Aquí se coloca el id del emisor deseado
-            var contador_m_enviados= 0
-            var contador_m_recibidos = 0
-            var contador_m_leidos=0
-            var contador_m_totales=0
-            //val id_BroadCast = id_broadcast// id del Broadcast
-            var contador_recibidos_B = 0
 
             lista.forEach {
 
@@ -154,9 +158,7 @@ class ReporteMensajesDao {
                     }
                 }
             }
-
             //Mensajes enviados al Broadcast por Usuario
-
             messageDetail = UserMessageDetailReports(
                 idBusqueda,
                 searchName,
@@ -168,6 +170,7 @@ class ReporteMensajesDao {
                 contador_recibidos_B
             )
         }
+         */
         return messageDetail
     }
 
@@ -191,10 +194,10 @@ class ReporteMensajesDao {
 
         return contador_mensajes_leidos.toString()
     }
-
-    fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports> {
+    
+@RequiresApi(Build.VERSION_CODES.O)
+fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports> {
         try{
-            //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
             var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
 
@@ -208,8 +211,8 @@ class ReporteMensajesDao {
                 if(employeeList.isNotEmpty()){
                     employeeList.forEach {
                         stadisticEmployeesList.add(recoverUserMessageStadistic(it.id, it.nombre))
-                        Log.d("ListaSubConacts", "id: ${it.id}")
-                        Log.d("ListaSubConacts", "Nombre: ${it.nombre}")
+                        Log.d("ListaSubConactsm", "id: ${it.id}")
+                        Log.d("ListaSubConactsm", "Nombre: ${it.nombre}")
                     }
                     stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
                     stadisticEmployeesList.forEach {
@@ -250,7 +253,7 @@ class ReporteMensajesDao {
             sendBroadcast   = sendBroadcast + data.sendBroadcast
         }
         var groupStadistic = UserMessageDetailReports(
-            "TEAM_MESSAGES_ID_CREATED_BY_MOD_REPORT",
+            "TEAM_ID_CREATED_BY_MOD_REPORT",
             "Mi equipo",
             send,
             received,

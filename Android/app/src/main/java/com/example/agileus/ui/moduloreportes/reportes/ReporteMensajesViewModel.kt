@@ -47,55 +47,49 @@ class ReporteMensajesViewModel: ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte(listener: ReportesListener, id: String){
-
-            viewModelScope.launch {
-                try {
-                    listaConsumida =  withContext(Dispatchers.IO) {
-                        lista.recuperardatosMensajes(id)
-                    }
-                    Log.d("VM devuelveListaReporte", "tam: ${listaConsumida.size}")
-                    if(listaConsumida.isNotEmpty()){
-                        adaptador.value = ListaDatosAdapter(listaConsumida,listener)
-                        enviados.value = lista.obtenerMensajesEnviados()
-                        recibidos.value = lista.obtenerMensajesRecibidos()
-                        totales.value = lista.obtenerMensajesTotales()
-                        leidos.value = lista.obtenerMensajesLeidos()
-
-                        if(enviados.value!!.isNotEmpty() && recibidos.value!!.isNotEmpty()
-                            && totales.value!!.isNotEmpty() && leidos.value!!.isNotEmpty()){
-                            cargaDatosExitosa.value = true
-                        }
-                    }
-
-                }catch (ex:Exception){
-                    Log.e("Error de conexion MensajesVM", ex.toString())
+        viewModelScope.launch {
+            try {
+                listaConsumida =  withContext(Dispatchers.IO) {
+                    lista.recuperardatosMensajes(id)
                 }
+                Log.d("VM devuelveListaReporte", "tam: ${listaConsumida.size}")
+                if(listaConsumida.isNotEmpty()){
+                    adaptador.value = ListaDatosAdapter(listaConsumida,listener)
+                    enviados.value = lista.obtenerMensajesEnviados()
+                    recibidos.value = lista.obtenerMensajesRecibidos()
+                    totales.value = lista.obtenerMensajesTotales()
+                    leidos.value = lista.obtenerMensajesLeidos()
+
+                    if(enviados.value!!.isNotEmpty() && recibidos.value!!.isNotEmpty()
+                        && totales.value!!.isNotEmpty() && leidos.value!!.isNotEmpty()){
+                        cargaDatosExitosa.value = true
+                    }
+                }
+
+            }catch (ex:Exception){
+                Log.e("Error de conexion MensajesVM", ex.toString())
             }
+        }
     }
 
     var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReports>>()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun devuelveListaEmpleados(idUser:String){
         try {
             viewModelScope.launch {
                 listaHijosConsumida =  withContext(Dispatchers.IO) {
                     lista.obtenerListaSubContactos(idUser)
                 }
-                /*
-                listaHijosConsumida.forEach {
-                    Log.e("Hijos", it.nombre)
-                    MySharedPreferences.empleadoUsuario.add(it.id.toInt(), it.nombre)
-                }
-                 */
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida
                 }
                 listaEmpleadosAux.value?.forEach {
-                    Log.e("Hijos", it.name)
+                    Log.e("HijosM", it.name)
                 }
 
-                Log.i("AuxList", "${listaEmpleadosAux.value}")
-                Log.i("sizeList", "${listaHijosConsumida.size}")
+                Log.i("AuxListM", "${listaEmpleadosAux.value}")
+                Log.i("sizeListM", "${listaHijosConsumida.size}")
             }
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())

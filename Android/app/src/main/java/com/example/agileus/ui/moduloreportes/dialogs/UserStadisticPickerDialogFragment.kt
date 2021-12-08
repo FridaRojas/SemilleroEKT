@@ -24,9 +24,16 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             //MySharedPreferences.empleadoUsuario[0].nombre
             var listaNombres = arrayListOf<String>()
             //listaNombres.add(MySharedPreferences.idUsuario)
-            MySharedPreferences.dataEmpleadoUsuario.forEach {
-                listaNombres.add(it.name)
-                Log.d("UserListDialog", it.name)
+            if(MySharedPreferences.dataEmpleadoUsuario.size == 0){
+                MySharedPreferences.empleadoUsuario.forEach {
+                    listaNombres.add(it.name)
+                    Log.d("UserListDialogEmp", it.name)
+                }
+            }else{
+                MySharedPreferences.dataEmpleadoUsuario.forEach {
+                    listaNombres.add(it.name)
+                    Log.d("UserListDialogData", it.name)
+                }
             }
 
             val userPicker = vista.findViewById<NumberPicker>(R.id.picker_year_month)
@@ -34,13 +41,14 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             txtTitulo.setText("Usuarios")
             userPicker.setMinValue(0)
             try {
-                userPicker.setMaxValue(MySharedPreferences.dataEmpleadoUsuario.size-1)
+                userPicker.setMaxValue(listaNombres.size-1)
                 userPicker.setValue(0)
                 userPicker.displayedValues = listaNombres.toTypedArray()
             }catch (ex:Exception){
                 userPicker.setMaxValue(0)
                 userPicker.setValue(0)
                 userPicker.displayedValues = arrayOf(MySharedPreferences.idUsuario)
+                Log.d("UserFilterError", ex.toString())
             }
 
             builder.setView(vista)

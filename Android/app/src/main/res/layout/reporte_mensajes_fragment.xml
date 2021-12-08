@@ -70,17 +70,17 @@
         app:layout_constraintStart_toStartOf="@+id/llMenuReportes"
         >
         <TextView
-            android:id="@+id/txtNombreReportes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre"
-            android:textSize="16dp"
-            />
-        <TextView
             android:id="@+id/txtRangoFechaReportes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rango de fechas"
+            android:textSize="16dp"
+            />
+        <TextView
+            android:id="@+id/txtNombreReportes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
             android:textSize="16dp"
             />
     </LinearLayout>

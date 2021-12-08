@@ -3,10 +3,12 @@ package com.example.agileus.ui.moduloreportes.dialogs
 import android.app.Dialog
 import android.content.DialogInterface
 import android.icu.text.SimpleDateFormat
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
@@ -291,6 +293,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
         return "${nombreDiaDelAnio(dia, mes, anio).replaceFirstChar {  it.uppercaseChar() }}: ${currentDF} "
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFiltroReportesSelected(anio: Int, mes: Int, dia: Int){
         val currentDate = dmyFormatoFecha(dia, mes, anio)//= sdf.format(d)
         txtDia.setText(formatoDiaSelected(dia, mes+1, anio, currentDate))
@@ -332,8 +335,17 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     }
 
     override fun onUserSelected(user: Int) {
+
+
+        if(MySharedPreferences.dataEmpleadoUsuario.size == 0){
+            txtUsuario.setText(empleadoUsuario[user].name)
+            userIdSelected = empleadoUsuario[user].id
+        }else{
+
             txtUsuario.setText(dataEmpleadoUsuario[user].name)
             userIdSelected = dataEmpleadoUsuario[user].id
+        }
+
         /*
 
         if (user == 0){
