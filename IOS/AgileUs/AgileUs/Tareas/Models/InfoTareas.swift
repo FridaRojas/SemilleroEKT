@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 struct Status: Codable {
     var estatus: String?
     var mensaje: String?
