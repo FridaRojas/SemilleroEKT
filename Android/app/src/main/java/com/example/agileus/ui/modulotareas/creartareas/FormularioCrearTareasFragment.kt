@@ -128,7 +128,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
             // Obtiene el numero de empleado de la persona seleccionada
             listaPersonas.forEach(){
                 if(nombrePersonaAsignada == it.nombre){
-                    idPersonaAsignada= it.numeroEmpleado
+                    idPersonaAsignada= it.id
                 }
             }
 
@@ -200,6 +200,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
         val descripcion = binding.edtDescripcion.text
 
         tarea = Tasks(
+            // TODO: 08/12/2021  agregar id_grupo desde sharedpreferences id_grupo
             "619696aa2ae47f99bde6e1e7",                  // id_grupo
             idsuperiorInmediato,
             "Armando Manzanero",
@@ -217,10 +218,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
         asignarTareaViewModel.postTarea(tarea)
 
         // Enviar tarea a la conversacion grupal
-        val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0-618d9c26beec342d91d747d6-618e8743c613329636a769aa","",
-            "Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
-        conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
-        Log.d("mensaje Tareas","$mensajeTareas")
+        // TODO: 08/12/2021  agregar id receptor desde sharedpreferences id_grupo
+        //val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0","",
+         //  "Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
+        //conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
+        //Log.d("mensaje Tareas","$mensajeTareas")
 
         //Volver al fragment anterior
         val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
