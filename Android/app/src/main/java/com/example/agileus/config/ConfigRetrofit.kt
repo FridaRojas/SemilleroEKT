@@ -116,7 +116,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitBuzon2(): BuzonApi2 {
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE3)
+            .baseUrl("http://10.97.7.15:3040/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return mRetrofit.create(BuzonApi2::class.java)
