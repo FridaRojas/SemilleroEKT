@@ -27,6 +27,8 @@ public interface GroupService {
     void borrarUsuarioDeGrupo( String idUser, String idGroup);
 
     Optional<Group> buscarUsuarioEnGrupo(String id, String user);
+    Boolean buscarBroadCastEnGrupo(String id);
+
 
     Optional<Group> buscarPorNombre(String nombre);
 

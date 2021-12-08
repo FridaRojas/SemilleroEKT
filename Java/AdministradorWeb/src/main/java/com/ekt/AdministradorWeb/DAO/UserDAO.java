@@ -187,6 +187,7 @@ public class UserDAO {
             JSONObject name1 = jsonObject.getJSONObject("data");
             JSONArray users = name1.getJSONArray("usuarios");
             for (int i=0;i<users.length();i++){
+                //omite al BROADCAST ya que solo se puede realizar la operacion de eliminar
                     listaUsuariosOrganigrama.add(gson.fromJson(users.getJSONObject(i).toString(), User.class));
             }
         }catch (Exception e){

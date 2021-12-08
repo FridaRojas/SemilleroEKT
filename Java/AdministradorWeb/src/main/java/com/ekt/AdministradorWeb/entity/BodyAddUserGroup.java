@@ -9,6 +9,8 @@ public class BodyAddUserGroup {
     private String idSuperior;
     private String nombreRol;
 
+
+
     public String getIdUsuario() {
         return idUsuario;
     }
