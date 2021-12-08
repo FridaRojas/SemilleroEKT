@@ -36,6 +36,9 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.LargeValueFormatter
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -93,7 +96,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
 
         binding.btnFiltroReportes.setOnClickListener {
-            reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
+            reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list ->
                 MySharedPreferences.empleadoUsuario = list
             })
             val newFragment = FiltroReportesDialog(this)
@@ -101,26 +104,31 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         }
 
         binding.btnReportesTareas.setOnClickListener {
-            val action = ReporteMensajesFragmentDirections.actionReporteMensajesFragmentToReporteTareasFragment()
+            val action =
+                ReporteMensajesFragmentDirections.actionReporteMensajesFragmentToReporteTareasFragment()
             val extras = FragmentNavigatorExtras(binding.btnReportesMensajes to "report_slide")
-            findNavController().navigate(action,  extras)
+            findNavController().navigate(action, extras)
         }
 
-            cambiarGrafica(tipo_grafica)
-}
+        cambiarGrafica(tipo_grafica)
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras() {
 
-        barChart=binding.barChart
-        binding.colorlegend1.isVisible=false
-        binding.colorlegend2.isVisible=false
+        barChart = binding.barChart
+        binding.colorlegend1.isVisible = false
+        binding.colorlegend2.isVisible = false
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        binding.txtRangoFechaReportes.isVisible=false
+        binding.txtRangoFechaReportes.isVisible = false
 
 
-        reporteMensajesViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(
+            this,
+            MySharedPreferences.idUsuarioEstadisticas
+        )
 
-        reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
+        reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
@@ -129,17 +137,17 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
 
 
-            binding.txtDataPrimerLegend.text=""
+            binding.txtDataPrimerLegend.text = ""
 
-            binding.txtDataSegundoLegend.text=""
+            binding.txtDataSegundoLegend.text = ""
 
-            binding.txtPrimerLegend.text=""
+            binding.txtPrimerLegend.text = ""
 
-            binding.txtSegundoLegend.text=""
+            binding.txtSegundoLegend.text = ""
 
-            binding.txtTercerLegend.text="Enviados"
+            binding.txtTercerLegend.text = "Enviados"
 
-            binding.txtCuartoLegend.text="Recibidos"
+            binding.txtCuartoLegend.text = "Recibidos"
 
             binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorPrimary))
 
@@ -152,34 +160,40 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
             recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
 
-            initBarChart(enviados.toFloat(),recibidos.toFloat())//inicializacion de la grafica de barras
-        // y se agregan los valores porcentuales para su visualización
+            initBarChart(
+                enviados.toFloat(),
+                recibidos.toFloat()
+            )//inicializacion de la grafica de barras
+            // y se agregan los valores porcentuales para su visualización
 
         })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
-        pieChart=binding.pieChart
-        binding.colorlegend1.isVisible=true
-        binding.colorlegend2.isVisible=true
+        pieChart = binding.pieChart
+        binding.colorlegend1.isVisible = true
+        binding.colorlegend2.isVisible = true
 
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        reporteMensajesViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(
+            this,
+            MySharedPreferences.idUsuarioEstadisticas
+        )
 
-        reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
+        reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-            binding.txtRangoFechaReportes.isVisible=false
+            binding.txtRangoFechaReportes.isVisible = false
 
-            binding.txtPrimerLegend.text="Enviados"
-            binding.txtSegundoLegend.text="Recibidos"
-            binding.txtTercerLegend.text="Totales"
-            binding.txtCuartoLegend.text="Leídos"
+            binding.txtPrimerLegend.text = "Enviados"
+            binding.txtSegundoLegend.text = "Recibidos"
+            binding.txtTercerLegend.text = "Totales"
+            binding.txtCuartoLegend.text = "Leídos"
 
             binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
 
@@ -209,11 +223,11 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     }
 
     //funcion regla de 3 para obtener un porcentage proporcional
-    fun obtenerPorcentajes(dato_parcial:Int, dato_total:Int):Float{
-        if(dato_total!=0) {
-            return (dato_parcial*100/dato_total).toFloat()
+    fun obtenerPorcentajes(dato_parcial: Int, dato_total: Int): Float {
+        if (dato_total != 0) {
+            return (dato_parcial * 100 / dato_total).toFloat()
         } else
-        return 0.0f
+            return 0.0f
     }
 
     private fun initPieChart() {
@@ -235,7 +249,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         pieChart.setDrawSliceText(false)
     }
 
-    private fun setDataToPieChart(enviados:Float,recibidos:Float,leidos:Float){
+    private fun setDataToPieChart(enviados: Float, recibidos: Float, leidos: Float) {
         pieChart.setUsePercentValues(true)
         val dataEntries = ArrayList<PieEntry>()
         dataEntries.add(PieEntry(enviados, "Enviados"))
@@ -270,56 +284,102 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     }
 
-    private fun initBarChart(enviados:Float,recibidos:Float) {
+    private fun initBarChart(enviados: Float, recibidos: Float) {
 
-        val entries: ArrayList<BarEntry> = ArrayList()
-        entries.add(BarEntry(0f, enviados))
-        entries.add(BarEntry(.5f, recibidos))
+        val barChartView = binding.barChart
 
-        val barDataSet = BarDataSet(entries, "")
-        //barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
 
-        val colors: ArrayList<Int> = ArrayList()
-        colors.add(resources.getColor(R.color.colorPrimary))
-        colors.add(resources.getColor(R.color.colorSecondary))
+        var xAxisValues = ArrayList<String>()
+        xAxisValues.add("Usuario 1")
+        xAxisValues.add("Usuario 2")
+        xAxisValues.add("Usuario 3")
+        xAxisValues.add("Usuario 4")
 
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
 
-        val data = BarData(barDataSet)
-        barChart.data = data
-        data.setBarWidth(0.3f);//Reducir el ancho de las barras
-        barDataSet.colors = colors
-        data.setValueTextSize(0f)
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
 
-        //hide grid lines
-        barChart.axisLeft.setDrawGridLines(true)
-        barChart.xAxis.setDrawGridLines(true)
-        barChart.xAxis.setDrawAxisLine(true)
-        barChart.xAxis.isEnabled=false
+        yValueGroup1.add((BarEntry(1f, enviados)))
+        yValueGroup2.add((BarEntry(1f, recibidos)))
+        yValueGroup1.add((BarEntry(2f, enviados)))
+        yValueGroup2.add((BarEntry(2f, recibidos)))
+        yValueGroup1.add((BarEntry(3f, enviados)))
+        yValueGroup2.add((BarEntry(3f, recibidos)))
+        yValueGroup1.add((BarEntry(4f, enviados)))
+        yValueGroup2.add((BarEntry(4f, recibidos)))
 
-        //remove right y-axis
-        barChart.axisRight.isEnabled = false
-        barChart.axisLeft.isEnabled = true
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        //barDataSet1.setColors(R.color.colorPrimary)
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
 
-        //forzar a que la barra izquierda de la gráfica, muestre por valores enteros
-        barChart.axisLeft.setGranularity(1.0f);
-        barChart.axisLeft.setGranularityEnabled(true); // Required to enable granularity
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
 
+        var barData = BarData(barDataSet1, barDataSet2)
 
-        barChart.setTouchEnabled(false)
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.setData(barData)
+        barChartView.getBarData().setBarWidth(barWidth)
+        barChartView.getXAxis().setAxisMinimum(0f)
+        barChartView.getXAxis().setAxisMaximum(2f)
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.getData().setHighlightEnabled(false)
+        barChartView.invalidate()
 
-        //remove legend
-        barChart.legend.isEnabled = false
-        //remove description label
-        barChart.description.isEnabled = false
+        val xAxis = barChartView.getXAxis()
+        xAxis.setGranularity(1f)
+        xAxis.setGranularityEnabled(true)
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(false)
+        xAxis.textSize = 10f
 
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
+        xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
 
-        //add animation
-        barChart.animateY(1000)
+        barChartView.setTouchEnabled(true)
 
-        //draw chart
-        barChart.invalidate()
+        xAxis.setLabelCount(4)
+        xAxis.mAxisMaximum = 4f
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(3f)
+        barChartView.setVisibleXRangeMinimum(3f)
+        barChartView.setDragEnabled(true)
+
+        //Y-axis
+        barChartView.getAxisRight().setEnabled(false)
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.getAxisLeft()
+        leftAxis.setValueFormatter(LargeValueFormatter())
+        leftAxis.setDrawGridLines(false)
+        leftAxis.setSpaceTop(1f)
+        leftAxis.setAxisMinimum(0f)
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 3f)
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -329,36 +389,39 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
         cambiarGrafica(tipo_grafica)
-        //Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun cambiarGrafica(valor:Int) {
+    override fun cambiarGrafica(valor: Int) {
 
         when (valor) {
 
             0 -> {
                 mostrargraficaPie()
-                binding.pieChart.isVisible=true
-                binding.barChart.isVisible=false
+                binding.pieChart.isVisible = true
+                binding.barChart.isVisible = false
                 vista = 0
-                tipo_grafica=0
+                tipo_grafica = 0
             }
             1 -> {
 
                 mostrargraficaBarras()
-                binding.barChart.isVisible=true
-                binding.pieChart.isVisible=false
+                binding.pieChart.isVisible = false
+                binding.barChart.isVisible = true
                 vista = 1
-                tipo_grafica=1
+                tipo_grafica = 1
 
             }
 
-            else -> {
+            else->{
+
                 mostrargraficaPie()
-                vista=0
+                binding.pieChart.isVisible = true
+                binding.barChart.isVisible = false
+                vista = 0
+                tipo_grafica = 0
+
             }
         }
     }
-
 }

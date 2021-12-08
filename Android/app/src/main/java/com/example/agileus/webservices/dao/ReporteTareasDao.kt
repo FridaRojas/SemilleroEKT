@@ -163,8 +163,8 @@ class ReporteTareasDao {
 
     fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
         try{
-            //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
-            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
+            //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts()
             var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
 
             if (ResponseDos.isSuccessful){
