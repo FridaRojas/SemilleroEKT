@@ -91,6 +91,7 @@ class ChatViewController:
         showNavBar()
     }
     
+    
     //creacion de funciones
     //funcion que retornar el usuario remitente
     func currentSender() -> SenderType

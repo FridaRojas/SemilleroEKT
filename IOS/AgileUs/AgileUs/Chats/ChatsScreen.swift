@@ -128,7 +128,10 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         let servicio = server + "mensajes/listarConversaciones/\(userID)"
 
         let url = URL(string: servicio)
-
+        let urll = NSMutableURLRequest(url: url! as URL)
+        urll.httpMethod = "GET";
+        urll.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
         URLSession.shared.dataTask(with: url!)
         {data,response,error in
             do
