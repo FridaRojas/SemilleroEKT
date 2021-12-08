@@ -111,10 +111,59 @@ extension UIViewController {
         
     }
     
-    func cantidadBroadRecibidos(mensajes: [Mensajes], idUsuario: String) -> Int {
+    func cantidadDeMensajes(mensaje: [Mensajes], cantidades: [Int], idUsuario: String) -> [Int] {
         
+        var enviados = cantidades[0]
+        var recibidos = cantidades[1]
+        var leidos = cantidades[2]
+        
+        for i in mensaje {
+            
+            if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
+                recibidos += 1
+            }
+            
+            if i.idreceptor == idUsuario && i.statusLeido == true {
+                leidos += 1
+            }
+            
+            if i.idemisor == idUsuario && i.statusEnviado == true {
+                enviados += 1
+            }
+            
+        }
+        
+        return [enviados, recibidos, leidos]
+    }
+    
+    func cantidadDeMensajesUsuario(mensaje: [Mensajes], idUsuario: String, nombre: String) -> [Any] {
+        
+        var enviados = 0
         var recibidos = 0
+        var leidos = 0
         
+        for i in mensaje {
+            
+            if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
+                recibidos += 1
+            }
+            
+            if i.idreceptor == idUsuario && i.statusLeido == true {
+                leidos += 1
+            }
+            
+            if i.idemisor == idUsuario && i.statusEnviado == true {
+                enviados += 1
+            }
+            
+        }
+        
+        return [nombre, enviados, recibidos, leidos]
+        
+    }
+    
+    func cantidadBroadRecibidos(mensajes: [Mensajes], idUsuario: String) -> Int {
+        var recibidos = 0
         for i in mensajes {
             if i.idemisor == userBroadcastID && i.idreceptor == idUsuario {
                 recibidos += 1
@@ -122,22 +171,38 @@ extension UIViewController {
         }
         
         return recibidos
+    }
+    
+    func cantidadBroadRecibidos(mensajes: [Mensajes], cantidades: [Int], idUsuario: String) -> Int {
+        var recibidos = cantidades[1]
+        for i in mensajes {
+            if i.idemisor == userBroadcastID && i.idreceptor == idUsuario {
+                recibidos += 1
+            }
+        }
         
+        return recibidos
     }
     
     func cantidadDeBroad(mensaje_broad: [Broadcast], idUsuario: String) -> [Int] {
-        
-        var recibidos = 0
+        let recibidos = 0
         var enviados = 0
+    
+        for _ in mensaje_broad {
+            enviados += 1
+        }
+        return [enviados, recibidos]
+    }
+    
+    func cantidadDeBroad(mensaje_broad: [Broadcast], cantidades: [Int], idUsuario: String) -> [Int] {
+        var enviados = cantidades[0]
+        let recibidos = cantidades[1]
     
         for i in mensaje_broad {
             enviados += 1
         }
         return [enviados, recibidos]
-        
     }
-    
-    
     
     func cantidadDeMensajesPorFecha(mensaje: [Mensajes], idUsuario: String, fechaIni: String, fechaFin: String) -> [Int] {
         

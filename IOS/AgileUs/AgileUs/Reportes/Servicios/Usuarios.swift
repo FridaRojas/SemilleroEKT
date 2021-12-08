@@ -22,8 +22,6 @@ class Usuarios{
     
     var serviceUser =  "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/"
     
-    //var serviceUser = "http://18.218.7.148:3040/api/user/findByBossId/"
-    
     func webServiceUsuarios(idUsuario: String) {
         
         serviceUser = "\(serviceUser)\(idUsuario)"
@@ -37,7 +35,8 @@ class Usuarios{
             
             if informacion == nil {
                 print("La informacion del servicio de Usuarios está vacia")
-            }else{
+                return
+            } else {
                 do{
                     //Añadir los datos del Json en el array de datos
                     arrData = try JSONDecoder().decode(Objeto.self, from: informacion!)

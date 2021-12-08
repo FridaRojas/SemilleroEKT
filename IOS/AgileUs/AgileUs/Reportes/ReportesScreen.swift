@@ -17,6 +17,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var opcionesGrafica: UITableView!
     var piechart = PieChartView()
     var barchart = BarChartView()
+    var barchartGeneral = BarChartView()
     
     // etiqueta cantidades
     @IBOutlet weak var cantEnviados: UILabel!
@@ -65,9 +66,14 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     // arreglo cantidad de mensajes broadcast
     var mensajesBroad:[Any]?
     var cantidad_mensajes_broad = [Int]()
+    var cantidad_mensajes_broad_usu = [Int]()
     
     // variable para cambiar fondo de lista al seleccionar
     var seleccionado = 0
+    
+    var tipoUsuario = false
+    var usuarios_cantidades = [Any]()
+    var usuarios_cantidades_broad = [Any]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,12 +90,11 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // Funcion para ejecutar servicios
     func ejecucionServicios(){
-        serviciosMensajes(idUsuario: userID)
-        serviciosTareas(idUsuario: userID)
         serviciosUsuarios()
-        serviciosBroadcast(idUsuario: userID)
+        //serviciosMensajes(idUsuario: userID)
+        serviciosTareas(idUsuario: userID)
+        //serviciosBroadcast(idUsuario: userID)
     }
-    
     
     // Funciones de servicioes web --->
     func serviciosMensajes(idUsuario: String) {
@@ -101,10 +106,21 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func serviciosMensajesPorLider(idUsuario: String, nombre: String) {
+        adaptadorServicios.servicioWebMensajesAdapter(idUsuario: idUsuario) {
+                [self] (Datos) -> Void in
+            mensajes = Datos
+            cantidad_mensajes = cantidadDeMensajes(mensaje: mensajes! as! [Mensajes], cantidades: cantidad_mensajes, idUsuario: idUsuario)
+            
+            usuarios_cantidades.append(cantidadDeMensajesUsuario(mensaje: mensajes! as! [Mensajes], idUsuario: idUsuario, nombre: nombre))
+            
+            llenar_pie_chart(mensajes: cantidad_mensajes)
+        }
+    }
+        
     func serviciosTareas(idUsuario: String){
         let _ = adaptadorServicios.servicioWebTareasAdapter(idUsuario: idUsuario){
             [self] (Datos) -> Void in
-            
             arrTareas = Datos
 
             //Cantidad de tareas
@@ -115,14 +131,29 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     func serviciosUsuarios() {
         adaptadorServicios.serviciosWeb(idUsuario: userID) {
             [self] (Datos) -> Void in
+            
             arrUsuarios = Datos
+            
+            if arrUsuarios!.count > 0 {
+                configura_label_usuario(nombre: "Mi equipo")
+                
+                if let lista_usuarios = (arrUsuarios as? [Usuario]) {
+                    for i in lista_usuarios {
+                        serviciosMensajesPorLider(idUsuario: i.id, nombre: i.nombre)
+                        serviciosBroadcastPorLider(idUsuario: i.id, nombre: i.nombre)
+                    }
+                }
+            } else {
+                serviciosBroadcast(idUsuario: userID)
+                serviciosMensajes(idUsuario: userID)
+                configura_label_usuario(nombre: userName)
+            }
         }
     }
-    
+        
     func serviciosBroadcast(idUsuario: String) {
         adaptadorServicios.servicioWebBroadcastAdapter(idUsuario: idUsuario) {
             [self] (Datos) -> Void in
-            
             mensajesBroad = Datos
             cantidad_mensajes_broad = cantidadDeBroad(mensaje_broad: mensajesBroad! as! [Broadcast], idUsuario:
                                                      idUsuario)
@@ -130,12 +161,42 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func serviciosBroadcastPorLider(idUsuario: String, nombre: String) {
+        adaptadorServicios.servicioWebBroadcastAdapter(idUsuario: idUsuario) {
+            [self] (Datos) -> Void in
+            mensajesBroad = Datos
+            cantidad_mensajes_broad = cantidadDeBroad(mensaje_broad: mensajesBroad! as! [Broadcast], cantidades: cantidad_mensajes_broad, idUsuario:
+                                                     idUsuario)
+            
+            print("enbroadlider cantidad \(cantidad_mensajes_broad)")
+            cantidad_mensajes_broad_usu = cantidadDeBroad(mensaje_broad: mensajesBroad! as! [Broadcast], idUsuario: idUsuario)
+            print("enbroadlider \(cantidad_mensajes_broad_usu)")
+            serviciosBroadcastRecibidosLider(idUsuario: idUsuario)
+            usuarios_cantidades_broad.append([nombre, cantidad_mensajes_broad_usu[0], cantidad_mensajes_broad_usu[1]])
+            
+        }
+    }
+    
     func serviciosBroadcastRecibidos(idUsuario: String) {
         adaptadorServicios.servicioWebMensajesAdapter(idUsuario: userBroadcastID) {
                 [self] (Datos) -> Void in
             mensajes = Datos
-            let recibidos = cantidadBroadRecibidos(mensajes: mensajes! as! [Mensajes], idUsuario: idUsuario)
+            let recibidos = cantidadBroadRecibidos(mensajes: mensajes! as! [Mensajes], cantidades: cantidad_mensajes_broad, idUsuario: idUsuario)
             
+            cantidad_mensajes_broad[1] = recibidos
+            actualizar_datos_lista_grafica(mensajes: cantidad_mensajes, broadcast: cantidad_mensajes_broad)
+        }
+    }
+    
+    func serviciosBroadcastRecibidosLider(idUsuario: String) {
+        adaptadorServicios.servicioWebMensajesAdapter(idUsuario: userBroadcastID) {
+                [self] (Datos) -> Void in
+            mensajes = Datos
+            let recibidos = cantidadBroadRecibidos(mensajes: mensajes! as! [Mensajes], cantidades: cantidad_mensajes_broad, idUsuario: idUsuario)
+            
+            let recibidosUsu =  cantidadBroadRecibidos(mensajes: mensajes! as! [Mensajes], idUsuario: idUsuario)
+    
+            cantidad_mensajes_broad_usu[1] = recibidosUsu
             cantidad_mensajes_broad[1] = recibidos
             actualizar_datos_lista_grafica(mensajes: cantidad_mensajes, broadcast: cantidad_mensajes_broad)
         }
@@ -168,6 +229,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         configurar_pie_chart()
         //configurar los gráficos de barras de mensajes
         configurar_bar_chart()
+        configurar_bar_chart_general()
         
         //      LISTA
         //Configurar lista
@@ -177,7 +239,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         //      GRÁFICAS
         //configurar los colores de los elementos a representar de los gráficos
         configuracion_colores()
-        configura_label_usuario(nombre: userName)
     }
      
     func configuracion_colores() {
@@ -200,7 +261,13 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     func configurar_bar_chart() {
         barchart = BarChartView(frame: CGRect(x: 0, y: 0, width: viewChart.frame.size.width, height: viewChart.frame.size.height))
         barchart.legend.enabled = false
-        barchart.isUserInteractionEnabled = false
+        barchart.isUserInteractionEnabled = true
+    }
+    
+    func configurar_bar_chart_general() {
+        barchartGeneral = BarChartView(frame: CGRect(x: 0, y: 0, width: viewChart.frame.size.width, height: viewChart.frame.size.height))
+        barchartGeneral.legend.enabled = false
+        //barchartGeneral.isUserInteractionEnabled = true
     }
     
     func configurar_lista() {
@@ -221,6 +288,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         //datos = [["ic_PieChart", 0, 0, "pie"], ["ic_Bar", 0, 0, "bar"]]
         cantidad_mensajes = [0,0,0]
         cantidad_mensajes_broad = [0,0]
+        cantidad_mensajes_broad_usu = [0,0]
     } // --->
     
     
@@ -230,6 +298,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if !barchart.isEmpty(){
             barchart.removeFromSuperview()
+        }
+        
+        if !barchartGeneral.isEmpty(){
+            barchartGeneral.removeFromSuperview()
         }
         
         let enviado = mensajes[0]
@@ -264,6 +336,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         //Remover el gráfico de barras de la vista
         if !barchart.isEmpty(){
             barchart.removeFromSuperview()
+        }
+        
+        if !barchartGeneral.isEmpty() {
+            barchartGeneral.removeFromSuperview()
         }
         
         //Comprobar que el arreglo de datos que se va a interpretar no esté vacio
@@ -322,18 +398,25 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             let colors = [Hexadecimal_Color(hex: "66BB6A"), Hexadecimal_Color(hex: "87D169")]
             dataSet.colors = colors
             
+            barchart.noDataText = "No hay información"
             viewChart.addSubview(barchart)
             cargar_animacion_bar()
             
-            //********* Añadir la configuracion de etiquetas *********
-            //configuracion_etiquetasBarTareas(arrCantTareas: arrCantidadDeTareas)
-            //ocultar_etiquetas(tipo: true)
         }else{
+            
             print("El arreglo de tareas está vacio")
         }
     }
     
     func llenar_bar_chart(datos: [Any]?) {
+        if !piechart.isEmpty(){
+            barchart.removeFromSuperview()
+        }
+        
+        if !barchartGeneral.isEmpty(){
+            barchartGeneral.removeFromSuperview()
+        }
+        
         let enviados = BarChartDataEntry(x: 1, y: Double("\(datos![0])")!)
         let recibidos = BarChartDataEntry(x: 2, y: Double("\(datos![1])")!)
         let entries = [enviados, recibidos]
@@ -346,6 +429,134 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         dataset.colors = colors
         viewChart.addSubview(barchart)
         cargar_animacion_bar()
+    }
+    
+    func llenar_bar_chart_general(tipo: String, datos: [Any]) {
+        
+        var arrGeneral = datos
+        
+        if !piechart.isEmpty(){
+            piechart.removeFromSuperview()
+        }
+        
+        if !barchart.isEmpty(){
+            barchart.removeFromSuperview()
+        }
+              
+        // Inicia arreglos de valores
+        var nombreUsuarios = [String]()
+        var cantEnviados = [Int]()
+        var cantRecibidos = [Int]()
+        var cantLeidos = [Int]()
+        
+        /*usuarios_cantidades.append(usuarios_cantidades[0])
+        usuarios_cantidades.append(usuarios_cantidades[1])
+        
+        usuarios_cantidades.append(usuarios_cantidades[0])
+        usuarios_cantidades.append(usuarios_cantidades[1])
+        
+        usuarios_cantidades.append(usuarios_cantidades[0])
+        usuarios_cantidades.append(usuarios_cantidades[1])
+        
+        usuarios_cantidades.append(usuarios_cantidades[0])
+        usuarios_cantidades.append(usuarios_cantidades[1])
+        
+        usuarios_cantidades.append(usuarios_cantidades[0])
+        usuarios_cantidades.append(usuarios_cantidades[1])
+        
+        usuarios_cantidades.append(usuarios_cantidades[0])
+        usuarios_cantidades.append(usuarios_cantidades[1])*/
+        
+        // llena arreglos de acuerdo a las cantidades
+        for i in datos {
+            let dato = i as! [Any]
+            nombreUsuarios.append(dato[0] as! String)
+            cantEnviados.append(dato[1] as! Int)
+            cantRecibidos.append(dato[2] as! Int)
+            
+            if tipo == "mensajes" {
+                cantLeidos.append(dato[3] as! Int)
+            }
+        }
+        
+        barchartGeneral.noDataText = "No hay información"
+        var enviados: [BarChartDataEntry] = []
+        var recibidos: [BarChartDataEntry] = []
+        var leidos: [BarChartDataEntry] = []
+
+        for i in 0..<nombreUsuarios.count {
+            let dataEnviados = BarChartDataEntry(x: Double(i), y: Double(cantEnviados[i]))
+                    enviados.append(dataEnviados)
+
+            let dataRecibidos = BarChartDataEntry(x: Double(i), y: Double(cantRecibidos[i]))
+                    recibidos.append(dataRecibidos)
+            
+            if tipo == "mensajes" {
+                let dataLeidos = BarChartDataEntry(x: Double(i), y: Double(cantLeidos[i]))
+                        leidos.append(dataLeidos)
+            }
+        }
+        
+        let chartDataEnviados = BarChartDataSet(entries: enviados)
+        let chartDataRecibidos = BarChartDataSet(entries: recibidos)
+        let chartDataLeidos = BarChartDataSet(entries: leidos)
+        
+        var dataSets = [BarChartDataSet]()
+        
+        if tipo == "mensajes" {
+            dataSets = [chartDataEnviados,chartDataRecibidos,chartDataLeidos]
+        } else if tipo == "broadcast" {
+            dataSets = [chartDataEnviados,chartDataRecibidos]
+        }
+
+        chartDataEnviados.colors = [Hexadecimal_Color(hex: "66BB6A")]
+        chartDataRecibidos.colors = [Hexadecimal_Color(hex: "87D169")]
+        chartDataLeidos.colors = [Hexadecimal_Color(hex: "7F8182")]
+
+        let chartData = BarChartData(dataSets: dataSets)
+
+        var groupSpace = 0.0
+        var barSpace = 0.0
+        var barWidth = 0.0
+        
+        if tipo == "mensajes" {
+            groupSpace = 0.16
+            barSpace = 0.03
+            barWidth = 0.25
+        } else if tipo == "broadcast" {
+            groupSpace = 0.20
+            barSpace = 0.03
+            barWidth = 0.10
+        }
+        
+        let groupCount = arrGeneral.count
+        let inicio = 0
+
+        chartData.barWidth = barWidth;
+        barchartGeneral.xAxis.axisMinimum = Double(inicio)
+        let gg = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
+        barchartGeneral.xAxis.axisMaximum = Double(inicio) + gg * Double(groupCount)
+                
+        chartData.groupBars(fromX: Double(inicio), groupSpace: groupSpace, barSpace: barSpace)
+    
+        barchartGeneral.notifyDataSetChanged()
+
+        barchartGeneral.data = chartData
+        barchartGeneral.setVisibleXRangeMaximum(2.0)
+        
+        //barchartGeneral.setVisibleXRangeMaximum(3.0)
+        
+        
+        barchartGeneral.doubleTapToZoomEnabled = false
+        
+        let xaxis = barchartGeneral.xAxis
+        xaxis.labelPosition = .bottom
+        xaxis.centerAxisLabelsEnabled = true
+        xaxis.valueFormatter = IndexAxisValueFormatter(values:nombreUsuarios)
+        xaxis.granularity = 1
+        
+        viewChart.addSubview(barchartGeneral)
+        barchartGeneral.animate(yAxisDuration: 0.8, easingOption: ChartEasingOption.easeInOutQuad)
     }
     // Fin llenado graficas de barras <---
     
@@ -522,6 +733,18 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             indTotales.backgroundColor = UIColor.systemOrange
         }
     } // <---
-
+    
+    
+    // funcion boton mostrar graficas de usuarios
+    @IBAction func btnMostrarGeneral(_ sender: Any) {
+        if optionstAB.selectedSegmentIndex == 0 {
+            if seleccionado == 0 {
+                llenar_bar_chart_general(tipo: "mensajes", datos: usuarios_cantidades)
+            } else if seleccionado == 1 {
+                llenar_bar_chart_general(tipo: "broadcast", datos: usuarios_cantidades_broad)
+            }
+        }
+    }
+    
 }
     
