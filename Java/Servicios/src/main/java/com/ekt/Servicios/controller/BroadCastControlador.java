@@ -86,29 +86,28 @@ public class BroadCastControlador {
 		}
 	}
 
-	@GetMapping("/mostarMensajesdelBroadcast/{miId}")
+	@GetMapping("/mostarMensajesdelBroadcast/{miID}")
 	public ResponseEntity<?>listarMensajes(@RequestHeader(value = "tokenAuth")String tokenAuth,
-										   @PathVariable (value = "miId")String miId){
+										   @PathVariable (value = "miID")String miID){
 		try {
 
-			if(miId.length()<24 || miId.length()>24){
+			if(miID.length()<24 || miID.length()>24){
 				ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El tamaño del id no es correcto", ""));
 			}
-			Optional<User> user = userRepository.validarUsuario(miId);
+			Optional<User> user = userRepository.validarUsuario(miID);
 			if(!user.isPresent()) {
 				ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "El usuario no existe",""));
 			}
-			if(user.get().getTokenAuth()== null){
-				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
-			}
 			if(!user.get().getTokenAuth().equals(tokenAuth)){
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no coincide",""));
-			}if(user.isPresent()){
+			}
 
+			if(user.isPresent()){
 
 				if(user.get().getNombreRol().equals("BROADCAST") || user.get().getIDSuperiorInmediato().equals("-1")) {
 
-					Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+					Iterable<BroadCast> brd = broadCastRepositorio.buscarMensajesEnGrupo(user.get().getIDGrupo());
+
 					return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de mensajes del Broadcast",brd));
 
 				}
@@ -177,6 +176,8 @@ public class BroadCastControlador {
 
 						broadCastM.setNombreEmisor(user.get().getNombre());
 						broadCastM.setAtendido(false);
+						broadCastM.setIdGrupo(user2.get().getIDGrupo());
+						broadCastM.setIdBroadcast(user2.get().getID());
 						broadCastRepositorio.save(broadCastM);
 						broadCastServicio.notificacion2(broadCastM.getNombreEmisor() + " Envio un mensaje", broadCast.getAsunto(),user2.get().getToken());
 						return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBroadcast(String.valueOf(HttpStatus.CREATED.value()), "Se creo el Mensaje a BROADCAST", "Usuario: "+broadCastM.getNombreEmisor()));
@@ -207,21 +208,23 @@ public class BroadCastControlador {
 			if(!user.isPresent()){
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()), "El Usuario no existe", "" ));
 			}
-			if(user.get().getTokenAuth()== null){
-				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),"Token no valido",""));
-			}
-			if(!user.get().getTokenAuth().equals(tokenAuth)) {
+			Optional<User> user2= userRepository.validarUsuario(miID);
+
+			if(!user2.get().getTokenAuth().equals(tokenAuth)) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseBroadcast(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), "Token no coincide", ""));
 			}
-			if(user.isPresent()){
-				List<BroadCast> listBrd = new ArrayList<>();
-				Iterable<BroadCast> brd = broadCastRepositorio.findAll();
-				for (BroadCast brd2 : brd) {
-					if(brd2.getIdEmisor().equals(idEmisor)){
-						listBrd.add(brd2);
+
+			if(user2.get().getTokenAuth().equals(tokenAuth)) {
+				if (user.isPresent()) {
+					List<BroadCast> listBrd = new ArrayList<>();
+					Iterable<BroadCast> brd = broadCastRepositorio.findAll();
+					for (BroadCast brd2 : brd) {
+						if (brd2.getIdEmisor().equals(idEmisor)) {
+							listBrd.add(brd2);
+						}
 					}
+					return ResponseEntity.status(HttpStatus.OK).body(new ResponseBroadcast(String.valueOf(HttpStatus.OK.value()), "Lista de Mensajes de: " + user.get().getNombre(), listBrd));
 				}
-				return ResponseEntity.status(HttpStatus.OK).body(new ResponseBroadcast(String.valueOf(HttpStatus.OK.value()),"Lista de Mensajes de: " + user.get().getNombre(),listBrd));
 			}
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body((new ResponseBroadcast(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario no tiene mensajes enviados ", "")));
 		}catch (MongoSocketOpenException e) {

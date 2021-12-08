@@ -12,6 +12,8 @@ public class BroadCast {
     private String idEmisor;
     private String nombreEmisor;
 	private boolean atendido;
+	private String idGrupo;
+	private String idBroadcast;
     
 	public String getId() {
 		return id;
@@ -50,5 +52,21 @@ public class BroadCast {
 
 	public void setAtendido(boolean atendido) {
 		this.atendido = atendido;
+	}
+
+	public String getIdGrupo() {
+		return idGrupo;
+	}
+
+	public void setIdGrupo(String idBroadcast) {
+		this.idGrupo = idBroadcast;
+	}
+
+	public String getIdBroadcast() {
+		return idBroadcast;
+	}
+
+	public void setIdBroadcast(String idBroadcast) {
+		this.idBroadcast = idBroadcast;
 	}
 }
