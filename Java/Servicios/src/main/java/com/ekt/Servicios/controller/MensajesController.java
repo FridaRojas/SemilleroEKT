@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 import com.ekt.Servicios.entity.*;
+import com.ekt.Servicios.repository.GruposMensajeriaRepository;
 import com.ekt.Servicios.repository.MensajesRepository;
 import com.mongodb.MongoException;
 import com.mongodb.MongoSocketException;
@@ -40,6 +41,9 @@ public class MensajesController {
 
 	@Autowired
 	MongoTemplate monogoTemplate;
+	
+	@Autowired
+	private GruposMensajeriaRepository gruposMensajeriaRepository;
 
 	@PostMapping("crearMensaje")
 	public ResponseEntity<?> crearMensaje(@RequestHeader("tokenSesion")String tokenSesion, @RequestBody Mensajes mensajes) {
@@ -605,7 +609,11 @@ public class MensajesController {
 			Conversacion conversacion = new Conversacion();
 
 			Iterable<User> misHermanos = userRepository.findByBossId(jefe.get().getID());
-			misHermanos.forEach(listaPadre::add);
+			for(User hermanos : misHermanos) {
+				if(hermanos.getStatusActivo().equals("true")) {
+					listaPadre.add(hermanos);
+				}
+			}
 
 			if (listaPadre.size() < 2) {
 				idConversacionPadre.append("");
@@ -628,7 +636,11 @@ public class MensajesController {
 		List<User> listaHijos = new ArrayList<>();
 
 		Iterable<User> misHijos = userRepository.findByBossId(miId);
-		misHijos.forEach(listaHijos::add);
+		for(User hijos : misHijos) {
+			if(hijos.getStatusActivo().equals("true")) {
+				listaHijos.add(hijos);
+			}
+		}
 
 		if (listaHijos.size() > 1) {
 			StringBuilder idMiConversacion = new StringBuilder();
@@ -650,6 +662,52 @@ public class MensajesController {
 						"Chat grupal con " + existo.get().getNombreRol() + " " + existo.get().getNombre());
 
 				grupos.add(miConversacion);
+			}
+		}
+		
+		for(Conversacion conv :grupos) {
+			GruposMensajeria gruposMensajeria = new GruposMensajeria();
+			
+			Optional<GruposMensajeria> grupoMensajeria = gruposMensajeriaRepository.buscarPorNombreOptional(conv.getNombreConversacionRecepto());
+			
+			if(grupoMensajeria.isPresent()) {
+				List<String> contenedorLocal = new ArrayList<>();
+				List<String> contenedorBD = new ArrayList<>();
+				
+				String[] arregloLocal = conv.getIdConversacion().split("-");
+				
+				for(String posicion : arregloLocal) {
+					contenedorLocal.add(posicion);
+				}
+				
+				String[] arregloBd = grupoMensajeria.get().getIdConversacion().split("-");
+				
+				for(String posicion : arregloBd) {
+					contenedorBD.add(posicion);
+				}
+				
+				if(contenedorLocal.size() != contenedorBD.size()) {
+					
+					Iterable<Mensajes> mensajes = mensajesService.verConversacion(grupoMensajeria.get().getIdConversacion());
+					
+					for(Mensajes mensajes2 : mensajes) {
+						mensajes2.setIDConversacion(conv.getIdConversacion());
+						mensajesService.save(mensajes2);
+					}
+					
+					grupoMensajeria.get().setIdConversacion(conv.getIdConversacion());
+					grupoMensajeria.get().setIdReceptor(conv.getIdReceptor());
+					grupoMensajeria.get().setNombreConversacion(conv.getNombreConversacionRecepto());
+
+					gruposMensajeriaRepository.save(grupoMensajeria.get());
+				}
+			}else {
+				
+				gruposMensajeria.setIdConversacion(conv.getIdConversacion());
+				gruposMensajeria.setIdReceptor(conv.getIdReceptor());
+				gruposMensajeria.setNombreConversacion(conv.getNombreConversacionRecepto());
+
+				gruposMensajeriaRepository.save(gruposMensajeria);
 			}
 		}
 
