@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
@@ -14,7 +13,6 @@ import retrofit2.Response
 import java.time.ZonedDateTime
 
 class ReporteMensajesDao {
-
 
     private var contador_mensajes_enviados:Int = 0
     private var contador_mensajes_recibidos:Int = 0
@@ -149,7 +147,7 @@ class ReporteMensajesDao {
                         contador_m_recibidos = contador_m_recibidos + 1
                     }
 
-                    if (it.statusLeido == "true") {
+                    if (it.statusLeido) {
                         contador_m_leidos = contador_m_leidos + 1
                     }
 
