@@ -5,68 +5,68 @@
 
 <head>
     <style>
-       table{
-           width:100%;
+        table{
+            width:100%;
 
-       }
-       table .resto{
-           padding: 20px;
-           width: 85% ;
-       }
+        }
+        table .resto{
+            padding: 20px;
+            width: 85% ;
+        }
 
-       table .menu{
-           width: 15% ;
-           height: max-content;
+        table .menu{
+            width: 15% ;
+            height: max-content;
 
 
-       }
-       .main {
-           width: 50%;
-           margin: 20px auto;
-       }
+        }
+        .main {
+            width: 50%;
+            margin: 20px auto;
+        }
 
-       /* Bootstrap 4 text input with search icon */
+        /* Bootstrap 4 text input with search icon */
 
-       .has-search .form-control {
-           padding-left: 2.375rem;
-       }
+        .has-search .form-control {
+            padding-left: 2.375rem;
+        }
 
-       .has-search .form-control-feedback {
-           position: absolute;
-           z-index: 2;
-           display: block;
-           width: 2.375rem;
-           height: 2.375rem;
-           line-height: 2.375rem;
-           text-align: right;
-           pointer-events: none;
-           color: #66BB6A;
-       }
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: right;
+            pointer-events: none;
+            color: #66BB6A;
+        }
 
-       .contenedor{
-           width:90px;
-           height:240px;
-           position:fixed;
-           right:0px;
-           bottom:0px;
-       }
-       .botonF1{
-           width:60px;
-           height:60px;
-           border-radius:100%;
-           background:#66BB6A;
-           right:0;
-           bottom:0;
-           position:absolute;
-           margin-right:16px;
-           margin-bottom:16px;
-           border:none;
-           outline:none;
-           color:#FFF;
-           font-size:36px;
-           box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-           transition:.3s;
-       }
+        .contenedor{
+            width:90px;
+            height:240px;
+            position:fixed;
+            right:0px;
+            bottom:0px;
+        }
+        .botonF1{
+            width:60px;
+            height:60px;
+            border-radius:100%;
+            background:#66BB6A;
+            right:0;
+            bottom:0;
+            position:absolute;
+            margin-right:16px;
+            margin-bottom:16px;
+            border:none;
+            outline:none;
+            color:#FFF;
+            font-size:36px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            transition:.3s;
+        }
 
     </style>
 
@@ -79,19 +79,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/InicioOrganigrama.css}" type="text/css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/estiloMenuLateral.css}">
-    <title>Title</title>
-    <script type="text/javascript" th:src="@{/js/prueba.js}"></script>
-
+    <title>Organigramas Registrados</title>
 </head>
 <body >
-
-
-
-
 <table id="tabla">
-        <td  class="menu">
-            <div th:replace="elementos/menuLateral::menuLateral"></div>
-        </td>
+    <td  class="menu">
+        <div th:replace="elementos/menuLateral::menuLateral"></div>
+    </td>
 
     <td class="resto" >
         <div  th:classappend="'alert-' + (${status != null} ? ${status} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert"> </div>
@@ -108,7 +102,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
 
 
@@ -137,71 +130,71 @@
         <th:block th:each="user: ${listaUsuarios}">
 
             <th:block th:if="${user.getStatusActivo().equals('true')}">
-            <div class="item" >
+                <div class="item" >
 
-                <div  class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                            <label th:text="${user.getNombre()}"></label>
-                        </div>
-                        <div class="col-sm">
-                            <label th:text="${user.getNombreRol()}"></label>
-                        </div>
-                        <div class="col-sm">
-                            <label th:text="${user.getNumeroEmpleado()}"></label>
-                        </div>
-                        <div class="col-sm">
-                            <form th:action="@{/verUsuario(id=${user.getID()})}" method="post">
-                                <button style="color: #66BB6A; background: white; border-color: white;box-shadow: white">Ver mas...</button>
-                            </form>
+                    <div  class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <label th:text="${user.getNombre()}"></label>
+                            </div>
+                            <div class="col-sm">
+                                <label th:text="${user.getNombreRol()}"></label>
+                            </div>
+                            <div class="col-sm">
+                                <label th:text="${user.getNumeroEmpleado()}"></label>
+                            </div>
+                            <div class="col-sm">
+                                <form th:action="@{/verUsuario(id=${user.getID()})}" method="post">
+                                    <button style="color: #66BB6A; background: white; border-color: white;box-shadow: white">Ver mas...</button>
+                                </form>
 
-                        </div>
-                        <div class="col-sm">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm">
-                                        <form method="post"  th:action="@{/editarUsuario(id=${user.getID()})}" >
-                                            <button type="submit"  value="submit"  style="background: #66BB6A" class="btn btn-primary" ><i class="fa fa-edit"></i></button>
-                                        </form>
-                                    </div>
-
-
-                                    <div class="col-sm" style="align-content: center">
-
-                                        <button type="button" style="background-color: #66BB6A"  class="btn btn-primary" data-toggle="modal" data-target="#"
-                                                th:attrappend="data-target=${user.getID()}"  ><i class="fa fa-trash"></i></button>
-                                        <div class="modal fade" th:id="${user.getID()}" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <form method="POST"
-                                                  th:action="@{/reasignaSuperior(idUsuario=${user.getID()},origen=0)}">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="modalAgregar">Eliminar Usuario</h5>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <h4 th:text="${user.getNombre()}">Boorar </h4>
-                                                            <h4></h4>
-                                                        </div>
-
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <form method="post"  th:action="@{/editarUsuario(id=${user.getID()})}" >
+                                                <button type="submit"  value="submit"  style="background: #66BB6A" class="btn btn-primary" ><i class="fa fa-edit"></i></button>
                                             </form>
                                         </div>
+
+
+                                        <div class="col-sm" style="align-content: center">
+
+                                            <button type="button" style="background-color: #66BB6A"  class="btn btn-primary" data-toggle="modal" data-target="#"
+                                                    th:attrappend="data-target=${user.getID()}"  ><i class="fa fa-trash"></i></button>
+                                            <div class="modal fade" th:id="${user.getID()}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <form method="POST"
+                                                      th:action="@{/reasignaSuperior(idUsuario=${user.getID()},origen=0)}">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="modalAgregar">Eliminar Usuario</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h4 th:text="${user.getNombre()}">Boorar </h4>
+                                                                <h4></h4>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
             </th:block>
 
         </th:block>
@@ -216,7 +209,6 @@
 </div>
 
 <div th:replace="paginas/modalCrearUsuario::#modalCreaUsuario"></div>
-
 
 
 

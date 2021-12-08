@@ -96,22 +96,22 @@
         </div>
         <div class="row d-flex justify-content-around" style="min-height: 20vh;">
             <!-- boton de agregar usuarios-->
-            <div class="col-2">
-                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalAgregarUsuarioAGrupo">
+            <div class="col-2" >
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalAgregarUsuarioAGrupo" style="background-color:rgba(255,255,255,.5); border-radius: 30%;border-color: gainsboro">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Agregar </p>
+                    <p style="color: black">Agregar </p>
                 </button>
             </div>
             <div class="col-2">
-                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalSustituirUsuario">
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalSustituirUsuario" style="background-color:rgba(255,255,255,.5); border-radius: 30%; border-color: gainsboro" >
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Sustituir</p>
+                    <p style="color: black">Sustituir</p>
                 </button>
             </div>
             <div class="col-2">
-                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalEditarUsuario">
+                <button class="btn button col"  type="button" data-toggle="modal" data-target="#modalEditarUsuario" style="background-color:rgba(255,255,255,.5); border-radius: 30%;border-color: gainsboro">
                     <img src="/assets/++.png" style="max-height: 7vh;"/>
-                    <p>Editar </p>
+                    <p style="color: black">Editar </p>
                 </button>
             </div>
 
@@ -119,9 +119,9 @@
                 <!--/*@thymesVar id="Group" type="java"*/-->
                 <form th:action="@{/eliminaUsuario}" th:object="${Group}" method="post" >
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario">
+                    <button type="button" class="btn button col" data-toggle="modal" data-target="#modalEliminaUsuario" style="background-color:rgba(255,255,255,.5); border-radius: 30%; border-color: gainsboro">
                         <img src="/assets/--.png" style="max-height: 7vh;"/>
-                        <p>Eliminar</p>
+                        <p style="color: black">Eliminar</p>
                     </button>
                 </form>
             </div>
@@ -163,25 +163,28 @@
                     <input type="text" name="idSuperior" class="form-control" value="" th:if="${listaUsuariosGrupo.isEmpty()}" hidden>
                     <div class="form-group" th:if="!${listaUsuariosGrupo.isEmpty()}">
                         <label>Jefe directo</label>
-                        <select name="idSuperior" id="idSuperior">
+                        <select name="idSuperior" id="idSuperior" th:onchange="desactivaNombreRol()">
                             <optgroup>
                                 <p th:each="user: ${listaUsuariosGrupo}">
+                                    <th:block th:if="${user.getNombreRol() != 'BROADCAST'}">
                                     <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                    </th:block>
                                 </p>
+                                <option th:text="BROADCAST" th:value="BROADCAST"></option>
                             </optgroup>
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div   class="form-group">
                         <label>Asigne Rol</label>
-                        <input type="text" name="nombreRol" id="nombreRol" class="form-control" aria-describedby="sizing-addon1" required>
+                        <input type="text" name="nombreRol" id="nombreRol" class="form-control" aria-describedby="sizing-addon1" required >
                     </div>
 
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Crear</button>
+                    <button type="submit" class="btn btn-success">Agregar</button>
                 </div>
 
             </div>
@@ -204,7 +207,7 @@
                             <select name="idUsuario" id="idUsuario">
                                 <optgroup>
                                     <p th:each="user: ${listaUsuariosGrupo}">
-                                        <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                        <option th:if="${user.getNombreRol() != 'BROADCAST'}" th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
                                     </p>
                                 </optgroup>
                             </select>
@@ -234,7 +237,7 @@
                             <select name="idUsuario" id="idUsuario">
                                 <optgroup>
                                     <p th:each="user: ${listaUsuariosGrupo}">
-                                        <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                        <option   th:if="${user.getNombreRol() != 'BROADCAST'}" th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
                                     </p>
                                 </optgroup>
                             </select>
@@ -244,7 +247,7 @@
                             <select name="idSuperior" id="idSuperior">
                                 <optgroup>
                                     <p th:each="user: ${listaUsuariosGrupo}">
-                                        <option th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
+                                        <option th:if="${user.getNombreRol() != 'BROADCAST'}" th:text="${user.getNombre()} + ' --- ' + ${user.getNombreRol()}" th:value="${user.getID()}"></option>
                                     </p>
                                 </optgroup>
                             </select>
@@ -296,12 +299,28 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Editar</button>
+                    <button type="submit" class="btn btn-success">Sustituir</button>
                 </div>
             </div>
         </div>
     </form>
 </div>
 
+
+<script  >
+
+    function desactivaNombreRol() {
+        var getSelectValue = document.getElementById("idSuperior").value;
+        var link = document.getElementById('nombreRol');
+        if(getSelectValue=="BROADCAST"){
+            console.log("esta en broadcast")
+            link.disabled = true;
+        }else{
+            link.disabled = false;
+            console.log("fuera de broadcast")
+            return false;
+        }
+    }
+</script>
 </body>
 </html>
