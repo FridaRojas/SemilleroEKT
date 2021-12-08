@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,16 +25,16 @@ import com.example.agileus.ui.MainActivity
 class InicioSesionFragment : Fragment() {
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
-     var trigger=0
+    var trigger=0
 
 
     companion object {
-          var correoLogin : String=""
-          var passwordLogin : String=""
-          var status:Boolean=false
-          var idUser:String=""
-          var rol:String = ""
-          var idnombre:String=""
+        var correoLogin : String=""
+        var passwordLogin : String=""
+        var status:Boolean=false
+        var idUser:String=""
+        var rol:String = ""
+        var idnombre:String=""
 
     }
 
@@ -114,17 +113,17 @@ class InicioSesionFragment : Fragment() {
         if (!status)
         {
             if(trigger == 0 )
-           {Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
-                }
+            {Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
+            }
             if (trigger >1 && !status) {
                 Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
 
                 if(trigger >3 )
-                    {
-                        Toast.makeText(activity, "Demasiado Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
-                        Handler().postDelayed({
-                            activity?.finish()
-                        }, 3000)
+                {
+                    Toast.makeText(activity, "Demasiado Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
+                    Handler().postDelayed({
+                        activity?.finish()
+                    }, 3000)
 
                 }
 
@@ -142,11 +141,11 @@ class InicioSesionFragment : Fragment() {
         }
         else if (!PatternsCompat.EMAIL_ADDRESS.matcher(correo).matches()){
             binding.username.error = "Por favor, ingresa un correo válido"
-        false
+            false
         } else {
-        binding.username.error = null
-             correoLogin = correo
-        true
+            binding.username.error = null
+            correoLogin = correo
+            true
         }
     }
     private fun validatePassword() : Boolean {
@@ -154,13 +153,13 @@ class InicioSesionFragment : Fragment() {
         // VALIDAR PASSWORD CON CARACTERES ESPECIALES
         val passwordRegex = Pattern.compile(
             "^" +   // declaración de inicio
-                "(?=.*[0-9])" +                     //Contener al menos un dígito
-                //"(?=.*[a-z])" +                     //Contener al menos ua letra minúscula
-                //"(?=.*[A-Z])" +                     //Contener al menos una letra mayúscula
-                //"(?=.*[@#$%^&+=])" +                //Contener al menos un caracter especial
-                "(?=\\S+$)" +                       //No tener espacios vacios o blancos
-                ".{3,}" +                           //Contener al menos 4 caracteres
-                "$"      // cierre
+                    "(?=.*[0-9])" +                     //Contener al menos un dígito
+                    //"(?=.*[a-z])" +                     //Contener al menos ua letra minúscula
+                    //"(?=.*[A-Z])" +                     //Contener al menos una letra mayúscula
+                    //"(?=.*[@#$%^&+=])" +                //Contener al menos un caracter especial
+                    "(?=\\S+$)" +                       //No tener espacios vacios o blancos
+                    ".{3,}" +                           //Contener al menos 4 caracteres
+                    "$"      // cierre
         )
         return if (password!!.isEmpty()) {
             binding.password.error = "El campo no puede estar vacío"

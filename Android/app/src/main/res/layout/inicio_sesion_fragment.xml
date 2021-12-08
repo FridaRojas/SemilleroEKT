@@ -23,14 +23,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/paddingGeneral"
             android:layout_marginTop="@dimen/margin_top_general"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            android:text="Número de Empleado: "
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
+            android:text="Número de Empleado"
             />
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+            android:layout_marginHorizontal="16dp"
             android:padding="@dimen/margin_top_general"
             app:startIconDrawable="@drawable/user_icon"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -48,31 +49,33 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/paddingGeneral"
             android:layout_marginTop="@dimen/margin_top_general"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            android:text="Contraseña: "
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
+            android:text="Contraseña"
             />
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            app:errorEnabled="true"
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
             android:padding="@dimen/margin_top_general"
+            app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:startIconDrawable="@drawable/vector_icon"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/colorPrimary">
 
-            <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:imeOptions="actionDone"
-            android:selectAllOnFocus="true" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:selectAllOnFocus="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <!--    -->
 

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.utils.Constantes
 
 
@@ -25,6 +26,7 @@ class ListContactsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
         contactsviewModel = ViewModelProvider(this).get(ListContactsViewModel::class.java)
 
         _binding = ListContactsFragmentBinding.inflate(inflater, container, false)
@@ -37,8 +39,18 @@ class ListContactsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //    Toast.makeText(activity, "Usuario BRD", Toast.LENGTH_LONG).show()
+        //llamar a la barra de acción
+        //var actionBar = getSupportActionBar()
+        /*
+        var actionBar = getSupportActionBar()
+
+        // mostrar el botón de retroceso en la barra de acción
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false)
+        }
 
 
+         */
 
         Constantes.id=idUser
 
