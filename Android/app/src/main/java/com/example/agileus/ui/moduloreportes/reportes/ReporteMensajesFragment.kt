@@ -461,13 +461,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         var barChartView = binding.barChart
 
-        val barWidth: Float
-        val barSpace: Float
-        val groupSpace: Float
-
-        barWidth = 0.15f //anchura de la barra
-        barSpace = 0.07f // espacio entre las barras agrupadas
-        groupSpace = 0.56f //espacio entre grupos de barras
+        val barWidth = 0.15f //anchura de la barra
+        val barSpace = 0.07f // espacio entre las barras agrupadas
+        val groupSpace = 0.56f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
         xAxisValues.add("Usuario 1")
@@ -515,16 +511,16 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChartView.getXAxis().setAxisMinimum(0f)
         barChartView.getXAxis().setAxisMaximum(2f)
         barChartView.groupBars(0f, groupSpace, barSpace)
-        barChartView.setFitBars(true)
         barChartView.getData().setHighlightEnabled(false)
         barChartView.invalidate()
+
 
         val xAxis = barChartView.getXAxis()
         xAxis.setGranularity(1f)
         xAxis.setGranularityEnabled(true)
         xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(false)
-        xAxis.textSize = 10f
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 12f
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
         xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
@@ -535,8 +531,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         xAxis.mAxisMaximum = 4f
         xAxis.setCenterAxisLabels(true)
         xAxis.setAvoidFirstLastClipping(true)
-        xAxis.spaceMin = 1f
-        xAxis.spaceMax = 1f
+        //xAxis.spaceMin = 1f
+        //xAxis.spaceMax = 1f
 
         barChartView.setVisibleXRangeMaximum(3f)
         barChartView.setVisibleXRangeMinimum(3f)
