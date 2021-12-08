@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
@@ -97,7 +98,7 @@ class ReporteMensajesDao {
                             contador_m_recibidos = contador_m_recibidos + 1
                         }
 
-                        if (it.statusLeido == "true") {
+                        if (it.statusLeido == true) {
                             contador_m_leidos = contador_m_leidos + 1
                         }
 
@@ -211,6 +212,7 @@ class ReporteMensajesDao {
 @RequiresApi(Build.VERSION_CODES.O)
 fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports> {
         try{
+            Log.d("ListaSubConactsm", "id: ${idUser}")
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
             var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
 
@@ -239,7 +241,7 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports>
 
                 Log.d("ListaSubConactsSIZE", "SIZE: ${stadisticEmployeesList.size}")
             }else{
-                Log.e("ERROR SubContactos", "Respuesta fallida:" + ResponseDos.code().toString())
+                Log.e("RMDao SubContactos", "Respuesta fallida:" + ResponseDos.code().toString())
             }
 
         }catch (ex:Exception){
