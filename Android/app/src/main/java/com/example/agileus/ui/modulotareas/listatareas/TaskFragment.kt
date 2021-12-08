@@ -23,7 +23,6 @@ import com.example.agileus.models.StatusTasks.Companion.lista
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.ui.login.InicioSesionViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoNivelBajo
-import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel.Companion.status
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 
@@ -32,10 +31,10 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
-    lateinit var adaptador : StatusTasksAdapter
+    lateinit var adaptadorStatus : StatusTasksAdapter
 
     private lateinit var taskViewModel: TaskViewModel
-
+    var nivelusuario = "medio"
     lateinit var listStatus : Array<String>
 
     override fun onCreateView(
@@ -60,8 +59,20 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
+
         //Recycler Status
-        var adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerLista(), this)
+        if(nivelusuario == "alto"){
+            adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelAlto(), this)
+            taskViewModel.statusRecycler.value = "asignada"
+            binding.tituloTareas.text = getString(R.string.titleStatus5)
+        }else if( nivelusuario == "medio" ){
+            adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelMedio(), this)
+            taskViewModel.statusRecycler.value = "pendiente"
+        }else{
+            adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelBajo(), this)
+            taskViewModel.statusRecycler.value = "pendiente"
+        }
+
 
        // var adaptadorStatus = StatusTasksAdapter(listStatus, this)
         binding.recyclerStatusTareas.adapter = adaptadorStatus
@@ -84,14 +95,14 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             it.findNavController().navigate(R.id.formularioCrearTareasFragment)
         }
         //Btn Crear tareas
-        /*if(nivel == "alto"){
+        if(nivelusuario == "alto" || nivelusuario == "medio"){
             binding.btnCrearTarea.isVisible = true
             binding.btnCrearTarea.setOnClickListener {
                 it.findNavController().navigate(R.id.formularioCrearTareasFragment)
             }
         }else{
             binding.btnCrearTarea.isVisible = false
-        }*/
+        }
 
     }
 
@@ -132,23 +143,6 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
         //Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun compararNivel(nivel: String) {
-        if(nivel == "alto"){
-            status = "asignada"
-            lista.add(StatusTasks("Asignadas",false))
-        }else if( nivel == "bajo"){
-            lista.add(StatusTasks("Pendientes",true))
-            lista.add(StatusTasks("Iniciadas",false))
-            lista.add(StatusTasks("En Revisión",false))
-            lista.add(StatusTasks("Terminadas",false))
-        }else if( nivel == "medio"){
-            lista.add(StatusTasks("Asignadas",false))
-            lista.add(StatusTasks("Pendientes",true))
-            lista.add(StatusTasks("Iniciadas",false))
-            lista.add(StatusTasks("En Revisión",false))
-            lista.add(StatusTasks("Terminadas",false))
-        }
-    }
 
     fun recuperarNivelUsuario() {
         //Todo al iniciar sesion

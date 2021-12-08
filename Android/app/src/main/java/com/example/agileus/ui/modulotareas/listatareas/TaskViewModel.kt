@@ -21,7 +21,6 @@ class TaskViewModel() : ViewModel() {
     companion object{
         var status = "pendiente"
     }
-
     var statusRecycler = MutableLiveData<String>()
     var statusListRecycler = MutableLiveData<String>()
     var adaptador = MutableLiveData<TasksAdapter>()
