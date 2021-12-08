@@ -2,19 +2,13 @@ package com.example.agileus.ui.moduloreportes.reportes
 
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
-import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
-import com.example.agileus.models.Contacts
 import com.example.agileus.models.Estadisticas
-import com.example.agileus.models.UserMessageDetailReports
-import com.example.agileus.models.UserTaskListDetail
-import com.example.agileus.utils.Constantes
+import com.example.agileus.models.UserMessageDetailReport
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteMensajesDao
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +27,7 @@ class ReporteMensajesViewModel: ViewModel() {
     var cargaOperacionesEstadisticas = MutableLiveData<Boolean>()
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
-    lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReports>
+    lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReport>
 
     init {
         lista = ReporteMensajesDao()
@@ -73,7 +67,7 @@ class ReporteMensajesViewModel: ViewModel() {
         }
     }
 
-    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReports>>()
+    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReport>>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelveListaEmpleados(idUser:String){

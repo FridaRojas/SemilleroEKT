@@ -78,7 +78,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         super.onViewCreated(view, savedInstanceState)
         //binding.txtNombreReportes.setText(MySharedPreferences.dataEmpleadoUsuario[0].name)
 
-        reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
+        reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, Observer{ list->
             MySharedPreferences.dataEmpleadoUsuario = list
             Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
         })

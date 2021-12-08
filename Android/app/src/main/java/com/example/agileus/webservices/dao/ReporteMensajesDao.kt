@@ -1,18 +1,14 @@
 package com.example.agileus.webservices.dao
-import android.content.Context
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.id_broadcast
 import com.example.agileus.models.*
-import com.example.agileus.ui.HomeActivity
 import retrofit2.Response
 import java.time.ZonedDateTime
 
@@ -29,7 +25,7 @@ class ReporteMensajesDao {
     lateinit var fecha_actual: ZonedDateTime
 
     var employeeList = ArrayList<Contacts>()
-    var stadisticEmployeesList = ArrayList<UserMessageDetailReports>()
+    var stadisticEmployeesList = ArrayList<UserMessageDetailReport>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosMensajes(idBusqueda: String): ArrayList<Estadisticas> {
@@ -53,7 +49,7 @@ class ReporteMensajesDao {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun recoverUserMessageStadistic(idBusqueda: String, searchName: String): UserMessageDetailReports {
+    fun recoverUserMessageStadistic(idBusqueda: String, searchName: String): UserMessageDetailReport {
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(idBusqueda)
         val ResponseMensajes: Response<conversartionListByID> = callRespuesta.execute()
@@ -63,7 +59,7 @@ class ReporteMensajesDao {
 
         var lista: ArrayList<Conversation>
         var lista_B: ArrayList<DatosBroadCast>
-        var messageDetail = UserMessageDetailReports()
+        var messageDetail = UserMessageDetailReport()
 
         val id_usuario_actual = idBusqueda //Aquí se coloca el id del emisor deseado
         var contador_m_enviados= 0
@@ -119,7 +115,7 @@ class ReporteMensajesDao {
                 Log.d("RMDao NoBroadcastConexion", ex.toString())
             }
 
-            messageDetail = UserMessageDetailReports(
+            messageDetail = UserMessageDetailReport(
                 idBusqueda,
                 searchName,
                 contador_m_enviados,
@@ -131,7 +127,7 @@ class ReporteMensajesDao {
             )
         }else{
             Log.d("RMDao", "NoConection to Broadcast or Messages")
-            messageDetail = UserMessageDetailReports(
+            messageDetail = UserMessageDetailReport(
                 idBusqueda,
                 searchName,
                 0,
@@ -173,7 +169,7 @@ class ReporteMensajesDao {
                 }
             }
             //Mensajes enviados al Broadcast por Usuario
-            messageDetail = UserMessageDetailReports(
+            messageDetail = UserMessageDetailReport(
                 idBusqueda,
                 searchName,
                 contador_m_enviados,
@@ -210,7 +206,7 @@ class ReporteMensajesDao {
     }
     
 @RequiresApi(Build.VERSION_CODES.O)
-fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports> {
+fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> {
         try{
             Log.d("ListaSubConactsm", "id: ${idUser}")
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
@@ -251,7 +247,7 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports>
     }
 
 
-    fun totalGroupEstadisticsBYBoss(dataValues: ArrayList<UserMessageDetailReports>): UserMessageDetailReports{
+    fun totalGroupEstadisticsBYBoss(dataValues: ArrayList<UserMessageDetailReport>): UserMessageDetailReport{
         var send: Int = 0
         var received: Int = 0
         var read: Int = 0
@@ -267,7 +263,7 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports>
             total       = total     + data.total
             sendBroadcast   = sendBroadcast + data.sendBroadcast
         }
-        var groupStadistic = UserMessageDetailReports(
+        var groupStadistic = UserMessageDetailReport(
             "TEAM_ID_CREATED_BY_MOD_REPORT",
             "Mi equipo",
             send,

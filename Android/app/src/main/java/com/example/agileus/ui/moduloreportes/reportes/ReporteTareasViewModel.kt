@@ -7,9 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
-import com.example.agileus.models.Contacts
 import com.example.agileus.models.Estadisticas
-import com.example.agileus.models.UserTaskListDetail
+import com.example.agileus.models.UserTaskDetailReport
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteTareasDao
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +47,7 @@ class ReporteTareasViewModel: ViewModel() {
     }
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
-    lateinit var listaHijosConsumida:ArrayList<UserTaskListDetail>
+    lateinit var listaHijosConsumida:ArrayList<UserTaskDetailReport>
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte( listener: ReportesListener, id:String){
@@ -74,7 +73,7 @@ class ReporteTareasViewModel: ViewModel() {
             }
         }
     }
-    var listaEmpleadosAux = MutableLiveData<ArrayList<UserTaskListDetail>>()
+    var listaEmpleadosAux = MutableLiveData<ArrayList<UserTaskDetailReport>>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelveListaEmpleados(idUser:String){

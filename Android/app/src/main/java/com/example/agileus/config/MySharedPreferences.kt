@@ -1,8 +1,7 @@
 package com.example.agileus.config
 
-import com.example.agileus.models.Contacts
-import com.example.agileus.models.UserMessageDetailReports
-import com.example.agileus.models.UserTaskListDetail
+import com.example.agileus.models.UserMessageDetailReport
+import com.example.agileus.models.UserTaskDetailReport
 import com.example.agileus.utils.Constantes
 
 class MySharedPreferences {
@@ -16,8 +15,8 @@ class MySharedPreferences {
         var id_broadcast="61a101db174bcf469164d2fd"
         var fechaIniEstadisticas = "1900-01-01T00:00:00.000+00:00"
         var fechaFinEstadisticas = "2100-01-01T00:00:00.000+00:00"
-        var empleadoUsuario = emptyList<UserMessageDetailReports>()
-        var dataEmpleadoUsuario = emptyList<UserTaskListDetail>()
+        var empleadoUsuario = emptyList<UserMessageDetailReport>()
+        var dataEmpleadoUsuario = emptyList<UserTaskDetailReport>()
         var tipo_grafica:Int=0
         var vista:Int=0
     }
