@@ -22,8 +22,8 @@
 <div  class="wrapper">
     <!-- Menu Lateral -->
     <nav id="sidebar">
-        <div class="sidebar-header" >
-            <svg class="bi me-2" width="16" height="16" >
+
+        <div class="sidebar-header" style="text-align: center">
                 <img src="/assets/LogoAgileUs.png" height="80" width="65">
             </svg>
             </h3>
@@ -39,6 +39,11 @@
             </li>
         </ul>
 
+        <div class="sidebar-footer" style="text-align: center; position:fixed; bottom: 0; padding: 2% 2% ">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
+            </form>
+        </div>
     </nav>
 
     <!-- Page Content Holder -->
