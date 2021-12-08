@@ -10,4 +10,9 @@
     <color name="colorBackground">#F5F5F5</color>
     <color name="colorGray">#7F8182</color>
 
+    <!--Semáforo-->
+    <color name="colorRed">#FF0000</color>
+    <color name="colorYellow">#FFB300</color>
+    <color name="colorGreen">#43A047</color>
+
 </resources>

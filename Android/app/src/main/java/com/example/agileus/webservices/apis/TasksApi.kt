@@ -16,19 +16,11 @@ interface TasksApi {
     @GET("tareas/obtenerTareas")
     fun getTasks(): Call<ArrayList<Tasks>>
 
-    //Agregar Tarea nueva
-    //todo Editar EndPoint para obtener personas de grupo
-    //"http://10.97.0.165:3040/api/user/findAll"
-    //@GET( "findAll")
-    //fun getListaPersonasGrupo(): Call<PersonasGrupo>? // id lider
-
-
     //Obtener una lista de personas en un grupo
-    //http://10.97.0.165:3040/api/user/findByBossId/618d9c26beec342d91d747d6
     @GET("{idsuperiorInmediato}")
     fun getListaPersonasGrupo(@Path("idsuperiorInmediato") idsuperiorInmediato: String): Call<PersonasGrupo>? // id lider
 
-
+    //Agregar Tarea nueva
     @POST("tareas/agregarTarea")
     fun insertarTarea(@Body t: Tasks): Call<Tasks>
 
@@ -43,7 +35,15 @@ interface TasksApi {
     //Editar tarea
     @PUT("tareas/actualizarTarea/{idTarea}")
     fun editTask(@Body taskUpdate: TaskUpdate, @Path("idTarea") idTarea: String)
-            : Call<TaskList2>
+            : Call<DataTask>
+
+    @PUT("tareas/actualizarTarea/{idTarea}/{idUsuario}")
+    fun editTaskPrueba(
+        @Body taskUpdate: TaskUpdate,
+        @Path("idTarea") idTarea: String,
+        @Path("idUsuario") idUsuario: String
+    ): Call<DataTask>
+
 
     //Actualizar Status
     @PUT("tareas/actulizarEstatus/{param}")
