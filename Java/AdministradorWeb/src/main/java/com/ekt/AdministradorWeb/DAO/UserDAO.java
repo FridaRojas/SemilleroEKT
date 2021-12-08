@@ -1,12 +1,10 @@
 package com.ekt.AdministradorWeb.DAO;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class UserDAO {
@@ -78,13 +76,11 @@ public class UserDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-
             if (jsonObject.get("status").equals("OK")){
                 System.out.println("Usuario editado correctamente");
                 res=true;
             }
         }catch (Exception e){
-
             System.out.println("Error en la consulta");
         }
         return res;
@@ -102,19 +98,15 @@ public class UserDAO {
                 .addHeader("Content-Type", "application/json")
                 .build();
         try {
-            System.out.println(user.getCurp()+"  "+user.getRFC()+"   "+user.getCorreo()+"  "+user.getNumeroEmpleado());
             Response response = client.newCall(request).execute();
             JSONObject jsonObject = new JSONObject(response.body().string());
-
             if (!jsonObject.get("data").toString().equals("true")) {
                 res=true;
-
             }
         }
         catch (Exception e){
             System.out.println("Error al realizar la peticion");
         }
-
         return res;
     }
 
@@ -131,7 +123,6 @@ public class UserDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject = new JSONObject(response.body().string());
-            System.out.println(jsonObject.toString());
             return true;
         }catch (Exception e){
             return false;
@@ -152,18 +143,13 @@ public class UserDAO {
             Response response = client.newCall(request).execute();
             String res = response.body().string();
             JSONObject jsonObject= new JSONObject(res);
-            //Separamos la parte de data
             JSONArray name1 = jsonObject.getJSONArray("data");
-
-            //prueba de casteo
-
             for (int i=0;i<name1.length();i++){
                 user=gson.fromJson(name1.getJSONObject(i).toString(), User.class);
                 if(user.getIDGrupo().equals("") && user.getStatusActivo().equals("true")){
                     listaUsuarios.add(gson.fromJson(name1.getJSONObject(i).toString(), User.class));
                 }
             }
-            System.out.println("La lista de disponibles es: "+listaUsuarios.size());
         }catch (Exception e){
             System.out.println("Error al lista usuarios");
         }
@@ -179,7 +165,6 @@ public class UserDAO {
                 .url("http://localhost:3040/api/grupo/buscar/"+id)
                 .method("GET", null)
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             String res = response.body().string();
@@ -188,12 +173,11 @@ public class UserDAO {
             JSONArray users = name1.getJSONArray("usuarios");
             for (int i=0;i<users.length();i++){
                 //omite al BROADCAST ya que solo se puede realizar la operacion de eliminar
-                    listaUsuariosOrganigrama.add(gson.fromJson(users.getJSONObject(i).toString(), User.class));
+                listaUsuariosOrganigrama.add(gson.fromJson(users.getJSONObject(i).toString(), User.class));
             }
         }catch (Exception e){
             System.out.println("Error al hacer la peticion");
         }
-
         return listaUsuariosOrganigrama;
     }
 
@@ -223,7 +207,6 @@ public class UserDAO {
             resp=false;
             System.out.println(e.getMessage());
         }
-
         return resp;
     }
 
@@ -239,15 +222,12 @@ public class UserDAO {
             Response response = client.newCall(request).execute();
             String res = response.body().string();
             JSONObject jsonObject= new JSONObject(res);
-
             if(!jsonObject.get("data").toString().equals("")){
                 JSONArray name1 = jsonObject.getJSONArray("data");
                 return name1;
             }else{
                 return null;
             }
-
-
         }catch (Exception e){
             System.out.println("Error al realizar la consulta");
             return null;
@@ -256,7 +236,6 @@ public class UserDAO {
 
     public boolean creaUsuario(User user){
         boolean res;
-
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -275,12 +254,10 @@ public class UserDAO {
             }else{
                 res=false;
             }
-
         }catch (Exception e){
             System.out.println("Error al insertar usuario");
             res=false;
         }
-
         return res;
     }
 
@@ -298,7 +275,6 @@ public class UserDAO {
             //limpia informacion del usuario en la db
             Response response = client.newCall(request).execute();
             res=true;
-            System.out.println("el id es: " + id + "  eliminado con exito");
         }catch (Exception e){
             System.out.println("Error  al eliminar usuario : "+e.getMessage());
         }
@@ -333,18 +309,14 @@ public class UserDAO {
 
     public boolean buscarOrigenUsuario(String id){
         Boolean res=false;
-
         //dos casos
         ArrayList<User> listaDisponibles =listaUsuariosDisponibles();
-
         //fuera del organigrama
         for (User use :listaDisponibles) {
             if (use.getID().equals(id)){
-                System.out.println("el usuario se encuentra en disponibles");
                 res=true;
             }
         }
-
         return res;
     }
 
