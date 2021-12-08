@@ -61,10 +61,10 @@ class TaskViewModel() : ViewModel() {
             listaTask = withContext(Dispatchers.IO){
                 if(statusRecycler.value.toString() == "asignada"){
                     //id Emisor
-                    lista.getTasksAssigned("61a83a84d036090b8e8db3be")
+                    lista.getTasksAssigned("618d9c26beec342d91d747d6")
                 }else{
                     //id Receptor -> id Receptor
-                    lista.getTasksByStatus("61a83a84d036090b8e8db3be", statusRecycler.value.toString())
+                    lista.getTasksByStatus("618d9c26beec342d91d747d6", statusRecycler.value.toString())
                 }
             }
             Log.d("api", "funciona")
