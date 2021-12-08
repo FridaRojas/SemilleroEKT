@@ -213,8 +213,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
 
                 //   detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
-
-
             }
 
         }
