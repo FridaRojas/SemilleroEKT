@@ -67,8 +67,7 @@ class TasksDao {
         var listaTareas = ArrayList<DataTask>()
         lateinit var taskList: TaskList
 
-        var datos = "$id&$status"
-        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksByStatus(datos)
+        val callRespuesta = InitialApplication.webServiceGlobalTasks.getTasksByStatus(id, status)
         var response = callRespuesta?.execute()
 
         Log.d("tareas", listaTareas.toString())
@@ -125,7 +124,10 @@ class TasksDao {
     }
 
     fun cancelTask(t: DetalleNivelAltoFragmentArgs) {
-        val callback = InitialApplication.webServiceGlobalTasks.cancelarTarea(t.tareas.idTarea)
+        val callback = InitialApplication.webServiceGlobalTasks.cancelarTarea(
+            t.tareas.idTarea,
+            t.tareas.idEmisor
+        )
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
@@ -145,11 +147,11 @@ class TasksDao {
     fun editTask(taskUpdate: TaskUpdate, idTarea: String, idUsuario: String) {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
-          val callback = InitialApplication.webServiceGlobalTasksPrueba.editTaskPrueba(
-              taskUpdate,
-              idTarea,
-              idUsuario
-          )
+        val callback = InitialApplication.webServiceGlobalTasks.editTask(
+            taskUpdate,
+            idTarea,
+            "61a83a84d036090b8e8db3be"
+        )
         /*val callback = InitialApplication.webServiceGlobalTasks.editTask(
             taskUpdate,
             idTarea
@@ -164,13 +166,9 @@ class TasksDao {
                         Log.d(
                             "Mensaje",
                             "Tarea Editada ${response.message()}"
-
                         )
-
-
-
                     } else {
-                        Log.d("Mensaje", "Tarea no Editada")
+                        Log.d("Mensaje", "Tarea no Editada ${response.message()}")
                     }
                 } catch (e: Exception) {
                     Log.d("Mensaje", e.message.toString())
@@ -185,10 +183,10 @@ class TasksDao {
     }
 
     fun updateStatus(idTarea: String, estatus: String) {
-        var url = idTarea + "&" + estatus
-        url.trim()
-        Log.d("url", url)
-        val callback = InitialApplication.webServiceGlobalTasks.updateStatus(url)
+//        var url = idTarea + "&" + estatus
+//        url.trim()
+//        Log.d("url", url)
+        val callback = InitialApplication.webServiceGlobalTasks.updateStatus(idTarea, estatus)
 //        val value: Response<String> = callback.execute()
 //        Log.d("Mensaje", value.toString())
         callback.enqueue(object : Callback<String> {
