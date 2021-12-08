@@ -4,21 +4,13 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
 import com.example.agileus.utils.Constantes
-import androidx.activity.OnBackPressedCallback
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import com.example.agileus.R
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 
 
 class ListContactsFragment : Fragment() {

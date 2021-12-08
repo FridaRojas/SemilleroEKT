@@ -1,4 +1,4 @@
-package com.example.agileus.ui.login.data.model
+package com.example.agileus.models
 
 data class Users(
     val correo: String,

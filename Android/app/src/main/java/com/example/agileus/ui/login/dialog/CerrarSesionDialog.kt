@@ -10,13 +10,13 @@ import com.example.agileus.R
 import com.example.agileus.utils.Constantes.id
 
 
-class RecuperaPasswordDialog (val objeto : DialogoListen) : DialogFragment() {
+class CerrarSesionDialog (val objeto : DialogoListen) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
-            builder.setMessage("¿Desea salir de la sesión?")
+            builder.setMessage("¿Desea salir de Agile Us?")
                 .setPositiveButton("Sí",
                     DialogInterface.OnClickListener { dialog, id ->
                         objeto.siDisparar("Sesión Finalizada")

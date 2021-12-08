@@ -1,14 +1,12 @@
-package com.example.agileus.ui.login.data.dao
+package com.example.agileus.webservices.dao
 
-import android.util.Log
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.ui.login.data.model.*
-import com.example.agileus.ui.login.data.service.LoginApi
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idnombre
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.rol
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
-import retrofit2.Call
+import com.example.agileus.models.LoginResponse
+import com.example.agileus.models.Users
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idnombre
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.rol
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
 import retrofit2.Response
 
 class LoginDao {
@@ -21,7 +19,6 @@ class LoginDao {
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
        // lateinit var user:LoginResponse
         if (responseDos.isSuccessful) {
-
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
                 //Log.d("almacenar", "${almacenar.data.id}")

@@ -1,22 +1,15 @@
-package com.example.agileus.ui.login.ui.login
+package com.example.agileus.ui.login.iniciosesion
 
 
-import android.content.Intent
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
-import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.login.data.dao.LoginDao
-import com.example.agileus.ui.login.data.model.LoginResponse
-import com.example.agileus.ui.login.data.model.Users
-import com.example.agileus.ui.login.repository.Repository
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
+import com.example.agileus.webservices.dao.LoginDao
+import com.example.agileus.models.LoginResponse
+import com.example.agileus.models.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,12 +25,9 @@ class InicioSesionViewModel : ViewModel() {
     //var usuariosShared = MutableLiveData<List<Users>>()
     //private val repository = Repository()
 
-
     init {
         list = LoginDao()
-        //shared
     }
-
 
 
 // recuperarToken
@@ -50,7 +40,7 @@ class InicioSesionViewModel : ViewModel() {
                 }!!
             }
 
-            Log.d("status","$status")
+            //Log.d("status","$status")
         } catch (ex : Exception) {
             inicioExitoso.value = false
             //Log.e("Corroborar Login", ex.message.toString())
