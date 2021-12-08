@@ -520,17 +520,18 @@ public class ConfigPag {
     }
 
     @PostMapping("/verUsuario")
-    public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs, HttpSession session){
+    public String verUsuario(@ModelAttribute(value = "id") String id,Model model,
+                             RedirectAttributes redirectAttrs, HttpSession session){
         try {
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
                 User user = userDAO.buscaID(id);
                 if (user != null) {
                     model.addAttribute("user", user);
-                    return "paginas/usuarios/verUsuario";
+                    return "paginas/usuarios/VerUsuario";
                 } else {
                     redirectAttrs
                             .addFlashAttribute("mensaje", "El usuario ya no existe");
-                    return "/findAllUsuarios";
+                    return "redirect:/findAllUsuarios";
                 }
             }else {
                 return "redirect:/login";
