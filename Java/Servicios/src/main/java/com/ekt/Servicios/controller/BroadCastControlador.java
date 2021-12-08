@@ -64,8 +64,15 @@ public class BroadCastControlador {
 			}
 
 			Iterable<User> listaUsuarios =  userRepository.findByGroupID(existo.get().getIDGrupo());
+			
+			List<User> miLista = new ArrayList<>();
+			for(User usuario : listaUsuarios) {
+				if(usuario.getStatusActivo().equals("true") && !usuario.getID().equals(existo.get().getID())) {
+					miLista.add(usuario);
+				}
+			}
 
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de usuarios",listaUsuarios));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseBroadcast(String.valueOf(HttpStatus.ACCEPTED.value()),"Lista de usuarios",miLista));
 
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
