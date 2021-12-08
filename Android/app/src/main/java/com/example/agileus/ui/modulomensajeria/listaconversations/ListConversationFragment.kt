@@ -90,15 +90,13 @@ class ListConversationFragment : Fragment(), DialogoListen {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                ChatsViewModel.devuelveListaChats(Constantes.id)
-
-                ChatsViewModel.chatsdeUsuario.observe(viewLifecycleOwner, {
 
                     if (p0.isNullOrEmpty()) {
                         binding.recyclerListGroups.isVisible = true
                         binding.recyclerListGroups.isEnabled = true
+                        ChatsViewModel.devuelveListaChats(Constantes.id)
                     } else {
-                        var filtrada = it.filter {
+                        var filtrada =ChatsViewModel.listadeChats.filter {
                             it.nombreConversacionRecepto.lowercase()
                                 .contains(p0.toString().lowercase())
                         }
@@ -106,12 +104,10 @@ class ListConversationFragment : Fragment(), DialogoListen {
                         binding.recyclerListGroups.isVisible = false
                         binding.recyclerListGroups.isEnabled = false
                 }
-                })
+
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                binding.recyclerListGroups.isVisible = true
-                binding.recyclerListGroups.isEnabled = true
 
 
             }
