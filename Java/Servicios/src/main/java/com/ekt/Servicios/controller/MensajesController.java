@@ -46,7 +46,7 @@ public class MensajesController {
 	private GruposMensajeriaRepository gruposMensajeriaRepository;
 
 	@PostMapping("crearMensaje")
-	public ResponseEntity<?> crearMensaje(@RequestHeader("tokenSesion")String tokenSesion, @RequestBody Mensajes mensajes) {
+	public ResponseEntity<?> crearMensaje(@RequestHeader("tokenAuth")String tokenAuth, @RequestBody Mensajes mensajes) {
 		try {
 
 			if (mensajes.getIDEmisor() == null || mensajes.getIDReceptor() == null || mensajes.getTexto() == null
@@ -89,7 +89,7 @@ public class MensajesController {
 						,"Usuario invalido",null));
 			}
 
-			if(!emisor.get().getTokenAuth().equals(tokenSesion) || emisor.get().getTokenAuth() == null || emisor.get().getTokenAuth().equals("")) {
+			if(!emisor.get().getTokenAuth().equals(tokenAuth) || emisor.get().getTokenAuth() == null || emisor.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -279,7 +279,7 @@ public class MensajesController {
 
 
 	@PutMapping("eliminarMensaje/{idMensaje}/{idUsuario}") //&{idUsuario}
-	public ResponseEntity<?> borrarMensaje(@RequestHeader("tokenSesion")String tokenSesion, @PathVariable(value = "idMensaje") String idMensaje, @PathVariable(value = "idUsuario") String idUsuario) {
+	public ResponseEntity<?> borrarMensaje(@RequestHeader("tokenAuth")String tokenAuth, @PathVariable(value = "idMensaje") String idMensaje, @PathVariable(value = "idUsuario") String idUsuario) {
 		try {
 			if(idMensaje.length()<24 || idMensaje.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value())
@@ -299,7 +299,7 @@ public class MensajesController {
 						,"Usuario invalido",null));
 			}
 			
-			if(!usuario.get().getTokenAuth().equals(tokenSesion) || usuario.get().getTokenAuth() == null || usuario.get().getTokenAuth().equals("")) {
+			if(!usuario.get().getTokenAuth().equals(tokenAuth) || usuario.get().getTokenAuth() == null || usuario.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -332,7 +332,7 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaContactos/{miId}")
-	public ResponseEntity<?> verListaContactos(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "miId") String miId) {
+	public ResponseEntity<?> verListaContactos(@RequestHeader("tokenAuth")String tokenAuth,@PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -346,7 +346,7 @@ public class MensajesController {
 						,"Usuario invalido",miId));
 			}
 			
-			if(!existo.get().getTokenAuth().equals(tokenSesion) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
+			if(!existo.get().getTokenAuth().equals(tokenAuth) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -366,7 +366,7 @@ public class MensajesController {
 	}
 
 	@PutMapping("actualizarLeido/{idUsuario}")
-	public ResponseEntity<?> actualizarLeido(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "idUsuario") String idUsuario,@RequestBody Mensajes mensajes) {
+	public ResponseEntity<?> actualizarLeido(@RequestHeader("tokenAuth")String tokenAuth,@PathVariable(value = "idUsuario") String idUsuario,@RequestBody Mensajes mensajes) {
 		try {
 			if(mensajes.getID()==null) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -390,7 +390,7 @@ public class MensajesController {
 						,"Usuario invalido",idUsuario));
 			}
 			
-			if(!existo.get().getTokenAuth().equals(tokenSesion) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
+			if(!existo.get().getTokenAuth().equals(tokenAuth) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -533,7 +533,7 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaGrupos/{miId}")
-	public ResponseEntity<?> listaGrupos(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "miId") String miId) {
+	public ResponseEntity<?> listaGrupos(@RequestHeader("tokenAuth")String tokenAuth,@PathVariable(value = "miId") String miId) {
 		try {
 			if(miId.length()<24 || miId.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -547,7 +547,7 @@ public class MensajesController {
 						"Usuario invalido",miId));
 			}
 			
-			if(!existo.get().getTokenAuth().equals(tokenSesion) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
+			if(!existo.get().getTokenAuth().equals(tokenAuth) || existo.get().getTokenAuth() == null || existo.get().getTokenAuth().equals("")) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
@@ -569,7 +569,7 @@ public class MensajesController {
 	}
 
 	@GetMapping("listaPersonasGrupo/{idGrupo}/{idUsuario}")
-	public ResponseEntity<?> listaDePersonasEnGrupo(@RequestHeader("tokenSesion")String tokenSesion,@PathVariable(value = "idGrupo") String idGrupo,@PathVariable(value = "idUsuario")String idUsuario) {
+	public ResponseEntity<?> listaDePersonasEnGrupo(@RequestHeader("tokenAuth")String tokenAuth,@PathVariable(value = "idGrupo") String idGrupo,@PathVariable(value = "idUsuario")String idUsuario) {
 		try {
 			if(idGrupo.length()<74) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -583,7 +583,7 @@ public class MensajesController {
 						"Usuario invalido",null));
 			}
 			
-			if(!existo.get().getTokenAuth().equals(tokenSesion)) {
+			if(!existo.get().getTokenAuth().equals(tokenAuth)) {
 				return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseMensajes(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())
 						,"Token invalido",null));
 			}
