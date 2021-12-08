@@ -22,7 +22,7 @@
         <item>Alta</item>
     </string-array>
 
-    //StatusArray
+    //StatusArrayBaja
     <string-array name="statusRecycler_array">
         <item>Pendientes</item>
         <item>Iniciadas</item>

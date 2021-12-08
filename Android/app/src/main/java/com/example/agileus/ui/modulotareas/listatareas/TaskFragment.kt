@@ -84,16 +84,13 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
         //Btn Crear tareas
         if(nivel == "alto"){
             binding.btnCrearTarea.isVisible = true
+            binding.btnCrearTarea.setOnClickListener {
+                it.findNavController().navigate(R.id.formularioCrearTareasFragment)
+            }
         }else{
             binding.btnCrearTarea.isVisible = false
-
         }
 
-        binding.btnCrearTarea.setOnClickListener {
-            it.findNavController().navigate(R.id.formularioCrearTareasFragment)
-
-
-        }
     }
 
     override fun onDestroyView() {
