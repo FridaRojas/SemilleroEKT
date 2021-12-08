@@ -9,12 +9,13 @@ import org.json.JSONObject;
 
 public class GroupDAO {
 
+    String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
     public User[] muestraUsuariosGrupo(String idGrupo){
         Gson gson = new Gson();
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/buscar/" + idGrupo)
+                .url(servidor+"/api/grupo/buscar/" + idGrupo)
                 .method("GET", null)
                 .build();
         try{
@@ -39,7 +40,7 @@ public class GroupDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n    \"idUsuario\":\""+idUser+"\",\r\n    \"idGrupo\":\""+idGroup+"\"\r\n}");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/borrarUsuarioDeGrupo")
+                .url(servidor+"/api/grupo/borrarUsuarioDeGrupo")
                 .method("DELETE", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -52,14 +53,14 @@ public class GroupDAO {
         }
     }
 
-    public boolean crearGrupo(Group gr){
+    public boolean crearGrupo(Group gr) {
         boolean res=true;
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/crearGrupo/"+gr.getNombre())
+                .url(servidor+"/api/api/grupo/crearGrupo/"+gr.getNombre())
                 .method("POST", body)
                 .build();
         try {
@@ -84,7 +85,7 @@ public class GroupDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":\""+user.getID()+"\",\"correo\":\""+user.getCorreo()+"\",\"fechaInicio\":\""+user.getFechaInicio()+"\",\"fechaTermino\":\""+user.getFechaTermino()+"\",\"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\"nombre\":\""+user.getNombre()+"\",\"password\":\""+user.getPassword()+"\",\"nombreRol\":\""+user.getNombreRol()+"\",\"idGrupo\":\""+user.getIDGrupo()+"\",\"opcionales\":[],\"token\":\""+user.getToken()+"\",\"telefono\":\""+user.getTelefono()+"\",\"idSuperiorInmediato\":\""+user.getIDSuperiorInmediato()+"\",\"statusActivo\":\""+user.getStatusActivo()+"\",\"curp\":\""+user.getCurp()+"\",\"rfc\":\""+user.getRFC()+"\"}");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/actualizaUsuarioGrupo")
+                .url(servidor+"/api/grupo/actualizaUsuarioGrupo")
                 .method("PUT", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -108,7 +109,7 @@ public class GroupDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n    \"idUsuario\":\""+datos.getIdUsuario()+"\",\r\n    \"idSuperior\":\""+datos.getIdSuperior()+"\",\r\n    \"nombreRol\":\""+datos.getNombreRol()+"\"\r\n}");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/reasignaUsuarioGrupo")
+                .url(servidor+"/api/grupo/reasignaUsuarioGrupo")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -134,7 +135,7 @@ public class GroupDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/buscarPorNombre/" + parametro)
+                .url(servidor+"/api/grupo/buscarPorNombre/" + parametro)
                 .method("GET", null)
                 .build();
         try {
@@ -162,7 +163,7 @@ public class GroupDAO {
                         "\",\r\n    \"idSuperior\":\""+IdSuperior+
                         "\",\r\n    \"nombreRol\":\""+NombreRol+"\"\r\n}\r\n\r\n");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/agregarUsuario")
+                .url(servidor+"/api/grupo/agregarUsuario")
                 .method("PUT", body)
                 .addHeader("Content-Type", "application/json")
                 .build();

@@ -9,13 +9,14 @@ import java.util.ArrayList;
 
 public class UserDAO {
 
+    String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
     public ArrayList<User> muestraSubordinados(String idSuperior){
         Gson gson = new Gson();
         ArrayList<User> listaUsuarios = new ArrayList<>();
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/findByBossId/" + idSuperior)
+                .url(servidor+"/api/user/findByBossId/" + idSuperior)
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -43,7 +44,7 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/find/" + idUser)
+                .url(servidor+"/api/user/find/" + idUser)
                 .method("GET", null)
                 .build();
         try {
@@ -69,7 +70,7 @@ public class UserDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n    \"id\":\""+user.getID()+"\",\r\n    \"correo\": \""+user.getCorreo()+"\",\r\n    \"fechaInicio\": \""+user.getFechaInicio()+"\",\r\n    \"fechaTermino\": \""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\": \""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\": \""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"opcionales\": [],\r\n    \"nombreRol\":\""+user.getNombreRol()+"\" ,\r\n    \"idGrupo\":\""+user.getIDGrupo()+" \",\r\n    \"token\":\""+user.getToken()+" \",\r\n    \"telefono\": \""+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \""+user.getIDSuperiorInmediato()+"\",\r\n    \"statusActivo\": \""+user.getStatusActivo()+"\",\r\n    \"curp\": \""+user.getCurp()+"\",\r\n    \"rfc\": \""+user.getRFC()+"\"\r\n}");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/update/")
+                .url(servidor+"/api/user/update/")
                 .method("PUT", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -93,7 +94,7 @@ public class UserDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\" : \""+user.getCorreo()+"\",\r\n    \"curp\" : \""+user.getCurp()+"\",\r\n    \"rfc\" : \""+user.getRFC()+"\",\r\n    \"numeroEmpleado\" : \""+user.getNumeroEmpleado()+"\"\r\n}");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/existUser")
+                .url(servidor+"/api/user/existUser")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -116,7 +117,7 @@ public class UserDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n    \"idUsuarios\" : [\""+idUser+"\"],\r\n    \"idSuperiores\" : [\""+idSuperior+"\"]\r\n}");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/updateIdBoss")
+                .url(servidor+"/api/user/updateIdBoss")
                 .method("PUT", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -136,7 +137,7 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/findAll")
+                .url(servidor+"/api/user/findAll")
                 .method("GET", null)
                 .build();
         try {
@@ -162,7 +163,7 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/grupo/buscar/"+id)
+                .url(servidor+"/api/grupo/buscar/"+id)
                 .method("GET", null)
                 .build();
         try {
@@ -188,7 +189,7 @@ public class UserDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\": \""+us.getCorreo()+"\",\r\n    \"password\": \""+us.getPassword()+"\",\r\n    \"token\":\"wesasasa\"\r\n}\r\n\r\n\r\n");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/admin/validate")
+                .url(servidor+"/api/admin/validate")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -215,7 +216,7 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/findAll")
+                .url(servidor+"/api/user/findAll")
                 .method("GET", null)
                 .build();
         try {
@@ -241,7 +242,7 @@ public class UserDAO {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\r\n  \"correo\":\""+user.getCorreo()+"\",\r\n    \"fechaInicio\":\""+user.getFechaInicio()+"\",\r\n    \"fechaTermino\":\""+user.getFechaTermino()+"\",\r\n    \"numeroEmpleado\":\""+user.getNumeroEmpleado()+"\",\r\n    \"nombre\":\""+user.getNombre()+"\",\r\n    \"password\": \""+user.getPassword()+"\",\r\n    \"nombreRol\": \"\",\r\n    \"idGrupo\": \"\",\r\n    \"opcionales\": [],\r\n    \"token\": \"\",\r\n    \"telefono\":\""+user.getTelefono()+"\",\r\n    \"idSuperiorInmediato\": \"\",\r\n    \"statusActivo\": \"true\",\r\n    \"curp\":\""+user.getCurp()+"\",\r\n    \"rfc\":\""+user.getRFC()+"\"\r\n}");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/create")
+                .url(servidor+"/api/user/create")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -268,7 +269,7 @@ public class UserDAO {
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/delete/"+id)
+                .url(servidor+"/api/user/delete/"+id)
                 .method("DELETE", body)
                 .build();
         try {
@@ -287,7 +288,7 @@ public class UserDAO {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         Request request = new Request.Builder()
-                .url("http://localhost:3040/api/user/busquedaUsuario/" + parametro)
+                .url(servidor+"/api/user/busquedaUsuario/" + parametro)
                 .method("GET", null)
                 .build();
         try {
