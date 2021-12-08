@@ -86,6 +86,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidAppear(_ animated: Bool) {
         ejecucionServicios()
+        configuracion_cantidades()
     }
     
     // Funcion para ejecutar servicios
@@ -138,6 +139,41 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                 configura_label_usuario(nombre: "Mi equipo")
                 
                 if let lista_usuarios = (arrUsuarios as? [Usuario]) {
+                    usuarios_cantidades = [Any]()
+                    usuarios_cantidades_broad = [Any]()
+                    for i in lista_usuarios {
+                        serviciosMensajesPorLider(idUsuario: i.id, nombre: i.nombre)
+                        //serviciosBroadcastPorLider(idUsuario: i.id, nombre: i.nombre)
+                    }
+                }
+            } else {
+                serviciosBroadcast(idUsuario: userID)
+                serviciosMensajes(idUsuario: userID)
+                configura_label_usuario(nombre: userName)
+            }
+        }
+    }
+    
+    func serviciosUsuariosPorFecha(filtros: [String]) {
+        if let lista_usuarios = (arrUsuarios as? [Usuario]){
+            for i in lista_usuarios {
+                serviciosMensajesPorLiderFiltrado(filtros: filtros, idUsuario: i.id, nombre: i.nombre)
+                
+            }
+        }
+        
+        
+        /*adaptadorServicios.serviciosWeb(idUsuario: userID) {
+            [self] (Datos) -> Void in
+            
+            arrUsuarios = Datos
+            
+            if arrUsuarios!.count > 0 {
+                configura_label_usuario(nombre: "Mi equipo")
+                
+                if let lista_usuarios = (arrUsuarios as? [Usuario]) {
+                    usuarios_cantidades = [Any]()
+                    usuarios_cantidades_broad = [Any]()
                     for i in lista_usuarios {
                         serviciosMensajesPorLider(idUsuario: i.id, nombre: i.nombre)
                         serviciosBroadcastPorLider(idUsuario: i.id, nombre: i.nombre)
@@ -148,7 +184,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                 serviciosMensajes(idUsuario: userID)
                 configura_label_usuario(nombre: userName)
             }
-        }
+        }*/
     }
         
     func serviciosBroadcast(idUsuario: String) {
@@ -167,10 +203,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             mensajesBroad = Datos
             cantidad_mensajes_broad = cantidadDeBroad(mensaje_broad: mensajesBroad! as! [Broadcast], cantidades: cantidad_mensajes_broad, idUsuario:
                                                      idUsuario)
-            
-            print("enbroadlider cantidad \(cantidad_mensajes_broad)")
             cantidad_mensajes_broad_usu = cantidadDeBroad(mensaje_broad: mensajesBroad! as! [Broadcast], idUsuario: idUsuario)
-            print("enbroadlider \(cantidad_mensajes_broad_usu)")
             serviciosBroadcastRecibidosLider(idUsuario: idUsuario)
             usuarios_cantidades_broad.append([nombre, cantidad_mensajes_broad_usu[0], cantidad_mensajes_broad_usu[1]])
             
@@ -219,7 +252,27 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             configura_label_usuario(nombre: filtros[3])
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
-    } // Fin funciones de servicioes web <---
+    }
+    
+    func serviciosMensajesPorLiderFiltrado(filtros: [String], idUsuario: String, nombre: String) {
+        adaptadorServicios.servicioWebMensajesAdapter(idUsuario: idUsuario) {
+                [self] (Datos) -> Void in
+            mensajes = Datos
+            cantidad_mensajes = cantidadDeMensajesPorFecha(mensaje: mensajes! as! [Mensajes], cantidades: cantidad_mensajes, idUsuario: idUsuario, fechaIni: filtros[0], fechaFin: filtros[1])
+            
+            //(mensaje: mensajes! as! [Mensajes], cantidades: cantidad_mensajes, idUsuario: idUsuario)
+            
+            usuarios_cantidades.append(cantidadDeMensajesPorFechaUsuario(mensaje: mensajes! as! [Mensajes], idUsuario: idUsuario, nombre: nombre, fechaIni: filtros[0], fechaFin: filtros[1]))
+                                       
+            llenar_pie_chart(mensajes: cantidad_mensajes)
+        }
+    }
+
+    
+    
+    
+    
+    // Fin funciones de servicioes web <---
     
         
     // Confiuraciones de graficos --->
@@ -433,7 +486,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func llenar_bar_chart_general(tipo: String, datos: [Any]) {
         
-        var arrGeneral = datos
+        let arrGeneral = datos
         
         if !piechart.isEmpty(){
             piechart.removeFromSuperview()
@@ -448,25 +501,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         var cantEnviados = [Int]()
         var cantRecibidos = [Int]()
         var cantLeidos = [Int]()
-        
-        /*usuarios_cantidades.append(usuarios_cantidades[0])
-        usuarios_cantidades.append(usuarios_cantidades[1])
-        
-        usuarios_cantidades.append(usuarios_cantidades[0])
-        usuarios_cantidades.append(usuarios_cantidades[1])
-        
-        usuarios_cantidades.append(usuarios_cantidades[0])
-        usuarios_cantidades.append(usuarios_cantidades[1])
-        
-        usuarios_cantidades.append(usuarios_cantidades[0])
-        usuarios_cantidades.append(usuarios_cantidades[1])
-        
-        usuarios_cantidades.append(usuarios_cantidades[0])
-        usuarios_cantidades.append(usuarios_cantidades[1])
-        
-        usuarios_cantidades.append(usuarios_cantidades[0])
-        usuarios_cantidades.append(usuarios_cantidades[1])*/
-        
+                
         // llena arreglos de acuerdo a las cantidades
         for i in datos {
             let dato = i as! [Any]
@@ -524,8 +559,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             barSpace = 0.03
             barWidth = 0.25
         } else if tipo == "broadcast" {
-            groupSpace = 0.20
-            barSpace = 0.03
+            groupSpace = 0.10
+            barSpace = 0.02
             barWidth = 0.10
         }
         
@@ -540,20 +575,30 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         chartData.groupBars(fromX: Double(inicio), groupSpace: groupSpace, barSpace: barSpace)
     
         barchartGeneral.notifyDataSetChanged()
-
         barchartGeneral.data = chartData
-        barchartGeneral.setVisibleXRangeMaximum(2.0)
         
-        //barchartGeneral.setVisibleXRangeMaximum(3.0)
-        
-        
+        if tipo == "mensajes" {
+            barchartGeneral.setVisibleXRangeMaximum(3.0)
+        } else if tipo == "broadcast" {
+            barchartGeneral.setVisibleXRangeMaximum(2.0)
+        }
+
         barchartGeneral.doubleTapToZoomEnabled = false
         
         let xaxis = barchartGeneral.xAxis
         xaxis.labelPosition = .bottom
         xaxis.centerAxisLabelsEnabled = true
         xaxis.valueFormatter = IndexAxisValueFormatter(values:nombreUsuarios)
+        
         xaxis.granularity = 1
+        
+        /*if tipo == "mensajes" {
+            xaxis.granularity = 1
+        } else if tipo == "broadcast" {
+            xaxis.granularity = 2
+        }*/
+        
+        print(nombreUsuarios)
         
         viewChart.addSubview(barchartGeneral)
         barchartGeneral.animate(yAxisDuration: 0.8, easingOption: ChartEasingOption.easeInOutQuad)
@@ -589,12 +634,33 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         let modal_form = adaptadorModal.crear_modal_funcion(datos: arrUsuarios!, Accion_Confirmacion_completion: {
             [self](Filtro) -> Void in
-              
-            lblNombreu.text = (Filtro[3] as! String)
-                    
-            serviciosTareasFiltrado(filtros: Filtro as! [String])
-            serviciosMensajesFiltrado(filtros: Filtro as! [String])
-            serviciosBroadcast(idUsuario: Filtro[2] as! String)
+            
+
+            if Filtro.count > 2 {
+                
+                if Filtro[3] as! String == "Mi equipo" {
+                    configuracion_cantidades()
+                    lblNombreu.text = Filtro[3] as! String
+                    serviciosUsuariosPorFecha(filtros: Filtro as! [String])
+                } else {
+                    serviciosTareasFiltrado(filtros: Filtro as! [String])
+                    serviciosMensajesFiltrado(filtros: Filtro as! [String])
+                    serviciosBroadcast(idUsuario: Filtro[2] as! String)
+                    lblNombreu.text = (Filtro[3] as! String)
+                }
+            } else if Filtro.count <= 2 {
+                
+                if Filtro[1] as! String == "Mi equipo" {
+                    configuracion_cantidades()
+                    serviciosUsuarios()
+                } else {
+                    //serviciosTareas(idUsuario: Filtro[1] as! String)
+                    serviciosMensajes(idUsuario: Filtro[0] as! String)
+                    serviciosBroadcast(idUsuario: Filtro[0] as! String)
+                    lblNombreu.text = (Filtro[1] as! String)
+                }
+                
+            }
             
             //Regresar al menu de mensajes
             optionstAB.selectedSegmentIndex = 0
@@ -740,6 +806,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         if optionstAB.selectedSegmentIndex == 0 {
             if seleccionado == 0 {
                 llenar_bar_chart_general(tipo: "mensajes", datos: usuarios_cantidades)
+                //llenar_bar_chart_general(tipo: "broadcast", datos: usuarios_cantidades_broad)
             } else if seleccionado == 1 {
                 llenar_bar_chart_general(tipo: "broadcast", datos: usuarios_cantidades_broad)
             }

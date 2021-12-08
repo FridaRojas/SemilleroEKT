@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
+		4912A080276060280066AE1B /* BroadcastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4912A07F276060280066AE1B /* BroadcastModel.swift */; };
 		4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EADD274D5B5200FA0380 /* Funciones_Date.swift */; };
 		4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */; };
 		4916EAE9275005DF00FA0380 /* Usuarios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAE8275005DF00FA0380 /* Usuarios.swift */; };
@@ -58,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4912A07F276060280066AE1B /* BroadcastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastModel.swift; sourceTree = "<group>"; };
 		4916EADD274D5B5200FA0380 /* Funciones_Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Date.swift; sourceTree = "<group>"; };
 		4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdaptadorServicios.swift; sourceTree = "<group>"; };
 		4916EAE8275005DF00FA0380 /* Usuarios.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Usuarios.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				494E588F27599FCC00F85AF6 /* TareasModel.swift */,
 				494E58912759A00700F85AF6 /* MensajesModel.swift */,
 				494E58932759A02B00F85AF6 /* UsuariosModel.swift */,
+				4912A07F276060280066AE1B /* BroadcastModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 			files = (
 				49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */,
 				D4E69C7C2746BD81002121E4 /* ViewController.swift in Sources */,
+				4912A080276060280066AE1B /* BroadcastModel.swift in Sources */,
 				494E58922759A00700F85AF6 /* MensajesModel.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */,

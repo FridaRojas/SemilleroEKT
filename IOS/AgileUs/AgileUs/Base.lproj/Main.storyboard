@@ -282,10 +282,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AeM-Up-c1t">
-                                <rect key="frame" x="16" y="481" width="62" height="59"/>
+                                <rect key="frame" x="14" y="482" width="71" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="ic_Bar-1"/>
+                                <buttonConfiguration key="configuration" style="plain" image="ic_Bar-1" imagePlacement="top" title="Todos"/>
                                 <connections>
                                     <action selector="btnMostrarGeneral:" destination="Mnh-GU-nQA" eventType="touchUpInside" id="553-7J-yD7"/>
                                 </connections>

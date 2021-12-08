@@ -218,7 +218,36 @@ extension UIViewController {
         var enviados = 0
         
         for i in mensaje {
-            
+            let fechaEnv = "\(i.fechaEnviado)".prefix(10)
+            fechaEnviado = Date().convertir_string_servicio_a_fecha(fecha: String(fechaEnv))
+            if fechaEnviado! >= fechaInicial && fechaEnviado! <= fechaFinal {
+                if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
+                    recibidos += 1
+                }
+                
+                if i.idreceptor == idUsuario && i.statusLeido == true {
+                    leidos += 1
+                }
+                
+                if i.idemisor == idUsuario && i.statusEnviado == true {
+                    enviados += 1
+                }
+            }
+        }
+        return [enviados, recibidos, leidos]
+    }
+    
+    func cantidadDeMensajesPorFechaUsuario(mensaje: [Mensajes], idUsuario: String, nombre: String, fechaIni: String, fechaFin: String) -> [Any] {
+        
+        var fechaEnviado:Date?
+        let fechaInicial = Date().convertir_string_a_fecha(fecha: fechaIni)
+        let fechaFinal = Date().convertir_string_a_fecha(fecha: fechaFin)
+
+        var leidos = 0
+        var recibidos = 0
+        var enviados = 0
+        
+        for i in mensaje {
             let fechaEnv = "\(i.fechaEnviado)".prefix(10)
             fechaEnviado = Date().convertir_string_servicio_a_fecha(fecha: String(fechaEnv))
             if fechaEnviado! >= fechaInicial && fechaEnviado! <= fechaFinal {
@@ -236,8 +265,42 @@ extension UIViewController {
             }
         }
         
-        return [enviados, recibidos, leidos]
+        return [nombre, enviados, recibidos, leidos]
         
+    }
+    
+    
+    func cantidadDeMensajesPorFecha(mensaje: [Mensajes], cantidades: [Int], idUsuario: String, fechaIni: String, fechaFin: String) -> [Int] {
+        
+        // quitar por idUsuario
+        //let usuario = "618b05c12d3d1d235de0ade0"
+        // FECHAS
+        var fechaEnviado:Date?
+        let fechaInicial = Date().convertir_string_a_fecha(fecha: fechaIni)
+        let fechaFinal = Date().convertir_string_a_fecha(fecha: fechaFin)
+
+        var enviados = cantidades[0]
+        var recibidos = cantidades[1]
+        var leidos = cantidades[2]
+        
+        for i in mensaje {
+            let fechaEnv = "\(i.fechaEnviado)".prefix(10)
+            fechaEnviado = Date().convertir_string_servicio_a_fecha(fecha: String(fechaEnv))
+            if fechaEnviado! >= fechaInicial && fechaEnviado! <= fechaFinal {
+                if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
+                    recibidos += 1
+                }
+                
+                if i.idreceptor == idUsuario && i.statusLeido == true {
+                    leidos += 1
+                }
+                
+                if i.idemisor == idUsuario && i.statusEnviado == true {
+                    enviados += 1
+                }
+            }
+        }
+        return [enviados, recibidos, leidos]
     }
     
     

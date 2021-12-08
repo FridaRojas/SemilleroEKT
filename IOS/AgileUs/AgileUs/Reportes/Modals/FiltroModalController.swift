@@ -31,6 +31,8 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet weak var txtFechaIni: UITextField!
     @IBOutlet weak var txtFechaFin: UITextField!
     @IBOutlet weak var txtUsuario: UITextField!
+    @IBOutlet weak var imgTitulo: UIImageView!
+    @IBOutlet weak var swTodo: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +46,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     func configuraciones() {
         opPeriodos.selectedSegmentTintColor = Hexadecimal_Color(hex: "66BB6A")
+        imgTitulo.backgroundColor = Hexadecimal_Color(hex: "66BB6A")
     }
     
     @IBAction func cancelar(_ sender: Any) {
@@ -221,6 +224,12 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     func obtener_usuarios() {
         opciones_usuario = [String]()
+        
+        if !usuarios!.isEmpty {
+            let todos = Usuario(id: "", nombre: "Mi equipo", fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "")
+            opciones_usuario.append(todos)
+        }
+        
         let usuarioL = Usuario(id: userID, nombre: userName, fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "")
      
         opciones_usuario.append(usuarioL)
@@ -292,45 +301,58 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         var info = [Any]()
         
-       switch opPeriodos.selectedSegmentIndex {
-        case 0:
-           if txtFecha.text == "" || txtUsuario.text == "" {
-               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
-               return
-           }
-           
-           info = [txtFecha.text!, txtFecha.text!, idUsuario!, txtUsuario.text!]
-                      
-       case 1:
-           if txtPeriodo.text == "" || txtUsuario.text == "" {
-               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
-               return
-           }
-           
-           let fechas_mes = Date().obtener_primer_ultimo_dia_mes(mes: txtPeriodo.text!)
-           
-           info = [fechas_mes[0], fechas_mes[1], idUsuario!, txtUsuario.text!]
-       case 2:
-           if txtPeriodo.text == "" || txtUsuario.text == "" {
-               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
-               return
-           }
-           
-           let fechas_anio = Date().obtener_primer_ultimo_dia_anio(anio: txtPeriodo.text!)
-           
-           info = [fechas_anio[0], fechas_anio[1], idUsuario!, txtUsuario.text!]
-       case 3:
-           
-           if txtFechaIni.text == "" || txtFechaFin.text == "" || txtUsuario.text == "" {
-               alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
-               return
-           }
-           
-           info = [txtFechaIni.text!, txtFechaFin.text!, idUsuario!, txtUsuario.text!]
-           
-        default:
-            info = ["","","",""]
+        if !swTodo.isOn {
+            switch opPeriodos.selectedSegmentIndex {
+            case 0:
+               if txtFecha.text == "" || txtUsuario.text == "" {
+                   alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+                   return
+               }
+               
+               info = [txtFecha.text!, txtFecha.text!, idUsuario!, txtUsuario.text!]
+                          
+           case 1:
+               if txtPeriodo.text == "" || txtUsuario.text == "" {
+                   alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+                   return
+               }
+               
+               let fechas_mes = Date().obtener_primer_ultimo_dia_mes(mes: txtPeriodo.text!)
+               
+               info = [fechas_mes[0], fechas_mes[1], idUsuario!, txtUsuario.text!]
+           case 2:
+               if txtPeriodo.text == "" || txtUsuario.text == "" {
+                   alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+                   return
+               }
+               
+               let fechas_anio = Date().obtener_primer_ultimo_dia_anio(anio: txtPeriodo.text!)
+               
+               info = [fechas_anio[0], fechas_anio[1], idUsuario!, txtUsuario.text!]
+           case 3:
+               
+               if txtFechaIni.text == "" || txtFechaFin.text == "" || txtUsuario.text == "" {
+                   alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+                   return
+               }
+               
+               info = [txtFechaIni.text!, txtFechaFin.text!, idUsuario!, txtUsuario.text!]
+               
+            default:
+                info = ["","","",""]
+            }
+        } else {
+            
+            if txtUsuario.text == "" {
+                alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
+                return
+            }
+            
+            info = [idUsuario!, txtUsuario.text!]
+            
         }
+        
+        
         
         self.accion_confirmacion?(info)
         
@@ -338,4 +360,24 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
+    @IBAction func swithTodo(_ sender: UISwitch) {
+        
+        print(sender.isOn)
+        let valor = sender.isOn
+        
+        
+        if valor == true {
+            cambio_enabled(tipo: false)
+        } else {
+            cambio_enabled(tipo: true)
+        }
+    }
+    
+    func cambio_enabled(tipo: Bool) {
+        opPeriodos.isEnabled = tipo
+        txtFecha.isEnabled = tipo
+        txtFechaIni.isEnabled = tipo
+        txtFechaFin.isEnabled = tipo
+        txtPeriodo.isEnabled = tipo
+    }
 }

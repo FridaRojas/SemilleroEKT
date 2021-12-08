@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct ObjetoMensajes:Codable{
+    let estatus: String
+    let mensaje: String
+    let data:[Mensajes]
+}
+
 struct Mensajes:Codable {
     let id:String
     let idemisor:String
@@ -19,10 +25,3 @@ struct Mensajes:Codable {
     let idconversacion:String
 }
 
-struct Broadcast: Codable {
-    let id:String
-    let asunto:String
-    let descripcion:String
-    let idEmisor:String
-    let nombreEmisor:String
-}
