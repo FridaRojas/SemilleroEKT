@@ -44,49 +44,6 @@ public class ConfigPag {
         }
     }
 
-    @PostMapping("/eliminarUsuarioGeneral")
-    public String eliminarUsuario(@ModelAttribute(value = "id") String id,Model model, HttpSession session){
-        if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")){
-            ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(id);
-            User user = userDAO.buscaID(id);
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .build();
-            MediaType mediaType = MediaType.parse("text/plain");
-            RequestBody body = RequestBody.create(mediaType, "");
-            Request request = new Request.Builder()
-                    .url("http://localhost:3040/api/user/delete/" + id)
-                    .method("DELETE", body)
-                    .build();
-            try {
-                //limpia informacion del usuario en la db
-                Response response = client.newCall(request).execute();
-                System.out.println("el id es: " + id + "  eliminado con exito");
-                //Verificar si tiene hijos
-                if (listaSubordinados != null) {
-                    ArrayList<User> listaUsuarios = new ArrayList<>();
-                    User[] usuarios;
-                    usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
-                    for (User usuario : usuarios) {
-                        if (!usuario.getID().equals(user.getID())) {
-                            listaUsuarios.add(usuario);
-                        }
-                    }
-                    model.addAttribute("listaSubordinados", listaSubordinados);
-                    model.addAttribute("listaUsuarios", listaUsuarios);
-                    model.addAttribute("idUsuario", id);
-                    return "paginas/usuarios/ReasignaSuperior";
-                } else {
-                    return "redirect:/buscarTodosGrupos";
-                }
-            } catch (Exception e) {
-                System.out.println("Error al eliminar usuario" + e);
-            }
-            return "redirect:/findAllUsuarios";
-        }else {
-            return "redirect:/login";
-        }
-    }
-
 
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs, HttpSession session) {
@@ -650,4 +607,6 @@ public class ConfigPag {
             return "redirect:/error1";
         }
     }
+
+
 }
