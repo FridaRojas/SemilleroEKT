@@ -12,6 +12,8 @@ import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.Contacts
 import com.example.agileus.models.Estadisticas
+import com.example.agileus.models.UserMessageDetailReports
+import com.example.agileus.models.UserTaskListDetail
 import com.example.agileus.utils.Constantes
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteMensajesDao
@@ -30,7 +32,7 @@ class ReporteMensajesViewModel: ViewModel() {
     var cargaDatosExitosa = MutableLiveData<Boolean>()
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
-    lateinit var listaHijosConsumida:ArrayList<Contacts>
+    lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReports>
 
     init {
 
@@ -70,7 +72,7 @@ class ReporteMensajesViewModel: ViewModel() {
             }
     }
 
-    var listaEmpleadosAux = MutableLiveData<ArrayList<Contacts>>()
+    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReports>>()
 
     fun devuelveListaEmpleados(idUser:String){
         try {
@@ -88,7 +90,7 @@ class ReporteMensajesViewModel: ViewModel() {
                     listaEmpleadosAux.value = listaHijosConsumida
                 }
                 listaEmpleadosAux.value?.forEach {
-                    Log.e("Hijos", it.nombre)
+                    Log.e("Hijos", it.name)
                 }
 
                 Log.i("AuxList", "${listaEmpleadosAux.value}")

@@ -94,7 +94,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         binding.btnFiltroReportes.setOnClickListener {
             reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
-                empleadoUsuario = list
+                MySharedPreferences.empleadoUsuario = list
             })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
@@ -118,7 +118,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.txtRangoFechaReportes.isVisible=false
 
 
-        reporteMensajesViewModel.devuelvelistaReporte(this)
+        reporteMensajesViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it
@@ -165,7 +165,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend2.isVisible=true
 
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        reporteMensajesViewModel.devuelvelistaReporte(this)
+        reporteMensajesViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it

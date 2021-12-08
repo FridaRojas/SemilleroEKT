@@ -140,7 +140,7 @@ class ReporteMensajesDao {
         return contador_mensajes_leidos.toString()
     }
 
-    fun obtenerListaSubContactos(idUser:String): ArrayList<Contacts> {
+    fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReports> {
         try{
             //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
@@ -168,7 +168,7 @@ class ReporteMensajesDao {
         }catch (ex:Exception){
 
         }
-        return employeeList
+        return stadisticEmployeesList
     }
 
 
