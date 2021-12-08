@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.agileus.ui.modulotareas.listatareas.TaskFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_tareas_fragment"
         tools:layout="@layout/fragment_task" >
         <action
             android:id="@+id/action_navigation_dashboard_to_formularioCrearTareasFragment"
@@ -113,7 +113,7 @@
     <fragment
         android:id="@+id/detalleNivelAltoFragment"
         android:name="com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragment"
-        android:label="fragment_detalle_nivel_alto"
+        android:label="Tarea Asignada"
         tools:layout="@layout/fragment_detalle_nivel_alto">
         <argument
             android:name="tareas"

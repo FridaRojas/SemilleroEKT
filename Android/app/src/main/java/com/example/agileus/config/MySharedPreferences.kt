@@ -6,7 +6,7 @@ import com.example.agileus.ui.login.data.model.Data
 
 class MySharedPreferences(contexto: Context) {
 
-    companion object {
+    companion object{
         val TOKEN_KEY = "TOKEN_KEY"
         val SESSION_TOKEN = "TOKEN"
 
