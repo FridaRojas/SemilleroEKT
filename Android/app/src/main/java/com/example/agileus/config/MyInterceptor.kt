@@ -6,7 +6,7 @@ import okhttp3.Response
 class MyInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
-        request.header("token_sesion", "192f81c6b619123d3ea563423ed278b4bdf2c8f432fd2f54c3d1f443f729e6d9")
+        request.header("token_sesion", "c9acb094036a82eb6dbac287b6dc437b87f25c95ee954db469a4c424eacdcaba")
         return chain.proceed(request.build())
     }
 }
