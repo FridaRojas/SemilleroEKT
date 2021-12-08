@@ -47,8 +47,6 @@ class MySharedPreferences(contexto: Context) {
         return sharedPreferences.getString(PASSWORD_KEY, " ")!!
     }
 
-    fun validaSesionIniciada(): Boolean {
-        return sharedPreferences.getBoolean(SESSION_TOKEN, false)
     fun validaSesionIniciada():Boolean{
         return sharedPreferences.getBoolean(SESSION_TOKEN,false)
     }
