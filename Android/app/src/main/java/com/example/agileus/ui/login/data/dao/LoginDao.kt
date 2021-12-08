@@ -26,26 +26,35 @@ class LoginDao {
 
     fun iniciarSesion(usuario:Users): Boolean {
 
-    var STATUS: Boolean=false
-//    val STATUS_BAD_REQUEST = "BAD_REQUEST"
+        var STATUS: Boolean=false
+        //    val STATUS_BAD_REQUEST = "BAD_REQUEST"
 
-    fun iniciarSesion(usuario: Users): Boolean {
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
        // lateinit var user:LoginResponse
-        if (responseDos.isSuccessful) {
 
-           if (responseDos.body() != null){
-                val almacenar:LoginResponse = responseDos.body()!!
-             //  Log.i("almacenar", "${almacenar.msj}")
-               return almacenar.status.equals(STATUS_ACCEPTED)
-           } else{
-               return false
-           }
-       }
-        else {
-            return false
-       }
+        if (responseDos.body() != null) {
+            val almacenar: LoginResponse = responseDos.body()!!
+            //Log.d("almacenar", "${almacenar.data.id}")
+            //idUser= almacenar.data.id.toString()
+            //rol= almacenar.data.nombreRol.toString()
+            if (almacenar.status == "ACCEPTED")
+            {
+                STATUS=true
+//                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
+                idUser = almacenar.data.id.toString()
+                rol=almacenar.data.nombreRol.toString()
+                idnombre=almacenar.data.nombre.toString()
+            }
+            if (almacenar.status =="BAD_REQUEST")
+            {
+                //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
+                STATUS=false
+
+            }
+            status=STATUS
+        }
+        return STATUS
     }
 
     suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
@@ -79,32 +88,6 @@ class LoginDao {
             Log.e("error", e.toString())
         }
         return listaUsers
-    }
-
-}
-            if (responseDos.body() != null) {
-                val almacenar: LoginResponse = responseDos.body()!!
-                //Log.d("almacenar", "${almacenar.data.id}")
-                //idUser= almacenar.data.id.toString()
-                //rol= almacenar.data.nombreRol.toString()
-                if (almacenar.status == "ACCEPTED")
-                {
-                    STATUS=true
-//                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
-                    idUser = almacenar.data.id.toString()
-                    rol=almacenar.data.nombreRol.toString()
-                    idnombre=almacenar.data.nombre.toString()
-                }
-                if (almacenar.status =="BAD_REQUEST")
-                {
-                 //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
-                    STATUS=false
-
-                }
-                status=STATUS
-            }
-        }
-    return STATUS
     }
 }
 
