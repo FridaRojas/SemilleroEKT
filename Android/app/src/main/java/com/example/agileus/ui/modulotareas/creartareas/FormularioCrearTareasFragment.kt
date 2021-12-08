@@ -66,10 +66,10 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     var urlPost             : String = ""
     var anioInicio          : Int? = null
     var anioFin             : Int? = null
-    var mesInicio           : String = ""
-    var mesFin              : String = ""
-    var diaInicio           : String = ""
-    var diaFin              : String = ""
+    var mesInicio           : Int? = null
+    var mesFin              : Int? = null
+    var diaInicio           : Int? = null
+    var diaFin              : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,18 +148,18 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
 
                     if(anioInicio==anioFin){                        // 2021 == 2021
                         if (mesInicio==mesFin){                     // Si mes inicio es igual a mes fin del mismo año
-                            if (diaInicio<=diaFin){             // Es un dia menor o igual del mismo mes
+                            if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
                                 confirmarTarea()
-                            }else if(diaInicio>diaFin){
+                            }else if(diaInicio!!>diaFin!!){
                                 Toast.makeText( context,
                                     "Fecha de inicio no puede ser mayor a fecha de vencimiento",
                                     Toast.LENGTH_SHORT).show()
                             }
                         }
 
-                        if(mesInicio<mesFin){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
+                        if(mesInicio!!<mesFin!!){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
                             confirmarTarea()
-                        }else if (mesInicio>mesFin){
+                        }else if (mesInicio!!>mesFin!!){
                             Toast.makeText( context,
                                 "Fecha de inicio no puede ser mayor a fecha de vencimiento",
                                 Toast.LENGTH_SHORT).show()
@@ -268,8 +268,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     // *** INTERFACES ***
     override fun onDateInicioSelected(anio: Int, mes:String, dia:String) {
         anioInicio  = anio
-        mesInicio   = mes
-        diaInicio   = dia
+        mesInicio   = mes.toInt()
+        diaInicio   = dia.toInt()
 
         val fecha=binding.edtFechaInicio
         val fechaObtenida = "$anio-$mes-$dia"
@@ -280,8 +280,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     }
     override fun onDateFinSelected(anio: Int, mes:String, dia:String) {
         anioFin  = anio
-        mesFin   = mes
-        diaFin   = dia
+        mesFin   = mes.toInt()
+        diaFin   = dia.toInt()
 
         val fecha=binding.edtFechaFin
         val fechaObtenida = "$anio-$mes-$dia"
