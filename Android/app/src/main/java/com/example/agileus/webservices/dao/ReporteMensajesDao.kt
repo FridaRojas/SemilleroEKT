@@ -1,6 +1,8 @@
 package com.example.agileus.webservices.dao
+import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
@@ -10,6 +12,7 @@ import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniE
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.id_broadcast
 import com.example.agileus.models.*
+import com.example.agileus.ui.HomeActivity
 import retrofit2.Response
 import java.time.ZonedDateTime
 
@@ -126,6 +129,18 @@ class ReporteMensajesDao {
                 contador_m_totales,
                 broadcastSize,
                 contador_recibidos_B
+            )
+        }else{
+            Log.d("RMDao", "NoConection to Broadcast or Messages")
+            messageDetail = UserMessageDetailReports(
+                idBusqueda,
+                searchName,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
             )
         }
         /*

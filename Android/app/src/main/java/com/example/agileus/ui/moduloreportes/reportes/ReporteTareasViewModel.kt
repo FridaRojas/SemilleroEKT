@@ -29,6 +29,7 @@ class ReporteTareasViewModel: ViewModel() {
     var leidas = MutableLiveData<String>()
     var lista : ReporteTareasDao// este es el dao del que se va a traer
     var cargaDatosExitosa = MutableLiveData<Boolean>()
+    var cargaOperacionesEstadisticasTareas = MutableLiveData<Boolean>()
 
 
     init {
@@ -42,6 +43,7 @@ class ReporteTareasViewModel: ViewModel() {
         totales.value =  "0"
         leidas.value =  "0"
         cargaDatosExitosa.value = false
+        cargaOperacionesEstadisticasTareas.value = false
 
     }
 
@@ -74,6 +76,7 @@ class ReporteTareasViewModel: ViewModel() {
     }
     var listaEmpleadosAux = MutableLiveData<ArrayList<UserTaskListDetail>>()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun devuelveListaEmpleados(idUser:String){
         try {
             viewModelScope.launch {
@@ -99,5 +102,6 @@ class ReporteTareasViewModel: ViewModel() {
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
+        cargaOperacionesEstadisticasTareas.value = true
     }
 }

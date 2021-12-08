@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -45,6 +46,7 @@ import javax.xml.datatype.DatatypeConstants.DAYS
 
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener {
 
     private lateinit var reporteMensajesViewModel: ReporteMensajesViewModel
@@ -77,9 +79,10 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        reporteMensajesViewModel = ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
         _binding = ReporteMensajesFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        reporteMensajesViewModel = ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
 
         //MySharedPreferences.idUsuarioEstadisticas = MySharedPreferences.idUsuario
 
@@ -89,6 +92,17 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
+            MySharedPreferences.empleadoUsuario = list
+            Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
+        })
+        reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, Observer{
+            Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
+            binding.txtRangoFechaReportes.isVisible = true
+            binding.txtRangoFechaReportes.setText("CargaCompleta")
+            cambiarGrafica(tipo_grafica)
+        } )
 
         reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
 
@@ -106,8 +120,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             findNavController().navigate(action,  extras)
         }
 
-            cambiarGrafica(tipo_grafica)
 }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras() {
 
@@ -115,7 +129,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend1.isVisible=false
         binding.colorlegend2.isVisible=false
         binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        binding.txtRangoFechaReportes.isVisible=false
+        //binding.txtRangoFechaReportes.isVisible=false
 
 
         reporteMensajesViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
@@ -174,7 +188,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-            binding.txtRangoFechaReportes.isVisible=false
+            //binding.txtRangoFechaReportes.isVisible=false
 
             binding.txtPrimerLegend.text="Enviados"
             binding.txtSegundoLegend.text="Recibidos"

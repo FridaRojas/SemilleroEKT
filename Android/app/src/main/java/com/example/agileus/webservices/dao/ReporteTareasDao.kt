@@ -62,6 +62,7 @@ class ReporteTareasDao {
         return listaRecycler
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun recoverUserTaskDetails(idBusqueda: String, nombreBusqueda: String):UserTaskListDetail{
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
@@ -69,7 +70,12 @@ class ReporteTareasDao {
         var taskDetail= UserTaskListDetail()
 
         if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
-            taskDetail = MySharedPreferences.dataEmpleadoUsuario[MySharedPreferences.dataEmpleadoUsuario.size-1]
+            try {
+                taskDetail = MySharedPreferences.dataEmpleadoUsuario[MySharedPreferences.dataEmpleadoUsuario.size-1]
+            }catch (ex:Exception){
+                Log.e("RTDao", ex.toString())
+            }
+
         }else if (ResponseTareas.isSuccessful) {
             val listaDs = ResponseTareas.body()!!
             lista = listaDs.data
@@ -213,6 +219,7 @@ class ReporteTareasDao {
         return contador_tareas_leidas.toString()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun obtenerListaSubContactos(idUser:String): ArrayList<UserTaskListDetail> {
         try{
             //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)

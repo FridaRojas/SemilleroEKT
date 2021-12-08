@@ -30,23 +30,24 @@ class ReporteMensajesViewModel: ViewModel() {
     var leidos = MutableLiveData<String>()
     var lista : ReporteMensajesDao
     var cargaDatosExitosa = MutableLiveData<Boolean>()
+    var cargaOperacionesEstadisticas = MutableLiveData<Boolean>()
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
     lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReports>
 
     init {
-
         lista = ReporteMensajesDao()
         enviados.value = "0"
         recibidos.value =  "0"
         totales.value =  "0"
         leidos.value =  "0"
         cargaDatosExitosa.value = false
-
+        cargaOperacionesEstadisticas.value = false
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte(listener: ReportesListener, id: String){
+        Log.d("Into", "devuelveListaReporte")
         viewModelScope.launch {
             try {
                 listaConsumida =  withContext(Dispatchers.IO) {
@@ -76,6 +77,7 @@ class ReporteMensajesViewModel: ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelveListaEmpleados(idUser:String){
+        Log.d("Into", "devuelveListaEmpleados")
         try {
             viewModelScope.launch {
                 listaHijosConsumida =  withContext(Dispatchers.IO) {
@@ -84,15 +86,10 @@ class ReporteMensajesViewModel: ViewModel() {
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida
                 }
-                listaEmpleadosAux.value?.forEach {
-                    Log.e("HijosM", it.name)
-                }
-
-                Log.i("AuxListM", "${listaEmpleadosAux.value}")
-                Log.i("sizeListM", "${listaHijosConsumida.size}")
             }
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
+        cargaOperacionesEstadisticas.value = true
     }
 }

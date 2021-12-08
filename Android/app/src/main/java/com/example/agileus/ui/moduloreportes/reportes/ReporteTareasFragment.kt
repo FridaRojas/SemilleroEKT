@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -77,6 +78,17 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         super.onViewCreated(view, savedInstanceState)
         //binding.txtNombreReportes.setText(MySharedPreferences.dataEmpleadoUsuario[0].name)
 
+        reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
+            MySharedPreferences.dataEmpleadoUsuario = list
+            Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
+        })
+        reporteTareasViewModel.cargaOperacionesEstadisticasTareas.observe(viewLifecycleOwner, Observer{
+            Toast.makeText(context, "COPE: ${reporteTareasViewModel.cargaOperacionesEstadisticasTareas.value}", Toast.LENGTH_LONG).show()
+            binding.txtRangoFechaReportes.isVisible = true
+            binding.txtRangoFechaReportes.setText("CargaCompleta")
+            cambiarGrafica(tipo_grafica)
+        } )
+
         reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
         binding.btnFiltroReportes.setOnClickListener {
             reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
@@ -92,7 +104,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             findNavController().navigate(action,  extras)
         }
 
-        cambiarGrafica(tipo_grafica)
+        //cambiarGrafica(tipo_grafica)
     }
 
 
