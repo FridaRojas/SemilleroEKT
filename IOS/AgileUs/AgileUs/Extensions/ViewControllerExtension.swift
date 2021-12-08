@@ -89,6 +89,9 @@ extension UIViewController{
         UserDefaults.standard.setValue(String(), forKey: "email")
         UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
         UserDefaults.standard.setValue(false, forKey: "isLogged")
+        UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+        UserDefaults.standard.setValue(String(), forKey: "idGrupo")
+        
         navigationController?.popViewController(animated: true)
     }
 }

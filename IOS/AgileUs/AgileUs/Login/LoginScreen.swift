@@ -26,6 +26,8 @@ struct User:Codable{
     let nombre: String
     let nombreRol: String
     let idsuperiorInmediato: String?
+    let tokenAuth: String
+    let idgrupo: String?
 }
 
 struct ResponseHierarchy:Codable{
@@ -73,13 +75,18 @@ class LoginScreen: UIViewController {
         rolName = userInfo.nombreRol
         let idsuperiorInmediato = userInfo.idsuperiorInmediato
         isLogged = true
+        
+        tokenAuth = userInfo.tokenAuth
+        idGrupo = userInfo.idgrupo ?? String()
 
         UserDefaults.standard.setValue(userID, forKey: "userID")
         UserDefaults.standard.setValue(userName, forKey: "userName")
         UserDefaults.standard.setValue(email, forKey: "email")
         UserDefaults.standard.setValue(employeeNumber, forKey: "employeeNumber")
         UserDefaults.standard.setValue(rolName, forKey: "rolName")
-
+        UserDefaults.standard.setValue(tokenAuth, forKey: "tokenAuth")
+        UserDefaults.standard.setValue(idGrupo, forKey: "idGrupo")
+        
         UserDefaults.standard.setValue(isLogged, forKey: "isLogged")
 
         let serverGetHierarchy = server + "user/findByBossId/" + userID

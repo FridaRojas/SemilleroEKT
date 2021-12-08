@@ -63,6 +63,8 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
         UserDefaults.standard.setValue(false, forKey: "isLogged")
         navigationController?.popViewController(animated: true)
+        UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+        UserDefaults.standard.setValue(String(), forKey: "idGrupo")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
