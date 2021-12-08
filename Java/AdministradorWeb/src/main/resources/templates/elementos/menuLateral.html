@@ -40,7 +40,7 @@
         </ul>
 
         <div class="sidebar-footer" style="text-align: center; position:fixed; bottom: 0; padding: 2% 2% ">
-            <form action="/login">
+            <form th:action="@{/logout}" method="post">
                 <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
             </form>
         </div>

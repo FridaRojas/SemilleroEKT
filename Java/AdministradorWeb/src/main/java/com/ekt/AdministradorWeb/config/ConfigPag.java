@@ -101,6 +101,7 @@ public class ConfigPag {
             //si es true, entra a inicio, si es false regresa a login con un mensaje de error
             if (res){
                 session.setAttribute("user", res);
+                session.setMaxInactiveInterval(10*60);
                 return "redirect:/findAllUsuarios";
             }else{
                 session.setAttribute("user", res);
@@ -700,5 +701,15 @@ public class ConfigPag {
             return "redirect:/error1";
         }
         return "paginas/organigramas/inicioOrganigramas.html";
+    }
+
+    @PostMapping("/logout")
+    public String logOut(HttpSession session){
+        try {
+            session.setAttribute("user", false);
+            return "redirect:/login";
+        }catch (Exception e){
+            return "redirect:/error1";
+        }
     }
 }
