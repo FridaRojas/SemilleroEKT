@@ -34,6 +34,7 @@
 		AEF5ADB527548E2800AAC104 /* DataPersonas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF5ADB427548E2800AAC104 /* DataPersonas.swift */; };
 		C910568F2750145700CA5A89 /* Help_String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C910568E2750145700CA5A89 /* Help_String.swift */; };
 		C9436A762755795A005B1922 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C9436A7527557959005B1922 /* GoogleService-Info.plist */; };
+		C94CC350276106D50091B856 /* InfoTareas.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94CC34F276106D50091B856 /* InfoTareas.swift */; };
 		C97774A8274C38DA001671E5 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97774A7274C38DA001671E5 /* Api.swift */; };
 		C9FAD60D275698B60017B7B5 /* Prov_Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FAD60C275698B60017B7B5 /* Prov_Firebase.swift */; };
 		D4E69C782746BD81002121E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69C772746BD81002121E4 /* AppDelegate.swift */; };
@@ -101,6 +102,7 @@
 		C910568E2750145700CA5A89 /* Help_String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help_String.swift; sourceTree = "<group>"; };
 		C927DABF274E93CD00D3C1B7 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C9436A7527557959005B1922 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C94CC34F276106D50091B856 /* InfoTareas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTareas.swift; sourceTree = "<group>"; };
 		C97774A7274C38DA001671E5 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		C9FAD60C275698B60017B7B5 /* Prov_Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prov_Firebase.swift; sourceTree = "<group>"; };
 		D4E69C742746BD81002121E4 /* AgileUs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileUs.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +236,7 @@
 				AE4918ED27570A2D000162AA /* NewTask.swift */,
 				AEF5ADB427548E2800AAC104 /* DataPersonas.swift */,
 				AEB4BFD8275854BA000526F6 /* Message.swift */,
+				C94CC34F276106D50091B856 /* InfoTareas.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 				AEB4BFD9275854BA000526F6 /* Message.swift in Sources */,
 				AE43C31B275595FC0035A514 /* VisorPDF.swift in Sources */,
 				AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */,
+				C94CC350276106D50091B856 /* InfoTareas.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
