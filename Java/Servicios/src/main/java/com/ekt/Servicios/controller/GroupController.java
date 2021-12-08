@@ -300,6 +300,8 @@ public class GroupController {
     @PutMapping("/actualizaUsuarioGrupo")
     public ResponseEntity<?> actualizaUsuarioGrupo(@RequestBody User user) {
         try {
+            String pwd = userService.cifrar(user.getPassword());
+            user.setPassword(pwd);
             if (groupService.actualizaUsuario(user)) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario en grupo actualizado correctamente", ""));
             } else {
