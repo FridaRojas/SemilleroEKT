@@ -32,6 +32,8 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
     var selector_Persona = UIPickerView()
     var selector_Prioridad = UIPickerView()
     var grupoID = "GRUPOID1"
+    var idUser = "61b0e65b1e484f08fcbf594c"
+    var nombreUser = "Carlos Nitsuga Hernandez Hernandez"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,8 +81,8 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
         {
         let task = Task(
                 id_grupo: grupoID,
-                id_emisor: "618e8743c613329636a769aa",
-                nombre_emisor: "Armando Manzanero",
+                id_emisor: idUser,
+                nombre_emisor: nombreUser,
                 id_receptor: seleccionado_picker_persona_id,
                 nombre_receptor: personSelectField.text,
                 fecha_ini: dateStartField.text!,
@@ -153,7 +155,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
 func MostarPersonasAsig()
             {
 
-                Api.shared.LoadPersonasAsignadas(idLider: "618b05c12d3d1d235de0ade0") {
+                Api.shared.LoadPersonasAsignadas(idLider: idUser) {
                     persona in
                     var i = 0
                     for item in persona.data

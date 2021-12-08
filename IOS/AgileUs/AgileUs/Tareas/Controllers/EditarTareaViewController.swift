@@ -34,6 +34,8 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     var seleccionado_picker_prioridad = String()
     var selector_Estatus = UIPickerView()
     var selector_Prioridad = UIPickerView()
+    var idUser = "61b0f1426d62db7974de1d2e"
+    var nombreUser = "Carlos Nitsuga Hernandez Hernandez"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -257,9 +259,9 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
         var task: Task?
 
         if observationField.text! == "" || observationField.text! == nil {
-            task = Task(id_grupo: "GRUPOID1", id_emisor: "618d9c26beec342d91d747d6", nombre_emisor: "Armando Manzanero", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status)
+            task = Task(id_grupo: "GRUPOID1", id_emisor: idUser, nombre_emisor: nombreUser, fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status)
             } else {
-                task = Task(id_grupo: "GRUPOID1", id_emisor: "618d9c26beec342d91d747d6", nombre_emisor: "Armando Manzanero", fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status, observaciones: observationField.text!)
+                task = Task(id_grupo: "GRUPOID1", id_emisor: idUser, nombre_emisor: nombreUser, fecha_ini: dateStart, fecha_fin: dateEnd, titulo: nameTaskField.text!, descripcion: descriptionText.text!, prioridad: priority, estatus: status, observaciones: observationField.text!)
             }
 
      
