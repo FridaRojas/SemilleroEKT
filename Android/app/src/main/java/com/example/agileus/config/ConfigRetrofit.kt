@@ -55,31 +55,31 @@ class ConfigRetrofit {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
             // .client(clientBuilder.build())
-            // .client(client)
+             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return mRetrofit.create(TasksApi::class.java)
     }
 
-    fun obtenerConfiguracionRetofitTasksPrueba(): TasksApi {
+    /*fun obtenerConfiguracionRetofitTasksPrueba(): TasksApi {
 
 
-        /*var http = OkHttpClient().newBuilder().addInterceptor(
+        *//*var http = OkHttpClient().newBuilder().addInterceptor(
             Interceptor { chain ->
                 val requestBuilder: Request.Builder = chain.request().newBuilder()
                 requestBuilder.header("token_sesion", "12345")
                 chain.proceed(requestBuilder.build())
-            }).build()*/
+            }).build()*//*
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl("http://10.97.3.24:3040/api/")
+            .baseUrl(URL_BASE_TAREAS)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return mRetrofit.create(TasksApi::class.java)
-    }
+    }*/
 
 
     fun obtenerConfiguracionRetofitLogin(): LoginApi {
