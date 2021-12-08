@@ -126,7 +126,10 @@
                                             <option th:text=" --- " th:value="''"> --- </option>
                                         </p>
                                         <p th:each="usuario: ${listaUsuarios}">
-                                            <option th:if="${user.getID()!=usuario.getID()}" th:text="${usuario.getNombre()} + ' --- ' + ${usuario.getNombreRol()}" th:value="${usuario.getID()}"></option>
+                                            <th:block th:if="${usuario.getNombreRol() != 'BROADCAST'}">
+                                                <option th:if="${user.getID()!=usuario.getID() }" th:text="${usuario.getNombre()} + ' --- ' + ${usuario.getNombreRol()}" th:value="${usuario.getID()}"></option>
+                                            </th:block>
+
                                         </p>
                                     </optgroup>
                                 </select>

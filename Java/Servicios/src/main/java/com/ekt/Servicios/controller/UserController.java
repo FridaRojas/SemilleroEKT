@@ -371,6 +371,7 @@ public class UserController {
             if (userService.findById(idUser).isPresent()){
                 User usr = userService.findById(idUser).get();
                 usr.setTokenAuth("");
+                groupService.actualizaUsuario(usr);
                 User tmp=userService.save(usr);
                 if (tmp.getTokenAuth().length()==0){
                     return new Response(HttpStatus.OK,"Deslogeado correctamente","");

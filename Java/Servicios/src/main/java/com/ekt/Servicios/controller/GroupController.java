@@ -33,21 +33,57 @@ public class GroupController {
 
     @PutMapping("/agregarUsuario")//*
     public ResponseEntity<?> addUserGroup(@RequestBody BodyAddUserGroup bodyAddUserGroup) {
+        System.out.println("entra a agregar usuario al grupo");
         try {
             if (bodyAddUserGroup.getIdUsuario() == null || bodyAddUserGroup.getIdGrupo() == null || bodyAddUserGroup.getIdSuperior() == null || bodyAddUserGroup.getNombreRol() == null) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error  en las llaves", ""));
             } else {
-                Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getNombreRol());
-                User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getNombreRol());
-                if (group == null && user == null) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", ""));
-                } else {
-                    return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
-                }
+                    //verificar el caso de broadcast (caso añadir desde organigrama)
+                    if(bodyAddUserGroup.getIdSuperior().equals("BROADCAST")){
+                        System.out.println("entra a coso broadcast");
+                        //verificar si un broadcast ya existe
+                        if(!groupService.buscarBroadCastEnGrupo(bodyAddUserGroup.getIdGrupo())){
+                            System.out.println("intenta agregar");
+                            //agregar
+                            Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), "-1", "BROADCAST");
+                            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), "-1", bodyAddUserGroup.getIdGrupo(), "BROADCAST");
+                            if (group == null && user == null) {
+                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", ""));
+                            } else {
+                                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
+                            }
+                        }else{
+                            System.out.println("No se agrega el usuario");
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,ya existe un Broadcast en el grupo", ""));
+                        }
+
+                    }else{
+                        System.out.println("no entra a caso broadcast");
+                        System.out.println("idsuperor:"+bodyAddUserGroup.getIdSuperior());
+                        System.out.println("id:"+bodyAddUserGroup.getIdUsuario());
+                        System.out.println("rol:"+bodyAddUserGroup.getNombreRol());
+
+
+                        //verifica si el usuario seleccionado no es el broadcast
+                      //  Optional<User> userBroadcast= userService.findById(bodyAddUserGroup.getIdSuperior());
+
+                       // if (!userBroadcast.get().getNombreRol().equals("BROADCAST")){
+                            Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getNombreRol());
+                            User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getNombreRol());
+                            if (group == null && user == null) {
+                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", ""));
+                            } else {
+                                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
+                            }
+                      /*  }else{
+                            //no se pueden asignar subordinados al broadcast
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,no se pueden asignar subordinados al broadcast", ""));
+                        }*/
+                    }
             }
         } catch (Exception e) {
             System.err.println("Error: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado  ", ""));
         }
     }
 

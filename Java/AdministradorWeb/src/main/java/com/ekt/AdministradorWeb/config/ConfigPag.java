@@ -264,10 +264,12 @@ public class ConfigPag {
     public String remplazaUsuario(@ModelAttribute(value = "idUsuarioMenos") String idUsuarioMenos,@ModelAttribute(value = "idUsuarioMas") String idUsuarioMas, Model modelMap,RedirectAttributes redirectAttrs){
 
         System.out.println("USUARIOmENOS: "+idUsuarioMenos+"   mas: "+idUsuarioMas);
-        User userNuevo,userViejo;
+        User userMas,userMenos;
         //dos casos
-        userViejo=userDAO.buscaID(idUsuarioMenos);
-        userNuevo=userDAO.buscaID(idUsuarioMas);
+        userMenos=userDAO.buscaID(idUsuarioMenos);
+        userMas=userDAO.buscaID(idUsuarioMas);
+        System.out.println("mas:"+userMas.toString());
+        System.out.println("menos:"+userMenos.toString());
 
         //fuera del organigrama
 
@@ -276,7 +278,7 @@ public class ConfigPag {
             //añadir informacion inicial al que se queda
 
             //guardar en grupo y en lista genersl
-            groupDAO.añadeUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo(), userViejo.getIDSuperiorInmediato(), userViejo.getNombreRol());
+            groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), userMenos.getIDSuperiorInmediato(), userMenos.getNombreRol());
 
             //falta reasignar hijos
             if (userDAO.muestraSubordinados(idUsuarioMenos)!=null){
@@ -285,12 +287,12 @@ public class ConfigPag {
                 }
             }
             //eliminar al viejo
-            groupDAO.eliminaUsuarioGrupo(userViejo.getID(), userViejo.getIDGrupo());
+            groupDAO.eliminaUsuarioGrupo(userMenos.getID(), userMenos.getIDGrupo());
 
             redirectAttrs
                     .addFlashAttribute("status", "success")
-                    .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
-            return "redirect:/editarGrupo?idGrupo=" + userViejo.getIDGrupo();
+                    .addFlashAttribute("mensaje", "Usuario remplazado correctamente");
+            return "redirect:/editarGrupo?idGrupo=" + userMenos.getIDGrupo();
         }else{
             //reasigna los hijos de los dos
 
@@ -314,23 +316,23 @@ public class ConfigPag {
             }
 
             //eliminar
-            groupDAO.eliminaUsuarioGrupo(idUsuarioMenos, userViejo.getIDGrupo());
-            groupDAO.eliminaUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo());
+            groupDAO.eliminaUsuarioGrupo(idUsuarioMenos, userMenos.getIDGrupo());
+            groupDAO.eliminaUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo());
 
             //guardar en grupo y en lista genersl
-            if (idUsuarioMas.equals(userViejo.getIDSuperiorInmediato())){
+            if (idUsuarioMas.equals(userMenos.getIDSuperiorInmediato())){
                 System.out.println("entra al caso 1");
-                groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userNuevo.getIDGrupo(), userNuevo.getIDSuperiorInmediato(), userNuevo.getNombreRol());
-                groupDAO.añadeUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo(), idUsuarioMenos, userViejo.getNombreRol());
+                groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userMas.getIDGrupo(), userMas.getIDSuperiorInmediato(), userMas.getNombreRol());
+                groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), idUsuarioMenos, userMenos.getNombreRol());
             }else{
-                if(userNuevo.getIDSuperiorInmediato().equals(idUsuarioMenos)){
+                if(userMas.getIDSuperiorInmediato().equals(idUsuarioMenos)){
                     System.out.println("entra al caso 2");
-                    groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userNuevo.getIDGrupo(), userNuevo.getIDSuperiorInmediato(), userNuevo.getNombreRol());
-                    groupDAO.añadeUsuarioGrupo(idUsuarioMas, userViejo.getIDGrupo(), idUsuarioMenos, userViejo.getNombreRol());
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userMas.getIDGrupo(), userMas.getIDSuperiorInmediato(), userMas.getNombreRol());
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), idUsuarioMenos, userMenos.getNombreRol());
                 }else{
                     System.out.println("entra al caso 3");
-                    groupDAO.añadeUsuarioGrupo(idUsuarioMenos,userNuevo.getIDGrupo(),userNuevo.getIDSuperiorInmediato(),userNuevo.getNombreRol());
-                    groupDAO.añadeUsuarioGrupo(idUsuarioMas,userNuevo.getIDGrupo(),userViejo.getIDSuperiorInmediato(),userViejo.getNombreRol());
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMenos,userMas.getIDGrupo(),userMas.getIDSuperiorInmediato(),userMas.getNombreRol());
+                    groupDAO.añadeUsuarioGrupo(idUsuarioMas,userMas.getIDGrupo(),userMenos.getIDSuperiorInmediato(),userMenos.getNombreRol());
                 }
             }
 
@@ -339,7 +341,7 @@ public class ConfigPag {
             redirectAttrs
                     .addFlashAttribute("status", "success")
                     .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
-            return "redirect:/editarGrupo?idGrupo=" + userViejo.getIDGrupo();
+            return "redirect:/editarGrupo?idGrupo=" + userMenos.getIDGrupo();
         }
     }
 
@@ -539,12 +541,15 @@ public class ConfigPag {
 
             JSONObject jsonObject= new JSONObject(response.body().string());
 
-            if (jsonObject.get("status").toString().equals("OK")){
-                return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
-            }else{
+            if (jsonObject.get("status").toString().equals("ACCEPTED")){
                 redirectAttrs
                         .addFlashAttribute("status", "success")
                         .addFlashAttribute("mensaje", "Usuario agregado correctamente");
+                return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
+            }else{
+                redirectAttrs
+                        .addFlashAttribute("status", "danger")
+                        .addFlashAttribute("mensaje", jsonObject.get("msj").toString());
                 return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
             }
         }catch (Exception e){

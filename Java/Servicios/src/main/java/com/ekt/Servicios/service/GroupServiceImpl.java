@@ -136,6 +136,20 @@ public class GroupServiceImpl implements GroupService{
 
 
     @Override
+    public Boolean buscarBroadCastEnGrupo(String id){
+        Boolean res=false;
+        Optional<Group> group=groupRepository.buscarBroadCastEnGrupo(id);
+        if(group.isPresent()){
+            if (group.get().getUsuarios().length>0){
+                res=true;
+                System.out.println("Encontro a broadcas en grupo: "+group.get().getUsuarios()[0].getNombre());
+            }
+        }
+
+        return res;
+    }
+
+    @Override
     public Optional<Group> buscarPorNombre(String nombre) {
         return groupRepository.buscarPorNombre(nombre);
     }
