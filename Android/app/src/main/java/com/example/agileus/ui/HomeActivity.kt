@@ -2,8 +2,15 @@ package com.example.agileus.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -31,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
         // Log.d("Login", idUser)
 
         val navView: BottomNavigationView = binding.navView
+
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -42,6 +50,34 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //Ocultar navegación
+        findViewById<BottomNavigationView>(R.id.nav_view)
+            .setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.formularioCrearTareasFragment -> hideBottomNav(navView)
+                R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
+                else -> showBottomNav(navView)
+            }
+        }
+
+    }
+
+    private fun showBottomNav(nav_view: BottomNavigationView) {
+        nav_view.visibility = View.VISIBLE
+    }
 
     }
 }
+
+    private fun hideBottomNav(nav_view: BottomNavigationView) {
+        nav_view.visibility = View.GONE
+    }
+
+}
+
+
+//        val navController = navHostFragment.navController
+        //      findViewById<BottomNavigationView>(R.id.bottom_nav)
+        //        .setupWithNavController(navController)
