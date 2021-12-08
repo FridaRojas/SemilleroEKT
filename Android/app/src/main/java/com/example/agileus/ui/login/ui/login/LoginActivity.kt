@@ -3,7 +3,6 @@ package com.example.agileus.ui.login.ui.login
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.agileus.R
-import com.example.agileus.databinding.ActivityLoginBinding
 
 
 class LoginActivity : AppCompatActivity() {

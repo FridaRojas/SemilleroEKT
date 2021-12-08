@@ -10,17 +10,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.control
 import android.os.CountDownTimer
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.example.agileus.R
 import com.example.agileus.models.MensajeBodyBroadcaster
-import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class BuzonDetallesFragment: Fragment() , BroadcasterListener {
@@ -49,6 +52,9 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title =
+            "Buzon Recibidos Broadcast"
+
 
 
 
@@ -70,41 +76,19 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
 
 
 
-/*
-        viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
-            if (response.isSuccessful)
-            {
-                Log.d("Main",response.body().toString())
-                Log.d("Main",response.code().toString())
-                Log.d("Main",response.message().toString())
-            }
-            else{
-                Log.d("Main",response.code().toString())
-            }
-        })
-*/
-        /*
-        viewModel.myResponse1.observe(viewLifecycleOwner, Observer { response->
-            if (response.isSuccessful)
-            {
-                Log.d("Main1",response.body().toString())
-                Log.d("Main1",response.code().toString())
-                Log.d("Main1",response.message().toString())
-            }
-            else{
-                Log.d("Main1",response.code().toString())
-            }
-        })
-*/
-
-//        viewModel.devuelvebuzon()
-
-
             viewModel.adaptador.observe(viewLifecycleOwner, {
                 binding.recyclerBuzon.adapter = it
                 binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
 
             })
+
+
+
+        viewModel.adaptador.observe(viewLifecycleOwner, {
+            binding.recyclerBuzon.adapter = it
+            binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
+
+        })
         }
 
         override fun onDestroyView() {
@@ -112,56 +96,33 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
             _binding = null
         }
 
-        override fun mensajeBroadcasting(buzon: Buzon) {
+
+    override fun mensajeBroadcasting(buzon: MensajeBodyBroadcaster) {
 
 
-          //  viewModel.postMensaje(buzon)
+        val size= listaus.size
 
-/*
-            viewModel.myResponse.observe(viewLifecycleOwner, Observer {response->
-                if (response.isSuccessful)
-                {
-                    Log.i("Code ",response.code().toString())
-                }
-                else{
-                    Log.i("Code ",response.code().toString())}
-            })
-
-            Handler().postDelayed({
-                binding.vista1.visibility= View.INVISIBLE
-                binding.vista2.visibility = View.VISIBLE
-                binding.fab.visibility = View.INVISIBLE
-            }, 5)
-
-
-            startTimeCounter()
-              ////////////////
-            Handler().postDelayed({
-                Toast.makeText(context, " Mensaje enviado a ${buzon.Receiverid}", Toast.LENGTH_SHORT).show()
-                binding.vista2.visibility = View.INVISIBLE
-                binding.vista1.visibility= View.VISIBLE
-                binding.fab.visibility = View.VISIBLE
-  }, 3800)
-*/
+        for(i in 0.. size-1)
+        {
+            if (buzon.idReceptor == listaus[i].nombre )
+            {
+                Log.d("id database","${listaus[i].id}")
+                buzon.idReceptor= listaus[i].id
+            }
         }
 
-    override fun mensajeBroadcasting1(buzon: MensajeBodyBroadcaster) {
-        //viewModel.postMensaje1(buzon)
-       // viewModel.postMensaje(buzon)
-
-
+//   var idreceptor=
   Log.d("body","${buzon.fechaCreacion}")
   Log.d("body","${buzon.idReceptor}")
   Log.d("body","${buzon.idEmisor}")
   Log.d("body","${buzon.texto}")
-//        viewModel.postMensaje(buzon)
+
+        viewModel.postMensaje(buzon)
 
 
         viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
             if (response.isSuccessful)
             {
-                Log.d("Mine",response.body().toString())
-                Log.d("Mine",response.code().toString())
                 Log.d("Mine",response.message().toString())
             }
             else{
@@ -196,9 +157,16 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 progressBar.progress = counter
             }
             override fun onFinish() {
-           //     viewModel.devuelvebuzon()
+                viewModel.devuelvebuzon1()
             }
         }.start()
     }
 
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navBar.isVisible = false
+
+    }
 }

@@ -34,19 +34,20 @@ class DialogoSenderUser(val listener: UserBuzonListener) : DialogFragment() {
 
             builder.setView(vista)
                 .setPositiveButton(
-                    "Aceptar",
-                    DialogInterface.OnClickListener { dialog, id ->
-                        if(Asunto.toString().isEmpty() || Mensaje.toString().isEmpty() ) {
-                            Toast.makeText(activity,
-                                "",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }else{
-                                listener.mensajeBroadcasting1(
-                                    MsgBodyUser(Asunto.text.toString(),Mensaje.text.toString(),"123")
-                                )
-                  }
-                    })
+                    "Aceptar"
+                ) { _, _ ->
+                    if (Asunto.toString().isEmpty() || Mensaje.toString().isEmpty()) {
+                        Toast.makeText(
+                            activity,
+                            "",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        listener.mensajeBroadcasting1(
+                            MsgBodyUser(Asunto.text.toString(), Mensaje.text.toString(), "123")
+                        )
+                    }
+                }
                 .setNegativeButton("Cancelar",
                     DialogInterface.OnClickListener { dialog, id ->
                         getDialog()?.cancel()

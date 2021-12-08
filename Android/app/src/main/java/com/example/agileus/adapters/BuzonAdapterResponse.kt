@@ -43,8 +43,8 @@ class BuzonAdapterResponse(private var dataSet: ArrayList<BuzonComunicados>, var
 
 //        viewHolder.textView.text = "Mensaje enviado a a Broadcast"
              viewHolder.textView.text =   "Mensaje enviado por ${buzon.idemisor}"
-             viewHolder.textView1.text =  "Asunto: N/A "
-             viewHolder.textView2.text =  "Mensaje: \n ${buzon.texto}"
+             viewHolder.textView1.text =  "Contenido: ${buzon.texto}  "
+             viewHolder.textView2.text =  "Mensaje enviado a ${buzon.idreceptor} "
         }
 
     override fun getItemCount(): Int {
