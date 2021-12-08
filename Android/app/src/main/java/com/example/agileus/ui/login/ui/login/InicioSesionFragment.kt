@@ -95,6 +95,7 @@ class InicioSesionFragment : Fragment() {
             Log.d("Login", InicioSesionFragment.passwordLogin)
             Log.d("Login", idUser)
 
+
             trigger = 0
             Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
             if(correoLogin != "rogelioL@gmail.com")
