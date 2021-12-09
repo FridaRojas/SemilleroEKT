@@ -166,15 +166,20 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             }
 
             btnEstado.setOnClickListener {
-                if (dataTask.estatus.equals("pendiente")) {
+           /*     if (dataTask.estatus.equals("pendiente")) {
                     dataTask.estatus = "iniciada"
                 } else if (dataTask.estatus.equals("iniciada")) {
                     dataTask.estatus = "revision"
-                }
+                }*/
                 if (dataTask.estatus.equals("revision")) {
                     btnEstado.isEnabled = false
                 }
-                detalleNivelBajoViewModel.actualizarEstatus(dataTask)
+
+                val newFragment = DialogoActualizarEstatus(dataTask)
+                newFragment.show(
+                    (activity as HomeActivity).supportFragmentManager,
+                    "missiles"
+                )
                 this.dialog?.dismiss()
             }
             builder.setView(vista)
@@ -182,11 +187,5 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
 
-    }
-
-    private fun descargarArchivo(btnPdf: Button) {
-        if (dataTask.archivo != null) {
-            btnPdf.isVisible = false
-        }
     }
 }

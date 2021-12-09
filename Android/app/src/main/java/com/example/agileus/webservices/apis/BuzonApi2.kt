@@ -6,16 +6,15 @@ import com.example.agileus.models.*
 import com.example.agileus.utils.Constantes.id
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface BuzonApi2 {
 
+//  @Headers("2aa0dbb48b80e5c3f3fa8aef7d26d72ed330cfbfdac5c6862ebd6c281402bb52")
     @GET("broadCast/listaUsuarios/{id}")
     fun getList(@Path ("id") idUser:String):Call<ArrayList<Contacts>>
 
+  //  @Headers("2aa0dbb48b80e5c3f3fa8aef7d26d72ed330cfbfdac5c6862ebd6c281402bb52")
     @GET("broadCast/mostarMensajesdelBroadcast/{id}")
     fun getbuzon(@Path ("id") idUser:String):Call<ArrayList<BuzonResp>>
 
@@ -24,7 +23,6 @@ interface BuzonApi2 {
 
     @GET("mensajes/verConversacion/{id}")
     fun getenviados(@Path ("id") idUser:String):Call<ArrayList<BuzonComunicados>> ///get enviados
-
 
 //
     @POST("broadCast/enviarMensaje")
