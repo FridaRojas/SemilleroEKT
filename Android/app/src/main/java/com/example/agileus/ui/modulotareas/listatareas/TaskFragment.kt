@@ -1,6 +1,7 @@
 package com.example.agileus.ui.modulotareas.listatareas
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +55,9 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //recuperarNivelUsuario()
+        recuperarNivelUsuario()
+        preferenciasGlobal.recuperarNivelUsuario()
+        Toast.makeText(activity, "$NIVEL_USER", Toast.LENGTH_SHORT).show()
         
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
@@ -74,13 +77,13 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
         }
 
 
-       // var adaptadorStatus = StatusTasksAdapter(listStatus, this)
+
+        // var adaptadorStatus = StatusTasksAdapter(listStatus, this)
         binding.recyclerStatusTareas.adapter = adaptadorStatus
         binding.recyclerStatusTareas.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        //var nivel = preferenciasGlobal.recuperarNivelUsuario()
         //compararNivel(nivel)
 
 
@@ -144,7 +147,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     }
 
 
-    /*
+
     fun recuperarNivelUsuario() {
         //Todo al iniciar sesion
         if(InicioSesionViewModel.usersByBoss == true){
@@ -155,7 +158,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             preferenciasGlobal.guardarNivelUsuario("bajo")
             // nivel bajo
         }
-    }*/
+    }
     
     override fun abreDialogo(dataTask: DataTask) {
         val newFragment = DialogoNivelBajo(this,dataTask)

@@ -41,7 +41,6 @@ class InicioSesionFragment : Fragment(){
         var idnombre:String = ""
         var idGrupo:String = ""
         var tokenAuth: String = ""
-
     }
 
     private lateinit var viewModel: InicioSesionViewModel
@@ -67,14 +66,20 @@ class InicioSesionFragment : Fragment(){
         //appBar: AppBar( title: Text("App Bar without Back Button"), automaticallyImplyLeading: false, ),
 
         //AGREGADA para ocultar BottonNavigationView
-        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-        navBar.isVisible = false
+        //val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        //navBar.isVisible = false
 
 ///////////////////////////////////////
         binding.btnLogin.setOnClickListener { validate()
 
         }
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getUsersByBoss()
     }
 
     private fun validate() {

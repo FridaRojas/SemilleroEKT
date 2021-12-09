@@ -1,5 +1,6 @@
 package com.example.agileus.webservices.dao
 
+import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
 import retrofit2.Call
@@ -63,7 +64,7 @@ class LoginDao {
         return STATUS
 
     }
-                /*
+
     suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
         var listaUsers = ArrayList<DataPersons>()
         lateinit var usersListResponse: UserBossResponse
@@ -95,6 +96,6 @@ class LoginDao {
             Log.e("error", e.toString())
         }
         return listaUsers
-    }*/
+    }
 }
 
