@@ -40,6 +40,7 @@ class InicioSesionFragment : Fragment(){
         var rol:String = ""
         var idnombre:String = ""
         var idGrupo:String = ""
+        var tokenAuth: String = ""
 
     }
 

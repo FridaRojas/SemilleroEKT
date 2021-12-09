@@ -8,6 +8,7 @@ import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idnombre
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.rol
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import retrofit2.Response
 
 class LoginDao {
@@ -33,6 +34,7 @@ class LoginDao {
                     rol=almacenar.data.nombreRol.toString()
                     idnombre=almacenar.data.nombre.toString()
                     idGrupo = almacenar.data.idgrupo.toString()
+                    tokenAuth = almacenar.data.tokenAuth.toString()
 
 
                 }
