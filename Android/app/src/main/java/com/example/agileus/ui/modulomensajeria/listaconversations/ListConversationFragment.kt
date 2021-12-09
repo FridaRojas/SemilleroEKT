@@ -57,7 +57,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
         Log.d("usuario pasado", "${InicioSesionFragment.idUser}")
 
-        Constantes.id=idUser
+        //Constantes.id=idUser
 
         ChatsViewModel.devuelveListaGrupos(Constantes.id)
         ChatsViewModel.devuelveListaChats(Constantes.id)

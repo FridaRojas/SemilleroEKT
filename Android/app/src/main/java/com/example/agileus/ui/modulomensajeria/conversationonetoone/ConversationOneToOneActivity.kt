@@ -47,7 +47,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         conversationviewModel = ViewModelProvider(this).get()
         chatsviewmodel = ViewModelProvider(this).get()
 
-        Constantes.id= InicioSesionFragment.idUser
+        //Constantes.id= InicioSesionFragment.idUser
 
         id_chat = intent.getStringExtra(Constantes.ID_CHAT).toString()
         id_receptor = intent.getStringExtra(Constantes.ID_RECEPTOR).toString()
