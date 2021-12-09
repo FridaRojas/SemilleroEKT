@@ -1,0 +1,27 @@
+
+.column {
+    float: left;
+    width: 50%;
+}
+.about-text h3 {
+    margin: 0 0 10px;
+    color: dimgray;
+}
+
+.about-text p {
+    font-size: 12px;
+    color: black;
+}
+.counter-section p {
+    color: #66BB6A;
+}
+.theme-color {
+    color: #66BB6A;
+}
+
+.gray-bg {
+    background-color: white;
+}
+
+
+

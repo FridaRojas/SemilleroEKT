@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/paddingGeneral"
     android:background="@color/colorBackground"
     tools:context=".ui.modulomensajeria.listaconversations.ListConversationFragment">
 
@@ -14,6 +15,7 @@
         android:background="@drawable/rounded_bg"
         android:backgroundTint="@color/white"
         android:drawableEnd="@drawable/iconobuscar"
+        app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +32,9 @@
         android:id="@+id/imgBroadcast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_general"
+        android:src="@drawable/iconobroadcast"
+        app:layout_constraintEnd_toStartOf="@+id/cerrarSesion"
         app:layout_constraintStart_toEndOf="@id/et_search_conversation"
         app:layout_constraintEnd_toStartOf="@id/cerrarSesion"
         app:layout_constraintTop_toTopOf="parent"
