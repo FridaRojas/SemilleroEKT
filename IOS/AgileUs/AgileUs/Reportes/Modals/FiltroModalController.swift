@@ -205,7 +205,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         } else if pickerView.restorationIdentifier == "usuario" {
             var usuario = opciones_usuario[row] as! Usuario
             
-            opcion = usuario.nombre
+            opcion = usuario.nombre!
         }
         return opcion
     }
@@ -221,7 +221,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     func obtener_usuarios() {
         opciones_usuario = [String]()
-        let usuarioL = Usuario(id: userID, nombre: userName, fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "")
+        let usuarioL = Usuario(id: userID, nombre: userName, fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "", tokenAuth: "")
      
         opciones_usuario.append(usuarioL)
         

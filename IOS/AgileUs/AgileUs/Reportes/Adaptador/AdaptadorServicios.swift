@@ -16,10 +16,10 @@ class AdaptadorServicios{
         pantallaUsuarios.webServiceUsuarios(idUsuario: idUsuario)
     }
     
-    func servicioWebTareasAdapter(webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
-        let claseTareas = TareasService()
-        claseTareas.webServiceTask = webServiceTareas
-        claseTareas.webServiceTareas()
+    func servicioWebTareasAdapterByBoss(idUsuario:String, token:String, webServiceSub: @escaping (_ Datos: [Any]) -> Void){
+        let claseSubordinados = TareasService()
+        claseSubordinados.webServiceUsuariosTask = webServiceSub
+        claseSubordinados.webServiceTareasPorLider(idUser: idUsuario, token: token)
         
     }
         

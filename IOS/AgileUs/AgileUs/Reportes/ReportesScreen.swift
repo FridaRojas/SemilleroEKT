@@ -17,6 +17,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var opcionesGrafica: UITableView!
     var piechart = PieChartView()
     var barchart = BarChartView()
+    var barchartGeneral = BarChartView()
     
     // etiqueta cantidades
     @IBOutlet weak var cantEnviados: UILabel!
@@ -39,6 +40,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var lblTiempoRes: UILabel!
     @IBOutlet weak var lblNombreu: UILabel!
     
+    @IBOutlet weak var btnCambioGrafico: UIButton!
+    @IBOutlet weak var viewBtn: UIView!
+    @IBOutlet weak var viewIndicadores: UIView!
+    
     // variables para lista
     var arrDatosLista = [Any]()
     //var datos = [Any]()
@@ -54,6 +59,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //arreglo de cantidad de tareas
     var arrTareas:[Any]?
     var arrCantidadDeTareas = [Int]()
+    
+    //Usuarios subordinados
+    var arrCantTareasSubordinados:[Int]?
     
     // adaptadores
     let adaptadorModal = Adaptador_Modals()
@@ -78,16 +86,26 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         configuraciones()
     }
     
+    func esconderBoton(){
+
+        viewBtn.isHidden = true
+        
+        let centerPos = viewBtn.frame.width / 1.5
+       
+        viewIndicadores.frame.origin.x = viewBtn.frame.origin.x + centerPos
+    }
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         ejecucionServicios()
     }
     
     // Funcion para ejecutar servicios
     func ejecucionServicios(){
-        serviciosMensajes(idUsuario: userID)
-        serviciosTareas(idUsuario: userID)
         serviciosUsuarios()
-        serviciosBroadcast(idUsuario: userID)
+        //serviciosMensajes(idUsuario: userID)
+        //serviciosTareas(idUsuario: userID)
+        //serviciosBroadcast(idUsuario: userID)
     }
     
     
@@ -112,10 +130,47 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func serviciosTareasLider(idUsuario: String, token:String){
+        print("H")
+        adaptadorServicios.servicioWebTareasAdapterByBoss(idUsuario: idUsuario, token: token) {
+            [self] (Datos) -> Void in
+            
+            print("Datos", Datos)
+            arrTareas = Datos
+            
+            //Cantidad de tareas
+            arrCantidadDeTareas = cantidaDeTareasUsuarios(tareas: arrTareas! as! [Tareas], arrCantidadTareas: arrCantidadDeTareas, idUsuario: idUsuario)
+        }
+    }
+    
     func serviciosUsuarios() {
         adaptadorServicios.serviciosWeb(idUsuario: userID) {
             [self] (Datos) -> Void in
             arrUsuarios = Datos
+
+            if arrUsuarios!.count > 0{
+                print("Tiene usuarios a su cargo")
+                
+                if let usuarios = arrUsuarios as? [Usuario] {
+                    print(usuarios)
+                    for i in usuarios{
+                        
+                        print("Imprimiendo i:")
+                        print(i.id, i.tokenAuth)
+                        
+                        serviciosTareasLider(idUsuario:i.id!, token: i.tokenAuth!)
+                    }
+                }
+                
+            }else{
+                
+                print("No hay usuarios a su cargo")
+                esconderBoton()
+                
+                serviciosBroadcast(idUsuario: userID)
+                serviciosMensajes(idUsuario: userID)
+                //serviciosTareas(idUsuario: userID)
+            }
         }
     }
     
@@ -150,6 +205,17 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func servicioTareasUsuariosFiltrado(filtro:[String]){
+        adaptadorServicios.servicioWebTareasAdapter(idUsuario: filtro[2]){
+            [self] (Datos) -> Void in
+            
+            arrTareas = Datos
+            arrCantidadDeTareas = cantidadDeTareasTodosUsuariosPorFecha(tareas: arrTareas! as! [Tareas], arrCantidadTareas: arrCantidadDeTareas, idUsuario: filtro[2], fechaInicio: filtro[0], fechaFin: filtro[1])
+            
+            llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
+        }
+    }
+    
     func serviciosMensajesFiltrado(filtros: [String]) {
         adaptadorServicios.servicioWebMensajesAdapter(idUsuario: filtros[2]) {
                 [self] (Datos) -> Void in
@@ -168,6 +234,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         configurar_pie_chart()
         //configurar los gráficos de barras de mensajes
         configurar_bar_chart()
+        configurar_bar_chart_general()
         
         //      LISTA
         //Configurar lista
@@ -179,6 +246,13 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         configuracion_colores()
         configura_label_usuario(nombre: userName)
     }
+    
+    func configurar_bar_chart_general() {
+            barchartGeneral = BarChartView(frame: CGRect(x: 0, y: 0, width: viewChart.frame.size.width, height: viewChart.frame.size.height))
+            barchartGeneral.legend.enabled = false
+            //barchartGeneral.isUserInteractionEnabled = true
+        }
+
      
     func configuracion_colores() {
         view.backgroundColor = Hexadecimal_Color(hex: "F5F5F5")
@@ -347,6 +421,100 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         viewChart.addSubview(barchart)
         cargar_animacion_bar()
     }
+    
+    
+    func llenar_bar_chart_general_Tareas(datos: [Any]){
+        
+        if !piechart.isEmpty(){
+            piechart.removeFromSuperview()
+        }
+        
+        if !barchart.isEmpty(){
+            barchart.removeFromSuperview()
+        }
+        
+
+        var arrGeneral = datos
+        
+        var arrNombres = [String]()
+        var arrPendientes = [Int]()
+        var arrIniciados = [Int]()
+        var arrRevisado = [Int]()
+        var arrTerminados = [Int]()
+        
+        for i in arrGeneral{
+            let dato = i as! [Any]
+            arrNombres.append(dato[0] as! String)
+            arrPendientes.append(dato[1] as! Int)
+            arrIniciados.append(dato[2] as! Int)
+            arrRevisado.append(dato[3] as! Int)
+            arrTerminados.append(dato[4] as! Int)
+        }
+        
+        var datEntPend:[BarChartDataEntry] = []
+        var datEntInic:[BarChartDataEntry] = []
+        var datEntRev:[BarChartDataEntry] = []
+        var datEntTer:[BarChartDataEntry] = []
+        
+        for i in 0..<arrNombres.count{
+            
+            let dataPend = BarChartDataEntry(x: Double(i), y: Double(arrPendientes[i]))
+            datEntPend.append(dataPend)
+            
+            let dataInic = BarChartDataEntry(x: Double(i), y: Double(arrIniciados[i]))
+            datEntInic.append(dataInic)
+            
+            let dataRev = BarChartDataEntry(x: Double(i), y: Double(arrRevisado[i]))
+            datEntRev.append(dataRev)
+            
+            let dataTerm = BarChartDataEntry(x: Double(i), y: Double(arrTerminados[i]))
+            datEntTer.append(dataTerm)
+        }
+        
+        let chartDataPend = BarChartDataSet(entries: datEntPend)
+        let chartDataIni = BarChartDataSet(entries: datEntInic)
+        let chartDataRev = BarChartDataSet(entries: datEntRev)
+        let chartDataTerm = BarChartDataSet(entries: datEntTer)
+        
+        var dataSet = [chartDataPend, chartDataIni, chartDataRev, chartDataTerm]
+        
+        chartDataPend.colors = [Hexadecimal_Color(hex: "66BB6A")]
+        chartDataIni.colors = [Hexadecimal_Color(hex: "87D169")]
+        chartDataRev.colors = [Hexadecimal_Color(hex: "66877F")]
+        chartDataTerm.colors = [Hexadecimal_Color(hex: "7F8182")]
+        
+        let chartData = BarChartData(dataSets: dataSet)
+        
+        var groupSpace = 0.16
+        var barSpace = 0.03
+        var barWidth = 0.25
+        
+        let groupCount = arrGeneral.count
+        
+        chartData.barWidth = barWidth
+        barchartGeneral.xAxis.axisMinimum = Double(0)
+        let gg = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
+        barchartGeneral.xAxis.axisMaximum = Double(gg) * Double(groupCount)
+        
+        chartData.groupBars(fromX: Double(0), groupSpace: groupSpace, barSpace: barSpace)
+        barchartGeneral.notifyDataSetChanged()
+        
+        barchartGeneral.data = chartData
+        barchartGeneral.setVisibleXRangeMaximum(2.0)
+        
+        barchartGeneral.doubleTapToZoomEnabled = false
+        
+        let xaxis = barchartGeneral.xAxis
+        xaxis.labelPosition = .bottom
+        xaxis.centerAxisLabelsEnabled = true
+        xaxis.valueFormatter = IndexAxisValueFormatter(values: arrNombres)
+        xaxis.granularity = 1
+        viewChart.addSubview(barchartGeneral)
+        barchartGeneral.animate(yAxisDuration: 0.8, easingOption:ChartEasingOption.easeInQuad)
+        
+    }
+    
+    
     // Fin llenado graficas de barras <---
     
     //  ACTUALIZAR DATOS DE LAS GRÁFICAS DE MENSAJES --->
@@ -384,6 +552,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             serviciosTareasFiltrado(filtros: Filtro as! [String])
             serviciosMensajesFiltrado(filtros: Filtro as! [String])
             serviciosBroadcast(idUsuario: Filtro[2] as! String)
+            
+            //Filtro de todos los usuarios
+            servicioTareasUsuariosFiltrado(filtro: Filtro as! [String])
             
             //Regresar al menu de mensajes
             optionstAB.selectedSegmentIndex = 0

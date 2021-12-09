@@ -7,9 +7,18 @@
 
 import UIKit
 
-let userID = "618b05c12d3d1d235de0ade0"
+let userID = "618d9c26beec342d91d747d6"
 let userName = "Pedrito"
 let userBroadcastID = "61a101db174bcf469164d2fd"
+
+//Servicios web
+let serviceTask = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/obtenerTareasQueLeAsignaronPorId/"
+
+var serviceUserBoos =  "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/"
+
+var serviceMessage = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/mensajes/listarMensajesRecividos/"
+
+var serviceBroad = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast//mostrarMensajesporID/"
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
