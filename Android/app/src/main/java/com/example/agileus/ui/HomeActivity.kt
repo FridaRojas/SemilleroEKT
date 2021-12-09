@@ -16,15 +16,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.ActivityHomeBinding
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
-
-
-
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
 
 class HomeActivity : AppCompatActivity() {
 

@@ -21,7 +21,7 @@ import com.example.agileus.models.DataTask
 import com.example.agileus.models.StatusTasks
 import com.example.agileus.models.StatusTasks.Companion.lista
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.login.ui.login.InicioSesionViewModel
+import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
@@ -54,7 +54,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recuperarNivelUsuario()
+        //recuperarNivelUsuario()
         
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
@@ -80,7 +80,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        var nivel = preferenciasGlobal.recuperarNivelUsuario()
+        //var nivel = preferenciasGlobal.recuperarNivelUsuario()
         //compararNivel(nivel)
 
 
@@ -144,6 +144,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     }
 
 
+    /*
     fun recuperarNivelUsuario() {
         //Todo al iniciar sesion
         if(InicioSesionViewModel.usersByBoss == true){
@@ -154,7 +155,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             preferenciasGlobal.guardarNivelUsuario("bajo")
             // nivel bajo
         }
-    }
+    }*/
     
     override fun abreDialogo(dataTask: DataTask) {
         val newFragment = DialogoNivelBajo(this,dataTask)

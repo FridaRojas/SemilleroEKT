@@ -2,15 +2,6 @@ package com.example.agileus.webservices.dao
 
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
-import com.example.agileus.ui.login.data.model.Data
-import com.example.agileus.ui.login.data.model.LoginResponse
-import com.example.agileus.ui.login.data.model.Users
-import com.example.agileus.ui.login.data.model.*
-import com.example.agileus.ui.login.data.service.LoginApi
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idnombre
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.rol
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
 import retrofit2.Call
 import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
@@ -33,58 +24,46 @@ class LoginDao {
 
     fun iniciarSesion(usuario:Users): Boolean {
 
-        var STATUS: Boolean=false
+        var STATUS: Boolean = false
         //    val STATUS_BAD_REQUEST = "BAD_REQUEST"
 
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
-       // lateinit var user:LoginResponse
 
-        if (responseDos.body() != null) {
-            val almacenar: LoginResponse = responseDos.body()!!
-            //Log.d("almacenar", "${almacenar.data.id}")
-            //idUser= almacenar.data.id.toString()
-            //rol= almacenar.data.nombreRol.toString()
-            if (almacenar.status == "ACCEPTED")
-            {
-                STATUS=true
         if (responseDos.isSuccessful) {
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
-                //Log.d("almacenar", "${almacenar.data.id}")
-                //idUser= almacenar.data.id.toString()
-                //rol= almacenar.data.nombreRol.toString()
-                if (almacenar.status == "ACCEPTED")
-                {
-                    STATUS=true
+                if (almacenar.status == "ACCEPTED") {
+                    STATUS = true
 //                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
-                idUser = almacenar.data.id.toString()
-                rol=almacenar.data.nombreRol.toString()
-                idnombre=almacenar.data.nombre.toString()
-            }
-            if (almacenar.status =="BAD_REQUEST")
-            {
-                //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
-                STATUS=false
                     idUser = almacenar.data.id.toString()
-                    rol=almacenar.data.nombreRol.toString()
-                    idnombre=almacenar.data.nombre.toString()
+                    rol = almacenar.data.nombreRol.toString()
+                    idnombre = almacenar.data.nombre.toString()
+                }
+                if (almacenar.status == "BAD_REQUEST") {
+                    //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
+                    STATUS = false
+                    idUser = almacenar.data.id.toString()
+                    rol = almacenar.data.nombreRol.toString()
+                    idnombre = almacenar.data.nombre.toString()
                     idGrupo = almacenar.data.idgrupo.toString()
                     tokenAuth = almacenar.data.tokenAuth.toString()
 
 
                 }
-                if (almacenar.status =="BAD_REQUEST")
-                {
-                 //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
-                    STATUS=false
+                if (almacenar.status == "BAD_REQUEST") {
+                    //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
+                    STATUS = false
 
+                }
+                status = STATUS
             }
-            status=STATUS
         }
-        return STATUS
-    }
 
+        return STATUS
+
+    }
+                /*
     suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
         var listaUsers = ArrayList<DataPersons>()
         lateinit var usersListResponse: UserBossResponse
@@ -116,6 +95,6 @@ class LoginDao {
             Log.e("error", e.toString())
         }
         return listaUsers
-    }
+    }*/
 }
 

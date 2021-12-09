@@ -15,14 +15,6 @@ import com.example.agileus.config.InitialApplication.Companion.preferenciasGloba
 import com.example.agileus.webservices.dao.LoginDao
 import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
-import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.login.data.dao.LoginDao
-import com.example.agileus.ui.login.data.model.LoginResponse
-import com.example.agileus.ui.login.data.model.Users
-import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel
-import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
-import com.example.agileus.ui.login.repository.Repository
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,6 +58,7 @@ class InicioSesionViewModel : ViewModel() {
         return emptyList()
     }
 
+    /*
     fun getUsersByBoss() {
         var listUsers = ArrayList<DataPersons>()
 
@@ -89,7 +82,7 @@ class InicioSesionViewModel : ViewModel() {
         }else{
             usersByBoss = true
         }
-    }
+    }*/
     fun cerrarSesion(view: View) {
         preferenciasGlobal.cerrarSesion()
     }

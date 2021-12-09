@@ -27,10 +27,6 @@ class MySharedPreferences(contexto: Context) {
         return sharedPreferences.getString(TOKEN_KEY, "")!!
     }
 
-    //LOGIN WITH SHARED
-    fun iniciarSesion(correo: String, password: String, sesion: Boolean) {
-        with(sharedPreferences.edit()) {
-    //LOGIN WITH SHARED PENDIENTE
     fun iniciarSesion(correo:String, password:String, sesion:Boolean){
         with(sharedPreferences.edit()){
             //putString(ID_KEY, id)
