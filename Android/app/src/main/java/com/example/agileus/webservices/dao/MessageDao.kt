@@ -134,11 +134,11 @@ class MessageDao {
                     if(responseChats.data != null){
                         listaChats = responseChats.data
                     }else{
-
+                        Log.e("ErrorRecuperarListadeChats", "El data es nulo")
                     }
 
                 }else{
-
+                    Log.e("Error", "El data es nulo")
                 }
             }else{
 

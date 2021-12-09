@@ -44,6 +44,8 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         firebaseProvider  = FirebaseProvider()
 
         conversationviewModel = ViewModelProvider(this).get()
@@ -55,7 +57,6 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         var name_receptor = intent.getStringExtra(Constantes.NAME_RECEPTOR)
 
         this.setTitle(name_receptor)
-        var rol = intent.getStringExtra(Constantes.ROL_USER).toString()
 
         conversationviewModel.devuelveLista(Constantes.id,id_chat)
 

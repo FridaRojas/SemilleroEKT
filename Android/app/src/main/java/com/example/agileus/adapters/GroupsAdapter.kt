@@ -40,6 +40,7 @@ class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
                 val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
                 intent.putExtra(Constantes.ID_CHAT, groups.idConversacion)
                 intent.putExtra(Constantes.ID_RECEPTOR, groups.idReceptor)
+                intent.putExtra(Constantes.NAME_RECEPTOR, groups.nombreConversacionRecepto)
                 contexto.startActivity(intent)
             }
 

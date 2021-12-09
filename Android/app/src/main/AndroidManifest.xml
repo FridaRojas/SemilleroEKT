@@ -24,8 +24,6 @@
             android:name=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.HomeActivity"
-
             />
         <activity
             android:name=".ui.HomeActivity"
