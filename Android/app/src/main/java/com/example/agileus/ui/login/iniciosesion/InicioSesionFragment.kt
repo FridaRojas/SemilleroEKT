@@ -29,6 +29,7 @@ class InicioSesionFragment : Fragment() {
     private val binding get() = _binding!!
     var trigger=0
 
+    //commit
 
     companion object {
         var correoLogin : String=""
