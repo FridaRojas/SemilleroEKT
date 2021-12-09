@@ -226,11 +226,11 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
         opciones_usuario = [String]()
         
         if !usuarios!.isEmpty {
-            let todos = Usuario(id: "", nombre: "Mi equipo", fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "")
+            let todos = Usuario(id: "", nombre: "Mi equipo", fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "", tokenAuth: "")
             opciones_usuario.append(todos)
         }
         
-        let usuarioL = Usuario(id: userID, nombre: userName, fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "")
+        let usuarioL = Usuario(id: userID, nombre: userName, fechaInicio: "", fechaTermino: "", nombreRol: "", idgrupo: "", idsuperiorInmediato: "", tokenAuth: "")
      
         opciones_usuario.append(usuarioL)
         
@@ -300,8 +300,10 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBAction func btnAceptar(_ sender: UIButton) {
         
         var info = [Any]()
+        var usuario = opciones_usuario[selector_usuario.selectedRow(inComponent: 0)] as! Usuario
         
         if !swTodo.isOn {
+        
             switch opPeriodos.selectedSegmentIndex {
             case 0:
                if txtFecha.text == "" || txtUsuario.text == "" {
@@ -309,7 +311,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
                    return
                }
                
-               info = [txtFecha.text!, txtFecha.text!, idUsuario!, txtUsuario.text!]
+                info = [txtFecha.text!, txtFecha.text!, idUsuario!, txtUsuario.text!, usuario.tokenAuth!]
                           
            case 1:
                if txtPeriodo.text == "" || txtUsuario.text == "" {
@@ -319,7 +321,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
                
                let fechas_mes = Date().obtener_primer_ultimo_dia_mes(mes: txtPeriodo.text!)
                
-               info = [fechas_mes[0], fechas_mes[1], idUsuario!, txtUsuario.text!]
+               info = [fechas_mes[0], fechas_mes[1], idUsuario!, txtUsuario.text!, usuario.tokenAuth!]
            case 2:
                if txtPeriodo.text == "" || txtUsuario.text == "" {
                    alerta_mensajes(title: "Error", Mensaje: "Faltan campos por llenar")
@@ -328,7 +330,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
                
                let fechas_anio = Date().obtener_primer_ultimo_dia_anio(anio: txtPeriodo.text!)
                
-               info = [fechas_anio[0], fechas_anio[1], idUsuario!, txtUsuario.text!]
+               info = [fechas_anio[0], fechas_anio[1], idUsuario!, txtUsuario.text!, usuario.tokenAuth!]
            case 3:
                
                if txtFechaIni.text == "" || txtFechaFin.text == "" || txtUsuario.text == "" {
@@ -336,10 +338,10 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
                    return
                }
                
-               info = [txtFechaIni.text!, txtFechaFin.text!, idUsuario!, txtUsuario.text!]
+               info = [txtFechaIni.text!, txtFechaFin.text!, idUsuario!, txtUsuario.text!, usuario.tokenAuth!]
                
             default:
-                info = ["","","",""]
+                info = ["","","","", ""]
             }
         } else {
             
@@ -348,7 +350,7 @@ class FiltroModalController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 return
             }
             
-            info = [idUsuario!, txtUsuario.text!]
+            info = [idUsuario!, txtUsuario.text!, usuario.tokenAuth!]
             
         }
         

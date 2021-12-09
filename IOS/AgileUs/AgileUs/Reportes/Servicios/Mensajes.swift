@@ -25,9 +25,8 @@ class MensajesService {
     var serviceMessage = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/mensajes/listarMensajesRecividos/"
     //let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/mensajes_nuevo.json?alt=media&token=eadcb762-992e-493c-8ee7-50e4c3a93ce2"
     //let serviceBroad = "http://10.97.7.227:3040/api/broadCast//mostrarMensajesporID/618b05c12d3d1d235de0ade0"
-    //var serviceBroad = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast//mostrarMensajesporID/"
+    var serviceBroad = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast//mostrarMensajesporID/"
     
-    var serviceBroad = "http://10.97.1.230:3040/api/broadCast/mostrarMensajesporID/61a83b59d036090b8e8db3c1/618b05c12d3d1d235de0ade0"
     
     
     func webServiceMensajes(idUsuario: String) {
@@ -35,7 +34,7 @@ class MensajesService {
         serviceMessage = "\(serviceMessage)\(userID)/\(idUsuario)"
         let url = URL(string: serviceMessage)
         var request = URLRequest(url: url!)
-        request.setValue("a60f68eceb8648b34b5ed39c19b57ac3f442d6e40f0471463df13a03666ff913", forHTTPHeaderField: "tokenAuth")
+        request.setValue(tokenAuth, forHTTPHeaderField: "tokenAuth")
     
         //Gernerar manejo de excepciones
         URLSession.shared.dataTask(with: request){
@@ -66,7 +65,7 @@ class MensajesService {
     
     func webServiceBroadcast(idUsuario: String) {
         let service = true
-        //serviceBroad = "\(serviceBroad)\(idUsuario)"
+        serviceBroad = "\(serviceBroad)\(userID)/\(idUsuario)"
         let url = URL(string: serviceBroad)
         
         //let request = NSMutableURLRequest(url: url! as URL)
@@ -77,7 +76,7 @@ class MensajesService {
         //request.setValue("secret-keyValue", forHTTPHeaderField: "secret-key")
         //request.httpMethod = "GET"
         //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("a60f68eceb8648b34b5ed39c19b57ac3f442d6e40f0471463df13a03666ff913", forHTTPHeaderField: "tokenAuth")
+        request.setValue(tokenAuth, forHTTPHeaderField: "tokenAuth")
 
         //URLSession.shared.dataTask(with: request) { data, response, error in }
         URLSession.shared.dataTask(with: request) {
