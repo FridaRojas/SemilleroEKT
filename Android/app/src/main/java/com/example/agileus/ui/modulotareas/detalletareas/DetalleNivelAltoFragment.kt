@@ -151,7 +151,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             }
 
             btnValidarTarea.setOnClickListener {
-                args.tareas.estatus = "terminada"
                 val newFragment2 =
                     DialogoValidarTarea(args)
                 newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
@@ -181,51 +180,28 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 observaciones = obs
                 estatus = "pendiente"
 
-                /*    if (observaciones.isNullOrEmpty()) {
-                        if (args.tareas.descripcion.equals(descripcion)
-                            && args.tareas.fechaIni.equals(fecha_ini)
-                            && args.tareas.fechaFin.equals(fecha_fin)
-                        ) {
-                            estatus = "terminada"
-                        } else {
-                            estatus = "pendiente"
-                        }
-                    } else {
-                        estatus = "pendiente"
-                        estatus = txtEstatusD.text.toString()
-                    }*/
+                if (descripcion.isNullOrEmpty()) {
+                    Toast.makeText(context, "La descripcion no puede ir vacia", Toast.LENGTH_SHORT)
+                        .show()
+                }else{
 
-                /*   if (args.tareas.estatus.equals("revision")
-                       && args.tareas.descripcion.equals(descripcion)
-                       && args.tareas.fechaIni.equals(fecha_ini)
-                       && args.tareas.fechaFin.equals(fecha_fin)
-                   ) {
-                       estatus = "terminada"
-                   } else {
-                       estatus = "pendiente"
-                   }*/
+                    var update = TaskUpdate(
+                        titulo,
+                        descripcion,
+                        fecha_ini,
+                        fecha_fin,
+                        prioridad,
+                        estatus,
+                        observaciones
+                    )
 
-                /*  if (observaciones.isNullOrEmpty()) {
-                      estatus = "terminada"
-                  } else {
-                      estatus = "pendiente"
-                  }*/
+                    desactivarCampos(args)
 
-                var update = TaskUpdate(
-                    titulo,
-                    descripcion,
-                    fecha_ini,
-                    fecha_fin,
-                    prioridad,
-                    estatus,
-                    observaciones
-                )
+                    val newFragment2 =
+                        DialogoActualizarTarea(update, args.tareas.idTarea, args.tareas.idEmisor)
+                    newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+                }
 
-                desactivarCampos(args)
-
-                val newFragment2 =
-                    DialogoActualizarTarea(update, args.tareas.idTarea, args.tareas.idEmisor)
-                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
             }
 
         }
