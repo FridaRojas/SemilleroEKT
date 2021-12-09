@@ -33,4 +33,5 @@ internal struct ConcreteMessageType: MessageType {
     let messageId: String
     let sentDate: Date
     var kind: MessageKind
+    var documento: String
 }

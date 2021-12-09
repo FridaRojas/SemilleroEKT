@@ -7,6 +7,12 @@
 
 import UIKit
 
+struct Datas_Contactos: Codable
+{
+    let status: String?
+    let data: [Contactos]?
+}
+
 struct Contactos: Codable
 {
     let id: String
@@ -61,19 +67,20 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
     
     func Servicio_web_contactos()
     {
-
-
-
         let servicio = server + "mensajes/listaContactos/\(userID)"
-
-
+        //let servicio = "http://10.97.7.15:3040/api/mensajes/listaContactos/\(userID)"
         let url = URL(string: servicio)
+        let requeste = NSMutableURLRequest(url: url! as URL)
+        requeste.httpMethod = "GET";
+        requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
 
-        URLSession.shared.dataTask(with: url!)
+        URLSession.shared.dataTask(with: requeste as! URLRequest)
         {data,response,error in
             do
             {
-                self.contactos = try JSONDecoder().decode([Contactos].self, from: data!)
+                let resp =  try JSONDecoder().decode(Datas_Contactos.self, from: data!)
+                self.contactos = resp.data!
+                
                 DispatchQueue.main.async
                 {
                     var cadena = String()

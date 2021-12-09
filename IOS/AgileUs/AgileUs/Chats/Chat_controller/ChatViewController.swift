@@ -1,7 +1,6 @@
 //
 //  ChatViewController.swift
 //  AgileUs
-//
 //  autor: Carlos_Adolfo_Hernandez (C_A_H)
 
 import UIKit
@@ -14,6 +13,12 @@ import FirebaseStorage
 //declaramos Structuras
 //estructura para codear json de api del servicio web
 //con los datos que vamos a ocupar
+struct Datas_Chats: Codable
+{
+    let status: String?
+    let data: [Chats]?
+}
+
 struct Chats: Codable
 {
     let id:String
@@ -46,7 +51,7 @@ struct Message: MessageType
     
     var kind: MessageKind
     
-    
+    var documento: String
 }
 
 
@@ -77,10 +82,7 @@ class ChatViewController:
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
-        messagesCollectionView.messagesCollectionViewFlowLayout.setMessageIncomingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: .zero))
-        messagesCollectionView.messagesCollectionViewFlowLayout.setMessageIncomingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: .zero))
         configureMessageInputBar()
-        //carga_mensajes()
         showNavBar()
     }
   
@@ -110,7 +112,9 @@ class ChatViewController:
         messages.append(Message(sender: currentUser,
                                      messageId: "1",
                                      sentDate: Date(),
-                                     kind: .text("\(mensaje)")))
+                                     kind: .text("\(mensaje)"),
+                                     documento: ""
+                               ))
         var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
         self.messagesCollectionView.reloadData()
@@ -157,6 +161,7 @@ class ChatViewController:
     }
     //funcion que se le asigna al pulsar el link
     func didSelectURL(_ url: URL) {
+        
         UIApplication.shared.openURL(url)
     }
     
@@ -184,9 +189,18 @@ class ChatViewController:
     
     
     func didTapMessage(in cell: MessageCollectionViewCell) {
-        let fileUrl = URL(string: self.url_Documento)
-        UIApplication.shared.openURL(fileUrl!)
-        
+        if let indexPath = messagesCollectionView.indexPath(for: cell),
+                    let messagesDataSource = messagesCollectionView.messagesDataSource {
+                    let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
+                    let sender = message.sender
+                    let docc = message.documento
+                    let documentoURL = URL(string: message.documento)
+                    if documentoURL != nil
+                    {
+                        UIApplication.shared.openURL(documentoURL!)
+                    }
+                    simpleAlertMessage(title: "Aviso", message:"Esto no es un Documento. :)")
+                }
     }
     //funcion para modificar el avatar de la conversacion
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
@@ -298,15 +312,23 @@ class ChatViewController:
         {
             
              let dato_chat = Datos_chats as! [Any]
-             servicio = server + "mensajes/verConversacion/\(userID)_\(dato_chat[2])"
-            servicio = server + "mensajes/verConversacion/\(dato_chat[1])"
+            print("chaaaaaa\(dato_chat[1])")
+             //servicio = server + "mensajes/verConversacion/\(userID)_\(dato_chat[2])"
+            servicio = server + "mensajes/verConversacion/\(userID)/\(dato_chat[1])"
+            //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(userID)_\(dato_chat[2])"
+            //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(dato_chat[1])"
         }else{
             let dato_contacto = Datos_contacto as! [Any]
-            servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
+            //servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
+            servicio = server + "mensajes/verConversacion/\(userID)/\(dato_contacto[1])_\(userID)"
+            //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
         }
-
         let url = URL(string: servicio)
-        URLSession.shared.dataTask(with: url!)
+        let requeste = NSMutableURLRequest(url: url! as URL)
+        requeste.httpMethod = "GET";
+        requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
+        
+        URLSession.shared.dataTask(with: requeste as! URLRequest)
         {data,response,error in
             do
             {
@@ -315,7 +337,8 @@ class ChatViewController:
                 {
                     self.simpleAlertMessage(title: "Aviso", message: "Aun no ha Iniciado conversacion")
                 }
-                self.usuarios = try JSONDecoder().decode([Chats].self, from: data!)
+                let resp = try JSONDecoder().decode(Datas_Chats.self, from: data!)
+                self.usuarios = resp.data!
                 DispatchQueue.main.async
                 {
                     var cont = 0
@@ -327,22 +350,22 @@ class ChatViewController:
                             
                             if item.rutaDocumento != ""
                             {
-                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion ,kind: .text("Documento: 📄📝")  ))
+                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion ,kind: .text("Documento: 📄📝"),documento:item.rutaDocumento))
                                 self.url_Documento = item.rutaDocumento
                                
                             }else{
-                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
+                                self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)"),documento:item.rutaDocumento))
                             }
                             
                         }else{
                             if item.rutaDocumento != ""
                             {
                                 
-                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion ,kind: .text("Documento: 📄📝")))
+                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion ,kind: .text("Documento: 📄📝"),documento:item.rutaDocumento))
                                 self.url_Documento = item.rutaDocumento
                             }else
                             {
-                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)")))
+                                self.messages.append(Message(sender: self.otherUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)"),documento:item.rutaDocumento))
                                 if item.statusLeido == false
                                     {
                                         self.jsonMensajeLeido(id: item.id)
@@ -364,7 +387,7 @@ class ChatViewController:
                     self.ultimo_mensaje()
                 }
             }
-            catch{print("Servidor Abajo\(error)")}
+            catch{print("Servidor Abajooooo\(error)")}
         }.resume()
     }
 
@@ -372,8 +395,8 @@ class ChatViewController:
     func mensajesLeidos(mensaje_leido: String, succes: @escaping (_ succes: String) ->(), fallo: @escaping (_ fallo: String) ->() )
     {
         //crea NSURL
-        let requestURL = URL(string: server + "mensajes/actualizarLeido")
-        
+        let requestURL = URL(string: server + "mensajes/actualizarLeido/\(userID)")
+        //let requestURL = URL(string: "http://10.97.7.15:3040/api/mensajes/actualizarLeido")
         //crea NSMutableURLRequest
         let requeste = NSMutableURLRequest(url: requestURL! as URL)
         //configura el método de envío
@@ -383,6 +406,7 @@ class ChatViewController:
         //agrega los parámetros a la petición
         requeste.httpBody = postParameters.data(using: String.Encoding.utf8)
         requeste.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         //crea una tarea que envía la petición post
         let task = URLSession.shared.dataTask(with:requeste as URLRequest){
             data, response, error in
@@ -393,8 +417,6 @@ class ChatViewController:
             }
             else{
                 succes("successsss")
-                //print(response)
-                //print(postParameters)
             }
         }
         //ejecuta la tarea
@@ -406,6 +428,7 @@ class ChatViewController:
     {
         //crea NSURL
         let requestURL = URL(string: server + "mensajes/crearMensaje")
+        //let requestURL = URL(string: "http://10.97.7.15:3040/api/mensajes/crearMensaje")
         
         //crea NSMutableURLRequest  10.97.6.83
         let request = NSMutableURLRequest(url: requestURL! as URL)
@@ -416,6 +439,7 @@ class ChatViewController:
         //agrega los parámetros a la petición
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         //request.
         //crea una tarea que envía la petición post
         let task = URLSession.shared.dataTask(with:request as URLRequest){
@@ -442,7 +466,6 @@ class ChatViewController:
             if let jsonLeido = JSONStringEncoder().encode(exampleLeido) {
                 mensajesLeidos(mensaje_leido: jsonLeido){
                     (succes) in
-                        //print(succes)
                     DispatchQueue.main.async {
                        exito("Registro exitoso")
                     }
@@ -537,7 +560,6 @@ class ChatViewController:
                     
                     self.create_json(id_emisor: userID, id_receptor: id_receptor, mensaje: mensaje, rutaDocumento: documentRoute, fecha: fecha){
                         (exito) in
-                        print("/****************************************************************/")
                         print("Exitoso \(userID)")}fallido:{ fallido in
                         print("Registro Fallido")
                     }

@@ -7,6 +7,12 @@
 
 import UIKit
 
+struct Datas_Conversaciones: Codable
+{
+    let status: String?
+    let data: [Conversaciones]?
+}
+
 struct Conversaciones: Codable
 {
     let idConversacion: String
@@ -15,6 +21,11 @@ struct Conversaciones: Codable
     let nombreRol:String
 
 }
+struct Datas_Grupos:Codable
+{
+    let status:String?
+    let data: [Grupos]?
+}
 struct Grupos:Codable
 {
     let idConversacion:String
@@ -22,6 +33,7 @@ struct Grupos:Codable
     let nombreConversacionRecepto:String
 
 }
+
 
 class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource { //se importan las clases abstraptas
 
@@ -44,7 +56,8 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
         Servicio_web_grupos()
         Servicio_web_conversaciones()
-
+        print("\(Datas_Conversaciones.self)")
+        print(userID)
     }
     override func viewDidAppear(_ animated: Bool) {
 
@@ -95,14 +108,20 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     func Servicio_web_grupos()
     {
         let servicio_grupos = server + "mensajes/listaGrupos/\(userID)"
-
+        //let servicio_grupos = "http://10.97.7.15:3040/api/mensajes/listaGrupos/\(userID)"
         let url = URL(string: servicio_grupos)
-
-        URLSession.shared.dataTask(with: url!)
+        let requeste = NSMutableURLRequest(url: url! as URL)
+        requeste.httpMethod = "GET";
+        requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
+        
+        URLSession.shared.dataTask(with: requeste as! URLRequest)
         {data,response,error in
             do
             {
-                self.grupos = try JSONDecoder().decode([Grupos].self, from: data!)
+                
+                let resp = try JSONDecoder().decode(Datas_Grupos.self, from: data!)
+               // print(String(data: dataSuccess, encoding: .utf8))
+                self.grupos = resp.data!
                 DispatchQueue.main.async
                 {
                     var cadena = String()
@@ -126,18 +145,21 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
 
     func Servicio_web_conversaciones()
     {
-
-       let servicio = server + "mensajes/listarConversaciones/\(userID)"
+        let servicio = server + "mensajes/listarConversaciones/\(userID)"
+        //let servicio = "http://10.97.7.15:3040/api/mensajes/listarConversaciones/\(userID)"
         print("Este es un toke \(tokenAuth)")
         let url = URL(string: servicio)
         let requeste = NSMutableURLRequest(url: url! as URL)
-        requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "token_session")
-        
+        requeste.httpMethod = "GET";
+        requeste.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         URLSession.shared.dataTask(with: requeste as URLRequest)
         {data,response,error in
+           
             do
             {
-                self.conversaciones = try JSONDecoder().decode([Conversaciones].self, from: data!)
+                let resp = try JSONDecoder().decode(Datas_Conversaciones.self, from: data!)
+                self.conversaciones = resp.data!
                 DispatchQueue.main.async
                 {
                     var cadena = String()
@@ -151,7 +173,7 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
                 }
 
             }
-            catch{print("Error")}
+            catch{print("Error\(error)")}
         }.resume()
 
     }
