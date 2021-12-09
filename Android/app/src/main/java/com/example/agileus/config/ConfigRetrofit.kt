@@ -24,7 +24,6 @@ class ConfigRetrofit {
 
     private var client = OkHttpClient.Builder().addInterceptor(MyInterceptor()).build()
 
-
     //val URL_LOGIN = Constantes.URL_LOGIN
     val URL_Login = Constantes.URL_Login
     fun cliente(tiempo: Long): OkHttpClient {

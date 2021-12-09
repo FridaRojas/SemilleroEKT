@@ -185,6 +185,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -239,20 +240,21 @@
                 android:background="@drawable/rounded_bg"
                 android:text="Cancelar Tarea"
                 android:textSize="14sp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/btnObservacionF"
+                android:id="@+id/btnValidarTarea"
                 style="@style/StyleButton"
                 android:layout_width="120dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/rounded_bg"
-                android:text="Agregar Observación"
+                android:text="Validar Tarea"
                 android:textSize="14sp"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btnCancelarTareaF" />
