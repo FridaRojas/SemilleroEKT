@@ -3,22 +3,4 @@
    uuid = "DC976ADE-56ED-42B3-9688-0D59C7310346"
    type = "0"
    version = "2.0">
-   <Breakpoints>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CF595A85-94EE-4389-958D-0C9DE2F25EC7"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AgileUs/Reportes/ReportesScreen.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "501"
-            endingLineNumber = "501"
-            landmarkName = "llenar_pie_chartTareas(tareas:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-   </Breakpoints>
 </Bucket>

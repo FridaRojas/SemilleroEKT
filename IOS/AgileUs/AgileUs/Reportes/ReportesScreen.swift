@@ -507,6 +507,15 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     //Llenado de graficas de barras --->
     
     func llenar_bar_chartTareas(arrDatosT: [Any]){
+        
+        if !piechart.isEmpty(){
+            barchart.removeFromSuperview()
+        }
+        
+        if !barchartGeneral.isEmpty(){
+            barchartGeneral.removeFromSuperview()
+        }
+        
         //Comprobar que el arreglo no esté vacio
         if !arrDatosT.isEmpty{
             let tareasATiempo = BarChartDataEntry(x: 1, y: Double("\(arrDatosT[4])")!)
