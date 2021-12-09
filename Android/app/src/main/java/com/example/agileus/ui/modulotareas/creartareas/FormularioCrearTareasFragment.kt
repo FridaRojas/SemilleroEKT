@@ -219,7 +219,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
         // Enviar tarea a la conversacion grupal
         val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0-618d9c26beec342d91d747d6-618e8743c613329636a769aa","",
             "Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
-        conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
+      //  conversationviewModel.mandarMensaje(Constantes.id, Constantes.idChat, mensajeTareas)
         Log.d("mensaje Tareas","$mensajeTareas")
 
         //Volver al fragment anterior
