@@ -82,10 +82,10 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, Observer{ list->
             Constantes.dataEmpleadoUsuario = list
-            Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
+            //Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
         })
         reporteTareasViewModel.cargaOperacionesEstadisticasTareas.observe(viewLifecycleOwner, Observer{
-            Toast.makeText(context, "COPE: ${reporteTareasViewModel.cargaOperacionesEstadisticasTareas.value}", Toast.LENGTH_LONG).show()
+            //Toast.makeText(context, "COPE: ${reporteTareasViewModel.cargaOperacionesEstadisticasTareas.value}", Toast.LENGTH_LONG).show()
             binding.txtRangoFechaReportes.isVisible = true
             binding.txtRangoFechaReportes.setText("CargaCompleta")
             cambiarGrafica(tipo_grafica)
