@@ -16,8 +16,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
-import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.ActivityHomeBinding
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
+
+
+
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
@@ -32,9 +36,9 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("Login", InicioSesionFragment.correoLogin)
-        Log.d("Login", InicioSesionFragment.passwordLogin)
-        Log.d("Login", idUser)
+        //Log.d("Login", InicioSesionFragment.correoLogin)
+        //Log.d("Login", InicioSesionFragment.passwordLogin)
+        // Log.d("Login", idUser)
 
         //Token Notificaciones
         val token = InitialApplication.preferenciasGlobal.recuperarToken()

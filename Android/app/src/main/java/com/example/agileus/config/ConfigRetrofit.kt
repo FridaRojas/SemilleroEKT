@@ -1,10 +1,9 @@
 package com.example.agileus.config
 
 
-import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
-import com.example.agileus.ui.login.data.service.LoginApi
+import com.example.agileus.webservices.apis.LoginApi
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS

@@ -4,21 +4,14 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.utils.Constantes
-import androidx.activity.OnBackPressedCallback
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import com.example.agileus.R
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 
 
 class ListContactsFragment : Fragment() {
@@ -33,6 +26,7 @@ class ListContactsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
         contactsviewModel = ViewModelProvider(this).get(ListContactsViewModel::class.java)
 
         _binding = ListContactsFragmentBinding.inflate(inflater, container, false)
@@ -45,8 +39,18 @@ class ListContactsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //    Toast.makeText(activity, "Usuario BRD", Toast.LENGTH_LONG).show()
+        //llamar a la barra de acción
+        //var actionBar = getSupportActionBar()
+        /*
+        var actionBar = getSupportActionBar()
+
+        // mostrar el botón de retroceso en la barra de acción
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false)
+        }
 
 
+         */
 
         Constantes.id=idUser
 

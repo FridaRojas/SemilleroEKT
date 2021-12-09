@@ -2,7 +2,6 @@ package com.example.agileus.config
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.agileus.ui.login.data.model.Data
 
 class MySharedPreferences(contexto: Context) {
 
@@ -31,6 +30,9 @@ class MySharedPreferences(contexto: Context) {
     //LOGIN WITH SHARED
     fun iniciarSesion(correo: String, password: String, sesion: Boolean) {
         with(sharedPreferences.edit()) {
+    //LOGIN WITH SHARED PENDIENTE
+    fun iniciarSesion(correo:String, password:String, sesion:Boolean){
+        with(sharedPreferences.edit()){
             //putString(ID_KEY, id)
             putString(CORREO_KEY, correo)
             putString(PASSWORD_KEY, password)

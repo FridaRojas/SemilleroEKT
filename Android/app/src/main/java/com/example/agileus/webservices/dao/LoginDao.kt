@@ -1,6 +1,5 @@
-package com.example.agileus.ui.login.data.dao
+package com.example.agileus.webservices.dao
 
-import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
 import com.example.agileus.ui.login.data.model.Data
@@ -13,6 +12,14 @@ import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idno
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.rol
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
 import retrofit2.Call
+import com.example.agileus.models.LoginResponse
+import com.example.agileus.models.Users
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idGrupo
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idnombre
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.rol
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -41,6 +48,15 @@ class LoginDao {
             if (almacenar.status == "ACCEPTED")
             {
                 STATUS=true
+        if (responseDos.isSuccessful) {
+            if (responseDos.body() != null) {
+                val almacenar: LoginResponse = responseDos.body()!!
+                //Log.d("almacenar", "${almacenar.data.id}")
+                //idUser= almacenar.data.id.toString()
+                //rol= almacenar.data.nombreRol.toString()
+                if (almacenar.status == "ACCEPTED")
+                {
+                    STATUS=true
 //                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
                 idUser = almacenar.data.id.toString()
                 rol=almacenar.data.nombreRol.toString()
@@ -50,6 +66,18 @@ class LoginDao {
             {
                 //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
                 STATUS=false
+                    idUser = almacenar.data.id.toString()
+                    rol=almacenar.data.nombreRol.toString()
+                    idnombre=almacenar.data.nombre.toString()
+                    idGrupo = almacenar.data.idgrupo.toString()
+                    tokenAuth = almacenar.data.tokenAuth.toString()
+
+
+                }
+                if (almacenar.status =="BAD_REQUEST")
+                {
+                 //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
+                    STATUS=false
 
             }
             status=STATUS
