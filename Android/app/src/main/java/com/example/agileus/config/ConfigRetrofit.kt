@@ -14,7 +14,6 @@ import com.example.agileus.utils.Constantes.URL_Tasks_Personas
 import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
@@ -160,4 +159,4 @@ class ConfigRetrofit {
 
 
 
-}
+    }

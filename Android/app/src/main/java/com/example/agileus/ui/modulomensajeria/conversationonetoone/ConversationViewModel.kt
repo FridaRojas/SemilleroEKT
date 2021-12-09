@@ -6,11 +6,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.ConversationAdapter
-import com.example.agileus.models.Conversation
-import com.example.agileus.models.Message
-import com.example.agileus.models.MessageResponse
-import com.example.agileus.models.StatusRead
+import com.example.agileus.models.*
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
 import com.example.agileus.webservices.dao.MessageDao
@@ -25,6 +23,11 @@ class ConversationViewModel:ViewModel() {
     lateinit var listaConsumida: ArrayList<Conversation>
     lateinit var RespuestaMessage: MessageResponse
     var responseM = MutableLiveData<MessageResponse>()
+    var actualizar = MutableLiveData<ArrayList<Conversation>>()
+
+    var adaptadorChats = MutableLiveData<ChatsAdapter>()
+    lateinit var listadeChats:ArrayList<Chats>
+    var pruebaArreglo = MutableLiveData<ArrayList<Chats>>()
 
 
     init {
@@ -41,6 +44,7 @@ class ConversationViewModel:ViewModel() {
                 if (listaConsumida != null) {
                     if (listaConsumida.isNotEmpty()) {
                         adaptador.postValue(ConversationAdapter(listaConsumida as ArrayList<Conversation>))
+                        actualizar.value = listaConsumida
                     }
                     else{
 
@@ -71,7 +75,6 @@ class ConversationViewModel:ViewModel() {
     }
 
     fun statusUpdateMessage(statusRead: StatusRead){
-
         try {
             viewModelScope.launch {
                 RespuestaMessage = withContext(Dispatchers.IO) {
@@ -83,4 +86,5 @@ class ConversationViewModel:ViewModel() {
             Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
+
 }

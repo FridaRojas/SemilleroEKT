@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
 import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
+import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
 import retrofit2.Response
@@ -42,110 +44,100 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         super.onViewCreated(view, savedInstanceState)
 
 
-       val post=MsgBodyUser("Hola ","61a101db174bcf469164d2fd","618e8882c613329636a769ad")
-        viewModel.postRequest(post)
 
 
+     //   viewModel.devuelvebuzon1()
 
-        viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
-            if (response.isSuccessful)
-            {
-                Log.d("Main",response.body().toString())
-                Log.d("Main",response.code().toString())
-                Log.d("Main",response.message().toString())
-            }
-            else{
-                Log.d("Main",response.code().toString())
-            }
-        })
-
-
-        binding.vista2.visibility=View.INVISIBLE
+   viewModel.devuelvebuzonentrada()
 
         if (BuzonFragment.control == 1) {
-            binding.fab.visibility = View.VISIBLE
+
+            viewModel.devuelvebuzon()
+
+            viewModel.adaptador.observe(
+                viewLifecycleOwner,
+                {
+                    binding.recyclerBuzon.adapter = it
+                    binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
+                })
+
             binding.fab.setOnClickListener {
-                val newFragment =
-                    DialogoSenderUser(this) //Se le pasa el dialogolistener con This
+                val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
                 activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
             }
         }
 
+
         if (BuzonFragment.control == 2) {
-            binding.fab.visibility = View.GONE
-            binding.fab.setOnClickListener {
-                Toast.makeText(context, "Opción No permitida ", Toast.LENGTH_SHORT).show()
-            }
+
+            viewModel.devuelvebuzonentrada()
+            binding.fab.visibility = View.INVISIBLE
+
+            viewModel.adaptador1.observe(
+                viewLifecycleOwner,
+                {
+                    binding.recyclerBuzon.adapter = it
+                    binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
+                })
+
         }
 
-//        viewModel.devuelvebuzon()
-
-
-
-        viewModel.adaptador.observe(viewLifecycleOwner, {
-            binding.recyclerBuzon.adapter = it
-            binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-        })
 
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
 
-        viewModel.postRequest(buzon)
-        viewModel.myResponse.observe(
-            viewLifecycleOwner,
-            Observer { response ->
-                 if (response.isSuccessful) {
-                     Log.i("response", response.code().toString())
-                }
-            },
-        )
+           buzon.idEmisor="618e8743c613329636a769aa"
 
-    Handler().postDelayed({
-            binding.vista1.visibility= View.INVISIBLE
-            binding.vista2.visibility = View.VISIBLE
+            viewModel.postRequest(buzon)
+
+            viewModel.myResponse.observe(
+                viewLifecycleOwner,
+                Observer { response ->
+                    if (response.isSuccessful) {
+                        Log.i("response", response.code().toString())
+                    }
+                },
+            )
+
+            Handler().postDelayed({
+                binding.vista1.visibility = View.INVISIBLE
+//                binding.vista2.visibility = View.VISIBLE
+                binding.fab.visibility = View.INVISIBLE
+            }, 5)
+            ////////////////
+
+            startTimeCounter()
+
+
+            Handler().postDelayed({
+                Toast.makeText(context, " Mensaje enviado a Broadcast", Toast.LENGTH_SHORT).show()
+  //              binding.vista2.visibility = View.INVISIBLE
+                binding.vista1.visibility = View.VISIBLE
+                binding.fab.visibility = View.VISIBLE
+            }, 3800)
+        }
+
+
+        fun startTimeCounter() {
+            var counter = 0
+            binding.vista1.visibility = View.INVISIBLE
+    //        binding.vista2.visibility = View.VISIBLE
             binding.fab.visibility = View.INVISIBLE
-        }, 5)
-        ////////////////
 
-        startTimeCounter()
-
-
-        Handler().postDelayed({
-            Toast.makeText(context, " Mensaje enviado a Broadcast", Toast.LENGTH_SHORT).show()
-            binding.vista2.visibility = View.INVISIBLE
-            binding.vista1.visibility= View.VISIBLE
-            binding.fab.visibility = View.VISIBLE
-        }, 3800)
-    }
-
-
-    fun startTimeCounter() {
-        var counter=0
-        binding.vista1.visibility= View.INVISIBLE
-        binding.vista2.visibility = View.VISIBLE
-        binding.fab.visibility = View.INVISIBLE
-
-        val progressBar = binding.progress
-        progressBar.visibility=View.VISIBLE
+      //      val progressBar = binding.progress
+        //    progressBar.visibility = View.VISIBLE
 //        val countTime: TextView = findViewById(R.id.countTime)
-        object : CountDownTimer(3900, 100) {
-            override fun onTick(millisUntilFinished: Long) {
+            object : CountDownTimer(3900, 100) {
+                override fun onTick(millisUntilFinished: Long) {
 //                countTime.text = counter.toString()
 //                Log.d("tiempo ", " $counter")
-                counter++
-                progressBar.progress = counter
-            }
-            override fun onFinish() {
-    //            viewModel.devuelvebuzon()
-            }
-        }.start()
+                    counter++
+         //           progressBar.progress = counter
+                }
+                override fun onFinish() {
+//                    viewModeldevuelvebuzon()
+                }
+            }.start()
+        }
     }
-}
-

@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -24,9 +23,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.ActivityHomeBinding
-import com.example.agileus.ui.modulotareas.dialogostareas.DialogoTareaCreadaExitosamente
 
-class HomeActivity : AppCompatActivity(), DialogoTareaCreadaExitosamente.NoticeDialogListener {
+class HomeActivity : AppCompatActivity() {
 
   lateinit var binding: ActivityHomeBinding
 
@@ -41,6 +39,8 @@ class HomeActivity : AppCompatActivity(), DialogoTareaCreadaExitosamente.NoticeD
         Log.d("token", token)
 
         val navView: BottomNavigationView = binding.navView
+        binding.navView.visibility= View.GONE
+
 
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
          val appBarConfiguration = AppBarConfiguration(
@@ -74,10 +74,4 @@ class HomeActivity : AppCompatActivity(), DialogoTareaCreadaExitosamente.NoticeD
 
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment) {
-
-    }
-
-    override fun onDialogNegativeClick(dialog: DialogFragment) {
-    }
 }

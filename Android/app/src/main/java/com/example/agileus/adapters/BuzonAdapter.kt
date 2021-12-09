@@ -40,26 +40,22 @@ class BuzonAdapter(private var dataSet: ArrayList<BuzonResp>, var tipo: Int) :
 
         val buzon = dataSet[position]
 
-        if(tipo==1) {
-            if(USERTYPE == "Broadcast" ) {
-                viewHolder.textView.text = "Mensaje enviado por :Broadcast "
-            }
-            else {
-                viewHolder.textView.text = "Mensaje enviado a : Broadcast"
-            }
-            viewHolder.textView1.text = "Asunto:  ${buzon.Asunto}"
-            viewHolder.textView2.text = "Mensaje: \n ${buzon.Message}"
-        }
+                viewHolder.textView.text = "Mensaje enviado por : ${buzon.nombreEmisor} "
+            viewHolder.textView1.text = "Contenido:  ${buzon.descripcion}"
+            viewHolder.textView2.text = ""
+
+
+
         if(tipo==2) {
 
             if (USERTYPE == "Broadcast") {
-                viewHolder.textView.text = "Mensaje enviado a :${buzon.Receiverid} "
+                viewHolder.textView.text = "Mensaje enviado a :${buzon.idreceptor} "
             }
-            if(buzon.Receiverid =="General"){
-                viewHolder.textView.text = "Comunicado:    ${buzon.Receiverid}"
+            if(buzon.idreceptor =="General"){
+                viewHolder.textView.text = "Comunicado:    ${buzon.descripcion}"
             }
-            viewHolder.textView1.text = "Asunto:    ${buzon.Asunto}"
-            viewHolder.textView2.text = "Mensaje: \n${buzon.Message}"
+            viewHolder.textView1.text = "idRec:    ${buzon.idreceptor}"
+            viewHolder.textView2.text = ""
         }
     }
     override fun getItemCount(): Int {

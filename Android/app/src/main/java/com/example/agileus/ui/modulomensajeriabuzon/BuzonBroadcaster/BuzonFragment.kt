@@ -12,6 +12,10 @@ import com.example.agileus.databinding.FragmentBuzonBinding
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class BuzonFragment : Fragment() {
 
@@ -29,6 +33,7 @@ companion object{
         savedInstanceState: Bundle?
     ): View? {
 
+
         _binding = FragmentBuzonBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -38,7 +43,12 @@ companion object{
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
         super.onViewCreated(view, savedInstanceState)
+//        getActivity()?.setTitle("Buzon Broadcaster");
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title =
+            "Buzon Broadcast"
 
 
         binding.mensajesrecibidos.setOnClickListener {
@@ -52,12 +62,16 @@ companion object{
         }
 
 
-
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navBar.isVisible = false
+    }
 }

@@ -7,3 +7,6 @@ data class Groups (
     @SerializedName("idReceptor") val idReceptor: String,
     @SerializedName("nombreConversacionRecepto") val nombreConversacionRecepto: String
         )
+
+
+

@@ -10,15 +10,16 @@ data class Conversation(
    @SerializedName("rutaDocumento") val rutaDocumento: String,
    @SerializedName("statusRutaDocumento") val statusRutaDocumento: Boolean,
    @SerializedName("nombreConversacionReceptor") val nombreConversacionReceptor: String,
-   @SerializedName("fechaCreacion") val fechaCreacion: String,
+   @SerializedName("fechaCreacion") var fechaCreacion: String,
    @SerializedName("statusCreado") val statusCreado: Boolean,
    @SerializedName("fechaEnviado") val fechaEnviado: String,
    @SerializedName("statusEnviado") val statusEnviado: Boolean,
    @SerializedName("fechaLeido") val fechaLeido: String,
    @SerializedName("statusLeido") val statusLeido: Boolean,
-   @SerializedName("idreceptor") val idreceptor: String,
-   @SerializedName("idemisor") val idemisor: String,
    @SerializedName("idconversacion") val idconversacion: String,
+   @SerializedName("idreceptor") val idreceptor: String,
+   @SerializedName("idemisor") val idemisor: String
+
 )
 class conversartionListByID(
    @SerializedName("estatus") val estatus: String,
