@@ -24,7 +24,7 @@ object Constantes {
     var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
 //    var URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
     val URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
-    val URL_BASE3 = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/"
+    val URL_BASE3 = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/"
     val URL_BASE4 = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/"
     val broadlist = "61a101db174bcf469164d2fd"
     val userlistbuzon="618e8821c613329636a769ac"

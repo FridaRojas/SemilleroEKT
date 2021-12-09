@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
-import com.example.agileus.models.DataTask
 import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.providers.FirebaseProvider
@@ -120,9 +119,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
 
         setInfo(args)
+        desactivarCampos(args)
 
         with(binding) {
-            desactivarCampos(args)
             btnCancelarTareaF.setOnClickListener {
                 cancelarTarea(args)
             }
@@ -151,15 +150,16 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 )
             }
 
-            btnObservacionF.setOnClickListener {
-                txtObservacionesD.isVisible = true
-                txtObservacionesD.isEnabled = true
+            btnValidarTarea.setOnClickListener {
+                args.tareas.estatus = "terminada"
+                val newFragment2 =
+                    DialogoValidarTarea(args)
+                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
             }
 
             btnGuardarTareaF.setOnClickListener {
                 var obs = binding.txtObservacionesD.text.toString()
                 args.tareas.observaciones = obs
-
 
                 //todo cuando haya que modificar archivo crear un metodo para subir el archivo
                 //todo si el archivo no es nulo o vacio
@@ -173,28 +173,43 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 var estatus: String
                 var observaciones: String
 
-
-
                 titulo = txtNombreTareaD.text.toString()
                 descripcion = txtDescripcionD.text.toString()
                 fecha_ini = txtFechaInicioD.text.toString()
                 fecha_fin = txtFechaFinD.text.toString()
-                prioridad = txtPrioridadD.text.toString()
+                prioridad = args.tareas.prioridad
                 observaciones = obs
+                estatus = "pendiente"
 
-
-                if (btnGuardarTareaF.text.equals("Validar")) {
-                    if (observaciones.isNullOrEmpty() && btnGuardarTareaF.text.equals("Validar")) {
-                        estatus = "terminada"
-                        //todo no entra condicion en terminada
-                        //todo el api de editar no acepta blancos, por eso no cambia de estado a editada
+                /*    if (observaciones.isNullOrEmpty()) {
+                        if (args.tareas.descripcion.equals(descripcion)
+                            && args.tareas.fechaIni.equals(fecha_ini)
+                            && args.tareas.fechaFin.equals(fecha_fin)
+                        ) {
+                            estatus = "terminada"
+                        } else {
+                            estatus = "pendiente"
+                        }
                     } else {
                         estatus = "pendiente"
-                    }
-                } else {
-                    estatus = txtEstatusD.text.toString()
-                }
+                        estatus = txtEstatusD.text.toString()
+                    }*/
 
+                /*   if (args.tareas.estatus.equals("revision")
+                       && args.tareas.descripcion.equals(descripcion)
+                       && args.tareas.fechaIni.equals(fecha_ini)
+                       && args.tareas.fechaFin.equals(fecha_fin)
+                   ) {
+                       estatus = "terminada"
+                   } else {
+                       estatus = "pendiente"
+                   }*/
+
+                /*  if (observaciones.isNullOrEmpty()) {
+                      estatus = "terminada"
+                  } else {
+                      estatus = "pendiente"
+                  }*/
 
                 var update = TaskUpdate(
                     titulo,
@@ -211,10 +226,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 val newFragment2 =
                     DialogoActualizarTarea(update, args.tareas.idTarea, args.tareas.idEmisor)
                 newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
-
-                //   detalleNivelAltoViewModel.editarTarea(update, args.tareas.idTarea)
-
-
             }
 
         }
@@ -234,15 +245,16 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     private fun setInfo(args: DetalleNivelAltoFragmentArgs) {
 //        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
 //        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
-
         Log.d("Mensaje", args.tareas.archivo)
-
+        Log.d("Mensaje", args.tareas.estatus)
         var mesI: String = ""
         var diaI: String = ""
         var mesF: String = ""
         var diaF: String = ""
         var fechaFi: String = ""
         var fechaIn: String = ""
+        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
+        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
         val sdf3 = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
 
         val cal = Calendar.getInstance()
@@ -291,11 +303,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
         Log.d("Mensaje", "fecha nueva $fechaFi")
 
-
-//        var statusCampo = "Estatus: ${args.tareas.estatus.uppercase()}"
-//        var prioridadCampo = "Prioridad: ${args.tareas.prioridad.uppercase()}"
-
-
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
         prioridad = args.tareas.prioridad
@@ -318,12 +325,26 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             args.tareas.archivo = ""
         }
 
+        if (args.tareas.estatus.equals("terminada")) {
+            binding.buttons.isVisible = false
+            val newFragment = DialogoAceptar("Tarea Terminada")
+            newFragment.show(parentFragmentManager, "tarea terminada")
+        }
+
+        if (args.tareas.estatus.equals("revision")) {
+            binding.btnValidarTarea.isVisible = true
+            binding.btnValidarTarea.isEnabled = true
+        } else {
+            binding.btnValidarTarea.isVisible = true
+            binding.btnValidarTarea.isEnabled = false
+        }
+
         with(binding) {
             txtNombreTareaD.setText(nombreTarea)
             txtNombrePersonaD.text = nombrePersona
-            txtPrioridadD.text = prioridad
+            txtPrioridadD.setText("Prioridad: " + prioridad)
             txtDescripcionD.setText(descripcion)
-            txtEstatusD.setText(estatus)
+            txtEstatusD.setText("Estatus: " + estatus)
             txtFechaInicioD.setText(fechaIn)
             txtFechaFinD.setText(fechaFi)
             txtObservacionesD.setText(observaciones)
@@ -337,15 +358,24 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             if (!args.tareas.archivo.isNullOrEmpty()) {
                 binding.btnDescargarArchivoFF.isVisible = true
             }
+            if (!args.tareas.observaciones.isNullOrEmpty()) {
+                txtObservacionesD.isVisible = true
+                txtObservacionesD.isEnabled = false
+            } else {
+                txtObservacionesD.isVisible = false
+                txtObservacionesD.isEnabled = false
+            }
+
+
+            btnValidarTarea.isVisible = true
+
             txtDescripcionD.isEnabled = false
             txtDescripcionD.isEnabled = false
             txtFechaInicioD.isEnabled = false
             btnAdjuntarArchivoF.isVisible = false
             txtFechaFinD.isEnabled = false
-            txtObservacionesD.isEnabled = false
             btnEditarTareaF.isVisible = true
             btnCancelarTareaF.isVisible = true
-            btnObservacionF.isVisible = true
             btnCancelarEdicion.isVisible = false
             btnGuardarTareaF.isVisible = false
         }
@@ -353,24 +383,24 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
     private fun activarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
-            //  binding.btnAdjuntarArchivoF.setText("Adjuntar Archivo PDF")
             Toast.makeText(context, "Estatus: ${args.tareas.estatus}", Toast.LENGTH_SHORT).show()
-            if (args.tareas.estatus.equals("revision")) {
-                btnGuardarTareaF.setText("Validar")
-            }
-
-            btnAdjuntarArchivoF.isVisible = true
+            /* if (args.tareas.estatus.equals("revision")) {
+                 btnGuardarTareaF.setText("Validar")
+             }*/
+            btnValidarTarea.isVisible = false
+            txtObservacionesD.isEnabled = true
+            txtObservacionesD.isVisible = true
+            btnAdjuntarArchivoF.isVisible = false
             btnDescargarArchivoFF.isVisible = false
             txtDescripcionD.isEnabled = true
             txtDescripcionD.isEnabled = true
             txtFechaInicioD.isEnabled = true
             txtFechaFinD.isEnabled = true
-            txtObservacionesD.isEnabled = true
             btnEditarTareaF.isVisible = false
             btnCancelarTareaF.isVisible = false
-            btnObservacionF.isVisible = false
             btnCancelarEdicion.isVisible = true
             btnGuardarTareaF.isVisible = true
+
         }
     }
 
@@ -404,7 +434,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
-        Toast.makeText(context, "Anuma si va a jalar :0", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {

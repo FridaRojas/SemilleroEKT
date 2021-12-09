@@ -34,6 +34,13 @@ public interface UserRepository extends MongoRepository<User,String> {
     @Query("{ 'idSuperiorInmediato' : ?0}")
     Optional<ArrayList<User>> findChilds(String idPadre);
 
+<<<<<<< HEAD
+
+    @Query(" {$and:[  {$or:[{'correo':?0},{'nombre':?0},{'rfc':?0},{'nombreRol':?0},{'curp':?0},{'numeroEmpleado':?0}]},{statusActivo:'true'} ]}")
+    Optional<ArrayList<User>> busquedaUsuario(String parametro);
+
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
     @Query("{'_id' : ?0}")
     Optional<User> validarUsuario(String _id); 
     
@@ -42,4 +49,11 @@ public interface UserRepository extends MongoRepository<User,String> {
     
     @Query("{'nombreRol' : ?0")
     Optional<User> findRol(String nombreRol);
+<<<<<<< HEAD
+
+    @Query("{'nombreRol' : ?0")
+    Iterable<User> findRolL(String nombreRol);
+
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 }

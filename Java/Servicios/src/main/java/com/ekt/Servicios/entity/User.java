@@ -25,6 +25,18 @@ public class User {
     private String statusActivo;
     private String curp;
     private String rfc;
+<<<<<<< HEAD
+    private String tokenAuth;
+
+    public String getTokenAuth() {
+        return tokenAuth;
+    }
+
+    public void setTokenAuth(String tokenAuth) {
+        this.tokenAuth = tokenAuth;
+    }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -73,4 +85,30 @@ public class User {
 
     public String getRFC() { return rfc; }
     public void setRFC(String value) { this.rfc = value; }
+<<<<<<< HEAD
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", correo='" + correo + '\'' +
+                ", fechaInicio='" + fechaInicio + '\'' +
+                ", fechaTermino='" + fechaTermino + '\'' +
+                ", numeroEmpleado='" + numeroEmpleado + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", password='" + password + '\'' +
+                ", nombreRol='" + nombreRol + '\'' +
+                ", idGrupo='" + idGrupo + '\'' +
+                ", opcionales=" + Arrays.toString(opcionales) +
+                ", token='" + token + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", idSuperiorInmediato='" + idSuperiorInmediato + '\'' +
+                ", statusActivo='" + statusActivo + '\'' +
+                ", curp='" + curp + '\'' +
+                ", rfc='" + rfc + '\'' +
+                ", tokenAuth='" + tokenAuth + '\'' +
+                '}';
+    }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 }

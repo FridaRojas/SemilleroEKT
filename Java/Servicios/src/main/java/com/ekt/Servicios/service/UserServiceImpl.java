@@ -1,14 +1,27 @@
 package com.ekt.Servicios.service;
 
 
+<<<<<<< HEAD
+import com.ekt.Servicios.entity.Response;
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 import com.ekt.Servicios.entity.User;
+import com.ekt.Servicios.repository.GroupRepository;
 import com.ekt.Servicios.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+<<<<<<< HEAD
+import org.springframework.http.HttpStatus;
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 
 @Service
@@ -16,6 +29,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+<<<<<<< HEAD
+    @Autowired
+    private GroupRepository groupRepository;
+
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
 
     @Override
@@ -132,4 +151,55 @@ public class UserServiceImpl implements UserService{
         return userRepository.findChilds(idPadre);
     }
 
+<<<<<<< HEAD
+    @Override
+    public Optional<ArrayList<User>> busquedaUsuario(String parametro) {
+        return userRepository.busquedaUsuario(parametro);
+    }
+
+    @Override
+    public Optional<String> guardarTokenAuth(String id) {
+        User usr = userRepository.findById(id).get();
+        String ret = cifrar("");
+        usr.setTokenAuth(ret);
+        userRepository.save(usr);
+        return Optional.ofNullable(ret);
+    }
+
+
+
+
+    /**
+     * Recibe un string.
+     * Si el string esta vacio crea un sha aleatorio.
+     * Si recibe un string con caracteres regresa un sha256 de dicho string.
+     * @return
+     */
+    public String cifrar(String param){
+        try {
+
+            if (param.length()>0){
+
+                System.out.println("Se va a cifrar: "+param);
+            }else{
+                System.out.println("Se va a crear un sha aleatorio");
+                for (int i=0;i<20;i++){
+                    param+=String.valueOf(Math.random());
+                }
+            }
+
+            System.out.println("wea a cifrar: "+param);
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            BigInteger number = new BigInteger(1, md.digest(param.getBytes(StandardCharsets.UTF_8)));
+            StringBuilder hexString = new StringBuilder(number.toString(16));
+            while (hexString.length() < 32){
+                hexString.insert(0, '0');
+            }
+            return hexString.toString();
+        }catch (Exception e){
+            return null;
+        }
+    }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 }
