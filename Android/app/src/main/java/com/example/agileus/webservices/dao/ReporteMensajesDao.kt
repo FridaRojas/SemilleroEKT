@@ -92,10 +92,15 @@ class ReporteMensajesDao {
 
                             if (id_usuario_actual == it.idemisor) {
                                 contador_m_enviados = contador_m_enviados + 1
+                            }else{
+                                contador_m_recibidos = contador_m_recibidos + 1
                             }
+                            /*
+
                             if (id_usuario_actual == it.idreceptor){
                                 contador_m_recibidos = contador_m_recibidos + 1
                             }
+                             */
 
                             if (it.statusLeido == true) {
                                 contador_m_leidos = contador_m_leidos + 1
