@@ -1,6 +1,6 @@
 package com.example.agileus.webservices.dao
 
-import com.example.agileus.Models.Buzon
+import com.example.agileus.models.Buzon
 import com.example.agileus.providers.BuzonProviderListener
 import retrofit2.Call
 import retrofit2.Response
@@ -14,4 +14,8 @@ class DaoBuzon(var listener: BuzonProviderListener) {
         return lista2
     }
 
+
+
 }
+
+

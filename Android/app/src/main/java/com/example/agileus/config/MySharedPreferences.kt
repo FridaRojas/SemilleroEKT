@@ -1,10 +1,22 @@
 package com.example.agileus.config
 
+import android.content.Context
 import com.example.agileus.models.UserMessageDetailReport
 import com.example.agileus.models.UserTaskDetailReport
 import com.example.agileus.utils.Constantes
 
-class MySharedPreferences {
+class MySharedPreferences(contexto: Context) {
+
+    companion object{
+        val TOKEN_KEY = "TOKEN_KEY"
+        val SESSION_TOKEN = "TOKEN"
+    }
+
+    val sharedPreferences = contexto.getSharedPreferences(SESSION_TOKEN, Context.MODE_PRIVATE)
+
+    fun recuperarToken() : String{
+        return sharedPreferences.getString(TOKEN_KEY, "")!!
+    }
 
     companion object reportesGlobales{
         var idUsuario = "618e8743c613329636a769aa"
@@ -20,5 +32,4 @@ class MySharedPreferences {
         var tipo_grafica:Int=0
         var vista:Int=0
     }
-
 }
