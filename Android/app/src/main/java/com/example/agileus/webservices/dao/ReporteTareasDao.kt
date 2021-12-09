@@ -74,94 +74,120 @@ class ReporteTareasDao {
         var contTareasFueraTiempo = 0
         var taskDetail= UserTaskDetailReport()
 
-        try {
-            val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
-            val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
+        if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
+            try {
+                taskDetail = dataEmpleadoUsuario[dataEmpleadoUsuario.size-1]
+            }catch (ex:Exception){
+                Log.e("RTDao", ex.toString())
+            }
+        }else{
+            try {
+                val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
+                val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
 
-            if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
-                try {
-                    taskDetail = dataEmpleadoUsuario[dataEmpleadoUsuario.size-1]
-                }catch (ex:Exception){
-                    Log.e("RTDao", ex.toString())
-                }
-            }else if (ResponseTareas.isSuccessful) {
-                try {
-                    val listaDs = ResponseTareas.body()!!
-                    lista = listaDs.data
-                    Log.e("CONSUMO", lista.size.toString())
+                if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
+                    try {
+                        taskDetail = dataEmpleadoUsuario[dataEmpleadoUsuario.size-1]
+                    }catch (ex:Exception){
+                        Log.e("RTDao", ex.toString())
+                    }
+                }else if (ResponseTareas.isSuccessful) {
+                    try {
+                        val listaDs = ResponseTareas.body()!!
+                        lista = listaDs.data
+                        Log.e("CONSUMO", lista.size.toString())
 
-                    val id_receptor = "RECEPT1"         //lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
+                        val id_receptor = "RECEPT1"         //lista[0].id_receptor//Aquí se coloca el id del usuario a revisar
 
-                    fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
-                    rangoIniFecha = ZonedDateTime.parse(fechaIniEstadisticas) // primera fecha para comparar
-                    rangoFinFecha = ZonedDateTime.parse(fechaFinEstadisticas) // segunda fecha para comparar
+                        fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
+                        rangoIniFecha = ZonedDateTime.parse(fechaIniEstadisticas) // primera fecha para comparar
+                        rangoFinFecha = ZonedDateTime.parse(fechaFinEstadisticas) // segunda fecha para comparar
 
-                    //Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
-                    lista.forEach {
-                        val dateIni = ZonedDateTime.parse(it.fecha_ini)
-                        if ((dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha)) &&
-                            (dateIni.isBefore(rangoFinFecha) || dateIni.isEqual(rangoFinFecha)) ){
+                        //Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
+                        lista.forEach {
+                            val dateIni = ZonedDateTime.parse(it.fecha_ini)
+                            if ((dateIni.isAfter(rangoIniFecha) || dateIni.isEqual(rangoIniFecha)) &&
+                                (dateIni.isBefore(rangoFinFecha) || dateIni.isEqual(rangoFinFecha)) ){
 
-                            //Log.e("RangoIN", "$rangoIniFecha / $dateIni / $rangoFinFecha")      //Lectura en rango de tareas
+                                //Log.e("RangoIN", "$rangoIniFecha / $dateIni / $rangoFinFecha")      //Lectura en rango de tareas
 
-                            //if(id_receptor==it.idReceptor) {
-                            if(true) {
-                                contador_t_totales = contador_t_totales + 1
-                                /*
-                                if (it.leido) {
-                                    contador_t_leidas = contador_t_leidas + 1
-                                } */
-                                if (it.estatus.lowercase().equals("terminada")) {
-                                    contador_t_terminadas = contador_t_terminadas + 1
-                                } else if(it.estatus.lowercase().equals("pendiente")) {
-                                    contador_t_pendientes = contador_t_pendientes + 1
-                                } else if(it.estatus.lowercase().equals("iniciada")){
-                                    contIniciada = contIniciada + 1
-                                } else if(it.estatus.lowercase().equals("revision")){
-                                    contRevision = contRevision + 1
-                                }else if(it.estatus.lowercase().equals("cancelado")){  //Cancelado
-                                    contCancelado = contCancelado + 1
-                                }else{
-                                    Log.e("taskStatusFormatERROR", "find: ${it.estatus}")
+                                //if(id_receptor==it.idReceptor) {
+                                if(true) {
+                                    contador_t_totales = contador_t_totales + 1
+                                    /*
+                                    if (it.leido) {
+                                        contador_t_leidas = contador_t_leidas + 1
+                                    } */
+                                    if (it.estatus.lowercase().equals("terminada")) {
+                                        contador_t_terminadas = contador_t_terminadas + 1
+                                    } else if(it.estatus.lowercase().equals("pendiente")) {
+                                        contador_t_pendientes = contador_t_pendientes + 1
+                                    } else if(it.estatus.lowercase().equals("iniciada")){
+                                        contIniciada = contIniciada + 1
+                                    } else if(it.estatus.lowercase().equals("revision")){
+                                        contRevision = contRevision + 1
+                                    }else if(it.estatus.lowercase().equals("cancelado")){  //Cancelado
+                                        contCancelado = contCancelado + 1
+                                    }else{
+                                        Log.e("taskStatusFormatERROR", "find: ${it.estatus}")
+                                    }
                                 }
-                            }
 
-                            try {
-                                fechaFin = ZonedDateTime.parse(it.fecha_fin)
-                                fechaFinR = ZonedDateTime.parse(it.fecha_finR)
-                                if (fechaFinR.isBefore(fechaFin) || fechaFinR.isEqual(fechaFin)){
-                                    contTareasaTiempo += 1
-                                }else{
-                                    contTareasFueraTiempo = contTareasFueraTiempo + 1
+                                try {
+                                    fechaFin = ZonedDateTime.parse(it.fecha_fin)
+                                    fechaFinR = ZonedDateTime.parse(it.fecha_finR)
+                                    if (fechaFinR.isBefore(fechaFin) || fechaFinR.isEqual(fechaFin)){
+                                        contTareasaTiempo += 1
+                                    }else{
+                                        contTareasFueraTiempo = contTareasFueraTiempo + 1
+                                    }
+                                }catch (ex:Exception){
+                                    fechaFin = ZonedDateTime.parse("1971-01-01T00:00:00.000+00:00")
+                                    fechaFinR = ZonedDateTime.parse("1970-01-01T00:00:00.000+00:00")
                                 }
-                            }catch (ex:Exception){
-                                fechaFin = ZonedDateTime.parse("1971-01-01T00:00:00.000+00:00")
-                                fechaFinR = ZonedDateTime.parse("1970-01-01T00:00:00.000+00:00")
                             }
                         }
+
+                    }catch (ex:java.lang.Exception){
+                        Log.d("RTDao no data/acces TASK.DATA", ex.toString())
                     }
 
-                }catch (ex:java.lang.Exception){
-                    Log.d("RTDao no data/acces TASK.DATA", ex.toString())
-                }
+                    taskDetail = UserTaskDetailReport(
+                        idBusqueda,
+                        nombreBusqueda,
+                        contador_t_totales,
+                        contador_t_terminadas,
+                        0,
+                        0,
+                        0,
+                        contador_t_pendientes,
+                        contCancelado,
+                        contIniciada,
+                        contRevision,
+                        contTareasaTiempo,
+                        contTareasFueraTiempo
+                    )
+                    Log.d("DetailsTASK", "D: ${taskDetail}")
+                }else{
+                    taskDetail = UserTaskDetailReport(
+                        idBusqueda,
+                        nombreBusqueda,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    )
 
-                taskDetail = UserTaskDetailReport(
-                    idBusqueda,
-                    nombreBusqueda,
-                    contador_t_totales,
-                    contador_t_terminadas,
-                    0,
-                    0,
-                    0,
-                    contador_t_pendientes,
-                    contCancelado,
-                    contIniciada,
-                    contRevision,
-                    contTareasaTiempo,
-                    contTareasFueraTiempo
-                )
-                Log.d("DetailsTASK", "D: ${taskDetail}")
-            }else{
+                }
+            }catch (ex: java.lang.Exception){
+                Log.d("RTDao Error al recuperar", "$nombreBusqueda")
                 taskDetail = UserTaskDetailReport(
                     idBusqueda,
                     nombreBusqueda,
@@ -177,25 +203,7 @@ class ReporteTareasDao {
                     0,
                     0
                 )
-
             }
-        }catch (ex: java.lang.Exception){
-            Log.d("RTDao Error al recuperar", "$nombreBusqueda")
-            taskDetail = UserTaskDetailReport(
-                idBusqueda,
-                nombreBusqueda,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            )
         }
 
         Log.d("DetailsTASK2", taskDetail.toString())
