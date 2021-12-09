@@ -13,7 +13,7 @@ interface ReportesApi {
     //@GET("tareas.json?alt=media&token=4aac6ac6-b294-4366-896b-59ac573f15ab")
     //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
     //@GET("TareasFechas.json?alt=media&token=70ef0428-836f-421f-a9ef-cc6563b64819")
-    @GET("tareas/obtenerTareasQueLeAsignaronPorId/{id}")
+    @GET("tareas/obtenerTareasQueLeAsignaronPorId/{id}")        //Listo
     fun getDatosReporteTareas(@Path("id") idBusqueda:String): Call<TaskListByID>
     //fun getDatosReporteTareas(): Call<ArrayList<Tasks>>
     //@GET("tareas/obtenerTareasQueLeAsignaronPorId/618b05c12d3d1d235de0ade0")
@@ -21,11 +21,11 @@ interface ReportesApi {
     //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
 
     //@GET("Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928")
-    @GET("mensajes/listarMensajesRecividos/{id}")
-    fun getDatosReporteMensajes(@Path("id") idBusqueda:String): Call<conversartionListByID>
+    @GET("mensajes/listarMensajesRecividos/{idUser}/{idSearch}")
+    fun getDatosReporteMensajes(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<conversartionListByID>
 
-    @GET("broadCast/mostrarMensajesporID/{id}")
-    fun getDatosRespuestasBroadcast(@Path("id") idBusqueda:String): Call<ArrayList<DatosBroadCast>>
+    @GET("broadCast/mostrarMensajesporID/{idUser}/{idSearch}")
+    fun getDatosRespuestasBroadcast(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<ArrayList<DatosBroadCast>>
 
     //Busqueda por Id de jefe
     @GET("user/findByBossId/{idsuperiorInmediato}")

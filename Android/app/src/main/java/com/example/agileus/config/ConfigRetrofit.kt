@@ -126,6 +126,7 @@ class ConfigRetrofit {
 
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_REPORTES)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

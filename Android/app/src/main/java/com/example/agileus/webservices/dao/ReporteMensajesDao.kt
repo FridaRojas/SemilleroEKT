@@ -6,6 +6,7 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.*
+import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.empleadoUsuario
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
@@ -53,10 +54,10 @@ class ReporteMensajesDao {
     @RequiresApi(Build.VERSION_CODES.O)
     fun recoverUserMessageStadistic(idBusqueda: String, searchName: String): UserMessageDetailReport {
 
-        val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(idBusqueda)
+        val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(Constantes.idUsuario, idBusqueda)
         val ResponseMensajes: Response<conversartionListByID> = callRespuesta.execute()
 
-        val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportesBroadCast.getDatosRespuestasBroadcast(idBusqueda)
+        val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportesBroadCast.getDatosRespuestasBroadcast(Constantes.idUsuario, idBusqueda)
         val ResponseMensajesBroadCast: Response<ArrayList<DatosBroadCast>> = callRespuestaBroadCast.execute()
 
         var lista: ArrayList<Conversation>
@@ -114,7 +115,7 @@ class ReporteMensajesDao {
                 lista_B = ResponseMensajesBroadCast.body()!!
                 broadcastSize = lista_B.size
             }catch (ex: java.lang.Exception){
-                Log.d("RMDao NoBroadcastConexion", ex.toString())
+                Log.d("RMDao ERRORBroadcastConection", ex.toString())
             }
 
             messageDetail = UserMessageDetailReport(

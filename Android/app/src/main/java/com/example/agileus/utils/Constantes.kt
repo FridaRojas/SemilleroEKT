@@ -20,9 +20,9 @@ object Constantes {
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
 
-    val id = "618b05c12d3d1d235de0ade0"
+    //val id = "618b05c12d3d1d235de0ade0"
     //var id = "61a83b59d036090b8e8db3c1"
-    //var id = "618d9c26beec342d91d747d6"
+    var id = "618d9c26beec342d91d747d6"
     val idChat = "618d9c26beec342d91d747d6_618b05c12d3d1d235de0ade0"
     val referenciaMensajeria = "Mensajeria"
     val referenciaTareas= "Tareas"
@@ -71,8 +71,9 @@ object Constantes {
 
 
 
-    var idUsuario = "618e8743c613329636a769aa"
-    var idUsuarioEstadisticas = id
+    //var idUsuario = "618e8743c613329636a769aa"
+    var idUsuario = id
+    var idUsuarioEstadisticas = idUsuario
     var opcionFiltro = 0
     var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
     var fechaEstadisticas = Constantes.date.toString()

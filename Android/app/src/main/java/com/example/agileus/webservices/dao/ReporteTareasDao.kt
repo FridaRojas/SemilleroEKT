@@ -239,15 +239,6 @@ class ReporteTareasDao {
                         Log.d("ListaSubConacts", "Nombre: ${it.nombre}")
                     }
                     stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
-                    stadisticEmployeesList.forEach {
-                        Log.d("ListaSubConactsDetail", "id: ${it.id}")
-                        Log.d("ListaSubConactsDetail", "Nombre: ${it.name}")
-                        Log.d("ListaSubConactsDetail", "pendings: ${it.pendings}")
-                        Log.d("ListaSubConactsDetail", "started: ${it.started}")
-                        Log.d("ListaSubConactsDetail", "revision: ${it.revision}")
-                        Log.d("ListaSubConactsDetail", "finished: ${it.finished}")
-                        Log.d("ListaSubConactsDetail", "totals: ${it.totals}")
-                    }
                 }
 
                 Log.d("ListaSubConactsSIZE", "SIZE: ${stadisticEmployeesList.size}")
