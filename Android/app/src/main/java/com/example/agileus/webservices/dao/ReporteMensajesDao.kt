@@ -189,15 +189,13 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> 
                     }
                     stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
                     stadisticEmployeesList.forEach {
-                        Log.d("ListaSubConactsDetailm", "id: ${it.id}")
-                        Log.d("ListaSubConactsDetailm", "Nombre: ${it.name}")
-                        Log.d("ListaSubConactsDetailm", "send: ${it.send}")
-                        Log.d("ListaSubConactsDetailm", "received: ${it.received}")
-                        Log.d("ListaSubConactsDetailm", "total: ${it.total}")
+                        Log.d("LSubConactsDetailm", "id: ${it.id}, Nombre: ${it.name}, " +
+                                "send: ${it.send}, received: ${it.received}, read: ${it.read}, total: ${it.total}, " +
+                                "sendB: ${it.sendBroadcast}, receivedB: ${it.sendBroadcast}")
                     }
                 }
 
-                Log.d("ListaSubConactsSIZE", "SIZE: ${stadisticEmployeesList.size}")
+                Log.d("ListaSubConactsSIZEM", "SIZE: ${stadisticEmployeesList.size}")
             }else{
                 Log.e("RMDao SubContactos", "Respuesta fallida:" + ResponseDos.code().toString())
             }
