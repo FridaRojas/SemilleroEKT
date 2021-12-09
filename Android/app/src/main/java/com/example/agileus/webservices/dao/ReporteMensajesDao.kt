@@ -58,7 +58,7 @@ class ReporteMensajesDao {
         val ResponseMensajes: Response<conversartionListByID> = callRespuesta.execute()
 
         val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportesBroadCast.getDatosRespuestasBroadcast(Constantes.idUsuario, idBusqueda)
-        val ResponseMensajesBroadCast: Response<ArrayList<DatosBroadCast>> = callRespuestaBroadCast.execute()
+        val ResponseMensajesBroadCast: Response<BroadcastByID> = callRespuestaBroadCast.execute()
 
         var lista: ArrayList<Conversation>
         var lista_B: ArrayList<DatosBroadCast>
@@ -112,10 +112,12 @@ class ReporteMensajesDao {
 
             //Mensajes enviados al Broadcast por Usuario
             try {
-                lista_B = ResponseMensajesBroadCast.body()!!
+                val objB = ResponseMensajesBroadCast.body()!!
+                Log.d("RMDao obj_B", objB.toString())
+                lista_B = objB.data!!
                 broadcastSize = lista_B.size
             }catch (ex: java.lang.Exception){
-                Log.d("RMDao ERRORBroadcastConection", ex.toString())
+                Log.d("RMDao NoDATABroadcast", ex.toString())
             }
 
             messageDetail = UserMessageDetailReport(
@@ -141,49 +143,6 @@ class ReporteMensajesDao {
                 0
             )
         }
-        /*
-
-        else if (ResponseMensajes.isSuccessful) {
-            val listaDS = ResponseMensajes.body()!!
-            lista = listaDS.data
-
-            lista.forEach {
-
-                fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
-
-                if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
-                    (fecha_actual.isBefore(fecha_fin))) {
-                    contador_m_totales = contador_m_totales + 1
-
-                    if (id_usuario_actual == it.idemisor) {
-                        contador_m_enviados = contador_m_enviados + 1
-                    }
-                    if (id_usuario_actual == it.idreceptor){
-                        contador_m_recibidos = contador_m_recibidos + 1
-                    }
-
-                    if (it.statusLeido) {
-                        contador_m_leidos = contador_m_leidos + 1
-                    }
-
-                    if (it.idemisor == id_broadcast) {
-                        contador_recibidos_B += 1
-                    }
-                }
-            }
-            //Mensajes enviados al Broadcast por Usuario
-            messageDetail = UserMessageDetailReport(
-                idBusqueda,
-                searchName,
-                contador_m_enviados,
-                contador_m_recibidos,
-                contador_m_leidos,
-                contador_m_totales,
-                0,
-                contador_recibidos_B
-            )
-        }
-         */
         return messageDetail
     }
 

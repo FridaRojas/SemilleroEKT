@@ -25,7 +25,8 @@ interface ReportesApi {
     fun getDatosReporteMensajes(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<conversartionListByID>
 
     @GET("broadCast/mostrarMensajesporID/{idUser}/{idSearch}")
-    fun getDatosRespuestasBroadcast(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<ArrayList<DatosBroadCast>>
+    fun getDatosRespuestasBroadcast(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<BroadcastByID>
+    //fun getDatosRespuestasBroadcast(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<ArrayList<DatosBroadCast>>
 
     //Busqueda por Id de jefe
     @GET("user/findByBossId/{idsuperiorInmediato}")
