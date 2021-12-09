@@ -80,7 +80,7 @@
             android:id="@+id/txtNombreReportes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="Mi información"
             android:textSize="16dp"
             />
     </LinearLayout>

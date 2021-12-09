@@ -86,7 +86,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         })
         reporteTareasViewModel.cargaOperacionesEstadisticasTareas.observe(viewLifecycleOwner, Observer{
             //Toast.makeText(context, "COPE: ${reporteTareasViewModel.cargaOperacionesEstadisticasTareas.value}", Toast.LENGTH_LONG).show()
-            binding.txtRangoFechaReportes.isVisible = true
+            //binding.txtRangoFechaReportes.isVisible = true
             binding.txtRangoFechaReportes.setText("CargaCompleta")
             cambiarGrafica(tipo_grafica)
         } )
@@ -177,12 +177,14 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         barChart=binding.barChart
 
-        try {
-            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
-        }catch (e: Exception){
-
+        dataEmpleadoUsuario.forEach {
+            if (idUsuarioEstadisticas == it.id){
+                binding.txtNombreReportes.setText(it.name)
+                Log.d("idUsuarioEstadisticas", it.id)
+            }
         }
-        binding.txtRangoFechaReportes.isVisible=true
+
+        //binding.txtRangoFechaReportes.isVisible=true
         binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
 
 

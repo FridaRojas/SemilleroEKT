@@ -102,7 +102,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
         reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, Observer{
             //Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
-            binding.txtRangoFechaReportes.isVisible = true
+            //binding.txtRangoFechaReportes.isVisible = true
             binding.txtRangoFechaReportes.setText("CargaCompleta")
             cambiarGrafica(tipo_grafica)
         } )
@@ -131,8 +131,14 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChart = binding.barChart
         binding.colorlegend1.isVisible = false
         binding.colorlegend2.isVisible = false
-        binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-        //binding.txtRangoFechaReportes.isVisible=false
+
+        Constantes.empleadoUsuario.forEach {
+            if (Constantes.idUsuarioEstadisticas == it.id){
+                binding.txtNombreReportes.setText(it.name)
+                Log.d("idUsuarioEstadisticas", it.id)
+            }
+        }
+        binding.txtRangoFechaReportes.isVisible=false
 
 
         reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
@@ -143,7 +149,14 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+            //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+
+            Constantes.empleadoUsuario.forEach {
+                if (Constantes.idUsuarioEstadisticas == it.id){
+                    binding.txtNombreReportes.setText(it.name)
+                    Log.d("idUsuarioEstadisticas", it.id)
+                }
+            }
 
 
             binding.txtDataPrimerLegend.text = ""
@@ -181,7 +194,15 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend1.isVisible = true
         binding.colorlegend2.isVisible = true
 
-        binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+
+        Constantes.dataEmpleadoUsuario.forEach {
+            if (Constantes.idUsuarioEstadisticas == it.id){
+                binding.txtNombreReportes.setText(it.name)
+                Log.d("idUsuarioEstadisticas", it.id)
+            }
+        }
+
+        //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
         reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
@@ -190,8 +211,16 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-            //binding.txtRangoFechaReportes.isVisible=false
+            //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+
+            Constantes.dataEmpleadoUsuario.forEach {
+                if (Constantes.idUsuarioEstadisticas == it.id){
+                    binding.txtNombreReportes.setText(it.name)
+                    Log.d("idUsuarioEstadisticas", it.id)
+                }
+            }
+
+            binding.txtRangoFechaReportes.isVisible=false
 
             binding.txtPrimerLegend.text = "Enviados"
             binding.txtSegundoLegend.text = "Recibidos"
