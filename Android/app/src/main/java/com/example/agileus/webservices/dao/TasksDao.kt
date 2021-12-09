@@ -1,11 +1,9 @@
 package com.example.agileus.webservices.dao
 
-import android.provider.ContactsContract
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
 import java.lang.ClassCastException
 
 class DialogoTareaCreadaExitosamente() : DialogFragment() {
