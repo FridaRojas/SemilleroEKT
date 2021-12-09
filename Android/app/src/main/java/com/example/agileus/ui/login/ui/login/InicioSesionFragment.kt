@@ -93,6 +93,7 @@ class InicioSesionFragment : Fragment() {
 
             Log.d("Login", InicioSesionFragment.correoLogin)
             Log.d("Login", InicioSesionFragment.passwordLogin)
+
             Log.d("Login", idUser)
 
 
