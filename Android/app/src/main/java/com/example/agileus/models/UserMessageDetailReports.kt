@@ -1,8 +1,6 @@
 package com.example.agileus.models
 
-import com.google.gson.annotations.SerializedName
-
-class UserMessageDetailReports (
+data class UserMessageDetailReports (
     val id: String = "",
     val name: String = "",
     val send: Int = 0,

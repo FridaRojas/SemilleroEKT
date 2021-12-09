@@ -21,16 +21,17 @@ interface ReportesApi {
     //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
 
     //@GET("Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928")
+    //api que realiza el consumo de los datos de los mensajes recibidos, como parámetro se coloca el id actual
     @GET("mensajes/listarMensajesRecividos/{id}")
     fun getDatosReporteMensajes(@Path("id") idBusqueda:String): Call<conversartionListByID>
 
+    //api que realiza el consumo de los datos de los mensajes enviados al Broadcst, como parámetro se coloca el id actual
     @GET("broadCast/mostrarMensajesporID/{id}")
     fun getDatosRespuestasBroadcast(@Path("id") idBusqueda:String): Call<ArrayList<DatosBroadCast>>
 
     //Busqueda por Id de jefe
+    //Api que realiza el consumo de los datos de los empleados, como parametro se coloca el jefe inmediato
     @GET("user/findByBossId/{idsuperiorInmediato}")
     fun getListSubContacts(@Path("idsuperiorInmediato") idsuperiorInmediato: String):Call<EmployeeListByBossID>
-    //fun getListSubContacts(@Path("idsuperiorInmediato") idsuperiorInmediato: String):Call<ArrayList<Contacts>>
-
 
 }

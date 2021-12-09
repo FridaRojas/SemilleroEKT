@@ -1,7 +1,6 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -9,45 +8,33 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
+import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
-import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
+import com.example.agileus.models.UserMessageDetailReports
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.time.temporal.ChronoUnit
-import javax.xml.datatype.DatatypeConstants.DAYS
-
-
+import com.github.mikephil.charting.formatter.PercentFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener {
@@ -56,8 +43,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private var _binding: ReporteMensajesFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var pieChart: PieChart
-    private lateinit var barChart: BarChart
+    private lateinit var pieChart: PieChart  //Inicializacion para la gráfica de pie
+    private lateinit var barChart: BarChart  //Inicializacion para la gráfica de barras
 
     //valores enteros de los datos de los mensajes
     private var enviados: Int = 0
@@ -87,8 +74,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         reporteMensajesViewModel = ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
 
-        //MySharedPreferences.idUsuarioEstadisticas = MySharedPreferences.idUsuario
-
         return root
     }
 
@@ -97,21 +82,23 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         super.onViewCreated(view, savedInstanceState)
 
         reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
-            MySharedPreferences.empleadoUsuario = list
-            Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
+            empleadoUsuario = list
+            Toast.makeText(context, "PE: $list", Toast.LENGTH_LONG).show()
         })
-        reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, Observer{
+
+        reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, {
             Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
             binding.txtRangoFechaReportes.isVisible = true
             binding.txtRangoFechaReportes.setText("CargaCompleta")
             cambiarGrafica(tipo_grafica)
-        } )
+        })
 
         reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
 
+        //información que nececita llevarse al diálogo
         binding.btnFiltroReportes.setOnClickListener {
             reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list ->
-                MySharedPreferences.empleadoUsuario = list
+                empleadoUsuario = list
             })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
@@ -123,19 +110,30 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             findNavController().navigate(action, extras)
         }
 
+        binding.barras.setOnClickListener {
+            cambiarGrafica(tipo_grafica)
+            binding.barras.isVisible = false
+            binding.pie.isVisible = true
+        }
+
+        binding.pie.setOnClickListener {
+            cambiarGrafica(tipo_grafica)
+            binding.barras.isVisible = true
+            binding.pie.isVisible = false
+        }
+
             //cambiarGrafica(tipo_grafica)
 }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras() {
 
         barChart = binding.barChart
-        binding.colorlegend1.isVisible = false
-        binding.colorlegend2.isVisible = false
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+
+        binding.txtNombreReportes.setText(idUsuarioEstadisticas)
         //binding.txtRangoFechaReportes.isVisible=false
 
-
-        reporteMensajesViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
@@ -143,25 +141,16 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
 
-
-            binding.txtDataPrimerLegend.text = ""
-
-            binding.txtDataSegundoLegend.text = ""
-
-            binding.txtPrimerLegend.text = ""
-
-            binding.txtSegundoLegend.text = ""
-
-            binding.txtTercerLegend.text = "Enviados"
-
-            binding.txtCuartoLegend.text = "Recibidos"
+            binding.txtPrimerLegend.text = "Enviados"
+            binding.txtSegundoLegend.text = "Recibidos"
+            binding.txtTercerLegend.text = "Totales"
+            binding.txtCuartoLegend.text = "Leídos"
 
             binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorPrimary))
 
             binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
-
 
             binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados.value.toString()
             enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
@@ -169,7 +158,11 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
             recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
 
-            initBarChart(enviados.toFloat(),recibidos.toFloat())//inicializacion de la grafica de barras
+            empleadoUsuario = reporteMensajesViewModel.listaEmpleadosAux.value!!
+
+            val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+
+            initBarChart(sortedList)//inicializacion de la grafica de barras
         // y se agregan los valores porcentuales para su visualización
 
         })
@@ -178,11 +171,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
         pieChart = binding.pieChart
-        binding.colorlegend1.isVisible = true
-        binding.colorlegend2.isVisible = true
 
-        binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
-        reporteMensajesViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
+        binding.txtNombreReportes.setText(idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
@@ -190,7 +181,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
             //binding.txtRangoFechaReportes.isVisible=false
 
             binding.txtPrimerLegend.text = "Enviados"
@@ -213,6 +204,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
             binding.txtDataCuartoLegend.text = reporteMensajesViewModel.leidos.value.toString()
             leidos = reporteMensajesViewModel.leidos.value.toString().toInt()
+
+            //aquí se obtinene el objeto de todos las estadísticas de mensajes
+            //empleadoUsuario = reporteMensajesViewModel.listaEmpleadosAux.value as ArrayList
 
             porcentaje_enviados = obtenerPorcentajes(enviados, totales)
             porcentaje_recibidos = obtenerPorcentajes(recibidos, totales)
@@ -287,7 +281,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     }
 
-    private fun initBarChart(enviados: Float, recibidos: Float) {
+    private fun initBarChart(listaUsuarios: ArrayList<UserMessageDetailReports>) {
 
         val barChartView = binding.barChart
 
@@ -296,29 +290,45 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         val groupSpace: Float = 0.56f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
-        xAxisValues.add("Usuario 1")
-        xAxisValues.add("Usuario 2")
-        xAxisValues.add("Usuario 3")
-        xAxisValues.add("Usuario 4")
-
         var yValueGroup1 = ArrayList<BarEntry>()
         var yValueGroup2 = ArrayList<BarEntry>()
+        var yValueGroup3 = ArrayList<BarEntry>()
 
         // draw the graph
         var barDataSet1: BarDataSet
         var barDataSet2: BarDataSet
+        var barDataSet3: BarDataSet
 
-        yValueGroup1.add((BarEntry(1f, enviados)))
-        yValueGroup2.add((BarEntry(1f, recibidos)))
-        yValueGroup1.add((BarEntry(2f, enviados)))
-        yValueGroup2.add((BarEntry(2f, recibidos)))
-        yValueGroup1.add((BarEntry(3f, enviados)))
-        yValueGroup2.add((BarEntry(3f, recibidos)))
-        yValueGroup1.add((BarEntry(4f, enviados)))
-        yValueGroup2.add((BarEntry(4f, recibidos)))
+        var contador=0
+
+          listaUsuarios.forEach {
+              //if((it.name != "Mi equipo") && (it.name != "Mi información")) {
+                  xAxisValues.add(it.name)
+                  contador += 1
+                  yValueGroup1.add((BarEntry(contador.toFloat(), it.send.toFloat())))
+                  yValueGroup2.add((BarEntry(contador.toFloat(), it.received.toFloat())))
+                  //yValueGroup3.add((BarEntry(contador.toFloat(), it.read.toFloat())))
+              //}
+          }
+
+        Log.d("contador",contador.toString())
+
+        //xAxisValues.add("Usuario 1")
+        //xAxisValues.add("Usuario 2")
+        //xAxisValues.add("Usuario 3")
+        //xAxisValues.add("Usuario 4")
+
+
+        //yValueGroup1.add((BarEntry(1f, enviados)))
+        //yValueGroup2.add((BarEntry(1f, recibidos)))
+        //yValueGroup1.add((BarEntry(2f, enviados)))
+        //yValueGroup2.add((BarEntry(2f, recibidos)))
+        //yValueGroup1.add((BarEntry(3f, enviados)))
+        //yValueGroup2.add((BarEntry(3f, recibidos)))
+        //yValueGroup1.add((BarEntry(4f, enviados)))
+        //yValueGroup2.add((BarEntry(4f, recibidos)))
 
         barDataSet1 = BarDataSet(yValueGroup1, "")
-        //barDataSet1.setColors(R.color.colorPrimary)
         barDataSet1.setColor(Color.parseColor("#66BB6A"))
         barDataSet1.setDrawIcons(false)
         barDataSet1.setDrawValues(false)
@@ -328,6 +338,13 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barDataSet2.setDrawIcons(false)
         barDataSet2.setDrawValues(false)
 
+        /*barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3.setColor(Color.YELLOW)
+        barDataSet3.setDrawIcons(false)
+        barDataSet3.setDrawValues(false)*/
+
+        //var barData = BarData(barDataSet1, barDataSet2, barDataSet3)
+
         var barData = BarData(barDataSet1, barDataSet2)
 
         //remove legenda
@@ -336,62 +353,54 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChartView.description.isEnabled = false
         barChartView.description.textSize = 0f
         barData.setValueFormatter(LargeValueFormatter())
-        barChartView.setData(barData)
-        barChartView.getBarData().setBarWidth(barWidth)
-        barChartView.getXAxis().setAxisMinimum(0f)
-        barChartView.getXAxis().setAxisMaximum(2f)
+        barChartView.data = barData
+        barChartView.barData.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0f
+        barChartView.xAxis.axisMaximum = 2f
         barChartView.groupBars(0f, groupSpace, barSpace)
         barChartView.setFitBars(true)
-        barChartView.getData().setHighlightEnabled(false)
+        barChartView.data.isHighlightEnabled = true
         barChartView.invalidate()
 
-        val xAxis = barChartView.getXAxis()
-        xAxis.setGranularity(1f)
-        xAxis.setGranularityEnabled(true)
+        //add animation
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
         xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(false)
+        xAxis.setDrawGridLines(true)
         xAxis.textSize = 10f
 
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
-        xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         barChartView.setTouchEnabled(true)
 
-        xAxis.setLabelCount(4)
-        xAxis.mAxisMaximum = 4f
+        xAxis.setLabelCount(contador)
+        xAxis.mAxisMaximum = contador.toFloat()
         xAxis.setCenterAxisLabels(true)
         xAxis.setAvoidFirstLastClipping(true)
         xAxis.spaceMin = 1f
         xAxis.spaceMax = 1f
 
-        barChartView.setVisibleXRangeMaximum(3f)
-        barChartView.setVisibleXRangeMinimum(3f)
-        barChartView.setDragEnabled(true)
+        barChartView.setVisibleXRangeMaximum(2f)
+        barChartView.setVisibleXRangeMinimum(1f)
+        barChartView.isDragEnabled = true
 
         //Y-axis
-        barChartView.getAxisRight().setEnabled(false)
+        barChartView.axisRight.isEnabled = false
         barChartView.setScaleEnabled(true)
 
-        val leftAxis = barChartView.getAxisLeft()
-        leftAxis.setValueFormatter(LargeValueFormatter())
-        leftAxis.setDrawGridLines(false)
-        leftAxis.setSpaceTop(1f)
-        leftAxis.setAxisMinimum(0f)
+        val leftAxis = barChartView.axisLeft
+        leftAxis.valueFormatter = LargeValueFormatter()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 1f
+        leftAxis.axisMinimum = 0f
 
         barChartView.data = barData
-        barChartView.setVisibleXRange(1f, 3f)
+        barChartView.setVisibleXRange(1f, 2f)
 
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onDateFilterSelected() {
-        cambiarGrafica(tipo_grafica)
-        //Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -426,6 +435,17 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onDateFilterSelected() {
+        cambiarGrafica(tipo_grafica)
+        //Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

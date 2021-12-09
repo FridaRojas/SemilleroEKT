@@ -2,19 +2,13 @@ package com.example.agileus.ui.moduloreportes.reportes
 
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
-import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
-import com.example.agileus.models.Contacts
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.models.UserMessageDetailReports
-import com.example.agileus.models.UserTaskListDetail
-import com.example.agileus.utils.Constantes
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteMensajesDao
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +28,8 @@ class ReporteMensajesViewModel: ViewModel() {
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
     lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReports>
+    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReports>>()
+
 
     init {
         lista = ReporteMensajesDao()
@@ -73,23 +69,23 @@ class ReporteMensajesViewModel: ViewModel() {
         }
     }
 
-    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReports>>()
 
+    //funcion que devuelve una lista de empleados
     @RequiresApi(Build.VERSION_CODES.O)
-    fun devuelveListaEmpleados(idUser:String){
+    fun devuelveListaEmpleados(idUser:String){ //recibe como parámetro el id del ususario actual
         Log.d("Into", "devuelveListaEmpleados")
         try {
             viewModelScope.launch {
                 listaHijosConsumida =  withContext(Dispatchers.IO) {
-                    lista.obtenerListaSubContactos(idUser)
+                    lista.obtenerListaSubContactos(idUser) //llama a la DAO para obtener la lista de empleados recibiendo el id del usuario actual
                 }
                 if (listaHijosConsumida.isNotEmpty()){
-                    listaEmpleadosAux.value = listaHijosConsumida
+                    listaEmpleadosAux.value = listaHijosConsumida  //Si la consulta de datos es exitosa, la lista se almacena en nuestra variable mutable de tipo ArrayList
                 }
             }
-        }catch (ex:Exception){
+        }catch (ex:Exception){ //manejo de excepciones
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
-        cargaOperacionesEstadisticas.value = true
+        cargaOperacionesEstadisticas.value = true //Indica que el consumo de datos fue exitoso
     }
 }
