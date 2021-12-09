@@ -4,15 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 
 data class LoginResponse (
-
     @SerializedName("status" ) var status : String? = null,
     @SerializedName("msj"    ) var msj    : String? = null,
-    @SerializedName("data"   ) var data   : Data
+    @SerializedName("data"   ) var data   : Any? = null
 )
 
 
 data class Data (
-
     @SerializedName("id"                  ) var id                  : String? = null, //
     @SerializedName("correo"              ) var correo              : String? = null,
     @SerializedName("fechaInicio"         ) var fechaInicio         : String? = null,

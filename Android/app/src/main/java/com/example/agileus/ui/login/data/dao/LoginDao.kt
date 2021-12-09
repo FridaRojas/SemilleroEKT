@@ -8,11 +8,13 @@ import com.example.agileus.ui.login.data.model.LoginResponse
 import com.example.agileus.ui.login.data.model.Users
 import com.example.agileus.ui.login.data.model.*
 import com.example.agileus.ui.login.data.service.LoginApi
+import com.example.agileus.ui.login.data.service.LoginListener
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idnombre
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.rol
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -23,38 +25,69 @@ class LoginDao {
     val STATUS_ACCEPTED = "ACCEPTED"
     val STATUS_BAD_REQUEST = "BAD_REQUEST"
 
+    lateinit var mLoginResponse: LoginResponse
 
-    fun iniciarSesion(usuario:Users): Boolean {
 
-        var STATUS: Boolean=false
-        //    val STATUS_BAD_REQUEST = "BAD_REQUEST"
+    fun iniciarSesion(usuario:Users, listener:LoginListener) {
 
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
-        var responseDos: Response<LoginResponse> = callRespuesta.execute()
-       // lateinit var user:LoginResponse
 
-        if (responseDos.body() != null) {
-            val almacenar: LoginResponse = responseDos.body()!!
-            //Log.d("almacenar", "${almacenar.data.id}")
-            //idUser= almacenar.data.id.toString()
-            //rol= almacenar.data.nombreRol.toString()
-            if (almacenar.status == "ACCEPTED")
-            {
-                STATUS=true
-//                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
-                idUser = almacenar.data.id.toString()
-                rol=almacenar.data.nombreRol.toString()
-                idnombre=almacenar.data.nombre.toString()
-            }
-            if (almacenar.status =="BAD_REQUEST")
-            {
-                //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
-                STATUS=false
+
+            try {
+                callRespuesta.enqueue(object: Callback<LoginResponse> {
+                    override fun onResponse(
+                        call: Call<LoginResponse>,
+                        response: Response<LoginResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("mensaje", response.body().toString())
+                            listener.onLoginSuccess(response.body()!!)
+                        }else{
+                            Log.d("mensaje", "no succesful")
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                        Log.d("mensaje", t.message.toString())
+                        Log.d("mensaje", t.stackTraceToString())
+                        listener.onLoginFail(t.message.toString())
+                    }
+
+                })
+                /*
+                lateinit var data : Any
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        //usersList = response.body()!!
+                        var status = response.body()!!.status
+                        var msj = response.body()!!.msj
+                        if (response.body()!!.status.equals(STATUS_ACCEPTED)) {
+                            data = response.body()!!.data as DataLogin
+                            mLoginResponse = LoginResponse(status, msj, data)
+
+                        } else {
+                            data = response.body()!!.data as String
+                            mLoginResponse = LoginResponse(status, msj, data)
+                        }
+                    } else{
+                        Log.e("mensajeError", "No successful")
+                        mLoginResponse = LoginResponse(STATUS_BAD_REQUEST, "Es null1", null)
+
+                    }
+                } else {
+                    Log.e("mensajeError", "Null")
+                    mLoginResponse = LoginResponse(STATUS_BAD_REQUEST, "Es null2", null)
+
+                }
+                * */
+            } catch (e: Exception) {
+                Log.e("error", e.toString())
+                mLoginResponse = LoginResponse(STATUS_BAD_REQUEST, "Es null3", null)
 
             }
-            status=STATUS
-        }
-        return STATUS
+
+
     }
 
     suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {

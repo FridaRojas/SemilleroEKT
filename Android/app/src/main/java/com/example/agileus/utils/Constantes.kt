@@ -10,6 +10,10 @@ import java.util.*
 
 
 object Constantes {
+
+    val URL_BASE_PRODUCCION = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"
+
+
     val URL_ENVIAR_MENSAJE = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/"
     val URL_BUZON_1=""
     val URL_BUZON_2=""

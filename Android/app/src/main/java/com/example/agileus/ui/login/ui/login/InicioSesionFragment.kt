@@ -17,17 +17,20 @@ import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.ui.MainActivity
+import com.example.agileus.ui.login.data.dao.LoginDao
 import com.example.agileus.ui.login.data.model.Users
+import com.example.agileus.ui.login.data.service.LoginListener
 import com.example.agileus.ui.login.ui.login.InicioSesionViewModel.Companion.usersByBoss
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
 
 
-class InicioSesionFragment : Fragment() {
+class InicioSesionFragment(val listener:LoginListener) : Fragment() {
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
      var trigger=0
 
+    lateinit var mloginDao : LoginDao
 
     companion object {
           var correoLogin : String=""
@@ -62,8 +65,11 @@ class InicioSesionFragment : Fragment() {
         viewModel.getUsersByBoss()
         //Nivel usuario
 
+        //Toast.makeText(activity, "${userLog.msj}", Toast.LENGTH_SHORT).show()
 
     }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

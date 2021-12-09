@@ -18,6 +18,7 @@ import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.data.dao.LoginDao
 import com.example.agileus.ui.login.data.model.LoginResponse
 import com.example.agileus.ui.login.data.model.Users
+import com.example.agileus.ui.login.data.service.LoginListener
 import com.example.agileus.ui.modulotareas.listatareas.TaskViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 import com.example.agileus.ui.login.repository.Repository
@@ -26,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class InicioSesionViewModel : ViewModel() {
+class InicioSesionViewModel : ViewModel(), LoginListener {
     var list : LoginDao
     var inicioExitoso = MutableLiveData<Boolean>()
 
@@ -55,14 +56,12 @@ class InicioSesionViewModel : ViewModel() {
         //Log.i("mensaje", "ver")
         try {
             viewModelScope.launch {
-                inicioExitoso.value = withContext(Dispatchers.IO){
-                    list.iniciarSesion(users)
-                }!!
+                withContext(Dispatchers.IO){
+                }
             }
 
             Log.d("status","$status")
         } catch (ex : Exception) {
-            inicioExitoso.value = false
             //Log.e("Corroborar Login", ex.message.toString())
         }
         return emptyList()
@@ -94,6 +93,14 @@ class InicioSesionViewModel : ViewModel() {
     }
     fun cerrarSesion(view: View) {
         preferenciasGlobal.cerrarSesion()
+    }
+
+    override fun onLoginSuccess(loginResponse: LoginResponse) {
+        Log.d("login", loginResponse.status.toString())
+    }
+
+    override fun onLoginFail(error: String) {
+        Log.d("login", error)
     }
 
 }

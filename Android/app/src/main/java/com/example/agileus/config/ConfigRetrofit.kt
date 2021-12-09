@@ -7,6 +7,7 @@ import com.example.agileus.utils.Constantes
 import com.example.agileus.ui.login.data.service.LoginApi
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
+import com.example.agileus.utils.Constantes.URL_BASE_PRODUCCION
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
 import com.example.agileus.webservices.apis.BuzonApi2
@@ -83,11 +84,10 @@ class ConfigRetrofit {
 
 
     fun obtenerConfiguracionRetofitLogin(): LoginApi {
-
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_Login)
+            .baseUrl(URL_BASE_PRODUCCION)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(cliente(60))
+            .client(cliente(20))
             .build()
         return mRetrofit.create(LoginApi::class.java)
     }
