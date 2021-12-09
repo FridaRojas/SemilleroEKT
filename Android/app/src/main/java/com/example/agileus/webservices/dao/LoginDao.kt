@@ -3,6 +3,7 @@ package com.example.agileus.webservices.dao
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idGrupo
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idnombre
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.rol
@@ -31,6 +32,9 @@ class LoginDao {
                     idUser = almacenar.data.id.toString()
                     rol=almacenar.data.nombreRol.toString()
                     idnombre=almacenar.data.nombre.toString()
+                    idGrupo = almacenar.data.idgrupo.toString()
+
+
                 }
                 if (almacenar.status =="BAD_REQUEST")
                 {

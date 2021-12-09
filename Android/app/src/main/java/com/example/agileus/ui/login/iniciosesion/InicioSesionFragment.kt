@@ -21,10 +21,11 @@ import com.example.agileus.models.Users
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
 import com.example.agileus.ui.MainActivity
+import com.example.agileus.ui.login.dialog.CerrarSesionDialog
+import com.example.agileus.ui.login.dialog.DialogoListen
 
-
-
-class InicioSesionFragment : Fragment() {
+//, DialogoListen
+class InicioSesionFragment : Fragment(){
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
     var trigger=0
@@ -34,10 +35,11 @@ class InicioSesionFragment : Fragment() {
     companion object {
         var correoLogin : String=""
         var passwordLogin : String=""
-        var status:Boolean=false
-        var idUser:String=""
+        var status:Boolean =false
+        var idUser:String = ""
         var rol:String = ""
-        var idnombre:String=""
+        var idnombre:String = ""
+        var idGrupo:String = ""
 
     }
 
@@ -109,7 +111,9 @@ class InicioSesionFragment : Fragment() {
 
                 if(trigger >3 )
                 {
-                    Toast.makeText(activity, "Demasiado Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "Demasiados Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
+                        //val newFragment = CerrarSesionDialog(this)
+                        //activity?.supportFragmentManager?.let { it -> newFragment.show(it, "Destino") }
                     Handler().postDelayed({
                         activity?.finish()
                     }, 3000)
@@ -163,5 +167,17 @@ class InicioSesionFragment : Fragment() {
         }
 
     }
+
+    /*override fun siDisparar(motivo: String) {
+        findNavController().navigate(R.id.inicioSesionFragment)
+        //Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun noDisparar(motivo: String) {
+        Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
+
+    }
+
+     */
     ////////////////////////////////////
 }
