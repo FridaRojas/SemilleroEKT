@@ -8,9 +8,9 @@
 import Foundation
 
 struct ObjetoTareas:Codable{
-    let estatus: String
-    let mensaje: String
-    let data:[Tareas]
+    let estatus: String?
+    let mensaje: String?
+    let data:[Tareas]?
 }
 
 struct Tareas:Codable{

@@ -15,6 +15,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var viewChart: UIView!
     @IBOutlet weak var imgEncabezado: UIImageView!
     @IBOutlet weak var opcionesGrafica: UITableView!
+    @IBOutlet weak var viewIndi: UIView!
+    @IBOutlet weak var viewBtn: UIView!
+    
+    
     var piechart = PieChartView()
     var barchart = BarChartView()
     var barchartGeneral = BarChartView()
@@ -56,6 +60,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     var arrTareas:[Any]?
     var arrCantidadDeTareas = [Int]()
     
+    //Usuarios subordinados
+    var arrCantTareasSubordinados = [Any]()
+    
     // adaptadores
     let adaptadorModal = Adaptador_Modals()
     var adaptadorServicios = AdaptadorServicios()
@@ -89,11 +96,22 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         configuracion_cantidades()
     }
     
+    
+    func esconderBoton(){
+
+        viewBtn.isHidden = true
+        
+        let centerPos = viewBtn.frame.width / 1.5
+       
+        viewIndi.frame.origin.x = viewBtn.frame.origin.x + centerPos
+    }
+
+    
     // Funcion para ejecutar servicios
     func ejecucionServicios(){
         serviciosUsuarios()
         //serviciosMensajes(idUsuario: userID)
-        serviciosTareas(idUsuario: userID)
+        //serviciosTareas(idUsuario: userID)
         //serviciosBroadcast(idUsuario: userID)
     }
     
@@ -118,9 +136,24 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
     }
+    
+    func serviciosTareasLider(idUsuario: String,  nombre:String, token:String){
+        print("H")
+        adaptadorServicios.servicioWebTareasAdapterByBoss(idUsuario: idUsuario, token: token) {
+            [self] (Datos) -> Void in
+            
+            print("Datos", Datos)
+            arrTareas = Datos
+            
+            //Cantidad de tareas
+            arrCantidadDeTareas = cantidaDeTareasUsuarios(tareas: arrTareas! as! [Tareas], arrCantidadTareas: arrCantidadDeTareas, idUsuario: idUsuario)
+            
+            arrCantTareasSubordinados.append(cantidadDeTareasUsuarios(tareas: arrTareas as! [Tareas], idUsuario: idUsuario, nombre: nombre))
+        }
+    }
         
-    func serviciosTareas(idUsuario: String){
-        let _ = adaptadorServicios.servicioWebTareasAdapter(idUsuario: idUsuario){
+    func serviciosTareas(idUsuario: String, token: String){
+        let _ = adaptadorServicios.servicioWebTareasAdapter(idUsuario: idUsuario, token: token){
             [self] (Datos) -> Void in
             arrTareas = Datos
 
@@ -144,12 +177,15 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                     for i in lista_usuarios {
                         serviciosMensajesPorLider(idUsuario: i.id, nombre: i.nombre)
                         //serviciosBroadcastPorLider(idUsuario: i.id, nombre: i.nombre)
+                        serviciosTareasLider(idUsuario:i.id, nombre: i.nombre, token: i.tokenAuth!)
                     }
                 }
             } else {
+                esconderBoton()
                 serviciosBroadcast(idUsuario: userID)
                 serviciosMensajes(idUsuario: userID)
                 configura_label_usuario(nombre: userName)
+                //serviciosTareas(idUsuario: userID)
             }
         }
     }
@@ -158,6 +194,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         if let lista_usuarios = (arrUsuarios as? [Usuario]){
             for i in lista_usuarios {
                 serviciosMensajesPorLiderFiltrado(filtros: filtros, idUsuario: i.id, nombre: i.nombre)
+                
+                servicioTareasUsuariosFiltradoFechas(filtro: filtros, idUsuario: i.id , nombre: i.nombre, token: i.tokenAuth!)
                 
             }
         }
@@ -236,11 +274,23 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func serviciosTareasFiltrado(filtros: [String]) {
-        adaptadorServicios.servicioWebTareasAdapter(idUsuario: filtros[2]){
+        adaptadorServicios.servicioWebTareasAdapter(idUsuario: filtros[2], token: filtros[4]){
             [self] (Datos) -> Void in
             arrTareas = Datos
             arrCantidadDeTareas = cantidadDeTareasPorFecha(tareas: arrTareas! as! [Tareas], idUsuario: filtros[2], fechaInicio: filtros[0], fechaFin: filtros[1])
-            llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
+            print("-------------------------\(arrCantidadDeTareas)")
+            //llenar_pie_chartTareas(tareas: arrCantidadDeTareas)
+        }
+    }
+    
+    func servicioTareasUsuariosFiltradoFechas(filtro:[String], idUsuario:String, nombre:String, token: String){
+        adaptadorServicios.servicioWebTareasAdapter(idUsuario: idUsuario, token: token){
+            [self] (Datos) -> Void in
+            
+            arrTareas = Datos
+            arrCantidadDeTareas = cantidadDeTareasPorFecha(tareas: arrTareas as! [Tareas], idUsuario: idUsuario, fechaInicio: filtro[0], fechaFin: filtro[1])
+            
+            arrCantTareasSubordinados.append(cantidadDeTareasTodosUsuariosPorFecha(tareas: arrTareas as! [Tareas], idUsuario: idUsuario, nombre: nombre, fechaInicio: filtro[0], fechaFin: filtro[1]))
         }
     }
     
@@ -266,6 +316,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                                        
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
+        
     }
 
     
@@ -603,6 +654,138 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         viewChart.addSubview(barchartGeneral)
         barchartGeneral.animate(yAxisDuration: 0.8, easingOption: ChartEasingOption.easeInOutQuad)
     }
+    
+    func llenar_bar_chart_general_Tareas(tipo: String, datos: [Any]){
+        
+        if !piechart.isEmpty(){
+            piechart.removeFromSuperview()
+        }
+        
+        if !barchart.isEmpty(){
+            barchart.removeFromSuperview()
+        }
+        
+
+        let arrGeneral = datos
+        
+        var arrNombres = [String]()
+        var arrPendientes = [Int]()
+        var arrIniciados = [Int]()
+        var arrRevisado = [Int]()
+        var arrTerminados = [Int]()
+        
+        var arrTerminadosATiempo = [Int]()
+        var arrTerminadosADestiempo = [Int]()
+        
+        for i in datos{
+            
+            let dato = i as! [Any]
+            
+            arrNombres.append(dato[0] as! String)
+            arrPendientes.append(dato[1] as! Int)
+            arrIniciados.append(dato[2] as! Int)
+            arrRevisado.append(dato[3] as! Int)
+            arrTerminados.append(dato[4] as! Int)
+            
+            if tipo.contains("atiempo"){
+                arrTerminadosATiempo.append(dato[5] as! Int)
+                arrTerminadosADestiempo.append(dato[6] as! Int)
+            }
+            
+        }
+        
+        var datEntPend:[BarChartDataEntry] = []
+        var datEntInic:[BarChartDataEntry] = []
+        var datEntRev:[BarChartDataEntry] = []
+        var datEntTer:[BarChartDataEntry] = []
+        var datEntATiempo:[BarChartDataEntry] = []
+        var datEntDesTiempo:[BarChartDataEntry] = []
+        
+        for i in 0..<arrNombres.count{
+            
+            let dataPend = BarChartDataEntry(x: Double(i), y: Double(arrPendientes[i]))
+            datEntPend.append(dataPend)
+            
+            let dataInic = BarChartDataEntry(x: Double(i), y: Double(arrIniciados[i]))
+            datEntInic.append(dataInic)
+            
+            let dataRev = BarChartDataEntry(x: Double(i), y: Double(arrRevisado[i]))
+            datEntRev.append(dataRev)
+            
+            let dataTerm = BarChartDataEntry(x: Double(i), y: Double(arrTerminados[i]))
+            datEntTer.append(dataTerm)
+            
+            if tipo.contains("atiempo"){
+                let dataATiempo = BarChartDataEntry(x: Double(i), y: Double(arrTerminadosATiempo[i]))
+                datEntATiempo.append(dataATiempo)
+                let dataADesTiempo = BarChartDataEntry(x: Double(i), y: Double(arrTerminadosADestiempo[i]))
+                datEntDesTiempo.append(dataADesTiempo)
+            }
+        }
+        
+        let chartDataPend = BarChartDataSet(entries: datEntPend)
+        let chartDataIni = BarChartDataSet(entries: datEntInic)
+        let chartDataRev = BarChartDataSet(entries: datEntRev)
+        let chartDataTerm = BarChartDataSet(entries: datEntTer)
+        let chartDataATiempo = BarChartDataSet(entries: datEntATiempo)
+        let chartDataDesTiempo = BarChartDataSet(entries: datEntDesTiempo)
+        
+        var dataSet = [BarChartDataSet]()
+        if tipo == "tareas"{
+            dataSet = [chartDataPend, chartDataIni, chartDataRev, chartDataTerm]
+        }else if tipo.contains("atiempo"){
+            dataSet = [chartDataATiempo, chartDataDesTiempo]
+        }
+        
+        
+        chartDataPend.colors = [Hexadecimal_Color(hex: "66BB6A")]
+        chartDataIni.colors = [Hexadecimal_Color(hex: "87D169")]
+        chartDataRev.colors = [Hexadecimal_Color(hex: "66877F")]
+        chartDataTerm.colors = [Hexadecimal_Color(hex: "7F8182")]
+        
+        let chartData = BarChartData(dataSets: dataSet)
+        
+        var groupSpace = 0.0
+        var barSpace = 0.0
+        var barWidth = 0.0
+        
+        if tipo == "tareas"{
+            groupSpace = 0.16
+            barSpace = 0.03
+            barWidth = 0.25
+            
+        }else if tipo == "atiempo"{
+            groupSpace = 0.16
+            barSpace = 0.03
+            barWidth = 0.25
+        }
+        
+        
+        let groupCount = arrGeneral.count
+        
+        chartData.barWidth = barWidth
+        barchartGeneral.xAxis.axisMinimum = Double(0)
+        let gg = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
+        barchartGeneral.xAxis.axisMaximum = Double(gg) * Double(groupCount)
+        
+        chartData.groupBars(fromX: Double(0), groupSpace: groupSpace, barSpace: barSpace)
+        barchartGeneral.notifyDataSetChanged()
+        
+        barchartGeneral.data = chartData
+        
+        barchartGeneral.setVisibleXRangeMaximum(3.0)
+        
+        barchartGeneral.doubleTapToZoomEnabled = false
+        
+        let xaxis = barchartGeneral.xAxis
+        xaxis.labelPosition = .bottom
+        xaxis.centerAxisLabelsEnabled = true
+        xaxis.valueFormatter = IndexAxisValueFormatter(values: arrNombres)
+        xaxis.granularity = 1
+        viewChart.addSubview(barchartGeneral)
+        barchartGeneral.animate(yAxisDuration: 0.8, easingOption:ChartEasingOption.easeInQuad)
+        
+    }
     // Fin llenado graficas de barras <---
     
     //  ACTUALIZAR DATOS DE LAS GRÁFICAS DE MENSAJES --->
@@ -636,26 +819,28 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             [self](Filtro) -> Void in
             
 
-            if Filtro.count > 2 {
+            if Filtro.count > 3 {
                 
                 if Filtro[3] as! String == "Mi equipo" {
                     configuracion_cantidades()
                     lblNombreu.text = Filtro[3] as! String
                     serviciosUsuariosPorFecha(filtros: Filtro as! [String])
                 } else {
-                    serviciosTareasFiltrado(filtros: Filtro as! [String])
+                    configuracion_cantidades()
                     serviciosMensajesFiltrado(filtros: Filtro as! [String])
+                    serviciosTareasFiltrado(filtros: Filtro as! [String])
                     serviciosBroadcast(idUsuario: Filtro[2] as! String)
                     lblNombreu.text = (Filtro[3] as! String)
                 }
-            } else if Filtro.count <= 2 {
+            } else if Filtro.count <= 3 {
                 
                 if Filtro[1] as! String == "Mi equipo" {
                     configuracion_cantidades()
                     serviciosUsuarios()
                 } else {
-                    //serviciosTareas(idUsuario: Filtro[1] as! String)
                     serviciosMensajes(idUsuario: Filtro[0] as! String)
+                    serviciosTareas(idUsuario: Filtro[0] as! String, token: Filtro[2] as! String)
+                    
                     serviciosBroadcast(idUsuario: Filtro[0] as! String)
                     lblNombreu.text = (Filtro[1] as! String)
                 }
@@ -810,6 +995,14 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             } else if seleccionado == 1 {
                 llenar_bar_chart_general(tipo: "broadcast", datos: usuarios_cantidades_broad)
             }
+        }else if optionstAB.selectedSegmentIndex == 1{
+            if seleccionado == 0{
+                llenar_bar_chart_general_Tareas(tipo: "tareas", datos:arrCantTareasSubordinados)
+            }else{
+                print("Tareas Culminadas a tiempo")
+                llenar_bar_chart_general_Tareas(tipo: "atiempo", datos:arrCantTareasSubordinados)
+            }
+            
         }
     }
     
