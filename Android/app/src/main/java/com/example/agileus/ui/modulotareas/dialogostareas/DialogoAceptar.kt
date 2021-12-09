@@ -16,7 +16,6 @@ import java.util.*
 class DialogoAceptar(var mensaje: String) :
     DialogFragment() {
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             // Use the Builder class for convenient dialog construction
