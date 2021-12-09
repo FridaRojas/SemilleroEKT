@@ -40,16 +40,6 @@ class BuzonUserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
-
-        //  format3339()
-
-     //   Log.d("tiempo","$cal")
-
-
-
-
         binding.mensajesrecibidos.setOnClickListener {
             BuzonFragment.control = 1
             findNavController().navigate(R.id.action_buzonUserFragment_to_buzonDetallesUserFragment)
@@ -67,5 +57,5 @@ class BuzonUserFragment : Fragment() {
         _binding = null
     }
 
-    //open fun format3339(allDay: Boolean): String!
+
 }

@@ -21,12 +21,14 @@ interface BuzonApi2 {
     @POST("broadCast/crearMensajeBroadcast")
     suspend fun pushrequest(@Body Mensaje:MsgBodyUser):Response<MsgBodyUser>
 
+    @GET("mensajes/verConversacion/{iduser}/{idchat}")
+    fun getenviados(@Path ("iduser") iduser:String, @Path ("idchat") idchat:String, @Header ("tokenAuth") token: String):Call<BuzonComunicados> ///get enviados
+
+
     //------------------------------------------------------------------------------------------------------//
      @GET("mensajes/listarConversaciones/{iduser}")
        fun getmybuzon(@Path ("iduser") idUser:String,@Header ("tokenAuth") token: String):Call<Chats1> ///getbuzon enviados
 
-    @GET("mensajes/verConversacion/{iduser}/{idchat}")
-    fun getenviados(@Path ("iduser") iduser:String, @Path ("idchat") idchat:String, @Header ("tokenAuth") token: String):Call<BuzonComunicados> ///get enviados
 
     //  @GET("broadCast/mostrarMensajesporID/61ad370537670e5060dc060e/{id}"}
 //  fun getmybuzon(@Path ("id") idUser:String):Call<Chats1> ///getbuzon enviados

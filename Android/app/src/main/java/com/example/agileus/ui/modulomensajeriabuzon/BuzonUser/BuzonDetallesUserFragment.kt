@@ -44,21 +44,23 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         super.onViewCreated(view, savedInstanceState)
 
 
+
         //   viewModel.devuelvebuzon1()
 
 //   viewModel.devuelvebuzonentrada()
 
-        //      if (BuzonFragment.control == 1) {
+              if (BuzonFragment.control == 2) {
 
-//            viewModel.devuelvebuzon()
-/*
+                  viewModel.devuelvebuzon2()
+              }
+
             viewModel.adaptador.observe(
                 viewLifecycleOwner,
                 {
                     binding.recyclerBuzon.adapter = it
                     binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
                 })
-*/
+
         binding.fab.setOnClickListener {
             val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
             activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
