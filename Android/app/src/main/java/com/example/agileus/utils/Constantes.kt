@@ -2,6 +2,8 @@ package com.example.agileus.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.agileus.models.UserMessageDetailReport
+import com.example.agileus.models.UserTaskDetailReport
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -54,5 +56,19 @@ object Constantes {
     val URL_LOGIN = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"
     val URL_Login = "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
 
+
+
+    var idUsuario = "618e8743c613329636a769aa"
+    var idUsuarioEstadisticas = Constantes.id
+    var opcionFiltro = 0
+    var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
+    var fechaEstadisticas = Constantes.date.toString()
+    var id_broadcast="61a101db174bcf469164d2fd"
+    var fechaIniEstadisticas = "1900-01-01T00:00:00.000+00:00"
+    var fechaFinEstadisticas = "2100-01-01T00:00:00.000+00:00"
+    var empleadoUsuario = emptyList<UserMessageDetailReport>()
+    var dataEmpleadoUsuario = emptyList<UserTaskDetailReport>()
+    var tipo_grafica:Int=0
+    var vista:Int=0
 
 }

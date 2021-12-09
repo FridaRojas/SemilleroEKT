@@ -17,7 +17,7 @@ interface ReportesApi {
     fun getDatosReporteTareas(@Path("id") idBusqueda:String): Call<TaskListByID>
     //fun getDatosReporteTareas(): Call<ArrayList<Tasks>>
     //@GET("tareas/obtenerTareasQueLeAsignaronPorId/618b05c12d3d1d235de0ade0")
-    fun getDatosReporteTareas(): Call<TaskListByID>
+    //fun getDatosReporteTareas(): Call<TaskListByID>
     //fun getDatosReporteTareas(): Call<ArrayList<DatosTareas>>
 
     //@GET("Messages.json?alt=media&token=03022225-583c-4114-a056-ce4964b1a928")

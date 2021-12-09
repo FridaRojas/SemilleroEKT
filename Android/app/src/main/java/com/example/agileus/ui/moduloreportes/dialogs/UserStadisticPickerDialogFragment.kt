@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.utils.Constantes
 import java.lang.Exception
 import java.util.*
 
@@ -24,13 +25,13 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             //MySharedPreferences.empleadoUsuario[0].nombre
             var listaNombres = arrayListOf<String>()
             //listaNombres.add(MySharedPreferences.idUsuario)
-            if(MySharedPreferences.dataEmpleadoUsuario.size == 0){
-                MySharedPreferences.empleadoUsuario.forEach {
+            if(Constantes.dataEmpleadoUsuario.size == 0){
+                Constantes.empleadoUsuario.forEach {
                     listaNombres.add(it.name)
                     Log.d("UserListDialogEmp", it.name)
                 }
             }else{
-                MySharedPreferences.dataEmpleadoUsuario.forEach {
+                Constantes.dataEmpleadoUsuario.forEach {
                     listaNombres.add(it.name)
                     Log.d("UserListDialogData", it.name)
                 }
@@ -47,7 +48,7 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             }catch (ex:Exception){
                 userPicker.setMaxValue(0)
                 userPicker.setValue(0)
-                userPicker.displayedValues = arrayOf(MySharedPreferences.idUsuario)
+                userPicker.displayedValues = arrayOf(Constantes.idUsuario)
                 Log.d("UserFilterError", ex.toString())
             }
 

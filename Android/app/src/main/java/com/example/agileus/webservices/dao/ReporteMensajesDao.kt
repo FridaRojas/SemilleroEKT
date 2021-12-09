@@ -5,10 +5,12 @@ import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaFinEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.fechaIniEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.id_broadcast
 import com.example.agileus.models.*
+import com.example.agileus.utils.Constantes.empleadoUsuario
+import com.example.agileus.utils.Constantes.fechaFinEstadisticas
+import com.example.agileus.utils.Constantes.fechaIniEstadisticas
+import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
+import com.example.agileus.utils.Constantes.id_broadcast
 import retrofit2.Response
 import java.time.ZonedDateTime
 
@@ -31,7 +33,7 @@ class ReporteMensajesDao {
     fun recuperardatosMensajes(idBusqueda: String): ArrayList<Estadisticas> {
 
         val listaRecycler= ArrayList<Estadisticas>()
-        val messageSelectedStadistic = recoverUserMessageStadistic(idBusqueda, MySharedPreferences.idUsuarioEstadisticas)
+        val messageSelectedStadistic = recoverUserMessageStadistic(idBusqueda, idUsuarioEstadisticas)
 
         contador_mensajes_enviados= messageSelectedStadistic.send
         contador_mensajes_recibidos=messageSelectedStadistic.received
@@ -74,7 +76,7 @@ class ReporteMensajesDao {
         fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
         fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
         if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
-            messageDetail = MySharedPreferences.empleadoUsuario[MySharedPreferences.empleadoUsuario.size-1]
+            messageDetail = empleadoUsuario[empleadoUsuario.size-1]
         }else if (ResponseMensajes.isSuccessful || ResponseMensajesBroadCast.isSuccessful) {
             Log.d("messageORbroadcast", "Success")
             try {

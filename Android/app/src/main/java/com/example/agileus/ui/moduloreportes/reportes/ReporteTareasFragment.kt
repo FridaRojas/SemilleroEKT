@@ -18,15 +18,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.dataEmpleadoUsuario
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
+import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
+import com.example.agileus.utils.Constantes.fechaFinEstadisticas
+import com.example.agileus.utils.Constantes.fechaIniEstadisticas
+import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
+import com.example.agileus.utils.Constantes.tipo_grafica
+import com.example.agileus.utils.Constantes.vista
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -79,7 +81,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         //binding.txtNombreReportes.setText(MySharedPreferences.dataEmpleadoUsuario[0].name)
 
         reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, Observer{ list->
-            MySharedPreferences.dataEmpleadoUsuario = list
+            Constantes.dataEmpleadoUsuario = list
             Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
         })
         reporteTareasViewModel.cargaOperacionesEstadisticasTareas.observe(viewLifecycleOwner, Observer{
@@ -92,7 +94,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
         binding.btnFiltroReportes.setOnClickListener {
             reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
-                MySharedPreferences.dataEmpleadoUsuario = list
+                Constantes.dataEmpleadoUsuario = list
             })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
@@ -120,9 +122,9 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         }
 
         binding.txtRangoFechaReportes.isVisible=false
-        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
+        binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
 
-        reporteTareasViewModel.devuelvelistaReporte(this, MySharedPreferences.idUsuarioEstadisticas)
+        reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
@@ -176,12 +178,12 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChart=binding.barChart
 
         try {
-            binding.txtNombreReportes.setText(MySharedPreferences.idUsuarioEstadisticas)
+            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
         }catch (e: Exception){
 
         }
         binding.txtRangoFechaReportes.isVisible=true
-        binding.txtRangoFechaReportes.setText(MySharedPreferences.fechaIniEstadisticas + " " + MySharedPreferences.fechaFinEstadisticas)
+        binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
 
 
         reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
@@ -358,7 +360,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     override fun onDateFilterSelected() {
         cambiarGrafica(tipo_grafica)
         //Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-        Log.d("DateFilter",  "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}")
+        Log.d("DateFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
     }
 
     override fun onDestroyView() {

@@ -7,6 +7,10 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.*
+import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
+import com.example.agileus.utils.Constantes.fechaFinEstadisticas
+import com.example.agileus.utils.Constantes.fechaIniEstadisticas
+import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
 import retrofit2.Response
 import java.time.ZonedDateTime
 
@@ -41,7 +45,7 @@ class ReporteTareasDao {
         // val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
         var listaRecycler= ArrayList<Estadisticas>()
 
-        val taskSelectedDetail = recoverUserTaskDetails(idBusqueda, MySharedPreferences.idUsuarioEstadisticas)
+        val taskSelectedDetail = recoverUserTaskDetails(idBusqueda, idUsuarioEstadisticas)
 
         contador_tareas_terminadas=taskSelectedDetail.finished
         contador_tareas_pendientes=taskSelectedDetail.pendings
@@ -66,7 +70,7 @@ class ReporteTareasDao {
 
         if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
             try {
-                taskDetail = MySharedPreferences.dataEmpleadoUsuario[MySharedPreferences.dataEmpleadoUsuario.size-1]
+                taskDetail = dataEmpleadoUsuario[dataEmpleadoUsuario.size-1]
             }catch (ex:Exception){
                 Log.e("RTDao", ex.toString())
             }
@@ -93,8 +97,8 @@ class ReporteTareasDao {
             var contTareasFueraTiempo = 0
 
             fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
-            rangoIniFecha = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas) // primera fecha para comparar
-            rangoFinFecha = ZonedDateTime.parse(MySharedPreferences.fechaFinEstadisticas) // segunda fecha para comparar
+            rangoIniFecha = ZonedDateTime.parse(fechaIniEstadisticas) // primera fecha para comparar
+            rangoFinFecha = ZonedDateTime.parse(fechaFinEstadisticas) // segunda fecha para comparar
 
             Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
             lista.forEach {

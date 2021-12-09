@@ -17,6 +17,7 @@ class MySharedPreferences(contexto: Context) {
     fun recuperarToken() : String{
         return sharedPreferences.getString(TOKEN_KEY, "")!!
     }
+/*
 
     companion object reportesGlobales{
         var idUsuario = "618e8743c613329636a769aa"
@@ -32,4 +33,5 @@ class MySharedPreferences(contexto: Context) {
         var tipo_grafica:Int=0
         var vista:Int=0
     }
+ */
 }
