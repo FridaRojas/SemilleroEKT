@@ -36,6 +36,7 @@ class InicioSesionFragment : Fragment(){
         var correoLogin : String=""
         var passwordLogin : String=""
         var status:Boolean =false
+        var user:String = " "
         var idUser:String = ""
         var rol:String = ""
         var idnombre:String = ""
@@ -90,6 +91,7 @@ class InicioSesionFragment : Fragment(){
 
 
         if (status) {
+
             //Log.d("Login", correoLogin)
             //Log.d("Login", passwordLogin)
             //Log.d("Login", idUser)
@@ -103,12 +105,11 @@ class InicioSesionFragment : Fragment(){
         }
 
         if (!status) {
-            //if(trigger == 0 )
-            //{Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
-            //}
+            if(trigger == 0 ) {
+                Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
+            }
             if (trigger >1 && !status) {
                 Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
-
                 if(trigger >3 )
                 {
                     Toast.makeText(activity, "Demasiados Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()

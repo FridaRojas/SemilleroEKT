@@ -7,7 +7,7 @@ data class LoginResponse(
 
     @SerializedName("status" ) var status: String? = null,
     @SerializedName("msj"    ) var msj: String? = null,
-    @SerializedName("data"   ) var data: Any
+    @SerializedName("data"   ) var data: Any?
 )
 
 
