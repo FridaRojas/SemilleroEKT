@@ -10,11 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
 import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.userName
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
@@ -42,7 +45,8 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title =
+            "Mis Mensajes Recibidos"
 
 
         //   viewModel.devuelvebuzon1()
@@ -83,14 +87,14 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         }
 */
 
-
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
-/*
-           buzon.idEmisor="618e8743c613329636a769aa"
 
-            viewModel.postRequest(buzon)
+           buzon.idEmisor=idUser
 
-            viewModel.myResponse.observe(
+
+        viewModel.postRequest(buzon)
+
+            viewModel.myResponse1.observe(
                 viewLifecycleOwner,
                 Observer { response ->
                     if (response.isSuccessful) {
@@ -140,6 +144,5 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
             }.start()
         }
     }
-*/
-    }
-}
+
+

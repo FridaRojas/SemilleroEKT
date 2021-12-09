@@ -18,8 +18,8 @@ interface BuzonApi2 {
     @POST("broadCast/enviarMensaje") //
     suspend fun pushpost(@Body Mensaje: MensajeBodyBroadcaster,@Header ("tokenAuth") token: String):Response<MensajeBodyBroadcaster>
 
-    @POST("broadCast/crearMensajeBroadcast")
-    suspend fun pushrequest(@Body Mensaje:MsgBodyUser):Response<MsgBodyUser>
+    @POST("broadCast/crearMensajeBroadcast/{idUser}")
+    suspend fun pushrequest(@Path("idUser") idUser:String ,@Body Mensaje:MsgBodyUser, @Header ("tokenAuth") token: String):Response<MsgBodyUser>
 
     @GET("mensajes/verConversacion/{iduser}/{idchat}")
     fun getenviados(@Path ("iduser") iduser:String, @Path ("idchat") idchat:String, @Header ("tokenAuth") token: String):Call<BuzonComunicados> ///get enviados

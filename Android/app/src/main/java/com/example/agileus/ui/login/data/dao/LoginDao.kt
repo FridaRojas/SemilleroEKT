@@ -9,6 +9,7 @@ import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUs
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.tokenPush
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.userName
 import retrofit2.Call
 import retrofit2.Response
 
@@ -36,6 +37,7 @@ class LoginDao {
                     token= almacenar.data.tokenAuth.toString()
                     tokenPush=almacenar.data.token.toString()
                     Rol=almacenar.data.nombreRol.toString()
+                    userName=almacenar.data.nombre.toString()
                 }
                 if (almacenar.status =="BAD_REQUEST")
                 {

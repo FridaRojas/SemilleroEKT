@@ -36,6 +36,7 @@ class InicioSesionFragment : Fragment() {
           var token:String=""
           var tokenPush:String=""
           var Rol:String = ""
+          var userName:String=""
     }
 
     private lateinit var viewModel: InicioSesionViewModel

@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.BuzonUserFragmentBinding
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import java.util.*
 
@@ -34,11 +36,12 @@ class BuzonUserFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
-
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title =
+            "Buzon de ${InicioSesionFragment.userName}"
 
+
+        binding.mensajesrecibidos.isEnabled=false
 
         binding.mensajesrecibidos.setOnClickListener {
             BuzonFragment.control = 1

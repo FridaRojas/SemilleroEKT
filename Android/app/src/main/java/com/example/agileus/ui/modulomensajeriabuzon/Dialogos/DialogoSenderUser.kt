@@ -44,7 +44,7 @@ class DialogoSenderUser(val listener: UserBuzonListener) : DialogFragment() {
                         ).show()
                     } else {
                         listener.mensajeBroadcasting1(
-                            MsgBodyUser(Asunto.text.toString(), Mensaje.text.toString(), "123")
+                            MsgBodyUser(Asunto.text.toString(), Mensaje.text.toString(), "")
                         )
                     }
                 }

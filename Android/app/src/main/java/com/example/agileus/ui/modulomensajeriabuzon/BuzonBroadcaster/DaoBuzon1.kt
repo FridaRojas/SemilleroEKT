@@ -3,6 +3,7 @@ package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
@@ -123,7 +124,7 @@ class DaoBuzon1() {
     }
 
     suspend fun getcustompush(post: MsgBodyUser): Response<MsgBodyUser> {
-        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(post)
+        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(idUser,post, token)
     }
 
 }
