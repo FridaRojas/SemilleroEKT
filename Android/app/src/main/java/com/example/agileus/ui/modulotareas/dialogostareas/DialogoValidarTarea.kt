@@ -35,6 +35,7 @@ class DialogoValidarTarea(var args: DetalleNivelAltoFragmentArgs) :
             builder.setMessage("Desea validar tarea ${args.tareas.titulo}?")
                 .setPositiveButton(R.string.respAceptar,
                     DialogInterface.OnClickListener { dialog, id ->
+                        args.tareas.estatus = "terminada"
                         detalleNivelAltoViewModel.actualizarEstatus(args)
                         val newFragment = DialogoAceptar("Tarea ${args.tareas.titulo} terminada")
                         newFragment.show(
