@@ -87,7 +87,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             txtTitulo.setText("Filtrar")
 
             try {
-                Constantes.dataEmpleadoUsuario.forEach {
+                Constantes.empleadoUsuario.forEach {
                     if (Constantes.idUsuarioEstadisticas == it.id){
                         txtUsuario.setText(it.name)
                         Log.d("idUsuarioEstadisticas", it.id)
@@ -96,7 +96,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             }catch (ex: Exception){
                 Log.d("FRD Reporte", "DataNotLoadedYet")
                 //txtUsuario.setText("Mi informacion")
-                txtUsuario.setText(Constantes.idUsuarioEstadisticas)
+                txtUsuario.setText("Mi información")
             }
 
             txtInicio.setText("Dia:")
