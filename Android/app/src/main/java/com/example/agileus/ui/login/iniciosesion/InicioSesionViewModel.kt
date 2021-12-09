@@ -87,4 +87,5 @@ class InicioSesionViewModel : ViewModel() {
         preferenciasGlobal.cerrarSesion()
     }
 
+>>>>>>>>> Temporary merge branch 2
 }

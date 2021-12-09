@@ -43,6 +43,8 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         firebaseProvider  = FirebaseProvider()
 
         conversationviewModel = ViewModelProvider(this).get()
@@ -54,7 +56,6 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         var name_receptor = intent.getStringExtra(Constantes.NAME_RECEPTOR)
 
         this.setTitle(name_receptor)
-        var rol = intent.getStringExtra(Constantes.ROL_USER).toString()
 
         conversationviewModel.devuelveLista(Constantes.id,id_chat)
 
@@ -101,7 +102,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         conversationviewModel.actualizar.observe(this,{
             for( valor in it){
                 if(valor.idemisor!=Constantes.id && valor.statusLeido == false){
-                    conversationviewModel.statusUpdateMessage(StatusRead(valor.id,Constantes.finalDate))
+                    conversationviewModel.statusUpdateMessage(Constantes.id, StatusRead(valor.id,Constantes.finalDate))
                 }
             }
 

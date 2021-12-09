@@ -17,9 +17,14 @@
         android:drawableEnd="@drawable/iconobuscar"
         app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="@dimen/margin_bottom_general"
-        android:layout_marginEnd="@dimen/margin_end_general">
+        style="@style/StyleSearchEditText"
+        android:layout_marginBottom="@dimen/paddingGeneral"
+        android:layout_marginEnd="@dimen/margin_end_general"
+        android:layout_marginStart="@dimen/paddingGeneral"
+        android:layout_marginTop="@dimen/paddingGeneral"
+       >
 
     </EditText>
 
@@ -31,16 +36,27 @@
         android:src="@drawable/iconobroadcast"
         app:layout_constraintEnd_toStartOf="@+id/cerrarSesion"
         app:layout_constraintStart_toEndOf="@id/et_search_conversation"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/cerrarSesion"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/iconobroadcast"
+        android:layout_marginStart="@dimen/margin_start_general"
+        android:layout_marginTop="@dimen/paddingGeneral"
+        android:layout_marginEnd="@dimen/margin_start_general"
+        app:layout_constraintHorizontal_weight="1"
+    />
 
     <ImageView
         android:id="@+id/cerrarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:src="@drawable/ic_back_button_login"
+        android:src="@drawable/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgBroadcast"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="@dimen/paddingGeneral"
+        android:layout_marginEnd="@dimen/paddingGeneral"
+
+        />
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerListGroups"
@@ -68,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="70dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/paddingGeneral"
         android:src="@drawable/iconoagregar"
         />
 

@@ -64,7 +64,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
                 while (true){
                     Log.i("chechar","checar")
                     ChatsViewModel.devuelveListaChats(Constantes.id)
-                    sleep(10000)
+                    sleep(20000)
                 }
             }
         }.start()

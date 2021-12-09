@@ -66,11 +66,11 @@ class ConversationViewModel:ViewModel() {
         }
     }
 
-    fun statusUpdateMessage(statusRead: StatusRead){
+    fun statusUpdateMessage(idUser:String,statusRead: StatusRead){
         try {
             viewModelScope.launch {
                 RespuestaMessage = withContext(Dispatchers.IO) {
-                    message.actualizarStatus(statusRead)
+                    message.actualizarStatus(idUser,statusRead)
                 }
                 responseM.value = RespuestaMessage
             }
