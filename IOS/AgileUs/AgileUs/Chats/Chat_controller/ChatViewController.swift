@@ -72,6 +72,7 @@ class ChatViewController:
     var url_Documento = ""
     var fecha_mensaje = ""
     var urlFile: URL?
+    var status_leido = Bool()
     
     override func viewDidLoad()
     {
@@ -82,8 +83,11 @@ class ChatViewController:
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
+        aligne_messageItem()
         configureMessageInputBar()
         showNavBar()
+        //print(Datos_chats)
+        //print(Datos_contacto)
     }
   
     override func viewDidAppear(_ animated: Bool) {
@@ -149,7 +153,16 @@ class ChatViewController:
     func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
         return [.url, .hashtag]
     }
-    //pintamos de diferente color los links y los hashtag
+    func aligne_messageItem()
+    {
+        let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout
+        layout?.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
+        layout?.setMessageOutgoingAvatarSize(.zero)
+        layout?.setMessageOutgoingMessageTopLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)))
+        layout?.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)))
+        layout?.setMessageOutgoingCellBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)))
+    }
+    //pintamos de diferente color los links y los hashtag  cellBottomLabelAttributedText
     func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedString.Key : Any] {
         switch detector {
               case .hashtag:
@@ -268,7 +281,12 @@ class ChatViewController:
         }
     //funcion para agregar label cuando el mensaje ha sido leido
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        return NSAttributedString(string: "Read", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10), NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+       var status = ""
+        if self.status_leido == true
+        {
+             status = "Leido ✅"
+        }
+        return NSAttributedString(string: "\(status)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10), NSAttributedString.Key.foregroundColor: UIColor.darkGray])
     }
     //tamaño de la celda de leido
     func cellBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
@@ -279,6 +297,7 @@ class ChatViewController:
     func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
             return 16
         }
+    
     
     func auto_scroll()
     {
@@ -312,7 +331,7 @@ class ChatViewController:
         {
             
              let dato_chat = Datos_chats as! [Any]
-            print("chaaaaaa\(dato_chat[1])")
+            //print("chaaaaaa\(dato_chat[1])")
              //servicio = server + "mensajes/verConversacion/\(userID)_\(dato_chat[2])"
             servicio = server + "mensajes/verConversacion/\(userID)/\(dato_chat[1])"
             //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(userID)_\(dato_chat[2])"
@@ -321,6 +340,7 @@ class ChatViewController:
             let dato_contacto = Datos_contacto as! [Any]
             //servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
             servicio = server + "mensajes/verConversacion/\(userID)/\(dato_contacto[1])_\(userID)"
+            servicio = server + "mensajes/verConversacion/\(userID)/\(userID)_\(dato_contacto[1])"
             //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
         }
         let url = URL(string: servicio)
@@ -356,7 +376,10 @@ class ChatViewController:
                             }else{
                                 self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)"),documento:item.rutaDocumento))
                             }
-                            
+                            self.status_leido = item.statusLeido as! Bool
+                            print(item.statusLeido)
+                            print(item.id)
+                            print(self.Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))
                         }else{
                             if item.rutaDocumento != ""
                             {
@@ -437,6 +460,7 @@ class ChatViewController:
         //parámetros a enviar
         let postParameters = mensaje_json;
         //agrega los parámetros a la petición
+        print(mensaje_json)
         request.httpBody = postParameters.data(using: String.Encoding.utf8)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
