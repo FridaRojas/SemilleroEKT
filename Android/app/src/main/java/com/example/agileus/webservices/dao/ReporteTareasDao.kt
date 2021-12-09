@@ -2,16 +2,17 @@ package com.example.agileus.webservices.dao
 
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.models.*
+import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
+import com.example.agileus.utils.Constantes.fechaFinEstadisticas
+import com.example.agileus.utils.Constantes.fechaIniEstadisticas
+import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
 import retrofit2.Response
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 
 class ReporteTareasDao {
 
@@ -33,7 +34,7 @@ class ReporteTareasDao {
 
     var employeeList = ArrayList<Contacts>()
     var lista = ArrayList<DatosTareas>()
-    var stadisticEmployeesList = ArrayList<UserTaskListDetail>()
+    var stadisticEmployeesList = ArrayList<UserTaskDetailReport>()
 
 
 
@@ -44,7 +45,7 @@ class ReporteTareasDao {
         // val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
         var listaRecycler= ArrayList<Estadisticas>()
 
-        val taskSelectedDetail = recoverUserTaskDetails(idBusqueda, MySharedPreferences.idUsuarioEstadisticas)
+        val taskSelectedDetail = recoverUserTaskDetails(idBusqueda, idUsuarioEstadisticas)
 
         contador_tareas_terminadas=taskSelectedDetail.finished
         contador_tareas_pendientes=taskSelectedDetail.pendings
@@ -61,15 +62,15 @@ class ReporteTareasDao {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun recoverUserTaskDetails(idBusqueda: String, nombreBusqueda: String):UserTaskListDetail{
+    fun recoverUserTaskDetails(idBusqueda: String, nombreBusqueda: String):UserTaskDetailReport{
 
         val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
         val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
-        var taskDetail= UserTaskListDetail()
+        var taskDetail= UserTaskDetailReport()
 
         if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
             try {
-                taskDetail = MySharedPreferences.dataEmpleadoUsuario[MySharedPreferences.dataEmpleadoUsuario.size-1]
+                taskDetail = dataEmpleadoUsuario[dataEmpleadoUsuario.size-1]
             }catch (ex:Exception){
                 Log.e("RTDao", ex.toString())
             }
@@ -96,8 +97,8 @@ class ReporteTareasDao {
             var contTareasFueraTiempo = 0
 
             fecha_anterior = ZonedDateTime.parse(lista[0].fecha_ini) // primera fecha para comparar
-            rangoIniFecha = ZonedDateTime.parse(MySharedPreferences.fechaIniEstadisticas) // primera fecha para comparar
-            rangoFinFecha = ZonedDateTime.parse(MySharedPreferences.fechaFinEstadisticas) // segunda fecha para comparar
+            rangoIniFecha = ZonedDateTime.parse(fechaIniEstadisticas) // primera fecha para comparar
+            rangoFinFecha = ZonedDateTime.parse(fechaFinEstadisticas) // segunda fecha para comparar
 
             Log.d("Rango", "ini: $fecha_anterior, fin:$rangoFinFecha")
             lista.forEach {
@@ -146,7 +147,7 @@ class ReporteTareasDao {
                     }
                 }
             }
-            taskDetail = UserTaskListDetail(
+            taskDetail = UserTaskDetailReport(
                 idBusqueda,
                 nombreBusqueda,
                 contador_t_totales,
@@ -163,7 +164,7 @@ class ReporteTareasDao {
             )
             Log.d("DetailsTASK", "D: ${taskDetail}")
         }else{
-            taskDetail = UserTaskListDetail(
+            taskDetail = UserTaskDetailReport(
                 idBusqueda,
                 nombreBusqueda,
                 0,
@@ -218,7 +219,7 @@ class ReporteTareasDao {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun obtenerListaSubContactos(idUser:String): ArrayList<UserTaskListDetail> {
+    fun obtenerListaSubContactos(idUser:String): ArrayList<UserTaskDetailReport> {
         try{
             //val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts(idUser)
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
@@ -238,15 +239,6 @@ class ReporteTareasDao {
                         Log.d("ListaSubConacts", "Nombre: ${it.nombre}")
                     }
                     stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
-                    stadisticEmployeesList.forEach {
-                        Log.d("ListaSubConactsDetail", "id: ${it.id}")
-                        Log.d("ListaSubConactsDetail", "Nombre: ${it.name}")
-                        Log.d("ListaSubConactsDetail", "pendings: ${it.pendings}")
-                        Log.d("ListaSubConactsDetail", "started: ${it.started}")
-                        Log.d("ListaSubConactsDetail", "revision: ${it.revision}")
-                        Log.d("ListaSubConactsDetail", "finished: ${it.finished}")
-                        Log.d("ListaSubConactsDetail", "totals: ${it.totals}")
-                    }
                 }
 
                 Log.d("ListaSubConactsSIZE", "SIZE: ${stadisticEmployeesList.size}")
@@ -260,7 +252,7 @@ class ReporteTareasDao {
         return stadisticEmployeesList
     }
 
-    fun totalGroupEstadisticsBYBoss(dataValues: ArrayList<UserTaskListDetail>): UserTaskListDetail{
+    fun totalGroupEstadisticsBYBoss(dataValues: ArrayList<UserTaskDetailReport>): UserTaskDetailReport{
         var totals=0
         var finished = 0
         var lowPriority = 0
@@ -287,7 +279,7 @@ class ReporteTareasDao {
             outTime     = outTime   + data.outTime
             onTime      = onTime    + data.onTime
         }
-        var groupStadistic = UserTaskListDetail(
+        var groupStadistic = UserTaskDetailReport(
             "TEAM_ID_CREATED_BY_MOD_REPORT",
             "Mi equipo",
             totals,

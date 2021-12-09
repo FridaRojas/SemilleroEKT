@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.agileus.Models.Buzon
 import com.example.agileus.R
+import com.example.agileus.models.BuzonResp
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 
-class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
+class BuzonAdapter(private var dataSet: ArrayList<BuzonResp>, var tipo: Int) :
     RecyclerView.Adapter<BuzonAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -39,19 +40,23 @@ class BuzonAdapter(private var dataSet: ArrayList<Buzon>, var tipo: Int) :
 
         val buzon = dataSet[position]
 
-        if(tipo==1) {
-            viewHolder.textView.text =  "Mensaje enviado a : Broadcast"
-     //       viewHolder.textView1.text = "Asunto:  ${buzon.}"
-            viewHolder.textView2.text = "Mensaje: \n ${buzon.message}"
-       //     viewHolder.textview3.text = "Fecha de enviado: ${buzon.fecha}"
-        }
-        if(tipo==2) {
-        //    viewHolder.textView.text =  "Comunicado dia  : ${buzon.fecha}"
-            viewHolder.textView1.text = "Asunto:    ${buzon.asunto}"
-            viewHolder.textView2.text = "Mensaje: \n${buzon.message}"
-            viewHolder.textview3.text = ""
-        }
+                viewHolder.textView.text = "Mensaje enviado por : ${buzon.nombreEmisor} "
+            viewHolder.textView1.text = "Contenido:  ${buzon.descripcion}"
+            viewHolder.textView2.text = ""
 
+
+
+        if(tipo==2) {
+
+            if (USERTYPE == "Broadcast") {
+                viewHolder.textView.text = "Mensaje enviado a :${buzon.idreceptor} "
+            }
+            if(buzon.idreceptor =="General"){
+                viewHolder.textView.text = "Comunicado:    ${buzon.descripcion}"
+            }
+            viewHolder.textView1.text = "idRec:    ${buzon.idreceptor}"
+            viewHolder.textView2.text = ""
+        }
     }
     override fun getItemCount(): Int {
         return dataSet.size

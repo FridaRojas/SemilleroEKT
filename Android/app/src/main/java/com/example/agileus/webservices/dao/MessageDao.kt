@@ -1,33 +1,45 @@
 package com.example.agileus.webservices.dao
 
-
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
+import com.example.agileus.models.response.ResponseChats
+import com.example.agileus.models.response.ResponseContacts
+import com.example.agileus.models.response.ResponseConversation
+import com.example.agileus.models.response.ResponseGroups
 import retrofit2.Response
 
 class MessageDao {
     lateinit var respuesta: MessageResponse
-    var listaMensajes = ArrayList<Conversation>()
-    var lista = ArrayList<Contacts>()
-    var listaGrupos = ArrayList<Groups>()
 
-    suspend fun recuperarMensajes(idChat: String): ArrayList<Conversation> {
+
+    suspend fun recuperarMensajes(idUser:String, idChat: String): ArrayList<Conversation> {
+        lateinit var responseConversation: ResponseConversation
+        var listMensajes = ArrayList<Conversation>()
         try{
             val callRespuesta =
-                InitialApplication.webServiceMessage.getConversationOnetoOne(idChat)
-            var ResponseDos: Response<ArrayList<Conversation>> = callRespuesta.execute()
+                InitialApplication.webServiceMessage.getConversationOnetoOne(idUser,idChat)
+            val responseCallConversation = callRespuesta.execute()
 
-
-            if (ResponseDos.isSuccessful) {
-                listaMensajes = ResponseDos.body()!!
+    if(responseCallConversation != null){
+        if(responseCallConversation.isSuccessful){
+            responseConversation = responseCallConversation.body()!!
+            if(responseConversation.data != null){
+                listMensajes = responseConversation.data
+            }else{
+                listMensajes = emptyList<Conversation>() as ArrayList<Conversation>
             }
-
-        }catch (ex:Exception){
+        }else{
 
         }
+    }else{
 
-        return listaMensajes
+    }
+        }catch (ex:Exception){
+            Log.e("ErrorRecuperarMensajes", ex.message.toString())
+        }
+
+        return listMensajes
     }
 
     suspend fun insertarMensajes(mensaje: Message): MessageResponse {
@@ -42,46 +54,117 @@ class MessageDao {
             }
 
         }catch (ex:Exception){
-
+                Log.e("ErrorInsertarMensaje", ex.message.toString())
         }
         return respuesta
     }
 
 
     suspend fun  recuperarListadeContactos(idUser:String): ArrayList<Contacts> {
+        var listContacts = ArrayList<Contacts>()
+        lateinit var responseContacts: ResponseContacts
         try{
             val callRespuesta = InitialApplication.webServiceMessage.getListContacts(idUser)
-            var ResponseDos:Response<ArrayList<Contacts>> = callRespuesta.execute()
+            var responseCallContacts = callRespuesta.execute()
 
+        if(responseCallContacts != null){
+          if(responseCallContacts.isSuccessful){
+             responseContacts = responseCallContacts.body()!!
+            if(responseContacts.data != null){
+            listContacts = responseContacts.data
+                  }else{
 
-            if (ResponseDos.isSuccessful){
-                lista = ResponseDos.body()!!
-            }else{
-                Log.e("ERROR", ResponseDos.code().toString())
-            }
+                  }
+          }else{
 
-        }catch (ex:Exception){
+      }
+        }else{
 
         }
-        return lista
+
+
+        }catch (ex:Exception){
+            Log.e("ErrorRecuperarListadeContactos", ex.message.toString())
+        }
+        return listContacts
     }
 
-    suspend fun  recuperarListadeGrupos(): ArrayList<Groups> {
+    suspend fun  recuperarListadeGrupos(idUser: String): ArrayList<Groups> {
+        var listGroups = ArrayList<Groups>()
+        lateinit var responseGroups: ResponseGroups
         try{
-            val callRespuesta = InitialApplication.webServiceMessage.getListGroups()
-            var ResponseDos:Response<ArrayList<Groups>> = callRespuesta.execute()
+            val callRespuesta = InitialApplication.webServiceMessage.getListGroups(idUser)
+            var responseCallGroups = callRespuesta.execute()
 
 
-            if (ResponseDos.isSuccessful){
-                listaGrupos = ResponseDos.body()!!
+            if(responseCallGroups != null){
+                if(responseCallGroups.isSuccessful){
+                    responseGroups = responseCallGroups.body()!!
+                    if(responseGroups.data != null){
+                        listGroups = responseGroups.data
+                    }else{
+
+                    }
+                }else{
+
+                }
+
             }else{
-                Log.e("ERROR", ResponseDos.code().toString())
+
             }
 
         }catch (ex:Exception){
-
+            Log.e("ErrorRecuperarListadeGrupos", ex.message.toString())
         }
 
-        return listaGrupos
+        return listGroups
+    }
+
+    suspend fun  recuperarListadeChats(idUser: String): ArrayList<Chats> {
+        var listaChats = ArrayList<Chats>()
+        lateinit var responseChats: ResponseChats
+
+        try{
+            val callRespuesta = InitialApplication.webServiceMessage.getListChats(idUser)
+            var responseCallChats = callRespuesta.execute()
+
+            if(responseCallChats != null){
+                if(responseCallChats.isSuccessful){
+                    responseChats = responseCallChats.body()!!
+                    if(responseChats.data != null){
+                        listaChats = responseChats.data
+                    }else{
+
+                    }
+
+                }else{
+
+                }
+            }else{
+
+            }
+
+        }catch (ex:Exception){
+            Log.e("ErrorRecuperarListadeChats", ex.message.toString())
+        }
+
+        return listaChats
+    }
+
+    suspend fun actualizarStatus(statusRead: StatusRead): MessageResponse {
+        try{
+            var callRespuesta = InitialApplication.webServiceMessage.statusUpdate(statusRead)
+            var ResponseDos: Response<MessageResponse> = callRespuesta.execute()
+
+            if(ResponseDos.isSuccessful){
+                respuesta = ResponseDos.body()!!
+            }else{
+
+            }
+
+        }catch (ex:Exception){
+            Log.e("ErrorAlActualizarLeido ", ex.message.toString())
+        }
+        return respuesta
     }
 }

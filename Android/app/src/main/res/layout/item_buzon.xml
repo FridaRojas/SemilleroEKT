@@ -23,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Comunicado "
+        android:text=""
         android:textSize="18sp"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"

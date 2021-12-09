@@ -1,24 +1,57 @@
 package com.example.agileus.config
 
-import com.example.agileus.models.UserMessageDetailReports
-import com.example.agileus.models.UserTaskListDetail
-import com.example.agileus.utils.Constantes
+import android.content.Context
+import android.content.SharedPreferences
+import com.example.agileus.ui.login.data.model.Data
 
-class MySharedPreferences {
+class MySharedPreferences(contexto: Context) {
 
-    companion object reportesGlobales{
-        var idUsuario = "618e8743c613329636a769aa"
-        var idUsuarioEstadisticas = Constantes.id
-        var opcionFiltro = 0
-        var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
-        var fechaEstadisticas = Constantes.date.toString()
-        var id_broadcast="61a101db174bcf469164d2fd"
-        var fechaIniEstadisticas = "1900-01-01T00:00:00.000+00:00"
-        var fechaFinEstadisticas = "2100-01-01T00:00:00.000+00:00"
-        var empleadoUsuario = ArrayList<UserMessageDetailReports>() //Objeto para recibir los datos de los mensajes de un usuario o grupo de usuarios
-        var dataEmpleadoUsuario = ArrayList<UserTaskListDetail>() //Objeto para recibir los datos de las tareas de un usuario o grupo de usuarios
-        var tipo_grafica:Int=0
-        var vista:Int=0
+    companion object{
+        val TOKEN_KEY = "TOKEN_KEY"
+        val SESSION_TOKEN = "TOKEN"
+
+        //
+        //val BASE_DATOS_KEY = "BD_PREFERENCIAS_DOS"
+        //val ID_KEY = "ID_KEY"
+        val CORREO_KEY = "CORREO_KEY"
+        val PASSWORD_KEY = "PASWORD_KEY"
+
+
     }
+
+    val sharedPreferences = contexto.getSharedPreferences(SESSION_TOKEN, Context.MODE_PRIVATE)
+    private lateinit var editor : SharedPreferences.Editor
+
+
+    fun recuperarToken(): String {
+        return sharedPreferences.getString(TOKEN_KEY, "")!!
+    }
+
+    //LOGIN WITH SHARED
+    fun iniciarSesion(correo:String, password:String, sesion:Boolean){
+        with(sharedPreferences.edit()){
+            //putString(ID_KEY, id)
+            putString(CORREO_KEY, correo)
+            putString(PASSWORD_KEY, password)
+            putBoolean(TOKEN_KEY, sesion)
+            editor.commit()
+        }
+    }
+    fun recuperaNombre():String{
+        return sharedPreferences.getString(CORREO_KEY," ")!!
+    }
+    fun recuperaPassword():String{
+        return sharedPreferences.getString(PASSWORD_KEY," ")!!
+    }
+
+    fun validaSesionIniciada():Boolean{
+        return sharedPreferences.getBoolean(SESSION_TOKEN,false)
+    }
+
+    fun cerrarSesion(){
+        //BORRA TODO LO QUE ESTA GUARDADO
+        sharedPreferences.edit().clear().apply()
+    }
+
 
 }

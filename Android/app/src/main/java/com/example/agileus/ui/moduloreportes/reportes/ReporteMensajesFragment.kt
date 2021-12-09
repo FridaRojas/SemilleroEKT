@@ -21,6 +21,10 @@ import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoU
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuarioEstadisticas
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.tipo_grafica
 import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
+import com.example.agileus.utils.Constantes.tipo_grafica
+import com.example.agileus.utils.Constantes.vista
+import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.utils.Constantes.empleadoUsuario
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.models.UserMessageDetailReports
 import com.example.agileus.providers.ReportesListener
@@ -82,12 +86,14 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         super.onViewCreated(view, savedInstanceState)
 
         reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
-            empleadoUsuario = list
-            Toast.makeText(context, "PE: $list", Toast.LENGTH_LONG).show()
+            Constantes.empleadoUsuario = list
+            //Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
         })
 
         reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, {
             Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
+        reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, Observer{
+            //Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
             binding.txtRangoFechaReportes.isVisible = true
             binding.txtRangoFechaReportes.setText("CargaCompleta")
             cambiarGrafica(tipo_grafica)
@@ -98,7 +104,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         //información que nececita llevarse al diálogo
         binding.btnFiltroReportes.setOnClickListener {
             reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list ->
-                empleadoUsuario = list
+                Constantes.empleadoUsuario = list
             })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
@@ -133,6 +139,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.txtNombreReportes.setText(idUsuarioEstadisticas)
         //binding.txtRangoFechaReportes.isVisible=false
 
+
+        reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
         reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
@@ -141,7 +149,14 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
+            binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+
+
+            binding.txtDataPrimerLegend.text = ""
+
+            binding.txtDataSegundoLegend.text = ""
+
+            binding.txtPrimerLegend.text = ""
 
             binding.txtPrimerLegend.text = "Enviados"
             binding.txtSegundoLegend.text = "Recibidos"
@@ -172,8 +187,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private fun mostrargraficaPie() {
         pieChart = binding.pieChart
 
-        binding.txtNombreReportes.setText(idUsuarioEstadisticas)
-        reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
+        binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
@@ -181,7 +196,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         })
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtNombreReportes.setText(idUsuarioEstadisticas)
+            binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
             //binding.txtRangoFechaReportes.isVisible=false
 
             binding.txtPrimerLegend.text = "Enviados"

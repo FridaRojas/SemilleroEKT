@@ -7,9 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.vista
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.providers.ReportesListener
+import com.example.agileus.utils.Constantes
 
 
 class ListaDatosAdapter(private val dataSet: ArrayList<Estadisticas>, val listener: ReportesListener) :
@@ -21,7 +21,7 @@ class ListaDatosAdapter(private val dataSet: ArrayList<Estadisticas>, val listen
 
        var id_vista=0
 
-        if(vista==0){
+        if(Constantes.vista==0){
             id_vista = if(viewType == 0)
                 R.layout.item_selected
                 else
@@ -83,7 +83,7 @@ class ListaDatosAdapter(private val dataSet: ArrayList<Estadisticas>, val listen
             view.setOnClickListener {
 
                 listener.cambiarGrafica(position)
-                vista=position
+                Constantes.vista=position
 
             }
 

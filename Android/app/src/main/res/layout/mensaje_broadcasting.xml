@@ -12,7 +12,6 @@
     <com.google.android.material.textfield.TextInputLayout
 
         android:background="#F5F5F5"
-        android:id="@+id/Asunto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/asunto"
@@ -23,7 +22,7 @@
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
-
+            android:id="@+id/Asunto"
             app:endIconDrawable="@drawable/ic_baseline_close_24"
             app:endIconContentDescription="@string/asunto"
             app:endIconMode="clear_text"
@@ -48,7 +47,7 @@
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
-
+            android:id="@+id/Mensajes1"
             app:endIconDrawable="@drawable/ic_baseline_close_24"
             app:endIconContentDescription="@string/mensaje_nuevo"
             app:endIconMode="clear_text"
@@ -73,8 +72,6 @@
     android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             >
-
-
     <AutoCompleteTextView
         android:id="@+id/Responsable"
         android:layout_width="match_parent"
@@ -82,6 +79,25 @@
         android:inputType="none"
         />
 </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:background="#F5F5F5"
+        android:id="@+id/txtRoles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtRol"
+            android:inputType="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </LinearLayout>

@@ -15,10 +15,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.R.*
 import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.dataEmpleadoUsuario
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.empleadoUsuario
-import com.example.agileus.config.MySharedPreferences.reportesGlobales.idUsuario
 import com.example.agileus.databinding.DialogFiltroReportesBinding
+import com.example.agileus.utils.Constantes
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputEditText
@@ -52,7 +50,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     private lateinit var switchNoDateRange: SwitchCompat
     private var dateSelected = 0
     private var opcionFiltro = 0
-    private var userIdSelected = MySharedPreferences.idUsuarioEstadisticas
+    private var userIdSelected = Constantes.idUsuarioEstadisticas
 
     val actualCal= Calendar.getInstance()
     val actualDay = actualCal.get(Calendar.DAY_OF_MONTH)
@@ -86,7 +84,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
 
             //txtTitulo.setText(MySharedPreferences.idUsuario)
             txtTitulo.setText("Filtrar")
-            txtUsuario.setText(MySharedPreferences.idUsuarioEstadisticas)
+            txtUsuario.setText(Constantes.idUsuarioEstadisticas)
             txtInicio.setText("Dia:")
             val fechaActual = dmyFormatoFecha(actualDay, actualMonth-1, actualYear)
             txtFechaInicio.setText(fechaActual)
@@ -237,9 +235,9 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                             endStringDate = "2100-01-01T00:00:00.000+00:00"
                             Toast.makeText(context, "Activado", Toast.LENGTH_SHORT).show()
                         }
-                        MySharedPreferences.fechaIniEstadisticas = iniStringDate
-                        MySharedPreferences.fechaFinEstadisticas = endStringDate
-                        MySharedPreferences.idUsuarioEstadisticas = userIdSelected
+                        Constantes.fechaIniEstadisticas = iniStringDate
+                        Constantes.fechaFinEstadisticas = endStringDate
+                        Constantes.idUsuarioEstadisticas = userIdSelected
 
                         //Toast.makeText(context, "ini: $iniStringDate, end: $endStringDate", Toast.LENGTH_LONG).show()
                         //Log.e("Filtro", "ini: $iniStringDate, end: $endStringDate")
@@ -337,13 +335,13 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     override fun onUserSelected(user: Int) {
 
 
-        if(MySharedPreferences.dataEmpleadoUsuario.size == 0){
-            txtUsuario.setText(empleadoUsuario[user].name)
-            userIdSelected = empleadoUsuario[user].id
+        if(Constantes.dataEmpleadoUsuario.size == 0){
+            txtUsuario.setText(Constantes.empleadoUsuario[user].name)
+            userIdSelected = Constantes.empleadoUsuario[user].id
         }else{
 
-            txtUsuario.setText(dataEmpleadoUsuario[user].name)
-            userIdSelected = dataEmpleadoUsuario[user].id
+            txtUsuario.setText(Constantes.dataEmpleadoUsuario[user].name)
+            userIdSelected = Constantes.dataEmpleadoUsuario[user].id
         }
 
         /*

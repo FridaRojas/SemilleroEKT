@@ -8,15 +8,24 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.R
 import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
+import com.example.agileus.models.StatusRead
 import com.example.agileus.providers.FirebaseProvider
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
+import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsViewModel
 import com.example.agileus.utils.Constantes
-import java.io.File
 import java.io.FileNotFoundException
 
 
@@ -24,24 +33,87 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
     lateinit var binding:ActivityConversationOneToOneBinding
     lateinit var conversationviewModel:ConversationViewModel
+    lateinit var chatsviewmodel:ListConversationViewModel
+    lateinit var contactsViewModel:ListContactsViewModel
     lateinit var resultLauncherArchivo: ActivityResultLauncher<Intent>
     lateinit var firebaseProvider : FirebaseProvider
+    lateinit var id_receptor :String
+    lateinit var id_chat:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConversationOneToOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        firebaseProvider  = FirebaseProvider()
 
         conversationviewModel = ViewModelProvider(this).get()
-        conversationviewModel.devuelveLista(Constantes.idChat)
+        chatsviewmodel = ViewModelProvider(this).get()
+        contactsViewModel = ViewModelProvider(this).get()
 
-        conversationviewModel.adaptador.observe(this,{
-            binding.recyclerConversacion.adapter = it
-            binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)
+        id_chat = intent.getStringExtra(Constantes.ID_CHAT).toString()
+        id_receptor = intent.getStringExtra(Constantes.ID_RECEPTOR).toString()
+        var name_receptor = intent.getStringExtra(Constantes.NAME_RECEPTOR)
+
+        this.setTitle(name_receptor)
+        var rol = intent.getStringExtra(Constantes.ROL_USER).toString()
+
+        conversationviewModel.devuelveLista(Constantes.id,id_chat)
+
+        chatsviewmodel.devuelveListaChats(Constantes.id)
+        chatsviewmodel.chatsdeUsuario.observe(this,{
+            for (user in it){
+                if(user.idReceptor.equals(id_receptor)){
+                    id_chat = user.idConversacion
+                    conversationviewModel.devuelveLista(Constantes.id,id_chat)
+                }
+            }
+        })
+
+        contactsViewModel.devuelveLista(Constantes.id)
+        contactsViewModel.contactos.observe(this,{
+            for(chats in it){
+                if(chats.id.equals(id_receptor)){
+                    binding.errordechat.isVisible = true
+                    binding.btnArchivoAdjunto.isEnabled = false
+                    binding.btnEnviarMensaje.isEnabled = false
+                }else{
+                    binding.errordechat.isVisible = false
+                    binding.btnArchivoAdjunto.isEnabled = true
+                    binding.btnEnviarMensaje.isEnabled = true
+                }
+            }
+        })
+
+        conversationviewModel.responseM.observe(this,{
+            id_chat = it.data
+            conversationviewModel.devuelveLista(Constantes.id, id_chat)
+        })
+
+
+        var background = object : Thread(){
+            override fun run() {
+                while (true){
+                    conversationviewModel.devuelveLista(Constantes.id, id_chat)
+                    sleep(5000)
+                }
+            }
+        }.start()
+
+        conversationviewModel.actualizar.observe(this,{
+            for( valor in it){
+                if(valor.idemisor!=Constantes.id && valor.statusLeido == false){
+                    conversationviewModel.statusUpdateMessage(StatusRead(valor.id,Constantes.finalDate))
+                }
+            }
 
         })
 
-        firebaseProvider  = FirebaseProvider()
+        conversationviewModel.adaptador.observe(this,{
+                    binding.recyclerConversacion.adapter = it
+                    binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)
+            binding.recyclerConversacion.getLayoutManager()?.scrollToPosition(conversationviewModel.listaConsumida.size-1)
+
+        })
 
         resultLauncherArchivo =registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if(result.resultCode== Activity.RESULT_OK){
@@ -49,10 +121,6 @@ class ConversationOneToOneActivity : AppCompatActivity() {
                 if(data!= null){
                     try{
                         var returnUri = data?.data!!
-                        val uriString = data.toString()
-
-                        val myFile = File(uriString)
-                        Log.d("mensaje","PDF: $uriString")
                         firebaseProvider.subirPdfFirebase(returnUri,Constantes.referenciaMensajeria, "documento${(0..999).random()}")
 
                     }catch (e: FileNotFoundException){
@@ -66,8 +134,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         }
 
         firebaseProvider.obs.observe(this,{
-            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","$it",Constantes.finalDate)
-            conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
+            conversationviewModel.mandarMensaje(Constantes.id, id_chat,Message(Constantes.id,id_receptor,"$it","Documento",Constantes.finalDate))
         })
 
         binding.btnArchivoAdjunto.setOnClickListener {
@@ -78,9 +145,15 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         }
 
         binding.btnEnviarMensaje.setOnClickListener {
-            var mensaje = Message(Constantes.id,"618b05c12d3d1d235de0ade0","","${binding.etMensaje.text.toString()}",Constantes.finalDate)
-            conversationviewModel.mandarMensaje(Constantes.idChat,mensaje)
-            binding.etMensaje.setText("")
+            try{
+                if(binding.etMensaje.text.isNullOrEmpty()){
+
+                }else{
+                    conversationviewModel.mandarMensaje(Constantes.id, id_chat,Message(Constantes.id,id_receptor,"","${binding.etMensaje.text.toString()}",Constantes.finalDate))
+                    binding.etMensaje.setText("")
+                }
+            }catch (ex:Exception){
+            }
             }
         }
     }
