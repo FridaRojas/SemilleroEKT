@@ -1,9 +1,11 @@
 package com.example.agileus.ui.login.iniciosesion
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +42,6 @@ class InicioSesionFragment : Fragment() {
 
     private lateinit var viewModel: InicioSesionViewModel
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,31 +52,19 @@ class InicioSesionFragment : Fragment() {
 
         val view: View = binding.root
 
-        // calling the action bar
-        //var actionBar =  getSupportActionBar()
-
-        // showing the back button in action bar
-        /*if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false)
-         */
-
         return view
     }
 
+    @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
 
-
-
         //appBar: AppBar( title: Text("App Bar without Back Button"), automaticallyImplyLeading: false, ),
-
 
         //AGREGADA para ocultar BottonNavigationView
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
-
-
 
 ///////////////////////////////////////
         binding.btnLogin.setOnClickListener { validate()
@@ -83,7 +72,6 @@ class InicioSesionFragment : Fragment() {
         }
 
     }
-
 
     private fun validate() {
 
