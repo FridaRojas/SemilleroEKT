@@ -13,12 +13,12 @@ class MessageDao {
     lateinit var respuesta: MessageResponse
 
 
-    suspend fun recuperarMensajes(idChat: String): ArrayList<Conversation> {
+    suspend fun recuperarMensajes(idUser:String, idChat: String): ArrayList<Conversation> {
         lateinit var responseConversation: ResponseConversation
         var listMensajes = ArrayList<Conversation>()
         try{
             val callRespuesta =
-                InitialApplication.webServiceMessage.getConversationOnetoOne(idChat)
+                InitialApplication.webServiceMessage.getConversationOnetoOne(idUser,idChat)
             val responseCallConversation = callRespuesta.execute()
 
     if(responseCallConversation != null){

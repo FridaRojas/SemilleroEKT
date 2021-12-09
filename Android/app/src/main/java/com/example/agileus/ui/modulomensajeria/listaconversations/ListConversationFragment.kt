@@ -57,10 +57,18 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
         Log.d("usuario pasado", "${InicioSesionFragment.idUser}")
 
-        //Constantes.id=idUser
-
         ChatsViewModel.devuelveListaGrupos(Constantes.id)
         ChatsViewModel.devuelveListaChats(Constantes.id)
+
+        var background = object : Thread(){
+            override fun run() {
+                while (true){
+                    Log.i("chechar","checar")
+                    ChatsViewModel.devuelveListaChats(Constantes.id)
+                    sleep(10000)
+                }
+            }
+        }.start()
 
         ChatsViewModel.adaptadorGrupos.observe(viewLifecycleOwner, {
             binding.recyclerListGroups.adapter = it

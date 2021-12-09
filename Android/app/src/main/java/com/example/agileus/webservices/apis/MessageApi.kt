@@ -13,8 +13,8 @@ interface MessageApi {
     @POST("mensajes/crearMensaje")
     fun mandarMensaje(@Body body:Message):Call<MessageResponse>
 
-    @GET("mensajes/verConversacion/{id}")
-    fun getConversationOnetoOne(@Path("id") idChat: String):Call<ResponseConversation>
+    @GET("mensajes/verConversacion/{id}/{idChat}")
+    fun getConversationOnetoOne(@Path("id") id:String , @Path("idChat") idChat: String ):Call<ResponseConversation>
 
     @GET("mensajes/listaContactos/{id}")
     fun getListContacts(@Path("id") idUser: String):Call<ResponseContacts>

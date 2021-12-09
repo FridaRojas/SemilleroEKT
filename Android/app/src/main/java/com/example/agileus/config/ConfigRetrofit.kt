@@ -25,7 +25,6 @@ class ConfigRetrofit {
 
     private var client = OkHttpClient.Builder().addInterceptor(MyInterceptor()).build()
 
-
     //val URL_LOGIN = Constantes.URL_LOGIN
     val URL_Login = Constantes.URL_Login
     fun cliente(tiempo: Long): OkHttpClient {
@@ -40,6 +39,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitMessage(): MessageApi {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return mRetrofit.create(MessageApi::class.java)
