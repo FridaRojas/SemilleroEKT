@@ -1,6 +1,7 @@
 package com.example.agileus.webservices.dao
 
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.models.Data
 import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idGrupo
@@ -19,7 +20,7 @@ class LoginDao {
     fun iniciarSesion(usuario: Users): Boolean {
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
-       // lateinit var user:LoginResponse
+        lateinit var user:LoginResponse
         if (responseDos.isSuccessful) {
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
@@ -29,18 +30,18 @@ class LoginDao {
                 if (almacenar.status == "ACCEPTED")
                 {
                     STATUS=true
-//                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
-                    idUser = almacenar.data.id.toString()
-                    rol=almacenar.data.nombreRol.toString()
-                    idnombre=almacenar.data.nombre.toString()
-                    idGrupo = almacenar.data.idgrupo.toString()
-                    tokenAuth = almacenar.data.tokenAuth.toString()
+                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
+                    idUser = (almacenar.data as Data).id.toString()
+                    rol= (almacenar.data as Data).nombreRol.toString()
+                    idnombre= (almacenar.data as Data).nombre.toString()
+                    idGrupo = (almacenar.data as Data).idgrupo.toString()
+                    tokenAuth = (almacenar.data as Data).tokenAuth.toString()
 
 
                 }
                 if (almacenar.status =="BAD_REQUEST")
                 {
-                 //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
+                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
                     STATUS=false
 
                 }

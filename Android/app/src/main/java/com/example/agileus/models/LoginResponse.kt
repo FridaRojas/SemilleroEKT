@@ -3,11 +3,11 @@ package com.example.agileus.models
 import com.google.gson.annotations.SerializedName
 
 
-data class LoginResponse (
+data class LoginResponse(
 
-    @SerializedName("status" ) var status : String? = null,
-    @SerializedName("msj"    ) var msj    : String? = null,
-    @SerializedName("data"   ) var data   : Data
+    @SerializedName("status" ) var status: String? = null,
+    @SerializedName("msj"    ) var msj: String? = null,
+    @SerializedName("data"   ) var data: Any
 )
 
 

@@ -102,11 +102,10 @@ class InicioSesionFragment : Fragment(){
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2) }
         }
 
-        if (!status)
-        {
-            if(trigger == 0 )
-            {Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
-            }
+        if (!status) {
+            //if(trigger == 0 )
+            //{Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
+            //}
             if (trigger >1 && !status) {
                 Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
 
