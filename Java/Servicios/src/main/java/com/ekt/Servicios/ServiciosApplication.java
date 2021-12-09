@@ -9,11 +9,19 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @SpringBootApplication
 public class ServiciosApplication extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder app) {
 		return app.sources(ServiciosApplication.class);
+	}
+
+	@PostConstruct
+	void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Mexico_City"));
 	}
 
 	@PostConstruct

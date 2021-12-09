@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="60dp"
+    android:padding="@dimen/paddingGeneral"
+    tools:context=".ui.modulotareas.detalletareas.DetalleNivelAltoFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Nombre de la Tarea -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtNombreTareaD"
+            style="@style/StyleTitleFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Nombre de la Tarea"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Nombre de la Persona -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtNombrePersonaD"
+            style="@style/StyleTextFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:enabled="false"
+            android:text="Nombre de la persona"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
+
+        <!-- Prioridad -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtPrioridadD"
+            style="@style/StyleTextGray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:enabled="false"
+            android:text="Prioridad"
+            app:layout_constraintBottom_toTopOf="@id/txtField_descripcion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
+
+        <!-- Status -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtEstatusD"
+            style="@style/StyleTextGray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:enabled="false"
+            android:text="Status"
+            app:layout_constraintBottom_toTopOf="@id/txtField_descripcion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
+
+        <!-- Descripción -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtField_descripcion"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción"
+            app:layout_constraintBottom_toTopOf="@id/field_fecha_inicio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtEstatusD">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtDescripcionD"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="start"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:singleLine="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Fecha de Inicio -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_fecha_inicio"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:hint="Fecha de Inicio"
+            app:layout_constraintBottom_toTopOf="@id/txtField_observacion"
+            app:layout_constraintEnd_toStartOf="@id/field_fecha_fin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtField_descripcion"
+            app:startIconDrawable="@drawable/iconocalendario">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFechaInicioD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Fecha de Fin -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_fecha_fin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:hint="Fecha de Fin"
+            app:layout_constraintBottom_toTopOf="@id/txtField_observacion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/field_fecha_inicio"
+            app:layout_constraintTop_toBottomOf="@id/txtField_descripcion"
+            app:startIconDrawable="@drawable/iconocalendario">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtFechaFinD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Observaciones -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtField_observacion"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Observaciones"
+            app:layout_constraintBottom_toTopOf="@id/btnAdjuntarArchivoF"
+            app:layout_constraintTop_toBottomOf="@+id/field_fecha_fin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtObservacionesD"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="start"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:singleLine="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/btnDescargarArchivoFF"
+            style="@style/StyleTextFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:drawableLeft="@drawable/iconoadjuntararchivo"
+            android:text="Descargar Archivo PDF"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@id/buttons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtField_observacion" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/btnAdjuntarArchivoF"
+            style="@style/StyleTextFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:drawableLeft="@drawable/iconoadjuntararchivo"
+            android:text="Adjuntar Archivo PDF"
+            android:textColor="@color/colorPrimary"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/buttons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtField_observacion" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAdjuntarArchivoF">
+
+            <Button
+                android:id="@+id/btnGuardarTareaF"
+                style="@style/StyleButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_bg"
+                android:text="Guardar"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/btnCancelarEdicion"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <Button
+                android:id="@+id/btnCancelarEdicion"
+                style="@style/StyleButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_bg"
+                android:text="Cancelar"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <Button
+                android:id="@+id/btnEditarTareaF"
+                style="@style/StyleButton"
+                android:layout_width="110dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_bg"
+                android:text="Editar Tarea"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnCancelarTareaF"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btnCancelarTareaF"
+                style="@style/StyleButton"
+                android:layout_width="110dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rounded_bg"
+                android:text="Cancelar Tarea"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <Button
+                android:id="@+id/btnObservacionF"
+                style="@style/StyleButton"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rounded_bg"
+                android:text="Agregar Observación"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnCancelarTareaF" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

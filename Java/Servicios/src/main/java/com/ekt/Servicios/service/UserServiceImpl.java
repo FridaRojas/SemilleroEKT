@@ -1,13 +1,19 @@
 package com.ekt.Servicios.service;
 
 
+<<<<<<< HEAD
 import com.ekt.Servicios.entity.Response;
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.GroupRepository;
 import com.ekt.Servicios.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,9 +29,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+<<<<<<< HEAD
     @Autowired
     private GroupRepository groupRepository;
 
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
 
     @Override
@@ -142,6 +151,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.findChilds(idPadre);
     }
 
+<<<<<<< HEAD
     @Override
     public Optional<ArrayList<User>> busquedaUsuario(String parametro) {
         return userRepository.busquedaUsuario(parametro);
@@ -190,4 +200,6 @@ public class UserServiceImpl implements UserService{
             return null;
         }
     }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 }

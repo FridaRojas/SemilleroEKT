@@ -25,6 +25,7 @@ public class User {
     private String statusActivo;
     private String curp;
     private String rfc;
+<<<<<<< HEAD
     private String tokenAuth;
 
     public String getTokenAuth() {
@@ -34,6 +35,8 @@ public class User {
     public void setTokenAuth(String tokenAuth) {
         this.tokenAuth = tokenAuth;
     }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -82,6 +85,7 @@ public class User {
 
     public String getRFC() { return rfc; }
     public void setRFC(String value) { this.rfc = value; }
+<<<<<<< HEAD
 
     @Override
     public String toString() {
@@ -105,4 +109,6 @@ public class User {
                 ", tokenAuth='" + tokenAuth + '\'' +
                 '}';
     }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 }

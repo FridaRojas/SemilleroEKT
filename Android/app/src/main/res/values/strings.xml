@@ -1,7 +1,77 @@
 <resources>
     <string name="app_name">Agile Us</string>
-    <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_mensajes">Mensajes</string>
+    <string name="title_tareas">Tareas</string>
+    <string name="title_reportes">Reportes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="crear_tarea">Crear Tarea</string>
+    <string name="fecha_de_vencimiento">Fecha de Vencimiento</string>
+    <string name="fecha_de_inicio">Fecha de Inicio</string>
+    <string name="nombre_de_la_tarea">Nombre de la tarea</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="prioridad">Prioridad</string>
+    <string name="persona_asignada">Persona Asignada</string>
+    <string name="BtnCambiarEstadoDialogo">Cambiar estado</string>
+
+    //Array spin prioridad tarea
+    <string-array name="prioridad_array">
+        <item>Baja</item>
+        <item>Media</item>
+        <item>Alta</item>
+    </string-array>
+
+    //StatusArrayBaja
+    <string-array name="statusRecycler_array">
+        <item>Pendientes</item>
+        <item>Iniciadas</item>
+        <item>En Revisión</item>
+        <item>Terminadas</item>
+        <item>Asignadas</item>
+    </string-array>
+
+    <string-array name="status_array">
+        <item>pendiente</item>
+        <item>iniciada</item>
+        <item>revision</item>
+        <item>terminada</item>
+        <item>asignada</item>
+    </string-array>
+
+    <string name="mensaje_nuevo">Mensaje nuevo</string>
+    <string name="comunicados">Comunicados</string>
+    <string name="destinatario">Destinatario :</string>
+    <string name="asunto">Asunto</string>
+    <string name="name_contactos_fragment">Contactos</string>
+
+    <string name="titleStatus1">Tareas Pendientes</string>
+    <string name="titleStatus2">Tareas Iniciadas</string>
+    <string name="titleStatus3">Tareas en Revisión</string>
+    <string name="titleStatus4">Tareas Terminadas</string>
+    <string name="titleStatus5">Tareas Asignadas</string>
+    <string name="respAceptar">Aceptar</string>
+    <string name="respCancelar">Cancelar</string>
+    <string name="GuardarTarea">Guardar Tarea</string>
+    <string name="AdjuntarArchivo">Adjuntar Archivo</string>
+    <string name="dialogoAceptar">dialogoAceptar</string>
+    <string name="title_tareas_fragment">Lista de Tareas</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="login_login_button">Iniciar sesión</string>
+    <string name="login_olvidado">¿Olvidaste tu contraseña?</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="action_sign_in_short">SignIn</string>
+    <string name="Login">fragment_login</string>
+    <string name="mensaje1">Estamos enviando el comunicado , Espere por favor</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+
 </resources>

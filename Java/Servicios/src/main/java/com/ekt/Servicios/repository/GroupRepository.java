@@ -16,9 +16,12 @@ public interface GroupRepository extends MongoRepository<Group,String> {
     @Query("{'id': ?0, 'usuarios.id': ?1}")
     Optional<Group> buscarUsuarioEnGrupo (String id, String user);
 
+<<<<<<< HEAD
     @Query("{'id': ?0, 'usuarios.idSuperiorInmediato': '-1'}")
     Optional<Group> buscarBroadCastEnGrupo (String id);
 
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
     @Query("{nombre:?0}")
     Optional<Group> buscarPorNombre (String nombre);
 

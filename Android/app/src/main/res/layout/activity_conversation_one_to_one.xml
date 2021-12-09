@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerConversacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fondomensaje"
+        android:layout_marginTop="@dimen/margin_bottom_recycler"
+        android:layout_marginBottom="@dimen/margin_bottom_recycler"
+        android:padding="@dimen/paddingGeneral"
+        />
+
+    <View
+        android:id="@+id/fondomensaje"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_view_write_mesage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/colorBackground"
+        android:layout_marginTop="@dimen/margin_top_general"
+    >
+
+</View>
+
+    <ImageView
+        android:id="@+id/btnArchivoAdjunto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/et_mensaje"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/iconoadjuntar"
+        android:layout_marginBottom="@dimen/margin_bottom_icon_enviar"
+        android:layout_marginEnd="@dimen/margin_end_general"
+        android:layout_marginStart="@dimen/paddingGeneral"
+        app:layout_constraintHorizontal_weight="1"/>
+
+    <EditText
+        android:id="@+id/et_mensaje"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/btnArchivoAdjunto"
+        app:layout_constraintEnd_toStartOf="@id/btnEnviarMensaje"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:hint="Mensaje"
+        android:padding="@dimen/padding_message_writer"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:background="@drawable/rounded_bg"
+        android:backgroundTint="@color/white"
+        android:layout_marginStart="@dimen/margin_start_general"
+        android:layout_marginEnd="@dimen/margin_end_general"
+        android:layout_marginBottom="@dimen/paddingGeneral"
+        app:layout_constraintHorizontal_weight="8"
+        >
+    </EditText>
+
+    <ImageView
+        android:id="@+id/btnEnviarMensaje"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/et_mensaje"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        android:layout_marginBottom="@dimen/margin_bottom_icon_enviar"
+        android:layout_marginStart="@dimen/margin_start_general"
+        android:layout_marginEnd="@dimen/paddingGeneral"
+        android:src="@drawable/iconoenviar">
+    </ImageView>
+</androidx.constraintlayout.widget.ConstraintLayout>

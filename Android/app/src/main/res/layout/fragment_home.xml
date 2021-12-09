@@ -4,19 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:padding="@dimen/paddingGeneral"
+    android:background="@color/colorBackground"
+    tools:context=".ui.modulomensajeria.listaconversations.ListConversationFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <EditText
+        android:id="@+id/et_search_conversation"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_search"
+        android:background="@drawable/rounded_bg"
+        android:backgroundTint="@color/white"
+        android:drawableEnd="@drawable/iconobuscar"
+        app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/margin_bottom_general"
+        android:layout_marginEnd="@dimen/margin_end_general">
+
+    </EditText>
+
+    <ImageView
+        android:id="@+id/imgBroadcast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_general"
+        android:src="@drawable/iconobroadcast"
+        app:layout_constraintEnd_toStartOf="@+id/cerrarSesion"
+        app:layout_constraintStart_toEndOf="@id/et_search_conversation"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/cerrarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:src="@drawable/ic_back_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerListGroups"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/et_search_conversation"
+    android:layout_marginTop="@dimen/margin_top_general"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerListChats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerListGroups"
+        android:layout_marginTop="@dimen/margin_top_general"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnListContacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="70dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/iconoagregar"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

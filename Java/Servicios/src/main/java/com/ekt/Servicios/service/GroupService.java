@@ -27,11 +27,16 @@ public interface GroupService {
     void borrarUsuarioDeGrupo( String idUser, String idGroup);
 
     Optional<Group> buscarUsuarioEnGrupo(String id, String user);
+<<<<<<< HEAD
     Boolean buscarBroadCastEnGrupo(String id);
 
 
     Optional<Group> buscarPorNombre(String nombre);
 
     void actualizaIdSuperior(String idUser, String idSuperior);
+=======
+
+    Optional<Group> buscarPorNombre(String nombre);
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
 }

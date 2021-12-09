@@ -60,6 +60,7 @@ public class GroupServiceImpl implements GroupService{
         Optional<User> user = userService.findById(idUser);
         Optional<User> superior = userService.findById(idSuperior);
 
+<<<<<<< HEAD
         if(group.isPresent() && user.isPresent()){
             if (!superior.isPresent()){
                 if (idSuperior.equals("")||idSuperior.equals("-1")){
@@ -70,6 +71,9 @@ public class GroupServiceImpl implements GroupService{
                     resGroup=null;
                 }
             }
+=======
+        if(group.isPresent() && user.isPresent() && superior.isPresent()){
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
             //verificar que el usuario no existe en ningun grupo
             if( !buscarUsuarioEnGrupo(idGrupo,idUser).isPresent()){
                 //actualizar informacion usuario
@@ -97,12 +101,37 @@ public class GroupServiceImpl implements GroupService{
         }
         return  resGroup;
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public void borrarPorId(String id) {groupRepository.deleteById(id);
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
     @Override
     public void borrarPorId(String id) {
         groupRepository.deleteById(id);
     }
+    @Override
+    public void borrarUsuarioDeGrupo(String idUser, String idGroup){
+        System.out.println("idUser:"+idUser+" idGroup:"+idGroup);
 
+        //buscar el grupo
+        Optional<Group> group = buscarPorId(idGroup);
+
+        //obtiene la lista de usuarios que tiene el grupo
+
+        User[] lista = group.get().getUsuarios();
+        User[] lista2 = new User[group.get().getUsuarios().length-1];
+
+        for(int i=0;i<group.get().getUsuarios().length;i++){
+            //si el idUsuario que manda no es igual, lo copia
+            if (! idUser.equals(lista[i].getID())){
+                lista2[i]=lista[i];
+            }
+        }
+
+<<<<<<< HEAD
     @Override
     public void borrarUsuarioDeGrupo(String idUser, String idGroup){
         System.out.println("idUser:"+idUser+" idGroup:"+idGroup);
@@ -115,6 +144,64 @@ public class GroupServiceImpl implements GroupService{
         User[] lista = group.get().getUsuarios();
         User[] lista2 = new User[group.get().getUsuarios().length-1];
         int j=0;
+=======
+        group.get().setUsuarios(lista2);
+
+        groupRepository.save(group.get());
+    }
+
+    @Override
+    public Optional<Group> buscarUsuarioEnGrupo(String id, String user){
+        return  groupRepository.buscarUsuarioEnGrupo(id,user);
+    }
+
+
+    @Override
+    public Optional<Group> buscarPorNombre(String nombre) {
+        return groupRepository.buscarPorNombre(nombre);
+    }
+
+    @Override
+    public Group actualizaNombre(String idGrupo, String nombreGrupo){
+        Optional<Group> grupo = groupRepository.findById(idGrupo);
+        grupo.get().setNombre(nombreGrupo);
+        return groupRepository.save(grupo.get());
+    }
+
+    @Override
+    public boolean actualizaUsuario(User usuario){
+        boolean bandera = false;
+        User []usuarios =null;
+        Optional<Group> grupo = groupRepository.buscarUsuarioEnGrupo(usuario.getIDGrupo(),usuario.getID());
+
+        if (grupo.isPresent()){
+            usuarios = grupo.get().getUsuarios();
+            for(User user:usuarios){
+                if(user.getID().equals(usuario.getID())){
+                    user.setCorreo(usuario.getCorreo());
+                    user.setFechaInicio(usuario.getFechaInicio());
+                    user.setFechaTermino(usuario.getFechaTermino());
+                    user.setNombre(usuario.getNombre());
+                    user.setPassword(usuario.getPassword());
+                    user.setRFC(usuario.getRFC());
+                    user.setCurp(usuario.getCurp());
+                    user.setNumeroEmpleado(user.getNumeroEmpleado());
+                    user.setTelefono(usuario.getTelefono());
+                    bandera = true;
+                }
+            }
+        }
+
+
+        if(bandera){
+            grupo.get().setUsuarios(usuarios);
+            groupRepository.save(grupo.get());
+            return true;
+        }else {
+            return false;
+        }
+    }
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
         for(int i=0;i<group.get().getUsuarios().length;i++){
             //si el idUsuario que manda no es igual, lo copia
