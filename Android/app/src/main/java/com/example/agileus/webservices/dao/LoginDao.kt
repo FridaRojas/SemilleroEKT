@@ -11,6 +11,7 @@ import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.rol
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
+import com.google.gson.internal.LinkedTreeMap
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -25,42 +26,44 @@ class LoginDao {
     fun iniciarSesion(usuario:Users): Boolean {
 
         var STATUS: Boolean = false
-        //    val STATUS_BAD_REQUEST = "BAD_REQUEST"
 
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
+        //var user:LoginResponse
 
         if (responseDos.isSuccessful) {
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
+                var guardarData:Data = Data()
+
                 if (almacenar.status == "ACCEPTED") {
                     STATUS = true
-//                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
-                    idUser = almacenar.data.id.toString()
-                    rol = almacenar.data.nombreRol.toString()
-                    idnombre = almacenar.data.nombre.toString()
-                }
-                if (almacenar.status == "BAD_REQUEST") {
-                    //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
-                    STATUS = false
-                    idUser = almacenar.data.id.toString()
-                    rol = almacenar.data.nombreRol.toString()
-                    idnombre = almacenar.data.nombre.toString()
-                    idGrupo = almacenar.data.idgrupo.toString()
-                    tokenAuth = almacenar.data.tokenAuth.toString()
+                    var mapa:LinkedTreeMap<String,Any?> = responseDos.body()!!.data as LinkedTreeMap<String, Any?>
+                    guardarData.id = mapa["id"].toString()
+                    guardarData.idUser = mapa["idUser"].toString()
+
+                    almacenar.data = guardarData
 
 
                 }
-                if (almacenar.status == "BAD_REQUEST") {
-                    //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
+
+                else {
                     STATUS = false
 
                 }
-                status = STATUS
+            }
+            else {
+                STATUS = false
+
             }
         }
+        else{
+            STATUS = false
+        }
 
-        return STATUS
+            status = STATUS
+
+            return STATUS
 
     }
                 /*
