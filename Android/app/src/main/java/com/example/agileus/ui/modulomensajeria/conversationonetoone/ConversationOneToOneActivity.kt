@@ -102,7 +102,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         conversationviewModel.actualizar.observe(this,{
             for( valor in it){
                 if(valor.idemisor!=Constantes.id && valor.statusLeido == false){
-                    conversationviewModel.statusUpdateMessage(StatusRead(valor.id,Constantes.finalDate))
+                    conversationviewModel.statusUpdateMessage(Constantes.id, StatusRead(valor.id,Constantes.finalDate))
                 }
             }
 

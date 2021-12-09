@@ -151,9 +151,9 @@ class MessageDao {
         return listaChats
     }
 
-    suspend fun actualizarStatus(statusRead: StatusRead): MessageResponse {
+    suspend fun actualizarStatus(idUser:String,statusRead: StatusRead): MessageResponse {
         try{
-            var callRespuesta = InitialApplication.webServiceMessage.statusUpdate(statusRead)
+            var callRespuesta = InitialApplication.webServiceMessage.statusUpdate(statusRead,idUser)
             var ResponseDos: Response<MessageResponse> = callRespuesta.execute()
 
             if(ResponseDos.isSuccessful){
