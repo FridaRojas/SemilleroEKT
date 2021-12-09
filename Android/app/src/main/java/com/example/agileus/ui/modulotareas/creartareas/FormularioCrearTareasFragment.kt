@@ -20,15 +20,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
-import com.example.agileus.models.DataTask
-import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoConfirmOp
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
@@ -37,8 +34,7 @@ import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
 import java.io.File
 
-
-class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoConfirmacionListener {
+class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
 
@@ -143,13 +139,13 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
                 if(anioInicio!!<=anioFin!!){
 
                     if(anioInicio!!<anioFin!!){                     // 2021 < 2022
-                        confirmarTarea()
+                        operacionIsert()
                     }
 
                     if(anioInicio==anioFin){                        // 2021 == 2021
                         if (mesInicio==mesFin){                     // Si mes inicio es igual a mes fin del mismo año
                             if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
-                                confirmarTarea()
+                                operacionIsert()
                             }else if(diaInicio!!>diaFin!!){
                                 Toast.makeText( context,
                                     "Fecha de inicio no puede ser mayor a fecha de vencimiento",
@@ -158,7 +154,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
                         }
 
                         if(mesInicio!!<mesFin!!){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
-                            confirmarTarea()
+                            operacionIsert()
                         }else if (mesInicio!!>mesFin!!){
                             Toast.makeText( context,
                                 "Fecha de inicio no puede ser mayor a fecha de vencimiento",
@@ -190,10 +186,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
     }
 
     // *** FUNCIONES ***
-    fun confirmarTarea(){
-        val newFragment = DialogoConfirmOp (this)
-        newFragment.show(parentFragmentManager, "Confirmacion")
-    }
     fun operacionIsert(){
         val tarea: Tasks
         val titulo      = binding.edtAgregaTitulo.text
@@ -215,14 +207,8 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
             urlPost                            // Url de archivo pdf subido a firebase
         )
 
-        asignarTareaViewModel.postTarea(tarea)
-
-        // Enviar tarea a la conversacion grupal
-        // TODO: 08/12/2021  agregar id receptor desde sharedpreferences id_grupo
-        //val mensajeTareas = Message(Constantes.id,"618b05c12d3d1d235de0ade0","",
-         //  "Se asigno la tarea: ${titulo.toString()} a $nombrePersonaAsignada",Constantes.finalDate)
-        //conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
-        //Log.d("mensaje Tareas","$mensajeTareas")
+        val newFragment = DialogoConfirmOp (tarea)
+        newFragment.show(parentFragmentManager, "Confirmacion")
 
         //Volver al fragment anterior
         val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
@@ -291,9 +277,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener, DialogoC
         fechaFin = fecha.text.toString()
         Log.e("Mensaje", "Fecha Fin $fechaFin")
 
-    }
-    override fun onConfirmOper() {
-        operacionIsert()
     }
     override fun onDestroyView() {
         super.onDestroyView()
