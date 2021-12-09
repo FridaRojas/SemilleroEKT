@@ -21,7 +21,6 @@ import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
 import com.example.agileus.models.StatusRead
 import com.example.agileus.providers.FirebaseProvider
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsViewModel
