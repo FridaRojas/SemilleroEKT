@@ -22,17 +22,19 @@ class TareasService{
     
     func webServiceTareas(){
         let sevice = true
-        let serviceByID = "\(serviceTask)\(userID)"
-        //let serviceByID = "\(serviceTask)ReceptorAlexis"
+        //let serviceByID = "\(serviceTask)\(userID)"
+        let serviceByID = "\(serviceTask)618d9c26beec342d91d747d6"
         
         print(serviceByID)
         
         let url = URL(string: serviceByID)
+        var request = URLRequest(url: url!)
+        request.setValue("c9acb094036a82eb6dbac287b6dc437b87f25c95ee954db469a4c424eacdcaba", forHTTPHeaderField: "tokenAuth")
         
         print("WebService de tareas")
         
         //Gernerar manejo de excepciones
-        URLSession.shared.dataTask(with: url!){
+        URLSession.shared.dataTask(with: request){
             
             (informacion, response, error) in
             
@@ -63,14 +65,17 @@ class TareasService{
     func webServiceTareas(idUsuario:String){
         
         let serviceByID = "\(serviceTask)\(idUsuario)"
+        //let serviceByID = "\(serviceTask)618d9c26beec342d91d747d6"
         
         let sevice = true
         let url = URL(string: serviceByID)
         
         print("WebService de tareas")
+        var request = URLRequest(url: url!)
+        request.setValue("c9acb094036a82eb6dbac287b6dc437b87f25c95ee954db469a4c424eacdcaba", forHTTPHeaderField: "tokenAuth")
         
         //Gernerar manejo de excepciones
-        URLSession.shared.dataTask(with: url!){
+        URLSession.shared.dataTask(with: request){
             
             (informacion, response, error) in
             

@@ -8,7 +8,7 @@
 import UIKit
 import Charts
 
-class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSource, CAAnimationDelegate {
     
     // elementos
     @IBOutlet weak var optionstAB: UISegmentedControl!
@@ -75,6 +75,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     var usuarios_cantidades = [Any]()
     var usuarios_cantidades_broad = [Any]()
     
+    let shapeLayer = CAShapeLayer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //Ejecutar los servicios web
@@ -91,11 +93,55 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // Funcion para ejecutar servicios
     func ejecucionServicios(){
-        serviciosUsuarios()
+        //serviciosUsuarios()
+        animacion_espera()
         //serviciosMensajes(idUsuario: userID)
-        serviciosTareas(idUsuario: userID)
+        //serviciosTareas(idUsuario: userID)
         //serviciosBroadcast(idUsuario: userID)
     }
+    
+    
+    // Animacion espera
+    
+    func animacion_espera() {
+        
+        view.isUserInteractionEnabled = false
+        
+        let center = view.center
+                let trackLayer = CAShapeLayer()
+                let circularPath = UIBezierPath(arcCenter: center, radius: 100, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+                trackLayer.path = circularPath.cgPath
+            
+                trackLayer.strokeColor = Hexadecimal_Color(hex: "2EC1B3").cgColor
+                trackLayer.lineWidth = 10
+                trackLayer.fillColor = UIColor.clear.cgColor
+                trackLayer.lineCap = CAShapeLayerLineCap.round
+                shapeLayer.path = circularPath.cgPath
+                //shapeLayer.strokeColor = UIColor.red.cgColor
+            
+                shapeLayer.strokeColor = Hexadecimal_Color(hex: "2EC1B3").cgColor
+                shapeLayer.lineWidth = 10
+                shapeLayer.fillColor = UIColor.clear.cgColor
+                shapeLayer.lineCap = CAShapeLayerLineCap.round
+                shapeLayer.strokeEnd = 0
+                
+                view.layer.addSublayer(shapeLayer)
+                
+                let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
+                basicAnimation.toValue = 1
+                basicAnimation.duration = 1.5
+                basicAnimation.repeatCount = Float.infinity
+                basicAnimation.fillMode = CAMediaTimingFillMode.forwards
+                basicAnimation.isRemovedOnCompletion = true
+                basicAnimation.delegate = self
+                shapeLayer.add(basicAnimation, forKey: "urSoBasic")    }
+    
+    
+    func animationDidStart(_ anim: CAAnimation) {
+        //configurar_pdf_visro()
+        serviciosUsuarios()
+    }
+    
     
     // Funciones de servicioes web --->
     func serviciosMensajes(idUsuario: String) {
@@ -115,6 +161,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             usuarios_cantidades.append(cantidadDeMensajesUsuario(mensaje: mensajes! as! [Mensajes], idUsuario: idUsuario, nombre: nombre))
             
+            shapeLayer.removeAllAnimations()
+            view.isUserInteractionEnabled = true
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
     }
@@ -123,7 +171,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         let _ = adaptadorServicios.servicioWebTareasAdapter(idUsuario: idUsuario){
             [self] (Datos) -> Void in
             arrTareas = Datos
-
+            print(arrTareas)
             //Cantidad de tareas
             arrCantidadDeTareas = cantidadDeTareas(tareas: arrTareas! as! [Tareas], idUsuario: idUsuario)
         }
@@ -161,30 +209,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
             }
         }
-        
-        
-        /*adaptadorServicios.serviciosWeb(idUsuario: userID) {
-            [self] (Datos) -> Void in
-            
-            arrUsuarios = Datos
-            
-            if arrUsuarios!.count > 0 {
-                configura_label_usuario(nombre: "Mi equipo")
-                
-                if let lista_usuarios = (arrUsuarios as? [Usuario]) {
-                    usuarios_cantidades = [Any]()
-                    usuarios_cantidades_broad = [Any]()
-                    for i in lista_usuarios {
-                        serviciosMensajesPorLider(idUsuario: i.id, nombre: i.nombre)
-                        serviciosBroadcastPorLider(idUsuario: i.id, nombre: i.nombre)
-                    }
-                }
-            } else {
-                serviciosBroadcast(idUsuario: userID)
-                serviciosMensajes(idUsuario: userID)
-                configura_label_usuario(nombre: userName)
-            }
-        }*/
     }
         
     func serviciosBroadcast(idUsuario: String) {
@@ -267,11 +291,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
     }
-
-    
-    
-    
-    
     // Fin funciones de servicioes web <---
     
         
@@ -386,6 +405,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func llenar_pie_chartTareas(tareas: [Int]){
+        
         //Remover el gráfico de barras de la vista
         if !barchart.isEmpty(){
             barchart.removeFromSuperview()
@@ -643,6 +663,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                     lblNombreu.text = Filtro[3] as! String
                     serviciosUsuariosPorFecha(filtros: Filtro as! [String])
                 } else {
+                    configuracion_cantidades()
                     serviciosTareasFiltrado(filtros: Filtro as! [String])
                     serviciosMensajesFiltrado(filtros: Filtro as! [String])
                     serviciosBroadcast(idUsuario: Filtro[2] as! String)
@@ -656,7 +677,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                 } else {
                     //serviciosTareas(idUsuario: Filtro[1] as! String)
                     serviciosMensajes(idUsuario: Filtro[0] as! String)
-                    serviciosBroadcast(idUsuario: Filtro[0] as! String)
+                    //serviciosBroadcast(idUsuario: Filtro[0] as! String)
                     lblNombreu.text = (Filtro[1] as! String)
                 }
                 
@@ -664,7 +685,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             //Regresar al menu de mensajes
             optionstAB.selectedSegmentIndex = 0
-            llenar_pie_chart(mensajes: cantidad_mensajes)
+            //llenar_pie_chart(mensajes: cantidad_mensajes)
             configuracion_etiquetasPieMensajes()
             ocultar_etiquetas(tipo: false)
             graficoMensajes = true

@@ -32,11 +32,13 @@ class MensajesService {
     
     func webServiceMensajes(idUsuario: String) {
         let service = true
-        serviceMessage = "\(serviceMessage)\(idUsuario)"
+        serviceMessage = "\(serviceMessage)\(userID)/\(idUsuario)"
         let url = URL(string: serviceMessage)
+        var request = URLRequest(url: url!)
+        request.setValue("a60f68eceb8648b34b5ed39c19b57ac3f442d6e40f0471463df13a03666ff913", forHTTPHeaderField: "tokenAuth")
     
         //Gernerar manejo de excepciones
-        URLSession.shared.dataTask(with: url!){
+        URLSession.shared.dataTask(with: request){
             
             (informacion, response, error) in
             
@@ -75,7 +77,7 @@ class MensajesService {
         //request.setValue("secret-keyValue", forHTTPHeaderField: "secret-key")
         //request.httpMethod = "GET"
         //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("8b694ba1cea1461d383ad5cd17d0359a0faff81c296b6d18b204db1fba12b281", forHTTPHeaderField: "tokenAuth")
+        request.setValue("a60f68eceb8648b34b5ed39c19b57ac3f442d6e40f0471463df13a03666ff913", forHTTPHeaderField: "tokenAuth")
 
         //URLSession.shared.dataTask(with: request) { data, response, error in }
         URLSession.shared.dataTask(with: request) {

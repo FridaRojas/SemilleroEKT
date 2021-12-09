@@ -14,8 +14,8 @@
             filePath = "AgileUs/Reportes/ReportesScreen.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "481"
-            endingLineNumber = "481"
+            startingLineNumber = "501"
+            endingLineNumber = "501"
             landmarkName = "llenar_bar_chart(datos:)"
             landmarkType = "7">
          </BreakpointContent>
