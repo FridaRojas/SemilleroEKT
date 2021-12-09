@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.GroupsAdapter
 import com.example.agileus.models.Chats
-import com.example.agileus.models.Contacts
 import com.example.agileus.models.Groups
-import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsViewModel
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +21,7 @@ class ListConversationViewModel : ViewModel() {
     lateinit var listaConsumidaGrupos:ArrayList<Groups>
     lateinit var listadeChats:ArrayList<Chats>
     var chatsdeUsuario = MutableLiveData<ArrayList<Chats>>()
+
     init {
         lista = MessageDao()
     }
@@ -37,7 +36,6 @@ class ListConversationViewModel : ViewModel() {
                 if (listaConsumidaGrupos != null){
                     if(listaConsumidaGrupos.isNotEmpty()){
                         adaptadorGrupos.postValue(GroupsAdapter(listaConsumidaGrupos as ArrayList<Groups>))
-
                     }
                 }
             }
@@ -45,6 +43,7 @@ class ListConversationViewModel : ViewModel() {
             Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
+
     fun devuelveListaChats(idUser:String){
         try {
             viewModelScope.launch {

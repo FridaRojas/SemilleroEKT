@@ -1,4 +1,4 @@
-package com.example.agileus.ui.modulomensajeria.listacontactos
+package com.example.agileus.ui.modulomensajeria.listaconversations
 
 import android.os.Bundle
 import android.text.Editable
@@ -14,8 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.dialog.DialogoListen
 import com.example.agileus.ui.login.dialog.CerrarSesionDialog
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
@@ -43,7 +45,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
         val root: View = binding.root
 
         //AGREGADA
-        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        val navBar: BottomNavigationView = (activity as HomeActivity).findViewById(R.id.nav_view)
         navBar.isVisible = true
 
         return root
@@ -54,10 +56,18 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
         Log.d("usuario pasado", "${InicioSesionFragment.idUser}")
 
-        Constantes.id=idUser
-
         ChatsViewModel.devuelveListaGrupos(Constantes.id)
         ChatsViewModel.devuelveListaChats(Constantes.id)
+
+        var background = object : Thread(){
+            override fun run() {
+                while (true){
+                    Log.i("chechar","checar")
+                    ChatsViewModel.devuelveListaChats(Constantes.id)
+                    sleep(10000)
+                }
+            }
+        }.start()
 
         ChatsViewModel.adaptadorGrupos.observe(viewLifecycleOwner, {
             binding.recyclerListGroups.adapter = it
@@ -81,34 +91,30 @@ class ListConversationFragment : Fragment(), DialogoListen {
             findNavController().navigate(R.id.action_navigation_home_to_buzonUserFragment)
         }
 
-        binding.etSearchConversation.addTextChangedListener(object : TextWatcher {
+        binding.etSearchConversation.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                ChatsViewModel.devuelveListaChats(Constantes.id)
-
-                ChatsViewModel.chatsdeUsuario.observe(viewLifecycleOwner, {
 
                     if (p0.isNullOrEmpty()) {
                         binding.recyclerListGroups.isVisible = true
                         binding.recyclerListGroups.isEnabled = true
+                        ChatsViewModel.devuelveListaChats(Constantes.id)
                     } else {
-                        var filtrada = it.filter {
+                        var filtrada =ChatsViewModel.listadeChats.filter {
                             it.nombreConversacionRecepto.lowercase()
                                 .contains(p0.toString().lowercase())
                         }
                         ChatsViewModel.filtrarChats(Constantes.id, filtrada as ArrayList<Chats>)
                         binding.recyclerListGroups.isVisible = false
                         binding.recyclerListGroups.isEnabled = false
-                    }
-                })
+                }
+
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                binding.recyclerListGroups.isVisible = true
-                binding.recyclerListGroups.isEnabled = true
 
 
             }

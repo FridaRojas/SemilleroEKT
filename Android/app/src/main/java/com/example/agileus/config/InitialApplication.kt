@@ -5,6 +5,7 @@ import com.example.agileus.webservices.apis.LoginApi
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
+import com.example.agileus.webservices.apis.ReportesApi
 import com.example.agileus.webservices.apis.TasksApi
 
 class InitialApplication : Application() {
@@ -15,6 +16,10 @@ class InitialApplication : Application() {
         lateinit var BroadcastServiceGlobalTasks: BuzonApi
         lateinit var BroadcastServiceGlobalTasks2: BuzonApi2
         lateinit var webServiceGlobalTasksPersonas: TasksApi
+       lateinit var webServiceGlobalTasksPrueba: TasksApi
+        lateinit var webServiceGlobalReportes: ReportesApi
+        lateinit var webServiceGlobalReportesBroadCast: ReportesApi
+        lateinit var webServiceGlobalReportesTareas: ReportesApi
        //lateinit var webServiceGlobalTasksPrueba: TasksApi
 
         //SharedPreferences
@@ -38,6 +43,9 @@ class InitialApplication : Application() {
         webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
       //  webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
 
+        webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
+        webServiceGlobalReportesBroadCast = ConfigRetrofit().getBroadCastReportes()
+        webServiceGlobalReportesTareas = ConfigRetrofit().getTareasporId()
 
         //SharedPreferences
         preferenciasGlobal = MySharedPreferences(applicationContext)
