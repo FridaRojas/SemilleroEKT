@@ -44,35 +44,33 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         super.onViewCreated(view, savedInstanceState)
 
 
+        //   viewModel.devuelvebuzon1()
 
+//   viewModel.devuelvebuzonentrada()
 
-     //   viewModel.devuelvebuzon1()
+        //      if (BuzonFragment.control == 1) {
 
-   viewModel.devuelvebuzonentrada()
-
-        if (BuzonFragment.control == 1) {
-
-            viewModel.devuelvebuzon()
-
+//            viewModel.devuelvebuzon()
+/*
             viewModel.adaptador.observe(
                 viewLifecycleOwner,
                 {
                     binding.recyclerBuzon.adapter = it
                     binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
                 })
-
-            binding.fab.setOnClickListener {
-                val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
-                activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
-            }
+*/
+        binding.fab.setOnClickListener {
+            val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
+            activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
         }
+    }
 
 
-        if (BuzonFragment.control == 2) {
+    //    if (BuzonFragment.control == 2) {
 
-            viewModel.devuelvebuzonentrada()
-            binding.fab.visibility = View.INVISIBLE
-
+//            viewModel.devuelvebuzonentrada()
+    //      binding.fab.visibility = View.INVISIBLE
+/*
             viewModel.adaptador1.observe(
                 viewLifecycleOwner,
                 {
@@ -81,12 +79,11 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
                 })
 
         }
+*/
 
-
-    }
 
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
-
+/*
            buzon.idEmisor="618e8743c613329636a769aa"
 
             viewModel.postRequest(buzon)
@@ -141,3 +138,6 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
             }.start()
         }
     }
+*/
+    }
+}

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.BuzonAdapter
-import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.models.*
 import com.example.agileus.utils.Constantes.broadlist
 import com.example.agileus.webservices.dao.ProviderBuzon
@@ -18,10 +17,12 @@ import retrofit2.Response
 class BuzonDetallesViewModel : ViewModel() {
 
     lateinit var listafiltrada1: ArrayList<String>
+
     //lateinit var listafiltrada: ArrayList<Buzon>
-    lateinit var listafiltrada2: ArrayList<BuzonResp>
+    lateinit var listafiltrada2: ArrayList<DataBuzon>
 
     var adaptador = MutableLiveData<BuzonAdapter>()
+
     //var myResponse: MutableLiveData<Response<Buzon>> = MutableLiveData()
     var myResponse: MutableLiveData<Response<MensajeBodyBroadcaster>> = MutableLiveData()
     var myResponse1: MutableLiveData<Response<MsgBodyUser>> = MutableLiveData()
@@ -29,8 +30,8 @@ class BuzonDetallesViewModel : ViewModel() {
     var lista: ProviderBuzon
     var lista1: DaoBuzon1
 
-    lateinit var listaConsumida: ArrayList<Buzon>
-    lateinit var listaConsumida1: ArrayList<BuzonResp>
+    lateinit var listaConsumida: ArrayList<DataBuzon>
+    lateinit var listaConsumida1: ArrayList<DataBuzon>
 
     init {
         lista = ProviderBuzon()
@@ -38,88 +39,92 @@ class BuzonDetallesViewModel : ViewModel() {
     }
 
     companion object {
-        var listaus=ArrayList<Contacts>()
-        var listaBrd=ArrayList<BuzonResp>()
+
+        //        var listaconversaciones=ArrayList<S>
+        var listaus = ArrayList<Datos>()
+        var listaBrd = ArrayList<DataBuzon>()
         var listasize = 0
-        var listafiltrada= ArrayList<String>()
+        var listafiltrada = ArrayList<String>()
+        var listafiltrada1 = ArrayList<String>()
     }
 
-    fun getLista():ArrayList<Contacts> {
-        listafiltrada = ArrayList()
-
+    fun getLista():ArrayList<String> {
+        listafiltrada1 = ArrayList()
+        Log.d("current user", broadlist)
         try {
             viewModelScope.launch {
                 listaus = withContext(Dispatchers.IO) {
                     lista1.recuperarListadeContactos(broadlist)
                 }
-                Log.d("tama","${listaus.size}")
-                if (listaus.isNotEmpty()) {
-                    listaus.forEach(){
-                        if(it.nombreRol != "BROADCAST")
-                        listafiltrada.add(it.nombre)
+                Log.d("usuarios totales", listaus.size.toString())
+
+//                Log.d("tama","${listaus.size}")
+                if (listaus.isNotEmpty())
+                    listaus.forEach() {
+                        listafiltrada1.add(it.nombre)
                     }
-                }
             }
-        } catch (ex: Exception) {
+        }
+
+        catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
         }
-        return listaus
-    }
+    return listafiltrada1}
 
 
+        fun devuelvebuzon1() {
 
-    fun devuelvebuzon1() {
+            listaConsumida1 = ArrayList()
+            listafiltrada2 = ArrayList()
+//            listafiltrada1 = ArrayList()
 
-        listaConsumida1 = ArrayList()
-        listafiltrada2=  ArrayList()
-        listafiltrada1=  ArrayList()
-
-        try {
-            viewModelScope.launch {
-                listaConsumida1 = withContext(Dispatchers.IO) {
-                    lista1.recuperarMensajesBrd(broadlist)
-                }
-
-                if (listaConsumida1.isNotEmpty()) {
-                    listasize = listaConsumida1.size
-                    listafiltrada2 = ArrayList()
-
-                    if (BuzonFragment.control == 1) {
-                        for (i in 0 until listaConsumida1.size) {
-                        //    if (listaConsumida[i].Receiverid == "Broadcast") {
-                                listafiltrada2.add(listaConsumida1[i])
-                            }
-                        }
+            try {
+                viewModelScope.launch {
+                    listaConsumida1 = withContext(Dispatchers.IO) {
+                        lista1.recuperarMensajesBrd(broadlist)
                     }
 
-                    if (BuzonFragment.control == 2) {
-                        for (i in 0 until listaConsumida.size) {
-                            if (listaConsumida[i].Senderid == broadlist) {
-                                listafiltrada2.add(listaConsumida1[i])
-                            }
-                        }
-                    }
-                    adaptador.value = BuzonAdapter(listafiltrada2, BuzonFragment.control)
-                }
-        } catch (ex: Exception) {
-            Log.e("aqui", ex.message.toString())
-        }
-    }
+                    if (listaConsumida1.isNotEmpty()) {
+                        listasize = listaConsumida1.size
 
-    fun postMensaje(mypost: MensajeBodyBroadcaster) {
+                        Log.d("listaconsumida", listasize.toString())
+                        adaptador.value = BuzonAdapter(listaConsumida1, BuzonFragment.control)
+                    }}}
+                        /*     if (BuzonFragment.control == 1) {
+                                 for (i in 0 until listaConsumida1.size) {
+                                     if (listaConsumida1[i].idEmisor == "Broadcast") {
+                                         listafiltrada2.add(listaConsumida1[i])
+                                     }
+                                 }
+                             }
 
-        try {
-            viewModelScope.launch {
-                val response : Response<MensajeBodyBroadcaster> = lista1.getcustompost(mypost)
-                myResponse.value=response
+
+                         if (BuzonFragment.control == 2) {
+                             for (i in 0 until listaConsumida1.size) {
+                                 if (listaConsumida1[i].idEmisor == broadlist) {
+                                     listafiltrada2.add(listaConsumida1[i])
+                                 }
+                             }
+                         }
+                         }*/
+            catch (ex: Exception) {
+                Log.e("ERROR", ex.message.toString())
             }
-        } catch (ex: Exception) {
-            Log.e("aqui", ex.message.toString())
         }
 
+        fun postMensaje(mypost: MensajeBodyBroadcaster) {
+            try {
+                viewModelScope.launch {
+                    val response: Response<MensajeBodyBroadcaster> = lista1.getcustompost(mypost)
+                    myResponse.value = response
+                }
+            } catch (ex: Exception) {
+                Log.e("aqui", ex.message.toString())
+            }
+
+        }
     }
 
 
 
-}
 

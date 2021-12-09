@@ -57,9 +57,9 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
 
     viewModel = ViewModelProvider(this).get(ReceiverBuzonBroadcastViewModel::class.java)
 
-        listas=viewModel.getLista()
+//        listas=viewModel.getLista()
 
-        Log.d("tamaño",listas.size.toString())
+//        Log.d("tamaño",listas.size.toString())
 
 
             viewModel.devuelvebuzon2()

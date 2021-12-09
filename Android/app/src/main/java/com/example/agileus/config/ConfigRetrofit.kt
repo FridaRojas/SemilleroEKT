@@ -1,12 +1,11 @@
 package com.example.agileus.config
 
 
-import com.example.agileus.utils.Constantes.URL_BASE1
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.ui.login.data.service.LoginApi
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
 import com.example.agileus.utils.Constantes.URL_BASE2
-import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
 import com.example.agileus.webservices.apis.BuzonApi2
@@ -27,6 +26,7 @@ class ConfigRetrofit {
 
     //val URL_LOGIN = Constantes.URL_LOGIN
     val URL_Login = Constantes.URL_Login
+
     fun cliente(tiempo: Long): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(tiempo, TimeUnit.SECONDS)
@@ -45,6 +45,7 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
+
         /*   var http = OkHttpClient().newBuilder().addInterceptor(
                Interceptor { chain ->
                    val requestBuilder: Request.Builder = chain.request().newBuilder()
@@ -115,9 +116,12 @@ class ConfigRetrofit {
 
     fun obtenerConfiguracionRetofitBuzon2(): BuzonApi2 {
 
+
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE3)
+            .baseUrl("http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/")
             .addConverterFactory(GsonConverterFactory.create())
+  //          .client(client)
+            .client(cliente(60))
             .build()
         return mRetrofit.create(BuzonApi2::class.java)
     }

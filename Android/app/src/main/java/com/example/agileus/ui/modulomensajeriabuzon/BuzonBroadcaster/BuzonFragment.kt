@@ -14,6 +14,8 @@ import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
+import com.example.agileus.utils.Constantes.broadlist
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -50,6 +52,7 @@ companion object{
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
             "Buzon Broadcast"
 
+        broadlist=idUser
 
         binding.mensajesrecibidos.setOnClickListener {
              control = 1

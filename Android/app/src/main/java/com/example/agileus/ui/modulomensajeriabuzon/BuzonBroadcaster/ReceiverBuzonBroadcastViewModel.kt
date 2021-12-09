@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.models.*
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada1
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastFragment.Companion.listas
 import com.example.agileus.utils.Constantes.broadlist
@@ -19,11 +21,12 @@ import retrofit2.Response
 class ReceiverBuzonBroadcastViewModel : ViewModel() {
 
 
+    lateinit var listachats: List<Chats1>
     var adaptador = MutableLiveData<BuzonAdapterResponse>()
     var myResponse: MutableLiveData<Response<BuzonComunicados>> = MutableLiveData()
 
     var lista1: DaoBuzon1
-       var conv: MessageDao
+    var conv: MessageDao
 
 
     init {
@@ -34,84 +37,81 @@ class ReceiverBuzonBroadcastViewModel : ViewModel() {
     }
 
     companion object {
-        var salas= ArrayList<String>()
-        var listachats = ArrayList<Chats>()
-        var listaBrd1=ArrayList<Chats>()
-        var mensajes =ArrayList<BuzonComunicados>()
+        var salas = ArrayList<String>()
+
+        //      var listachats =
+//        var listaBrd1
+        var memsajes2 = ArrayList<Datas>()
+        var mensajes = ArrayList<BuzonComunicados>()
     }
 
-    fun getLista(): ArrayList<Contacts> {
+    fun getLista() {
 
-        listafiltrada = ArrayList()
-            viewModelScope.launch {
-                listaus = withContext(Dispatchers.IO) {
-                    lista1.recuperarListadeContactos(broadlist)
-                }
-                Log.d("tama","${listaus.size}")
-                listaus.forEach {
-                    Log.d("lista name",it.nombre)
-                    Log.d("lista name",it.id)
-                    listas.add(it)
-
-                }
-                if (listaus.isNotEmpty()) {
-                 listas = listaus   //
-                }
+        listafiltrada1 = ArrayList()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                lista1.recuperarListadeContactos(broadlist)
             }
-          return listaus
-    }
+            //    Log.d("tama","${listaus.size}")
+            //               listaus.forEach {
+            //            Log.d("lista name",it.nombre)
+            //          Log.d("lista name",it.id)
+            //                 listas.add(it)
 
+        }
+        //           if (listaus.isNotEmpty()) {
+        //          listas = listaus   //
+        //       }
+        //}
+
+    }
 
 
     fun devuelvebuzon2() {
+    //    var listar=ArrayList<String>()
         try {
-            viewModelScope.launch {
-                 listachats = withContext(Dispatchers.IO) {
-                    lista1.recuperarMensajesBrd1(broadlist)
+             viewModelScope.launch {
+                 var  listar= withContext(Dispatchers.IO) {
+                     lista1.recuperarMensajesBrd1(broadlist)
                 }
-                if (listachats.isNotEmpty()) {
-                    for (i in 0 until listachats.size) {
-                        salas.add(listachats[i].idConversacion)
-                        }
-                    }
-                var lista=getLista()
-                getEnviados(salas,lista)
+                Log.d("lista", listar.toString())
+                for (i in 0..listafiltrada.size - 1)
+                    getEnviados(listafiltrada[i])
             }
         } catch (ex: Exception) {
             Log.e("aqui", ex.message.toString())
         }
     }
 
-     fun getEnviados(sala: ArrayList<String>, lista: ArrayList<Contacts>) {
+    suspend fun getEnviados(sala: String) {
 
-        try {
-          for(i in 0 .. (sala.size)-1)
-            viewModelScope.launch {
-                mensajes = withContext(Dispatchers.IO) {
-                    lista1.recuperarEnviadosBrd(sala[i])
-                }
-
-
-                if (mensajes.isNotEmpty()) {
-                    for(i in 0 until lista.size)
-                    {
-                        mensajes.forEach {
-                            if (it.idreceptor == lista[i].id)
-                             it.idreceptor=lista[i].nombre
-                        }
-                    }
-                    mensajes.forEach {
-                        it.idemisor="Broadcast"
-                    }
-                    adaptador.value = BuzonAdapterResponse(mensajes, 1)
-                }
+//    try {
+//////////////vamos bien
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                lista1.recuperarEnviadosBrd(idUser,sala)
             }
-        } catch (ex: Exception) {
-            Log.e("aqui", ex.message.toString())
+
+           val lista = getLista()
+/*
+        memsajes2.forEach {
+
+                for (i in 0..lista.size - 1)
+                      {
+                        if(it.idreceptor==lista[i].id)
+                        {
+                         it.idreceptor=lista[i].nombre
+                  }
+          }*/
         }
+          adaptador.value = BuzonAdapterResponse(memsajes2, 1)
+
+        // }
+
+        // } catch (ex: Exception) {
+        //   Log.e("aqui", ex.message.toString())
+        // }
     }
-
-
-
-
 }
+
+

@@ -13,7 +13,7 @@ interface LoginApi {
    // fun iniciarSesionLogin(@Body usuario:Users) : Call<LoginResponse>
 
 
-    @POST("api/user/validate")
+    @POST("user/validate")
     fun iniciarSesionLogin(@Body usuario:Users) : Call<LoginResponse>
 
 

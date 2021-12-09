@@ -1,37 +1,44 @@
 package com.example.agileus.webservices.apis
 
 
-import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.models.*
-import com.example.agileus.utils.Constantes.id
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface BuzonApi2 {
-
+//------------------------------------------------------------------------------------------------------//
     @GET("broadCast/listaUsuarios/{id}")
-    fun getList(@Path ("id") idUser:String):Call<ArrayList<Contacts>>
+    fun getList(@Path("id") idUser: String ,@Header ("tokenAuth") token: String):Call<Contacts1>
 
-    @GET("broadCast/mostarMensajesdelBroadcast/{id}")
-    fun getbuzon(@Path ("id") idUser:String):Call<ArrayList<BuzonResp>>
+    @GET("broadCast/mostarMensajesdelBroadcast/{idUser}")
+    fun getbuzon(@Path ("idUser") idUser:String,@Header ("tokenAuth") token: String):Call<BuzonResp1>
 
-    @GET("mensajes/listarConversaciones/{id}")
-    fun getmybuzon(@Path ("id") idUser:String):Call<ArrayList<Chats>> ///getbuzon recibidos
-
-    @GET("mensajes/verConversacion/{id}")
-    fun getenviados(@Path ("id") idUser:String):Call<ArrayList<BuzonComunicados>> ///get enviados
-
-
-//
-    @POST("broadCast/enviarMensaje")
-    suspend fun pushpost(@Body Mensaje: MensajeBodyBroadcaster):Response<MensajeBodyBroadcaster>
+    @POST("broadCast/enviarMensaje") //
+    suspend fun pushpost(@Body Mensaje: MensajeBodyBroadcaster,@Header ("tokenAuth") token: String):Response<MensajeBodyBroadcaster>
 
     @POST("broadCast/crearMensajeBroadcast")
     suspend fun pushrequest(@Body Mensaje:MsgBodyUser):Response<MsgBodyUser>
+
+    //------------------------------------------------------------------------------------------------------//
+     @GET("mensajes/listarConversaciones/{iduser}")
+       fun getmybuzon(@Path ("iduser") idUser:String,@Header ("tokenAuth") token: String):Call<Chats1> ///getbuzon enviados
+
+    @GET("mensajes/verConversacion/{iduser}/{idchat}")
+    fun getenviados(@Path ("iduser") iduser:String, @Path ("idchat") idchat:String, @Header ("tokenAuth") token: String):Call<BuzonComunicados> ///get enviados
+
+    //  @GET("broadCast/mostrarMensajesporID/61ad370537670e5060dc060e/{id}"}
+//  fun getmybuzon(@Path ("id") idUser:String):Call<Chats1> ///getbuzon enviados
+
+  //  @GET("mensajes/listarConversaciones/{id}") ///broadCast/mostrarMensajesporID/61ad370537670e5060dc060e/61a83a48d036090b8e8db3bd
+    //fun getmybuzon(@Path ("id") idUser:String):Call<Chats1> ///getbuzon recibidos
+
+
+
+
+    //
+
 
   //  @GET("mensajes/listaContactos/{id}")
   //  fun getListContacts(@Path("id") idUser: String):Call<ArrayList<Contacts>>

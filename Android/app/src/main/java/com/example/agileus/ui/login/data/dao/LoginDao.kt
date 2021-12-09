@@ -4,8 +4,11 @@ import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.ui.login.data.model.*
 import com.example.agileus.ui.login.data.service.LoginApi
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.Rol
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.status
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
+import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.tokenPush
 import retrofit2.Call
 import retrofit2.Response
 
@@ -30,6 +33,9 @@ class LoginDao {
                     STATUS=true
 //                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
                     idUser = almacenar.data.id.toString()
+                    token= almacenar.data.tokenAuth.toString()
+                    tokenPush=almacenar.data.token.toString()
+                    Rol=almacenar.data.nombreRol.toString()
                 }
                 if (almacenar.status =="BAD_REQUEST")
                 {

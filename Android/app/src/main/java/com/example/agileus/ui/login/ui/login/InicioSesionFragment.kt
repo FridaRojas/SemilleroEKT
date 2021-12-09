@@ -28,12 +28,14 @@ class InicioSesionFragment : Fragment() {
 
 
     companion object {
+
           var correoLogin : String=""
           var passwordLogin : String=""
           var status:Boolean=false
           var idUser:String=""
-          //var rol:String = " "
-
+          var token:String=""
+          var tokenPush:String=""
+          var Rol:String = ""
     }
 
     private lateinit var viewModel: InicioSesionViewModel
@@ -61,10 +63,9 @@ class InicioSesionFragment : Fragment() {
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
 /////////////////NUEVO AGREGUE//////////////////////
-        binding.btnLogin.setOnClickListener { validate()
-
+        binding.btnLogin.setOnClickListener {
+            validate()
         }
-
     }
 
     private fun validate() {
@@ -80,18 +81,25 @@ class InicioSesionFragment : Fragment() {
 
         if (status) {
             trigger = 0
-            Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(activity, "Usuario Encontrado ", Toast.LENGTH_SHORT).show()
+
+            if(Rol !=  "BROADCAST" )
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
+            else{
+                findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment)
+            }
         }
 
-        if (!status)
-        {   if(trigger == 0 )
-
-           {Toast.makeText(activity, "Presiona de nuevo para confirmar", Toast.LENGTH_SHORT).show()
-                }
-            if (trigger >1 && !status) {
+        if (!status) {
+            if (trigger == 0) {
+                Toast.makeText(activity, "Presiona de nuevo para confirmar", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            if (trigger > 1 && !status) {
                 Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
 
+                /*
                 if(trigger >3 )
                     {
                         Toast.makeText(activity, "Demasiado Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
@@ -105,7 +113,8 @@ class InicioSesionFragment : Fragment() {
 
             }
             trigger++
-
+*/
+            }
         }
     }
 
