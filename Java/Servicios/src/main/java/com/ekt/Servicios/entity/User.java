@@ -1,5 +1,4 @@
 package com.ekt.Servicios.entity;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,10 +16,27 @@ public class User {
     private String numeroEmpleado;
     private String nombre;
     private String password;
-    private Rol[] roles;
+    private String nombreRol;
+    private String idGrupo;
+    private Object[] opcionales;
+    private String token;
     private String telefono;
     private String idSuperiorInmediato;
     private String statusActivo;
+    private String curp;
+    private String rfc;
+<<<<<<< HEAD
+    private String tokenAuth;
+
+    public String getTokenAuth() {
+        return tokenAuth;
+    }
+
+    public void setTokenAuth(String tokenAuth) {
+        this.tokenAuth = tokenAuth;
+    }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 
     public String getID() { return id; }
     public void setID(String value) { this.id = value; }
@@ -43,8 +59,17 @@ public class User {
     public String getPassword() { return password; }
     public void setPassword(String value) { this.password = value; }
 
-    public Rol[] getRoles() { return roles; }
-    public void setRoles(Rol[] value) { this.roles = value; }
+    public String getNombreRol() { return nombreRol; }
+    public void setNombreRol(String value) { this.nombreRol = value; }
+
+    public String getIDGrupo() { return idGrupo; }
+    public void setIDGrupo(String value) { this.idGrupo = value; }
+
+    public Object[] getOpcionales() { return opcionales; }
+    public void setOpcionales(Object[] value) { this.opcionales = value; }
+
+    public String getToken() { return token; }
+    public void setToken(String value) { this.token = value; }
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String value) { this.telefono = value; }
@@ -54,4 +79,36 @@ public class User {
 
     public String getStatusActivo() { return statusActivo; }
     public void setStatusActivo(String value) { this.statusActivo = value; }
+
+    public String getCurp() { return curp; }
+    public void setCurp(String value) { this.curp = value; }
+
+    public String getRFC() { return rfc; }
+    public void setRFC(String value) { this.rfc = value; }
+<<<<<<< HEAD
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", correo='" + correo + '\'' +
+                ", fechaInicio='" + fechaInicio + '\'' +
+                ", fechaTermino='" + fechaTermino + '\'' +
+                ", numeroEmpleado='" + numeroEmpleado + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", password='" + password + '\'' +
+                ", nombreRol='" + nombreRol + '\'' +
+                ", idGrupo='" + idGrupo + '\'' +
+                ", opcionales=" + Arrays.toString(opcionales) +
+                ", token='" + token + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", idSuperiorInmediato='" + idSuperiorInmediato + '\'' +
+                ", statusActivo='" + statusActivo + '\'' +
+                ", curp='" + curp + '\'' +
+                ", rfc='" + rfc + '\'' +
+                ", tokenAuth='" + tokenAuth + '\'' +
+                '}';
+    }
+=======
+>>>>>>> 1af49fd3a12c50a4e22480c930b409d10b1f5f5c
 }

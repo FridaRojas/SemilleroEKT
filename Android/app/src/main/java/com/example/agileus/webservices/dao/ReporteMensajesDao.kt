@@ -6,6 +6,7 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.*
+import com.example.agileus.models.response.ResponseConversation
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.empleadoUsuario
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
@@ -68,7 +69,7 @@ class ReporteMensajesDao {
 
         try{
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(Constantes.idUsuario, idBusqueda)
-            val ResponseMensajes: Response<conversartionListByID> = callRespuesta.execute()
+            val ResponseMensajes: Response<ResponseConversation> = callRespuesta.execute()
 
             val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportesBroadCast.getDatosRespuestasBroadcast(Constantes.idUsuario, idBusqueda)
             val ResponseMensajesBroadCast: Response<BroadcastByID> = callRespuestaBroadCast.execute()

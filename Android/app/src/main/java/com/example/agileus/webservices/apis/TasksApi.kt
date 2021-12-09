@@ -25,33 +25,45 @@ interface TasksApi {
     fun insertarTarea(@Body t: Tasks): Call<Tasks>
 
     //Obtener lista por id, status
-    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{datos}")
-    fun getTasksByStatus(@Path("datos") datos: String): Call<TaskList>?
+    @GET("tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/{idUsuario}/{estatus}")
+    fun getTasksByStatus(
+        @Path("idUsuario") idUsuario: String,
+        @Path("estatus") estatus: String
+    ): Call<TaskList>?
 
     //Cancelar tarea
-    @DELETE("tareas/cancelarTarea/{idTarea}")
-    fun cancelarTarea(@Path("idTarea") idTarea: String): Call<DataTask>
+    @DELETE("tareas/cancelarTarea/{idTarea}/{idUsuario}")
+    fun cancelarTarea(
+        @Path("idTarea") idTarea: String,
+        @Path("idUsuario") idUsuario: String
+    ): Call<DataTask>
 
     //Editar tarea
-    @PUT("tareas/actualizarTarea/{idTarea}")
-    fun editTask(@Body taskUpdate: TaskUpdate, @Path("idTarea") idTarea: String)
-            : Call<DataTask>
-
     @PUT("tareas/actualizarTarea/{idTarea}/{idUsuario}")
-    fun editTaskPrueba(
+    fun editTask(
         @Body taskUpdate: TaskUpdate,
         @Path("idTarea") idTarea: String,
         @Path("idUsuario") idUsuario: String
     ): Call<DataTask>
 
+    /*  @PUT("tareas/actualizarTarea/{idTarea}/{idUsuario}")
+      fun editTaskPrueba(
+          @Body taskUpdate: TaskUpdate,
+          @Path("idTarea") idTarea: String,
+          @Path("idUsuario") idUsuario: String
+      ): Call<DataTask>*/
+
 
     //Actualizar Status
-    @PUT("tareas/actulizarEstatus/{param}")
-    fun updateStatus(@Path("param") param: String): Call<String>
+    @PUT("tareas/actulizarEstatus/{idTarea}/{estatus}")
+    fun updateStatus(
+        @Path("idTarea") idTarea: String,
+        @Path("estatus") estatus: String
+    ): Call<String>
 
     //Obtener las tareas que asigno el usuario por id, status
     //@GET("tareas/obtenerTareasQueAsignoPorIdYEstatus/{datos}")
-    @GET("tareas/obtenerTareasQueAsignoPorId/{datos}")
-    fun getTasksAssigned(@Path("datos") datos: String): Call<TaskList>?
+    @GET("tareas/obtenerTareasQueAsignoPorId/{idUsuario}")
+    fun getTasksAssigned(@Path("idUsuario") idUsuario: String): Call<TaskList>?
 
 }

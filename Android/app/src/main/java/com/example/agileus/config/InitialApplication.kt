@@ -1,8 +1,7 @@
 package com.example.agileus.config
 
 import android.app.Application
-import com.example.agileus.ui.login.data.service.LoginApi
-import com.example.agileus.webservices.apis.*
+import com.example.agileus.webservices.apis.LoginApi
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
@@ -21,6 +20,7 @@ class InitialApplication : Application() {
         lateinit var webServiceGlobalReportes: ReportesApi
         lateinit var webServiceGlobalReportesBroadCast: ReportesApi
         lateinit var webServiceGlobalReportesTareas: ReportesApi
+       //lateinit var webServiceGlobalTasksPrueba: TasksApi
 
         //SharedPreferences
         lateinit var preferenciasGlobal: MySharedPreferences
@@ -41,7 +41,7 @@ class InitialApplication : Application() {
 
         BroadcastServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
-        webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
+      //  webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
 
         webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
         webServiceGlobalReportesBroadCast = ConfigRetrofit().getBroadCastReportes()

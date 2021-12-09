@@ -1,6 +1,7 @@
 package com.example.agileus.webservices.apis
 
 import com.example.agileus.models.*
+import com.example.agileus.models.response.ResponseConversation
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,7 +11,7 @@ interface ReportesApi {
     fun getDatosReporteTareas(@Path("id") idBusqueda:String): Call<TaskListByID>
 
     @GET("mensajes/listarMensajesRecividos/{idUser}/{idSearch}")
-    fun getDatosReporteMensajes(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<conversartionListByID>
+    fun getDatosReporteMensajes(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<ResponseConversation>
 
     @GET("broadCast/mostrarMensajesporID/{idUser}/{idSearch}")
     fun getDatosRespuestasBroadcast(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<BroadcastByID>
