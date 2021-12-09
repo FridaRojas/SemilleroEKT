@@ -251,12 +251,12 @@ public class MensajesController {
 											 @PathVariable(value = "idConversacion") String idConversacion) {
 		try {
 			if (idConversacion.length() < 49) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El id de la convbersacion no contiene los caracteres neesarios", ""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El id de la convbersacion no contiene los caracteres neesarios", null));
 			}
 			Optional<User> user = userRepository.validarUsuario(miID);
 
-			if (user.get().getStatusActivo().equals("false")) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El usuario esta inactivo", ""));
+			if(user.get().getIDGrupo().equals("")){
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
 
 			if (user.get().getTokenAuth().equals(tokenAuth)) {
@@ -266,7 +266,7 @@ public class MensajesController {
 
 			}
 
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Token invalido", ""));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Token invalido", null));
 
 		} catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -502,14 +502,14 @@ public class MensajesController {
 													   @PathVariable(value = "idConversacion") String idConversacion) {
 		try{
 			if(idConversacion.length()<49) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El id de la conversacion no contiene los caracteres neesarios", ""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El id de la conversacion no contiene los caracteres neesarios", null));
 			}
 			Optional<User> user= userRepository.validarUsuario(miID);
-			if(user.get().getStatusActivo().equals("false")){
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El usuario esta inactivo", ""));
+			if(user.get().getIDGrupo().equals("")){
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
 			if(!user.get().getTokenAuth().equals(tokenAuth)){
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Token invalido", ""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Token invalido", null));
 			}
 
 			List<Mensajes> list = new ArrayList<>();
@@ -517,16 +517,16 @@ public class MensajesController {
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
 			iter.forEach(list::add);
 			if(list.size()<1) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "No existe la conversacion",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "No existe la conversacion",null));
 			}
 			if(!list.get(0).isConversacionVisible()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "La conversacion ya se elimino anteriormente",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "La conversacion ya se elimino anteriormente",null));
 			}
 			for (Mensajes msg : iter) {
 				msg.setConversacionVisible(false);
 				mensajesService.save(msg);
 			}
-			return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMensajes(String.valueOf(HttpStatus.CREATED.value()), "Se elimino la conversacion",""));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMensajes(String.valueOf(HttpStatus.CREATED.value()), "Se elimino la conversacion","Numero de Mensajes eliminados: "+list.size()));
 
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
@@ -755,18 +755,17 @@ public class MensajesController {
 												  @PathVariable(value ="idEmisor")String idEmisor){
 		try{
 			if(idEmisor.length()<24 || idEmisor.length()>24){
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El id del usuario no tiene los caracteres necesarios",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El id del usuario no tiene los caracteres necesarios",null));
 			}
 			Optional<User> user = userRepository.validarUsuario(idEmisor);
 			if (!user.isPresent()){
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"No se encuentra este usuario",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"No se encuentra este usuario",null));
 			}
-			if(user.get().getStatusActivo().equals("false")){
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El usuario esta inactivo",""));
-
+			if(user.get().getIDGrupo().equals("")){
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
 			if(!user.get().getTokenAuth().equals(tokenAuth)){
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Token invalido",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Token invalido",null));
 			}
 
 			MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
@@ -835,15 +834,15 @@ public class MensajesController {
 													 @PathVariable (value = "idEmisor")String idEmisor){
 		try{
 			if(idEmisor.length()<24 || idEmisor.length()>24) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tamaño del id invalido",""));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tamaño del id invalido",null));
 			}
 			Optional<User> user=userRepository.validarUsuario(idEmisor);
 			if(!user.isPresent()){
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"no se encuetra el usuario",""));
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"no se encuetra el usuario",null));
 			}
 			Optional<User> user2= userRepository.validarUsuario(miID);
-			if(user2.get().getStatusActivo().equals("false")){
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"El usuario esta inactivo", ""));
+			if(user2.get().getIDGrupo().equals("")){
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
 			if(user2.get().getTokenAuth().equals(tokenAuth)) {
 				Iterable<Mensajes> msg = mensajesRepository.findAll();
@@ -856,7 +855,7 @@ public class MensajesController {
 				}
 				return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),"Lista de mensajes",lMensajes));
 			}
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Token invalido",""));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Token invalido",null));
 		}catch (MongoSocketOpenException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
