@@ -34,6 +34,7 @@ class ConfigRetrofit {
             .connectTimeout(tiempo, TimeUnit.SECONDS)
             .readTimeout(tiempo, TimeUnit.SECONDS)
             .writeTimeout(tiempo, TimeUnit.SECONDS)
+            .addInterceptor(MyInterceptor())
             .build()
         return okHttpClient
     }
