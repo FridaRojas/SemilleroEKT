@@ -29,7 +29,6 @@ class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
-        val contexto = view.context
         val myView:View
 
         init {
@@ -41,17 +40,8 @@ class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
             txtNameContact.text = groups.nombreConversacionRecepto
 
             myView.setOnClickListener {
-                /*
-                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
-                intent.putExtra(Constantes.ID_CHAT, groups.idConversacion)
-                intent.putExtra(Constantes.ID_RECEPTOR, groups.idReceptor)
-                intent.putExtra(Constantes.NAME_RECEPTOR, groups.nombreConversacionRecepto)
-                contexto.startActivity(intent)
-
-                 */
-
                 var action: NavDirections
-                action = ListConversationFragmentDirections.actionNavigationHomeToUserConversationFragment(groups.idConversacion,groups.idReceptor,groups.nombreConversacionRecepto, "chatsFragment")
+                action = ListConversationFragmentDirections.actionNavigationHomeToUserConversationFragment(groups.idConversacion,groups.idReceptor,groups.nombreConversacionRecepto, R.string.chats_name.toString())
                 it.findNavController().navigate(action)
             }
 

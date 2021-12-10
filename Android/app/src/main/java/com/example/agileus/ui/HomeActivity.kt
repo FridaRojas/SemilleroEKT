@@ -91,10 +91,10 @@ class HomeActivity : AppCompatActivity() {
             "Contactos" -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
             }
-            "chatsFragment"-> {
+           R.string.chats_name.toString()-> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
             }
-            "contactosFragment" -> {
+            R.string.contacts_name.toString() -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.listContactsFragment)
             }
         }

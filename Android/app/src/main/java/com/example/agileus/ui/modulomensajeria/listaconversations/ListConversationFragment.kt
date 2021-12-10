@@ -131,7 +131,6 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
     override fun siDisparar(motivo: String) {
         findNavController().navigate(R.id.inicioSesionFragment)
-        //Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
     }
 
     override fun noDisparar(motivo: String) {

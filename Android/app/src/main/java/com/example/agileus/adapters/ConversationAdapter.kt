@@ -2,7 +2,6 @@ package com.example.agileus.adapters
 
 
 import android.os.Build
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +15,7 @@ import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
-
 
 class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {

@@ -30,10 +30,6 @@ import java.io.FileNotFoundException
 
 class UserConversationFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = UserConversationFragment()
-    }
-
     private var _binding: UserConversationFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -80,13 +76,8 @@ class UserConversationFragment : Fragment() {
 
         var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
 
-
         (activity as HomeActivity).supportActionBar!!.title = nameReceptor
-
         (activity as HomeActivity).fragmentSeleccionado = flagFragment
-
-        Toast.makeText(activity, "$idChatUser + $idReceptor + $nameReceptor", Toast.LENGTH_LONG).show()
-
 
         contactsViewModel.devuelveLista(UserId)
 
@@ -147,9 +138,6 @@ class UserConversationFragment : Fragment() {
         })
 
 
-
-
-
 /////////
         viewModel.devuelveLista(UserId,idChatUser)
         viewModel.adaptador.observe(viewLifecycleOwner,{
@@ -178,7 +166,7 @@ class UserConversationFragment : Fragment() {
                     }
                 }
             }else{
-               // Toast.makeText(activity,"No se selecciono un archivo", Toast.LENGTH_LONG).show()
+               Toast.makeText(activity,"No se selecciono un archivo", Toast.LENGTH_LONG).show()
             }
         }
 

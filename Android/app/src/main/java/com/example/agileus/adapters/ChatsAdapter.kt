@@ -38,7 +38,6 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
         val txtRol: TextView
-        val contexto = view.context
         val myView: View
 
         init {
@@ -52,21 +51,9 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
             txtRol.text = chats.nombreRol
 
             myView.setOnClickListener {
-/*
-                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
-                intent.putExtra(Constantes.ID_CHAT, chats.idConversacion)
-                intent.putExtra(Constantes.ID_RECEPTOR, chats.idReceptor)
-                intent.putExtra(Constantes.NAME_RECEPTOR, chats.nombreConversacionRecepto)
-                contexto.startActivity(intent)
-
-*/
-
-
                 var action: NavDirections
-                action = ListConversationFragmentDirections.actionNavigationHomeToUserConversationFragment(chats.idConversacion,chats.idReceptor,chats.nombreConversacionRecepto, "chatsFragment")
+                action = ListConversationFragmentDirections.actionNavigationHomeToUserConversationFragment(chats.idConversacion,chats.idReceptor,chats.nombreConversacionRecepto, R.string.chats_name.toString())
                 it.findNavController().navigate(action)
-
-
             }
         }
     }

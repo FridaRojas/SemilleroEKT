@@ -39,7 +39,6 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNameContact: TextView
         val txtRol:TextView
-        val contexto = view.context
         val myView:View
 
         init {
@@ -52,16 +51,8 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
             txtRol.text = contacts.nombreRol
 
             myView.setOnClickListener {
-                /*
-               val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
-                intent.putExtra(Constantes.ID_RECEPTOR, contacts.id)
-                intent.putExtra(Constantes.NAME_RECEPTOR, contacts.nombre)
-                contexto.startActivity(intent)
-
-                 */
-
                 var action: NavDirections
-                action = ListContactsFragmentDirections.actionListContactsFragmentToUserConversationFragment("",contacts.id,contacts.nombre, "contactosFragment")
+                action = ListContactsFragmentDirections.actionListContactsFragmentToUserConversationFragment("",contacts.id,contacts.nombre, R.string.contacts_name.toString())
                 it.findNavController().navigate(action)
             }
 
