@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.models.DataTask
 import com.example.agileus.models.TaskUpdate
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoActualizarTarea
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.launch
 import java.util.*
@@ -16,10 +18,10 @@ class DetalleNivelAltoViewModel : ViewModel() {
         taskDao = TasksDao()
     }
 
-    fun cancelarTarea(dataTask: DetalleNivelAltoFragmentArgs) {
+    fun cancelarTarea(dataTask: DetalleNivelAltoFragmentArgs, listener: dialogoConfirmarListener) {
         try {
             viewModelScope.launch {
-                taskDao.cancelTask(dataTask)
+                taskDao.cancelTask(dataTask, listener)
             }
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
@@ -27,20 +29,25 @@ class DetalleNivelAltoViewModel : ViewModel() {
 
     }
 
-    fun editarTarea(dataTask: TaskUpdate, idTarea: String, idUsuario: String) {
+    fun editarTarea(
+        dataTask: TaskUpdate,
+        idTarea: String,
+        idUsuario: String,
+        listener: dialogoConfirmarListener
+    ) {
         try {
             viewModelScope.launch {
-                taskDao.editTask(dataTask, idTarea, idUsuario)
+                taskDao.editTask(dataTask, idTarea, idUsuario, listener)
             }
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 
-    fun actualizarEstatus(dataTask: DataTask) {
+    fun actualizarEstatus(dataTask: DataTask, listener: dialogoConfirmarListener) {
         try {
             viewModelScope.launch {
-                taskDao.updateStatus(dataTask.idTarea, dataTask.estatus)
+                taskDao.updateStatus(dataTask.idTarea, dataTask.estatus, listener)
                 Log.d("Mensaje", "id: ${dataTask.idTarea}")
                 Log.d("Mensaje", "estatus: ${dataTask.estatus}")
             }
@@ -49,10 +56,10 @@ class DetalleNivelAltoViewModel : ViewModel() {
         }
     }
 
-    fun actualizarEstatus(dataTask: DetalleNivelAltoFragmentArgs) {
+    fun actualizarEstatus(dataTask: DetalleNivelAltoFragmentArgs,listener: dialogoConfirmarListener) {
         try {
             viewModelScope.launch {
-                taskDao.updateStatus(dataTask.tareas.idTarea, dataTask.tareas.estatus)
+                taskDao.updateStatus(dataTask.tareas.idTarea, dataTask.tareas.estatus,listener)
                 Log.d("Mensaje", "id: ${dataTask.tareas.idTarea}")
                 Log.d("Mensaje", "estatus: ${dataTask.tareas.estatus}")
             }

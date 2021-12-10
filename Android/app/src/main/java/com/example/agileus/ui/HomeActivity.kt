@@ -22,7 +22,6 @@ import com.example.agileus.databinding.ActivityHomeBinding
 class HomeActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,13 +62,13 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun showBottomNav(nav_view:BottomNavigationView) {
+    private fun showBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.VISIBLE
     }
 
-    private fun hideBottomNav(nav_view:BottomNavigationView) {
+    private fun hideBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.GONE
     }
 
- }
+}
 

@@ -10,11 +10,15 @@ import com.example.agileus.R
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 import com.example.agileus.webservices.dao.TasksDao
 import java.lang.IllegalStateException
 import java.util.*
 
-class DialogoEliminarTarea(var args: DetalleNivelAltoFragmentArgs) :
+class DialogoEliminarTarea(
+    var args: DetalleNivelAltoFragmentArgs,
+    var listener: dialogoConfirmarListener
+) :
     DialogFragment() {
 
     private lateinit var observacionesD: String
@@ -42,12 +46,8 @@ class DialogoEliminarTarea(var args: DetalleNivelAltoFragmentArgs) :
             builder.setMessage("Desea cancelar tarea ${args.tareas.titulo}?")
                 .setPositiveButton(R.string.respAceptar,
                     DialogInterface.OnClickListener { dialog, id ->
-                        detalleNivelAltoViewModel.cancelarTarea(args)
-                        val newFragment = DialogoAceptar("Tarea cancelada")
-                        newFragment.show(
-                            (activity as HomeActivity).supportFragmentManager,
-                            "missiles"
-                        )
+                        detalleNivelAltoViewModel.cancelarTarea(args, listener)
+
                     })
                 .setNegativeButton(R.string.respCancelar,
                     DialogInterface.OnClickListener { dialog, id ->

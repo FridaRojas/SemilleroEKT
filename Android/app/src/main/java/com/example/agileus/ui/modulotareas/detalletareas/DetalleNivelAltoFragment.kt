@@ -14,16 +14,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
 import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.moduloreportes.reportes.ReporteMensajesFragmentDirections
 import com.example.agileus.ui.modulotareas.dialogostareas.*
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 import com.example.agileus.utils.Constantes
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.File
@@ -33,7 +38,7 @@ import java.util.*
 
 
 class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
-    DialogoTareaCreadaExitosamente.NoticeDialogListener {
+    DialogoTareaCreadaExitosamente.NoticeDialogListener, dialogoConfirmarListener {
     lateinit var firebaseProvider: FirebaseProvider
     lateinit var mStorageInstance: FirebaseStorage
     lateinit var mStorageReference: StorageReference
@@ -76,10 +81,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args: DetalleNivelAltoFragmentArgs by navArgs()
 
+        val args: DetalleNivelAltoFragmentArgs by navArgs()
         firebaseProvider = FirebaseProvider()
         mStorageInstance =
             FirebaseStorage.getInstance()                           /*  *** Instancias Fb Storage ***  */
@@ -150,58 +156,64 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                 )
             }
 
-            btnValidarTarea.setOnClickListener {
+
+        }
+
+        binding.btnValidarTarea.setOnClickListener {
+            val newFragment2 =
+                DialogoValidarTarea(args,this)
+            newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+        }
+
+        binding.btnGuardarTareaF.setOnClickListener {
+            var obs = binding.txtObservacionesD.text.toString()
+            args.tareas.observaciones = obs
+
+            //todo cuando haya que modificar archivo crear un metodo para subir el archivo
+            //todo si el archivo no es nulo o vacio
+            //todo mandarlo a llamar en esta parte pasandole el parametro del archivo.
+
+            var titulo: String
+            var descripcion: String
+            var fecha_ini: String
+            var fecha_fin: String
+            var prioridad: String
+            var estatus: String
+            var observaciones: String
+
+            titulo = binding.txtNombreTareaD.text.toString()
+            descripcion = binding.txtDescripcionD.text.toString()
+            fecha_ini = binding.txtFechaInicioD.text.toString()
+            fecha_fin = binding.txtFechaFinD.text.toString()
+            prioridad = args.tareas.prioridad
+            observaciones = obs
+            estatus = "pendiente"
+
+            if (descripcion.isNullOrEmpty()) {
+                Toast.makeText(context, "La descripcion no puede ir vacia", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+
+                var update = TaskUpdate(
+                    titulo,
+                    descripcion,
+                    fecha_ini,
+                    fecha_fin,
+                    prioridad,
+                    estatus,
+                    observaciones
+                )
+
+                desactivarCampos(args)
+
                 val newFragment2 =
-                    DialogoValidarTarea(args)
-                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
-            }
-
-            btnGuardarTareaF.setOnClickListener {
-                var obs = binding.txtObservacionesD.text.toString()
-                args.tareas.observaciones = obs
-
-                //todo cuando haya que modificar archivo crear un metodo para subir el archivo
-                //todo si el archivo no es nulo o vacio
-                //todo mandarlo a llamar en esta parte pasandole el parametro del archivo.
-
-                var titulo: String
-                var descripcion: String
-                var fecha_ini: String
-                var fecha_fin: String
-                var prioridad: String
-                var estatus: String
-                var observaciones: String
-
-                titulo = txtNombreTareaD.text.toString()
-                descripcion = txtDescripcionD.text.toString()
-                fecha_ini = txtFechaInicioD.text.toString()
-                fecha_fin = txtFechaFinD.text.toString()
-                prioridad = args.tareas.prioridad
-                observaciones = obs
-                estatus = "pendiente"
-
-                if (descripcion.isNullOrEmpty()) {
-                    Toast.makeText(context, "La descripcion no puede ir vacia", Toast.LENGTH_SHORT)
-                        .show()
-                }else{
-
-                    var update = TaskUpdate(
-                        titulo,
-                        descripcion,
-                        fecha_ini,
-                        fecha_fin,
-                        prioridad,
-                        estatus,
-                        observaciones
+                    DialogoActualizarTarea(
+                        update,
+                        args.tareas.idTarea,
+                        args.tareas.idEmisor,
+                        this
                     )
-
-                    desactivarCampos(args)
-
-                    val newFragment2 =
-                        DialogoActualizarTarea(update, args.tareas.idTarea, args.tareas.idEmisor)
-                    newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
-                }
-
+                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
             }
 
         }
@@ -381,7 +393,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     }
 
     private fun cancelarTarea(args: DetalleNivelAltoFragmentArgs) {
-        val dialogoAceptar = DialogoEliminarTarea(args)
+        val dialogoAceptar = DialogoEliminarTarea(args, this)
         dialogoAceptar.show(
             (activity as HomeActivity).supportFragmentManager,
             getString(R.string.dialogoAceptar)
@@ -414,6 +426,14 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
         TODO("Not yet implemented")
+    }
+
+    override fun abreDialogoConfirmar(mensaje: String) {
+        val dialogoAceptar = DialogoAceptar(mensaje)
+        dialogoAceptar.show(
+            (activity as HomeActivity).supportFragmentManager,
+            getString(R.string.dialogoAceptar)
+        )
     }
 
 }
