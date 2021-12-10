@@ -75,7 +75,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             }
         })
 
-
+/////////////////////////////
         conversationviewModel.devuelveLista(UserId,id_chat)
 
         chatsviewmodel.devuelveListaChats(UserId)
@@ -111,14 +111,14 @@ class ConversationOneToOneActivity : AppCompatActivity() {
             }
 
         })
-
+////////////////////////////
         conversationviewModel.adaptador.observe(this,{
             binding.progressBarConversation.isVisible = false
                     binding.recyclerConversacion.adapter = it
                     binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)
             binding.recyclerConversacion.getLayoutManager()?.scrollToPosition(conversationviewModel.listaConsumida.size-1)
         })
-
+////////////////////////
         if(conversationviewModel.bandera == true){
             binding.progressBarConversation.isVisible = true
         }

@@ -4,11 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Chats
 import com.example.agileus.models.Contacts
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragmentDirections
+import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragmentDirections
 import com.example.agileus.utils.Constantes
 
 class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
@@ -48,11 +52,21 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
             txtRol.text = chats.nombreRol
 
             myView.setOnClickListener {
+/*
                 val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
                 intent.putExtra(Constantes.ID_CHAT, chats.idConversacion)
                 intent.putExtra(Constantes.ID_RECEPTOR, chats.idReceptor)
                 intent.putExtra(Constantes.NAME_RECEPTOR, chats.nombreConversacionRecepto)
                 contexto.startActivity(intent)
+
+*/
+
+
+                var action: NavDirections
+                action = ListConversationFragmentDirections.actionNavigationHomeToUserConversationFragment(chats.idConversacion,chats.idReceptor,chats.nombreConversacionRecepto, "chatsFragment")
+                it.findNavController().navigate(action)
+
+
             }
         }
     }

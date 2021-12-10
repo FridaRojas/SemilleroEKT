@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_home_to_inicioSesionFragment"
             app:destination="@id/inicioSesionFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_userConversationFragment"
+            app:destination="@id/userConversationFragment" />
     </fragment>
 
     <fragment
@@ -48,6 +51,9 @@
         <action
             android:id="@+id/action_listContactsFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_listContactsFragment_to_userConversationFragment"
+            app:destination="@id/userConversationFragment" />
 
     </fragment>
 
@@ -143,7 +149,25 @@
             app:destination="@id/buzonFragment" />
 
     </fragment>
-
+    <fragment
+        android:id="@+id/userConversationFragment"
+        android:name="com.example.agileus.ui.modulomensajeria.conversation.UserConversationFragment"
+        android:label="user_conversation_fragment"
+        tools:layout="@layout/user_conversation_fragment" >
+        <action
+            android:id="@+id/action_userConversationFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <argument
+            android:name="idConversationUser"
+            app:argType="string" />
+        <argument android:name="idreceptor"
+            app:argType="string" />
+        <argument android:name="namereceptor"
+            app:argType="string" />
+        <argument
+            android:name="banderaFragment"
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>

@@ -5,10 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Contacts
 import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragmentDirections
+import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragmentDirections
 import com.example.agileus.utils.Constantes
 
 class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
@@ -48,10 +52,17 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
             txtRol.text = contacts.nombreRol
 
             myView.setOnClickListener {
+                /*
                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
                 intent.putExtra(Constantes.ID_RECEPTOR, contacts.id)
                 intent.putExtra(Constantes.NAME_RECEPTOR, contacts.nombre)
                 contexto.startActivity(intent)
+
+                 */
+
+                var action: NavDirections
+                action = ListContactsFragmentDirections.actionListContactsFragmentToUserConversationFragment("",contacts.id,contacts.nombre, "contactosFragment")
+                it.findNavController().navigate(action)
             }
 
         }

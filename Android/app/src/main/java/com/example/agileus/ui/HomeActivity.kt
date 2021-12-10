@@ -7,14 +7,8 @@ import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
@@ -71,6 +65,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.formularioCrearTareasFragment -> hideBottomNav(navView)
                 R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
                 R.id.listContactsFragment -> hideBottomNav(navView)
+                R.id.userConversationFragment -> hideBottomNav(navView)
                 else -> showBottomNav(navView)
             }
         }
@@ -95,6 +90,12 @@ class HomeActivity : AppCompatActivity() {
             }
             "Contactos" -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
+            }
+            "chatsFragment"-> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
+            }
+            "contactosFragment" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.listContactsFragment)
             }
         }
         return super.onOptionsItemSelected(item)
