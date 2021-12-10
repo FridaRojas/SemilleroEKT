@@ -1,10 +1,8 @@
 package com.example.agileus.ui.login.iniciosesion
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,9 +18,6 @@ import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.models.Users
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
-import com.example.agileus.ui.MainActivity
-import com.example.agileus.ui.login.dialog.CerrarSesionDialog
-import com.example.agileus.ui.login.dialog.DialogoListen
 
 //, DialogoListen
 class InicioSesionFragment : Fragment(){
