@@ -110,6 +110,12 @@ public class TaskController {
         }
     }
 
+    /**
+     * Metodo encargado de traer todas las tareas existentes
+     * @param token_sesion parametro que se recibe mediante el header para validar la sesion de usuario
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/obtenerTareas/{id_usuario}")   //10. Reportes
     public ResponseEntity<?> readAll(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario){
         try {
@@ -122,12 +128,16 @@ public class TaskController {
             }
             //Traer todas las tareas
             Iterable<Task> tareas = tareaService.findAll();
+            //Sacamos el tamaño de la coleccion
             int nDocumentos = ((Collection<Task>) tareas).size();
+            //Validamos que el tamaño de la coleccion no este vacio
             if (nDocumentos == 0) {
                 mensaje = "No se encontraron tareas";
+                //return en caso de que la coleecion este vacia retorna un respuesta que contiene un estatus y un mensaje de error
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
             mensaje = "Tareas encontradas";
+            //return en caso de ser exitosa la peticion retorna un estatus 200, un mensaje y un data con las tareas encontradas
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
         }catch (MongoSocketException e){
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
@@ -142,6 +152,13 @@ public class TaskController {
         }
     }
 
+    /**
+     * Metodo que tiene como funcion obtener una tarea por medio de su ID
+     * @param token_sesion parametro que se recibe mediante el header para validar la sesion de usuario
+     * @param id_tarea parametro tipo string que sirve para buscar por id una tarea
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping(value="/obtenerTareaPorId/{id_tarea}/{id_usuario}")    //2. Tareas
     public ResponseEntity<?> read(@RequestHeader("tokenAuth") String token_sesion, @PathVariable String id_tarea,@PathVariable String id_usuario){
         try {
@@ -180,32 +197,46 @@ public class TaskController {
         }
     }
 
+    /**
+     * Metodo que tiene como funcion actualizar una tarea en especifico
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_tarea parametro que sirve para buscar mediante el id de la tarea a actualizar
+     * @param tarea objeto creado a partir de un json que contiene todos los parametro  a actualizar
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @PutMapping("/actualizarTarea/{id_tarea}/{id_usuario}")  //3. Tareas
     public ResponseEntity<?> updateById(@RequestHeader("tokenAuth") String token_sesion, @PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario){
         try {
             String mensaje = "";
             //Validar sesión
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            //Validacion de arreglo vacio
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
             }
             //Buscar tarea
             Optional<Task> oTarea = tareaService.findById(id_tarea);
+            //Validar que existe en DB
             if (oTarea.isPresent()) {
+                //Valida datos de entrada correctos
                 ArrayList<String> validarActualizacion = tareaService.validarTareasActualizar(tarea);
+                //Valida objeto sin errores
                 if (validarActualizacion.size() == 0) {
                     LocalDateTime date = LocalDateTime.now();
                     TaskLog bitacora = new TaskLog();
                     String id_tareas = id_tarea;
+                    //Guarda accion de guardado
                     bitacora.setId_emisor(tarea.getId_emisor());
                     bitacora.setNombre_emisor(tarea.getNombre_emisor());
                     bitacora.setAccion("Actualizo la tarea");
                     bitacora.setId_tarea(id_tarea);
                     Date newLdt = Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
                     bitacora.setFecha_actualizacion(newLdt);
-
+                    //Guarda en bitacora la accion de guardado
                     taskLogServiceImpl.save(bitacora);
+                    //Actualiza la tarea
                     tareaService.updateById(id_tarea, tarea);
                     Optional<Task> newTarea = tareaService.findById(id_tarea);
                     mensaje = "Tarea " + id_tarea + " actualizada correctamente";
@@ -275,6 +306,13 @@ public class TaskController {
         }
     }
 
+    /**
+     * Metodo que tiene como funcion filtrar las tareas por una prioridad en especifico(minimo, medio, maximo)
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param prioridad parametro que sirve para filtra por medio de una prioridad(alta, baja, maxima)
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/filtrarTareasPorPrioridad/{prioridad}/{id_usuario}")//Reportes
     public ResponseEntity<?> getTareasByPrioridad(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
         try {
@@ -320,7 +358,6 @@ public class TaskController {
             String mensaje;
             //Se valida sesión del usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
-            //Si hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
@@ -330,8 +367,11 @@ public class TaskController {
             int nDocumentos = ((Collection<Task>) tareas).size();
             //Si no existen documentos en la colección
             if (nDocumentos == 0) {
+                //Map<String, Object> body = new LinkedHashMap<>();//LinkedHashMap conserva el orden de inserción
                 Map<String, String> data = new LinkedHashMap<>();
+                //body.put("statusCode", String.valueOf(HttpStatus.NOT_FOUND.value()));
                 data.put("id_grupo", "No hay tareas para el Grupo Id: " + id_grupo);
+                //body.put("Data",data);
                 mensaje = "No hay tareas para el Grupo Id: " + id_grupo;
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje, data));
             }
@@ -350,7 +390,13 @@ public class TaskController {
         }
     }
 
-
+    /**
+     * Metodo que tiene como funcion filtrar las tareas de un usuario por una prioridad(minimo, medio, maximo)
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param prioridad parametro que sirve para filtrar por medio de una preioridad(minimo, medio, maximo) una tarea
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos y buscar por medio de id de usuario
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}/{id_usuario}") //5. Tareas
     public ResponseEntity<?> getUsuarioTareasByPrioridad(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
         try {
@@ -386,6 +432,13 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje,e.getStackTrace()));
         }
     }
+
+    /**
+     * Metodo que tiene como funcion listar las tareas que un usuario asigno a otro
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos y buscar tareas que asigno
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/obtenerTareasQueAsignoPorId/{id_usuario}")    // 13
     public ResponseEntity<?> getAllTareasOutByUserId(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario){
         try {
@@ -428,9 +481,7 @@ public class TaskController {
     public ResponseEntity<?> getAllTareasInByUserId(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario){
         try {
             String mensaje;
-            //Se valida sesión del usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
-            //Si hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
@@ -457,6 +508,14 @@ public class TaskController {
             return  ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje,e.getStackTrace()));
         }
     }
+
+    /**
+     * Metodo que tiene como funcion listar las tareas que fueron asignadas a un usuario
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos
+     * @param id_receptor parametro que sirve para buscar las tareas que fueron asignada a un usuario
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/obtenerTareasQueLeAsignaronPorIdReportes/{id_usuario}/{id_receptor}") //REPORTES
     public ResponseEntity<?> obtenerTareasAsignadas(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario, @PathVariable String id_receptor){
         try {
@@ -489,7 +548,13 @@ public class TaskController {
         }
     }
 
-
+    /**
+     * Metodo que tiene como funcion traer todas las tareas asignadas a un grupo
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_grupo parametro que sirve para filtrar las tareas por grupo de trabajo
+     * @param id_usuario parametro que sirve para validar el token de sesion en base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}/{id_usuario}")    //Reportes
     public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario){
         try {
@@ -520,6 +585,13 @@ public class TaskController {
         }
     }
 
+    /**
+     *
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_tarea parametro que sirve para indicar la tarea que será actualizado el estatus
+     * @param estatus parametro que sirve para actualizar el valor del parametro estatus
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @PutMapping("/actulizarEstatus/{id_tarea}/{estatus}")   //6. Tareas
     public ResponseEntity<?> actualizarEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea, @PathVariable String estatus) {
         try {
@@ -563,6 +635,12 @@ public class TaskController {
         }
     }
 
+    /**
+     * Metodo que tiene como función actualizar el estatus de tarea leia/vista
+     * @param token_sesion parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_tarea parametro que indica la tarea a actualizar el estatus de tarea leia/vista
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @PutMapping("/actualizarLeidoPorIdTarea/{id_tarea}")    //7. Tarea
     public ResponseEntity<?> actualizaLeidoPorIdTarea(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea){
         try {
@@ -635,13 +713,6 @@ public class TaskController {
         }
     }
 
-    /**
-     * Este método se encarga de obtener todas las tareas que una persona asignó a otra por su id y un estatus en la base de datos
-     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
-     * @param id_usuario parámetro tipo string que sirve para validar la sesión de usuario y buscar sus tareas que asignó en la base de datos
-     * @param estatus parámetro tipo string que sirve para filtrar tareas que le asignaron en la base de datos
-     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
-     */
     @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}/{estatus}")  //9. Tareas
     public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
         try {
