@@ -9,3 +9,4 @@ data class Chats (
     @SerializedName("idEmisor") val idEmisor: String,
     @SerializedName("nombreRol") val nombreRol: String
     )
+

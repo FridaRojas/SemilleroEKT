@@ -16,8 +16,13 @@ import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.utils.Constantes
 import java.io.File
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 
 class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
@@ -66,6 +71,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         lateinit var FechaMsj:TextView
         lateinit var documento: TextView
         lateinit var myView :View
+        lateinit var txtStatusLeido:TextView
         var context = view.context
 
         init {
@@ -73,15 +79,23 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
             documento = view.findViewById(R.id.txtArchivoadjunto)
             FechaMsj = view.findViewById(R.id.txtFecha)
             myView = view.findViewById(R.id.idMsj)
+            txtStatusLeido = view.findViewById(R.id.txtStatusLeido)
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
 
-            val formatter: DateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
+            if(conversacion.statusLeido == true && conversacion.idemisor.equals(Constantes.id)){
+                txtStatusLeido.isVisible = true
+            }
+            else{
+                txtStatusLeido.isVisible = false
+            }
+
+            val formatter = DateTimeFormatter.ISO_DATE_TIME
             val text: String = conversacion.fechaCreacion.format(formatter)
-            val parsedDate: LocalDate = LocalDate.parse(text, formatter)
+            val parsedDate = LocalDate.parse(text, formatter)
             FechaMsj.text = parsedDate.toString()
 
             if(conversacion.texto.equals("Documento")){
