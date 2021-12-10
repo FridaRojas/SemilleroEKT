@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +32,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
-import java.io.File
 
 class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , DialogoConfirmOpStatusListener{
     private var _binding: FragmentFormularioCrearTareasBinding? = null
@@ -56,7 +54,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
     lateinit var idPersonaAsignada          : String
 
     var listaN = ArrayList<String>()
-    var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"
+    var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"   // Recuperar de shared inicio sesion
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
     var urlPost             : String = ""
@@ -98,10 +96,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
                 val data:Intent?=result.data
                 if(data!= null){
                     try{
-
                         var returnUri = data?.data!!
-                        val uriString = data.toString()
-                        val myFile = File(uriString).name
+                        //val uriString = data.toString()
+                        //val myFile = File(uriString).name
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado: ${data.data!!.lastPathSegment} "
                         Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
@@ -111,7 +108,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
                     }
                 }
             }else{
-                Toast.makeText(context,"No se selecciono archivo",Toast.LENGTH_LONG).show()
+                val newFragment = DialogoAceptar("No se selecciono archivo")
+                newFragment.show(
+                    (activity as HomeActivity).supportFragmentManager,
+                    "missiles"
+                )
             }
         }
         firebaseProvider.obs.observe(viewLifecycleOwner,{
@@ -124,7 +125,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
             nombrePersonaAsignada = (binding.spinnerPersonaAsignada.getEditText() as AutoCompleteTextView).text.toString()
             prioridadAsignada = (binding.spinnerPrioridad.getEditText() as AutoCompleteTextView).text.toString()
 
-            // Obtiene el numero de empleado de la persona seleccionada
+            // Obtiene el id de la persona seleccionada
             listaPersonas.forEach(){
                 if(nombrePersonaAsignada == it.nombre){
                     idPersonaAsignada= it.id
@@ -201,12 +202,13 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
 
     // *** FUNCIONES ***
     fun operacionIsert(){
+
         val tarea: Tasks
-        tituloTarea = binding.edtAgregaTitulo.text.toString()
         val descripcion = binding.edtDescripcion.text
+        tituloTarea = binding.edtAgregaTitulo.text.toString()
 
         tarea = Tasks(
-            // TODO: 08/12/2021  agregar id_grupo desde sharedpreferences id_grupo
+            // TODO: 08/12/2021  agregar id_grupo y nombreEmisor desde sharedpreferences id_grupo
             "619696aa2ae47f99bde6e1e7",                  // id_grupo
             idsuperiorInmediato,
             "Armando Manzanero",
@@ -214,11 +216,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
             fechaFin,                           // Fecha Fin
-            tituloTarea,                  // Titulo de la tarea
+            tituloTarea,                        // Titulo de la tarea
             descripcion.toString(),             // Descripcion
             prioridadAsignada,                  // Prioridad
-            "pendiente",
-            urlPost                            // Url de archivo pdf subido a firebase
+            "pendiente",                  // Estatus
+            urlPost                             // Url de archivo pdf subido a firebase
         )
 
         val newFragment = DialogoConfirmOp (tarea,idPersonaAsignada, this)

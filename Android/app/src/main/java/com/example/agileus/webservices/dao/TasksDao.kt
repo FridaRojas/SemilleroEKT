@@ -15,7 +15,7 @@ class TasksDao {
 
     //Agregar nueva tarea
     fun postTasks(t: Tasks, opStatus: DialogoConfirmOpStatusListener){
-        lateinit var nuevaTarea: Tasks
+        //lateinit var nuevaTarea: Tasks
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
         callInserta.enqueue(object : Callback<Tasks> {
             override fun onResponse(call: Call<Tasks>, response: Response<Tasks>) {
@@ -24,7 +24,7 @@ class TasksDao {
 
                     opStatus.onOpSuccessful()       // Devuelme mensaje de status
 
-                    nuevaTarea = response.body()!!
+                    /*nuevaTarea = response.body()!!
                     var mensaje =
                         "Tarea creada por el emisor: ${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
@@ -33,7 +33,7 @@ class TasksDao {
                     mensaje += ", Descripcion:${nuevaTarea.descripcion}"
                     mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
                     mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
-                    Log.d("Mensaje", mensaje)
+                    Log.d("Mensaje", mensaje)*/
 
                 } else {
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
@@ -130,7 +130,6 @@ class TasksDao {
         })
     }
 
-
     fun editTask(
         taskUpdate: TaskUpdate,
         idTarea: String,
@@ -211,7 +210,7 @@ class TasksDao {
             if (Response != null) {
                 if (Response.isSuccessful) {
                     listaGrupoRecuperada = Response.body()!!
-                    Log.d("Mensaje", "listaGrupoRecuperada: ${listaGrupoRecuperada.status} ")
+                    //Log.d("Mensaje", "listaGrupoRecuperada: ${listaGrupoRecuperada.status} ")
                     if (listaGrupoRecuperada.data != null) {
                         listaPersonsDatos = listaGrupoRecuperada.data
                     } else {
@@ -225,7 +224,7 @@ class TasksDao {
         } catch (e: Exception) {
             Log.e("error", e.toString())
         }
-        Log.d("Mensaje", "listaPersonsDatos size: ${listaPersonsDatos.size} ")
+        //Log.d("Mensaje", "listaPersonsDatos size: ${listaPersonsDatos.size} ")
         return listaPersonsDatos
     }
 
