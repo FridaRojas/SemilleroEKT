@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentDetalleNivelAltoBinding
 import com.example.agileus.models.TaskUpdate
 import com.example.agileus.providers.DownloadProvider
@@ -40,7 +41,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener, dialogoConfir
     lateinit var mStorageInstance: FirebaseStorage
     lateinit var mStorageReference: StorageReference
     var uriPost: String = ""
-    var idsuperiorInmediato: String = "618d9c26beec342d91d747d6"
+    var idsuperiorInmediato: String = InitialApplication.preferenciasGlobal.recuperarIdSuperiorInmediato()
     lateinit var resultLauncherArchivo: ActivityResultLauncher<Intent>
 
 
@@ -131,8 +132,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener, dialogoConfir
                 abreDialogoFecha(2)
             }
         }
-
-
     }
 
     private fun abreDialogoFecha(b: Int) {
