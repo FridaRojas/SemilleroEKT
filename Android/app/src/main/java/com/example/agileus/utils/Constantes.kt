@@ -19,7 +19,7 @@ object Constantes {
     val URL_Tareas_Enviadas=""
     val URL_Tareas_Recibidas=""
 
-    //val id = "618b05c12d3d1d235de0ade0"
+    val idUser = "618b05c12d3d1d235de0ade0"
     val NAME_RECEPTOR = "NAME_RECEPTOR"
     //var id = "61a83b59d036090b8e8db3c1"
     //var id = "618d9c26beec342d91d747d6"
@@ -73,7 +73,7 @@ object Constantes {
     //val URL_Login = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"//"https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"           // "http://10.97.4.193:3040/"                                    // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
 
     //var idUsuario = "618e8743c613329636a769aa"
-    var idUsuario = id
+    var idUsuario =idUser
     var idUsuarioEstadisticas = idUsuario
     var opcionFiltro = 0
     var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
