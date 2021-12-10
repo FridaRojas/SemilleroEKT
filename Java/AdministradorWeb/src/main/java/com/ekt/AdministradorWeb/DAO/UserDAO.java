@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class UserDAO {
 
     String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
+
     public ArrayList<User> muestraSubordinados(String idSuperior){
         Gson gson = new Gson();
         ArrayList<User> listaUsuarios = new ArrayList<>();
@@ -83,30 +84,6 @@ public class UserDAO {
             }
         }catch (Exception e){
             System.out.println("Error en la consulta");
-        }
-        return res;
-    }
-
-    public Boolean existusuario(User user){
-        Boolean res=false;
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"correo\" : \""+user.getCorreo()+"\",\r\n    \"curp\" : \""+user.getCurp()+"\",\r\n    \"rfc\" : \""+user.getRFC()+"\",\r\n    \"numeroEmpleado\" : \""+user.getNumeroEmpleado()+"\"\r\n}");
-        Request request = new Request.Builder()
-                .url(servidor+"/api/user/existUser")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            JSONObject jsonObject = new JSONObject(response.body().string());
-            if (!jsonObject.get("data").toString().equals("true")) {
-                res=true;
-            }
-        }
-        catch (Exception e){
-            System.out.println("Error al realizar la peticion");
         }
         return res;
     }
@@ -320,5 +297,7 @@ public class UserDAO {
         }
         return res;
     }
+
+
 
 }

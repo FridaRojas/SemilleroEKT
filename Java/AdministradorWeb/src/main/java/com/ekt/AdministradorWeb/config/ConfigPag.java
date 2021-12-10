@@ -44,49 +44,6 @@ public class ConfigPag {
         }
     }
 
-    @PostMapping("/eliminarUsuarioGeneral")
-    public String eliminarUsuario(@ModelAttribute(value = "id") String id,Model model, HttpSession session){
-        if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")){
-            ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(id);
-            User user = userDAO.buscaID(id);
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .build();
-            MediaType mediaType = MediaType.parse("text/plain");
-            RequestBody body = RequestBody.create(mediaType, "");
-            Request request = new Request.Builder()
-                    .url("http://localhost:3040/api/user/delete/" + id)
-                    .method("DELETE", body)
-                    .build();
-            try {
-                //limpia informacion del usuario en la db
-                Response response = client.newCall(request).execute();
-                System.out.println("el id es: " + id + "  eliminado con exito");
-                //Verificar si tiene hijos
-                if (listaSubordinados != null) {
-                    ArrayList<User> listaUsuarios = new ArrayList<>();
-                    User[] usuarios;
-                    usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
-                    for (User usuario : usuarios) {
-                        if (!usuario.getID().equals(user.getID())) {
-                            listaUsuarios.add(usuario);
-                        }
-                    }
-                    model.addAttribute("listaSubordinados", listaSubordinados);
-                    model.addAttribute("listaUsuarios", listaUsuarios);
-                    model.addAttribute("idUsuario", id);
-                    return "paginas/usuarios/ReasignaSuperior";
-                } else {
-                    return "redirect:/buscarTodosGrupos";
-                }
-            } catch (Exception e) {
-                System.out.println("Error al eliminar usuario" + e);
-            }
-            return "redirect:/findAllUsuarios";
-        }else {
-            return "redirect:/login";
-        }
-    }
-
 
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs, HttpSession session) {
@@ -372,18 +329,10 @@ public class ConfigPag {
     @GetMapping("/buscarTodosGrupos")
     public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model, HttpSession session) {
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-            Gson gson = new Gson();
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .build();
-            Request request = new Request.Builder()
-                    .url("http://localhost:3040/api/grupo/buscarTodo")
-                    .method("GET", null)
-                    .build();
+
             try {
-                Response response = client.newCall(request).execute();
-                String res = response.body().string();
-                JSONObject jsonObject = new JSONObject(res);
-                JSONArray name1 = jsonObject.getJSONArray("data");
+                Gson gson = new Gson();
+                JSONArray name1 = groupDAO.buscarTodosGrupos();
                 for (int i = 0; i < name1.length(); i++) {
                     listaGrupos.add(gson.fromJson(name1.getJSONObject(i).toString(), Group.class));
                 }
@@ -460,33 +409,7 @@ public class ConfigPag {
         }else return "redirect:/login";
     }
 
-    @PostMapping("/buscarGrupo")
-    public String buscarGrupo(String nombre, HttpSession session){
-        try {
-            if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-                ArrayList<Group> listaGrupos = new ArrayList<>();
-                Gson gson = new Gson();
-                OkHttpClient client = new OkHttpClient().newBuilder()
-                        .build();
-                Request request = new Request.Builder()
-                        .url("http://localhost:3040/api/grupo/buscarPorNombre/" + nombre)
-                        .method("GET", null)
-                        .build();
-                Response response = client.newCall(request).execute();
-                String res = response.body().string();
-                JSONObject jsonObject = new JSONObject(res);
-                //JSONArray name1 = jsonObject.getJSONArray("data");
-                //listaGrupos.add(gson.fromJson(name1.getJSONObject(0).toString(), Group.class));
-                System.out.println(jsonObject.toString());
-            }else {
-                return "redirect:/login";
-            }
-        }catch (Exception e){
-            System.err.println("Exception"+e);
-            return "/error1";
-        }
-        return null;
-    }
+
 
     @GetMapping("/error1")
     public String error() {
@@ -497,21 +420,7 @@ public class ConfigPag {
     public String agregarUsuarioAGrupo(@ModelAttribute BodyAddUserGroup bodyAdd, RedirectAttributes redirectAttrs, HttpSession session) {
         try{
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-                OkHttpClient client = new OkHttpClient().newBuilder()
-                        .build();
-                MediaType mediaType = MediaType.parse("application/json");
-                RequestBody body = RequestBody.create(mediaType,
-                        "{\r\n    \"idUsuario\":\"" + bodyAdd.getIdUsuario() +
-                                "\",\r\n    \"idGrupo\":\"" + bodyAdd.getIdGrupo() +
-                                "\",\r\n    \"idSuperior\":\"" + bodyAdd.getIdSuperior() +
-                                "\",\r\n    \"nombreRol\":\"" + bodyAdd.getNombreRol() + "\"\r\n}\r\n\r\n");
-                Request request = new Request.Builder()
-                        .url("http://localhost:3040/api/grupo/agregarUsuario")
-                        .method("PUT", body)
-                        .addHeader("Content-Type", "application/json")
-                        .build();
-                Response response = client.newCall(request).execute();
-                JSONObject jsonObject = new JSONObject(response.body().string());
+                JSONObject jsonObject = groupDAO.agregarUsuario(bodyAdd);
                 if (jsonObject.get("status").toString().equals("ACCEPTED")){
                     redirectAttrs
                             .addFlashAttribute("status", "success")
@@ -563,17 +472,18 @@ public class ConfigPag {
     }
 
     @PostMapping("/verUsuario")
-    public String verUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs, HttpSession session){
+    public String verUsuario(@ModelAttribute(value = "id") String id,Model model,
+                             RedirectAttributes redirectAttrs, HttpSession session){
         try {
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
                 User user = userDAO.buscaID(id);
                 if (user != null) {
                     model.addAttribute("user", user);
-                    return "paginas/usuarios/verUsuario";
+                    return "paginas/usuarios/VerUsuario";
                 } else {
                     redirectAttrs
                             .addFlashAttribute("mensaje", "El usuario ya no existe");
-                    return "/findAllUsuarios";
+                    return "redirect:/findAllUsuarios";
                 }
             }else {
                 return "redirect:/login";
@@ -589,15 +499,7 @@ public class ConfigPag {
     public String borrarGrupo(@ModelAttribute(value = "idGrupo") String id,Model model, HttpSession session) {
         try{
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-                OkHttpClient client = new OkHttpClient().newBuilder()
-                        .build();
-                MediaType mediaType = MediaType.parse("text/plain");
-                RequestBody body = RequestBody.create(mediaType, "");
-                Request request = new Request.Builder()
-                        .url("http://localhost:3040/api/grupo/borrar/" + id)
-                        .method("DELETE", body)
-                        .build();
-                Response response = client.newCall(request).execute();
+                groupDAO.borrarGrupo(id);
                 return "redirect:/buscarTodosGrupos";
             }else {
                 return "redirect:/login";
@@ -650,4 +552,6 @@ public class ConfigPag {
             return "redirect:/error1";
         }
     }
+
+
 }

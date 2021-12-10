@@ -5,6 +5,7 @@ import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class GroupDAO {
@@ -60,7 +61,7 @@ public class GroupDAO {
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url(servidor+"/api/api/grupo/crearGrupo/"+gr.getNombre())
+                .url(servidor+"/api/grupo/crearGrupo/"+gr.getNombre())
                 .method("POST", body)
                 .build();
         try {
@@ -180,4 +181,53 @@ public class GroupDAO {
             return false;
         }
     }
+
+    public void borrarGrupo(String id) throws Exception{
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url(servidor+"/api/grupo/borrar/" + id)
+                .method("DELETE", body)
+                .build();
+        Response response = client.newCall(request).execute();
+    }
+
+    public JSONObject agregarUsuario(BodyAddUserGroup bodyAdd) throws Exception{
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType,
+                "{\r\n    \"idUsuario\":\"" + bodyAdd.getIdUsuario() +
+                        "\",\r\n    \"idGrupo\":\"" + bodyAdd.getIdGrupo() +
+                        "\",\r\n    \"idSuperior\":\"" + bodyAdd.getIdSuperior() +
+                        "\",\r\n    \"nombreRol\":\"" + bodyAdd.getNombreRol() + "\"\r\n}\r\n\r\n");
+        Request request = new Request.Builder()
+                .url(servidor+"/api/grupo/agregarUsuario")
+                .method("PUT", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        Response response = client.newCall(request).execute();
+        return new JSONObject(response.body().string());
+    }
+
+    public JSONArray buscarTodosGrupos()throws Exception{
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url(servidor+"/api/grupo/buscarTodo")
+                .method("GET", null)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String res = response.body().string();
+        JSONObject jsonObject = new JSONObject(res);
+        JSONArray resp=jsonObject.getJSONArray("data");
+        return resp;
+
+    }
+
+
 }

@@ -5,6 +5,7 @@ import com.ekt.Servicios.entity.BodyUpdateBoss;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
+import com.ekt.Servicios.service.GeneralService;
 import com.ekt.Servicios.service.GroupServiceImpl;
 import com.ekt.Servicios.service.UserService;
 import org.json.JSONException;
@@ -43,7 +44,7 @@ public class UserController {
                     System.out.println("ya existe");
                     return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",null));
                 }else {
-                    String psw= userService.cifrar(user.getPassword());
+                    String psw= GeneralService.cifrar(user.getPassword());
                     user.setPassword(psw);
                     user.setTokenAuth("");
                     userService.save(user);
@@ -94,7 +95,7 @@ public class UserController {
                 System.out.println("Error en las llaves");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
             }else{
-                String psw=userService.cifrar(infAcceso.getPassword());
+                String psw=GeneralService.cifrar(infAcceso.getPassword());
                 Optional<User> user=userService.userValidate(infAcceso.getCorreo(),psw);
                 if (user.isPresent()){
                     System.out.println(user.get().getStatusActivo());
@@ -203,7 +204,7 @@ public class UserController {
                     return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", null));
                 }else{
                         if (!userUpdate.getPassword().equals(user.get().getPassword())){
-                            String pwd=userService.cifrar(userUpdate.getPassword());
+                            String pwd=GeneralService.cifrar(userUpdate.getPassword());
                             userUpdate.setPassword(pwd);
                         }
                         //si tien grupo actualizamos informacion personal
