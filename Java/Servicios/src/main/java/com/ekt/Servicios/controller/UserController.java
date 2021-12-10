@@ -59,11 +59,18 @@ public class UserController {
 
     }
 
+
+
+    /**
+     * Busca a todos los usuarios existentes
+     * @return Objeto Respuesta que contiene un HttpStatus, un mensaje y una lista de usuarios
+     **/
     @GetMapping("/findAll")//*
     public ResponseEntity<?> findAll(){
         try{
-            if (userService.findAll()!=null){
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Lista de usuarios encontrada",userService.findAll()));
+            Iterable<User> listaUsuarios= userService.findAll();
+            if (listaUsuarios!=null){
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Lista de usuarios encontrada",listaUsuarios));
             }else{
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al buscar los datos",""));
             }
@@ -73,12 +80,19 @@ public class UserController {
         }
     }
 
-    @GetMapping("/find/{id}")//*
+
+    /**
+     * Busca a un usuario por id
+     * @param id
+     * @return Objeto Respuesta que contiene un HttpStatus, un mensaje y un Objeto Usuario
+     */
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable String id){
-        //return userService.findById(id);
+        Optional<User> user;
         try{
-            if(userService.findById(id).isPresent()){
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",userService.findById(id)));
+            user= userService.findById(id);
+            if(user.isPresent()){
+                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",user));
             }else{
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",""));
             }

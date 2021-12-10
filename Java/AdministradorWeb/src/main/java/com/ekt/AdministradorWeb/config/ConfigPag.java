@@ -66,6 +66,13 @@ public class ConfigPag {
         }
     }
 
+    /**
+     *Busca a todos los usuarios y retorna a la pagina inicial de usuarios
+     * @param model
+     * @param session parametro correspondiente al manejo de la sesion
+     * @return lista de usuarios en el Model
+     * @return Pagina Inicial de Usuarios
+     */
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(ModelMap model, HttpSession session) {
         Gson gson = new Gson();
@@ -87,6 +94,13 @@ public class ConfigPag {
         }
     }
 
+    /**
+     *Añade un usuario nuevo, unicamente con informacion personal
+     * @param user Se recibe un Usuario para ser añadido
+     * @param redirectAttrs parametro para añadir las alertas
+     * @param session parametro para el manejo de la sesion
+     * @return a la pagina inicial de Usuarios
+     */
     @PostMapping("/añadirUsuario")//*
     public String añadirUsuario(@ModelAttribute User user, RedirectAttributes redirectAttrs, HttpSession session){
         try {
@@ -97,7 +111,6 @@ public class ConfigPag {
                             .addFlashAttribute("mensaje", "Usuario Creado Correctamente");
                     return "redirect:/findAllUsuarios";
                 } else {
-                    System.out.println("no creado :(");
                     redirectAttrs
                             .addFlashAttribute("status", "danger")
                             .addFlashAttribute("mensaje", "El usuario ya existe");
@@ -112,6 +125,15 @@ public class ConfigPag {
         }
     }
 
+
+    /**
+     *Se llena un formulario con la informacion personal de un usuario y asi pueda ser editada
+     * @param id parametro correspondiente al id de un Usuario
+     * @param model
+     * @param redirectAttrs parametro donde se añaden las alertas
+     * @param session parametro correspondiente al manejo de la sesion
+     * @return Se retorna a la pagina EditarUsuario
+     */
     @RequestMapping(value="/editarUsuario",method = {RequestMethod.POST, RequestMethod.GET})
     @PostMapping("/editarUsuario")
     public String editarUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs, HttpSession session){
@@ -139,6 +161,16 @@ public class ConfigPag {
 
     }
 
+
+    /**
+     * Se edita la informacion personal en un usuario
+     * @param user parametro con la informacion de un Usurio a editar
+     * @param id parametro correspondiente al id de un Usuario
+     * @param redirectAttrs parametro donde se añaden las alertas
+     * @param session parametro correspondiente al manejo de la sesion
+     * @return retorna a pagina Inicial de Usuarios
+     * @return  retorna a la misma pagina en caso de ocurrir un error
+     */
     @PostMapping ("/editarUsuarioServicio")//*
     public String editarUsuarioServicio(@ModelAttribute User user,@ModelAttribute(value = "id") String id,RedirectAttributes redirectAttrs, HttpSession session){
         Boolean bandera=false;
@@ -150,16 +182,13 @@ public class ConfigPag {
             user.setIDGrupo(userDb.getIDGrupo());
             user.setNombreRol(userDb.getNombreRol());
             user.setIDSuperiorInmediato(userDb.getIDSuperiorInmediato());
-            //editar informacion
-            //editar usuario en grupo
+
             //vefiricar si tiene un grupo asignado para editarlo tambien
             if (!userDb.getIDGrupo().equals("")) {
-                System.out.println("Entra a grupo lleno");
                 if (userDAO.editarUsuario(user) && groupDAO.editarUsuarioGrupo(user)) {
                     bandera = true;
                 }
             } else {
-                System.out.println("Entra a grupo vacio");
                 if (userDAO.editarUsuario(user)) {
                     bandera = true;
                 }
@@ -367,9 +396,7 @@ public class ConfigPag {
     }
 
     @PostMapping("/ActualizaElimina")
-    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen
-            ,@ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap
-            ,Model model,RedirectAttributes redirectAttrs, HttpSession session){
+    public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen,@ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap,Model model,RedirectAttributes redirectAttrs, HttpSession session){
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
             userDAO.actualizaIdSuperior(idUser, idBoss);
             ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
@@ -410,7 +437,6 @@ public class ConfigPag {
     }
 
 
-
     @GetMapping("/error1")
     public String error() {
         return "paginas/error.html";
@@ -441,6 +467,15 @@ public class ConfigPag {
         }
     }
 
+
+    /**
+     *Edita un usuario en un Organigrama
+     * @param idGrupo parametro correspondiente a un id de Grupo
+     * @param body Objeto con (idUsuario,idGrupo,idSuperior,nombreRol)
+     * @param redirectAttrs parametro correspondiente a las alertas
+     * @param session parametro correspondiente al manejo de sesion
+     * @return retorna a la pagina general de Organigramas
+     */
     @PostMapping("/editaUsuarioAGrupo")
     public String editaUsuarioAGrupo(@ModelAttribute(value = "idGrupo") String idGrupo,@ModelAttribute BodyAddUserGroup body
             ,RedirectAttributes redirectAttrs, HttpSession session){

@@ -32,6 +32,11 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
     }
 
+    /**
+     * Agrega un usuario a un grupo
+     * @param bodyAddUserGroup (idUsuario,idGrupo,idSuperior,nombreRol)
+     * @return @return Objeto Respuesta que contiene un HttpStatus, un mensaje y un  Objeto Grupo
+     */
     @PutMapping("/agregarUsuario")//*
     public ResponseEntity<?> addUserGroup(@RequestBody BodyAddUserGroup bodyAddUserGroup) {
         System.out.println("entra a agregar usuario al grupo");
@@ -59,16 +64,6 @@ public class GroupController {
                         }
 
                     }else{
-                        System.out.println("no entra a caso broadcast");
-                        System.out.println("idsuperor:"+bodyAddUserGroup.getIdSuperior());
-                        System.out.println("id:"+bodyAddUserGroup.getIdUsuario());
-                        System.out.println("rol:"+bodyAddUserGroup.getNombreRol());
-
-
-                        //verifica si el usuario seleccionado no es el broadcast
-                      //  Optional<User> userBroadcast= userService.findById(bodyAddUserGroup.getIdSuperior());
-
-                       // if (!userBroadcast.get().getNombreRol().equals("BROADCAST")){
                             Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getNombreRol());
                             User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getNombreRol());
                             if (group == null && user == null) {
@@ -76,10 +71,6 @@ public class GroupController {
                             } else {
                                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
                             }
-                      /*  }else{
-                            //no se pueden asignar subordinados al broadcast
-                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,no se pueden asignar subordinados al broadcast", ""));
-                        }*/
                     }
             }
         } catch (Exception e) {
