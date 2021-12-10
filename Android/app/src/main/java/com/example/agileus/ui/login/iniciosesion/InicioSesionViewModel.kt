@@ -28,8 +28,6 @@ class InicioSesionViewModel : ViewModel() {
 
     }
 
-    val correo = preferenciasGlobal.recuperaNombre()
-    val password = preferenciasGlobal.recuperaPassword()
     //shared
     //private var userList = mutableListOf<Users>()
     //var usuariosShared = MutableLiveData<List<Users>>()
@@ -58,7 +56,7 @@ class InicioSesionViewModel : ViewModel() {
         return emptyList()
     }
 
-    /*
+
     fun getUsersByBoss() {
         var listUsers = ArrayList<DataPersons>()
 
@@ -68,7 +66,7 @@ class InicioSesionViewModel : ViewModel() {
                 list.getUsersByBoss("618d9c26beec342d91d747d6")
 
                 //false "No tiene hijos" -> bajo
-                //list.getUsersByBoss("61a83c49d036090b8e8db3c5")
+                //list.getUsersByBoss("618d9c26beec342d91d747d")
 
             }
             if (listUsers != null) {
@@ -82,7 +80,8 @@ class InicioSesionViewModel : ViewModel() {
         }else{
             usersByBoss = true
         }
-    }*/
+    }
+
     fun cerrarSesion(view: View) {
         preferenciasGlobal.cerrarSesion()
     }

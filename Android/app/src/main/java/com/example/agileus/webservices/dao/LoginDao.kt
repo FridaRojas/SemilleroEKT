@@ -2,6 +2,7 @@ package com.example.agileus.webservices.dao
 
 import android.util.Log
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.*
 import retrofit2.Call
 import com.example.agileus.models.LoginResponse
@@ -57,6 +58,20 @@ class LoginDao {
 
                     almacenar.data = guardarData
 
+                    preferenciasGlobal.guardarDatosInicioSesion(
+                        mapa["idUser"].toString(),
+                        mapa["correo"].toString(),
+                        mapa["numeroEmpleo"].toString(),
+                        mapa["nombre"].toString(),
+                        mapa["nombreRol"].toString(),
+                        mapa["mapa"].toString(),
+                        mapa["curp"].toString(),
+                        mapa["rfc"].toString(),
+                        mapa["tokenAuth"].toString(),
+                        mapa["idgrupo"].toString(),
+                        mapa["idsuperiorInmediato"].toString()
+                    )
+
                 }
 
                 else {
@@ -78,7 +93,7 @@ class LoginDao {
             return STATUS
 
     }
-                /*
+
     suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
         var listaUsers = ArrayList<DataPersons>()
         lateinit var usersListResponse: UserBossResponse
@@ -110,6 +125,6 @@ class LoginDao {
             Log.e("error", e.toString())
         }
         return listaUsers
-    }*/
+    }
 }
 
