@@ -61,6 +61,8 @@ class ReporteMensajesViewModel: ViewModel() {
                     }
                 }
 
+                //cargaOperacionesEstadisticas.value = !(cargaOperacionesEstadisticas.value)!!
+                //Log.d("RMVM Boolean", cargaOperacionesEstadisticas.value.toString())
             }catch (ex:Exception){
                 Log.e("Error de conexion MensajesVM", ex.toString())
             }
@@ -84,6 +86,6 @@ class ReporteMensajesViewModel: ViewModel() {
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
-        cargaOperacionesEstadisticas.value = true
+        cargaOperacionesEstadisticas.value = !(cargaOperacionesEstadisticas.value)!!
     }
 }

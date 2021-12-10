@@ -13,18 +13,22 @@
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/iconofiltrar.xml" value="0.10400000000000001" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/rounded_bg.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/drawable/rounded_rm.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/activity_conversation_one_to_one.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/activity_home.xml" value="0.16" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/activity_main.xml" value="0.18125" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/dialog_filtro_reportes.xml" value="0.4" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/dialog_picker_filtro_meses_anios.xml" value="0.1983695652173913" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/dialog_picker_meses_filtro_meses.xml" value="0.20380434782608695" />
+        <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.14010416666666667" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/fragment_notifications.xml" value="0.17300724637681159" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/fragment_tasks.xml" value="0.19322916666666667" />
+        <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/inicio_sesion_fragment.xml" value="0.1734375" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/item.xml" value="0.26510416666666664" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/item_selected.xml" value="0.26510416666666664" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/list_contacts_fragment.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/list_contacts_item.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/list_item.xml" value="0.26510416666666664" />
+        <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/login_fragment.xml" value="0.1734375" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/reporte_mensajes_fragment.xml" value="0.4" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/reporte_tareas_fragment.xml" value="0.4" />
         <entry key="..\:/Users/Sergi/OneDrive/Escritorio/ProyectoSemilleroEKT/semilleroekt/Android/app/src/main/res/layout/rounded_corners.xml" value="0.18125" />

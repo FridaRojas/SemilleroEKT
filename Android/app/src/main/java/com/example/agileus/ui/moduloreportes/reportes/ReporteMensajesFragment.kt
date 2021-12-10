@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.transition.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -98,6 +99,10 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
             Constantes.empleadoUsuario = list
+            binding.progressLoading.visibility = View.GONE
+            binding.btnFiltroReportes.visibility = View.VISIBLE
+            //cambiarGrafica(tipo_grafica)
+
             //Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
         })
         reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, Observer{
@@ -106,13 +111,18 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             binding.txtRangoFechaReportes.setText("CargaCompleta")
             cambiarGrafica(tipo_grafica)
         } )
+        /*
+        reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, Observer{
+            //Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
+            //binding.txtRangoFechaReportes.isVisible = true
+            binding.txtRangoFechaReportes.setText("CargaCompleta")
+            cambiarGrafica(tipo_grafica)
+        } )
+         */
 
         reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
 
         binding.btnFiltroReportes.setOnClickListener {
-            reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list ->
-                Constantes.empleadoUsuario = list
-            })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }
@@ -419,13 +429,13 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
+        //binding.progressLoading.visibility = View.VISIBLE
         cambiarGrafica(tipo_grafica)
         //Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun cambiarGrafica(valor: Int) {
-
         when (valor) {
 
             0 -> {
