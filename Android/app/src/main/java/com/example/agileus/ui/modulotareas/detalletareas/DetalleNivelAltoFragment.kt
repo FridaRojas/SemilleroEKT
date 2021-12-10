@@ -3,12 +3,10 @@ package com.example.agileus.ui.modulotareas.detalletareas
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
@@ -37,8 +35,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
-    DialogoTareaCreadaExitosamente.NoticeDialogListener, dialogoConfirmarListener {
+class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener, dialogoConfirmarListener {
     lateinit var firebaseProvider: FirebaseProvider
     lateinit var mStorageInstance: FirebaseStorage
     lateinit var mStorageReference: StorageReference
@@ -56,8 +53,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
     private var _binding: FragmentDetalleNivelAltoBinding? = null
     private val binding get() = _binding!!
     private lateinit var observaciones: String
-    private lateinit var fechaFin: Date
-    private lateinit var fechaInicio: Date
     private lateinit var descripcion: String
     private lateinit var estatus: String
     private lateinit var prioridad: String
@@ -94,39 +89,7 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         //toolbar
         (activity as HomeActivity).fragmentSeleccionado = "verDetalleTarea"
 
-        resultLauncherArchivo =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data: Intent? = result.data
-                    if (data != null) {
-                        try {
-                            var returnUri = data?.data!!
-                            val uriString = data.toString()
-                            val myFile = File(uriString).name
-                            //val myFile = getRealPathFromURI(requireContext(), returnUri)
-                            binding.btnAdjuntarArchivoF.text = "Archivo seleccionado"
-                            Log.d("mensaje", "PDF: $myFile")
-                            firebaseProvider.subirPdfFirebase(
-                                returnUri,
-                                Constantes.referenciaTareas,
-                                "tarea$idsuperiorInmediato${(0..999).random()}"
-
-                            )
-                        } catch (e: FileNotFoundException) {
-                            e.printStackTrace()
-                            Log.e("mensaje", "File not found. ${e.message}");
-                        }
-                    }
-                } else {
-                    Toast.makeText(context, "No se selecciono archivo", Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
-        firebaseProvider.obs.observe(viewLifecycleOwner, {
-            uriPost = it
-        })
-
-
+        resultLauncher()
         setInfo(args)
         desactivarCampos(args)
 
@@ -144,98 +107,157 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             }
 
             btnAdjuntarArchivoF.setOnClickListener {
-                val intentPdf = Intent()
-                intentPdf.setAction(Intent.ACTION_GET_CONTENT)
-                intentPdf.type =
-                    "application/pdf"                     // Filtra para archivos pdf
-                resultLauncherArchivo.launch(intentPdf)
+                abreIntentAdjuntarArchivo()
             }
 
             btnDescargarArchivoFF.setOnClickListener {
-                var mDownloadProvider = DownloadProvider()
-                mDownloadProvider.dowloadFile(
-                    (activity as HomeActivity).applicationContext,
-                    args.tareas.archivo, "archivo"
-                )
+                descargarArchivo(args)
+            }
+
+            btnValidarTarea.setOnClickListener {
+                validarTarea(args)
+            }
+
+            btnGuardarTareaF.setOnClickListener {
+                guardarTarea(args)
+            }
+
+
+            txtFechaInicioD.setOnClickListener {
+                abreDialogoFecha(1)
+            }
+
+            txtFechaFinD.setOnClickListener {
+                abreDialogoFecha(2)
             }
         }
 
-        binding.btnValidarTarea.setOnClickListener {
-            val newFragment2 =
-                DialogoValidarTarea(args,this)
-            newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
-        }
-
-        binding.btnGuardarTareaF.setOnClickListener {
-            var obs = binding.txtObservacionesD.text.toString()
-            args.tareas.observaciones = obs
-
-            //todo cuando haya que modificar archivo crear un metodo para subir el archivo
-            //todo si el archivo no es nulo o vacio
-            //todo mandarlo a llamar en esta parte pasandole el parametro del archivo.
-
-            var titulo: String
-            var descripcion: String
-            var fecha_ini: String
-            var fecha_fin: String
-            var prioridad: String
-            var estatus: String
-            var observaciones: String
-
-            titulo = binding.txtNombreTareaD.text.toString()
-            descripcion = binding.txtDescripcionD.text.toString()
-            fecha_ini = binding.txtFechaInicioD.text.toString()
-            fecha_fin = binding.txtFechaFinD.text.toString()
-            prioridad = args.tareas.prioridad
-            observaciones = obs
-            estatus = "pendiente"
-
-            if (descripcion.isNullOrEmpty()) {
-                Toast.makeText(context, "La descripcion no puede ir vacia", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-
-                var update = TaskUpdate(
-                    titulo,
-                    descripcion,
-                    fecha_ini,
-                    fecha_fin,
-                    prioridad,
-                    estatus,
-                    observaciones
-                )
-
-                desactivarCampos(args)
-
-                val newFragment2 =
-                    DialogoActualizarTarea(
-                        update,
-                        args.tareas.idTarea,
-                        args.tareas.idEmisor,
-                        this
-                    )
-                newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
-            }
-
-        }
-
-        binding.txtFechaInicioD.setOnClickListener {
-            val newFragment = EdtFecha(this, 1)
-            newFragment.show(parentFragmentManager, "Edt fecha")
-        }
-
-        binding.txtFechaFinD.setOnClickListener {
-            val newFragment = EdtFecha(this, 2)
-            newFragment.show(parentFragmentManager, "Edt fecha")
-        }
 
     }
 
+    private fun abreDialogoFecha(b: Int) {
+        val newFragment = EdtFecha(this, b)
+        newFragment.show(parentFragmentManager, "Edt fecha")
+    }
+
+    private fun descargarArchivo(args: DetalleNivelAltoFragmentArgs) {
+        var mDownloadProvider = DownloadProvider()
+        mDownloadProvider.dowloadFile(
+            (activity as HomeActivity).applicationContext,
+            args.tareas.archivo, "archivo"
+        )
+    }
+
+    private fun abreIntentAdjuntarArchivo() {
+        val intentPdf = Intent()
+        intentPdf.setAction(Intent.ACTION_GET_CONTENT)
+        intentPdf.type =
+            "application/pdf"                     // Filtra para archivos pdf
+        resultLauncherArchivo.launch(intentPdf)
+    }
+
+    private fun validarTarea(args: DetalleNivelAltoFragmentArgs) {
+        val newFragment2 =
+            DialogoValidarTarea(args, this)
+        newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+    }
+
+    private fun guardarTarea(args: DetalleNivelAltoFragmentArgs) {
+        var obs = binding.txtObservacionesD.text.toString()
+        args.tareas.observaciones = obs
+
+        //todo cuando haya que modificar archivo crear un metodo para subir el archivo
+        //todo si el archivo no es nulo o vacio
+        //todo mandarlo a llamar en esta parte pasandole el parametro del archivo.
+
+        var titulo: String
+        var descripcion: String
+        var fecha_ini: String
+        var fecha_fin: String
+        var prioridad: String
+        var estatus: String
+        var observaciones: String
+
+        titulo = binding.txtNombreTareaD.text.toString()
+        descripcion = binding.txtDescripcionD.text.toString()
+        fecha_ini = binding.txtFechaInicioD.text.toString()
+        fecha_fin = binding.txtFechaFinD.text.toString()
+        prioridad = args.tareas.prioridad
+        observaciones = obs
+        estatus = "pendiente"
+
+        if (descripcion.isNullOrEmpty()) {
+            val dialogoAceptar = DialogoAceptar("La descripcion no puede quedar vacia")
+            dialogoAceptar.show(
+                (activity as HomeActivity).supportFragmentManager,
+                getString(R.string.dialogoAceptar)
+            )
+        } else {
+
+            var update = TaskUpdate(
+                titulo,
+                descripcion,
+                fecha_ini,
+                fecha_fin,
+                prioridad,
+                estatus,
+                observaciones
+            )
+
+            desactivarCampos(args)
+
+            val newFragment2 =
+                DialogoActualizarTarea(
+                    update,
+                    args.tareas.idTarea,
+                    args.tareas.idEmisor,
+                    this
+                )
+            newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+        }
+    }
+
+    private fun resultLauncher() {
+        resultLauncherArchivo =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    if (data != null) {
+                        try {
+                            var returnUri = data?.data!!
+                            val uriString = data.toString()
+                            val myFile = File(uriString).name
+                            //val myFile = getRealPathFromURI(requireContext(), returnUri)
+                            binding.btnAdjuntarArchivoF.text = "Archivo seleccionado"
+                            firebaseProvider.subirPdfFirebase(
+                                returnUri,
+                                Constantes.referenciaTareas,
+                                "tarea$idsuperiorInmediato${(0..999).random()}"
+
+                            )
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                            val dialogoAceptar = DialogoAceptar("Archivo no encontrado")
+                            dialogoAceptar.show(
+                                (activity as HomeActivity).supportFragmentManager,
+                                getString(R.string.dialogoAceptar)
+                            )
+                        }
+                    }
+                } else {
+                    val dialogoAceptar = DialogoAceptar("No se selecciono archivo")
+                    dialogoAceptar.show(
+                        (activity as HomeActivity).supportFragmentManager,
+                        getString(R.string.dialogoAceptar)
+                    )
+                }
+            }
+        firebaseProvider.obs.observe(viewLifecycleOwner, {
+            uriPost = it
+        })
+    }
+
     private fun setInfo(args: DetalleNivelAltoFragmentArgs) {
-//        Toast.makeText(context, "${args.tareas.idTarea}", Toast.LENGTH_SHORT).show()
-//        Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
-        Log.d("Mensaje", args.tareas.archivo)
-        Log.d("Mensaje", args.tareas.estatus)
         var mesI: String = ""
         var diaI: String = ""
         var mesF: String = ""
@@ -249,7 +271,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         val cal = Calendar.getInstance()
         var fechaI = sdf3.parse(args.tareas.fechaIni.toString())
         var fechaF = sdf3.parse(args.tareas.fechaFin.toString())
-
 
         cal.time = fechaI
 
@@ -290,7 +311,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
         fechaFi =
             cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
-        Log.d("Mensaje", "fecha nueva $fechaFi")
 
         nombreTarea = args.tareas.titulo
         nombrePersona = args.tareas.nombreEmisor
@@ -298,6 +318,22 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         estatus = args.tareas.estatus
         descripcion = args.tareas.descripcion
 
+        validaciones(args)
+
+
+        with(binding) {
+            txtNombreTareaD.setText(nombreTarea)
+            txtNombrePersonaD.text = nombrePersona
+            txtPrioridadD.setText("Prioridad: " + prioridad)
+            txtDescripcionD.setText(descripcion)
+            txtEstatusD.setText("Estatus: " + estatus)
+            txtFechaInicioD.setText(fechaIn)
+            txtFechaFinD.setText(fechaFi)
+            txtObservacionesD.setText(observaciones)
+        }
+    }
+
+    private fun validaciones(args: DetalleNivelAltoFragmentArgs) {
         if (!args.tareas.observaciones.isNullOrEmpty()) {
             observaciones = args.tareas.observaciones
             binding.txtObservacionesD.setText(observaciones)
@@ -335,22 +371,11 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             binding.btnValidarTarea.isEnabled = false
         }
 
-        with(binding) {
-            txtNombreTareaD.setText(nombreTarea)
-            txtNombrePersonaD.text = nombrePersona
-            txtPrioridadD.setText("Prioridad: " + prioridad)
-            txtDescripcionD.setText(descripcion)
-            txtEstatusD.setText("Estatus: " + estatus)
-            txtFechaInicioD.setText(fechaIn)
-            txtFechaFinD.setText(fechaFi)
-            txtObservacionesD.setText(observaciones)
-        }
     }
 
     private fun desactivarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
-            Log.d("Mensaje", args.tareas.archivo)
-//            Toast.makeText(context, args.tareas.archivo, Toast.LENGTH_SHORT).show()
+
             if (!args.tareas.archivo.isNullOrEmpty()) {
                 binding.btnDescargarArchivoFF.isVisible = true
             }
@@ -379,10 +404,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
 
     private fun activarCampos(args: DetalleNivelAltoFragmentArgs) {
         with(binding) {
-            Toast.makeText(context, "Estatus: ${args.tareas.estatus}", Toast.LENGTH_SHORT).show()
-            /* if (args.tareas.estatus.equals("revision")) {
-                 btnGuardarTareaF.setText("Validar")
-             }*/
             btnValidarTarea.isVisible = false
             txtObservacionesD.isEnabled = true
             txtObservacionesD.isVisible = true
@@ -427,13 +448,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
         val fechaObtenida = "$anio-$mes-$dia"
         fecha.setText(fechaObtenida)
 
-    }
-
-    override fun onDialogPositiveClick(dialog: DialogFragment) {
-    }
-
-    override fun onDialogNegativeClick(dialog: DialogFragment) {
-        TODO("Not yet implemented")
     }
 
     override fun abreDialogoConfirmar(mensaje: String) {

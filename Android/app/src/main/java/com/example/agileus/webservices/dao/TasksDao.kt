@@ -152,8 +152,7 @@ class TasksDao {
         idUsuario: String,
         listener: dialogoConfirmarListener
     ) {
-        Log.d("Mensaje", taskUpdate.toString())
-        Log.d("Mensaje", "id: ${idTarea}")
+
         val callback = InitialApplication.webServiceGlobalTasks.editTask(
             taskUpdate,
             idTarea,
@@ -166,13 +165,8 @@ class TasksDao {
             ) {
                 try {
                     if (response.isSuccessful) {
-                        Log.d(
-                            "Mensaje",
-                            "Tarea Editada ${response.message()}"
-                        )
                         listener.abreDialogoConfirmar("Tarea ${taskUpdate.titulo} editada")
                     } else {
-                        Log.d("Mensaje", "Tarea no Editada ${response.message()}")
                         listener.abreDialogoConfirmar("Tarea no editada ${response.message()}")
                     }
                 } catch (e: Exception) {
@@ -181,7 +175,6 @@ class TasksDao {
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Failure: ${t.message}")
                 listener.abreDialogoConfirmar(t.message.toString())
             }
 
@@ -198,16 +191,13 @@ class TasksDao {
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
-                    Log.d("Mensaje", "Estatus Editado")
                     listener.abreDialogoConfirmar("Estatus modificado")
                 } else {
-                    Log.d("Mensaje", "No se Edito estatus ${response.code()}")
                     listener.abreDialogoConfirmar("Estatus no modificado")
                 }
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
-                Log.d("Mensaje", "On Failure: ${t.message}")
                 // listener.abreDialogoConfirmar(t.message.toString())
             }
 

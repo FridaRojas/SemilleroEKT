@@ -48,8 +48,6 @@ class DetalleNivelAltoViewModel : ViewModel() {
         try {
             viewModelScope.launch {
                 taskDao.updateStatus(dataTask.idTarea, dataTask.estatus, listener)
-                Log.d("Mensaje", "id: ${dataTask.idTarea}")
-                Log.d("Mensaje", "estatus: ${dataTask.estatus}")
             }
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
@@ -60,8 +58,7 @@ class DetalleNivelAltoViewModel : ViewModel() {
         try {
             viewModelScope.launch {
                 taskDao.updateStatus(dataTask.tareas.idTarea, dataTask.tareas.estatus,listener)
-                Log.d("Mensaje", "id: ${dataTask.tareas.idTarea}")
-                Log.d("Mensaje", "estatus: ${dataTask.tareas.estatus}")
+
             }
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
