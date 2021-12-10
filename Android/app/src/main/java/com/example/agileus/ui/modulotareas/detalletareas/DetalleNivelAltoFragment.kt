@@ -158,8 +158,6 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
                     args.tareas.archivo, "archivo"
                 )
             }
-
-
         }
 
         binding.btnValidarTarea.setOnClickListener {

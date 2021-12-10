@@ -195,8 +195,8 @@ class TasksDao {
         val callback = InitialApplication.webServiceGlobalTasks.updateStatus(idTarea, estatus)
 //        val value: Response<String> = callback.execute()
 //        Log.d("Mensaje", value.toString())
-        callback.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        callback.enqueue(object : Callback<DataTask> {
+            override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
                     Log.d("Mensaje", "Estatus Editado")
                     listener.abreDialogoConfirmar("Estatus modificado")
@@ -206,9 +206,9 @@ class TasksDao {
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
-                listener.abreDialogoConfirmar(t.message.toString())
+                // listener.abreDialogoConfirmar(t.message.toString())
             }
 
         })
