@@ -32,21 +32,18 @@ public class UserController {
 
     @PostMapping("/create")//*
     public ResponseEntity<?> create(@Validated @RequestBody User user){
-        System.out.println(user.getNombre()+"  "+user.getRFC());
         try {
             if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",null));
             }else{
                 boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
                 if (us){
-                    System.out.println("ya existe");
                     return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",null));
                 }else {
                     String psw= GeneralService.cifrar(user.getPassword());
                     user.setPassword(psw);
                     user.setTokenAuth("");
                     userService.save(user);
-                    System.out.println("creado");
                     return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario Creado",user));
                 }
             }
@@ -99,21 +96,16 @@ public class UserController {
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
         try{
             if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
-                System.out.println("Error en las llaves");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
             }else{
                 String psw=GeneralService.cifrar(infAcceso.getPassword());
                 Optional<User> user=userService.userValidate(infAcceso.getCorreo(),psw);
                 if (user.isPresent()){
-                    System.out.println(user.get().getStatusActivo());
                     if(user.get().getStatusActivo().equals("true")){
-                        System.out.println("Login: Usuario encontrado");
                         user.get().setToken(infAcceso.getToken());
                         user.get().setTokenAuth(userService.guardarTokenAuth(user.get().getID()).get());
                         userService.save(user.get());
                         groupService.actualizaUsuario(user.get());
-
-
                         user.get().setFechaInicio(null);
                         user.get().setFechaTermino(null);
                         user.get().setPassword(null);
@@ -130,7 +122,6 @@ public class UserController {
 
                     }
                 }else{
-                System.out.println("Login: Usuario no encontrado");
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
                 }
             }
@@ -143,6 +134,14 @@ public class UserController {
         }
     }
 
+    /**
+     * Metodo que cambia el statusActivo de un usuario, no lo borra de la BD
+     * -busca que el usuario exista
+     * -cambia el statusActivo a false
+     * -cambia nombreRol,idGrupo,idSuperiorInmediato a un string vacio
+     * @param id es el id del usuario a borrar
+     * @return Response data="" en caso de exito
+     */
     @DeleteMapping(value="/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable String id){
         try{
@@ -340,7 +339,6 @@ public class UserController {
                 String[] Superiores = body.getIDSuperiores();
 
                 for (int i = 0; i < Usuarios.length; i++) {
-                    System.out.println("Empleado:" + Usuarios[i] + "  Superior:" + Superiores[i]);
                 }
                 userService.reasignaSuperiores(Usuarios, Superiores);
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Superiores Modificados", ""));
@@ -355,6 +353,13 @@ public class UserController {
         }
     }
 
+
+    /**
+     * Busca un usuario filtrando el parametro recibido en los atributos correo, nombre,
+     * numeroEmpleado, nombreRol, rfc. Filtrando a los usuarios que tengan el statusActivo=true
+     * @param parametro es el string a buscar
+     * @return data=ArrayList<User> en caso de exito
+     */
     @GetMapping("/busquedaUsuario/{parametro}")
     public Response busquedaUsuario(@PathVariable String parametro) {
         try {

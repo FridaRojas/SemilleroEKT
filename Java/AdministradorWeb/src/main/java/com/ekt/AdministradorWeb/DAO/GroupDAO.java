@@ -10,7 +10,8 @@ import org.json.JSONObject;
 
 public class GroupDAO {
 
-    String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
+    //String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
+    String servidor = "http://localhost:3040";
     public User[] muestraUsuariosGrupo(String idGrupo){
         Gson gson = new Gson();
         OkHttpClient client = new OkHttpClient().newBuilder()

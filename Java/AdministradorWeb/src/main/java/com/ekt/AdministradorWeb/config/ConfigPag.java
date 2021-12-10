@@ -288,7 +288,6 @@ public class ConfigPag {
                 //valida si el usuario a eliminar tiene suboordinados a reasignar y redirecciona a ReasignaSuperior
                 ArrayList<User> listaUsuarios = new ArrayList<>();
                 User[] usuarios;
-                //
                 usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
                 for (User usuario : usuarios) {
                     if (!usuario.getID().equals(user.getID())) {
@@ -330,6 +329,13 @@ public class ConfigPag {
         }
     }
 
+
+    /**
+     * Agrega un ArrayList a la pagina inicioOrganigramas para ser utilizada  con thymeleaf
+     * -valida que la sesion este activa
+     * -en caso de error redirige a la pagina de error
+     * @return
+     */
     @GetMapping("/buscarTodosGrupos")
     public String buscarTodosGrupos(@ModelAttribute ArrayList<Group> listaGrupos, ModelMap model, HttpSession session) {
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
@@ -341,7 +347,7 @@ public class ConfigPag {
                     listaGrupos.add(gson.fromJson(name1.getJSONObject(i).toString(), Group.class));
                 }
             } catch (Exception e) {
-                System.out.println("Error al realizar la consulta");
+                return "redirect:/error1";
             }
             model.addAttribute("listaGrupos", listaGrupos);
             return "paginas/organigramas/inicioOrganigramas.html";
@@ -350,6 +356,14 @@ public class ConfigPag {
         }
     }
 
+    /**
+     * Redirecciona a la pagina de edicion de grupos agregando el id del grupo a editar y
+     * las listas de usuarios de dicho grupo y usuarios disponibles para agregar
+     *
+     * @param id string del id del grupo a editar
+     *
+     * @return
+     */
     @RequestMapping(value="/editarGrupo",method = { RequestMethod.POST, RequestMethod.GET })
     @PostMapping("/editarGrupo")
     public String editarGrupos(@ModelAttribute User user,@ModelAttribute(value = "idGrupo") String id,Model model, HttpSession session) {
@@ -418,6 +432,11 @@ public class ConfigPag {
         }else return "redirect:/login";
     }
 
+
+    /**
+     * Redireccion a la pagina de error general
+     * @return
+     */
     @GetMapping("/error1")
     public String error() {
         return "paginas/error.html";
