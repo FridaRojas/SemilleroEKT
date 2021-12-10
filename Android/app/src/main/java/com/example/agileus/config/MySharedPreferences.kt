@@ -60,6 +60,9 @@ class MySharedPreferences(contexto: Context) {
     fun recuperarNombreSesion() : String{
         return sharedPreferences.getString(NOMBRE_SESSION, "")!!
     }
+    fun recuperarTokenAuth() : String{
+        return sharedPreferences.getString(TOKEN_AUTH_KEY, "")!!
+    }
 
     fun recuperarIdSesion() : String{
         return sharedPreferences.getString(ID_SESSION, "")!!

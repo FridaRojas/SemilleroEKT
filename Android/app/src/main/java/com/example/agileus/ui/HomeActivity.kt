@@ -6,11 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
@@ -75,6 +70,7 @@ class HomeActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.formularioCrearTareasFragment -> hideBottomNav(navView)
                 R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
+                R.id.listContactsFragment -> hideBottomNav(navView)
                 else -> showBottomNav(navView)
             }
         }
@@ -96,6 +92,9 @@ class HomeActivity : AppCompatActivity() {
             }
             "verDetalleTarea" -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
+            }
+            "Contactos" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
             }
         }
         return super.onOptionsItemSelected(item)

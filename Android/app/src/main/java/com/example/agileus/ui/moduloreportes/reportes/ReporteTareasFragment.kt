@@ -17,6 +17,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
@@ -91,7 +92,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             cambiarGrafica(tipo_grafica)
         } )
 
-        reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
+        reporteTareasViewModel.devuelveListaEmpleados(InitialApplication.preferenciasGlobal.recuperarIdSesion())
         binding.btnFiltroReportes.setOnClickListener {
             reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
                 Constantes.dataEmpleadoUsuario = list

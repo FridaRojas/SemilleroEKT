@@ -59,7 +59,7 @@ class LoginDao {
                     almacenar.data = guardarData
 
                     preferenciasGlobal.guardarDatosInicioSesion(
-                        mapa["idUser"].toString(),
+                        mapa["id"].toString(),
                         mapa["correo"].toString(),
                         mapa["numeroEmpleo"].toString(),
                         mapa["nombre"].toString(),

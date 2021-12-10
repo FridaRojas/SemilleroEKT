@@ -14,13 +14,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.dialog.DialogoListen
 import com.example.agileus.ui.login.dialog.CerrarSesionDialog
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -51,16 +50,17 @@ class ListConversationFragment : Fragment(), DialogoListen {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("usuario pasado", "${InicioSesionFragment.idUser}")
+        var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+        Toast.makeText(activity, "$UserId", Toast.LENGTH_LONG).show()
 
-        ChatsViewModel.devuelveListaGrupos(idUser)
-        ChatsViewModel.devuelveListaChats(idUser)
+        ChatsViewModel.devuelveListaGrupos(UserId)
+        ChatsViewModel.devuelveListaChats(UserId)
 
         var background = object : Thread(){
             override fun run() {
                 while (true){
                     Log.i("chechar","checar")
-                    ChatsViewModel.devuelveListaChats(idUser)
+                    ChatsViewModel.devuelveListaChats(UserId)
                     sleep(20000)
                 }
             }
@@ -101,13 +101,13 @@ class ListConversationFragment : Fragment(), DialogoListen {
                     if (p0.isNullOrEmpty()) {
                         binding.recyclerListGroups.isVisible = true
                         binding.recyclerListGroups.isEnabled = true
-                        ChatsViewModel.devuelveListaChats(idUser)
+                        ChatsViewModel.devuelveListaChats(UserId)
                     } else {
                         var filtrada =ChatsViewModel.listadeChats.filter {
                             it.nombreConversacionRecepto.lowercase()
                                 .contains(p0.toString().lowercase())
                         }
-                        ChatsViewModel.filtrarChats(idUser, filtrada as ArrayList<Chats>)
+                        ChatsViewModel.filtrarChats(UserId, filtrada as ArrayList<Chats>)
                         binding.recyclerListGroups.isVisible = false
                         binding.recyclerListGroups.isEnabled = false
                 }
