@@ -90,7 +90,7 @@ class ConfigRetrofit {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_Login)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(cliente(60))
+//            .client(cliente(5))
             .build()
         return mRetrofit.create(LoginApi::class.java)
     }
