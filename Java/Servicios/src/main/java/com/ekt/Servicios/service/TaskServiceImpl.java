@@ -208,10 +208,8 @@ public class TaskServiceImpl implements TaskService{
     public ArrayList<String> validarSesion(String token_sesion, String id_usuario){
         ArrayList<String> data = new ArrayList<>();
         Optional<User> usuarioValido = usuarioService.findById(id_usuario);
-        System.out.println("token_Davis: "+token_sesion);
         String token_valido;// buscar en BD
         if(usuarioValido.isPresent()) {
-            System.out.println("token_BD: "+usuarioValido.get().getTokenAuth());
             token_valido = usuarioValido.get().getTokenAuth();
             if (token_valido == null || token_valido == "")
                 data.add("No existe el token en la BD");
@@ -221,5 +219,45 @@ public class TaskServiceImpl implements TaskService{
                 data.add("Usuario invalido");
         }
         return data;
+    }
+
+    @Override
+    public Iterable<Task> findByPriority(String prioridad) {
+        return tareaRepository.findByPriority(prioridad);
+    }
+
+    @Override
+    public Iterable<Task> findByIdGrupo(String id_grupo) {
+        return tareaRepository.findByIdGrupo(id_grupo);
+    }
+
+    @Override
+    public Iterable<Task> findIdReceptorTareaByPrioridad(String id_usuario, String prioridad) {
+        return tareaRepository.findIdReceptorTareaByPrioridad(id_usuario, prioridad);
+    }
+
+    @Override
+    public Iterable<Task> getAllOutByUserId(String id_usuario) {
+        return tareaRepository.getAllOutByUserId(id_usuario);
+    }
+
+    @Override
+    public Iterable<Task> getAllInByUserId(String id_receptor) {
+        return tareaRepository.getAllInByUserId(id_receptor);
+    }
+
+    @Override
+    public Iterable<Task> getAllByGroupAndIdEmisor(String id_grupo, String id_usuario) {
+        return tareaRepository.getAllByGroupAndIdEmisor(id_grupo, id_usuario);
+    }
+
+    @Override
+    public Iterable<Task> getAllByIdReceptorAndStatus(String id_usuario, String estatus) {
+        return tareaRepository.getAllByIdReceptorAndStatus(id_usuario,estatus);
+    }
+
+    @Override
+    public Iterable<Task> getAllByIdEmisorAndStatus(String id_usuario, String estatus) {
+        return tareaRepository.getAllByIdEmisorAndStatus(id_usuario, estatus);
     }
 }
