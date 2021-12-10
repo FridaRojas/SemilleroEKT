@@ -54,9 +54,9 @@ companion object{
 
         broadlist= InicioSesionFragment.id
 
-        Log.d("tokenAuth", tokenAuth)
-        Log.d("User", idUsuario)
-        Log.d("User id", InicioSesionFragment.id)
+//        Log.d("tokenAuth", tokenAuth)
+  //      Log.d("User", idUsuario)
+    //    Log.d("User id", InicioSesionFragment.id)
 
 
 
