@@ -189,9 +189,13 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Splash Screen"/>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_logo" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-GA-cId">
+                                <rect key="frame" x="149" y="384" width="115" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.96854287390000005" green="0.96868163350000003" blue="0.96851247549999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="Api-M3-Qju"/>
                     <connections>
@@ -258,26 +262,6 @@
                                 <color key="textColor" systemColor="systemGray2Color"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FmI-mO-lej">
-                                <rect key="frame" x="79" y="533" width="253" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="¿Olvidaste tu contraseña?">
-                                    <color key="baseForegroundColor" red="0.69385659690000001" green="0.71833616499999997" blue="0.75432312489999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="forgotPassword:" destination="njg-x3-P2J" eventType="touchUpInside" id="MV9-lK-XHE"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lm2-fd-Fhu">
-                                <rect key="frame" x="243" y="711" width="67" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <segue destination="sNb-yt-Spy" kind="show" id="LW1-GH-JGV"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="dvm-v9-8Mb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -292,22 +276,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A0l-SS-DDg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1813" y="-414"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="NDT-el-t1f">
-            <objects>
-                <viewController id="sNb-yt-Spy" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="LNP-Rc-I7d">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="mPc-Cd-d7b"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="WGM-bQ-eJX"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kzl-O0-j5X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2654" y="-640"/>
         </scene>
         <!--Tareas-->
         <scene sceneID="kxU-t7-os2">
@@ -502,7 +470,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="CTn-di-tSd"/>
+        <segue reference="MsL-cW-dAo"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Broadcast_btn" width="45" height="45"/>
@@ -512,6 +480,7 @@
         <image name="buzon_bckgrnd" width="374" height="796"/>
         <image name="cmcds_bckgrnd" width="375" height="794"/>
         <image name="com_btn" width="172" height="45"/>
+        <image name="icon_logo" width="991" height="1280"/>
         <image name="msjs_envds_Bckgrnd" width="375" height="794"/>
         <image name="snd_msj_btn" width="172" height="45"/>
         <systemColor name="systemBackgroundColor">

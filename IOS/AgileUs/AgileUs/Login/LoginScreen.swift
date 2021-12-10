@@ -89,9 +89,17 @@ class LoginScreen: UIViewController {
         
         UserDefaults.standard.setValue(isLogged, forKey: "isLogged")
 
-        let serverGetHierarchy = server + "user/findByBossId/" + userID
-        let url = URL(string: serverGetHierarchy)
-        URLSession.shared.dataTask(with: url!)
+        let url = URL(string: server + "user/findByBossId/" + userID)!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(tokenAuth, forHTTPHeaderField: "tokenSession")
+        //let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in }
+            
+        //let serverGetHierarchy = server + "user/findByBossId/" + userID
+        //let url = URL(string: serverGetHierarchy)
+        
+        URLSession.shared.dataTask(with: request) //URLSession.shared.dataTask(with: url!)
         { (data, response, error) in
 
             if let error = error {
@@ -170,7 +178,6 @@ class LoginScreen: UIViewController {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
         let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
             if let error = error {
                 print ("error: \(error)")
@@ -185,10 +192,29 @@ class LoginScreen: UIViewController {
                 mimeType == "application/json",
                 let data = data
             {
-                //print ("got data: \(dataString)")
+                var dataJson = String()
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as! NSDictionary
+                    print("/*******************************************/")
+                    print(json["data"])
+                    print("/*******************************************/")
+                    print(json)
+                    print("/*******************************************/")
+                    dataJson = json["data"] as! String
+                } catch let error_catch {
+                    print("Error: \(error_catch)")
+                }
+                
+                print(dataJson)
+                
+                if dataJson == String() {
+                    print("is EMPTY")
+                    self.simpleAlertMessage(title: "AgileUS", message: "Usuario o contrasena incorrectas")
+                    return
+                }
+                
                 do{
                     let dataResponse = try JSONDecoder().decode(Response.self, from: data)
-
                     switch dataResponse.status
                     {
                         case "ACCEPTED":
@@ -213,8 +239,7 @@ class LoginScreen: UIViewController {
 
                  }catch let error_catch {
                     print("Error: \(error_catch)")
-                    self.simpleAlertMessage(title: "AgileUS", message: "Usuario o contrasena incorrectas")
-                    print(data)
+                    //print(data)
                 }
             }
         }

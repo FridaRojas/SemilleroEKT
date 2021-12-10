@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var logoView: UIView!
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        /*
         //Fondo verde
         self.view.backgroundColor = UIColor(red: 100.0/255, green: 188.0/255.0, blue: 111.0/255, alpha: 1.0)
         
@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         layer.path =  UIBezierPath(arcCenter: CGPoint(x: self.view.center.x, y: self.view.center.y), radius: CGFloat(100), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi * 2), clockwise: true).cgPath
         layer.fillColor = UIColor(red: 133.0/255, green: 210.0/255.0, blue: 112.0/255, alpha: 1.0).cgColor
         self.view.layer.addSublayer(layer)
-        
+        */
         
     }
     
