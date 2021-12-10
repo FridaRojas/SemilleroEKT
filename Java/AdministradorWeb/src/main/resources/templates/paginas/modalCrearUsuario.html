@@ -46,8 +46,9 @@
                         <div class="form-group">
                             <label for="uname">RFC:</label> <input type="text"
                                                                    title="Solo mayusculas o numeros, longitus de 13" minlength="13"
-                                                                   maxlength="13" class="form-control"
-                                                                   placeholder="Ingrese RFC" name="RFC" required pattern="[A-Z0-9]+">
+                                                                   maxlength="13" class="form-control" id="rfc"
+                                                                   placeholder="Ingrese RFC" name="RFC" required pattern="[A-Z0-9]+"
+                                                                   onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
                             <div class="valid-feedback">Valid.</div>
 
                         </div>
@@ -55,7 +56,8 @@
                         <label for="uname">CURP:</label> <input type="text"
                                                                 title="Solo mayusculas y numeros, lonitud de 18" minlength="18" maxlength="18"
                                                                 class="form-control" id="uname" placeholder="Ingrese su curp"
-                                                                name="curp" required pattern="[A-Z0-9]+">
+                                                                name="curp" required pattern="[A-Z0-9]+"
+                                                                onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
                         <div class="valid-feedback">Valid.</div>
 
                     </div>

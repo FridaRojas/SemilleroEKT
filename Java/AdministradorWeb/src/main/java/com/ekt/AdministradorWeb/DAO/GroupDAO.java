@@ -5,11 +5,13 @@ import com.ekt.AdministradorWeb.entity.Group;
 import com.ekt.AdministradorWeb.entity.User;
 import com.google.gson.Gson;
 import okhttp3.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class GroupDAO {
 
-    String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
+    //String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
+    String servidor = "http://localhost:3040";
     public User[] muestraUsuariosGrupo(String idGrupo){
         Gson gson = new Gson();
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -21,7 +23,7 @@ public class GroupDAO {
         try{
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            if (!jsonObject.get("data").equals("")){
+            if (jsonObject.get("data")!=null){
                 JSONObject grupoObjeto = jsonObject.getJSONObject("data");
                 Group grupo  = gson.fromJson(grupoObjeto.toString(), Group.class);
                 User []usuarios = grupo.getUsuarios();
@@ -47,7 +49,12 @@ public class GroupDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            return true;
+            if (jsonObject.get("data")!=null){
+                return true;
+            }else {
+                return false;
+            }
+
         }catch (Exception e){
             return false;
         }
@@ -60,7 +67,7 @@ public class GroupDAO {
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url(servidor+"/api/api/grupo/crearGrupo/"+gr.getNombre())
+                .url(servidor+"/api/grupo/crearGrupo/"+gr.getNombre())
                 .method("POST", body)
                 .build();
         try {
@@ -116,7 +123,6 @@ public class GroupDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            //si status es "OK" creo el grupo y regresa true, si es diferente a "OK" el grupo ya existe y regresa false
             if (jsonObject.get("status").toString().equals("OK")){
                 res="OK";
             }else{
@@ -141,7 +147,7 @@ public class GroupDAO {
         try {
             Response response = client.newCall(request).execute();
             JSONObject jsonObject= new JSONObject(response.body().string());
-            if (!jsonObject.get("data").equals("")) {
+            if (jsonObject.get("data")!=null) {
                 JSONObject grupoObjeto = jsonObject.getJSONObject("data");
                 grupo = gson.fromJson(grupoObjeto.toString(), Group.class);
                 return grupo;
@@ -180,4 +186,75 @@ public class GroupDAO {
             return false;
         }
     }
+
+    public boolean borrarGrupo(String id) throws Exception{
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url(servidor+"/api/grupo/borrar/" + id)
+                .method("DELETE", body)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            if (jsonObject.get("status").toString().equals("OK")) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+            System.out.println("Error al agregar usuario a grupo");
+            return false;
+        }
+    }
+
+    public boolean agregarUsuario(BodyAddUserGroup bodyAdd) throws Exception{
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType,
+                "{\r\n    \"idUsuario\":\"" + bodyAdd.getIdUsuario() +
+                        "\",\r\n    \"idGrupo\":\"" + bodyAdd.getIdGrupo() +
+                        "\",\r\n    \"idSuperior\":\"" + bodyAdd.getIdSuperior() +
+                        "\",\r\n    \"nombreRol\":\"" + bodyAdd.getNombreRol() + "\"\r\n}\r\n\r\n");
+        Request request = new Request.Builder()
+                .url(servidor+"/api/grupo/agregarUsuario")
+                .method("PUT", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            if (jsonObject.get("status").toString().equals("OK")) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+        System.out.println("Error al agregar usuario a grupo");
+        return false;
+        }
+
+    }
+
+    public JSONArray buscarTodosGrupos()throws Exception{
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url(servidor+"/api/grupo/buscarTodo")
+                .method("GET", null)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String res = response.body().string();
+        JSONObject jsonObject = new JSONObject(res);
+        JSONArray resp=jsonObject.getJSONArray("data");
+        return resp;
+
+    }
+
+
 }

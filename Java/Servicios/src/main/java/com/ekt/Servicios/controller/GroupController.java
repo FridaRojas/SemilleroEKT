@@ -4,8 +4,11 @@ import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
+import com.ekt.Servicios.service.GeneralService;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
+import com.mongodb.MongoException;
+import com.mongodb.MongoSocketException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,88 +29,102 @@ public class GroupController {
 
     @PostMapping("/crear")
     public ResponseEntity<?> save(@RequestBody Group group) {
-        Group obj = groupService.guardar(group);
-        System.out.println(group.getNombre());
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
+        try {
+            Group obj = groupService.guardar(group);
+            return ResponseEntity.status(HttpStatus.CREATED).body(groupService.guardar(group));
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
+        }
     }
 
+    /**
+     * Agrega un usuario a un grupo
+     * @param bodyAddUserGroup (idUsuario,idGrupo,idSuperior,nombreRol)
+     * @return @return Objeto Respuesta que contiene un HttpStatus, un mensaje y un  Objeto Grupo
+     */
     @PutMapping("/agregarUsuario")//*
     public ResponseEntity<?> addUserGroup(@RequestBody BodyAddUserGroup bodyAddUserGroup) {
-        System.out.println("entra a agregar usuario al grupo");
         try {
             if (bodyAddUserGroup.getIdUsuario() == null || bodyAddUserGroup.getIdGrupo() == null || bodyAddUserGroup.getIdSuperior() == null || bodyAddUserGroup.getNombreRol() == null) {
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error  en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error  en las llaves", null));
             } else {
                     //verificar el caso de broadcast (caso añadir desde organigrama)
                     if(bodyAddUserGroup.getIdSuperior().equals("BROADCAST")){
-                        System.out.println("entra a coso broadcast");
                         //verificar si un broadcast ya existe
                         if(!groupService.buscarBroadCastEnGrupo(bodyAddUserGroup.getIdGrupo())){
-                            System.out.println("intenta agregar");
                             //agregar
                             Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), "-1", "BROADCAST");
                             User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), "-1", bodyAddUserGroup.getIdGrupo(), "BROADCAST");
                             if (group == null && user == null) {
-                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", ""));
+                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", null));
                             } else {
-                                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
+                                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "El usuario se añadio correctamente", group));
                             }
                         }else{
-                            System.out.println("No se agrega el usuario");
-                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,ya existe un Broadcast en el grupo", ""));
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,ya existe un Broadcast en el grupo", null));
                         }
-
                     }else{
-                        System.out.println("no entra a caso broadcast");
-                        System.out.println("idsuperor:"+bodyAddUserGroup.getIdSuperior());
-                        System.out.println("id:"+bodyAddUserGroup.getIdUsuario());
-                        System.out.println("rol:"+bodyAddUserGroup.getNombreRol());
-
-
-                        //verifica si el usuario seleccionado no es el broadcast
-                      //  Optional<User> userBroadcast= userService.findById(bodyAddUserGroup.getIdSuperior());
-
-                       // if (!userBroadcast.get().getNombreRol().equals("BROADCAST")){
                             Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getNombreRol());
                             User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getNombreRol());
                             if (group == null && user == null) {
-                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", ""));
+                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", null));
                             } else {
-                                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
+                                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "El usuario se añadio correctamente", group));
                             }
-                      /*  }else{
+                        /*}else{
                             //no se pueden asignar subordinados al broadcast
                             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,no se pueden asignar subordinados al broadcast", ""));
                         }*/
                     }
             }
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            System.err.println("Error: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado  ", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
-    @CrossOrigin(origins = {"*"})
-    @GetMapping("/buscar/{id}")//*
+
+    /**
+     * Busca un grupo filtrando por id.
+     * @param id es un string del id a buscar
+     * @return data=Group en caso de exito
+     */
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id) {
         try {
             if (groupService.buscarPorId(id).isPresent()) {
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Grupo encontrado", groupService.buscarPorId(id)));
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorId(id)));
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error grupo no existente", ""));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error grupo no existente", null));
             }
+        }catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            System.err.println("Error: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
-    @DeleteMapping(value = "/borrar/{id}") //*
+    /**
+     * Borra un grupo.
+     * -Cambia el idGrupo, idSupereior inmediato y nombreRol de los usuarios en el grupo a ""
+     * -Elimina el grupo de la BD
+     * @param id String con el id del grupo a borrar
+     * @return
+     */
+    @DeleteMapping(value = "/borrar/{id}")
     public ResponseEntity<Response> delete(@PathVariable String id) {
         try {
             if (id == null) {
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
             } else {
                 Optional<Group> grupo = groupService.buscarPorId(id);
                 if (grupo.isPresent()) {
@@ -118,15 +135,17 @@ public class GroupController {
                         userService.save(usr);
                     }
                     groupService.borrarPorId(id);
-                    System.out.println("Grupo eliminado");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Grupo eliminado", grupo.get()));
+                    return ResponseEntity.ok(new Response(HttpStatus.OK, "Grupo eliminado", grupo.get()));
                 } else {
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Grupo no encontrado", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Grupo no encontrado", null));
                 }
             }
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            System.err.println("Error: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
@@ -134,8 +153,7 @@ public class GroupController {
     public ResponseEntity deleteUserFromgroup(@RequestBody BodyAddUserGroup body) {
         try {
             if (body.getIdGrupo() == null || body.getIdUsuario() == null) {
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
             } else {
                 Optional<Group> grupo = groupService.buscarUsuarioEnGrupo(body.getIdGrupo(), body.getIdUsuario());
                 if (grupo.isPresent()) {
@@ -147,21 +165,30 @@ public class GroupController {
                     us.get().setIDGrupo("");
                     us.get().setNombreRol("");
                     userService.save(us.get());
-
-                    System.out.println("Usuario eliminado del grupo");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Usuario eliminado del grupo", grupo.get()));
+                    return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario eliminado del grupo", grupo.get()));
                 } else {
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Grupo o usuario no encontrado", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Grupo o usuario no encontrado", null));
                 }
             }
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            System.err.println("Error en eliminar usuario de un grupo: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
+
+    /**
+     * Buscar usuario en grupo
+     * -valida que exista el grupo
+     * -valida que exista el usuario
+     * @param json contiene idGrupo y idUsuaurio
+     * @return data=Group en caso de exito
+     */
     @GetMapping("/buscarUsuarioEnGrupo")
-    public Response buscarUsuarioEnGrupo(@RequestBody String json) {
+    public ResponseEntity<?> buscarUsuarioEnGrupo(@RequestBody String json) {
         try {
             String idGroup = "", idUser = "";
             JSONObject jsn = new JSONObject(json);
@@ -170,13 +197,9 @@ public class GroupController {
 
             //verifica que exista el grupo
             if (groupService.buscarPorId(idGroup).isPresent()) {
-                //traza
-                System.out.println("Grupo existe");
 
                 //verifica que existe el usuario
                 if (userService.findById(idUser).isPresent()) {
-                    //traza
-                    System.out.println("Usuario existe");
 
                     Optional<Group> optGroup;
                     optGroup = groupService.buscarUsuarioEnGrupo(idGroup, idUser);
@@ -184,37 +207,40 @@ public class GroupController {
                     if (optGroup.isPresent()) {
                         Group group = optGroup.get();
                         if (group == null) {
-                            return new Response(HttpStatus.NOT_FOUND, "el usuario no pertenece al grupo", group);
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "el usuario no pertenece al grupo", group));
                         }
 
-                        return new Response(HttpStatus.OK, "usuario encontrado dentro del grupo", group);
+                        return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "usuario encontrado dentro del grupo", group));
                     } else {
-                        return new Response(HttpStatus.NOT_FOUND, "No se encontro el usuario dentro del grupo", "");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( new Response(HttpStatus.BAD_REQUEST, "No se encontro el usuario dentro del grupo", null));
                     }
                 } else {
-                    return new Response(HttpStatus.NOT_FOUND, "El usuario no existe", "");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( new Response(HttpStatus.BAD_REQUEST, "El usuario no existe", null));
                 }
             } else {
-                return new Response(HttpStatus.NOT_FOUND, "El grupo no existe", "");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "El grupo no existe", null));
             }
 
         } catch (Exception e) {
-            System.out.println("Exception: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", "");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "Error en la consulta", e));
         }
     }
 
+    /**
+     * Busca un grupo filtrando por nombre.
+     * @param nombre es un string del nombre a buscar
+     * @return data=Group en caso de exito
+     */
     @GetMapping("/buscarPorNombre/{nombre}")
-    public Response buscarPorNombre(@PathVariable String nombre) {
+    public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         try {
             if (groupService.buscarPorNombre(nombre).isPresent()) {
-                return new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorNombre(nombre).get());
+                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorNombre(nombre).get()));
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "Nombre no encontrado", "");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Nombre no encontrado", null));
             }
         } catch (Exception e) {
-            System.err.println("Excepcion: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", "");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND, "Error en la consulta", null));
         }
     }
 
@@ -230,15 +256,19 @@ public class GroupController {
                 groupService.guardar(group);
                 return new Response(HttpStatus.OK, "Grupo " + nombre + " creado", "");
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "Grupo " + nombre + " ya existe", "");
+                return new Response(HttpStatus.BAD_REQUEST, "Grupo " + nombre + " ya existe", null);
             }
         } catch (Exception e) {
-            System.err.println("Exception: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta: " + e, "");
+            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta: " + e, null);
         }
         //return new Response();
     }
 
+
+    /**
+     * Busca todos los grupos
+     * @return data=ArrayList<Group> en caso de exito
+     */
     @CrossOrigin(origins = {"*"})
     @GetMapping("/buscarTodo")
     public Response buscarTodo() {
@@ -246,69 +276,81 @@ public class GroupController {
             Iterable<Group> grupos = groupService.buscarTodo();
             return new Response(HttpStatus.OK, "Grupos existentes", grupos);
         } catch (Exception e) {
-            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", "");
+            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e);
         }
     }
 
 
     /**
+     * Busca todos los grupos con paginacion
      * @param json Recibe dos parametros "pagina" y "tamaño"
      *             pagina: es la pagina a mostrar
      *             tamaño: es la cantidad de objetos por pagina
-     * @return
+     * @return data=ArrayList<Group> en caso de exito
      */
-    @CrossOrigin(origins = "http://localhost:8080/")
+    @CrossOrigin(origins = {"*"})
     @GetMapping("/buscarTodoPags")
-    public Response buscarTodoPageable(@RequestBody String json) {
+    public ResponseEntity<?> buscarTodoPageable(@RequestBody String json) {
         try {
             int pagina = -1, tamaño = -1;
             JSONObject jsn = new JSONObject(json);
 
             if (jsn.get("pagina") == null || jsn.get("tamaño") == null) {
-                return new Response(HttpStatus.BAD_REQUEST, "Faltan datos", "");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body( new Response(HttpStatus.NOT_ACCEPTABLE, "Faltan datos", null));
             }
 
             pagina = (int) jsn.get("pagina");
             tamaño = (int) jsn.get("tamaño");
 
             if (pagina < 0 || tamaño < 1) {
-                return new Response(HttpStatus.BAD_REQUEST, "Datos incorrectos", "");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Datos incorrectos", null));
             }
 
             Iterable<Group> grupos = groupService.buscarTodo(PageRequest.of(pagina, tamaño));
-            return new Response(HttpStatus.OK, "Grupos existentes", grupos);
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "Grupos existentes", grupos));
 
         } catch (Exception e) {
-            System.err.println("Exception: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", "");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e));
         }
     }
 
+    //Actualiza el nombre de un grupo
     @PutMapping("/actualizaNombre")
     public ResponseEntity<?> actualizaNombre(@RequestBody Group grupo) {
         try {
+            //Valida si hay otro grupo que se llame igual
             if (groupService.buscarPorId(grupo.getId()).isPresent() && grupo.getNombre() != null) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Grupo actualizado correctamente", groupService.actualizaNombre(grupo.getId(), grupo.getNombre())));
             } else {
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Grupo no encontrado", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Grupo no encontrado", null));
             }
+        //Manejod de excepciones
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
+    //Actualiza el usuario dentro de un grupo
     @PutMapping("/actualizaUsuarioGrupo")
     public ResponseEntity<?> actualizaUsuarioGrupo(@RequestBody User user) {
         try {
-            String pwd = userService.cifrar(user.getPassword());
-            user.setPassword(pwd);
+            //Cifra la nueva contraseña y actualiza en grupos
+            user.setPassword(GeneralService.cifrar(user.getPassword()));
             if (groupService.actualizaUsuario(user)) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario en grupo actualizado correctamente", ""));
             } else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", null));
             }
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
@@ -327,17 +369,21 @@ public class GroupController {
                     if (groupService.actualizaUsuario(user.get()) && (userService.save(user.get()) != null)) {
                         return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario  actualizado correctamente", ""));
                     } else {
-                        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no actualizado", ""));
+                        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no actualizado", null));
                     }
 
                 }else{
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", null));
                 }
             } else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error no se puede asignar a si mismo como superior", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error no se puede asignar a si mismo como superior", null));
             }
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
 
 

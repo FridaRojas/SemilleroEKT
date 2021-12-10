@@ -24,7 +24,8 @@
                 <h5 class="modal-title" id="exampleModalLongTitle">Escribe el nombre de tu organigrama</h5>
             </div>
             <div class="modal-body">
-                <input type="text" name="name"  class="form-control" aria-describedby="sizing-addon1" required>
+                <input type="text" name="name"  class="form-control" aria-describedby="sizing-addon1" required
+                       id="groupName" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
