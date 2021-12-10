@@ -47,6 +47,7 @@ public class ConfigPag {
         }
     }
 
+
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs, HttpSession session) {
         boolean res=userDAO.validaCorreoPassword(us);
@@ -68,6 +69,13 @@ public class ConfigPag {
         }
     }
 
+    /**
+     *Busca a todos los usuarios y retorna a la pagina inicial de usuarios
+     * @param model
+     * @param session parametro correspondiente al manejo de la sesion
+     * @return lista de usuarios en el Model
+     * @return Pagina Inicial de Usuarios
+     */
     @GetMapping("/findAllUsuarios")
     public String findAllUsuarios(ModelMap model, HttpSession session) {
         Gson gson = new Gson();
@@ -89,6 +97,13 @@ public class ConfigPag {
         }
     }
 
+    /**
+     *Añade un usuario nuevo, unicamente con informacion personal
+     * @param user Se recibe un Usuario para ser añadido
+     * @param redirectAttrs parametro para añadir las alertas
+     * @param session parametro para el manejo de la sesion
+     * @return a la pagina inicial de Usuarios
+     */
     @PostMapping("/añadirUsuario")//*
     public String añadirUsuario(@ModelAttribute User user, RedirectAttributes redirectAttrs, HttpSession session){
         try {
@@ -114,6 +129,15 @@ public class ConfigPag {
         }
     }
 
+
+    /**
+     *Se llena un formulario con la informacion personal de un usuario y asi pueda ser editada
+     * @param id parametro correspondiente al id de un Usuario
+     * @param model
+     * @param redirectAttrs parametro donde se añaden las alertas
+     * @param session parametro correspondiente al manejo de la sesion
+     * @return Se retorna a la pagina EditarUsuario
+     */
     @RequestMapping(value="/editarUsuario",method = {RequestMethod.POST, RequestMethod.GET})
     @PostMapping("/editarUsuario")
     public String editarUsuario(@ModelAttribute(value = "id") String id,Model model,RedirectAttributes redirectAttrs, HttpSession session){
@@ -137,8 +161,20 @@ public class ConfigPag {
             System.out.println(e.getMessage());
             return "redirect:/error1";
         }
+
+
     }
 
+
+    /**
+     * Se edita la informacion personal en un usuario
+     * @param user parametro con la informacion de un Usurio a editar
+     * @param id parametro correspondiente al id de un Usuario
+     * @param redirectAttrs parametro donde se añaden las alertas
+     * @param session parametro correspondiente al manejo de la sesion
+     * @return retorna a pagina Inicial de Usuarios
+     * @return  retorna a la misma pagina en caso de ocurrir un error
+     */
     @PostMapping ("/editarUsuarioServicio")//*
     public String editarUsuarioServicio(@ModelAttribute User user,@ModelAttribute(value = "id") String id,RedirectAttributes redirectAttrs, HttpSession session){
         Boolean bandera=false;
@@ -150,16 +186,13 @@ public class ConfigPag {
             user.setIDGrupo(userDb.getIDGrupo());
             user.setNombreRol(userDb.getNombreRol());
             user.setIDSuperiorInmediato(userDb.getIDSuperiorInmediato());
-            //editar informacion
-            //editar usuario en grupo
+
             //vefiricar si tiene un grupo asignado para editarlo tambien
             if (!userDb.getIDGrupo().equals("")) {
-                System.out.println("Entra a grupo lleno");
                 if (userDAO.editarUsuario(user) && groupDAO.editarUsuarioGrupo(user)) {
                     bandera = true;
                 }
             } else {
-                System.out.println("Entra a grupo vacio");
                 if (userDAO.editarUsuario(user)) {
                     bandera = true;
                 }
@@ -219,7 +252,7 @@ public class ConfigPag {
             System.out.println("mas:"+userMas.toString());
             System.out.println("menos:"+userMenos.toString());
             //fuera del organigrama
-            if (userDAO.buscarOrigenUsuario(idUsuarioMas)) {
+
                 //añadir informacion inicial al que se queda
                 //guardar en grupo y en lista genersl
                 groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), userMenos.getIDSuperiorInmediato(), userMenos.getNombreRol());
@@ -235,43 +268,7 @@ public class ConfigPag {
                         .addFlashAttribute("status", "success")
                         .addFlashAttribute("mensaje", "Usuario remplazado correctamente");
                 return "redirect:/editarGrupo?idGrupo=" + userMenos.getIDGrupo();
-            }else{
-                //reasigna los hijos de los dos
-                //falta reasignar hijos
-                ArrayList<User> listUserMas=userDAO.muestraSubordinados(idUsuarioMas);
-                ArrayList<User> lisyUserMenos=userDAO.muestraSubordinados(idUsuarioMenos);
-                //falta reasignar hijos
-                if (lisyUserMenos!=null){
-                    for (User us : userDAO.muestraSubordinados(idUsuarioMenos)) {
-                        userDAO.actualizaIdSuperior(us.getID(), idUsuarioMas);
-                    }
-                }
-                if (listUserMas!=null){
-                    for (User us : userDAO.muestraSubordinados(idUsuarioMas)) {
-                        userDAO.actualizaIdSuperior(us.getID(), idUsuarioMas);
-                    }
-                }
-                //eliminar
-                groupDAO.eliminaUsuarioGrupo(idUsuarioMenos, userMenos.getIDGrupo());
-                groupDAO.eliminaUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo());
-                //guardar en grupo y en lista genersl
-                if (idUsuarioMas.equals(userMenos.getIDSuperiorInmediato())){
-                    groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userMas.getIDGrupo(), userMas.getIDSuperiorInmediato(), userMas.getNombreRol());
-                    groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), idUsuarioMenos, userMenos.getNombreRol());
-                }else{
-                    if(userMas.getIDSuperiorInmediato().equals(idUsuarioMenos)){
-                        groupDAO.añadeUsuarioGrupo(idUsuarioMenos, userMas.getIDGrupo(), userMas.getIDSuperiorInmediato(), userMas.getNombreRol());
-                        groupDAO.añadeUsuarioGrupo(idUsuarioMas, userMenos.getIDGrupo(), idUsuarioMenos, userMenos.getNombreRol());
-                    }else{
-                        groupDAO.añadeUsuarioGrupo(idUsuarioMenos,userMas.getIDGrupo(),userMas.getIDSuperiorInmediato(),userMas.getNombreRol());
-                        groupDAO.añadeUsuarioGrupo(idUsuarioMas,userMas.getIDGrupo(),userMenos.getIDSuperiorInmediato(),userMenos.getNombreRol());
-                    }
-                }
-                redirectAttrs
-                        .addFlashAttribute("status", "success")
-                        .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
-                return "redirect:/editarGrupo?idGrupo=" + userMenos.getIDGrupo();
-            }
+
         }else {
             return "redirect:/login";
         }
@@ -446,8 +443,8 @@ public class ConfigPag {
     public String agregarUsuarioAGrupo(@ModelAttribute BodyAddUserGroup bodyAdd, RedirectAttributes redirectAttrs, HttpSession session) {
         try{
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-                JSONObject jsonObject = groupDAO.agregarUsuario(bodyAdd);
-                if (jsonObject.get("status").toString().equals("ACCEPTED")){
+                boolean res = groupDAO.agregarUsuario(bodyAdd);
+                if (res){
                     redirectAttrs
                             .addFlashAttribute("status", "success")
                             .addFlashAttribute("mensaje", "Usuario agregado correctamente");
@@ -455,7 +452,7 @@ public class ConfigPag {
                 }else{
                     redirectAttrs
                             .addFlashAttribute("status", "danger")
-                            .addFlashAttribute("mensaje", jsonObject.get("msj").toString());
+                            .addFlashAttribute("mensaje", "El usuario no pudo ser agregado");
                     return "redirect:/editarGrupo/?idGrupo=" + bodyAdd.getIdGrupo();
                 }
             }else {
@@ -467,6 +464,15 @@ public class ConfigPag {
         }
     }
 
+
+    /**
+     *Edita un usuario en un Organigrama
+     * @param idGrupo parametro correspondiente a un id de Grupo
+     * @param body Objeto con (idUsuario,idGrupo,idSuperior,nombreRol)
+     * @param redirectAttrs parametro correspondiente a las alertas
+     * @param session parametro correspondiente al manejo de sesion
+     * @return retorna a la pagina general de Organigramas
+     */
     @PostMapping("/editaUsuarioAGrupo")
     public String editaUsuarioAGrupo(@ModelAttribute(value = "idGrupo") String idGrupo,@ModelAttribute BodyAddUserGroup body
             ,RedirectAttributes redirectAttrs, HttpSession session){
@@ -522,11 +528,19 @@ public class ConfigPag {
 
     @RequestMapping(value="/borrarGrupo",method = { RequestMethod.POST})
     @PostMapping("/borrarGrupo")
-    public String borrarGrupo(@ModelAttribute(value = "idGrupo") String id,Model model, HttpSession session) {
+    public String borrarGrupo(@ModelAttribute(value = "idGrupo") String id,Model model, HttpSession session,RedirectAttributes redirectAttrs) {
         try{
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
-                groupDAO.borrarGrupo(id);
-                return "redirect:/buscarTodosGrupos";
+                boolean res = groupDAO.borrarGrupo(id);
+                if (res){
+                    return "redirect:/buscarTodosGrupos";
+                }else{
+                    redirectAttrs
+                            .addFlashAttribute("status", "danger")
+                            .addFlashAttribute("mensaje", "Grupo no eliminado");
+                    return "redirect:/buscarTodosGrupos";
+                }
+
             }else {
                 return "redirect:/login";
             }
