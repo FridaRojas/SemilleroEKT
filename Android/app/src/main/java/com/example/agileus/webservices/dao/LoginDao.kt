@@ -68,7 +68,8 @@ class LoginDao {
                         mapa["rfc"].toString(),
                         mapa["tokenAuth"].toString(),
                         mapa["idgrupo"].toString(),
-                        mapa["idsuperiorInmediato"].toString()
+                        mapa["idsuperiorInmediato"].toString(),
+                        true
                     )
 
                 }

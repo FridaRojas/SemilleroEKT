@@ -69,11 +69,19 @@ class InicioSesionFragment : Fragment(){
 
         viewModel.getUsersByBoss()
 
+        /*if(preferenciasGlobal.validaSesionIniciada()){
+            findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
+            Toast.makeText(activity, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
+        }*/
+
         binding.btnLogin.setOnClickListener {
             //validate()
+
             var result = arrayOf(validateEmail(), validatePassword())
             correoSession = binding.email.text.toString()
             passwordSession = binding.password.text.toString()
+
+
 
             if(false in result){
                 Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
@@ -88,9 +96,10 @@ class InicioSesionFragment : Fragment(){
                     findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
 
                     var nombre = preferenciasGlobal.recuperarNombreSesion()
-                    Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
                 }else{
                     Log.d("Login", "Usuario no encontrado")
+
                 }
             }
         }

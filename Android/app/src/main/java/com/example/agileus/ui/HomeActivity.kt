@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
@@ -58,8 +59,9 @@ class HomeActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
 
-        if(preferenciasGlobal.validaSesionIniciada()){
 
+        if(preferenciasGlobal.validaSesionIniciada()){
+            Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
         }
 
 

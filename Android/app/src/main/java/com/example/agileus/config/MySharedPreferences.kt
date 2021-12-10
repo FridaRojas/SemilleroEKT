@@ -10,8 +10,7 @@ class MySharedPreferences(contexto: Context) {
         val SESSION_TOKEN = "TOKEN"
         val NIVEL_USER = "NIVEL_USER"
 
-        val CORREO_KEY = "CORREO_KEY"
-        val PASSWORD_KEY = "PASWORD_KEY"
+        val SESSION_KEY = "SESSION_KEY"
 
         //Login
         val ID_SESSION = "ID_USER"
@@ -39,7 +38,7 @@ class MySharedPreferences(contexto: Context) {
         id : String,  correo: String, numEmpleado:String,
         nombre:String, nombreRol:String,
         telefono:String, curp:String, rfc:String, tokenAuth:String,
-        idGrupo:String, idSuperior:String
+        idGrupo:String, idSuperior:String, sessionKey:Boolean
     ){
         with(sharedPreferences.edit()) {
             putString(ID_SESSION, id)
@@ -53,6 +52,7 @@ class MySharedPreferences(contexto: Context) {
             putString(TOKEN_AUTH_KEY, tokenAuth)
             putString(ID_GRUPO_SESSION, idGrupo)
             putString(  ID_SUPERIOR_INMEDIATO, idSuperior)
+            putBoolean(SESSION_KEY, sessionKey)
             commit()
         }
     }
@@ -74,7 +74,7 @@ class MySharedPreferences(contexto: Context) {
     }
 
     fun validaSesionIniciada(): Boolean{
-        return sharedPreferences.getBoolean(SESSION_TOKEN, false)
+        return sharedPreferences.getBoolean(SESSION_KEY, false)
     }
 
     fun cerrarSesion(){
