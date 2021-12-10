@@ -78,7 +78,7 @@ class MySharedPreferences(contexto: Context) {
     }
 
     fun cerrarSesion(){
-        sharedPreferences.edit().clear()
+        sharedPreferences.edit().clear().commit()
     }
 
     //Token Notificaciones

@@ -14,12 +14,14 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.databinding.ActivityHomeBinding
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragment
 
@@ -56,12 +58,8 @@ class HomeActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
 
-        //PreferenciasGlobal
-        if(InitialApplication.preferenciasGlobal.validaSesionIniciada()){
-            val fragmentInicio = ListConversationFragment()
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.navigation_home, fragmentInicio)
-            transaction.commit()
+        if(preferenciasGlobal.validaSesionIniciada()){
+
         }
 
 
