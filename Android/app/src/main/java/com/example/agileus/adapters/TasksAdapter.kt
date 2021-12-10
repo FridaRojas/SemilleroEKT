@@ -85,8 +85,6 @@ class TasksAdapter(
                 prioridad.setTextColor(context.resources.getColor(R.color.colorGreen))
             }
 
-
-
             //Log.d("status", status)
             cardTarea.setOnClickListener {
                 //Toast.makeText(context, "${prioridad.text}", Toast.LENGTH_SHORT).show()

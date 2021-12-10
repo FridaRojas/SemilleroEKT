@@ -12,11 +12,12 @@ import com.example.agileus.models.TaskUpdate
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 import com.example.agileus.webservices.dao.TasksDao
 import java.lang.IllegalStateException
 import java.util.*
 
-class DialogoActualizarEstatus(var args: DataTask) :
+class DialogoActualizarEstatus(var args: DataTask, var listener: dialogoConfirmarListener) :
     DialogFragment() {
 
     private lateinit var detalleNivelBajoViewModel: DetalleNivelAltoViewModel
@@ -45,12 +46,8 @@ class DialogoActualizarEstatus(var args: DataTask) :
                         } else if (args.estatus.equals("iniciada")) {
                             args.estatus = "revision"
                         }
-                        detalleNivelBajoViewModel.actualizarEstatus(args)
-                        val newFragment = DialogoAceptar("estatus actualizado")
-                        newFragment.show(
-                            (activity as HomeActivity).supportFragmentManager,
-                            "missiles"
-                        )
+                        detalleNivelBajoViewModel.actualizarEstatus(args, listener)
+
                     })
                 .setNegativeButton(R.string.respCancelar,
                     DialogInterface.OnClickListener { dialog, id ->

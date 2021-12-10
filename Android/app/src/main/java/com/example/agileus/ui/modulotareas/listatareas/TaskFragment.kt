@@ -23,12 +23,15 @@ import com.example.agileus.models.StatusTasks
 import com.example.agileus.models.StatusTasks.Companion.lista
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoNivelBajo
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoValidarTarea
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 
 
-class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
+class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoConfirmarListener {
 
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
@@ -160,8 +163,17 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
     }
     
     override fun abreDialogo(dataTask: DataTask) {
-        val newFragment = DialogoNivelBajo(this,dataTask)
-        newFragment.show((activity as HomeActivity).supportFragmentManager, "missiles")
+        val newFragment2 =
+            DialogoNivelBajo(dataTask,this)
+        newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
     }
-    
+
+    override fun abreDialogoConfirmar(mensaje: String) {
+        val dialogoAceptar = DialogoAceptar(mensaje)
+        dialogoAceptar.show(
+            (activity as HomeActivity).supportFragmentManager,
+            getString(R.string.dialogoAceptar)
+        )
+    }
+
 }
