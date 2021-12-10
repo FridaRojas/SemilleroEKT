@@ -37,25 +37,23 @@ public class GroupController {
         System.out.println("entra a agregar usuario al grupo");
         try {
             if (bodyAddUserGroup.getIdUsuario() == null || bodyAddUserGroup.getIdGrupo() == null || bodyAddUserGroup.getIdSuperior() == null || bodyAddUserGroup.getNombreRol() == null) {
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error  en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error  en las llaves", null));
             } else {
                     //verificar el caso de broadcast (caso añadir desde organigrama)
                     if(bodyAddUserGroup.getIdSuperior().equals("BROADCAST")){
                         System.out.println("entra a coso broadcast");
                         //verificar si un broadcast ya existe
                         if(!groupService.buscarBroadCastEnGrupo(bodyAddUserGroup.getIdGrupo())){
-                            System.out.println("intenta agregar");
                             //agregar
                             Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), "-1", "BROADCAST");
                             User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), "-1", bodyAddUserGroup.getIdGrupo(), "BROADCAST");
                             if (group == null && user == null) {
-                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", ""));
+                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", null));
                             } else {
-                                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
+                                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
                             }
                         }else{
-                            System.out.println("No se agrega el usuario");
-                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,ya existe un Broadcast en el grupo", ""));
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,ya existe un Broadcast en el grupo", null));
                         }
 
                     }else{
@@ -72,9 +70,9 @@ public class GroupController {
                             Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getNombreRol());
                             User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getNombreRol());
                             if (group == null && user == null) {
-                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", ""));
+                                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", null));
                             } else {
-                                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
+                                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "El usuario se añadio correctamente", group));
                             }
                       /*  }else{
                             //no se pueden asignar subordinados al broadcast
@@ -84,7 +82,7 @@ public class GroupController {
             }
         } catch (Exception e) {
             System.err.println("Error: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado  ", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado  ", null));
         }
     }
 
@@ -98,13 +96,13 @@ public class GroupController {
     public Response buscar(@PathVariable String id) {
         try {
             if (groupService.buscarPorId(id).isPresent()) {
-                return new Response(HttpStatus.ACCEPTED, "Grupo encontrado", groupService.buscarPorId(id));
+                return new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorId(id));
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "Error grupo no existente", "");
+                return new Response(HttpStatus.BAD_REQUEST, "Error grupo no existente", null);
             }
         } catch (Exception e) {
             System.err.println("Error: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error Inesperado", "");
+            return new Response(HttpStatus.NOT_FOUND, "Error Inesperado", null);
         }
     }
 
@@ -119,7 +117,7 @@ public class GroupController {
     public Response delete(@PathVariable String id) {
         try {
             if (id == null) {
-                return new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", "");
+                return new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null);
             } else {
                 Optional<Group> grupo = groupService.buscarPorId(id);
                 if (grupo.isPresent()) {
@@ -132,7 +130,7 @@ public class GroupController {
                     groupService.borrarPorId(id);
                     return new Response(HttpStatus.ACCEPTED, "Grupo eliminado", "");
                 } else {
-                    return new Response(HttpStatus.BAD_REQUEST, "Grupo no encontrado", "");
+                    return new Response(HttpStatus.BAD_REQUEST, "Grupo no encontrado", null);
                 }
             }
         } catch (Exception e) {
@@ -145,7 +143,7 @@ public class GroupController {
         try {
             if (body.getIdGrupo() == null || body.getIdUsuario() == null) {
                 System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
             } else {
                 Optional<Group> grupo = groupService.buscarUsuarioEnGrupo(body.getIdGrupo(), body.getIdUsuario());
                 if (grupo.isPresent()) {
@@ -159,14 +157,14 @@ public class GroupController {
                     userService.save(us.get());
 
                     System.out.println("Usuario eliminado del grupo");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Usuario eliminado del grupo", grupo.get()));
+                    return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario eliminado del grupo", grupo.get()));
                 } else {
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Grupo o usuario no encontrado", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Grupo o usuario no encontrado", null));
                 }
             }
         } catch (Exception e) {
             System.err.println("Error en eliminar usuario de un grupo: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", null));
         }
     }
 
@@ -198,18 +196,18 @@ public class GroupController {
                     if (optGroup.isPresent()) {
                         Group group = optGroup.get();
                         if (group == null) {
-                            return new Response(HttpStatus.NOT_FOUND, "el usuario no pertenece al grupo", group);
+                            return new Response(HttpStatus.BAD_REQUEST, "el usuario no pertenece al grupo", group);
                         }
 
                         return new Response(HttpStatus.OK, "usuario encontrado dentro del grupo", group);
                     } else {
-                        return new Response(HttpStatus.NOT_FOUND, "No se encontro el usuario dentro del grupo", "");
+                        return new Response(HttpStatus.BAD_REQUEST, "No se encontro el usuario dentro del grupo", null);
                     }
                 } else {
-                    return new Response(HttpStatus.NOT_FOUND, "El usuario no existe", "");
+                    return new Response(HttpStatus.BAD_REQUEST, "El usuario no existe", null);
                 }
             } else {
-                return new Response(HttpStatus.NOT_FOUND, "El grupo no existe", "");
+                return new Response(HttpStatus.BAD_REQUEST, "El grupo no existe", null);
             }
 
         } catch (Exception e) {
@@ -228,11 +226,11 @@ public class GroupController {
             if (groupService.buscarPorNombre(nombre).isPresent()) {
                 return new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorNombre(nombre).get());
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "Nombre no encontrado", "");
+                return new Response(HttpStatus.BAD_REQUEST, "Nombre no encontrado", null);
             }
         } catch (Exception e) {
             System.err.println("Excepcion: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", "");
+            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", null);
         }
     }
 
@@ -248,11 +246,11 @@ public class GroupController {
                 groupService.guardar(group);
                 return new Response(HttpStatus.OK, "Grupo " + nombre + " creado", "");
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "Grupo " + nombre + " ya existe", "");
+                return new Response(HttpStatus.BAD_REQUEST, "Grupo " + nombre + " ya existe", null);
             }
         } catch (Exception e) {
             System.err.println("Exception: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta: " + e, "");
+            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta: " + e, null);
         }
         //return new Response();
     }
@@ -289,14 +287,14 @@ public class GroupController {
             JSONObject jsn = new JSONObject(json);
 
             if (jsn.get("pagina") == null || jsn.get("tamaño") == null) {
-                return new Response(HttpStatus.BAD_REQUEST, "Faltan datos", "");
+                return new Response(HttpStatus.NOT_ACCEPTABLE, "Faltan datos", null);
             }
 
             pagina = (int) jsn.get("pagina");
             tamaño = (int) jsn.get("tamaño");
 
             if (pagina < 0 || tamaño < 1) {
-                return new Response(HttpStatus.BAD_REQUEST, "Datos incorrectos", "");
+                return new Response(HttpStatus.BAD_REQUEST, "Datos incorrectos", null);
             }
 
             Iterable<Group> grupos = groupService.buscarTodo(PageRequest.of(pagina, tamaño));
@@ -313,10 +311,10 @@ public class GroupController {
             if (groupService.buscarPorId(grupo.getId()).isPresent() && grupo.getNombre() != null) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Grupo actualizado correctamente", groupService.actualizaNombre(grupo.getId(), grupo.getNombre())));
             } else {
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Grupo no encontrado", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Grupo no encontrado", null));
             }
         } catch (Exception e) {
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error desconocido", null));
         }
     }
 
@@ -328,10 +326,10 @@ public class GroupController {
             if (groupService.actualizaUsuario(user)) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario en grupo actualizado correctamente", ""));
             } else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", null));
             }
         } catch (Exception e) {
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", null));
         }
     }
 
@@ -350,17 +348,17 @@ public class GroupController {
                     if (groupService.actualizaUsuario(user.get()) && (userService.save(user.get()) != null)) {
                         return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario  actualizado correctamente", ""));
                     } else {
-                        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no actualizado", ""));
+                        return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no actualizado", null));
                     }
 
                 }else{
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", null));
                 }
             } else {
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error no se puede asignar a si mismo como superior", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Error no se puede asignar a si mismo como superior", null));
             }
         } catch (Exception e) {
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", null));
         }
 
 

@@ -37,24 +37,24 @@ public class UserController {
         System.out.println(user.getNombre()+"  "+user.getRFC());
         try {
             if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",null));
             }else{
                 boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
                 if (us){
                     System.out.println("ya existe");
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",null));
                 }else {
                     String psw= GeneralService.cifrar(user.getPassword());
                     user.setPassword(psw);
                     user.setTokenAuth("");
                     userService.save(user);
                     System.out.println("creado");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Creado",user));
+                    return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario Creado",user));
                 }
             }
         }catch (Exception e){
             System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",null));
         }
 
     }
@@ -63,13 +63,13 @@ public class UserController {
     public ResponseEntity<?> findAll(){
         try{
             if (userService.findAll()!=null){
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Lista de usuarios encontrada",userService.findAll()));
+                return ResponseEntity.ok(new Response(HttpStatus.OK,"Lista de usuarios encontrada",userService.findAll()));
             }else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al buscar los datos",""));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al buscar los datos",null));
             }
         }catch (Exception e){
             System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",null));
         }
     }
 
@@ -78,13 +78,13 @@ public class UserController {
         //return userService.findById(id);
         try{
             if(userService.findById(id).isPresent()){
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",userService.findById(id)));
+                return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario encontrado",userService.findById(id)));
             }else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",""));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",null));
             }
         }catch (Exception e){
             System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",null));
         }
     }
 
@@ -155,9 +155,9 @@ public class UserController {
                     userService.save(usr);
                     return new Response(HttpStatus.OK,"Usuario eliminado correctamente","");
                 }
-                return new Response(HttpStatus.BAD_REQUEST,"No se puede borrar","");
+                return new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",null);
             }else{
-                return new Response(HttpStatus.BAD_REQUEST,"No se puede borrar","");
+                return new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",null);
             }
         }catch(Exception e){
             System.err.println("Error: "+e);
@@ -171,7 +171,7 @@ public class UserController {
         try {
             if (updateBoss.getIDUsuarios()==null || updateBoss.getIDSuperiores()==null){
                 System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",null));
             }else{
                 String[] idUser = updateBoss.getIDUsuarios();
                 String[] idBoss = updateBoss.getIDSuperiores();
@@ -179,11 +179,11 @@ public class UserController {
                     userService.updateIdBoss(idUser[i], idBoss[i]);
                     groupService.actualizaIdSuperior(idUser[i], idBoss[i]);
                 }
-                return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", null));
             }
 
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,e.getMessage(),""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,e.getMessage(),null));
         }
     }
 
@@ -194,21 +194,21 @@ public class UserController {
             Optional<User> user = userService.findById(userUpdate.getID());
 
             if(!user.isPresent()) {
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se encontró al usuario", null));
             }else {
                 if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(userUpdate.getCorreo())){
                     System.out.println("1");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", null));
                 }else
                     if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(userUpdate.getCurp())){
                     System.out.println("2");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", null));
                 }else if(!user.get().getRFC().equals(userUpdate.getRFC()) && userService.buscaRFCUsuario(userUpdate.getRFC())){
                     System.out.println("3");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "RFC no válido", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "RFC no válido", null));
                 }else if(!user.get().getNumeroEmpleado().equals(userUpdate.getNumeroEmpleado()) && userService.buscaNoEmpleadoUsuario(userUpdate.getNumeroEmpleado())){
                     System.out.println("4");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", null));
                 }else{
                         if (!userUpdate.getPassword().equals(user.get().getPassword())){
                             String pwd=GeneralService.cifrar(userUpdate.getPassword());
@@ -223,7 +223,7 @@ public class UserController {
                 }
             }
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, e.toString(), ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.toString(), null));
         }
 
     }
@@ -259,13 +259,13 @@ public class UserController {
                     userService.actualizaRol(user.get(), idSuperior, idGrupo, nombreRol);
                     return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
                 } else {
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "No se aceptan los cambios", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se aceptan los cambios", null));
                 }
             }else{
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró usuario", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se encontró usuario", null));
             }
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", null));
         }
     }
 
@@ -277,10 +277,10 @@ public class UserController {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuarios encontrados", users));
             }
             else {
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontraron usuarios", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se encontraron usuarios", ""));
             }
         }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Error desconocido", ""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
         }
     }
 
@@ -288,20 +288,18 @@ public class UserController {
     public ResponseEntity<?> existUser(@RequestBody User user){
         try {
             if (user.getCorreo() == null || user.getCurp() == null || user.getRFC() == null || user.getNumeroEmpleado() == null) {
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
             } else {
                 boolean us = userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
                 if (us) {
-                    System.out.println("El usuario existe");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "El usuario existe", "true"));
+                    return ResponseEntity.ok(new Response(HttpStatus.OK, "El usuario existe", "true"));
                 } else {
                     return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", "false"));
                 }
             }
         }catch (Exception e){
             System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",null));
         }
     }
 
@@ -309,8 +307,7 @@ public class UserController {
     public ResponseEntity reasigna(@RequestBody BodyUpdateBoss body){
         try {
             if (body.getIDUsuarios() == null || body.getIDSuperiores() == null) {
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
             } else {
                 String[] Usuarios = body.getIDUsuarios();
                 String[] Superiores = body.getIDSuperiores();
@@ -319,12 +316,12 @@ public class UserController {
                     System.out.println("Empleado:" + Usuarios[i] + "  Superior:" + Superiores[i]);
                 }
                 userService.reasignaSuperiores(Usuarios, Superiores);
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Superiores Modificados", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Superiores Modificados", ""));
 
             }
         }catch (Exception e){
             System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",null));
         }
 
     }
@@ -340,7 +337,7 @@ public class UserController {
     public Response busquedaUsuario(@PathVariable String parametro) {
         try {
             if (parametro==null){
-                return new Response(HttpStatus.BAD_REQUEST,"Faltan datos para realizar la consulta",null);
+                return new Response(HttpStatus.NOT_ACCEPTABLE,"Faltan datos para realizar la consulta",null);
             }else{
                 if (userService.busquedaUsuario(parametro).isPresent()){
                     return new Response(HttpStatus.OK, "Usuario(s) encontrado(s)",userService.busquedaUsuario(parametro).get());
@@ -365,13 +362,13 @@ public class UserController {
                     return new Response(HttpStatus.OK,"Deslogeado correctamente","");
                 }
                 else{
-                    return  new Response(HttpStatus.BAD_REQUEST,"Error al deslogear","");
+                    return  new Response(HttpStatus.BAD_REQUEST,"Error al deslogear",null);
                 }
             }else{
-                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+idUser+" no existe","");
+                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+idUser+" no existe",null);
             }
         }catch (Exception e){
-            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",e);
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",null);
         }
     }
 

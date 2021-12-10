@@ -1,12 +1,9 @@
 package com.ekt.AdministradorWeb.config;
 
-
 import com.ekt.AdministradorWeb.DAO.GroupDAO;
 import com.ekt.AdministradorWeb.DAO.UserDAO;
 import com.ekt.AdministradorWeb.entity.*;
 import com.google.gson.Gson;
-import okhttp3.*;
-import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.ekt.AdministradorWeb.entity.User;
@@ -33,17 +30,22 @@ public class ConfigPag {
          return "paginas/login";
     }
 
+    //Muestra los usuarios de un grupo
     @GetMapping("/eliminaUsuario")
     public String muestraUsuariosGrupo(@ModelAttribute Group group, ModelMap model, HttpSession session){
-        if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")){
-            User[] usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
-            model.addAttribute("usuarios", usuarios);
-            return "paginas/modalEliminaUsuario";
-        }else{
-            return "redirect:/login";
+        try {
+            //Valida si está activa la sesión
+            if (session.getAttribute("user") != null && (boolean) session.getAttribute("user")) {
+                User[] usuarios = groupDAO.muestraUsuariosGrupo(group.getId());
+                model.addAttribute("usuarios", usuarios);
+                return "paginas/modalEliminaUsuario";
+            } else {
+                return "redirect:/login";
+            }
+        }catch (Exception e){
+            return "redirect:/error1";
         }
     }
-
 
     @PostMapping("/entrar")
     public String Valida(@ModelAttribute User us, RedirectAttributes redirectAttrs, HttpSession session) {
@@ -135,8 +137,6 @@ public class ConfigPag {
             System.out.println(e.getMessage());
             return "redirect:/error1";
         }
-
-
     }
 
     @PostMapping ("/editarUsuarioServicio")//*
@@ -277,13 +277,15 @@ public class ConfigPag {
         }
     }
 
+    //Reasigna un miembro del organigrama con otro superior inmediato (cuando se elimina su superior del organigrama)
     @PostMapping("/reasignaSuperior")
     public String reasignaSuperior(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen, Model modelMap,RedirectAttributes redirectAttrs, HttpSession session){
+        //valida si la sesión está activa
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
             ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
             User user = userDAO.buscaID(idUsuario);
             if (listaSubordinados != null) {
-                //si tiene suboordinados, redirecciona a vista de reasignar superior
+                //valida si el usuario a eliminar tiene suboordinados a reasignar y redirecciona a ReasignaSuperior
                 ArrayList<User> listaUsuarios = new ArrayList<>();
                 User[] usuarios;
                 usuarios = groupDAO.muestraUsuariosGrupo(user.getIDGrupo());
@@ -322,6 +324,7 @@ public class ConfigPag {
                 }
             }
         }else {
+            //si la sesión no está activa redirecciona al login
             return "redirect:/login";
         }
     }
@@ -381,14 +384,19 @@ public class ConfigPag {
         }
     }
 
+    //Itera la lista de usuarios para reasiganrles su superior y elimina el usuario elegido.
     @PostMapping("/ActualizaElimina")
     public String actualizaElimina(@ModelAttribute(value = "idUsuario") String idUsuario,@ModelAttribute(value = "origen") String origen
             ,@ModelAttribute(value = "idUser") String idUser, @ModelAttribute(value = "idBoss") String idBoss, ModelMap modelMap
             ,Model model,RedirectAttributes redirectAttrs, HttpSession session){
+        //valida si la sesión está activa
         if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
+            //Actualiza el el usuario con el id del superior inmediato
             userDAO.actualizaIdSuperior(idUser, idBoss);
             ArrayList<User> listaSubordinados = userDAO.muestraSubordinados(idUsuario);
             User user = userDAO.buscaID(idUsuario);
+            //si el usuario a eliminar aún tiene subordinados extrae los posibles candidatos a ser su superior inmediato y redireeciona
+            //a ReasignaSuperior
             if (listaSubordinados != null) {
                 ArrayList<User> listaUsuarios = new ArrayList<>();
                 User[] usuarios;
@@ -407,14 +415,14 @@ public class ConfigPag {
                 //si no tiene suboordinados, elimina y redirecciona a editarGrupo
                 groupDAO.eliminaUsuarioGrupo(idUsuario, user.getIDGrupo());
                 if (origen.equals("0")) {
-                    //Si el origen proviene de vistaUsuarios cambiar el status a false y redirecciona a findallusuarios
+                    //Si el origen proviene de vistaUsuarios cambiar el status a false y redirecciona a findAllusuarios
                     userDAO.desactivarUsuario(idUsuario);
                     redirectAttrs
                             .addFlashAttribute("status", "success")
                             .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
                     return "redirect:/findAllUsuarios";
                 } else {
-                    //si origen proviene de grupos, redirecciona a edita grupo
+                    //si origen proviene de grupos, redirecciona a editarGrupo
                     redirectAttrs
                             .addFlashAttribute("status", "success")
                             .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
@@ -528,14 +536,17 @@ public class ConfigPag {
         }
     }
 
+    //Busca a un usuario usando filtro por RFC, CURP, nombre, rol, correo o número de empleado.
     @PostMapping("/busquedaUsuario")
     public String busquedaUsuario(@ModelAttribute(value = "parametro") String parametro, ModelMap modelMap, HttpSession session){
         try {
+            //valida si la sesión está activa, busca a los usuarios y redirecciona a InicioUsuarios
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
                 ArrayList<User> listaUsuarios = userDAO.busqedaUsuarios(parametro);
                 modelMap.addAttribute("listaUsuarios", listaUsuarios);
                 return "paginas/usuarios/InicioUsuarios";
             }else {
+                //si la sesión no está activa redirecciona a login
                 return "redirect:/login";
             }
         }catch (Exception e){
@@ -543,24 +554,27 @@ public class ConfigPag {
         }
     }
 
+    //Busca a un organigrama por su nombre
     @PostMapping("/busquedaOrganigrama")
     public String busquedaOrganigrama(@ModelAttribute(value = "parametro") String parametro, ModelMap model, HttpSession session){
         ArrayList<Group> listaGrupos = new ArrayList<>();
         try {
+            //Valida si la sesión está activa
             if (session.getAttribute("user")!= null && (boolean) session.getAttribute("user")) {
                 if (groupDAO.busquedaGrupo(parametro) != null) {
                     listaGrupos.add(groupDAO.busquedaGrupo(parametro));
                     model.addAttribute("listaGrupos", listaGrupos);
                 }
+                return "paginas/organigramas/inicioOrganigramas.html";
             }else {
                 return "redirect:/login";
             }
         }catch (Exception e){
             return "redirect:/error1";
         }
-        return "paginas/organigramas/inicioOrganigramas.html";
     }
 
+    //Cierra sesión cambia estatus de la sesión a false.
     @PostMapping("/logout")
     public String logOut(HttpSession session){
         try {
