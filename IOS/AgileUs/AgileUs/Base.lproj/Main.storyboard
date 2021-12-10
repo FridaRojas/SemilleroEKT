@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bS3-wo-jyG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="etT-s0-VoZ">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
@@ -35,7 +35,7 @@
             </objects>
             <point key="canvasLocation" x="886.95652173913049" y="41.517857142857139"/>
         </scene>
-        <!--View Controller-->
+        <!--Item-->
         <scene sceneID="xyP-Kg-WF5">
             <objects>
                 <viewController id="njg-x3-P2J" sceneMemberID="viewController">
@@ -45,6 +45,7 @@
                         <viewLayoutGuide key="safeArea" id="dvm-v9-8Mb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="R2m-Pf-exC"/>
                     <navigationItem key="navigationItem" id="qSr-fF-6NL"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A0l-SS-DDg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -97,6 +98,7 @@
                         <segue destination="Srt-5x-2vk" kind="relationship" relationship="viewControllers" id="2Ed-ip-3QO"/>
                         <segue destination="He9-Ti-izS" kind="relationship" relationship="viewControllers" id="aUh-lB-AwV"/>
                         <segue destination="Mnh-GU-nQA" kind="relationship" relationship="viewControllers" id="NCr-y3-Nbt"/>
+                        <segue destination="njg-x3-P2J" kind="relationship" relationship="viewControllers" id="E7p-Db-doy"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEV-Kx-CJu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -340,6 +342,9 @@
             <point key="canvasLocation" x="3975.3846153846152" y="466.35071090047393"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="E7p-Db-doy"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="ic_Bar-1" width="55.666667938232422" height="55.666667938232422"/>
         <image name="ic_Filter" width="41.666667938232422" height="41.666667938232422"/>
