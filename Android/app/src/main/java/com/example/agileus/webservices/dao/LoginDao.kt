@@ -16,16 +16,13 @@ class LoginDao {
 
 
     fun iniciarSesion(usuario:Users): Boolean {
-
-        var STATUS: Boolean = false
-
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
         //var user:LoginResponse
 
         if (responseDos.isSuccessful) {
-            Log.d("body",responseDos.body().toString())
-            Log.d("body",responseDos.body()?.status.toString())
+            //Log.d("body",responseDos.body().toString())
+            //Log.d("body",responseDos.body()?.status.toString())
             //Log.d("body",responseDos.body().data.toString())
 
             if (responseDos.body() != null) {
@@ -33,7 +30,6 @@ class LoginDao {
                 var guardarData:Data = Data()
 
                 if (almacenar.status == "ACCEPTED") {
-                    STATUS = true
                     var mapa:LinkedTreeMap<String,Any?> = responseDos.body()!!.data as LinkedTreeMap<String, Any?>
                     guardarData.id = mapa["id"].toString()
                     guardarData.idUser = mapa["idUser"].toString()
@@ -53,29 +49,22 @@ class LoginDao {
                     guardarData.idgrupo = mapa["idgrupo"].toString()
                     guardarData.idsuperiorInmediato = mapa["idsuperiorInmediato"].toString()
                     guardarData.tokenAuth = mapa["tokenAuth"].toString()
-
                     almacenar.data = guardarData
-
+                    status  = true
                 }
-
                 else {
-                    STATUS = false
-
+                    status = false
                 }
             }
             else {
-                STATUS = false
-
+                status = false
             }
         }
         else{
-            STATUS = false
+            status = false
         }
-
-            status = STATUS
-
-            return STATUS
-
+            //Log.d("status", status.toString())
+            return status
     }
                 /*
     suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {

@@ -39,8 +39,7 @@ class InicioSesionViewModel : ViewModel() {
         list = LoginDao()
     }
 
-
-// recuperarToken
+    // recuperarToken
     fun recuperarLogueo(users: Users): List<LoginResponse>{
         //Log.i("mensaje", "ver")
         try {
@@ -48,6 +47,7 @@ class InicioSesionViewModel : ViewModel() {
                 inicioExitoso.value = withContext(Dispatchers.IO){
                     list.iniciarSesion(users)
                 }!!
+
             }
 
             //Log.d("status","$status")
@@ -57,6 +57,9 @@ class InicioSesionViewModel : ViewModel() {
         }
         return emptyList()
     }
+
+
+
 
     /*
     fun getUsersByBoss() {

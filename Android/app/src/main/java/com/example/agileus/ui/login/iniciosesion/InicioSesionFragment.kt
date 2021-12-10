@@ -3,6 +3,9 @@ package com.example.agileus.ui.login.iniciosesion
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
+import android.os.SystemClock.sleep
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +19,7 @@ import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.models.Users
+import com.example.agileus.ui.HomeActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
 
@@ -23,12 +27,11 @@ import java.util.regex.Pattern
 class InicioSesionFragment : Fragment(){
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
-    //var trigger=0
 
     companion object {
         var correoLogin : String=""
         var passwordLogin : String=""
-        var status:Boolean =false
+        var status:Boolean=false
         var id:String = " "
         var idUser:String = ""
         var correo:String =" "
@@ -65,25 +68,48 @@ class InicioSesionFragment : Fragment(){
         return view
     }
 
+
     @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
+        //OCULTAR BOTÓN ATRÁS EN ONACTIVITYCREATED
+        (activity as HomeActivity).ocultarBtnAtras()
 
-        //appBar: AppBar( title: Text("App Bar without Back Button"), automaticallyImplyLeading: false, ),
+        viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
 
         //AGREGADA para ocultar BottonNavigationView
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
 
 ///////////////////////////////////////
-        binding.btnLogin.setOnClickListener { validate()
+        binding.btnLogin.setOnClickListener { validate() }
+        // observer se dispara cuando finalice el servicio
+        viewModel.inicioExitoso.observe(viewLifecycleOwner, {response ->
+            //Log.d("respuesta inicio ", viewModel.inicioExitoso.toString())
+            var x = response
+            if(x)
+            {
+                //Log.d("xdata",x.toString())
+             //   Toast.makeText(activity, "Inicio", Toast.LENGTH_SHORT).show()
+            }
+             else {
+                //Log.d("xdata",x.toString())
+            }
 
-        }
+            //}
+        })
+
+
 
     }
 
     private fun validate() {
+
+        var progressBar = binding.progressLoading
+        progressBar.visibility=View.VISIBLE
+        binding.btnLogin.isEnabled=false
+
+
         var result = arrayOf(validateEmail(), validatePassword())
 
         if (false in result) {
@@ -91,15 +117,12 @@ class InicioSesionFragment : Fragment(){
         }
         val usuario = Users(correoLogin, passwordLogin, TOKEN_KEY)
         viewModel.recuperarLogueo(usuario)
-        //binding.progressLoading.isVisible = true
+
+
+        sleep(1000)
 
         if (status) {
-            Log.d("Login", correoLogin)
-            Log.d("Login", passwordLogin)
-            Log.d("Login", idUser)
-            //trigger = 0
-            Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
-
+            //Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
             if(correoLogin != "rogelioL@gmail.com")
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
             else
@@ -108,7 +131,7 @@ class InicioSesionFragment : Fragment(){
              }
 
         else {
-                Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+            startTimeCounter()
             }
 
     }
@@ -154,5 +177,22 @@ class InicioSesionFragment : Fragment(){
         }
 
     }
+   //Barra de carga para inicio de login
+    fun startTimeCounter() {
+        var counter=0
+        val progressBar = binding.progressLoading
+        progressBar.visibility=View.VISIBLE
+        object : CountDownTimer(3000, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+                progressBar.setProgress(counter++)//counter++
+            }
+            override fun onFinish() {
+                Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+                progressBar.visibility=View.INVISIBLE
+                binding.btnLogin.isEnabled=true
 
+
+            }
+        }.start()
+    }
 }

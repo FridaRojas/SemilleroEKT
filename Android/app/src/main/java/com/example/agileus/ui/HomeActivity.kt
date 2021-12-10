@@ -71,5 +71,10 @@ class HomeActivity : AppCompatActivity() {
         nav_view.visibility = View.GONE
     }
 
- }
+    //Ocultar flecha atras del inicio de sesión
+    fun ocultarBtnAtras() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+}
 
