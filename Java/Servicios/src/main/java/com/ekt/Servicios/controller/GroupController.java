@@ -50,7 +50,7 @@ public class GroupController {
                             if (group == null && user == null) {
                                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,parametro no valido", null));
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.ACCEPTED, "El usuario se añadio correctamente", group));
+                                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "El usuario se añadio correctamente", group));
                             }
                         }else{
                             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error al realizar en la operacion,ya existe un Broadcast en el grupo", null));
@@ -66,7 +66,6 @@ public class GroupController {
                         //verifica si el usuario seleccionado no es el broadcast
                       //  Optional<User> userBroadcast= userService.findById(bodyAddUserGroup.getIdSuperior());
 
-                       // if (!userBroadcast.get().getNombreRol().equals("BROADCAST")){
                             Group group = groupService.guardarUsuario(bodyAddUserGroup.getIdUsuario(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getNombreRol());
                             User user = userService.actualizaRol(userService.findById(bodyAddUserGroup.getIdUsuario()).get(), bodyAddUserGroup.getIdSuperior(), bodyAddUserGroup.getIdGrupo(), bodyAddUserGroup.getNombreRol());
                             if (group == null && user == null) {

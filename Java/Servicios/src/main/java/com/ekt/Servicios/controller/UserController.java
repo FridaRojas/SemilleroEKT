@@ -172,7 +172,7 @@ public class UserController {
                     userService.updateIdBoss(idUser[i], idBoss[i]);
                     groupService.actualizaIdSuperior(idUser[i], idBoss[i]);
                 }
-                return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", null));
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
             }
 
         }catch (Exception e){
