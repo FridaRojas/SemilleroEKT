@@ -21,8 +21,3 @@ data class Conversation(
    @SerializedName("idemisor") val idemisor: String
 
 )
-class conversartionListByID(
-   @SerializedName("estatus") val estatus: String,
-   @SerializedName("mensaje") val mensaje: String,
-   @SerializedName("data") val data: ArrayList<Conversation>
-)

@@ -5,21 +5,44 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
+import com.example.agileus.ui.modulotareas.creartareas.CrearTareasViewModel
+import com.example.agileus.models.Tasks
 
-class DialogoConfirmOp(val listener: DialogoConfirmacionListener) : DialogFragment(){
+class DialogoConfirmOp(var tarea: Tasks) : DialogFragment(){
+
+    lateinit var conversationviewModel  : ConversationViewModel         // ViewModel
+    lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
+
+            asignarTareaViewModel = ViewModelProvider(this).get()                   // ViewModel
+            conversationviewModel = ViewModelProvider(this).get()
+
             val builder = AlertDialog.Builder(it)
-            //val inflater = requireActivity().layoutInflater;
-            //val vista = inflater.inflate(R.layout.dialogo_tarea_creada, null)
 
             builder.setMessage("Confirmar")
                 // Add action buttons
                 .setPositiveButton("Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
-                        listener.onConfirmOper()
+                        asignarTareaViewModel.postTarea(tarea)
+                        // Enviar tarea a la conversacion grupal
+                        // TODO: 08/12/2021  agregar id receptor desde sharedpreferences id_grupo
+                        //val mensajeTareas = Message(
+                            //Constantes.id,"618b05c12d3d1d235de0ade0","",
+                          //"Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",Constantes.finalDate)
+                        //conversationviewModel.mandarMensaje(Constantes.idChat,mensajeTareas)
+                        //Log.d("mensaje Tareas","$mensajeTareas")
+
+                        val newFragment = DialogoAceptar("Tarea ${tarea.titulo} creada")
+                        newFragment.show(
+                            (activity as HomeActivity).supportFragmentManager,
+                            "missiles"
+                        )
                     })
                 .setNegativeButton("Cancelar",
                     DialogInterface.OnClickListener { dialog, id ->

@@ -9,3 +9,9 @@ data class DatosBroadCast(
     @SerializedName("idEmisor")val idEmisor: String,
     @SerializedName("nombreEmisor")val nombreEmisor: String
 )
+
+class BroadcastByID(
+    @SerializedName("estatus") val estatus: String,
+    @SerializedName("mensaje") val mensaje: String,
+    @SerializedName("data") val data: ArrayList<DatosBroadCast>?
+)

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,9 +19,9 @@ import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.dialog.DialogoListen
-import com.example.agileus.ui.login.dialog.RecuperaPasswordDialog
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
+import com.example.agileus.ui.login.dialog.CerrarSesionDialog
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
 import com.example.agileus.utils.Constantes
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -80,7 +79,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
         })
 
         binding.cerrarSesion.setOnClickListener {
-            val newFragment = RecuperaPasswordDialog(this)
+            val newFragment = CerrarSesionDialog(this)
             activity?.supportFragmentManager?.let { it -> newFragment.show(it, "Destino") }
         }
 

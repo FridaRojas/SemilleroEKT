@@ -80,7 +80,7 @@
             android:id="@+id/txtNombreReportes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="Mi información"
             android:textSize="16dp"
             />
     </LinearLayout>
@@ -115,6 +115,7 @@
         android:layout_height="50sp"
         android:src="@drawable/ic_bar_chart"
         android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         />
@@ -125,10 +126,10 @@
         android:layout_height="50sp"
         android:src="@drawable/ic_pie_chart"
         android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         />
-
 
 
     <LinearLayout
@@ -139,7 +140,8 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         app:layout_constraintEnd_toStartOf="@+id/llSegundoLegend"
-        app:layout_constraintStart_toStartOf="@id/RecyclerLista">
+        app:layout_constraintStart_toStartOf="@id/RecyclerLista"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -12,16 +12,53 @@ public class Group {
 
         @Id
         private String id;
-        private String name;
-        private User[] users;
+        private String nombre;
+        private User[] usuarios;
 
-        public String getID() { return id; }
-        public void setID(String value) { this.id = value; }
+        public Group() {
+        }
 
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
+        public Group(String nombre, User[] usuarios) {
+                this.nombre = nombre;
+                this.usuarios = usuarios;
+        }
 
-        public User[] getUsers() { return users; }
-        public void setUsers(User[] value) { this.users = value; }
+        public Group(String id, String nombre, User[] usuarios) {
+                this.id = id;
+                this.nombre = nombre;
+                this.usuarios = usuarios;
+        }
 
+        public String getId() {
+                return id;
+        }
+
+        public void setId(String id) {
+                this.id = id;
+        }
+
+        public String getNombre() {
+                return nombre;
+        }
+
+        public void setNombre(String nombre) {
+                this.nombre = nombre;
+        }
+
+        public User[] getUsuarios() {
+                return usuarios;
+        }
+
+        public void setUsuarios(User[] usuarios) {
+                this.usuarios = usuarios;
+        }
+
+        @Override
+        public String toString() {
+                return "Grupo{" +
+                        "id='" + id + '\'' +
+                        ", nombre='" + nombre + '\'' +
+                        ", usuarios=" + Arrays.toString(usuarios) +
+                        '}';
+        }
 }

@@ -82,7 +82,7 @@
             android:id="@+id/txtNombreReportes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="Mi información"
             android:textSize="16dp"
             />
     </LinearLayout>
@@ -117,6 +117,8 @@
         android:layout_height="50sp"
         android:src="@drawable/ic_bar_chart"
         android:visibility="visible"
+        android:layout_marginStart="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         />
@@ -127,6 +129,8 @@
         android:layout_height="50sp"
         android:src="@drawable/ic_pie_chart"
         android:visibility="invisible"
+        android:layout_marginStart="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         />
@@ -148,7 +152,7 @@
 
             <ImageView
                 android:id="@+id/colorlegend1"
-                android:layout_width="15dp"
+                android:layout_width="12dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:background="@color/colorPrimary" />
@@ -158,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext1"
+                android:text="Pendientes"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -178,17 +182,17 @@
 
             <ImageView
                 android:id="@+id/colorlegend3"
-                android:layout_width="15dp"
+                android:layout_width="12dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/white" />
+                android:background="@color/colorGray" />
 
             <TextView
                 android:id="@+id/txtTercerLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext3"
+                android:text="Revisión"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -206,8 +210,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@id/RecyclerLista"
+        android:layout_marginTop="250dp"
         app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
+        app:layout_constraintEnd_toEndOf="@id/RecyclerLista"
         app:layout_constraintStart_toEndOf="@+id/llPrimerLegend">
 
         <LinearLayout
@@ -219,14 +224,14 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorSecondary"
                 />
             <TextView
                 android:id="@+id/txtSegundoLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext2"
+                android:text="Iniciadas"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -247,14 +252,14 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/colorGray"
+                android:background="@color/Naranja"
                 />
             <TextView
                 android:id="@+id/txtCuartoLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext4"
+                android:text="Terminadas"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>

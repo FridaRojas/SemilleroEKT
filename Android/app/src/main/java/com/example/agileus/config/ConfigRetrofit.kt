@@ -6,7 +6,7 @@ import com.example.agileus.webservices.apis.ReportesApi
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_REPORTES
-import com.example.agileus.ui.login.data.service.LoginApi
+import com.example.agileus.webservices.apis.LoginApi
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
@@ -14,6 +14,7 @@ import com.example.agileus.utils.Constantes.URL_Tasks_Personas
 import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
 import com.example.agileus.webservices.apis.TasksApi
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
@@ -24,6 +25,7 @@ class ConfigRetrofit {
     val URL_MESSAGE = Constantes.URL_ENVIAR_MENSAJE
 
     private var client = OkHttpClient.Builder().addInterceptor(MyInterceptor()).build()
+
 
     //val URL_LOGIN = Constantes.URL_LOGIN
     val URL_Login = Constantes.URL_Login
@@ -56,31 +58,31 @@ class ConfigRetrofit {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
             // .client(clientBuilder.build())
-            // .client(client)
+             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return mRetrofit.create(TasksApi::class.java)
     }
 
-    fun obtenerConfiguracionRetofitTasksPrueba(): TasksApi {
+    /*fun obtenerConfiguracionRetofitTasksPrueba(): TasksApi {
 
 
-        /*var http = OkHttpClient().newBuilder().addInterceptor(
+        *//*var http = OkHttpClient().newBuilder().addInterceptor(
             Interceptor { chain ->
                 val requestBuilder: Request.Builder = chain.request().newBuilder()
                 requestBuilder.header("token_sesion", "12345")
                 chain.proceed(requestBuilder.build())
-            }).build()*/
+            }).build()*//*
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl("http://10.97.3.24:3040/api/")
+            .baseUrl(URL_BASE_TAREAS)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return mRetrofit.create(TasksApi::class.java)
-    }
+    }*/
 
 
     fun obtenerConfiguracionRetofitLogin(): LoginApi {
@@ -117,7 +119,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitBuzon2(): BuzonApi2 {
 
         var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE3)
+            .baseUrl("http://10.97.7.15:3040/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return mRetrofit.create(BuzonApi2::class.java)

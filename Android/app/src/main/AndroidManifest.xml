@@ -15,10 +15,6 @@
         android:theme="@style/Theme.AgileUs"
         android:usesCleartextTraffic="true"
         tools:ignore="MissingClass" >
-        <activity
-            android:name=".ui.login.ui.login.LoginActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity"

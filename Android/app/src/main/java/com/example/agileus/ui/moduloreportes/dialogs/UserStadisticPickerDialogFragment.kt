@@ -25,6 +25,18 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             //MySharedPreferences.empleadoUsuario[0].nombre
             var listaNombres = arrayListOf<String>()
             //listaNombres.add(MySharedPreferences.idUsuario)
+            if(Constantes.empleadoUsuario.size == 0){
+                Constantes.dataEmpleadoUsuario.forEach {
+                    listaNombres.add(it.name)
+                    Log.d("UserListDialogEmp", it.name)
+                }
+            }else{
+                Constantes.empleadoUsuario.forEach {
+                    listaNombres.add(it.name)
+                    Log.d("UserListDialogData", it.name)
+                }
+            }
+            /*
             if(Constantes.dataEmpleadoUsuario.size == 0){
                 Constantes.empleadoUsuario.forEach {
                     listaNombres.add(it.name)
@@ -36,6 +48,7 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
                     Log.d("UserListDialogData", it.name)
                 }
             }
+             */
 
             val userPicker = vista.findViewById<NumberPicker>(R.id.picker_year_month)
             val txtTitulo = vista.findViewById<TextView>(R.id.txtDPFTitulo)

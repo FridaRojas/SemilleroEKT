@@ -4,27 +4,19 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.utils.Constantes
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
-import com.example.agileus.R
-import com.example.agileus.config.MySharedPreferences
-import com.example.agileus.models.Chats
-import com.example.agileus.ui.HomeActivity
 
 
 class ListContactsFragment : Fragment() {
 
     private lateinit var contactsviewModel: ListContactsViewModel
-
 
     private var _binding: ListContactsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -33,6 +25,7 @@ class ListContactsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
 
         contactsviewModel = ViewModelProvider(this).get(ListContactsViewModel::class.java)
 
@@ -45,6 +38,22 @@ class ListContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //    Toast.makeText(activity, "Usuario BRD", Toast.LENGTH_LONG).show()
+        //llamar a la barra de acción
+        //var actionBar = getSupportActionBar()
+        /*
+        var actionBar = getSupportActionBar()
+
+        // mostrar el botón de retroceso en la barra de acción
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false)
+        }
+
+
+         */
+
+        Constantes.id=idUser
+
         contactsviewModel.devuelveLista(Constantes.id)
 
 
@@ -52,26 +61,17 @@ class ListContactsFragment : Fragment() {
             binding.recyclerListContacts.adapter = it
             binding.recyclerListContacts.layoutManager = LinearLayoutManager(activity)
         })
-
-
-
-
-
         binding.etSearchContact.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(p0.isNullOrEmpty()){
-                    contactsviewModel.devuelveLista(Constantes.id)
-                }else{
-                    var list = contactsviewModel.listaConsumida
-                    var fil = list.filter {  it.nombre.lowercase().contains(p0.toString().lowercase()) }
-                    contactsviewModel.filtrarContactos(Constantes.id, fil)
-
-                }
+                contactsviewModel.devuelveLista(Constantes.id)
+                contactsviewModel.contactos.observe(viewLifecycleOwner,{
+                    var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
+                    contactsviewModel.filtrarContactos(Constantes.id,filtro)
+                })
             }
-
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -79,4 +79,7 @@ class ListContactsFragment : Fragment() {
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
 }

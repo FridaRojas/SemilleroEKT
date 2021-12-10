@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.DataTask
+import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 import com.example.agileus.webservices.dao.TasksDao
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -20,7 +21,6 @@ class TaskViewModel() : ViewModel() {
     companion object{
         var status = "pendiente"
     }
-
     var statusRecycler = MutableLiveData<String>()
     var statusListRecycler = MutableLiveData<String>()
     var adaptador = MutableLiveData<TasksAdapter>()
@@ -66,6 +66,8 @@ class TaskViewModel() : ViewModel() {
                     lista.getTasksByStatus("618d9c26beec342d91d747d6", statusRecycler.value.toString())
                 }
             }
+            Log.d("api", "funciona")
+
             if (listaTask != null) {
                 adaptador.value = TasksAdapter(listaTask,listener)
             }

@@ -7,6 +7,7 @@
     <!-- Paletas de Colores -->
     <color name="colorPrimary">#66BB6A</color>
     <color name="colorSecondary">#87D169</color>
+    <color name="Naranja">#FF8800</color>
     <color name="colorBackground">#F5F5F5</color>
     <color name="colorGray">#7F8182</color>
 

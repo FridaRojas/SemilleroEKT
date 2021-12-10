@@ -21,6 +21,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.lang.Exception
 import java.time.ZonedDateTime
 import java.util.*
 
@@ -84,7 +85,20 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
 
             //txtTitulo.setText(MySharedPreferences.idUsuario)
             txtTitulo.setText("Filtrar")
-            txtUsuario.setText(Constantes.idUsuarioEstadisticas)
+
+            try {
+                Constantes.empleadoUsuario.forEach {
+                    if (Constantes.idUsuarioEstadisticas == it.id){
+                        txtUsuario.setText(it.name)
+                        Log.d("idUsuarioEstadisticas", it.id)
+                    }
+                }
+            }catch (ex: Exception){
+                Log.d("FRD Reporte", "DataNotLoadedYet")
+                //txtUsuario.setText("Mi informacion")
+                txtUsuario.setText("Mi información")
+            }
+
             txtInicio.setText("Dia:")
             val fechaActual = dmyFormatoFecha(actualDay, actualMonth-1, actualYear)
             txtFechaInicio.setText(fechaActual)

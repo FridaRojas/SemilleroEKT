@@ -30,7 +30,6 @@ class DetalleNivelAltoViewModel : ViewModel() {
     fun editarTarea(dataTask: TaskUpdate, idTarea: String, idUsuario: String) {
         try {
             viewModelScope.launch {
-//                taskDao.editTask(dataTask, idTarea, idUsuario)
                 taskDao.editTask(dataTask, idTarea, idUsuario)
             }
         } catch (ex: Exception) {
@@ -44,6 +43,18 @@ class DetalleNivelAltoViewModel : ViewModel() {
                 taskDao.updateStatus(dataTask.idTarea, dataTask.estatus)
                 Log.d("Mensaje", "id: ${dataTask.idTarea}")
                 Log.d("Mensaje", "estatus: ${dataTask.estatus}")
+            }
+        } catch (ex: Exception) {
+            Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
+        }
+    }
+
+    fun actualizarEstatus(dataTask: DetalleNivelAltoFragmentArgs) {
+        try {
+            viewModelScope.launch {
+                taskDao.updateStatus(dataTask.tareas.idTarea, dataTask.tareas.estatus)
+                Log.d("Mensaje", "id: ${dataTask.tareas.idTarea}")
+                Log.d("Mensaje", "estatus: ${dataTask.tareas.estatus}")
             }
         } catch (ex: Exception) {
             Log.e(DetalleNivelAltoViewModel::class.simpleName.toString(), ex.message.toString())
