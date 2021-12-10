@@ -28,8 +28,6 @@ class InicioSesionViewModel : ViewModel() {
 
     }
 
-    val correo = preferenciasGlobal.recuperaNombre()
-    val password = preferenciasGlobal.recuperaPassword()
     //shared
     //private var userList = mutableListOf<Users>()
     //var usuariosShared = MutableLiveData<List<Users>>()
@@ -39,8 +37,7 @@ class InicioSesionViewModel : ViewModel() {
         list = LoginDao()
     }
 
-
-// recuperarToken
+    // recuperarToken
     fun recuperarLogueo(users: Users): List<LoginResponse>{
         //Log.i("mensaje", "ver")
         try {
@@ -48,6 +45,7 @@ class InicioSesionViewModel : ViewModel() {
                 inicioExitoso.value = withContext(Dispatchers.IO){
                     list.iniciarSesion(users)
                 }!!
+
             }
 
             //Log.d("status","$status")
@@ -57,6 +55,7 @@ class InicioSesionViewModel : ViewModel() {
         }
         return emptyList()
     }
+
 
 
     fun getUsersByBoss() {
@@ -82,10 +81,6 @@ class InicioSesionViewModel : ViewModel() {
         }else{
             usersByBoss = true
         }
-    }
-
-    fun cerrarSesion(view: View) {
-        preferenciasGlobal.cerrarSesion()
     }
 
 }

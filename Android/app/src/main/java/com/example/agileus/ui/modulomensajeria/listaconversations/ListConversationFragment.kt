@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.HomeActivity
@@ -81,6 +82,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
         binding.cerrarSesion.setOnClickListener {
             val newFragment = CerrarSesionDialog(this)
             activity?.supportFragmentManager?.let { it -> newFragment.show(it, "Destino") }
+            preferenciasGlobal.cerrarSesion()
         }
 
 
