@@ -4,6 +4,7 @@ import com.ekt.Servicios.entity.BodyAddUserGroup;
 import com.ekt.Servicios.entity.Group;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
+import com.ekt.Servicios.service.GeneralService;
 import com.ekt.Servicios.service.GroupService;
 import com.ekt.Servicios.service.UserService;
 import org.json.JSONObject;
@@ -300,7 +301,7 @@ public class GroupController {
     @PutMapping("/actualizaUsuarioGrupo")
     public ResponseEntity<?> actualizaUsuarioGrupo(@RequestBody User user) {
         try {
-            String pwd = userService.cifrar(user.getPassword());
+            String pwd = GeneralService.cifrar(user.getPassword());
             user.setPassword(pwd);
             if (groupService.actualizaUsuario(user)) {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario en grupo actualizado correctamente", ""));
