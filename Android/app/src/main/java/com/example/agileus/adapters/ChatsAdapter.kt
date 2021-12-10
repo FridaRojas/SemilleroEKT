@@ -54,7 +54,6 @@ class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
                 intent.putExtra(Constantes.NAME_RECEPTOR, chats.nombreConversacionRecepto)
                 contexto.startActivity(intent)
             }
-
         }
     }
 

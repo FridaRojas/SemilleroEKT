@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.utils.Constantes
 import java.io.File
 import java.text.SimpleDateFormat
@@ -59,7 +60,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
 
     override fun getItemViewType(position: Int): Int {
         val usuario=dataSet[position]
-       if(Constantes.id.equals(usuario.idemisor)){
+       if(InicioSesionFragment.idUser.equals(usuario.idemisor)){
            return 1
         }else{
             return 2
@@ -86,7 +87,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
 
-            if(conversacion.statusLeido == true && conversacion.idemisor.equals(Constantes.id)){
+            if(conversacion.statusLeido == true && conversacion.idemisor.equals(InicioSesionFragment.idUser)){
                 txtStatusLeido.isVisible = true
             }
             else{

@@ -39,6 +39,7 @@ class LoginDao {
                     idUser = almacenar.data.id.toString()
                     rol = almacenar.data.nombreRol.toString()
                     idnombre = almacenar.data.nombre.toString()
+                    tokenAuth = almacenar.data.tokenAuth.toString()
                 }
                 if (almacenar.status == "BAD_REQUEST") {
                     //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)

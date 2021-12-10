@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +22,7 @@ import com.example.agileus.databinding.ActivityConversationOneToOneBinding
 import com.example.agileus.models.Message
 import com.example.agileus.models.StatusRead
 import com.example.agileus.providers.FirebaseProvider
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
@@ -47,6 +49,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
         this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         firebaseProvider  = FirebaseProvider()
+        binding.progressBarConversation.isVisible = true
 
         conversationviewModel = ViewModelProvider(this).get()
         chatsviewmodel = ViewModelProvider(this).get()
@@ -58,43 +61,51 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
         this.setTitle(name_receptor)
 
-        conversationviewModel.devuelveLista(Constantes.id,id_chat)
+        contactsViewModel.devuelveLista(idUser)
 
-        chatsviewmodel.devuelveListaChats(Constantes.id)
+        contactsViewModel.contactos.observe(this,{
+            for(chats in it) {
+                if (id_receptor.length < 50) {
+                    if (chats.id.equals(id_receptor)) {
+                        binding.errordechat.visibility = View.GONE
+                        binding.btnEnviarMensaje.isEnabled = true
+                        binding.btnArchivoAdjunto.isEnabled = true
+                    }
+                }
+                else {
+                    binding.errordechat.visibility = View.GONE
+                    binding.btnEnviarMensaje.isEnabled = true
+                    binding.btnArchivoAdjunto.isEnabled = true
+                }
+            }
+        })
+
+
+        conversationviewModel.devuelveLista(idUser,id_chat)
+
+        chatsviewmodel.devuelveListaChats(idUser)
         chatsviewmodel.chatsdeUsuario.observe(this,{
             for (user in it){
                 if(user.idReceptor.equals(id_receptor)){
                     id_chat = user.idConversacion
-                    conversationviewModel.devuelveLista(Constantes.id,id_chat)
+                    conversationviewModel.devuelveLista(idUser,id_chat)
                 }
             }
         })
 
-        contactsViewModel.devuelveLista(Constantes.id)
-        contactsViewModel.contactos.observe(this,{
-            for(chats in it){
-                if(chats.id.equals(id_receptor)){
-                    binding.errordechat.isVisible = true
-                    binding.btnArchivoAdjunto.isEnabled = false
-                    binding.btnEnviarMensaje.isEnabled = false
-                }else{
-                    binding.errordechat.isVisible = false
-                    binding.btnArchivoAdjunto.isEnabled = true
-                    binding.btnEnviarMensaje.isEnabled = true
-                }
-            }
-        })
+
+
 
         conversationviewModel.responseM.observe(this,{
             id_chat = it.data
-            conversationviewModel.devuelveLista(Constantes.id, id_chat)
+            conversationviewModel.devuelveLista(idUser, id_chat)
         })
 
 
         var background = object : Thread(){
             override fun run() {
                 while (true){
-                    conversationviewModel.devuelveLista(Constantes.id, id_chat)
+                    conversationviewModel.devuelveLista(idUser, id_chat)
                     sleep(5000)
                 }
             }
@@ -102,14 +113,15 @@ class ConversationOneToOneActivity : AppCompatActivity() {
 
         conversationviewModel.actualizar.observe(this,{
             for( valor in it){
-                if(valor.idemisor!=Constantes.id && valor.statusLeido == false){
-                    conversationviewModel.statusUpdateMessage(Constantes.id, StatusRead(valor.id,Constantes.finalDate))
+                if(valor.idemisor!=idUser && valor.statusLeido == false){
+                    conversationviewModel.statusUpdateMessage(idUser, StatusRead(valor.id,Constantes.finalDate))
                 }
             }
 
         })
 
         conversationviewModel.adaptador.observe(this,{
+            binding.progressBarConversation.isVisible = false
                     binding.recyclerConversacion.adapter = it
                     binding.recyclerConversacion.layoutManager = LinearLayoutManager(this)
             binding.recyclerConversacion.getLayoutManager()?.scrollToPosition(conversationviewModel.listaConsumida.size-1)
@@ -135,7 +147,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
         }
 
         firebaseProvider.obs.observe(this,{
-            conversationviewModel.mandarMensaje(Constantes.id, id_chat,Message(Constantes.id,id_receptor,"$it","Documento",Constantes.finalDate))
+            conversationviewModel.mandarMensaje(idUser, id_chat,Message(idUser,id_receptor,"$it","Documento",Constantes.finalDate))
         })
 
         binding.btnArchivoAdjunto.setOnClickListener {
@@ -150,7 +162,7 @@ class ConversationOneToOneActivity : AppCompatActivity() {
                 if(binding.etMensaje.text.isNullOrEmpty()){
 
                 }else{
-                    conversationviewModel.mandarMensaje(Constantes.id, id_chat,Message(Constantes.id,id_receptor,"","${binding.etMensaje.text.toString()}",Constantes.finalDate))
+                    conversationviewModel.mandarMensaje(idUser, id_chat,Message(idUser,id_receptor,"","${binding.etMensaje.text.toString()}",Constantes.finalDate))
                     binding.etMensaje.setText("")
                 }
             }catch (ex:Exception){

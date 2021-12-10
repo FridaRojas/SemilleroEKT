@@ -19,7 +19,7 @@ object Constantes {
     val URL_Tareas_Recibidas=""
     val NAME_RECEPTOR = "NAME_RECEPTOR"
     //var id = "61a83b59d036090b8e8db3c1"
-    var id = "618d9c26beec342d91d747d6"
+    //var id = "618d9c26beec342d91d747d6"
     val idChat = "618d9c26beec342d91d747d6_618b05c12d3d1d235de0ade0"
     val referenciaMensajeria = "Mensajeria"
     val referenciaTareas= "Tareas"
