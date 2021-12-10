@@ -3,8 +3,8 @@ package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 //import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd1
@@ -20,10 +20,10 @@ class DaoBuzon1() {
 
     suspend fun recuperarListadeContactos(idUser: String): ArrayList<Datos> {
         listaus = ArrayList()
-        Log.d("token", token)
+        Log.d("tokenAuth", tokenAuth)
         try {
             val callRespuesta =
-                InitialApplication.BroadcastServiceGlobalTasks2.getList(idUser, token)
+                InitialApplication.BroadcastServiceGlobalTasks2.getList(idUser, tokenAuth)
             val ResponseDos: Response<Contacts1> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
                 val x = ResponseDos.body()!!
@@ -56,7 +56,7 @@ class DaoBuzon1() {
         listaBrd = ArrayList()
         try {
             val callRespuesta =
-                InitialApplication.BroadcastServiceGlobalTasks2.getbuzon(idUser, token)
+                InitialApplication.BroadcastServiceGlobalTasks2.getbuzon(idUser, tokenAuth)
             val ResponseDos: Response<BuzonResp1> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
                 var x = ResponseDos.body()!!
@@ -78,7 +78,7 @@ class DaoBuzon1() {
         try {
             val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getmybuzon(
                 idUser,
-                token
+                tokenAuth
             )
             var ResponseDos: Response<Chats1> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
@@ -102,7 +102,7 @@ class DaoBuzon1() {
         try {
             Log.d("id recibido", idUser)
             val callRespuesta =
-                InitialApplication.BroadcastServiceGlobalTasks2.getenviados(idUser, sala, token)
+                InitialApplication.BroadcastServiceGlobalTasks2.getenviados(idUser, sala, tokenAuth)
             var ResponseDos: Response<BuzonComunicados> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
                 var mensajes = ResponseDos.body()!!
@@ -120,11 +120,11 @@ class DaoBuzon1() {
 
 
     suspend fun getcustompost(post: MensajeBodyBroadcaster): Response<MensajeBodyBroadcaster> {
-        return InitialApplication.BroadcastServiceGlobalTasks2.pushpost(post, token)
+        return InitialApplication.BroadcastServiceGlobalTasks2.pushpost(post, tokenAuth)
     }
 
     suspend fun getcustompush(post: MsgBodyUser): Response<MsgBodyUser> {
-        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(idUser,post, token)
+        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(idUser,post, tokenAuth)
     }
 
 }

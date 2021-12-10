@@ -1,7 +1,8 @@
 package com.example.agileus.config
 
+import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
-import com.example.agileus.ui.login.ui.login.LoginResponse
+//import com.example.agileus.ui.login.ui.login.LoginResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body

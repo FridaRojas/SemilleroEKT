@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.BuzonAdapter
+import com.example.agileus.databinding.LoginFragmentBinding
 import com.example.agileus.models.*
 import com.example.agileus.utils.Constantes.broadlist
+import com.example.agileus.webservices.dao.LoginDao
 import com.example.agileus.webservices.dao.ProviderBuzon
 
 import kotlinx.coroutines.Dispatchers
@@ -50,6 +52,7 @@ class BuzonDetallesViewModel : ViewModel() {
 
     fun getLista():ArrayList<String> {
         listafiltrada1 = ArrayList()
+
         Log.d("current user", broadlist)
         try {
             viewModelScope.launch {

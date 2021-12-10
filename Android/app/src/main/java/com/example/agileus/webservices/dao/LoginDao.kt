@@ -6,7 +6,9 @@ import com.example.agileus.models.*
 import retrofit2.Call
 import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.id
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.google.gson.internal.LinkedTreeMap
 import retrofit2.Response
 
@@ -50,6 +52,9 @@ class LoginDao {
                     guardarData.idsuperiorInmediato = mapa["idsuperiorInmediato"].toString()
                     guardarData.tokenAuth = mapa["tokenAuth"].toString()
                     almacenar.data = guardarData
+
+                    id=guardarData.id.toString()
+                    tokenAuth=guardarData.tokenAuth.toString()
                     status  = true
                 }
                 else {

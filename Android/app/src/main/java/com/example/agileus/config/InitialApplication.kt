@@ -2,7 +2,6 @@ package com.example.agileus.config
 
 import android.app.Application
 import com.example.agileus.webservices.apis.LoginApi
-import com.example.agileus.ui.login.data.service.LoginApi
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.webservices.apis.BuzonApi2
 import com.example.agileus.webservices.apis.MessageApi
@@ -34,13 +33,13 @@ class InitialApplication : Application() {
         super.onCreate()
         webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
-        BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
+//        BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
 
         LoginServiceGlobal=ConfigRetrofit().obtenerConfiguracionRetofitLogin()
 
         BroadcastServiceGlobalTasks2=ConfigRetrofit().obtenerConfiguracionRetofitBuzon2()
 
-        BroadcastServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
+  //      BroadcastServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
       //  webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
 

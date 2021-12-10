@@ -7,8 +7,6 @@ import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_REPORTES
 import com.example.agileus.webservices.apis.LoginApi
-import com.example.agileus.ui.login.data.service.LoginApi
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
@@ -112,7 +110,7 @@ class ConfigRetrofit {
 
     fun obtenerConfiguracionRetofitBuzon2(): BuzonApi2 {
 
-
+ //       http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/
         var mRetrofit = Retrofit.Builder()
             .baseUrl("http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/")
             .addConverterFactory(GsonConverterFactory.create())

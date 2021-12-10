@@ -59,7 +59,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
 
     override fun getItemViewType(position: Int): Int {
         val usuario=dataSet[position]
-       if(Constantes.id.equals(usuario.idemisor)){
+       if(Constantes.idUsuario.equals(usuario.idemisor)){
            return 1
         }else{
             return 2
@@ -86,7 +86,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
 
-            if(conversacion.statusLeido == true && conversacion.idemisor.equals(Constantes.id)){
+            if(conversacion.statusLeido == true && conversacion.idemisor.equals(Constantes.idUsuario)){
                 txtStatusLeido.isVisible = true
             }
             else{

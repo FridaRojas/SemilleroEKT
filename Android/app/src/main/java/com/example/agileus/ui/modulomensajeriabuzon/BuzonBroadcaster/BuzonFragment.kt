@@ -9,13 +9,12 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentBuzonBinding
-import com.example.agileus.utils.Constantes.URL_BASE2
-import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.idUser
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.example.agileus.utils.Constantes.broadlist
+import com.example.agileus.utils.Constantes.idUsuario
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -52,7 +51,13 @@ companion object{
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
             "Buzon Broadcast"
 
-        broadlist=idUser
+        broadlist= InicioSesionFragment.id
+
+        Log.d("tokenAuth", tokenAuth)
+        Log.d("User", idUsuario)
+        Log.d("User id", InicioSesionFragment.id)
+
+
 
         binding.mensajesrecibidos.setOnClickListener {
              control = 1

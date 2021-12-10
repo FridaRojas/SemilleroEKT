@@ -2,7 +2,6 @@ package com.example.agileus.webservices.apis
 
 
 import com.example.agileus.models.*
-import com.example.agileus.ui.login.ui.login.InicioSesionFragment.Companion.token
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
