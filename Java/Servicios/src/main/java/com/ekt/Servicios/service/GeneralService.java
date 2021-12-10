@@ -12,11 +12,11 @@ public class GeneralService {
      * Recibe un string.
      * Si el string esta vacio crea un sha aleatorio.
      * Si recibe un string con caracteres regresa un sha256 de dicho string.
-     * @return
+     * @param param es el parametro a cifrar
+     * @return parametro cifrado cifrada
      */
     public  static String cifrar(String param){
         try {
-
             if (param.length()>0){
             }else{
                 for (int i=0;i<20;i++){
