@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.Message
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.creartareas.CrearTareasViewModel
@@ -45,7 +46,7 @@ class DialogoConfirmOp(var tarea: Tasks, var idRecep:String, val listener: Dialo
     override fun onOpSuccessful() {
         // Enviar tarea al chat del receptor
         val mensajeTareas = Message(
-            Constantes.id,idRecep,"",
+            preferenciasGlobal.recuperarIdSesion(),idRecep,"",
             "Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",Constantes.finalDate)
         conversationviewModel.mandarMensaje("618d9c26beec342d91d747d6",Constantes.idChat,mensajeTareas)
         Log.d("mensaje Tareas","$mensajeTareas")

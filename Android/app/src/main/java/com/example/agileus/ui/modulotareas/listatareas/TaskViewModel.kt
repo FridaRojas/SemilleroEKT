@@ -32,27 +32,6 @@ class TaskViewModel() : ViewModel() {
     init {
         statusRecycler.value = "pendiente"
     }
-    /*
-    fun devuelveLista() {
-        try {
-            viewModelScope.launch {
-                listaConsumida = withContext(Dispatchers.IO) {
-                    lista.getTasks()
-                }
-                if (listaConsumida != null) {
-                    if (listaConsumida.isNotEmpty()) {
-                        adaptador.value =
-                            TasksAdapter(listaConsumida)
-                    }
-                }
-
-            }
-
-
-        } catch (ex: Exception) {
-            Log.e(HomeViewModel::class.simpleName.toString(), ex.message.toString())
-        }
-    }*/
 
     fun devolverListaPorStatus(listener: TaskListListener){
         status = statusRecycler.value.toString()
@@ -60,10 +39,10 @@ class TaskViewModel() : ViewModel() {
             listaTask = withContext(Dispatchers.IO){
                 if(statusRecycler.value.toString() == "asignada"){
                     //id Emisor
-                    lista.getTasksAssigned("618d9c26beec342d91d747d6")
+                    lista.getTasksAssigned(preferenciasGlobal.recuperarIdSesion())
                 }else{
                     //id Receptor -> id Receptor
-                    lista.getTasksByStatus("618d9c26beec342d91d747d6", statusRecycler.value.toString())
+                    lista.getTasksByStatus(preferenciasGlobal.recuperarIdSesion(), statusRecycler.value.toString())
                 }
             }
             Log.d("api", "funciona")
