@@ -7,23 +7,40 @@
 
 import UIKit
 
+
+
 class TareasScreen: UIViewController {
 
+
+
     override func viewDidLoad() {
+
         super.viewDidLoad()
+        hideNavBar()
+        addLogoutButton()
+        }
+        override func viewDidDisappear(_ animated: Bool) {
 
-        // Do any additional setup after loading the view.
+
     }
-    
+    @IBAction func editTaskBtn(_ sender: Any) {
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+        performSegue(withIdentifier: "viewEditTask", sender: self)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let destino = segue.destination as? EditarTareaViewController {
+            destino.idTask = "61a6a120516207029a580544"
+        }
     }
-    */
+
+    @IBAction func Visualizar_tarea(_ sender: UIButton) {
+
+
+    }
+
+
+
 
 }
