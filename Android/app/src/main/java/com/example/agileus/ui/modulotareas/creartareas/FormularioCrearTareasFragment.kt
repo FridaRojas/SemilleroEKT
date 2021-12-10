@@ -108,7 +108,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
                         //val uriString = data.toString()
                         //val myFile = File(uriString).name
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado: ${data.data!!.lastPathSegment} "
-                        Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
+                     //   Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
                         e.printStackTrace()

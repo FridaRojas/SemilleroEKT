@@ -22,12 +22,10 @@ class TaskViewModel() : ViewModel() {
         var status = "pendiente"
     }
     var statusRecycler = MutableLiveData<String>()
-    var statusListRecycler = MutableLiveData<String>()
     var adaptador = MutableLiveData<TasksAdapter>()
 
     var lista: TasksDao = TasksDao()
     var listaTask = ArrayList<DataTask>()
-    //lateinit var listaConsumida : ArrayList<Tasks>
 
     init {
         statusRecycler.value = "pendiente"
@@ -45,8 +43,6 @@ class TaskViewModel() : ViewModel() {
                     lista.getTasksByStatus(preferenciasGlobal.recuperarIdSesion(), statusRecycler.value.toString())
                 }
             }
-            Log.d("api", "funciona")
-
             if (listaTask != null) {
                 adaptador.value = TasksAdapter(listaTask,listener)
             }
@@ -54,7 +50,6 @@ class TaskViewModel() : ViewModel() {
         if(listaTask.isNotEmpty()){
             adaptador.value?.update(listaTask)
         }
-        Log.d("tarea", "${statusRecycler.value}")
     }
 
 }

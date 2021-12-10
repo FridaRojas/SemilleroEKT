@@ -49,7 +49,7 @@ class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String
             preferenciasGlobal.recuperarIdSesion(),idRecep,"",
             "Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",Constantes.finalDate)
         conversationviewModel.mandarMensaje("618d9c26beec342d91d747d6",Constantes.idChat,mensajeTareas)
-        Log.d("mensaje Tareas","$mensajeTareas")
+        //Log.d("mensaje Tareas","$mensajeTareas")
         listener.onOpSuccessful()
     }
 

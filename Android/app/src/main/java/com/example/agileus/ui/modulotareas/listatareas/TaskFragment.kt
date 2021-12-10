@@ -60,8 +60,6 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
 
         recuperarNivelUsuario()
         preferenciasGlobal.recuperarNivelUsuario()
-        //Toast.makeText(activity, "$NIVEL_USER", Toast.LENGTH_SHORT).show()
-        Toast.makeText(activity, preferenciasGlobal.recuperarNombreSesion(), Toast.LENGTH_SHORT).show()
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
@@ -142,10 +140,8 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
             }
         }
 
-        //taskViewModel.statusRecycler.value = "Iniciada"
         taskViewModel.devolverListaPorStatus(this)
         binding.progressUno.visibility = View.GONE
-        //Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
     }
 
 
