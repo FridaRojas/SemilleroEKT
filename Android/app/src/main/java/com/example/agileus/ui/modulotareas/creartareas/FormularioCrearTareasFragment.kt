@@ -20,10 +20,13 @@ import com.example.agileus.R
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
+import com.example.agileus.models.DataTask
+import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
+import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoConfirmOp
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
@@ -39,6 +42,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
 
+    lateinit var conversationviewModel  : ConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
     /*  *** Firebase Storage ***  */
     lateinit var firebaseProvider       : FirebaseProvider
@@ -84,6 +88,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
 
         listaPrioridades = resources.getStringArray(R.array.prioridad_array)          // spiner lista de prioridades archivo strings.xml
         asignarTareaViewModel = ViewModelProvider(this).get()                   // ViewModel
+        conversationviewModel = ViewModelProvider(this).get()                   // ViewModel
         firebaseProvider  = FirebaseProvider()
         mStorageInstance = FirebaseStorage.getInstance()                              /*  *** Instancias Firebase Storage ***  */
         mStorageReference = mStorageInstance.getReference("Documentos")        /*  *** Instancias Firebase Storage ***  */
@@ -200,6 +205,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
     }
 
     // *** FUNCIONES ***
+
     fun operacionIsert(){
         val tarea: Tasks
         tituloTarea = binding.edtAgregaTitulo.text.toString()
@@ -310,6 +316,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
             "missiles"
         )
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

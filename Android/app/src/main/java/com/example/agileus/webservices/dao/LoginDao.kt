@@ -17,6 +17,10 @@ class LoginDao {
 
 
     fun iniciarSesion(usuario:Users): Boolean {
+
+        var STATUS: Boolean = false
+        //    val STATUS_BAD_REQUEST = "BAD_REQUEST"
+
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
         //var user:LoginResponse
@@ -54,7 +58,7 @@ class LoginDao {
                     status  = true
 
                     preferenciasGlobal.guardarDatosInicioSesion(
-                        mapa["idUser"].toString(),
+                        mapa["id"].toString(),
                         mapa["correo"].toString(),
                         mapa["numeroEmpleo"].toString(),
                         mapa["nombre"].toString(),

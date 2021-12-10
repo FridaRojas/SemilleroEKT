@@ -7,17 +7,16 @@ import android.view.View
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
@@ -45,6 +44,7 @@ class HomeActivity : AppCompatActivity() {
         val token = InitialApplication.preferenciasGlobal.recuperarToken()
         Log.d("token", token)
 
+
         //Navegación
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
@@ -70,6 +70,7 @@ class HomeActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.formularioCrearTareasFragment -> hideBottomNav(navView)
                 R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
+                R.id.listContactsFragment -> hideBottomNav(navView)
                 else -> showBottomNav(navView)
             }
         }
@@ -91,6 +92,9 @@ class HomeActivity : AppCompatActivity() {
             }
             "verDetalleTarea" -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
+            }
+            "Contactos" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
             }
         }
         return super.onOptionsItemSelected(item)

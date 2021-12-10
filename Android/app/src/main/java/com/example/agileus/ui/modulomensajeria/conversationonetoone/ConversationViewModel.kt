@@ -23,6 +23,7 @@ class ConversationViewModel:ViewModel() {
     lateinit var RespuestaMessage: MessageResponse
     var responseM = MutableLiveData<MessageResponse>()
     var actualizar = MutableLiveData<ArrayList<Conversation>>()
+    var bandera = false
 
     init {
         message = MessageDao()
@@ -40,6 +41,7 @@ class ConversationViewModel:ViewModel() {
                         actualizar.value = listaConsumida
                     }
                     else{
+                        bandera = true
 
                     }
                 }else{
@@ -66,11 +68,11 @@ class ConversationViewModel:ViewModel() {
         }
     }
 
-    fun statusUpdateMessage(statusRead: StatusRead){
+    fun statusUpdateMessage(idUser:String,statusRead: StatusRead){
         try {
             viewModelScope.launch {
                 RespuestaMessage = withContext(Dispatchers.IO) {
-                    message.actualizarStatus(statusRead)
+                    message.actualizarStatus(idUser,statusRead)
                 }
                 responseM.value = RespuestaMessage
             }

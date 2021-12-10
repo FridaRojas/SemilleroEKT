@@ -7,16 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.models.Buzon
 import com.example.agileus.adapters.BuzonAdapter
 import com.example.agileus.adapters.BuzonAdapterResponse
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.BuzonComunicados
 import com.example.agileus.models.BuzonResp
 import com.example.agileus.models.MsgBodyUser
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listasize
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.control
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.DaoBuzon1
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.listaBrd1
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.listachats
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.mensajes
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.salas
@@ -63,7 +60,7 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
     fun devuelvebuzon() {
 
-        CURRENT_USER=idUser
+        CURRENT_USER= InitialApplication.preferenciasGlobal.recuperarIdSesion()
         listaConsumida1 = ArrayList()
         listafiltrada2=  ArrayList()
         listafiltrada1=  ArrayList()

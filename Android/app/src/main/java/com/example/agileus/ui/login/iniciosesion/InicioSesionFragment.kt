@@ -38,7 +38,7 @@ class InicioSesionFragment : Fragment(){
 
     companion object {
         var status:Boolean =false
-        var idUser:String = ""
+       // var idUser:String = ""
     }
 
     private lateinit var viewModel: InicioSesionViewModel
