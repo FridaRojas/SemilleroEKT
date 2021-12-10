@@ -1,18 +1,15 @@
 package com.example.agileus.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
-import com.example.agileus.models.Status
+import com.example.agileus.models.StatusTasks
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 
-class StatusTasksAdapter(private var dataSet: ArrayList<Status>, val listener:TaskDialogListener) :
+class StatusTasksAdapter(private var dataSet: ArrayList<StatusTasks>, val listener:TaskDialogListener) :
     RecyclerView.Adapter<StatusTasksAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -44,7 +41,7 @@ class StatusTasksAdapter(private var dataSet: ArrayList<Status>, val listener:Ta
 
     override fun getItemCount() = dataSet.size
 
-    fun update(datos:ArrayList<Status>){
+    fun update(datos:ArrayList<StatusTasks>){
         this.dataSet = datos
         notifyDataSetChanged()
     }

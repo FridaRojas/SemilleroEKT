@@ -4,28 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.login.ui.login.InicioSesionFragment"
+    tools:context=".ui.login.iniciosesion.InicioSesionFragment"
     android:orientation="vertical"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_vertical_margin"
-    android:paddingBottom="@dimen/fragment_vertical_margin">
+  >
+
+        <!-- Linear progress indicator -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressLoading"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:visibility="invisible"
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
+            android:layout_marginBottom="2dp"
+            android:indeterminate="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/fragment_vertical_margin"
+            android:max="29"
+            android:progressBackgroundTint="@color/colorGray"
+            android:backgroundTintMode="add"
+            android:secondaryProgressTintMode="add"
+
+            />
+
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
             android:text="Bienvenido"
             android:textAlignment="center"
-            android:textSize="35sp"
+            android:textSize="@dimen/textsize"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="16dp"
-            android:text="Correo Electrónico"
+            android:paddingTop="@dimen/paddingGeneral"
+            android:layout_marginTop="@dimen/margin_top_general"
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
+            android:text="Número de Empleado"
             />
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -48,14 +68,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/paddingGeneral"
             android:layout_marginTop="@dimen/margin_top_general"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
             android:text="Contraseña"
             />
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
             android:padding="@dimen/margin_top_general"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
@@ -68,12 +89,12 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint=" "
                     android:inputType="textPassword"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionDone"
                     android:selectAllOnFocus="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <!--    -->
 
@@ -81,9 +102,9 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="16dp"
-            android:paddingVertical="16dp"
+            android:layout_marginTop="@dimen/margin_top_general"
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+            android:paddingVertical="@dimen/paddingGeneral"
             android:text="@string/login_login_button"
             app:layout_constraintTop_toBottomOf="@id/password"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,14 +126,6 @@
                    -->
 
 
-        <ProgressBar
-            android:id="@+id/progressLoading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:visibility="gone"/>
         <!--     app:visible="@{viewModel.progressVisibility}" /> -->
         <!-- android:visibility="@{ viewModel.progressVisibility ? View.VISIBLE : View.GONE }" -->
 

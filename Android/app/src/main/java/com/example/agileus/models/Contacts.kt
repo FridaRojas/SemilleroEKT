@@ -28,3 +28,9 @@ data class Datos(
     @SerializedName("nombre") val nombre: String
 )
 
+
+data class EmployeeListByBossID(
+    @SerializedName("status") val status: String,
+    @SerializedName("msj") val msj: String,
+    @SerializedName("data") val dataEmployees: ArrayList<Contacts>
+)

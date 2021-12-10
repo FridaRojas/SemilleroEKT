@@ -27,16 +27,18 @@
         android:id="@+id/imgBroadcast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_general"
         android:src="@drawable/iconobroadcast"
         app:layout_constraintEnd_toStartOf="@+id/cerrarSesion"
+        app:layout_constraintStart_toEndOf="@id/et_search_conversation"
         app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+    <ImageView
         android:id="@+id/cerrarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
-        android:src="@drawable/ic_back_button"
+        android:src="@drawable/ic_back_button_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
