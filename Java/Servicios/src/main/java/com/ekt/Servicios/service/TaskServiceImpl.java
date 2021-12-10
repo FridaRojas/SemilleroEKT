@@ -208,10 +208,8 @@ public class TaskServiceImpl implements TaskService{
     public ArrayList<String> validarSesion(String token_sesion, String id_usuario){
         ArrayList<String> data = new ArrayList<>();
         Optional<User> usuarioValido = usuarioService.findById(id_usuario);
-        System.out.println("token_Davis: "+token_sesion);
         String token_valido;// buscar en BD
         if(usuarioValido.isPresent()) {
-            System.out.println("token_BD: "+usuarioValido.get().getTokenAuth());
             token_valido = usuarioValido.get().getTokenAuth();
             if (token_valido == null || token_valido == "")
                 data.add("No existe el token en la BD");

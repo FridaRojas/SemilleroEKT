@@ -8,6 +8,7 @@ import com.ekt.Servicios.service.TaskServiceImpl;
 import com.ekt.Servicios.service.UserServiceImpl;
 import com.ekt.Servicios.service.TaskLogServiceImpl;
 import com.mongodb.MongoException;
+import com.mongodb.MongoSocketException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,21 @@ public class TaskController {
     @Autowired
     private UserServiceImpl usuarioService;
 
+    /**
+     * Este método se encarga de crear una tarea en la base de datos
+     * Contiene validaciones y una bitacora que se almacena en otra colección
+     * Contiene manejo de excepciones por si se pierde la conexión o falla la base de datos
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param tarea es el objeto creado a partir del JSON que contiene todos los parámetros que recibimos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @PostMapping("/agregarTarea")   //1. Tareas
     public ResponseEntity<?> create(@RequestHeader("tokenAuth") String token_sesion,@RequestBody Task tarea){
         try {
             String mensaje;
-
-            //Validar sesión
+            //Validar sesión de usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,tarea.getId_emisor());
+            //Si no hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
@@ -43,37 +52,42 @@ public class TaskController {
 
             // Valida que el receptor exista
             Optional<User> usuarioValido = usuarioService.findById(tarea.getId_receptor());
+            // Si no existe
             if (!usuarioValido.isPresent()) {
                 mensaje = "Usuario receptor con id: " + tarea.getId_receptor() + " invalido";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
+            // Si existe
             String token = usuarioValido.get().getToken();
             if (token != null || token != "") {
                 tareaService.notificacion(token, tarea.getTitulo());
                 System.out.println("Se envio notificacion Token:" + token);
             }
-
+            // Se crea la fecha en la que se registra en la base de datos
             LocalDateTime date = LocalDateTime.now();
-            System.out.println(date.toString());
             String asunto = "";
-            System.out.println("Entramos en agregar tarea");
+            // Validamos los atributos de entrada de una tarea
             ArrayList<String> validarTareas = tareaService.validarTareasCrear(tarea);
+            // Si no hay errores
             if (validarTareas.size() == 0) {
+                //Creamos un registro en la bitacora
                 TaskLog bitacora = new TaskLog();
                 bitacora.setId_emisor(tarea.getId_emisor());
                 bitacora.setNombre_emisor(tarea.getNombre_emisor());
                 bitacora.setAccion("Creo una tarea");
-
+                // Almacenamos la fecha dependiendo la zona horaria de la aplicación
                 LocalDateTime ldt = date
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
                 Date newLdt = Date.from(ldt.atZone(ZoneId.of("UTC")).toInstant());
-
                 tarea.setFecha_BD(newLdt);
+                //Guardamos la tarea en la base de datos
                 tareaService.save(tarea);
                 bitacora.setFecha_actualizacion(newLdt);
                 bitacora.setEstatus(tarea.getEstatus());
+                //Guardamos la bitacora en la base de datos
                 taskLogServiceImpl.save(bitacora);
+                //Enviamos notificación al usuario de que se le asignó una tarea
                 tareaService.notificacion(token, asunto);
 
                 mensaje = "Tarea creada correctamente";
@@ -82,6 +96,8 @@ public class TaskController {
                 mensaje = "Error de validacion de tarea";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, validarTareas));
             }
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -113,6 +129,8 @@ public class TaskController {
             }
             mensaje = "Tareas encontradas";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -149,6 +167,8 @@ public class TaskController {
             }
             mensaje = "Se encontró una tarea";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, oTarea));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -199,6 +219,8 @@ public class TaskController {
                 mensaje = "El id no fue encontrado";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -210,18 +232,29 @@ public class TaskController {
         }
     }
 
+    /**
+     * Este método se encarga de cancelar una tarea en la base de datos poniendo su estatus como Cancelado
+     * Contiene manejo de excepciones por si se pierde la conexión o falla la base de datos
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_tarea parametro tipo string que sirve para buscar por id una tarea dentro de la base de datos
+     * @param id_usuario parametro tipo string que sirve para validar la sesión de usuario buscándo su token en la base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @DeleteMapping("/cancelarTarea/{id_tarea}/{id_usuario}") //4. Tareas
     public ResponseEntity<?> deleteById(@RequestHeader("tokenAuth") String token_sesion, @PathVariable String id_tarea, @PathVariable String id_usuario){
         try {
             String mensaje ="";
-            //Validar sesión
+            //Se valida sesión del usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            //Si no hay error en la validación
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
             }
+            //Si existe la tarea
             Optional<Task> oTarea = tareaService.findById(id_tarea);
             if (oTarea.isPresent()) {
+                // Cancelamos la tarea
                 tareaService.deleteById(id_tarea);
                 mensaje = "Tarea con id: " + id_tarea + " cancelada";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje));
@@ -229,6 +262,8 @@ public class TaskController {
                 mensaje = "Tarea con Id: " + id_tarea + " no encontrado";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -258,6 +293,8 @@ public class TaskController {
 
             mensaje = "Se obtuvieron las tareas";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje,tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -269,30 +306,39 @@ public class TaskController {
         }
     }
 
+    /**
+     * Este método se encarga de filtrar todas las tareas por grupo y usuario en la base de datos
+     * Contiene manejo de excepciones por si se pierde la conexión o falla la base de datos
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_grupo parametro tipo string que sirve para buscar por tareas por su grupo dentro de la base de datos
+     * @param id_usuario parametro tipo string que sirve para validar la sesión de usuario buscándo su token en la base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/filtrarTareasPorGrupo/{id_grupo}/{id_usuario}")// Reportes
     public ResponseEntity<?> getTareasByGrupo(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario) {
         try {
             String mensaje;
-            //Validar sesión
+            //Se valida sesión del usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            //Si hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
             }
+            //Traemos las tareas por grupo en la base de datos
             Iterable<Task> tareas = tareaService.findByIdGrupo(id_grupo);
-            //Si no existe el id_grupo
             int nDocumentos = ((Collection<Task>) tareas).size();
+            //Si no existen documentos en la colección
             if (nDocumentos == 0) {
-                //Map<String, Object> body = new LinkedHashMap<>();//LinkedHashMap conserva el orden de inserción
                 Map<String, String> data = new LinkedHashMap<>();
-                //body.put("statusCode", String.valueOf(HttpStatus.NOT_FOUND.value()));
                 data.put("id_grupo", "No hay tareas para el Grupo Id: " + id_grupo);
-                //body.put("Data",data);
                 mensaje = "No hay tareas para el Grupo Id: " + id_grupo;
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje, data));
             }
             mensaje = "Petición con éxito";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas.iterator()));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -303,6 +349,7 @@ public class TaskController {
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje,e.getStackTrace()));
         }
     }
+
 
     @GetMapping("/filtrarPrioridadTareasPorUsuario/{prioridad}/{id_usuario}") //5. Tareas
     public ResponseEntity<?> getUsuarioTareasByPrioridad(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String prioridad,@PathVariable String id_usuario) {
@@ -327,6 +374,8 @@ public class TaskController {
             }
             mensaje = "Se encontraron tareas";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -354,6 +403,8 @@ public class TaskController {
             }
             mensaje = "Se encontraron tareas";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -365,25 +416,37 @@ public class TaskController {
         }
     }
 
+    /**
+     * Este método se encarga de obtener todas las tareas que le asignaron a una persona por su id en la base de datos
+     * Contiene manejo de excepciones por si se pierde la conexión o falla la base de datos
+     * Contiene validación de sesión por token
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_usuario parametro tipo string que sirve para validar la sesión de usuario y buscar sus tareas que le asignaron en la base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/obtenerTareasQueLeAsignaronPorId/{id_usuario}") //14
     public ResponseEntity<?> getAllTareasInByUserId(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario){
         try {
             String mensaje;
+            //Se valida sesión del usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            //Si hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
             }
-            //Validar Id en la BD
-            //Validar tareas !=0
+            //Traemos todas las tareas que le asignaron
             Iterable<Task> tareas = tareaService.getAllInByUserId(id_usuario);
             int nDocumentos = ((Collection<Task>) tareas).size();
+            //Si no hay documentos en la colección
             if (nDocumentos == 0) {
                 mensaje = "No se encontraron tareas";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
             mensaje = "Se encontraron tareas";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -413,6 +476,8 @@ public class TaskController {
             }
             mensaje = "Se encontraron tareas";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -423,6 +488,7 @@ public class TaskController {
             return  ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje,e.getStackTrace()));
         }
     }
+
 
     @GetMapping("/obtenerTareasPorGrupoYEmisor/{id_grupo}/{id_usuario}")    //Reportes
     public ResponseEntity<?> getAllTareasByGrupoAndIdEmisor(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_grupo,@PathVariable String id_usuario){
@@ -441,6 +507,8 @@ public class TaskController {
             }
             mensaje = "Se encontraron tareas";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -482,6 +550,8 @@ public class TaskController {
                 //return ResponseEntity.ok(new Respuesta(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),e.getMessage()));
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -512,6 +582,8 @@ public class TaskController {
                 //return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -523,42 +595,76 @@ public class TaskController {
         }
     }
 
+    /**
+     * Este método se encarga de obtener todas las tareas que le asignaron a una persona por su id y un estatus en la base de datos
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_usuario parámetro tipo string que sirve para validar la sesión de usuario y buscar sus tareas que le asignaron en la base de datos
+     * @param estatus parámetro tipo string que sirve para filtrar tareas que le asignaron en la base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @GetMapping("/obtenerTareasQueLeAsignaronPorIdYEstatus/{id_usuario}/{estatus}") //8. Tareas
     public ResponseEntity<?> obtenerTareasQueLeAsignaronPorIdYEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
-
-        String mensaje;
-        ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
-        if(!erroresSesion.isEmpty()) {
-            mensaje = "Error al procesar solicitud";
-            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
-        }
-        Iterable<Task> tareas = tareaService.getAllByIdReceptorAndStatus(id_usuario,estatus);
-        int nDocumentos = ((Collection<Task>) tareas).size();
-        if(nDocumentos==0){
-            mensaje = "No hay tareas que le asignaron al id: "+id_usuario+" por estatus: "+estatus;
-            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
-        }
-        mensaje = "Tareas que le asignaron al id: "+id_usuario+" por estatus: "+estatus+ " obtenidas correctamente";
-        return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
-    }
-
-    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}/{estatus}")  //9. Tareas
-    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
         try {
             String mensaje;
-            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
+            //Se valida sesión del usuario
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            //Si no hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
             }
+            //Traemos todas las tareas que le asignaro a una persona filtrada por estatus
+            Iterable<Task> tareas = tareaService.getAllByIdReceptorAndStatus(id_usuario,estatus);
+            int nDocumentos = ((Collection<Task>) tareas).size();
+            //Si no hay documentos en la colección
+            if(nDocumentos==0){
+                mensaje = "No hay tareas que le asignaron al id: "+id_usuario+" por estatus: "+estatus;
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
+            }
+            mensaje = "Tareas que le asignaron al id: "+id_usuario+" por estatus: "+estatus+ " obtenidas correctamente";
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
+        }catch (MongoException m){ String mensaje;
+            mensaje = "No se puede conectar con la base de datos";
+            return  ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),mensaje,m.getStackTrace()));
+        }catch (Exception e){
+            String mensaje;
+            mensaje = "Ocurrio un Error: No se pudo procesar tu solicitud";
+            return  ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()),mensaje,e.getStackTrace()));
+        }
+    }
+
+    /**
+     * Este método se encarga de obtener todas las tareas que una persona asignó a otra por su id y un estatus en la base de datos
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_usuario parámetro tipo string que sirve para validar la sesión de usuario y buscar sus tareas que asignó en la base de datos
+     * @param estatus parámetro tipo string que sirve para filtrar tareas que le asignaron en la base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
+    @GetMapping("/obtenerTareasQueAsignoPorIdYEstatus/{id_usuario}/{estatus}")  //9. Tareas
+    public ResponseEntity<?> obtenerTareasQueAsignoPorIdYEstatus(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_usuario,@PathVariable String estatus){
+        try {
+            String mensaje;
+            //Se valida sesión del usuario
+            ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
+            //Si hay errores en la sesión
+            if(!erroresSesion.isEmpty()) {
+                mensaje = "Error al procesar solicitud";
+                return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
+            }
+            //Traemos todas las tareas que asignó una persona por estatus
             Iterable<Task> tareas = tareaService.getAllByIdEmisorAndStatus(id_usuario, estatus);
             int nDocumentos = ((Collection<Task>) tareas).size();
+            //Si no hay documentos en la colección
             if (nDocumentos == 0) {
                 mensaje = "No hay tareas que asignó el id: " + id_usuario + " por estatus: " + estatus;
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.NOT_FOUND.value()), mensaje));
             }
             mensaje = "Tareas que asignó el id: " + id_usuario + " por estatus: " + estatus + " obtenidas correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()), mensaje, tareas));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             String mensaje;
             mensaje = "No se puede conectar con la base de datos";
@@ -570,18 +676,31 @@ public class TaskController {
         }
     }
 
+    /**
+     * Este método se encarga de actualizar el atributo fecha_iniR de tipo Date donde un usuario comienza su tarea
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_tarea parámetro tipo string que sirve para actualizar una tarea  en la base de datos
+     * @param tarea es el objeto creado a partir del JSON recibido que contiene el parametro fecha_iniR a actualizar
+     * @param id_usuario parámetro tipo string que sirve para validar la sesión de usuario en la base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @PutMapping("/actualizarTareaFechaRealIni/{id_tarea}/{id_usuario}") //11
     public ResponseEntity<?> actualizarFechaRealTareaIni(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
         String mensaje = "";
         try {
+            //Se valida sesión del usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion,id_usuario);
+            //Si hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
             }
+            //Se actualiza la fecha
             tareaService.updateRealDateStart(id_tarea, tarea);
             mensaje = "Fecha de inicio guardada correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             mensaje = "No se puede conectar con la base de datos";
             return  ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),mensaje,m.getStackTrace()));
@@ -591,18 +710,31 @@ public class TaskController {
         }
     }
 
+    /**
+     * Este método se encarga de actualizar el atributo fecha_finR de tipo Date donde un usuario termina su tarea
+     * @param token_sesion es un parámetro que se recibe como header para poder validar la sesión de usuario en la base de datos
+     * @param id_tarea parámetro tipo string que sirve para actualizar una tarea  en la base de datos
+     * @param tarea es el objeto creado a partir del JSON recibido que contiene el parametro fecha_finR a actualizar
+     * @param id_usuario parámetro tipo string que sirve para validar la sesión de usuario en la base de datos
+     * @return objeto Respuesta que contiene un HttpStatus code, un mensaje y data[] (datos que fallaron)
+     */
     @PutMapping("/actualizarTareaFechaRealFin/{id_tarea}/{id_usuario}") //12
     public ResponseEntity<?> actualizarFechaRealTareaFin(@RequestHeader("tokenAuth") String token_sesion,@PathVariable String id_tarea,@RequestBody Task tarea, @PathVariable String id_usuario) {
         String mensaje = "";
         try {
+            //Se valida sesión del usuario
             ArrayList<String> erroresSesion = tareaService.validarSesion(token_sesion, id_usuario);
+            //Si hay errores en la sesión
             if(!erroresSesion.isEmpty()) {
                 mensaje = "Error al procesar solicitud";
                 return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()), mensaje, erroresSesion));
             }
+            //Se actualiza la fecha
             tareaService.updateRealDateFinish(id_tarea, tarea);
             mensaje = "Fecha de termino guardada correctamente";
             return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.OK.value()),mensaje));
+        }catch (MongoSocketException e){
+            return ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),e.getMessage(),e.getStackTrace()));
         }catch (MongoException m){
             mensaje = "No se puede conectar con la base de datos";
             return  ResponseEntity.ok(new ResponseTask(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),mensaje,m.getStackTrace()));
