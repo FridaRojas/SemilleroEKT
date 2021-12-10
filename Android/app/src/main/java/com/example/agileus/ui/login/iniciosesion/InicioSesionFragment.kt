@@ -28,19 +28,29 @@ import com.example.agileus.ui.login.dialog.DialogoListen
 class InicioSesionFragment : Fragment(){
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
-    var trigger=0
-
-    //commit
+    //var trigger=0
 
     companion object {
         var correoLogin : String=""
         var passwordLogin : String=""
         var status:Boolean =false
-        var user:String = " "
+        var id:String = " "
         var idUser:String = ""
-        var rol:String = ""
-        var idnombre:String = ""
+        var correo:String =" "
+        var fechaInicio:String = " "
+        var fechaTermino:String = " "
+        var numeroEmpleado:String = " "
+        var nombre : String = " "
+        var password:String = " "
+        var nombreRol:String = " "
+        var opcionales:String = " "
+        var token:String = " "
+        var telefono:String = " "
+        var statusActivo:String = " "
+        var curp:String = " "
+        var rfc:String = " "
         var idGrupo:String = ""
+        var idsuperiorInmediato:String = " "
         var tokenAuth: String = ""
 
     }
@@ -79,7 +89,6 @@ class InicioSesionFragment : Fragment(){
     }
 
     private fun validate() {
-
         var result = arrayOf(validateEmail(), validatePassword())
 
         if (false in result) {
@@ -87,44 +96,26 @@ class InicioSesionFragment : Fragment(){
         }
         val usuario = Users(correoLogin, passwordLogin, TOKEN_KEY)
         viewModel.recuperarLogueo(usuario)
-        binding.progressLoading.isVisible = true
-
+        //binding.progressLoading.isVisible = true
 
         if (status) {
-
-            //Log.d("Login", correoLogin)
-            //Log.d("Login", passwordLogin)
-            //Log.d("Login", idUser)
-            trigger = 0
+            Log.d("Login", correoLogin)
+            Log.d("Login", passwordLogin)
+            Log.d("Login", idUser)
+            //trigger = 0
             Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
+
             if(correoLogin != "rogelioL@gmail.com")
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
             else
             {
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2) }
-        }
+             }
 
-        if (!status) {
-            if(trigger == 0 ) {
-                Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
+        else {
+                Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
             }
-            if (trigger >1 && !status) {
-                Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
-                if(trigger >3 )
-                {
-                    Toast.makeText(activity, "Demasiados Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
-                        //val newFragment = CerrarSesionDialog(this)
-                        //activity?.supportFragmentManager?.let { it -> newFragment.show(it, "Destino") }
-                    Handler().postDelayed({
-                        activity?.finish()
-                    }, 3000)
 
-                }
-
-            }
-            trigger++
-
-        }
     }
 
     private fun validateEmail(): Boolean {
@@ -169,16 +160,4 @@ class InicioSesionFragment : Fragment(){
 
     }
 
-    /*override fun siDisparar(motivo: String) {
-        findNavController().navigate(R.id.inicioSesionFragment)
-        //Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun noDisparar(motivo: String) {
-        Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
-
-    }
-
-     */
-    ////////////////////////////////////
 }

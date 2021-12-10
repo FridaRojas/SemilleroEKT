@@ -1,22 +1,14 @@
 package com.example.agileus.webservices.dao
 
+import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
 import retrofit2.Call
 import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idGrupo
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idnombre
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.rol
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.google.gson.internal.LinkedTreeMap
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
-import java.lang.Exception
-
 
 class LoginDao {
     val STATUS_ACCEPTED = "ACCEPTED"
@@ -32,6 +24,10 @@ class LoginDao {
         //var user:LoginResponse
 
         if (responseDos.isSuccessful) {
+            Log.d("body",responseDos.body().toString())
+            Log.d("body",responseDos.body()?.status.toString())
+            //Log.d("body",responseDos.body().data.toString())
+
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
                 var guardarData:Data = Data()
@@ -41,9 +37,24 @@ class LoginDao {
                     var mapa:LinkedTreeMap<String,Any?> = responseDos.body()!!.data as LinkedTreeMap<String, Any?>
                     guardarData.id = mapa["id"].toString()
                     guardarData.idUser = mapa["idUser"].toString()
+                    guardarData.correo = mapa["correo"].toString()
+                    guardarData.fechaInicio = mapa["fechaInicio"].toString()
+                    guardarData.fechaTermino = mapa["fechaTermino"].toString()
+                    guardarData.numeroEmpleado = mapa["numeroEmpleo"].toString()
+                    guardarData.nombre = mapa["nombre"].toString()
+                    guardarData.password = mapa["password"].toString()
+                    guardarData.nombreRol = mapa["nombreRol"].toString()
+                    guardarData.opcionales = mapa["opcionales"].toString()
+                    guardarData.token = mapa["token"].toString()
+                    guardarData.telefono = mapa["mapa"].toString()
+                    guardarData.statusActivo = mapa["statusActivo"].toString()
+                    guardarData.curp = mapa["curp"].toString()
+                    guardarData.rfc = mapa["rfc"].toString()
+                    guardarData.idgrupo = mapa["idgrupo"].toString()
+                    guardarData.idsuperiorInmediato = mapa["idsuperiorInmediato"].toString()
+                    guardarData.tokenAuth = mapa["tokenAuth"].toString()
 
                     almacenar.data = guardarData
-
 
                 }
 
