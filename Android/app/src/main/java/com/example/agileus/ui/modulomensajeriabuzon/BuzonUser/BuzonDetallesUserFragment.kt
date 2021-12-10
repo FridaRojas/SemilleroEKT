@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.R
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
 import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
@@ -56,7 +59,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
             "Mis Mensajes Recibidos"
 
-
+        binding.vista2.visibility=View.INVISIBLE
         binding.fab.setOnClickListener {
             val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
             activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
@@ -86,7 +89,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
             Handler().postDelayed({
                 binding.vista1.visibility = View.INVISIBLE
-//                binding.vista2.visibility = View.VISIBLE
+                binding.vista2.visibility = View.VISIBLE
                 binding.fab.visibility = View.INVISIBLE
             }, 5)
             ////////////////
@@ -96,7 +99,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
             Handler().postDelayed({
                 Toast.makeText(context, " Mensaje enviado a Broadcast", Toast.LENGTH_SHORT).show()
-  //              binding.vista2.visibility = View.INVISIBLE
+                binding.vista2.visibility = View.INVISIBLE
                 binding.vista1.visibility = View.VISIBLE
                 binding.fab.visibility = View.VISIBLE
             }, 3800)
@@ -106,24 +109,29 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         fun startTimeCounter() {
             var counter = 0
             binding.vista1.visibility = View.INVISIBLE
-    //        binding.vista2.visibility = View.VISIBLE
+            binding.vista2.visibility = View.VISIBLE
             binding.fab.visibility = View.INVISIBLE
 
-      //      val progressBar = binding.progress
-        //    progressBar.visibility = View.VISIBLE
+            val progressBar = binding.progress
+            progressBar.visibility = View.VISIBLE
 //        val countTime: TextView = findViewById(R.id.countTime)
             object : CountDownTimer(3900, 100) {
                 override fun onTick(millisUntilFinished: Long) {
-//                countTime.text = counter.toString()
+                //countTime.text = counter.toString()
 //                Log.d("tiempo ", " $counter")
                     counter++
-         //           progressBar.progress = counter
+                    progressBar.progress = counter
                 }
                 override fun onFinish() {
 //                    viewModeldevuelvebuzon()
                 }
             }.start()
         }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as HomeActivity).ocultarBtnAtras()
+    }
     }
 
 

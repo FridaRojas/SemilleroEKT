@@ -16,6 +16,7 @@ import com.example.agileus.databinding.BuzonDetallesFragmentBinding
 import com.example.agileus.databinding.ReceiverBuzonBroadcastFragmentBinding
 import com.example.agileus.models.Contacts
 import com.example.agileus.models.Datos
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -63,11 +64,13 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
+        (activity as HomeActivity).ocultarBtnAtras()
 
 
 
 
-            viewModel.devuelvebuzon2()
+
+        viewModel.devuelvebuzon2()
 
     }
 

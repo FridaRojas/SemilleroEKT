@@ -11,6 +11,7 @@ import com.example.agileus.R
 import com.example.agileus.databinding.FragmentBuzonBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.example.agileus.utils.Constantes.broadlist
@@ -78,6 +79,7 @@ companion object{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity as HomeActivity).ocultarBtnAtras()
 
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false

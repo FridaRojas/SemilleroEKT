@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.BuzonUserFragmentBinding
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.nombre
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
@@ -56,6 +57,11 @@ class BuzonUserFragment : Fragment() {
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as HomeActivity).ocultarBtnAtras()
+
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

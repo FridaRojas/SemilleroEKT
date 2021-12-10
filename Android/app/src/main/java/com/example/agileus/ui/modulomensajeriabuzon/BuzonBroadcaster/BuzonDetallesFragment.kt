@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.agileus.R
 import com.example.agileus.models.MensajeBodyBroadcaster
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
@@ -158,6 +159,8 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         super.onActivityCreated(savedInstanceState)
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
+        (activity as HomeActivity).ocultarBtnAtras()
+
 
     }
 }
