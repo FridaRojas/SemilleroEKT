@@ -1,5 +1,4 @@
 package com.example.agileus.adapters
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Chats
-import com.example.agileus.models.Contacts
-import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragmentDirections
-import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragmentDirections
-import com.example.agileus.utils.Constantes
+
 
 class ChatsAdapter(private var dataSet: ArrayList<Chats>) :
     RecyclerView.Adapter<ChatsAdapter.ViewHolder>() {

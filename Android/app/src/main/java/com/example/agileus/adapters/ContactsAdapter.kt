@@ -10,10 +10,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Contacts
-import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
-import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragmentDirections
 import com.example.agileus.ui.modulomensajeria.listcontacts.ListContactsFragmentDirections
-import com.example.agileus.utils.Constantes
+
 
 class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
     RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {

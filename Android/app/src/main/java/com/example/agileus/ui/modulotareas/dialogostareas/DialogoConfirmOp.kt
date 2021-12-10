@@ -8,13 +8,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.creartareas.CrearTareasViewModel
 import com.example.agileus.models.Tasks
+import com.example.agileus.ui.modulomensajeria.conversation.UserConversationViewModel
 
 class DialogoConfirmOp(var tarea: Tasks) : DialogFragment(){
 
-    lateinit var conversationviewModel  : ConversationViewModel         // ViewModel
+    lateinit var conversationviewModel  : UserConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

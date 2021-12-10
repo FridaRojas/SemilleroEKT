@@ -10,10 +10,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
 import com.example.agileus.models.Groups
-import com.example.agileus.ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragmentDirections
-import com.example.agileus.ui.modulotareas.listatareas.TaskFragmentDirections
-import com.example.agileus.utils.Constantes
 class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
     RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
 
