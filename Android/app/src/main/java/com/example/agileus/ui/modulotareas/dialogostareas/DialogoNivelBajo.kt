@@ -131,7 +131,7 @@ class DialogoNivelBajo(
         }
 
         if (!dataTask.archivo.isNullOrEmpty()) {
-            Toast.makeText(context, dataTask.archivo, Toast.LENGTH_SHORT).show()
+           // Toast.makeText(context, dataTask.archivo, Toast.LENGTH_SHORT).show()
             btnPdf.isVisible = true
             btnPdf.setOnClickListener {
                 // Log.d("Mensaje", dataTask.idTarea)
