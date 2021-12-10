@@ -21,4 +21,3 @@ data class Conversation(
    @SerializedName("idemisor") val idemisor: String
 
 )
-

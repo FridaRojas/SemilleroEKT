@@ -1,57 +1,257 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/colorBackground"
     tools:context=".ui.moduloreportes.reportes.ReporteMensajesFragment">
 
-
     <LinearLayout
+        android:id="@+id/llMenuReportes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
+        android:orientation="horizontal"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/rounded_rm"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         >
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:backgroundTint="@color/colorBackground"
-            android:background="@drawable/rounded_rm"
-            >
-            <com.google.android.material.button.MaterialButton
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mensajes"
-                app:cornerRadius="16dp"
-                android:id="@+id/btnReportesMensajes"
-                android:transitionName="report_slide"
-                />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnReportesTareas"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tareas"
-                android:textColor="@color/black"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                />
-        </LinearLayout>
+            android:text="Mensajes"
+            app:cornerRadius="16dp"
+            android:id="@+id/btnReportesMensajes"
+            android:transitionName="report_slide"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReportesTareas"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tareas"
+            android:textColor="@color/black"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btnFiltroReportes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/llMenuReportes"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtrar"
+            android:textSize="16dp"
+            />
+        <ImageView
+            android:src="@drawable/iconofiltrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/llMenuReportes"
+        app:layout_constraintStart_toStartOf="@+id/llMenuReportes"
+        >
+        <TextView
+            android:id="@+id/txtRangoFechaReportes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rango de fechas"
+            android:textSize="16dp"
+            />
+        <TextView
+            android:id="@+id/txtNombreReportes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mi información"
+            android:textSize="16dp"
+            />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/text_notifications"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="362sp"
+        android:layout_height="238sp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
+        />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="362sp"
+        android:layout_height="238sp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
+        />
+
+    <LinearLayout
+        android:id="@+id/llPrimerLegend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="238dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
+        app:layout_constraintEnd_toStartOf="@+id/llSegundoLegend"
+        app:layout_constraintStart_toStartOf="@id/RecyclerLista">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/colorlegend1"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/txtPrimerLegend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/legendtext1"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDataPrimerLegend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/colorlegend3"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@color/white" />
+
+            <TextView
+                android:id="@+id/txtTercerLegend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/legendtext3"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDataTercerLegend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llSegundoLegend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/RecyclerLista"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
+        app:layout_constraintStart_toEndOf="@+id/llPrimerLegend">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/colorlegend2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+                />
+            <TextView
+                android:id="@+id/txtSegundoLegend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/legendtext2"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDataSegundoLegend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/colorlegend4"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@color/colorGray"
+                />
+            <TextView
+                android:id="@+id/txtCuartoLegend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/legendtext4"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDataCuartoLegend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:text="000" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp" />
+        app:layout_constraintTop_toBottomOf="@+id/llPrimerLegend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

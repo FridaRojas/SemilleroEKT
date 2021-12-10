@@ -17,4 +17,8 @@ class Contacts (
     @SerializedName("token")val token: String
         )
 
-
+data class EmployeeListByBossID(
+    @SerializedName("status") val status: String,
+    @SerializedName("msj") val msj: String,
+    @SerializedName("data") val dataEmployees: ArrayList<Contacts>
+)

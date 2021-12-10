@@ -43,6 +43,19 @@ class ListContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //    Toast.makeText(activity, "Usuario BRD", Toast.LENGTH_LONG).show()
+        //llamar a la barra de acción
+        //var actionBar = getSupportActionBar()
+        /*
+        var actionBar = getSupportActionBar()
+
+        // mostrar el botón de retroceso en la barra de acción
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false)
+        }
+
+
+         */
         binding.progressBarContacts.isVisible = true
 
         contactsviewModel.devuelveLista(idUser)
