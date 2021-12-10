@@ -28,7 +28,6 @@ import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoConfirmOp
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
-import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmacionListener
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
@@ -189,10 +188,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     }
 
     // *** FUNCIONES ***
-    fun confirmarTarea(){
-        val newFragment = DialogoConfirmOp (this)
-        newFragment.show(parentFragmentManager, "Confirmacion")
-    }
+
     fun operacionIsert(){
         val tarea: Tasks
         val titulo      = binding.edtAgregaTitulo.text
@@ -285,9 +281,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         Log.e("Mensaje", "Fecha Fin $fechaFin")
 
     }
-    override fun onConfirmOper() {
-        operacionIsert()
-    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

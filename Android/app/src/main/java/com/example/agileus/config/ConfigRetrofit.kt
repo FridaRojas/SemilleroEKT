@@ -29,6 +29,7 @@ class ConfigRetrofit {
             .connectTimeout(tiempo, TimeUnit.SECONDS)
             .readTimeout(tiempo, TimeUnit.SECONDS)
             .writeTimeout(tiempo, TimeUnit.SECONDS)
+            .addInterceptor(MyInterceptor())
             .build()
         return okHttpClient
     }
@@ -36,7 +37,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitMessage(): MessageApi {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)
-            .client(client)
+            .client(cliente(60))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return mRetrofit.create(MessageApi::class.java)
