@@ -49,15 +49,12 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
             "Mis Mensajes Recibidos"
 
 
-        //   viewModel.devuelvebuzon1()
-
-//   viewModel.devuelvebuzonentrada()
-
-              if (BuzonFragment.control == 2) {
+        binding.fab.setOnClickListener {
+            val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
+            activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
+        }
 
                   viewModel.devuelvebuzon2()
-              }
-
             viewModel.adaptador.observe(
                 viewLifecycleOwner,
                 {
@@ -65,27 +62,11 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
                     binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
                 })
 
-        binding.fab.setOnClickListener {
-            val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
-            activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
-        }
+
     }
 
 
-    //    if (BuzonFragment.control == 2) {
 
-//            viewModel.devuelvebuzonentrada()
-    //      binding.fab.visibility = View.INVISIBLE
-/*
-            viewModel.adaptador1.observe(
-                viewLifecycleOwner,
-                {
-                    binding.recyclerBuzon.adapter = it
-                    binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-                })
-
-        }
-*/
 
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
 
@@ -96,7 +77,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
             viewModel.myResponse1.observe(
                 viewLifecycleOwner,
-                Observer { response ->
+                { response ->
                     if (response.isSuccessful) {
                         Log.i("response", response.code().toString())
                     }
