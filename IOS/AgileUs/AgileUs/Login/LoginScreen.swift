@@ -52,7 +52,7 @@ class LoginScreen: UIViewController {
 
         txtPassword.addBackgroundColorAndTextColor(backgroundColor: UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0), textColor: UIColor(red: 156.0/255, green: 158.0/255, blue: 159.0/255, alpha: 1.0))
         txtPassword.roundCorners(cornerRadius: 20.0)
-        txtPassword.addIcon(image: UIImage(named: "vector_icon")!, direction: "Left")
+        txtPassword.addIcon(image: UIImage(named: "Vector_icon")!, direction: "Left")
         let visibilityButton = txtPassword.addButton(iconImage: UIImage(named: "visibility_off")!)
         visibilityButton.addTarget(self, action: #selector(showHideText), for: .touchUpInside)
     }
@@ -146,14 +146,14 @@ class LoginScreen: UIViewController {
                     }
                 }catch let error_S
                 {
-                    print("Error al conseguir hierarchy level\n\n\(error_S)\n\n****")
+                    print("Error al conseguir hierarchy level\n\n\(error_S)\n\n**")
                 }
             }
         }.resume()
     }
-
-    @IBAction func iniciarSesion(_ sender: UIButton) {
-
+    
+    func logIn()
+    {
         guard let text = txtUser.text, !text.isEmpty else {
             simpleAlertMessage(title: "Error!", message: "El campo usuario esta vacio")
             return
@@ -192,68 +192,65 @@ class LoginScreen: UIViewController {
                 mimeType == "application/json",
                 let data = data
             {
-                var dataJson = String()
+                var dataJson: Any?
+                
                 do {
                     let json = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as! NSDictionary
-                    print("/*******************************************/")
-                    print(json["data"])
-                    print("/*******************************************/")
-                    print(json)
-                    print("/*******************************************/")
-                    dataJson = json["data"] as! String
-                } catch let error_catch {
-                    print("Error: \(error_catch)")
-                }
-                
-                print(dataJson)
-                
-                if dataJson == String() {
-                    print("is EMPTY")
-                    self.simpleAlertMessage(title: "AgileUS", message: "Usuario o contrasena incorrectas")
-                    return
-                }
-                
-                do{
-                    let dataResponse = try JSONDecoder().decode(Response.self, from: data)
-                    switch dataResponse.status
+                    
+                    DispatchQueue.main.async
                     {
-                        case "ACCEPTED":
-                            print(dataResponse.data.id)
-
-                            DispatchQueue.main.async {
-                                self.setUserVariables(userInfo: dataResponse.data)
-                                self.txtUser.becomeFirstResponder()
-                                self.txtUser.text = nil
-                                self.txtPassword.text = nil
-                                self.performSegue(withIdentifier: "Login_To_Home", sender: nil)
-                            }
-
-                        break
-                        case "BAD_REQUEST":
+                        if let dataJson = json["data"] as? String
+                        {
                             self.simpleAlertMessage(title: "AgileUS", message: "Usuario o contrasena incorrectas")
+                            return
+                        }
+                        else
+                        {
+                            do{
+                                let dataResponse = try JSONDecoder().decode(Response.self, from: data)
+                                switch dataResponse.status
+                                {
+                                    case "ACCEPTED":
+                                        print(dataResponse.data.id)
 
-                        break
-                        default:
-                        break
+                                        DispatchQueue.main.async {
+                                            self.setUserVariables(userInfo: dataResponse.data)
+                                            self.txtUser.becomeFirstResponder()
+                                            self.txtUser.text = nil
+                                            self.txtPassword.text = nil
+                                            self.performSegue(withIdentifier: "Login_To_Home", sender: nil)
+                                        }
+
+                                    break
+                                    case "BAD_REQUEST":
+                                        self.simpleAlertMessage(title: "AgileUS", message: "Usuario o contrasena incorrectas")
+
+                                    break
+                                    default:
+                                    break
+                                }
+
+                             }catch let error_catch {
+                                print("Error  -----: \(error_catch)")
+                                //print(data)
+                            }
+                            
+                        }
                     }
-
-                 }catch let error_catch {
-                    print("Error: \(error_catch)")
-                    //print(data)
+                } catch let error_catch
+                {
+                    print("Error    * : \(error_catch)")
                 }
             }
         }
         task.resume()
-
-        //self.performSegue(withIdentifier: "Login_To_Home", sender: self)
-
+        
+    }
+    @IBAction func iniciarSesion(_ sender: UIButton) {
+        logIn()
     }
 
     @IBAction func forgotPassword(_ sender: UIButton) {
-
-        //let modalAdapter = ModalsAdapter()
-        //let modalForgotPassword = modalAdapter.generateModalForgotPassword()
-
         self.present(ModalsAdapter().generateModalForgotPassword(), animated: true)
     }
 
