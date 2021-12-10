@@ -68,8 +68,8 @@ class InicioSesionFragment : Fragment(){
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
 
-///////////////////////////////////////
-        binding.btnLogin.setOnClickListener { validate() }
+        /*
+        binding.btnLogin.setOnClickListener { validate()
         // observer se dispara cuando finalice el servicio
         viewModel.inicioExitoso.observe(viewLifecycleOwner, {response ->
             //Log.d("respuesta inicio ", viewModel.inicioExitoso.toString())
@@ -84,7 +84,7 @@ class InicioSesionFragment : Fragment(){
             }
 
             //}
-        })
+        })*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,19 +98,39 @@ class InicioSesionFragment : Fragment(){
         }*/
 
         binding.btnLogin.setOnClickListener {
-            //validate()
 
+            // observer se dispara cuando finalice el servicio
+            viewModel.inicioExitoso.observe(viewLifecycleOwner, {response ->
+                //Log.d("respuesta inicio ", viewModel.inicioExitoso.toString())
+                var x = response
+                if(x)
+                {
+                    //Log.d("xdata",x.toString())
+                    //   Toast.makeText(activity, "Inicio", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    //Log.d("xdata",x.toString())
+                }
+
+                //}
+            })
+
+            var progressBar = binding.progressLoading
+            progressBar.visibility=View.VISIBLE
+            binding.btnLogin.isEnabled=false
+
+            //validate()
             var result = arrayOf(validateEmail(), validatePassword())
             correoSession = binding.email.text.toString()
             passwordSession = binding.password.text.toString()
-
-
 
             if(false in result){
                 Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
             }else{
                 val usuario = Users(correoSession, passwordSession, TOKEN_KEY)
                 viewModel.recuperarLogueo(usuario)
+                sleep(1000)
+
                 if (status) {
                     Log.d("Login", correoSession)
                     Log.d("Login", passwordSession)
@@ -129,7 +149,7 @@ class InicioSesionFragment : Fragment(){
     }
 
 
-
+/*
     private fun validate() {
 
         var progressBar = binding.progressLoading
@@ -159,7 +179,7 @@ class InicioSesionFragment : Fragment(){
             startTimeCounter()
             }
 
-    }
+    }*/
 
     private fun validateEmail(): Boolean {
         val correo = binding.email.text?.toString()

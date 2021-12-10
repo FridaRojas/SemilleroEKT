@@ -63,7 +63,7 @@ class TaskViewModel() : ViewModel() {
                     lista.getTasksAssigned("618d9c26beec342d91d747d6")
                 }else{
                     //id Receptor -> id Receptor
-                    lista.getTasksByStatus("618d9c26beec342d91d747d6", statusRecycler.value.toString())
+                    lista.getTasksByStatus("61a83a48d036090b8e8db3bd", statusRecycler.value.toString())
                 }
             }
             Log.d("api", "funciona")
