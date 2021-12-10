@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 public class UserDAO {
 
-    String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
+    //String servidor = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT";
+    String servidor = "http://localhost:3040";
 
     public ArrayList<User> muestraSubordinados(String idSuperior){
         Gson gson = new Gson();

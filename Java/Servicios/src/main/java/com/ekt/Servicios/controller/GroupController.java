@@ -88,27 +88,38 @@ public class GroupController {
         }
     }
 
-    @CrossOrigin(origins = {"*"})
-    @GetMapping("/buscar/{id}")//*
-    public ResponseEntity<?> buscar(@PathVariable String id) {
+
+    /**
+     * Busca un grupo filtrando por id.
+     * @param id es un string del id a buscar
+     * @return data=Group en caso de exito
+     */
+    @GetMapping("/buscar/{id}")
+    public Response buscar(@PathVariable String id) {
         try {
             if (groupService.buscarPorId(id).isPresent()) {
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Grupo encontrado", groupService.buscarPorId(id)));
+                return new Response(HttpStatus.ACCEPTED, "Grupo encontrado", groupService.buscarPorId(id));
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error grupo no existente", ""));
+                return new Response(HttpStatus.BAD_REQUEST, "Error grupo no existente", "");
             }
         } catch (Exception e) {
             System.err.println("Error: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", ""));
+            return new Response(HttpStatus.NOT_FOUND, "Error Inesperado", "");
         }
     }
 
-    @DeleteMapping(value = "/borrar/{id}") //*
-    public ResponseEntity<Response> delete(@PathVariable String id) {
+    /**
+     * Borra un grupo.
+     * -Cambia el idGrupo, idSupereior inmediato y nombreRol de los usuarios en el grupo a ""
+     * -Elimina el grupo de la BD
+     * @param id String con el id del grupo a borrar
+     * @return
+     */
+    @DeleteMapping(value = "/borrar/{id}")
+    public Response delete(@PathVariable String id) {
         try {
             if (id == null) {
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", "");
             } else {
                 Optional<Group> grupo = groupService.buscarPorId(id);
                 if (grupo.isPresent()) {
@@ -119,15 +130,13 @@ public class GroupController {
                         userService.save(usr);
                     }
                     groupService.borrarPorId(id);
-                    System.out.println("Grupo eliminado");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Grupo eliminado", grupo.get()));
+                    return new Response(HttpStatus.ACCEPTED, "Grupo eliminado", "");
                 } else {
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Grupo no encontrado", ""));
+                    return new Response(HttpStatus.BAD_REQUEST, "Grupo no encontrado", "");
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error: " + e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error Inesperado", ""));
+            return new Response(HttpStatus.NOT_FOUND, "Error Inesperado", e);
         }
     }
 
@@ -161,6 +170,14 @@ public class GroupController {
         }
     }
 
+
+    /**
+     * Buscar usuario en grupo
+     * -valida que exista el grupo
+     * -valida que exista el usuario
+     * @param json contiene idGrupo y idUsuaurio
+     * @return data=Group en caso de exito
+     */
     @GetMapping("/buscarUsuarioEnGrupo")
     public Response buscarUsuarioEnGrupo(@RequestBody String json) {
         try {
@@ -171,13 +188,9 @@ public class GroupController {
 
             //verifica que exista el grupo
             if (groupService.buscarPorId(idGroup).isPresent()) {
-                //traza
-                System.out.println("Grupo existe");
 
                 //verifica que existe el usuario
                 if (userService.findById(idUser).isPresent()) {
-                    //traza
-                    System.out.println("Usuario existe");
 
                     Optional<Group> optGroup;
                     optGroup = groupService.buscarUsuarioEnGrupo(idGroup, idUser);
@@ -200,11 +213,15 @@ public class GroupController {
             }
 
         } catch (Exception e) {
-            System.out.println("Exception: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", "");
+            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", e);
         }
     }
 
+    /**
+     * Busca un grupo filtrando por nombre.
+     * @param nombre es un string del nombre a buscar
+     * @return data=Group en caso de exito
+     */
     @GetMapping("/buscarPorNombre/{nombre}")
     public Response buscarPorNombre(@PathVariable String nombre) {
         try {
@@ -240,6 +257,11 @@ public class GroupController {
         //return new Response();
     }
 
+
+    /**
+     * Busca todos los grupos
+     * @return data=ArrayList<Group> en caso de exito
+     */
     @CrossOrigin(origins = {"*"})
     @GetMapping("/buscarTodo")
     public Response buscarTodo() {
@@ -247,18 +269,19 @@ public class GroupController {
             Iterable<Group> grupos = groupService.buscarTodo();
             return new Response(HttpStatus.OK, "Grupos existentes", grupos);
         } catch (Exception e) {
-            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", "");
+            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e);
         }
     }
 
 
     /**
+     * Busca todos los grupos con paginacion
      * @param json Recibe dos parametros "pagina" y "tamaño"
      *             pagina: es la pagina a mostrar
      *             tamaño: es la cantidad de objetos por pagina
-     * @return
+     * @return data=ArrayList<Group> en caso de exito
      */
-    @CrossOrigin(origins = "http://localhost:8080/")
+    @CrossOrigin(origins = {"*"})
     @GetMapping("/buscarTodoPags")
     public Response buscarTodoPageable(@RequestBody String json) {
         try {
@@ -280,8 +303,7 @@ public class GroupController {
             return new Response(HttpStatus.OK, "Grupos existentes", grupos);
 
         } catch (Exception e) {
-            System.err.println("Exception: " + e);
-            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", "");
+            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e);
         }
     }
 

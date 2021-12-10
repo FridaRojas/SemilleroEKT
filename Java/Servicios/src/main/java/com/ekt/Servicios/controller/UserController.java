@@ -133,8 +133,17 @@ public class UserController {
         }
     }
 
+
+    /**
+     * Metodo que cambia el statusActivo de un usuario, no lo borra de la BD
+     * -busca que el usuario exista
+     * -cambia el statusActivo a false
+     * -cambia nombreRol,idGrupo,idSuperiorInmediato a un string vacio
+     * @param id es el id del usuario a borrar
+     * @return Response data="" en caso de exito
+     */
     @DeleteMapping(value="/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id){
+    public Response delete(@PathVariable String id){
         try{
             if(userService.findById(id).isPresent()){
                 User usr = userService.findById(id).get();
@@ -144,18 +153,16 @@ public class UserController {
                     usr.setIDGrupo("");
                     usr.setIDSuperiorInmediato("");
                     userService.save(usr);
-                    return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario eliminado correctamente",""));
+                    return new Response(HttpStatus.OK,"Usuario eliminado correctamente","");
                 }
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
+                return new Response(HttpStatus.BAD_REQUEST,"No se puede borrar","");
             }else{
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
+                return new Response(HttpStatus.BAD_REQUEST,"No se puede borrar","");
             }
         }catch(Exception e){
             System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Usuario no encontrado",""));
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta: ",e);
         }
-        //userService.deleteById(id);
-
     }
 
     @PutMapping("/updateIdBoss")//*
@@ -322,46 +329,18 @@ public class UserController {
 
     }
 
-    @GetMapping("/buscarFamilia/{id}")
-    public Response findFamily(@PathVariable String id){
-        System.out.println(id);
-        ArrayList<User> listaUsuarios=new ArrayList<>();
 
-        /*
-        -verificar que existe el id
-        -buscar al padre
-        -buscar hermanos
-        -buscarhijos
-        -buscar hijos de hijos hasta el infinito
-
-         */
-        try {
-            User tempUser=new User();
-            //verificar que existe el id
-            if(userService.findById(id).isPresent()){
-                tempUser=userService.findById(id).get();
-                //buscar al padre
-                if (tempUser.getIDSuperiorInmediato().length()>5){
-                    if (userService.findById(tempUser.getIDSuperiorInmediato()).isPresent()){
-                        listaUsuarios.add(userService.findById(tempUser.getIDSuperiorInmediato()).get());
-                    }
-                }
-                return new Response(HttpStatus.OK,"hasta aqui solo esta el papa",listaUsuarios);
-
-            }else{
-                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+id+" no existe","");
-            }
-        }catch (Exception e){
-            System.err.println("Excepcion: "+e);
-            return new Response(HttpStatus.NOT_FOUND,"Error en la consulta","");
-        }
-    }
-
+    /**
+     * Busca un usuario filtrando el parametro recibido en los atributos correo, nombre,
+     * numeroEmpleado, nombreRol, rfc. Filtrando a los usuarios que tengan el statusActivo=true
+     * @param parametro es el string a buscar
+     * @return data=ArrayList<User> en caso de exito
+     */
     @GetMapping("/busquedaUsuario/{parametro}")
     public Response busquedaUsuario(@PathVariable String parametro) {
         try {
             if (parametro==null){
-                return new Response(HttpStatus.BAD_REQUEST,"",null);
+                return new Response(HttpStatus.BAD_REQUEST,"Faltan datos para realizar la consulta",null);
             }else{
                 if (userService.busquedaUsuario(parametro).isPresent()){
                     return new Response(HttpStatus.OK, "Usuario(s) encontrado(s)",userService.busquedaUsuario(parametro).get());
@@ -370,7 +349,7 @@ public class UserController {
                 }
             }
         }catch (Exception e){
-            return new Response(HttpStatus.NOT_FOUND,"",null);
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",e);
         }
     }
 
