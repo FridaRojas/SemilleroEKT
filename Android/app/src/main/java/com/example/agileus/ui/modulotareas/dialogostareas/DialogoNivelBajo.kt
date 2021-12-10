@@ -17,11 +17,15 @@ import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 import java.lang.IllegalStateException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: DataTask) :
+class DialogoNivelBajo(
+    var dataTask: DataTask,
+    var listener: dialogoConfirmarListener
+) :
     DialogFragment() {
 
     private lateinit var estatusD: String
@@ -166,16 +170,16 @@ class DialogoNivelBajo(private var listener: TaskListListener, var dataTask: Dat
             }
 
             btnEstado.setOnClickListener {
-           /*     if (dataTask.estatus.equals("pendiente")) {
-                    dataTask.estatus = "iniciada"
-                } else if (dataTask.estatus.equals("iniciada")) {
-                    dataTask.estatus = "revision"
-                }*/
+                /*     if (dataTask.estatus.equals("pendiente")) {
+                         dataTask.estatus = "iniciada"
+                     } else if (dataTask.estatus.equals("iniciada")) {
+                         dataTask.estatus = "revision"
+                     }*/
                 if (dataTask.estatus.equals("revision")) {
                     btnEstado.isEnabled = false
                 }
 
-                val newFragment = DialogoActualizarEstatus(dataTask)
+                val newFragment = DialogoActualizarEstatus(dataTask, listener)
                 newFragment.show(
                     (activity as HomeActivity).supportFragmentManager,
                     "missiles"

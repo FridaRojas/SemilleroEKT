@@ -67,11 +67,11 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun showBottomNav(nav_view:BottomNavigationView) {
+    private fun showBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.VISIBLE
     }
 
-    private fun hideBottomNav(nav_view:BottomNavigationView) {
+    private fun hideBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.GONE
     }
 

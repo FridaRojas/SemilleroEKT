@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import retrofit2.Call
 import retrofit2.Callback
@@ -106,7 +107,7 @@ class TasksDao {
         return listaTareasAsignadas
     }
 
-    fun cancelTask(t: DetalleNivelAltoFragmentArgs) {
+    fun cancelTask(t: DetalleNivelAltoFragmentArgs, listener: dialogoConfirmarListener) {
         val callback = InitialApplication.webServiceGlobalTasks.cancelarTarea(
             t.tareas.idTarea,
             t.tareas.idEmisor
@@ -115,25 +116,33 @@ class TasksDao {
             override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
                     Log.d("Mensaje", "Eliminada")
+                    listener.abreDialogoConfirmar("Tarea cancelada")
                 } else {
                     Log.d("Mensaje", "No se elimino tarea ${response.code()}")
+                    listener.abreDialogoConfirmar("Tarea no cancelada")
                 }
             }
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure ${t.message}")
+                listener.abreDialogoConfirmar(t.message.toString())
             }
         })
     }
 
 
-    fun editTask(taskUpdate: TaskUpdate, idTarea: String, idUsuario: String) {
+    fun editTask(
+        taskUpdate: TaskUpdate,
+        idTarea: String,
+        idUsuario: String,
+        listener: dialogoConfirmarListener
+    ) {
         Log.d("Mensaje", taskUpdate.toString())
         Log.d("Mensaje", "id: ${idTarea}")
         val callback = InitialApplication.webServiceGlobalTasks.editTask(
             taskUpdate,
             idTarea,
-            "618d9c26beec342d91d747d6"
+            idUsuario
         )
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(
@@ -146,8 +155,10 @@ class TasksDao {
                             "Mensaje",
                             "Tarea Editada ${response.message()}"
                         )
+                        listener.abreDialogoConfirmar("Tarea ${taskUpdate.titulo} editada")
                     } else {
                         Log.d("Mensaje", "Tarea no Editada ${response.message()}")
+                        listener.abreDialogoConfirmar("Tarea no editada ${response.message()}")
                     }
                 } catch (e: Exception) {
                     Log.d("Mensaje", e.message.toString())
@@ -156,29 +167,33 @@ class TasksDao {
 
             override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
+                listener.abreDialogoConfirmar(t.message.toString())
             }
 
         })
     }
 
-    fun updateStatus(idTarea: String, estatus: String) {
+    fun updateStatus(idTarea: String, estatus: String, listener: dialogoConfirmarListener) {
 //        var url = idTarea + "&" + estatus
 //        url.trim()
 //        Log.d("url", url)
         val callback = InitialApplication.webServiceGlobalTasks.updateStatus(idTarea, estatus)
 //        val value: Response<String> = callback.execute()
 //        Log.d("Mensaje", value.toString())
-        callback.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        callback.enqueue(object : Callback<DataTask> {
+            override fun onResponse(call: Call<DataTask>, response: Response<DataTask>) {
                 if (response.isSuccessful) {
                     Log.d("Mensaje", "Estatus Editado")
+                    listener.abreDialogoConfirmar("Estatus modificado")
                 } else {
                     Log.d("Mensaje", "No se Edito estatus ${response.code()}")
+                    listener.abreDialogoConfirmar("Estatus no modificado")
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<DataTask>, t: Throwable) {
                 Log.d("Mensaje", "On Failure: ${t.message}")
+                // listener.abreDialogoConfirmar(t.message.toString())
             }
 
         })
