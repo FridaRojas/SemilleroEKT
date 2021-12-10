@@ -157,7 +157,7 @@ class TasksDao {
         val callback = InitialApplication.webServiceGlobalTasks.editTask(
             taskUpdate,
             idTarea,
-            "618d9c26beec342d91d747d6"
+            idUsuario
         )
         callback.enqueue(object : Callback<DataTask> {
             override fun onResponse(
