@@ -57,6 +57,7 @@ class LoginDao {
                     id=guardarData.id.toString()
                     tokenAuth=guardarData.tokenAuth.toString()
                     nombre=guardarData.nombre.toString()
+
                     status  = true
                 }
                 else {

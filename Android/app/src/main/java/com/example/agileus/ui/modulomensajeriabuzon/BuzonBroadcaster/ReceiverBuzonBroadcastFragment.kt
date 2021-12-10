@@ -47,7 +47,7 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
-            "Buzon Enviados Broadcast"
+            "Enviados Broadcast"
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
