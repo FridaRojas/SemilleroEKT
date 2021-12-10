@@ -91,6 +91,9 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             FirebaseStorage.getInstance()                           /*  *** Instancias Fb Storage ***  */
         mStorageReference = mStorageInstance.getReference("Documentos")
 
+        //toolbar
+        (activity as HomeActivity).fragmentSeleccionado = "verDetalleTarea"
+
         resultLauncherArchivo =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {

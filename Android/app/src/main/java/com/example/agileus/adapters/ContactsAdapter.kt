@@ -50,6 +50,7 @@ class ContactsAdapter(private var dataSet: ArrayList<Contacts>) :
             myView.setOnClickListener {
                val intent = Intent(contexto,ConversationOneToOneActivity::class.java)
                 intent.putExtra(Constantes.ID_RECEPTOR, contacts.id)
+                intent.putExtra(Constantes.NAME_RECEPTOR, contacts.nombre)
                 contexto.startActivity(intent)
             }
 

@@ -87,6 +87,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
 
         setUpUiAsignarTareas() /*  *** spiners ***  */
 
+        //toolbar
+        (activity as HomeActivity).fragmentSeleccionado = "crearTarea"
+
         resultLauncherArchivo=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if(result.resultCode== Activity.RESULT_OK){
                 val data:Intent?=result.data

@@ -1,8 +1,11 @@
 package com.example.agileus.config
 
 
+import com.example.agileus.utils.Constantes.URL_BASE1
+import com.example.agileus.webservices.apis.ReportesApi
 import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
+import com.example.agileus.utils.Constantes.URL_REPORTES
 import com.example.agileus.webservices.apis.LoginApi
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
@@ -23,6 +26,7 @@ class ConfigRetrofit {
 
     private var client = OkHttpClient.Builder().addInterceptor(MyInterceptor()).build()
 
+
     //val URL_LOGIN = Constantes.URL_LOGIN
     val URL_Login = Constantes.URL_Login
     fun cliente(tiempo: Long): OkHttpClient {
@@ -37,6 +41,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitMessage(): MessageApi {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return mRetrofit.create(MessageApi::class.java)
@@ -85,7 +90,7 @@ class ConfigRetrofit {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_Login)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(cliente(60))
+//            .client(cliente(5))
             .build()
         return mRetrofit.create(LoginApi::class.java)
     }
@@ -119,5 +124,42 @@ class ConfigRetrofit {
             .build()
         return mRetrofit.create(BuzonApi2::class.java)
     }
+    fun getConfigReportes(): ReportesApi{
 
-}
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_REPORTES)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(ReportesApi::class.java)
+
+    }
+
+    fun getBroadCastReportes(): ReportesApi{
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl("http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(ReportesApi::class.java)
+
+    }
+
+
+    fun getTareasporId(): ReportesApi{
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl("http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return mRetrofit.create(ReportesApi::class.java)
+
+    }
+
+
+
+
+    }

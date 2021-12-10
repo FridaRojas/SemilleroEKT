@@ -22,6 +22,8 @@ import com.example.agileus.databinding.ActivityHomeBinding
 class HomeActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeBinding
+    lateinit var fragmentSeleccionado : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +37,9 @@ class HomeActivity : AppCompatActivity() {
         //Token Notificaciones
         val token = InitialApplication.preferenciasGlobal.recuperarToken()
         Log.d("token", token)
+
+        //Toolbar
+
 
 
         //Navegación
@@ -70,5 +75,17 @@ class HomeActivity : AppCompatActivity() {
         nav_view.visibility = View.GONE
     }
 
-}
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(fragmentSeleccionado){
+            "crearTarea" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
+            }
+            "verDetalleTarea" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+ }
 

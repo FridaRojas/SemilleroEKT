@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="60dp"
+    android:background="@color/colorBackground"
     android:padding="@dimen/paddingGeneral"
     tools:context=".ui.modulotareas.detalletareas.DetalleNivelAltoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        >
 
         <!-- Nombre de la Tarea -->
         <com.google.android.material.textview.MaterialTextView

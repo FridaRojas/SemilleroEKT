@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerConversacion"
         android:layout_width="match_parent"
@@ -77,4 +78,24 @@
         android:layout_marginEnd="@dimen/paddingGeneral"
         android:src="@drawable/iconoenviar">
     </ImageView>
+
+    <TextView
+        android:id="@+id/errordechat"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_view_write_mesage"
+        android:text="No puedes responder este mensaje"
+        android:gravity = "center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/paddingGeneral"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="invisible"
+        />
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@ class GroupsAdapter(private var dataSet: ArrayList<Groups>) :
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.list_contacts_item, viewGroup, false)
+            .inflate(R.layout.list_groups_item, viewGroup, false)
         return ViewHolder(view)
     }
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
