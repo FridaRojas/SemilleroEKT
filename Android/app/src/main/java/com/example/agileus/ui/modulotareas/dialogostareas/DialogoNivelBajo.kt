@@ -3,11 +3,7 @@ package com.example.agileus.ui.modulotareas.dialogostareas
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +12,6 @@ import com.example.agileus.models.DataTask
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoViewModel
-import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
 import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 import java.lang.IllegalStateException
 import java.text.SimpleDateFormat
@@ -28,6 +23,8 @@ class DialogoNivelBajo(
 ) :
     DialogFragment() {
 
+    private var txtDia: String = ""
+    private var txtMes: String = ""
     private lateinit var estatusD: String
     private lateinit var fechaFinD: Date
     private lateinit var fechaInicioD: Date
@@ -36,6 +33,16 @@ class DialogoNivelBajo(
     private lateinit var nombrePersonaD: String
     private lateinit var nombreTarea: String
     private lateinit var detalleNivelBajoViewModel: DetalleNivelAltoViewModel
+
+    var mesI: String = ""
+    var diaI: String = ""
+    var mesF: String = ""
+    var diaF: String = ""
+    var fechaFi: String = ""
+    var fechaIn: String = ""
+    val sdf3 = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+
+    val cal = Calendar.getInstance()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -56,75 +63,16 @@ class DialogoNivelBajo(
             var txtEstatusD = vista.findViewById<TextView>(R.id.txtEstatusD)
             var btnEstado = vista.findViewById<Button>(R.id.btnCambiarEstadoD)
             var btnPdf = vista.findViewById<ImageView>(R.id.btnPdf)
-
-            Log.d("Mensaje", dataTask.toString())
-
-            if (dataTask.estatus.equals("pendiente")) {
-                btnEstado.setText("Cambiar a Iniciada")
-            } else if (dataTask.estatus.equals("iniciada")) {
-                btnEstado.setText("Cambiar a Revision")
-            } else if (dataTask.estatus.equals("revision")) {
-                btnEstado.setText("En revision")
-                btnEstado.isEnabled = false
-            } else if (dataTask.estatus.equals("terminada")) {
-                btnEstado.setText("Tarea Terminada")
-                btnEstado.isEnabled = false
-            } else if (dataTask.estatus.equals("cancelado")) {
-                btnEstado.setText("Tarea Cancelada")
-                btnEstado.isEnabled = false
-            }
-
-            var mesI: String = ""
-            var diaI: String = ""
-            var mesF: String = ""
-            var diaF: String = ""
-            var fechaFi: String = ""
-            var fechaIn: String = ""
-            val sdf3 = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
-
-            val cal = Calendar.getInstance()
+            var progressBar = vista.findViewById<ProgressBar>(R.id.progressBar)
             var fechaI = sdf3.parse(dataTask.fechaIni.toString())
             var fechaF = sdf3.parse(dataTask.fechaFin.toString())
 
+            sigEstatus(btnEstado)
             cal.time = fechaI
+            convierteFechas(cal.time, 1)
 
-            cal[Calendar.MONTH] + 1
-//        cal[Calendar.DATE] + 1
-            if (cal[Calendar.MONTH] < 10) {
-                mesI = "0${cal[Calendar.MONTH]}"
-            } else {
-                mesI = cal[Calendar.MONTH].toString()
-            }
-
-            if (cal[Calendar.DATE] < 10) {
-                diaI = "0${cal[Calendar.DATE]}"
-            } else {
-                diaI = cal[Calendar.DATE].toString()
-            }
-
-            fechaIn =
-                cal[Calendar.YEAR].toString() + "-" + mesI + "-" + diaI
-
-///////////////////////////////////////////////////////////////777
             cal.time = fechaF
-
-            cal[Calendar.MONTH] + 1
-//        cal[Calendar.DATE] + 1
-            if (cal[Calendar.MONTH] < 10) {
-                mesF = "0${cal[Calendar.MONTH]}"
-            } else {
-                mesF = cal[Calendar.MONTH].toString()
-            }
-
-            if (cal[Calendar.DATE] < 10) {
-                diaF = "0${cal[Calendar.DATE]}"
-            } else {
-                diaF = cal[Calendar.DATE].toString()
-            }
-
-            fechaFi =
-                cal[Calendar.YEAR].toString() + "-" + mesF + "-" + diaF
-            Log.d("Mensaje", "fecha nueva $fechaFi")
+            convierteFechas(cal.time, 2)
 
             nombreTarea = dataTask.titulo
             nombrePersonaD = dataTask.nombreEmisor
@@ -133,7 +81,6 @@ class DialogoNivelBajo(
             descripcionD = dataTask.descripcion
             fechaInicioD = dataTask.fechaIni
             fechaFinD = dataTask.fechaFin
-            //observacionesD = dataTask.observaciones
 
             txtNombreTareaD.text = nombreTarea
             txtNombrePersonaD.text = nombrePersonaD.capitalize()
@@ -144,41 +91,11 @@ class DialogoNivelBajo(
             txtEstatusD.text = "Estatus: ${estatusD.capitalize()}"
             txtObservacionesD.text = "Observaciones: ${dataTask.observaciones}"
 
-            if (dataTask.observaciones != null) {
-                //observacionesD = dataTask.observaciones
-                txtObservacionesD.setText(dataTask.observaciones)
-                txtObservacionesD.isVisible = true
-            } else {
-                txtObservacionesD.isVisible = false
-                dataTask.observaciones = ""
-            }
+            activaElementosDisponibles(dataTask, txtObservacionesD, btnPdf, btnEstado, progressBar)
 
             this.dialog?.closeOptionsMenu()
-            //Toast.makeText(context, dataTask.archivo, Toast.LENGTH_SHORT).show()
-            if (!dataTask.archivo.isNullOrEmpty()) {
-                btnPdf.isVisible = true
-                btnPdf.setOnClickListener {
-                    Log.d("Mensaje", dataTask.idTarea)
-                    var mDownloadProvider = DownloadProvider()
-                    mDownloadProvider.dowloadFile(
-                        (activity as HomeActivity).applicationContext,
-                        dataTask.archivo, "archivo"
-                    )
-                }
-            } else {
-                btnPdf.isVisible = false
-            }
 
             btnEstado.setOnClickListener {
-                /*     if (dataTask.estatus.equals("pendiente")) {
-                         dataTask.estatus = "iniciada"
-                     } else if (dataTask.estatus.equals("iniciada")) {
-                         dataTask.estatus = "revision"
-                     }*/
-                if (dataTask.estatus.equals("revision")) {
-                    btnEstado.isEnabled = false
-                }
-
                 val newFragment = DialogoActualizarEstatus(dataTask, listener)
                 newFragment.show(
                     (activity as HomeActivity).supportFragmentManager,
@@ -191,5 +108,85 @@ class DialogoNivelBajo(
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
 
+    }
+
+    private fun activaElementosDisponibles(
+        dataTask: DataTask,
+        txtObservacionesD: TextView,
+        btnPdf: ImageView,
+        btnEstado: Button,
+        progressBar: ProgressBar
+    ) {
+
+        if (dataTask.estatus.equals("revision")) {
+            btnEstado.isEnabled = false
+        }
+
+        if (dataTask.observaciones != null) {
+            txtObservacionesD.setText(dataTask.observaciones)
+            txtObservacionesD.isVisible = true
+        } else {
+            txtObservacionesD.isVisible = false
+            dataTask.observaciones = ""
+        }
+
+        if (!dataTask.archivo.isNullOrEmpty()) {
+            Toast.makeText(context, dataTask.archivo, Toast.LENGTH_SHORT).show()
+            btnPdf.isVisible = true
+            btnPdf.setOnClickListener {
+                // Log.d("Mensaje", dataTask.idTarea)
+                progressBar.isVisible = true
+                var mDownloadProvider = DownloadProvider()
+                mDownloadProvider.dowloadFile(
+                    (activity as HomeActivity).applicationContext,
+                    dataTask.archivo, "archivo"
+                )
+                progressBar.isVisible = false
+
+            }
+        } else {
+            btnPdf.isVisible = false
+        }
+    }
+
+    private fun convierteFechas(time: Date, fecha: Int) {
+        var anio = cal[Calendar.YEAR] + 1
+        var mes = cal[Calendar.MONTH] + 1
+        var dia = cal[Calendar.DATE] + 1
+        if (mes < 10) {
+            txtMes = "0$mes"
+        } else {
+            txtMes = mes.toString()
+        }
+        if (dia < 10) {
+            txtDia = "0$dia"
+        } else {
+            txtDia = dia.toString()
+        }
+
+        if (fecha == 1) {
+            fechaIn =
+                cal[Calendar.YEAR].toString() + "-" + txtMes + "-" + txtDia
+        } else if (fecha == 2) {
+            fechaFi =
+                cal[Calendar.YEAR].toString() + "-" + txtMes + "-" + txtDia
+        }
+    }
+
+    private fun sigEstatus(btnEstado: Button) {
+        if (dataTask.estatus.equals("pendiente")) {
+            btnEstado.setText("Cambiar a Iniciada")
+        } else if (dataTask.estatus.equals("iniciada")) {
+            btnEstado.setText("Cambiar a Revision")
+        } else if (dataTask.estatus.equals("revision")) {
+            btnEstado.setText("En revision")
+            btnEstado.isEnabled = false
+        } else if (dataTask.estatus.equals("terminada")) {
+            btnEstado.setText("Tarea Terminada")
+            btnEstado.isEnabled = false
+        } else if (dataTask.estatus.equals("cancelado")) {
+            btnEstado.setText("Tarea Cancelada")
+            btnEstado.isEnabled = false
+        }
     }
 }
