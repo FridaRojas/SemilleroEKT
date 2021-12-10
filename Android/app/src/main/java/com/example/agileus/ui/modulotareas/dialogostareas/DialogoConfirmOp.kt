@@ -15,7 +15,7 @@ import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.utils.Constantes
 
-class DialogoConfirmOp(var tarea: Tasks, var idRecep:String, val listener: DialogoConfirmOpStatusListener ) : DialogFragment(), DialogoConfirmOpStatusListener{
+class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String, val listener: DialogoConfirmOpStatusListener ) : DialogFragment(), DialogoConfirmOpStatusListener{
 
     lateinit var conversationviewModel  : ConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
@@ -44,10 +44,10 @@ class DialogoConfirmOp(var tarea: Tasks, var idRecep:String, val listener: Dialo
 
     override fun onOpSuccessful() {
         // Enviar tarea al chat del receptor
-        val mensajeTareas = Message(
-            Constantes.id,idRecep,"",
-            "Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",Constantes.finalDate)
-        conversationviewModel.mandarMensaje("618d9c26beec342d91d747d6",Constantes.idChat,mensajeTareas)
+        val mensajeTareas = Message(idEmisor,idRecep,"",
+            "Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",
+            Constantes.finalDate)
+        conversationviewModel.mandarMensaje(idEmisor,idRecep,mensajeTareas)
         Log.d("mensaje Tareas","$mensajeTareas")
         listener.onOpSuccessful()
     }

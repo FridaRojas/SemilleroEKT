@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.agileus.R
 import androidx.navigation.fragment.findNavController
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
@@ -54,7 +55,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
     lateinit var idPersonaAsignada          : String
 
     var listaN = ArrayList<String>()
-    var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"   // Recuperar de shared inicio sesion
+    var idsuperiorInmediato : String = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+    var nombreSesion        : String = InitialApplication.preferenciasGlobal.recuperarNombreSesion()
+    var grupoSesion         : String = InitialApplication.preferenciasGlobal.recuperarIdGrupoSesion()
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
     var urlPost             : String = ""
@@ -209,9 +212,9 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
 
         tarea = Tasks(
             // TODO: 08/12/2021  agregar id_grupo y nombreEmisor desde sharedpreferences id_grupo
-            "619696aa2ae47f99bde6e1e7",                  // id_grupo
+            grupoSesion,                  // id_grupo
             idsuperiorInmediato,
-            "Armando Manzanero",
+            nombreSesion,
             idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
@@ -223,7 +226,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
             urlPost                             // Url de archivo pdf subido a firebase
         )
 
-        val newFragment = DialogoConfirmOp (tarea,idPersonaAsignada, this)
+        val newFragment = DialogoConfirmOp (tarea, idsuperiorInmediato, idPersonaAsignada, this)
         newFragment.show(parentFragmentManager, "Confirmacion")
 
     }
