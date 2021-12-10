@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
-import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.login.data.model.Users
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
@@ -72,8 +71,6 @@ class InicioSesionFragment : Fragment() {
     private fun validate() {
 
         var result = arrayOf(validateEmail(), validatePassword())
-       // Log.d("Login", correoLogin)
-       // Log.d("Login", passwordLogin)
         if (false in result) {
             return
         }
@@ -94,27 +91,11 @@ class InicioSesionFragment : Fragment() {
 
         if (!status) {
             if (trigger == 0) {
-                Toast.makeText(activity, "Presiona de nuevo para confirmar", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(activity, "Presiona de nuevo para confirmar", Toast.LENGTH_SHORT).show()
             }
             if (trigger > 1 && !status) {
                 Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
-
-                /*
-                if(trigger >3 )
-                    {
-                        Toast.makeText(activity, "Demasiado Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
-
-                        Handler().postDelayed({
-                            activity?.finish()
-                        }, 3000)
-
-
-                }
-
-            }
             trigger++
-*/
             }
         }
     }
