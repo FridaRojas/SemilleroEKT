@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.ListaDatosAdapter
 import com.example.agileus.models.Estadisticas
 import com.example.agileus.models.UserMessageDetailReport
-import com.example.agileus.models.UserMessageDetailReports
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.webservices.dao.ReporteMensajesDao
 import kotlinx.coroutines.Dispatchers
@@ -28,10 +27,9 @@ class ReporteMensajesViewModel: ViewModel() {
     var cargaOperacionesEstadisticas = MutableLiveData<Boolean>()
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
-    lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReports>
-    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReports>>()
-
     lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReport>
+    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReport>>()
+
 
     init {
         lista = ReporteMensajesDao()
@@ -71,7 +69,6 @@ class ReporteMensajesViewModel: ViewModel() {
         }
     }
 
-    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReport>>()
 
     //funcion que devuelve una lista de empleados
     @RequiresApi(Build.VERSION_CODES.O)

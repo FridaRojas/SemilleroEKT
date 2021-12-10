@@ -178,7 +178,7 @@
 
             <ImageView
                 android:id="@+id/colorlegend3"
-                android:layout_width="15dp"
+                android:layout_width="12dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:background="@color/white" />
@@ -220,7 +220,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorSecondary"
                 />
             <TextView
                 android:id="@+id/txtSegundoLegend"
