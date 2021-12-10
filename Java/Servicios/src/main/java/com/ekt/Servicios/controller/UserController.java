@@ -361,19 +361,19 @@ public class UserController {
      * @return data=ArrayList<User> en caso de exito
      */
     @GetMapping("/busquedaUsuario/{parametro}")
-    public Response busquedaUsuario(@PathVariable String parametro) {
+    public ResponseEntity<?> busquedaUsuario(@PathVariable String parametro) {
         try {
             if (parametro==null){
-                return new Response(HttpStatus.NOT_ACCEPTABLE,"",null);
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"",null));
             }else{
                 if (userService.busquedaUsuario(parametro).isPresent()){
-                    return new Response(HttpStatus.OK, "Usuario(s) encontrado(s)",userService.busquedaUsuario(parametro).get());
+                    return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "Usuario(s) encontrado(s)",userService.busquedaUsuario(parametro).get()));
                 }else{
-                    return new Response(HttpStatus.OK, "Usuario(s) no encontrado(s)",userService.busquedaUsuario(parametro).get());
+                    return ResponseEntity.status(HttpStatus.OK).body( new Response(HttpStatus.OK, "Usuario(s) no encontrado(s)",userService.busquedaUsuario(parametro).get()));
                 }
             }
         }catch (Exception e){
-            return new Response(HttpStatus.NOT_FOUND,"",null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"",null));
         }
     }
 

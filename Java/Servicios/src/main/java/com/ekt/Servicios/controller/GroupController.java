@@ -187,7 +187,7 @@ public class GroupController {
      * @return data=Group en caso de exito
      */
     @GetMapping("/buscarUsuarioEnGrupo")
-    public Response buscarUsuarioEnGrupo(@RequestBody String json) {
+    public ResponseEntity<?> buscarUsuarioEnGrupo(@RequestBody String json) {
         try {
             String idGroup = "", idUser = "";
             JSONObject jsn = new JSONObject(json);
@@ -206,22 +206,22 @@ public class GroupController {
                     if (optGroup.isPresent()) {
                         Group group = optGroup.get();
                         if (group == null) {
-                            return new Response(HttpStatus.BAD_REQUEST, "el usuario no pertenece al grupo", group);
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "el usuario no pertenece al grupo", group));
                         }
 
-                        return new Response(HttpStatus.OK, "usuario encontrado dentro del grupo", group);
+                        return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "usuario encontrado dentro del grupo", group));
                     } else {
-                        return new Response(HttpStatus.BAD_REQUEST, "No se encontro el usuario dentro del grupo", null);
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( new Response(HttpStatus.BAD_REQUEST, "No se encontro el usuario dentro del grupo", null));
                     }
                 } else {
-                    return new Response(HttpStatus.BAD_REQUEST, "El usuario no existe", null);
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( new Response(HttpStatus.BAD_REQUEST, "El usuario no existe", null));
                 }
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "El grupo no existe", null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "El grupo no existe", null));
             }
 
         } catch (Exception e) {
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "Error en la consulta", e));
         }
     }
 
@@ -231,15 +231,15 @@ public class GroupController {
      * @return data=Group en caso de exito
      */
     @GetMapping("/buscarPorNombre/{nombre}")
-    public Response buscarPorNombre(@PathVariable String nombre) {
+    public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         try {
             if (groupService.buscarPorNombre(nombre).isPresent()) {
-                return new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorNombre(nombre).get());
+                return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorNombre(nombre).get()));
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "Nombre no encontrado", null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Nombre no encontrado", null));
             }
         } catch (Exception e) {
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND, "Error en la consulta", null));
         }
     }
 
@@ -289,27 +289,27 @@ public class GroupController {
      */
     @CrossOrigin(origins = {"*"})
     @GetMapping("/buscarTodoPags")
-    public Response buscarTodoPageable(@RequestBody String json) {
+    public ResponseEntity<?> buscarTodoPageable(@RequestBody String json) {
         try {
             int pagina = -1, tamaño = -1;
             JSONObject jsn = new JSONObject(json);
 
             if (jsn.get("pagina") == null || jsn.get("tamaño") == null) {
-                return new Response(HttpStatus.NOT_ACCEPTABLE, "Faltan datos", null);
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body( new Response(HttpStatus.NOT_ACCEPTABLE, "Faltan datos", null));
             }
 
             pagina = (int) jsn.get("pagina");
             tamaño = (int) jsn.get("tamaño");
 
             if (pagina < 0 || tamaño < 1) {
-                return new Response(HttpStatus.BAD_REQUEST, "Datos incorrectos", null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Datos incorrectos", null));
             }
 
             Iterable<Group> grupos = groupService.buscarTodo(PageRequest.of(pagina, tamaño));
-            return new Response(HttpStatus.OK, "Grupos existentes", grupos);
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "Grupos existentes", grupos));
 
         } catch (Exception e) {
-            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e));
         }
     }
 
