@@ -10,6 +10,7 @@ target 'AgileUs' do
     pod 'InputBarAccessoryView', '5.1.0'
     pod 'Firebase/Analytics'
     pod 'Firebase/Storage'
+    pod 'Charts'
 
 
   target 'AgileUsTests' do
