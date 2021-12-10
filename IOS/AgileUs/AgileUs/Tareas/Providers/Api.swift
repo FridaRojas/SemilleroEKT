@@ -13,17 +13,17 @@ final class Api {
     
     static let shared = Api()
     
-    let url = "http://10.97.3.24:3040/api/tareas"
-    let token = "5ae7d87c088ea2187b0531d7172616f3147d7736a7a125dac893d8de2bc5068a";
+    let url = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
+    let token = "cb4726124497b16bdaaa8d2bfbce5aba0782fa7d59d4fe873dabc55062743091";
 //    let url_personas = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/618b05c12d3d1d235de0ade0"
 //    let url = "http://10.97.3.24:3040/Servicios-0.0.1-SNAPSHOT/api/tareas"
 //    let url_personas = "http://10.97.3.24:3040/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/618b05c12d3d1d235de0ade0"
-    let url_personas = "http://10.97.3.24:3040/api/user/findByBossId/618b05c12d3d1d235de0ade0"
+    let url_personas = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/61b0e5b31e484f08fcbf594b"
 
     let rangeStatusCode200 = 200...299
     let rangeStatusCode400 = 400...499
     let rangeStatusCode500 = 500...599
-    let idUser = "61a83bbad036090b8e8db3c2"
+    let idUser = "61b0e5b31e484f08fcbf594b"
     
     func createTask(task: Task, file: URL?, success: @escaping (_ task: TaskResponse) -> (), failure: @escaping (_ error: String) -> ()){
         
@@ -73,7 +73,7 @@ final class Api {
                         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                         
                         // Token Config
-                        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+                        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
                         let dataToJson = try! JSONEncoder().encode(newTask!)
                         
                         let taskSession = session.uploadTask(with: request, from: dataToJson) {
@@ -159,7 +159,7 @@ final class Api {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
             // Token Config
-            request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+            request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
 
             let dataToJson = try! JSONEncoder().encode(newTask!)
             
@@ -218,7 +218,7 @@ final class Api {
         var request = URLRequest(url: url)
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
 
         let task = session.dataTask(with: request) {
             (data, response, error) in
@@ -269,7 +269,7 @@ final class Api {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
 
         let dataToJson = try! JSONEncoder().encode(task)
         
@@ -328,7 +328,7 @@ final class Api {
         request.httpMethod = "DELETE"
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             
@@ -374,7 +374,7 @@ final class Api {
         var request = URLRequest(url: url)
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
 
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -422,12 +422,12 @@ final class Api {
     func LoadTareaModal(idTarea: String, success: @escaping (_ tarea: Task) -> (), failure: @escaping (_ error: String) -> ()){
        
         let session = URLSession.shared
-        let url = URL(string: "\(url)/obtenerTareaPorId/\(idTarea)")!
+        let url = URL(string: "\(url)/obtenerTareaPorId/\(idTarea)/\(idUser)")!
         var request = URLRequest(url: url)
      
         request.httpMethod = "GET"
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             var tarea: TaskResponse
@@ -470,7 +470,7 @@ final class Api {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             var persona:FindPersons
@@ -512,7 +512,7 @@ final class Api {
         
         request.httpMethod = "PUT"
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse,
@@ -559,7 +559,7 @@ final class Api {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
 
         let dataToJson = try! JSONEncoder().encode(messageS)
         
@@ -619,7 +619,7 @@ final class Api {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
         var arreglo: Dictionary<String,String>
         if ban {
              arreglo = ["fecha_iniR":"\(dateFormatter.string(from: date))"]

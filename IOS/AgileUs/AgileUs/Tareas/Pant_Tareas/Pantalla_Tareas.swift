@@ -17,7 +17,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var dataSource = [String]()
     
     
-    let servico = "http://10.97.3.24:3040/api/tareas/"
+    let servico = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
     
 //    let servico = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
     @IBOutlet weak var Lista_tareas: UITableView!
@@ -28,13 +28,13 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var tarea = [Any]()
     var arrTareas = [Datos]()
     var selestatus: Status?
-    let idUser = "61a83bbad036090b8e8db3c2"
+    let idUser = "61b0e5b31e484f08fcbf594b"
     var nivel = "intermedio"
     var select_estatus:String = ""
     var id_tarea:String = ""
     var url:String = ""
     let cellSpacingHeight: CGFloat = 5
-    let token = "5ae7d87c088ea2187b0531d7172616f3147d7736a7a125dac893d8de2bc5068a"
+    let token = "cb4726124497b16bdaaa8d2bfbce5aba0782fa7d59d4fe873dabc55062743091"
     //variable para mostrar el colection view
 
     
@@ -112,7 +112,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         var request = URLRequest(url: url!)
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "token_sesion")
+        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
         
         print(request)
         print(self.token)

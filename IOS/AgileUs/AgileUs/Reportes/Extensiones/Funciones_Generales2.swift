@@ -10,8 +10,8 @@ import UIKit
 extension UIViewController {
     
     /*
-     Función que toma el valor hexadecimal de color para obtener su valor en RGB
-     */
+     Función que toma el valor hexadecimal de color para obtener su valor en RGB*/
+    
     func Hexadecimal_Color(hex:String) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
@@ -599,7 +599,6 @@ extension UIViewController {
                         
                         if "\(i.estatus!.lowercased())" == "iniciada"{
                             iniciada += 1
-                            
                         }
                         
                         if "\(i.estatus!.lowercased())" == "revision"{
