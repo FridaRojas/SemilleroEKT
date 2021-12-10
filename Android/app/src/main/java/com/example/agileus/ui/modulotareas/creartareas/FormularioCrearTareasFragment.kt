@@ -217,7 +217,6 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
         tituloTarea = binding.edtAgregaTitulo.text.toString()
 
         tarea = Tasks(
-            // TODO: 08/12/2021  agregar id_grupo y nombreEmisor desde sharedpreferences id_grupo
             grupoSesion,                  // id_grupo
             idsuperiorInmediato,
             nombreSesion,
