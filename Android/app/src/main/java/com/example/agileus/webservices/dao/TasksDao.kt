@@ -4,43 +4,26 @@ import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
 import com.example.agileus.ui.modulotareas.detalletareas.DetalleNivelAltoFragmentArgs
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
 class TasksDao {
+
     //Agregar nueva tarea
-    fun postTasks(t: Tasks) {
+    fun postTasks(t: Tasks, opStatus: DialogoConfirmOpStatusListener){
+        lateinit var nuevaTarea: Tasks
         val callInserta = InitialApplication.webServiceGlobalTasks.insertarTarea(t)
-
-        /*val Response = callInserta?.execute()
-        try {
-            if (Response != null) {
-                if (Response.isSuccessful) {
-                    val nuevaTarea: Tasks = Response.body()!!
-                    var mensaje =
-                        "Tarea creada por el emisor:${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
-                    mensaje += ", Titulo:${nuevaTarea.titulo}"
-                    mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
-                    mensaje += ", Numero de empleado:${nuevaTarea.idReceptor}"
-                    mensaje += ", Descripcion:${nuevaTarea.descripcion}"
-                    mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
-                    mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
-                    Log.d("Mensaje", mensaje)
-                } else {
-                    Log.d("Mensaje", "No se creo la tarea ${Response.code()}")
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("error", e.toString())
-        }*/
-
         callInserta.enqueue(object : Callback<Tasks> {
             override fun onResponse(call: Call<Tasks>, response: Response<Tasks>) {
 
                 if (response.isSuccessful) {
-                    val nuevaTarea: Tasks = response.body()!!
+
+                    opStatus.onOpSuccessful()       // Devuelme mensaje de status
+
+                    nuevaTarea = response.body()!!
                     var mensaje =
                         "Tarea creada por el emisor: ${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
                     mensaje += ", Titulo:${nuevaTarea.titulo}"
@@ -56,7 +39,9 @@ class TasksDao {
                 }
             }
 
-            override fun onFailure(call: Call<Tasks>, t: Throwable) {}
+            override fun onFailure(call: Call<Tasks>, t: Throwable) {
+                opStatus.onOpFailure()
+            }
         })
     }
 
