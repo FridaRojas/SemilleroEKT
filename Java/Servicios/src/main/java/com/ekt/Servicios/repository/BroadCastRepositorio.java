@@ -17,4 +17,6 @@ import java.util.Optional;
 public interface BroadCastRepositorio extends MongoRepository<BroadCast, String> {
     @Query(value= "{'idGrupo': ?0}")
     Iterable<BroadCast> buscarMensajesEnGrupo (String idGrupo);
+    @Query(value= "{'idEmisor': ?0}")
+    Iterable<BroadCast> buscarMensajesId(String idEmisor);
 }

@@ -1,6 +1,5 @@
 package com.ekt.Servicios.controller;
 
-import java.io.IOException;
 import java.util.*;
 
 import com.ekt.Servicios.entity.*;
@@ -9,14 +8,10 @@ import com.ekt.Servicios.repository.MensajesRepository;
 import com.ekt.Servicios.service.MensajesServiceImpl;
 import com.mongodb.MongoException;
 import com.mongodb.MongoSocketException;
-import com.mongodb.MongoSocketOpenException;
+
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -287,30 +282,41 @@ public class MensajesController {
 		}
 	}
 
+	/**
+	 *	Peticion tipo GET para listar una conversacion
+	 * @param tokenAuth variable que se recibe por header para evaluar la secion de un usuario
+	 * @param miID variable que recibimos por url para saber que usuario ara la peticion
+	 * @param idConversacion parametro que recibimos por url para listar todos los mensajes que pertenecen a esa conversacion
+	 * @return cuerpo de respuesta(ResponseMensajes)
+	 */
 	@GetMapping("/verConversacion/{miID}/{idConversacion}")
 	public ResponseEntity<?> verConversacion(@RequestHeader (value = "tokenAuth") String tokenAuth,
 											 @PathVariable(value = "miID") String miID,
 											 @PathVariable(value = "idConversacion") String idConversacion) {
 		try {
+			//validacion donde se evalua que el idConversacion no sea menor a 49 caracteres
 			if (idConversacion.length() < 49) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El id de la convbersacion no contiene los caracteres neesarios", null));
 			}
+			//valida si existe el usuario en la base de datos
 			Optional<User> user = userRepository.validarUsuario(miID);
-
+			//validacion donde se sabe si el usuario existe en algun grupo
 			if(user.get().getIDGrupo().equals("")){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
-
+			//validacion donde se evalua el token que se genera al logueo
 			if (user.get().getTokenAuth().equals(tokenAuth)) {
-
+				//si el token coincide hace una consulta en la base de datos para encontrar todos los mensajes que tengan el mismo iidConversacion
 				Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+				//cuerpo de respuesta (ResponseMensajes), se compone de un HttpStatus, mensaje ,lista de mensajes.
 				return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()), "Lista de mensajes de conversacion: " + idConversacion, iter.iterator()));
 
 			}
-
+			//en caso de que no conincida el token se regresa un cuerpo de respuesta negativo
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Token invalido", null));
-
-		} catch (MongoSocketOpenException e) {
+			//Manejo de excepciones desde el mas particular hasta el mas general:
+			//Se devuelve cuerpo de respuesta con codigo de status, un mensaje de la causa y un objeto
+		} catch (MongoSocketException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
@@ -321,8 +327,6 @@ public class MensajesController {
 					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		}
 	}
-
-
 
 	@PutMapping("eliminarMensaje/{idMensaje}/{idUsuario}") //&{idUsuario}
 	public ResponseEntity<?> borrarMensaje(@RequestHeader("tokenAuth")String tokenAuth, @PathVariable(value = "idMensaje") String idMensaje, @PathVariable(value = "idUsuario") String idUsuario) {
@@ -577,40 +581,59 @@ public class MensajesController {
 			}
 		}
 	}
-	
+
+	/**
+	 * 	Peticion tipo PUT para actualizar el campo de una conversacion a falso ya que los mensajes no se pueden enlimar solo ocultar
+	 * @param tokenAuth variable que se recibe por header para evaluar la secion de un usuario
+	 * @param miID variable que recibimos por url para saber que usuario ara la peticion
+	 * @param idConversacion variable que recibimos por url para saber que conversacion se va actualizar
+	 * @return cuerpo de respuesta(ResponseMensajes)
+	 */
 	@PutMapping("/eliminarConversacion/{miID}/{idConversacion}")
 	public ResponseEntity<?> cambiarStatusConversacion(@RequestHeader(value = "tokenAuth")String tokenAuth,
 													   @PathVariable (value  ="miID") String miID,
 													   @PathVariable(value = "idConversacion") String idConversacion) {
 		try{
+			//validamos que el idConversacion no sea menor a 49
 			if(idConversacion.length()<49) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "El id de la conversacion no contiene los caracteres neesarios", null));
 			}
+			//validamos que el usuario exista en la base de datos
 			Optional<User> user= userRepository.validarUsuario(miID);
+			//validamos que el usuario pertenesca a un grupo
 			if(user.get().getIDGrupo().equals("")){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
+			//validamos el token recibido por header coicida con el del usuario en la base de datos
 			if(!user.get().getTokenAuth().equals(tokenAuth)){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Token invalido", null));
 			}
-
+			//Iniciamos un contenedor para listar todos los mensajes que pertenecen a la conversacion
 			List<Mensajes> list = new ArrayList<>();
-
+			//hacemos una consulta a la base de datos 
 			Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
+			//itera ttoda la lista y la agrega al contenedor list
 			iter.forEach(list::add);
+			//valida que el contenido sea difernete a 0
 			if(list.size()<1) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "No existe la conversacion",null));
 			}
+			//valida si la conversacion ya fue eliminada
 			if(!list.get(0).isConversacionVisible()) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()), "La conversacion ya se elimino anteriormente",null));
 			}
+			//si la conversacion no ha sido eliminada itera todos los mensajes
 			for (Mensajes msg : iter) {
+				//valores asignado automaticamente a los mensajes que pertenecen a esa conversacion
 				msg.setConversacionVisible(false);
+				//guarda el mensaje de cada iteracion
 				mensajesService.save(msg);
 			}
+			//cuerpo de respuesta
 			return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMensajes(String.valueOf(HttpStatus.CREATED.value()), "Se elimino la conversacion","Numero de Mensajes eliminados: "+list.size()));
-
-		}catch (MongoSocketOpenException e) {
+			//Manejo de excepciones desde el mas particular hasta el mas general:
+			//Se devuelve cuerpo de respuesta con codigo de status, un mensaje de la causa y un objeto
+		}catch (MongoSocketException e) {
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
 					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
@@ -856,72 +879,95 @@ public class MensajesController {
 		return grupos;
 	}
 
-
+	/**
+	 * 	Peticion GET que trae todas las conversaciones a las que participa un usuario
+	 * @param tokenAuth variable que se recibe por header para evaluar la secion de un usuario
+	 * @param idEmisor variable que recibimos por url para saber que usuario ara la peticion
+	 * @return cuerpo de respuesta
+	 */
 	@GetMapping("/listarConversaciones/{idEmisor}")
 	public ResponseEntity<?> listarConversaciones(@RequestHeader(value = "tokenAuth")String tokenAuth,
 												  @PathVariable(value ="idEmisor")String idEmisor){
 		try{
+			//validacion donde el idEmisor no puede ser mayor o menor a 24
 			if(idEmisor.length()<24 || idEmisor.length()>24){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"El id del usuario no tiene los caracteres necesarios",null));
 			}
+			//busca al usuario en la base de datos
 			Optional<User> user = userRepository.validarUsuario(idEmisor);
+			//evalua si existe este usuario
 			if (!user.isPresent()){
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"No se encuentra este usuario",null));
 			}
+			//evalua si el usuario pertenece a un grupo
 			if(user.get().getIDGrupo().equals("")){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
+			//evlaua que el token entrante sea igual al que esta en la base de datos
 			if(!user.get().getTokenAuth().equals(tokenAuth)){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Token invalido",null));
 			}
-
+			//Esta seccion sirve para traer todos los id conversacion distintos sin repetise
 			MongoCollection mongoCollection = monogoTemplate.getCollection("Mensajes");
 			DistinctIterable distinctIterable = mongoCollection.distinct("idConversacion", String.class);
 			MongoCursor mongoCursor = distinctIterable.iterator();
-
+			//se crea un contenedor donde se almacenaran las difernetes conversaciones
 			List<Conversacion> lConversacion3 = new ArrayList<>();
-			if(user.get().getTokenAuth().equals(tokenAuth)){
+			//iteracion de las diferentes conversaciones encontrada
 				while (mongoCursor.hasNext()) {
-
+					//instanciamos el cuerpo de respuesta de conversacion
 					Conversacion mConv = new Conversacion();
+					//se convierte en string el id de conversacion consultada
 					String idConversacion = (String) mongoCursor.next();
+					//se le asigna un valor al atributo idConversacion en cada iteracion
 					mConv.setIdConversacion(idConversacion);
+					//se busca en todos los mensajes de una conversacion para saber elemisor y receptor de la conversacion
 					Iterable<Mensajes> iter = mensajesService.verConversacion(idConversacion);
-
+					//iteramos la lista consultada anteriormente
 					Iterator<Mensajes> cursor = iter.iterator();
+					//iteramos cada mensaje de la lista cursor
 					while (cursor.hasNext()) {
-
+						//si encuentra algo en la iteracion se guarda como mensaje
 						Mensajes mensajes = cursor.next();
+						//comparo en el mensaje si el emisor es diferente al receptor
 						if ( !mensajes.getIDReceptor().equals(idEmisor)  ) {
-
+							//se agregan los valores por defecto al cuerpo de conversacion
 							mConv.setIdReceptor(mensajes.getIDReceptor());
 							mConv.setNombreConversacionRecepto(mensajes.getNombreConversacionReceptor());
 							mConv.setIdConversacion(mensajes.getIDConversacion());
 							mConv.setIdEmisor(mensajes.getIDEmisor());
-
+						//comparacion si el emisor es igual receptor
 						}else if(mensajes.getIDReceptor().equals(idEmisor)) {
+							//busco al usuario emisor entrante en la base de datos
 							Optional<User> user3 = userRepository.validarUsuario(mensajes.getIDEmisor());
-							System.out.println();
+							//se agregan valores al cuerpo de conversacion
 							mConv.setIdReceptor(mensajes.getIDEmisor());
 							mConv.setNombreConversacionRecepto(user3.get().getNombre());
 							mConv.setIdConversacion(mensajes.getIDConversacion());
 							mConv.setIdEmisor(mensajes.getIDEmisor());
 						}
 					}
+					//evaluo si la conversacion contiene al idEmisor
 					if( mConv.getIdConversacion().contains(idEmisor)){
+						//evaluo si la conversacion es menor a 50
 						if(mConv.getIdConversacion().length()<50){
+							//evaluo que el receptor no sea nulo
 							if(mConv.getIdReceptor() !=null ) {
+								//busco  el usuario en la base de datos para agregar su roll
 								Optional<User> user2 = userRepository.validarUsuario(mConv.getIdReceptor());
 
 								mConv.setNombreRol(user2.get().getNombreRol());
 							}
+							//agregamos el cuerpo de conversacion a el contenedor declarado anteriormente
 							lConversacion3.add(mConv);
 						}
 					}
 				}
-			}
+			//respuesta valida
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),"Lista de conversaciones",lConversacion3));
-		}catch (MongoSocketOpenException e) {
+		/*Manejo de excepciones desde el mas particular hasta el mas general:
+		  Se devuelve cuerpo de respuesta con codigo de status, un mensaje de la causa y un objeto*/
+		}catch (MongoSocketException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {
@@ -935,35 +981,57 @@ public class MensajesController {
 
 	}
 
+	/**
+	 *		Peticion GET que trae todos los mensajes que ha enviado o recivido un usuario(modulo de reportes)
+	 * @param tokenAuth variable que se recibe por header para evaluar la secion de un usuario
+	 * @param miID variable que recibimos por url para saber que usuario ara la peticion
+	 * @param idEmisor variable que se consultara en la base de datos
+	 * @return cuerpo de respuesta(ResponseMensajes)
+	 */
+
 	@GetMapping("listarMensajesRecividos/{miID}/{idEmisor}")
 	public ResponseEntity<?> listarMensajesRecividos(@RequestHeader(value = "tokenAuth")String tokenAuth,
 													 @PathVariable (value  ="miID") String miID,
 													 @PathVariable (value = "idEmisor")String idEmisor){
 		try{
+			//validacion de que el idUsuario a evaluar no sea mayor o menor a 24
 			if(idEmisor.length()<24 || idEmisor.length()>24) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tamaño del id invalido",null));
 			}
+			//valida si el usuario
 			Optional<User> user=userRepository.validarUsuario(idEmisor);
+			//valida si el usuario no esta en la base de datos
 			if(!user.isPresent()){
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMensajes(String.valueOf(HttpStatus.NOT_FOUND.value()),"no se encuetra el usuario",null));
 			}
+			//valida si el usuario que ara la peticion exite en la base de datos
 			Optional<User> user2= userRepository.validarUsuario(miID);
+			//valida si el usuario que ara la peticion si pertenece a un grupo
 			if(user2.get().getIDGrupo().equals("")){
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBroadcast(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Usuario invalido",null));
 			}
+			//validacion donde el token que recibimos en el header si es igual que el que esta en la base de datos
 			if(user2.get().getTokenAuth().equals(tokenAuth)) {
+			//consulta a la base de datos donde trae todos los mensajes
 				Iterable<Mensajes> msg = mensajesRepository.findAll();
+				//se crea un nuevo contenedor donde habra una lista de los mensajes consultados
 				List<Mensajes> lMensajes = new ArrayList<>();
-
+				//iteracion de los mensajes
 				for (Mensajes msg2 : msg) {
+					//condicion donde si el idConversacion contiene idEmisor
 					if (msg2.getIDConversacion().contains(idEmisor)) {
+						//si lo contiene se agrega al contenedor declarado anteriormente
 						lMensajes.add(msg2);
 					}
 				}
+				//cuerpo de respuesta valido
 				return ResponseEntity.status(HttpStatus.OK).body(new ResponseMensajes(String.valueOf(HttpStatus.OK.value()),"Lista de mensajes",lMensajes));
 			}
+			//cuerpo de respuesta invalido
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMensajes(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Token invalido",null));
-		}catch (MongoSocketOpenException e) {
+		/*Manejo de excepciones desde el mas particular hasta el mas general:
+		  Se devuelve cuerpo de respuesta con codigo de status, un mensaje de la causa y un objeto*/
+		}catch (MongoSocketException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ResponseMensajes(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), e.getMessage(), e.getCause()));
 		} catch (MongoException e) {

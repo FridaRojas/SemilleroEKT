@@ -15,4 +15,10 @@ public interface MensajesRepository extends MongoRepository<Mensajes, String> {
     
     @Query("{'_id' : ?0}")
     Optional<Mensajes> buscarMensaje (String idMensaje);
+
+    @Query("{'idEmisor': ?0 }")
+    Iterable<Mensajes> buscarMensajes(String idEmisor);
+
+    @Query("'idReceptor': ?0")
+    Iterable<Mensajes> buscarMensajes1(String idEmisor);
 }
