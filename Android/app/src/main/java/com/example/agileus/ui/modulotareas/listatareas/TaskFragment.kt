@@ -57,8 +57,8 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
         recuperarNivelUsuario()
         preferenciasGlobal.recuperarNivelUsuario()
-        Toast.makeText(activity, "$NIVEL_USER", Toast.LENGTH_SHORT).show()
-        
+        //Toast.makeText(activity, "$NIVEL_USER", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, preferenciasGlobal.recuperarNombreSesion(), Toast.LENGTH_SHORT).show()
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
@@ -75,7 +75,6 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelBajo(), this)
             taskViewModel.statusRecycler.value = "pendiente"
         }
-
 
 
         // var adaptadorStatus = StatusTasksAdapter(listStatus, this)

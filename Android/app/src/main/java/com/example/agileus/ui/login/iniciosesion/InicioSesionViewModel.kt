@@ -28,8 +28,6 @@ class InicioSesionViewModel : ViewModel() {
 
     }
 
-    val correo = preferenciasGlobal.recuperaNombre()
-    val password = preferenciasGlobal.recuperaPassword()
     //shared
     //private var userList = mutableListOf<Users>()
     //var usuariosShared = MutableLiveData<List<Users>>()
