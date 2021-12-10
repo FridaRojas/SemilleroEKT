@@ -17,7 +17,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var dataSource = [String]()
     
     
-    let servico = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
+    //let servico = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
     
 //    let servico = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
     @IBOutlet weak var Lista_tareas: UITableView!
@@ -28,13 +28,13 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     var tarea = [Any]()
     var arrTareas = [Datos]()
     var selestatus: Status?
-    let idUser = "61b0e5b31e484f08fcbf594b"
-    var nivel = "intermedio"
+    //let idUser = "61b0e5b31e484f08fcbf594b"
+    //var nivel = "intermedio"
     var select_estatus:String = ""
     var id_tarea:String = ""
     var url:String = ""
     let cellSpacingHeight: CGFloat = 5
-    let token = "cb4726124497b16bdaaa8d2bfbce5aba0782fa7d59d4fe873dabc55062743091"
+    //let token = "cb4726124497b16bdaaa8d2bfbce5aba0782fa7d59d4fe873dabc55062743091"
     //variable para mostrar el colection view
 
     
@@ -57,7 +57,6 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         ValidarNivelUser()
         //llamar a mi boton
         botonflotante.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
@@ -68,25 +67,26 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         Lista_tareas.register(List.nib(),forCellReuseIdentifier: List.identificador)
         
 
-        select_estatus = nivel == "alto" ? "Asignadas" : "pendiente"
+        select_estatus = hierarchyLevel == 1 ? "Asignadas" : "pendiente"
      // llamar al servico de filtros
         // llamada de menu
         menu_clasificador.dataSource = self
         menu_clasificador.delegate = self
         menu_clasificador.register(ItemMenu.nib(), forCellWithReuseIdentifier: ItemMenu.identificador)
         
-        titleTaksField.text = nivel != "alto" ? "Tareas Pendientes" : "Asignadas"
+        titleTaksField.text = hierarchyLevel != 1 ? "Tareas Pendientes" : "Asignadas"
     }
 
     override func viewWillAppear(_ animated: Bool) {
         //llama al servico
+        hideNavBar()
         if select_estatus == "Asignadas"
         {
-            url =  "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+            url =  "\(server)tareas/obtenerTareasQueAsignoPorId/\(userID)"
         }
         else
         {
-            url = nivel != "alto" ? "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)" : "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+            url = hierarchyLevel != 1 ? "\(server)tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/\(userID)/\(select_estatus)" : "\(server)tareas/obtenerTareasQueAsignoPorId/\(userID)"
             
         }
         consumir_servicio(url: url)
@@ -112,10 +112,10 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         var request = URLRequest(url: url!)
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         
         print(request)
-        print(self.token)
+        //print(self.token)
         self.MostrarSpinner(onView: self.view)
         
         URLSession.shared.dataTask(with: request){
@@ -264,31 +264,31 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
         switch select_estatus {
         case "Iniciadas":
             select_estatus = "iniciada"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
+            url = "\(server)tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/\(userID)/\(select_estatus)"
             titleTaksField.text = "Tareas Iniciadas"
 
             //print(estatus)
         case "Pendientes":
             select_estatus = "pendiente"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
+            url = "\(server)tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/\(userID)/\(select_estatus)"
             titleTaksField.text = "Tareas Pendientes"
 
             //print(estatus)
         case "Revisión":
             select_estatus = "revision"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
+            url = "\(server)tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/\(userID)/\(select_estatus)"
             titleTaksField.text = "Tareas En Revisión"
 
             //print(estatus)
         case "Terminadas":
             select_estatus = "terminada"
-            url = "\(servico)obtenerTareasQueLeAsignaronPorIdYEstatus/\(idUser)/\(select_estatus)"
+            url = "\(server)tareas/obtenerTareasQueLeAsignaronPorIdYEstatus/\(userID)/\(select_estatus)"
             titleTaksField.text = "Tareas Terminadas"
 
             //print(estatus)
         case "Asignadas":
             select_estatus = "Asignadas"
-            url = "\(servico)obtenerTareasQueAsignoPorId/\(idUser)"
+            url = "\(server)tareas/obtenerTareasQueAsignoPorId/\(userID)"
             titleTaksField.text = "Tareas Asignadas"
 
             
@@ -303,13 +303,13 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
             }
     func ValidarNivelUser()
     {
-        if nivel == "alto"
+        if hierarchyLevel == 1
         {
             dataSource.append("Asignadas")
             view.addSubview(botonflotante)
 
         }
-        else if nivel == "intermedio"
+        else if hierarchyLevel == 2
         {
             dataSource.append(contentsOf: ["Pendientes","Iniciadas","Revisión","Terminadas","Asignadas"])
             view.addSubview(botonflotante)

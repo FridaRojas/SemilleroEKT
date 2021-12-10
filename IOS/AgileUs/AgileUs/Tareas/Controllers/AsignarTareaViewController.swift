@@ -35,6 +35,7 @@ class AsignarTareaViewController: UIViewController, UITextViewDelegate, UIDocume
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        showNavBar()
         descriptionText.delegate = self
         navbarConfig()
         viewStyleConfig()

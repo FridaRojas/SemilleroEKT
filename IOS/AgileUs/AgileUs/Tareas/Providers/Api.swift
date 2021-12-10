@@ -13,17 +13,17 @@ final class Api {
     
     static let shared = Api()
     
-    let url = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
-    let token = "cb4726124497b16bdaaa8d2bfbce5aba0782fa7d59d4fe873dabc55062743091";
+    //let url = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/tareas/"
+    //let token = "cb4726124497b16bdaaa8d2bfbce5aba0782fa7d59d4fe873dabc55062743091";
 //    let url_personas = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/618b05c12d3d1d235de0ade0"
 //    let url = "http://10.97.3.24:3040/Servicios-0.0.1-SNAPSHOT/api/tareas"
 //    let url_personas = "http://10.97.3.24:3040/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/618b05c12d3d1d235de0ade0"
-    let url_personas = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/61b0e5b31e484f08fcbf594b"
+    //let url_personas = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/61b0e5b31e484f08fcbf594b"
 
     let rangeStatusCode200 = 200...299
     let rangeStatusCode400 = 400...499
     let rangeStatusCode500 = 500...599
-    let idUser = "61b0e5b31e484f08fcbf594b"
+   // let userID = "61b0e5b31e484f08fcbf594b"
     
     func createTask(task: Task, file: URL?, success: @escaping (_ task: TaskResponse) -> (), failure: @escaping (_ error: String) -> ()){
         
@@ -51,9 +51,9 @@ final class Api {
                        urlFile = "\(urlText)"
                         
                         newTask = Task(
-                                    id_grupo: "GRUPOID1",
-                                    id_emisor: "61a83bbad036090b8e8db3c2",
-                                    nombre_emisor: "Armando Manzanero",
+                                    id_grupo: idGrupo,
+                                    id_emisor: userID,
+                                    nombre_emisor: userName,
                                     id_receptor: task.id_receptor,
                                     nombre_receptor: task.nombre_receptor,
                                     fecha_ini: task.fecha_ini!,
@@ -65,7 +65,7 @@ final class Api {
                                     archivo: "\(urlText)")
                         
                         let session = URLSession.shared
-                        let urlB = URL(string: "\(self.url)/agregarTarea")!
+                        let urlB = URL(string: "\(server)tareas/agregarTarea")!
                         var request = URLRequest(url: urlB)
                         
                         
@@ -73,7 +73,7 @@ final class Api {
                         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                         
                         // Token Config
-                        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+                        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
                         let dataToJson = try! JSONEncoder().encode(newTask!)
                         
                         let taskSession = session.uploadTask(with: request, from: dataToJson) {
@@ -139,9 +139,9 @@ final class Api {
         
         } else {
             newTask = Task(
-                        id_grupo: "GRUPOID1",
-                        id_emisor: "61a83bbad036090b8e8db3c2",
-                        nombre_emisor: "Armando Manzanero",
+                        id_grupo: idGrupo,
+                        id_emisor: userID,
+                        nombre_emisor: userName,
                         id_receptor: task.id_receptor,
                         nombre_receptor: task.nombre_receptor,
                         fecha_ini: task.fecha_ini!,
@@ -152,14 +152,14 @@ final class Api {
                         estatus: "pendiente")
             
             let session = URLSession.shared
-            let url = URL(string: "\(url)/agregarTarea")!
+            let url = URL(string: "\(server)tareas/agregarTarea")!
             var request = URLRequest(url: url)
             
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
             // Token Config
-            request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+            request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
 
             let dataToJson = try! JSONEncoder().encode(newTask!)
             
@@ -214,11 +214,11 @@ final class Api {
     func editTask(id: String, success: @escaping (_ task: Task) -> (), failure: @escaping (_ error: String) -> ()) {
         
         let session = URLSession.shared
-        let url = URL(string: "\(url)/obtenerTareaPorId/\(id)/\(idUser)")!
+        let url = URL(string: "\(server)tareas/obtenerTareaPorId/\(id)/\(userID)")!
         var request = URLRequest(url: url)
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
 
         let task = session.dataTask(with: request) {
             (data, response, error) in
@@ -262,14 +262,14 @@ final class Api {
     func updateTask(id: String, task: Task, success: @escaping (_ task: String) -> (), failure: @escaping (_ error: String) -> ()) {
         
         let session = URLSession.shared
-        let url = URL(string: "\(url)/actualizarTarea/\(id)/\(idUser)")!
+        let url = URL(string: "\(server)tareas/actualizarTarea/\(id)/\(userID)")!
         var request = URLRequest(url: url)
         
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
 
         let dataToJson = try! JSONEncoder().encode(task)
         
@@ -322,13 +322,13 @@ final class Api {
     func cancelTask(id: String, success: @escaping (_ message: String) -> (), failure: @escaping (_ error: String) -> ()) {
         
         let session = URLSession.shared
-        let url = URL(string: "\(url)/cancelarTarea/\(id)/\(idUser)")!
+        let url = URL(string: "\(server)tareas/cancelarTarea/\(id)/\(userID)")!
         var request = URLRequest(url: url)
         
         request.httpMethod = "DELETE"
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             
@@ -370,11 +370,11 @@ final class Api {
     func changeStatus(id: String, status: String, success: @escaping (_ message: String) -> (), failure: @escaping (_ error: String) -> ()) {
         
         let session = URLSession.shared
-        let url = URL(string: "\(url)/actulizarEstatus/\(id)/\(status)")!
+        let url = URL(string: "\(server)tareas/actulizarEstatus/\(id)/\(status)")!
         var request = URLRequest(url: url)
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
 
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -422,12 +422,12 @@ final class Api {
     func LoadTareaModal(idTarea: String, success: @escaping (_ tarea: Task) -> (), failure: @escaping (_ error: String) -> ()){
        
         let session = URLSession.shared
-        let url = URL(string: "\(url)/obtenerTareaPorId/\(idTarea)/\(idUser)")!
+        let url = URL(string: "\(server)tareas/obtenerTareaPorId/\(idTarea)/\(userID)")!
         var request = URLRequest(url: url)
      
         request.httpMethod = "GET"
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             var tarea: TaskResponse
@@ -466,11 +466,11 @@ final class Api {
        
         
         let session = URLSession.shared
-        let url = URL(string: url_personas)!
+        let url = URL(string: "\(server)user/findByBossId/\(userID)")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             var persona:FindPersons
@@ -507,12 +507,12 @@ final class Api {
        
         
         let session = URLSession.shared
-        let url = URL(string: "\(url)/actulizarEstatus/\(idTarea)/\(estatus)")!
+        let url = URL(string: "\(server)tareas/actulizarEstatus/\(idTarea)/\(estatus)")!
         var request = URLRequest(url: url)
         
         request.httpMethod = "PUT"
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         let task = session.dataTask(with: request) {
             (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse,
@@ -544,7 +544,7 @@ final class Api {
     func sendMessage(message: String, title: String, person: String) {
         
         let session = URLSession.shared
-        let url = URL(string: "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/mensajes/crearMensaje")!
+        let url = URL(string: "\(server)mensajes/crearMensaje")!
         var request = URLRequest(url: url)
         
         let date = Date()
@@ -559,7 +559,7 @@ final class Api {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
 
         let dataToJson = try! JSONEncoder().encode(messageS)
         
@@ -612,14 +612,14 @@ final class Api {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
         let session = URLSession.shared
-        let url = ban != false ? URL(string: "\(url)/actualizarTareaFechaRealIni/\(idTask)")! : URL(string: "\(url)/actualizarTareaFechaRealFin/\(idTask)")!
+        let url = ban != false ? URL(string: "\(server)tareas/actualizarTareaFechaRealIni/\(idTask)")! : URL(string: "\(server)tareas/actualizarTareaFechaRealFin/\(idTask)")!
         var request = URLRequest(url: url)
 
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Token Config
-        request.setValue("\(self.token)", forHTTPHeaderField: "tokenAuth")
+        request.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
         var arreglo: Dictionary<String,String>
         if ban {
              arreglo = ["fecha_iniR":"\(dateFormatter.string(from: date))"]

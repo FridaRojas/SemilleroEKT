@@ -37,6 +37,7 @@ class EditarTareaViewController: UIViewController, UITextViewDelegate, UITextFie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        showNavBar()
         Configurar_teclado()
         getTask()
         inputStyleConfig(isEdit: isEdit)

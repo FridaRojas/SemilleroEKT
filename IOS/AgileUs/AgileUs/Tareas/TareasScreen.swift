@@ -14,15 +14,13 @@ class TareasScreen: UIViewController {
 
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
+        hideNavBar()
+        addLogoutButton()
+        }
+        override func viewDidDisappear(_ animated: Bool) {
 
-
-
-        self.navigationController?.navigationBar.topItem?.title = "hola"
-
-
-    }
-    override func viewDidDisappear(_ animated: Bool) {
 
     }
     @IBAction func editTaskBtn(_ sender: Any) {
