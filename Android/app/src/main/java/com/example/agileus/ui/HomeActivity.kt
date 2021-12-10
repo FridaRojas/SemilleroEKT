@@ -96,5 +96,11 @@ class HomeActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
- }
+
+    //Ocultar flecha atras del inicio de sesión
+    fun ocultarBtnAtras() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+}
 
