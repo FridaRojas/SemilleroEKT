@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
 import com.example.agileus.models.MsgBodyUser
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
@@ -35,6 +36,17 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
     ): View? {
         viewModel = ViewModelProvider(this)[BuzonDetallesUserViewModel::class.java]
         _binding = BuzonDetallesUserFragmentBinding.inflate(inflater, container, false)
+
+        viewModel.myResponse1.observe(
+            viewLifecycleOwner,
+            { response ->
+                if (response.isSuccessful) {
+                    Log.i("response", response.code().toString())
+                }
+            },
+        )
+
+
         val root: View = binding.root
         return root
     }
@@ -66,19 +78,11 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
 
-//           buzon.idEmisor=id
+           buzon.idEmisor=InicioSesionFragment.id
 
 
         viewModel.postRequest(buzon)
 
-            viewModel.myResponse1.observe(
-                viewLifecycleOwner,
-                { response ->
-                    if (response.isSuccessful) {
-                        Log.i("response", response.code().toString())
-                    }
-                },
-            )
 
             Handler().postDelayed({
                 binding.vista1.visibility = View.INVISIBLE

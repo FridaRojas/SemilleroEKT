@@ -15,6 +15,7 @@ import com.example.agileus.R
 import com.example.agileus.databinding.BuzonDetallesFragmentBinding
 import com.example.agileus.databinding.ReceiverBuzonBroadcastFragmentBinding
 import com.example.agileus.models.Contacts
+import com.example.agileus.models.Datos
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,7 +29,7 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
 
 
     companion object{
-        var  listas=ArrayList<Contacts>()
+        var  listas=ArrayList<Datos>()
     }
     
     override fun onCreateView(
@@ -49,26 +50,25 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        viewModel = ViewModelProvider(this).get(ReceiverBuzonBroadcastViewModel::class.java)
+
+        viewModel.adaptador.observe(viewLifecycleOwner, {
+            binding.recyclerBuzon.adapter = it
+            binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
+
+        })
+
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
 
-    viewModel = ViewModelProvider(this).get(ReceiverBuzonBroadcastViewModel::class.java)
 
-//        listas=viewModel.getLista()
-
-//        Log.d("tamaño",listas.size.toString())
 
 
             viewModel.devuelvebuzon2()
 
-           viewModel.adaptador.observe(viewLifecycleOwner, {
-            binding.recyclerBuzon.adapter = it
-            binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-
-        })
     }
 
     override fun onDestroy() {

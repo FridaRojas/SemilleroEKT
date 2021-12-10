@@ -3,12 +3,14 @@ package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 import android.util.Log
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.models.*
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.id
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 //import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd1
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastFragment.Companion.listas
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.memsajes2
 //import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.listaBrd1
 import com.example.agileus.utils.Constantes.broadlist
@@ -98,7 +100,7 @@ class DaoBuzon1() {
 
     suspend fun recuperarEnviadosBrd(idUser: String, sala: String) {
 
-//        memsajes2 = ArrayList()
+       memsajes2 = ArrayList()
         try {
             Log.d("id recibido", idUser)
             val callRespuesta =
@@ -124,7 +126,7 @@ class DaoBuzon1() {
     }
 
     suspend fun getcustompush(post: MsgBodyUser): Response<MsgBodyUser> {
-        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(idUser,post, tokenAuth)
+        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(id,post, tokenAuth)
     }
 
 }
