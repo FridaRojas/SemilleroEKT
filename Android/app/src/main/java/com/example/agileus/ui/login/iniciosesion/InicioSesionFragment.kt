@@ -113,6 +113,8 @@ class InicioSesionFragment : Fragment(){
         var result = arrayOf(validateEmail(), validatePassword())
 
         if (false in result) {
+            progressBar.visibility=View.INVISIBLE
+            binding.btnLogin.isEnabled=true
             return
         }
         val usuario = Users(correoLogin, passwordLogin, TOKEN_KEY)
