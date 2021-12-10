@@ -320,6 +320,13 @@ class DetalleNivelAltoFragment : Fragment(), DialogoFechaListener,
             newFragment.show(parentFragmentManager, "tarea terminada")
         }
 
+        if (args.tareas.estatus.equals("Cancelado")) {
+            binding.buttons.isVisible = false
+            val newFragment = DialogoAceptar("Tarea Cancelada")
+            newFragment.show(parentFragmentManager, "tarea cancelada")
+        }
+
+
         if (args.tareas.estatus.equals("revision")) {
             binding.btnValidarTarea.isVisible = true
             binding.btnValidarTarea.isEnabled = true
