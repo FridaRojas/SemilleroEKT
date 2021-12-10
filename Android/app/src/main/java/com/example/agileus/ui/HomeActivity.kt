@@ -4,20 +4,27 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.databinding.ActivityHomeBinding
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragment
 
 class HomeActivity : AppCompatActivity() {
 
@@ -38,10 +45,6 @@ class HomeActivity : AppCompatActivity() {
         val token = InitialApplication.preferenciasGlobal.recuperarToken()
         Log.d("token", token)
 
-        //Toolbar
-
-
-
         //Navegación
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
@@ -55,6 +58,12 @@ class HomeActivity : AppCompatActivity() {
 
         findViewById<BottomNavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
+
+
+        if(preferenciasGlobal.validaSesionIniciada()){
+            Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
+        }
+
 
         //Ocultar BottomNavigationBar en pantallas específicas
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -87,5 +96,11 @@ class HomeActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
- }
+
+    //Ocultar flecha atras del inicio de sesión
+    fun ocultarBtnAtras() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+}
 

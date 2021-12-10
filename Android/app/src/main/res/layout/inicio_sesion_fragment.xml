@@ -9,7 +9,26 @@
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_vertical_margin"
-    android:paddingBottom="@dimen/fragment_vertical_margin">
+  >
+
+        <!-- Linear progress indicator -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressLoading"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:visibility="invisible"
+            android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
+            android:layout_marginBottom="2dp"
+            android:indeterminate="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="@dimen/fragment_vertical_margin"
+            android:max="29"
+            android:progressBackgroundTint="@color/colorGray"
+            android:backgroundTintMode="add"
+            android:secondaryProgressTintMode="add"
+
+            />
+
 
         <TextView
             android:layout_width="match_parent"
@@ -38,7 +57,7 @@
             app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/username"
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
@@ -107,14 +126,6 @@
                    -->
 
 
-        <ProgressBar
-            android:id="@+id/progressLoading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_bottom_general"
-            android:layout_marginBottom="@dimen/margin_bottom_general"
-            android:visibility="gone"/>
         <!--     app:visible="@{viewModel.progressVisibility}" /> -->
         <!-- android:visibility="@{ viewModel.progressVisibility ? View.VISIBLE : View.GONE }" -->
 
