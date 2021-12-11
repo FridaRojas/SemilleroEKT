@@ -102,6 +102,10 @@ class InicioSesionFragment : Fragment(){
 
         binding.btnLogin.setOnClickListener {
 
+            var progressBar = binding.progressLoading
+            progressBar.visibility=View.VISIBLE
+            binding.btnLogin.isEnabled=false
+
             // observer se dispara cuando finalice el servicio
             viewModel.inicioExitoso.observe(viewLifecycleOwner, {response ->
                 //Log.d("respuesta inicio ", viewModel.inicioExitoso.toString())
@@ -122,16 +126,14 @@ class InicioSesionFragment : Fragment(){
             })
 
 
-            var progressBar = binding.progressLoading
-            progressBar.visibility=View.VISIBLE
-            binding.btnLogin.isEnabled=false
-
             //validate()
             var result = arrayOf(validateEmail(), validatePassword())
             correoSession = binding.email.text.toString()
             passwordSession = binding.password.text.toString()
 
             if(false in result){
+                progressBar.visibility = View.INVISIBLE
+                binding.btnLogin.isEnabled = true
                 Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
             }else{
                 val usuario = Users(correoSession, passwordSession, TOKEN_KEY)
@@ -148,6 +150,7 @@ class InicioSesionFragment : Fragment(){
                     var nombre = preferenciasGlobal.recuperarNombreSesion()
                     //Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
                 }else{
+                    startTimeCounter()
                     Log.d("Login", "Usuario no encontrado")
 
                 }
