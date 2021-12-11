@@ -123,9 +123,7 @@ public class UserController {
                         user.get().setFechaInicio(null);
                         user.get().setFechaTermino(null);
                         user.get().setPassword(null);
-                        user.get().setIDGrupo(null);
                         user.get().setOpcionales(null);
-                        user.get().setIDSuperiorInmediato(null);
                         user.get().setStatusActivo(null);
                         user.get().setCurp(null);
                         user.get().setRFC(null);
