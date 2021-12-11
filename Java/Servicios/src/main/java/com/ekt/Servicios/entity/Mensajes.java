@@ -22,7 +22,7 @@ public class Mensajes {
     private boolean statusRutaDocumento;
     
     private String nombreConversacionReceptor;
-    private String nombreConversacionEmisor;
+    private String nombreEmisor;
     
     private Date fechaCreacion;
     private boolean statusCreado;
@@ -32,8 +32,14 @@ public class Mensajes {
     
     private Date fechaLeido;
     private boolean statusLeido;
-
-    public String getRutaDocumento() {
+    
+    public String getNombreEmisor() {
+		return nombreEmisor;
+	}
+	public void setNombreEmisor(String nombreEmisor) {
+		this.nombreEmisor = nombreEmisor;
+	}
+	public String getRutaDocumento() {
 		return rutaDocumento;
 	}
 	public void setRutaDocumento(String rutaDocumento) {

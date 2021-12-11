@@ -141,6 +141,8 @@ public class MensajesController {
 				mensajes.setFechaEnviado(new Date());
 				mensajes.setStatusEnviado(true);
 
+				mensajes.setNombreEmisor(emisor.get().getNombre());
+				
 				mensajes.setStatusLeido(false);
 				mensajes.setFechaLeido(new Date(0));
 
@@ -238,6 +240,8 @@ public class MensajesController {
 
 				mensajes.setFechaEnviado(new Date());
 				mensajes.setStatusEnviado(true);
+				
+				mensajes.setNombreEmisor(emisor.get().getNombre());
 
 				mensajes.setStatusLeido(false);
 				mensajes.setFechaLeido(new Date(0));
