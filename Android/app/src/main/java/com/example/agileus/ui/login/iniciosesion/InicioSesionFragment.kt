@@ -32,7 +32,7 @@ class InicioSesionFragment : Fragment(){
         var correoLogin : String=""
         var passwordLogin : String=""
         var status:Boolean=false
-        var id:String = " "
+        var id:String = ""
         var idUser:String = ""
         var correo:String =" "
         var fechaInicio:String = " "
@@ -125,7 +125,7 @@ class InicioSesionFragment : Fragment(){
 
         if (status) {
             //Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
-            if(correoLogin != "rogelioL@gmail.com")
+            if(nombreRol != "BROADCAST")
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
             else
             {

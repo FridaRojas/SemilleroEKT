@@ -20,7 +20,7 @@ object Constantes {
 
     //val id = "618b05c12d3d1d235de0ade0"
     //var id = "61a83b59d036090b8e8db3c1"
-    var id = ""
+    var id = "618d9c26beec342d91d747d6"
     val idChat = "618d9c26beec342d91d747d6_618b05c12d3d1d235de0ade0"
     val referenciaMensajeria = "Mensajeria"
     val referenciaTareas= "Tareas"
@@ -68,7 +68,7 @@ object Constantes {
 
     //Login
   //  val URL_LOGIN = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"
-    val URL_Login = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                // "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/"            // "https://10.97.3.183:3040/"        // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/" //"http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"//"https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"           // "http://10.97.4.193:3040/"                                    // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
+      val URL_Login = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                // "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/"            // "https://10.97.3.183:3040/"        // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/" //"http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"//"https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"           // "http://10.97.4.193:3040/"                                    // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
     //val URL_Login = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"//"https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"           // "http://10.97.4.193:3040/"                                    // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
    // val URL_Login = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/"                                                                               // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
 
@@ -78,7 +78,7 @@ object Constantes {
     var opcionFiltro = 0
     var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
     var fechaEstadisticas = Constantes.date.toString()
-    var id_broadcast="61a101db174bcf469164d2fd"
+    var id_broadcast="618d9c26beec342d91d747d6"
     var fechaIniEstadisticas = "1900-01-01T00:00:00.000+00:00"
     var fechaFinEstadisticas = "2100-01-01T00:00:00.000+00:00"
     var empleadoUsuario = emptyList<UserMessageDetailReport>()

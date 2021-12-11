@@ -8,6 +8,7 @@ import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.id
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.nombre
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.nombreRol
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.google.gson.internal.LinkedTreeMap
@@ -54,9 +55,10 @@ class LoginDao {
                     guardarData.tokenAuth = mapa["tokenAuth"].toString()
                     almacenar.data = guardarData
 
-                    id=guardarData.id.toString()
+                    //id=guardarData.id.toString()
                     tokenAuth=guardarData.tokenAuth.toString()
                     nombre=guardarData.nombre.toString()
+                    nombreRol =guardarData.nombreRol.toString()
 
                     status  = true
                 }

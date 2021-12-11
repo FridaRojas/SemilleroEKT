@@ -51,13 +51,6 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        viewModel = ViewModelProvider(this).get(ReceiverBuzonBroadcastViewModel::class.java)
-
-        viewModel.adaptador.observe(viewLifecycleOwner, {
-            binding.recyclerBuzon.adapter = it
-            binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-
-        })
 
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -66,11 +59,15 @@ class ReceiverBuzonBroadcastFragment : Fragment() {
         navBar.isVisible = false
         (activity as HomeActivity).ocultarBtnAtras()
 
-
-
-
-
+        viewModel = ViewModelProvider(this).get(ReceiverBuzonBroadcastViewModel::class.java)
         viewModel.devuelvebuzon2()
+
+        viewModel.adaptador.observe(viewLifecycleOwner, {
+            binding.recyclerBuzon.adapter = it
+            binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
+
+        })
+
 
     }
 
