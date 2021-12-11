@@ -8,17 +8,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.Message
-import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
 import com.example.agileus.ui.modulotareas.creartareas.CrearTareasViewModel
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.utils.Constantes
+import com.example.agileus.ui.modulomensajeria.conversation.UserConversationViewModel
 
 class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String, val listener: DialogoConfirmOpStatusListener ) : DialogFragment(), DialogoConfirmOpStatusListener{
 
-    lateinit var conversationviewModel  : ConversationViewModel         // ViewModel
+    lateinit var conversationviewModel  : UserConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

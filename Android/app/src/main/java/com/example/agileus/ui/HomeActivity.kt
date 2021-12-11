@@ -8,7 +8,6 @@ import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
@@ -16,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
@@ -36,9 +34,6 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Log.d("Login", InicioSesionFragment.correoLogin)
-        //Log.d("Login", InicioSesionFragment.passwordLogin)
-        // Log.d("Login", idUser)
 
         //Token Notificaciones
         val token = InitialApplication.preferenciasGlobal.recuperarToken()
@@ -71,6 +66,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.formularioCrearTareasFragment -> hideBottomNav(navView)
                 R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
                 R.id.listContactsFragment -> hideBottomNav(navView)
+                R.id.userConversationFragment -> hideBottomNav(navView)
                 else -> showBottomNav(navView)
             }
         }
@@ -95,6 +91,12 @@ class HomeActivity : AppCompatActivity() {
             }
             "Contactos" -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
+            }
+           R.string.chats_name.toString()-> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
+            }
+            R.string.contacts_name.toString() -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.listContactsFragment)
             }
         }
         return super.onOptionsItemSelected(item)

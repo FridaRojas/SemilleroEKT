@@ -14,8 +14,20 @@ class Contacts (
     @SerializedName("telefono")val telefono: String,
     @SerializedName("statusActivo") val statusActivo: String,
     @SerializedName("idsuperiorInmediato")val idsuperiorInmediato: String,
-    @SerializedName("token")val token: String
+    @SerializedName("token") val token: String
         )
+
+data class Contacts1(
+    val data: List<Datos>,
+    val estatus: String,
+    val mensaje: String
+)
+
+data class Datos(
+    @SerializedName("id") val id: String,
+    @SerializedName("nombre") val nombre: String
+)
+
 
 data class EmployeeListByBossID(
     @SerializedName("status") val status: String,

@@ -52,7 +52,6 @@ class ListConversationFragment : Fragment(), DialogoListen {
         super.onViewCreated(view, savedInstanceState)
 
         var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
-        Toast.makeText(activity, "$UserId", Toast.LENGTH_LONG).show()
 
         ChatsViewModel.devuelveListaGrupos(UserId)
         ChatsViewModel.devuelveListaChats(UserId)
@@ -133,7 +132,6 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
     override fun siDisparar(motivo: String) {
         findNavController().navigate(R.id.inicioSesionFragment)
-        //Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
     }
 
     override fun noDisparar(motivo: String) {

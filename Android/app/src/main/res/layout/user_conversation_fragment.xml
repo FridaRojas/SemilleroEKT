@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.modulomensajeria.conversationonetoone.ConversationOneToOneActivity">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.modulomensajeria.conversation.UserConversationFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerConversacion"
+        android:id="@+id/recyclerUserConversacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fondomensaje"
+        app:layout_constraintBottom_toTopOf="@id/fondomessage"
         android:layout_marginTop="@dimen/margin_bottom_recycler"
         android:layout_marginBottom="@dimen/margin_bottom_recycler"
         android:padding="@dimen/paddingGeneral"
         />
 
     <View
-        android:id="@+id/fondomensaje"
+        android:id="@+id/fondomessage"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/height_view_write_mesage"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,12 +27,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/colorBackground"
         android:layout_marginTop="@dimen/margin_top_general"
-    >
+        >
 
-</View>
+    </View>
 
     <ImageView
-        android:id="@+id/btnArchivoAdjunto"
+        android:id="@+id/btnArchivoAdj"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,8 +48,8 @@
         android:id="@+id/et_mensaje"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/btnArchivoAdjunto"
-        app:layout_constraintEnd_toStartOf="@id/btnEnviarMensaje"
+        app:layout_constraintStart_toEndOf="@id/btnArchivoAdj"
+        app:layout_constraintEnd_toStartOf="@id/btnSendMessage"
         app:layout_constraintBottom_toBottomOf="parent"
         android:hint="Mensaje"
         android:padding="@dimen/padding_message_writer"
@@ -66,7 +65,7 @@
     </EditText>
 
     <ImageView
-        android:id="@+id/btnEnviarMensaje"
+        android:id="@+id/btnSendMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/et_mensaje"
@@ -80,7 +79,7 @@
     </ImageView>
 
     <TextView
-        android:id="@+id/errordechat"
+        android:id="@+id/errorchat"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_view_write_mesage"
         android:text="No puedes responder este mensaje"
@@ -93,16 +92,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
     <ProgressBar
-        android:id="@+id/progress_bar_conversation"
+        android:id="@+id/progress_conversation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/recyclerConversacion"
+        app:layout_constraintBottom_toTopOf="@id/recyclerUserConversacion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/paddingGeneral"></ProgressBar>
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

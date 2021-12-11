@@ -16,6 +16,7 @@ import androidx.core.util.PatternsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
@@ -106,6 +107,7 @@ class InicioSesionFragment : Fragment(){
             progressBar.visibility=View.VISIBLE
             binding.btnLogin.isEnabled=false
 
+            var rol = InitialApplication.preferenciasGlobal.recuperarRol()
             // observer se dispara cuando finalice el servicio
             viewModel.inicioExitoso.observe(viewLifecycleOwner, {response ->
                 //Log.d("respuesta inicio ", viewModel.inicioExitoso.toString())
@@ -145,7 +147,11 @@ class InicioSesionFragment : Fragment(){
                     Log.d("Login", passwordSession)
                     Log.d("Login", idUsuario)
                     //Toast.makeText(activity, "Inicio de sesion correcto", Toast.LENGTH_SHORT).show()
+
+                    if(rol!="BROADCAST")
                     findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
+                    else
+                        findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2)
 
                     var nombre = preferenciasGlobal.recuperarNombreSesion()
                     //Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
@@ -170,8 +176,6 @@ class InicioSesionFragment : Fragment(){
         var result = arrayOf(validateEmail(), validatePassword())
 
         if (false in result) {
-            progressBar.visibility=View.INVISIBLE
-            binding.btnLogin.isEnabled=true
             return
         }
         val usuario = Users(password, passwordLogin, TOKEN_KEY)
@@ -252,5 +256,4 @@ class InicioSesionFragment : Fragment(){
             }
         }.start()
     }
-
 }

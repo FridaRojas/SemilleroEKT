@@ -9,15 +9,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
 import com.example.agileus.models.MsgBodyUser
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
-import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderBroadcast
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
 import retrofit2.Response
@@ -36,24 +40,33 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
     ): View? {
         viewModel = ViewModelProvider(this)[BuzonDetallesUserViewModel::class.java]
         _binding = BuzonDetallesUserFragmentBinding.inflate(inflater, container, false)
+
+        viewModel.myResponse1.observe(
+            viewLifecycleOwner,
+            { response ->
+                if (response.isSuccessful) {
+                    Log.i("response", response.code().toString())
+                }
+            },
+        )
+
+
         val root: View = binding.root
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title =
+            "Mis Mensajes Recibidos"
 
+        binding.vista2.visibility=View.INVISIBLE
+        binding.fab.setOnClickListener {
+            val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
+            activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
+        }
 
-
-
-     //   viewModel.devuelvebuzon1()
-
-   viewModel.devuelvebuzonentrada()
-
-        if (BuzonFragment.control == 1) {
-
-            viewModel.devuelvebuzon()
-
+                  viewModel.devuelvebuzon2()
             viewModel.adaptador.observe(
                 viewLifecycleOwner,
                 {
@@ -61,48 +74,24 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
                     binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
                 })
 
-            binding.fab.setOnClickListener {
-                val newFragment = DialogoSenderUser(this) //Se le pasa el dialogolistener con This
-                activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
-            }
-        }
-
-
-        if (BuzonFragment.control == 2) {
-
-            viewModel.devuelvebuzonentrada()
-            binding.fab.visibility = View.INVISIBLE
-
-            viewModel.adaptador1.observe(
-                viewLifecycleOwner,
-                {
-                    binding.recyclerBuzon.adapter = it
-                    binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-                })
-
-        }
-
 
     }
 
+
+
+
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
 
-           buzon.idEmisor="618e8743c613329636a769aa"
+           buzon.idEmisor= InitialApplication.preferenciasGlobal.recuperarIdSesion()
 
-            viewModel.postRequest(buzon)
 
-            viewModel.myResponse.observe(
-                viewLifecycleOwner,
-                Observer { response ->
-                    if (response.isSuccessful) {
-                        Log.i("response", response.code().toString())
-                    }
-                },
-            )
+
+        viewModel.postRequest(buzon)
+
 
             Handler().postDelayed({
                 binding.vista1.visibility = View.INVISIBLE
-//                binding.vista2.visibility = View.VISIBLE
+                binding.vista2.visibility = View.VISIBLE
                 binding.fab.visibility = View.INVISIBLE
             }, 5)
             ////////////////
@@ -112,7 +101,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
             Handler().postDelayed({
                 Toast.makeText(context, " Mensaje enviado a Broadcast", Toast.LENGTH_SHORT).show()
-  //              binding.vista2.visibility = View.INVISIBLE
+                binding.vista2.visibility = View.INVISIBLE
                 binding.vista1.visibility = View.VISIBLE
                 binding.fab.visibility = View.VISIBLE
             }, 3800)
@@ -122,22 +111,29 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
         fun startTimeCounter() {
             var counter = 0
             binding.vista1.visibility = View.INVISIBLE
-    //        binding.vista2.visibility = View.VISIBLE
+            binding.vista2.visibility = View.VISIBLE
             binding.fab.visibility = View.INVISIBLE
 
-      //      val progressBar = binding.progress
-        //    progressBar.visibility = View.VISIBLE
+            val progressBar = binding.progress
+            progressBar.visibility = View.VISIBLE
 //        val countTime: TextView = findViewById(R.id.countTime)
             object : CountDownTimer(3900, 100) {
                 override fun onTick(millisUntilFinished: Long) {
-//                countTime.text = counter.toString()
+                //countTime.text = counter.toString()
 //                Log.d("tiempo ", " $counter")
                     counter++
-         //           progressBar.progress = counter
+                    progressBar.progress = counter
                 }
                 override fun onFinish() {
 //                    viewModeldevuelvebuzon()
                 }
             }.start()
         }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as HomeActivity).ocultarBtnAtras()
     }
+    }
+
+
