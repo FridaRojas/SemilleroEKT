@@ -1,12 +1,17 @@
 package com.example.agileus.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
+import android.os.SystemClock.sleep
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
@@ -26,7 +31,7 @@ import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversati
 class HomeActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeBinding
-    lateinit var fragmentSeleccionado : String
+    lateinit var fragmentSeleccionado: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +40,11 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        //Token Notificaciones
+
+        //sleep(3000)
+
+
+    //Token Notificaciones
         val token = InitialApplication.preferenciasGlobal.recuperarToken()
         Log.d("token", token)
 
@@ -56,7 +65,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         if(preferenciasGlobal.validaSesionIniciada()){
-            Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
         }
 
 
