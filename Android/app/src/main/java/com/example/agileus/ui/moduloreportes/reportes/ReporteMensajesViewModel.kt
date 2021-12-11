@@ -38,7 +38,7 @@ class ReporteMensajesViewModel: ViewModel() {
         cargaDatosExitosa.value = false
         cargaOperacionesEstadisticas.value = false
     }
-
+    var listaConsumidaAux = MutableLiveData<ArrayList<Estadisticas>>()
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte(listener: ReportesListener, id: String){
         Log.d("Into", "devuelveListaReporte")
@@ -55,12 +55,16 @@ class ReporteMensajesViewModel: ViewModel() {
                     totales.value = lista.obtenerMensajesTotales()
                     leidos.value = lista.obtenerMensajesLeidos()
 
+                    listaConsumidaAux.value = listaConsumida
+
                     if(enviados.value!!.isNotEmpty() && recibidos.value!!.isNotEmpty()
                         && totales.value!!.isNotEmpty() && leidos.value!!.isNotEmpty()){
                         cargaDatosExitosa.value = true
                     }
                 }
 
+                //cargaOperacionesEstadisticas.value = !(cargaOperacionesEstadisticas.value)!!
+                //Log.d("RMVM Boolean", cargaOperacionesEstadisticas.value.toString())
             }catch (ex:Exception){
                 Log.e("Error de conexion MensajesVM", ex.toString())
             }
@@ -79,11 +83,13 @@ class ReporteMensajesViewModel: ViewModel() {
                 }
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida
+                    //cargaOperacionesEstadisticas.value = true
                 }
             }
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
-        cargaOperacionesEstadisticas.value = true
+        //cargaOperacionesEstadisticas.value = !(cargaOperacionesEstadisticas.value)!!
     }
+
 }

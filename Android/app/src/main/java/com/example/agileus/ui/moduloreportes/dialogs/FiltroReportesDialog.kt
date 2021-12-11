@@ -247,7 +247,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
                         if (switchNoDateRange.isChecked){
                             iniStringDate = "1900-01-01T00:00:00.000+00:00"
                             endStringDate = "2100-01-01T00:00:00.000+00:00"
-                            Toast.makeText(context, "Activado", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(context, "Activado", Toast.LENGTH_SHORT).show()
                         }
                         Constantes.fechaIniEstadisticas = iniStringDate
                         Constantes.fechaFinEstadisticas = endStringDate
