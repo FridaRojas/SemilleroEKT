@@ -59,13 +59,11 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         print("\(Datas_Conversaciones.self)")
         print(userID)
     }
-    override func viewDidAppear(_ animated: Bool) {
-
+    
+    override func viewWillAppear(_ animated: Bool) {
         showNavBar()
-
         hideNavBar()
         addLogoutButton()
-
     }
 
     @IBAction func cerrarSesion(_ sender: UIButton) {
