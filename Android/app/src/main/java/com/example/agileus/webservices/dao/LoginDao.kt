@@ -55,10 +55,11 @@ class LoginDao {
                     guardarData.tokenAuth = mapa["tokenAuth"].toString()
                     almacenar.data = guardarData
 
-                    //id=guardarData.id.toString()
+                    id=guardarData.id.toString()
                     tokenAuth=guardarData.tokenAuth.toString()
                     nombre=guardarData.nombre.toString()
                     nombreRol =guardarData.nombreRol.toString()
+
 
                     status  = true
                 }
