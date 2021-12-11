@@ -73,12 +73,15 @@ object Constantes {
     fun devuelveFechaHora(fecha:String):String{
         var minute = ""
         var time = ZonedDateTime.parse(fecha)
+
+        var hour = time.hour + 6
+
         if(time.minute < 10){
             minute = "0"+time.minute.toString()
         }else{
             minute = time.minute.toString()
         }
-        return time.dayOfMonth.toString()+"-"+time.monthValue +"-"+time.year+"  " +time.hour.toString()+":" + minute
+        return time.dayOfMonth.toString()+"-"+time.monthValue +"-"+time.year+"  " +hour.toString()+":" + minute
 
     }
     //Login

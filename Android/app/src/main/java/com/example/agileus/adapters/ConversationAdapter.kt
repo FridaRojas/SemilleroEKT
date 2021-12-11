@@ -14,8 +14,6 @@ import com.example.agileus.config.InitialApplication.Companion.preferenciasGloba
 import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.utils.Constantes
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
 class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
@@ -80,10 +78,15 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         @RequiresApi(Build.VERSION_CODES.O)
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
-            id_Emisor.text = conversacion.nombreConversacionReceptor
-
+            id_Emisor.text = conversacion.nombreEmisor
+            txtStatusLeido.text = "Leído: "+ Constantes.devuelveFechaHora(conversacion.fechaLeido)
             if(conversacion.idconversacion.length > 50){
-                id_Emisor.isVisible = true
+                if(!conversacion.idemisor.equals(preferenciasGlobal.recuperarIdSesion())){
+                    id_Emisor.isVisible = true
+                }else{
+                    id_Emisor.isVisible = false
+                }
+
             }else{
                 id_Emisor.isVisible = false
             }
@@ -95,7 +98,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
                 txtStatusLeido.isVisible = false
             }
 
-            FechaMsj.text = Constantes.devuelveFechaHora(conversacion.fechaCreacion)
+            FechaMsj.text = "Enviado: "+Constantes.devuelveFechaHora(conversacion.fechaCreacion)
 
             if(conversacion.texto.equals("Documento")){
                 msg.isVisible = false
