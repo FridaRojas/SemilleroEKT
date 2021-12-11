@@ -5,9 +5,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.*
-import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
@@ -83,7 +82,7 @@ class ReporteTareasDao {
             }
         }else{
             try {
-                val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(Constantes.idUsuario, idBusqueda)
+                val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(preferenciasGlobal.recuperarIdSesion(), idBusqueda)
                 val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
 
                 if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
@@ -95,6 +94,10 @@ class ReporteTareasDao {
                 }else if (ResponseTareas.isSuccessful) {
                     try {
                         val listaDs = ResponseTareas.body()!!
+                        //Log.e("RTDAO1", ResponseTareas.message().toString())
+                        //Log.e("RTDAO2", ResponseTareas.errorBody().toString())
+                        //Log.e("RTDAO3", ResponseTareas.code().toString())
+                        //Log.e("RTDAO4", listaDs.data.toString())
                         lista = listaDs.data
                         Log.e("CONSUMO", lista.size.toString())
 

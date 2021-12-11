@@ -21,7 +21,6 @@ object Constantes {
     val URL_Tareas_Recibidas=""
 
     val idUser = "618b05c12d3d1d235de0ade0"
-    val NAME_RECEPTOR = "NAME_RECEPTOR"
     //var id = "61a83b59d036090b8e8db3c1"
     //var id = "618d9c26beec342d91d747d6"
     val idChat = "618d9c26beec342d91d747d6_618b05c12d3d1d235de0ade0"
@@ -92,9 +91,9 @@ object Constantes {
 
     //var idUsuario = "618e8743c613329636a769aa"
     var idUsuario =idUser
-    var idUsuarioEstadisticas = idUsuario
+    //var idUsuarioEstadisticas = idUsuario
     val GROUP_ID_REPORTES ="TEAM_ID_CREATED_BY_MOD_REPORT"
-    var idUsuario = id
+    //var idUsuario = id
     var idUsuarioEstadisticas = GROUP_ID_REPORTES
     var opcionFiltro = 0
     var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"

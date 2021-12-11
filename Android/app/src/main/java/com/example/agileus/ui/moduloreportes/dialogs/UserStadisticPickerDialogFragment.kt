@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.utils.Constantes
 import java.lang.Exception
@@ -61,7 +62,7 @@ class UserStadisticPickerDialogFragment(val listener: UserStadistickPickerDialog
             }catch (ex:Exception){
                 userPicker.setMaxValue(0)
                 userPicker.setValue(0)
-                userPicker.displayedValues = arrayOf(Constantes.idUsuario)
+                userPicker.displayedValues = arrayOf(InitialApplication.preferenciasGlobal.recuperarIdSesion())
                 Log.d("UserFilterError", ex.toString())
             }
 

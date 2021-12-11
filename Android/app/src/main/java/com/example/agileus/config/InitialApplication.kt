@@ -40,8 +40,6 @@ class InitialApplication : Application() {
       //  webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
 
         webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
-        webServiceGlobalReportesBroadCast = ConfigRetrofit().getBroadCastReportes()
-        webServiceGlobalReportesTareas = ConfigRetrofit().getTareasporId()
         webServiceGlobalNivel = ConfigRetrofit().obtenerConfiguracionRetrofitNivel()
 
         //SharedPreferences

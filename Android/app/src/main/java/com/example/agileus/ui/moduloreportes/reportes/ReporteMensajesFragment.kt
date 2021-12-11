@@ -24,6 +24,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.utils.Constantes.tipo_grafica
 import com.example.agileus.utils.Constantes.vista
 import com.example.agileus.config.MySharedPreferences
@@ -104,7 +105,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
+        reporteMensajesViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
 
         //Primer Grafica al cargar la vista
         reporteMensajesViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
@@ -435,7 +436,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
 
         if(idUsuarioEstadisticas == GROUP_ID_REPORTES){
-            reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
+            reporteMensajesViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
             fechaIniComp = fechaIniEstadisticas
             fechaFinComp = fechaFinEstadisticas
             userEstComp = idUsuarioEstadisticas

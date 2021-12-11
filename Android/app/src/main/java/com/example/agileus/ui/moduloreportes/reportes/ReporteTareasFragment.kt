@@ -17,6 +17,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
@@ -82,7 +83,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
+        reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
 
         reporteTareasViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
             Constantes.dataEmpleadoUsuario = list
@@ -359,7 +360,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
 
         if(idUsuarioEstadisticas == "TEAM_ID_CREATED_BY_MOD_REPORT"){
-            reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
+            reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
         }else {
             cambiarGrafica(tipo_grafica)
         }

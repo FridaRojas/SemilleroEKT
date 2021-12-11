@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.*
 import com.example.agileus.models.response.ResponseConversation
@@ -68,10 +69,10 @@ class ReporteMensajesDao {
         var broadcastSize = 0
 
         try{
-            val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(Constantes.idUsuario, idBusqueda)
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(preferenciasGlobal.recuperarIdSesion(), idBusqueda)
             val ResponseMensajes: Response<ResponseConversation> = callRespuesta.execute()
 
-            val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportes.getDatosRespuestasBroadcast(Constantes.idUsuario, idBusqueda)
+            val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportes.getDatosRespuestasBroadcast(preferenciasGlobal.recuperarIdSesion(), idBusqueda)
             val ResponseMensajesBroadCast: Response<BroadcastByID> = callRespuestaBroadCast.execute()
 
             //Fechas por día, mes, año, custom y default

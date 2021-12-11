@@ -16,7 +16,6 @@ import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.utils.Constantes.broadlist
-import com.example.agileus.utils.Constantes.idUsuario
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
