@@ -24,10 +24,5 @@ interface LoginApi {
     @POST("api/user/validate")
     fun iniciarSesionLogin(@Body usuario: Users) : Call<LoginResponse>
 
-
-    @GET("user/findByBossId/{id}")
-    fun getUsersByBoss(@Path("id") datos: String): Call<UserBossResponse>?
-
-
 }
 

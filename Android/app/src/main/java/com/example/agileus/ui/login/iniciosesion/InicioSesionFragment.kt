@@ -22,6 +22,7 @@ import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.models.Data
 import com.example.agileus.models.Users
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel.Companion.userBoss
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
 
@@ -97,6 +98,8 @@ class InicioSesionFragment : Fragment(){
             Toast.makeText(activity, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
         }*/
 
+
+
         binding.btnLogin.setOnClickListener {
 
             // observer se dispara cuando finalice el servicio
@@ -114,6 +117,10 @@ class InicioSesionFragment : Fragment(){
 
                 //}
             })
+            viewModel.userByBossId.observe(viewLifecycleOwner, {response ->
+
+            })
+
 
             var progressBar = binding.progressLoading
             progressBar.visibility=View.VISIBLE

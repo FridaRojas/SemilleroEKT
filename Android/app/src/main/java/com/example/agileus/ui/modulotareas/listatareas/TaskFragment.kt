@@ -21,8 +21,10 @@ import com.example.agileus.databinding.FragmentTaskBinding
 import com.example.agileus.models.DataTask
 import com.example.agileus.models.StatusTasks
 import com.example.agileus.models.StatusTasks.Companion.lista
+import com.example.agileus.models.UserBossResponse
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel
+import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel.Companion.userBoss
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoNivelBajo
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoValidarTarea
@@ -38,7 +40,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
     lateinit var adaptadorStatus : StatusTasksAdapter
 
     private lateinit var taskViewModel: TaskViewModel
-    var nivelusuario = "medio"
+    //var nivelusuario = "medio"
     lateinit var listStatus : Array<String>
 
     override fun onCreateView(
@@ -60,16 +62,34 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
 
         recuperarNivelUsuario()
         preferenciasGlobal.recuperarNivelUsuario()
+
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
+        //Toast.makeText(activity, userBoss, Toast.LENGTH_SHORT).show()
+
+        var superior = preferenciasGlobal.recuperarIdSuperiorInmediato()
+
+            if(superior.isNullOrEmpty()){
+                preferenciasGlobal.guardarNivelUsuario("alto")
+            }else if(userBoss.equals("alto") && !superior.isNullOrEmpty()){
+                    preferenciasGlobal.guardarNivelUsuario("medio")
+                }else{
+                    preferenciasGlobal.guardarNivelUsuario("bajo")
+                }
+
+
+
+        Toast.makeText(activity, "$superior", Toast.LENGTH_SHORT).show()
+
+        var nivelUsuario = preferenciasGlobal.recuperarNivelUsuario()
 
         //Recycler Status
-        if(nivelusuario == "alto"){
+        if(nivelUsuario == "alto"){
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelAlto(), this)
             taskViewModel.statusRecycler.value = "asignada"
             binding.tituloTareas.text = getString(R.string.titleStatus5)
-        }else if( nivelusuario == "medio" ){
+        }else if( nivelUsuario == "medio" ){
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelMedio(), this)
             taskViewModel.statusRecycler.value = "pendiente"
         }else{
@@ -98,7 +118,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
             it.findNavController().navigate(R.id.formularioCrearTareasFragment)
         }
         //Btn Crear tareas
-        if(nivelusuario == "alto" || nivelusuario == "medio"){
+        if(nivelUsuario == "alto" || nivelUsuario == "medio"){
             binding.btnCrearTarea.isVisible = true
             binding.btnCrearTarea.setOnClickListener {
                 it.findNavController().navigate(R.id.formularioCrearTareasFragment)
@@ -148,7 +168,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
 
     fun recuperarNivelUsuario() {
         //Todo al iniciar sesion
-        if(InicioSesionViewModel.usersByBoss == true){
+        if(InicioSesionViewModel.userBoss == "alto"){
             // nivel alto / medio
             preferenciasGlobal.guardarNivelUsuario("alto")
             //todo superior para saber si es nivel alto o medio

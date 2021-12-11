@@ -88,32 +88,37 @@ class LoginDao {
             return status
     }
 
-    suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
-        var listaUsers = ArrayList<DataPersons>()
-        lateinit var usersListResponse: UserBossResponse
+    suspend fun getUsersByBoss(id: String): ArrayList<Data> {
+        var listaUsers = ArrayList<Data>()
+        lateinit var usersListResponse: LoginResponse
 
-        val callRespuesta = InitialApplication.LoginServiceGlobal.getUsersByBoss(id)
+        val callRespuesta = InitialApplication.webServiceGlobalNivel.getUsersByBoss(id)
         var response = callRespuesta?.execute()
 
         try {
             if (response != null) {
+                Log.d("usuario", "${response.body()}")
+                Log.d("usuario", "${response.errorBody()}")
+                Log.d("usuario", "${response.code()}")
+
+
                 if (response.isSuccessful) {
                     //usersList = response.body()!!
                         var status = response.body()!!.status
                     var msj = response.body()!!.msj
-                    if (response.body()!!.status.equals("NOT_FOUND")) {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
-                        listaUsers =  emptyList<DataPersons>() as ArrayList<DataPersons>
+                    if (response.body()!!.status.equals("BAD_REQUEST")) {
+                        //usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
+                        listaUsers =  emptyList<Data>() as ArrayList<Data>
 
                     } else {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as ArrayList<DataPersons>)
-                        listaUsers = usersListResponse.data as ArrayList<DataPersons>
+                        usersListResponse = LoginResponse(status, msj, response.body()!!.data as ArrayList<Data>)
+                        listaUsers = usersListResponse.data as ArrayList<Data>
                     }
                 } else {
-                    listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                    listaUsers = emptyList<Data>() as ArrayList<Data>
                 }
             } else {
-                listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                listaUsers = emptyList<Data>() as ArrayList<Data>
             }
         } catch (e: Exception) {
             Log.e("error", e.toString())

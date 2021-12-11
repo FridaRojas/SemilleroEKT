@@ -11,7 +11,7 @@ class MySharedPreferences(contexto: Context) {
         val NIVEL_USER = "NIVEL_USER"
 
         val SESSION_KEY = "SESSION_KEY"
-
+        val NIVEL_HIJOS = "NIVEL_HIJOS"
         //Login
         val ID_SESSION = "ID_USER"
         val CORREO_SESSION = "CORREO_SESSION"

@@ -214,7 +214,6 @@ class TasksDao {
         } catch (e: Exception) {
             Log.e("error", e.toString())
         }
-        //Log.d("Mensaje", "listaPersonsDatos size: ${listaPersonsDatos.size} ")
         return listaPersonsDatos
     }
 
