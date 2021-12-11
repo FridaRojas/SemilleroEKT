@@ -175,8 +175,10 @@ class InicioSesionFragment : Fragment(){
                     else
                         findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2)
 
-                    var nombre = preferenciasGlobal.recuperarNombreSesion()
-                    //Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
+                    var nombre = preferenciasGlobal.recuperarIdSesion()
+                    Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
+
+
                 }else{
                     startTimeCounter()
                     Log.d("Login", "Usuario no encontrado")

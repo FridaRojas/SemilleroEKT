@@ -24,23 +24,19 @@ class MonthPickerDialogFragment(val listener: MonthPickerDialogListener):  Dialo
 
             val monthPicker = vista.findViewById<NumberPicker>(R.id.picker_year_month)
             val txtTitulo = vista.findViewById<TextView>(R.id.txtDPFTitulo)
-            txtTitulo.setText("Mes")
+            txtTitulo.setText(getString(R.string.Month))
             monthPicker.setMinValue(1)
             monthPicker.setMaxValue(12)
             monthPicker.setValue(month+1)
 
-            //monthPicker.displayedValues = arrayOf(R.array.months_array.toString())
-            //monthPicker.displayedValues = arrayOf(R.array.months_array)
-
-            monthPicker.displayedValues =  arrayOf("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" )
-
+            monthPicker.displayedValues = getResources().getStringArray(R.array.months_array)
             builder.setView(vista)
                 // Add action buttons
-                .setPositiveButton("Guardar",
+                .setPositiveButton(getString(R.string.SaveOption),
                     DialogInterface.OnClickListener { dialog, id ->
                         listener.onMonthSelected(monthPicker.value)
                     })
-                .setNegativeButton("Cancelar",
+                .setNegativeButton(getString(R.string.respCancelar),
                     DialogInterface.OnClickListener { dialog, id ->
                         getDialog()?.cancel()
                     })

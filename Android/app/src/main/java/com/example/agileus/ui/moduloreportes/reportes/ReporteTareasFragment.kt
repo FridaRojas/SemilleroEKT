@@ -17,11 +17,10 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
-import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
-import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
@@ -60,6 +59,10 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private var porcentaje_revision:Float = 0.0f
     private var porcentaje_leidas:Float = 0.0f
 
+    private var fechaIniComp = Constantes.fechaIniEstadisticas
+    private var fechaFinComp = Constantes.fechaFinEstadisticas
+    private var userEstComp = Constantes.idUsuarioEstadisticas
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,24 +82,17 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //binding.txtNombreReportes.setText(MySharedPreferences.dataEmpleadoUsuario[0].name)
 
-        reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, Observer{ list->
+        reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
+
+        reporteTareasViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
             Constantes.dataEmpleadoUsuario = list
-            //Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
-        })
-        reporteTareasViewModel.cargaOperacionesEstadisticasTareas.observe(viewLifecycleOwner, Observer{
-            //Toast.makeText(context, "COPE: ${reporteTareasViewModel.cargaOperacionesEstadisticasTareas.value}", Toast.LENGTH_LONG).show()
-            //binding.txtRangoFechaReportes.isVisible = true
-            binding.txtRangoFechaReportes.setText("CargaCompleta")
+            binding.progressLoadingR.visibility = View.GONE
+            binding.btnFiltroReportes.visibility = View.VISIBLE
             cambiarGrafica(tipo_grafica)
-        } )
+        })
 
-        reporteTareasViewModel.devuelveListaEmpleados(InitialApplication.preferenciasGlobal.recuperarIdSesion())
         binding.btnFiltroReportes.setOnClickListener {
-            reporteTareasViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
-                Constantes.dataEmpleadoUsuario = list
-            })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }
@@ -186,7 +182,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         }
 
         //binding.txtRangoFechaReportes.isVisible=true
-        binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
+        //binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
 
 
         reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
@@ -361,9 +357,14 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
-        cambiarGrafica(tipo_grafica)
-        //Toast.makeText(context, "User: ${MySharedPreferences.idUsuarioEstadisticas}, iniCustom: ${MySharedPreferences.fechaIniEstadisticas}, fecha: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-        Log.d("DateFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
+        Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
+
+        if(idUsuarioEstadisticas == "TEAM_ID_CREATED_BY_MOD_REPORT"){
+            reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
+        }else {
+            cambiarGrafica(tipo_grafica)
+        }
+
     }
 
     override fun onDestroyView() {
