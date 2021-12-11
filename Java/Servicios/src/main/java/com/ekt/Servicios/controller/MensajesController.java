@@ -1,5 +1,8 @@
 package com.ekt.Servicios.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 import com.ekt.Servicios.entity.*;
@@ -137,8 +140,15 @@ public class MensajesController {
 				mensajes.setIDConversacion(mensajes.getIDReceptor());
 
 				mensajes.setStatusCreado(true);
-
-				mensajes.setFechaEnviado(new Date());
+				
+				LocalDateTime date = LocalDateTime.now();
+				
+				LocalDateTime ldt = date
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+                Date newLdt = Date.from(ldt.atZone(ZoneId.of("UTC")).toInstant());
+                
+				mensajes.setFechaEnviado(newLdt);
 				mensajes.setStatusEnviado(true);
 
 				mensajes.setNombreEmisor(emisor.get().getNombre());

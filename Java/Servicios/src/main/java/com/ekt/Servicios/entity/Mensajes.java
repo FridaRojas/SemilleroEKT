@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Document(collection = "Mensajes")
 public class Mensajes {
@@ -27,6 +28,7 @@ public class Mensajes {
     private Date fechaCreacion;
     private boolean statusCreado;
     
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date fechaEnviado;
     private boolean statusEnviado;
     
