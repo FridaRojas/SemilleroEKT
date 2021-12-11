@@ -121,7 +121,7 @@ class UserConversationFragment : Fragment() {
             override fun run() {
                 while (true){
                     viewModel.devuelveLista(UserId, idChatUser)
-                    sleep(5000)
+                    sleep(15000)
                 }
             }
         }.start()
@@ -151,7 +151,6 @@ class UserConversationFragment : Fragment() {
         viewModel.bandera.observe(viewLifecycleOwner,{
             binding.progressConversation.isVisible = false
         })
-
 
         resultLauncherArchivo =registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if(result.resultCode== Activity.RESULT_OK){
