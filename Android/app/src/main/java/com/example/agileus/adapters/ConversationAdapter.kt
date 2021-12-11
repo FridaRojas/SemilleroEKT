@@ -2,7 +2,6 @@ package com.example.agileus.adapters
 
 
 import android.os.Build
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,10 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
+import com.example.agileus.utils.Constantes
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
-
 
 class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
@@ -70,6 +65,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         lateinit var documento: TextView
         lateinit var myView :View
         lateinit var txtStatusLeido:TextView
+        lateinit var id_Emisor : TextView
         var context = view.context
 
         init {
@@ -78,11 +74,19 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
             FechaMsj = view.findViewById(R.id.txtFecha)
             myView = view.findViewById(R.id.idMsj)
             txtStatusLeido = view.findViewById(R.id.txtStatusLeido)
+            id_Emisor = view.findViewById(R.id.id_Emisor)
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
+            id_Emisor.text = conversacion.nombreConversacionReceptor
+
+            if(conversacion.idconversacion.length > 50){
+                id_Emisor.isVisible = true
+            }else{
+                id_Emisor.isVisible = false
+            }
 
             if(conversacion.statusLeido == true && conversacion.idemisor.equals(preferenciasGlobal.recuperarIdSesion())){
                 txtStatusLeido.isVisible = true
@@ -91,11 +95,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
                 txtStatusLeido.isVisible = false
             }
 
-           val formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
-            val text: String = conversacion.fechaCreacion.format(formatter)
-            val parsedDate = LocalDate.parse(text, formatter)
-
-            FechaMsj.text = parsedDate.toString()
+            FechaMsj.text = Constantes.devuelveFechaHora(conversacion.fechaCreacion)
 
             if(conversacion.texto.equals("Documento")){
                 msg.isVisible = false

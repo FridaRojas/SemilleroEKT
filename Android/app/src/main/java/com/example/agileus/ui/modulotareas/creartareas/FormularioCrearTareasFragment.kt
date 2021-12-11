@@ -27,6 +27,7 @@ import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
+import com.example.agileus.ui.modulomensajeria.conversation.UserConversationViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoConfirmOp
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
@@ -41,7 +42,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var conversationviewModel  : ConversationViewModel         // ViewModel
+    lateinit var conversationviewModel  : UserConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
     /*  *** Firebase Storage ***  */
     lateinit var firebaseProvider       : FirebaseProvider

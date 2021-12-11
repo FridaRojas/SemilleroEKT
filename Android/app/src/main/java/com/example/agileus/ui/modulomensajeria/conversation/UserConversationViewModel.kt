@@ -1,29 +1,26 @@
-package com.example.agileus.ui.modulomensajeria.listacontactos
+package com.example.agileus.ui.modulomensajeria.conversation
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.agileus.adapters.ChatsAdapter
 import com.example.agileus.adapters.ConversationAdapter
-import com.example.agileus.models.*
-import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
-import com.example.agileus.utils.Constantes
+import com.example.agileus.models.Conversation
+import com.example.agileus.models.Message
+import com.example.agileus.models.MessageResponse
+import com.example.agileus.models.StatusRead
 import com.example.agileus.webservices.dao.MessageDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ConversationViewModel:ViewModel() {
+class UserConversationViewModel : ViewModel() {
     var adaptador = MutableLiveData<ConversationAdapter>()
     lateinit var message: MessageDao
     lateinit var listaConsumida: ArrayList<Conversation>
     lateinit var RespuestaMessage: MessageResponse
     var responseM = MutableLiveData<MessageResponse>()
     var actualizar = MutableLiveData<ArrayList<Conversation>>()
-    var bandera = false
+    var bandera = MutableLiveData<Boolean>()
 
     init {
         message = MessageDao()
@@ -41,7 +38,7 @@ class ConversationViewModel:ViewModel() {
                         actualizar.value = listaConsumida
                     }
                     else{
-                        bandera = true
+                        bandera.value = true
 
                     }
                 }else{
@@ -49,7 +46,7 @@ class ConversationViewModel:ViewModel() {
                 }
             }
         } catch (ex: Exception) {
-            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+            //Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 
@@ -64,7 +61,7 @@ class ConversationViewModel:ViewModel() {
                 responseM.value = RespuestaMessage
             }
         }catch (ex:Exception){
-            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+           // Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 
@@ -77,7 +74,7 @@ class ConversationViewModel:ViewModel() {
                 responseM.value = RespuestaMessage
             }
         }catch (ex:Exception){
-            Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+           // Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 
