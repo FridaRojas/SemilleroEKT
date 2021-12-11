@@ -91,6 +91,9 @@
 		E47AAA1527569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E47AAA1227569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard */; };
 		E4821A0F275FBC0E001AEC19 /* Celda_Comunicados.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4821A0D275FBC0E001AEC19 /* Celda_Comunicados.swift */; };
 		E4821A10275FBC0E001AEC19 /* Celda_Comunicados.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */; };
+		E4A43A7C276420D200CDFDF4 /* Adaptadores_Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A43A7B276420D100CDFDF4 /* Adaptadores_Web.swift */; };
+		E4A43A7E2764299700CDFDF4 /* servicios_broadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A43A7D2764299700CDFDF4 /* servicios_broadcast.swift */; };
+		E4A43A8127643F9600CDFDF4 /* Modelos_Broadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A43A8027643F9600CDFDF4 /* Modelos_Broadcast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -206,6 +209,9 @@
 		E47AAA1227569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Modal_Mensajes_Enviados.storyboard; sourceTree = "<group>"; };
 		E4821A0D275FBC0E001AEC19 /* Celda_Comunicados.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Celda_Comunicados.swift; sourceTree = "<group>"; };
 		E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Celda_Comunicados.xib; sourceTree = "<group>"; };
+		E4A43A7B276420D100CDFDF4 /* Adaptadores_Web.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adaptadores_Web.swift; sourceTree = "<group>"; };
+		E4A43A7D2764299700CDFDF4 /* servicios_broadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = servicios_broadcast.swift; sourceTree = "<group>"; };
+		E4A43A8027643F9600CDFDF4 /* Modelos_Broadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modelos_Broadcast.swift; sourceTree = "<group>"; };
 		E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -588,6 +594,8 @@
 		E45EE8892759532D000989A3 /* Broadcast */ = {
 			isa = PBXGroup;
 			children = (
+				E4A43A7F27643F7900CDFDF4 /* Modelos */,
+				E4A43A7A27641F9400CDFDF4 /* Servicios_web */,
 				E47AAA002756993300B1A213 /* Adaptador_Modal.swift */,
 				E47AA9FE27568CFD00B1A213 /* Modulo_Broadcast.swift */,
 				E47AAA0327569A3000B1A213 /* Mensajes_Enviados */,
@@ -625,6 +633,23 @@
 				E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */,
 			);
 			path = Lista_Comunicados;
+			sourceTree = "<group>";
+		};
+		E4A43A7A27641F9400CDFDF4 /* Servicios_web */ = {
+			isa = PBXGroup;
+			children = (
+				E4A43A7B276420D100CDFDF4 /* Adaptadores_Web.swift */,
+				E4A43A7D2764299700CDFDF4 /* servicios_broadcast.swift */,
+			);
+			path = Servicios_web;
+			sourceTree = "<group>";
+		};
+		E4A43A7F27643F7900CDFDF4 /* Modelos */ = {
+			isa = PBXGroup;
+			children = (
+				E4A43A8027643F9600CDFDF4 /* Modelos_Broadcast.swift */,
+			);
+			path = Modelos;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -923,9 +948,11 @@
 				DF89B86827517DBA000E8DAE /* lista_contactos.swift in Sources */,
 				E47AA9FF27568CFD00B1A213 /* Modulo_Broadcast.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
+				E4A43A7E2764299700CDFDF4 /* servicios_broadcast.swift in Sources */,
 				E47AAA012756993300B1A213 /* Adaptador_Modal.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
 				AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */,
+				E4A43A8127643F9600CDFDF4 /* Modelos_Broadcast.swift in Sources */,
 				AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */,
 				AEA60AA3274D97530087E417 /* Strings.swift in Sources */,
 				AE4C5A312750391E0095B907 /* CustomVisualEffectView.swift in Sources */,
@@ -939,6 +966,7 @@
 				AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */,
 				AE1D0AC1274EED9A00D3792B /* PickerView.swift in Sources */,
 				AEB4BFD9275854BA000526F6 /* Message.swift in Sources */,
+				E4A43A7C276420D200CDFDF4 /* Adaptadores_Web.swift in Sources */,
 				AE43C31B275595FC0035A514 /* VisorPDF.swift in Sources */,
 				AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */,
 				C94CC350276106D50091B856 /* InfoTareas.swift in Sources */,

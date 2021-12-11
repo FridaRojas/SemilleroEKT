@@ -90,7 +90,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         hierarchyLevel = UserDefaults.standard.integer(forKey: "hierarchyLevel")
         tokenAuth = UserDefaults.standard.string(forKey: "tokenAuth") ?? String()
         idGrupo = UserDefaults.standard.string(forKey: "isGrupo") ?? String()
-    }
+        
+        print("\n*************\n")
+        print(tokenAuth)
+        print("\n*************\n")    }
 
     func recoverLogged(){
         isLogged = UserDefaults.standard.bool(forKey: "isLogged")

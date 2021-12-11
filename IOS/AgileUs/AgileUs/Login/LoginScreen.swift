@@ -43,6 +43,15 @@ class LoginScreen: UIViewController {
         super.viewDidLoad()
         hideNavBar()
         initCustomUIKit()
+        
+        //borrar datos solo prueba*********
+        
+        txtUser.text = "rogelioL@gmail.com"
+        txtPassword.text = "0000000000"
+        
+        //*******************************
+        
+        
     }
 
     func initCustomUIKit(){

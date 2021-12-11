@@ -34,11 +34,15 @@ class celda_msjs_enviados: UITableViewCell
         super.setSelected(selected, animated: animated)
     }
     
-    func Configurar_Celda_Mensajes (Datos: [Any])
+    func Configurar_Celda_Mensajes (Mensaje_recibido: Mensajes_Broacast)
     {
-        id = Datos[0] as! Int
-        nombre = Datos[1] as! String
-        area = Datos[2] as! String
+        nombre_lbl_celda.text = Mensaje_recibido.nombreEmisor
+        //id = Datos[0] as! Int
+        //nombre = Datos[1] as! String
+        //area = Datos[2] as! String
+        print("\n**********************\n")
+        print(Mensaje_recibido)
+        print("\n**********************\n")
     }
     
     func regresar_id () -> Int
