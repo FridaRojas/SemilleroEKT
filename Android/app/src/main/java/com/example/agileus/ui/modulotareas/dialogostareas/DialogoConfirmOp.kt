@@ -45,11 +45,11 @@ class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String
 
     override fun onOpSuccessful() {
         // Enviar tarea al chat del receptor
-        val mensajeTareas = Message(
-            preferenciasGlobal.recuperarIdSesion(),idRecep,"",
-            "Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",Constantes.finalDate)
-        conversationviewModel.mandarMensaje("618d9c26beec342d91d747d6",Constantes.idChat,mensajeTareas)
-        //Log.d("mensaje Tareas","$mensajeTareas")
+        val mensajeTareas = Message(idEmisor,idRecep,"",
+            "Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",
+            Constantes.finalDate)
+        conversationviewModel.mandarMensaje(idEmisor,idRecep,mensajeTareas)
+        Log.d("mensaje Tareas","$mensajeTareas")
         listener.onOpSuccessful()
     }
 

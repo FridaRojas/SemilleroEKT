@@ -24,16 +24,6 @@ class TasksDao {
 
                     opStatus.onOpSuccessful()       // Devuelme mensaje de status
 
-                    /*nuevaTarea = response.body()!!
-                    var mensaje =
-                        "Tarea creada por el emisor: ${nuevaTarea.nombreEmisor}" // Mensaje mostrado en el Log
-                    mensaje += ", Titulo:${nuevaTarea.titulo}"
-                    mensaje += ", Asignada a:${nuevaTarea.nombreReceptor}"
-                    mensaje += ", Numero de empleado:${nuevaTarea.idReceptor}"
-                    mensaje += ", Descripcion:${nuevaTarea.descripcion}"
-                    mensaje += ", Fecha inicio:${nuevaTarea.fechaInicio}"
-                    mensaje += ", Fecha fin:${nuevaTarea.fechaFin}"
-                    Log.d("Mensaje", mensaje)*/
 
                 } else {
                     Log.d("Mensaje", "No se creo la tarea ${response.code()}")
