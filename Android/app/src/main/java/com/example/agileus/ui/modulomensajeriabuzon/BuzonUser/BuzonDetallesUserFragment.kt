@@ -15,12 +15,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.Buzon
 import com.example.agileus.databinding.BuzonDetallesUserFragmentBinding
 import com.example.agileus.models.MsgBodyUser
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeriabuzon.Dialogos.DialogoSenderUser
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
 import retrofit2.Response
@@ -81,7 +82,8 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
 
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
 
-           buzon.idEmisor=InicioSesionFragment.id
+           buzon.idEmisor= InitialApplication.preferenciasGlobal.recuperarIdSesion()
+
 
 
         viewModel.postRequest(buzon)

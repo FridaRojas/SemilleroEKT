@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.BuzonAdapterResponse
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.*
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.id
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada1
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
@@ -63,7 +62,7 @@ class ReceiverBuzonBroadcastViewModel : ViewModel() {
         try {
              viewModelScope.launch {
                  var  listar= withContext(Dispatchers.IO) {
-                     lista1.recuperarMensajesBrd1(id)
+                     lista1.recuperarMensajesBrd1(MySharedPreferences.ID_SESSION)
                 }
            Log.d("lista", listar.toString())
                 for (i in 0..listafiltrada.size - 1)
@@ -80,7 +79,7 @@ class ReceiverBuzonBroadcastViewModel : ViewModel() {
 //////////////vamos bien
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                lista1.recuperarEnviadosBrd(id, sala)
+                lista1.recuperarEnviadosBrd(MySharedPreferences.ID_SESSION, sala)
             }
 
             memsajes2.forEach {

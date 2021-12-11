@@ -11,17 +11,21 @@ import com.example.agileus.R
 import com.example.agileus.databinding.FragmentBuzonBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
 import com.example.agileus.utils.Constantes.broadlist
 import com.example.agileus.utils.Constantes.idUsuario
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class BuzonFragment : Fragment() {
+    var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+    var token= InitialApplication.preferenciasGlobal.recuperarTokenAuth()
 
-companion object{
+
+    companion object{
     var control=1
     var USERTYPE=""
 }
@@ -52,7 +56,7 @@ companion object{
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
             "Buzon Broadcast"
 
-        broadlist= InicioSesionFragment.id
+        broadlist= UserId
 
 //        Log.d("tokenAuth", tokenAuth)
   //      Log.d("User", idUsuario)

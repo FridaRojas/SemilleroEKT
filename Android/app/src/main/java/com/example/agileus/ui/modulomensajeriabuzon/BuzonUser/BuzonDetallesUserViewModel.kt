@@ -5,10 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.BuzonAdapterResponse
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.MsgBodyUser
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.id
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.DaoBuzon1
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.memsajes2
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +16,9 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class BuzonDetallesUserViewModel : ViewModel() {
+
+    var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+    var name  =InitialApplication.preferenciasGlobal.recuperarNombreSesion()
 
 
     var myResponse1: MutableLiveData<Response<MsgBodyUser>> = MutableLiveData()
@@ -28,10 +30,12 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
     ///
     fun devuelvebuzon2() {
+
 var listaf =ArrayList<String>()
+//        Log.d("usuario act",)
             viewModelScope.launch {
                  listaf=withContext(Dispatchers.IO) {
-                    lista.recuperarMensajesBrd1(id)
+                    lista.recuperarMensajesBrd1(UserId)
                 }
                 Log.d("lista ", listaf.toString())
                 for (i in 0 until listaf.size)
@@ -44,9 +48,13 @@ var listaf =ArrayList<String>()
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                lista.recuperarEnviadosBrd(id, sala)
+                lista.recuperarEnviadosBrd(UserId, sala)
             }
 
+            memsajes2.forEach {
+                it.idemisor="Broadcast"
+                it.idreceptor=name
+            }
             adaptador.value = BuzonAdapterResponse(memsajes2, 1)
         }
     }
