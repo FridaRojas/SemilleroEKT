@@ -27,9 +27,6 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Log.d("Login", InicioSesionFragment.correoLogin)
-        //Log.d("Login", InicioSesionFragment.passwordLogin)
-        // Log.d("Login", idUser)
 
         //Token Notificaciones
         val token = InitialApplication.preferenciasGlobal.recuperarToken()

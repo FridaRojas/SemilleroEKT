@@ -13,6 +13,7 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
+import com.example.agileus.utils.Constantes
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
@@ -85,11 +86,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
                 txtStatusLeido.isVisible = false
             }
 
-           val formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
-            val text: String = conversacion.fechaCreacion.format(formatter)
-            val parsedDate = LocalDate.parse(text, formatter)
-
-            FechaMsj.text = parsedDate.toString()
+            FechaMsj.text = Constantes.devuelveFechaHora(conversacion.fechaCreacion)
 
             if(conversacion.texto.equals("Documento")){
                 msg.isVisible = false
