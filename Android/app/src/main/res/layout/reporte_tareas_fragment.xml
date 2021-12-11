@@ -64,6 +64,7 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,17 +76,25 @@
             android:id="@+id/txtRangoFechaReportes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rango de fechas"
             android:textSize="16dp"
             />
         <TextView
-            android:id="@+id/txtNombreReportes"
+            android:id="@+id/txtNombreReportes2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mi información"
             android:textSize="16dp"
             />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtNombreReportes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintStart_toStartOf="@id/llMenuReportes"
+        />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
@@ -95,7 +104,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintTop_toBottomOf="@id/txtNombreReportes"
         app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
@@ -104,35 +113,11 @@
         android:layout_width="362sp"
         android:layout_height="238sp"
         android:layout_gravity="center"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintTop_toBottomOf="@id/txtNombreReportes"
         app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
-        />
-
-    <ImageView
-        android:id="@+id/barras"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:src="@drawable/ic_bar_chart"
-        android:visibility="visible"
-        android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
-        />
-
-    <ImageView
-        android:id="@+id/pie"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:src="@drawable/ic_pie_chart"
-        android:visibility="invisible"
-        android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         />
 
     <LinearLayout
@@ -152,7 +137,7 @@
 
             <ImageView
                 android:id="@+id/colorlegend1"
-                android:layout_width="12dp"
+                android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:background="@color/colorPrimary" />
@@ -172,8 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -182,10 +167,10 @@
 
             <ImageView
                 android:id="@+id/colorlegend3"
-                android:layout_width="12dp"
+                android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/colorGray" />
+                android:background="@color/white" />
 
             <TextView
                 android:id="@+id/txtTercerLegend"
@@ -203,16 +188,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llSegundoLegend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="250dp"
-        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         app:layout_constraintEnd_toEndOf="@id/RecyclerLista"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
         app:layout_constraintStart_toEndOf="@+id/llPrimerLegend">
 
         <LinearLayout
@@ -224,7 +208,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/colorSecondary"
+                android:background="@color/colorPrimary"
                 />
             <TextView
                 android:id="@+id/txtSegundoLegend"
@@ -241,8 +225,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -252,7 +236,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/Naranja"
+                android:background="@android:color/holo_orange_dark"
                 />
             <TextView
                 android:id="@+id/txtCuartoLegend"
@@ -270,17 +254,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/llPrimerLegend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ProgressBar
+        android:id="@+id/progressLoadingR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="50dp"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,7 +25,7 @@ interface MessageApi {
     @GET("mensajes/listaGrupos/{id}")
     fun getListGroups(@Path("id") idUser: String):Call<ResponseGroups>
 
-    @PUT("mensajes/actualizarLeido")
-    fun statusUpdate(@Body body:StatusRead):Call<MessageResponse>
+    @PUT("mensajes/actualizarLeido/{id}")
+    fun statusUpdate(@Body body:StatusRead, @Path("id") id:String):Call<MessageResponse>
 
 }

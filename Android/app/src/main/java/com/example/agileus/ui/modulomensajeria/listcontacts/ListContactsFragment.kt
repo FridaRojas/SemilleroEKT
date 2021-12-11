@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
 import com.example.agileus.utils.Constantes
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
+import com.example.agileus.R
 
 
 class ListContactsFragment : Fragment() {
@@ -54,6 +58,7 @@ class ListContactsFragment : Fragment() {
 
         Constantes.id=idUser
 
+
         contactsviewModel.devuelveLista(Constantes.id)
 
 
@@ -61,17 +66,26 @@ class ListContactsFragment : Fragment() {
             binding.recyclerListContacts.adapter = it
             binding.recyclerListContacts.layoutManager = LinearLayoutManager(activity)
         })
+
+
+
+
+
         binding.etSearchContact.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                contactsviewModel.devuelveLista(Constantes.id)
-                contactsviewModel.contactos.observe(viewLifecycleOwner,{
-                    var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
-                    contactsviewModel.filtrarContactos(Constantes.id,filtro)
-                })
+                if(p0.isNullOrEmpty()){
+                    contactsviewModel.devuelveLista(Constantes.id)
+                }else{
+                    var list = contactsviewModel.listaConsumida
+                    var fil = list.filter {  it.nombre.lowercase().contains(p0.toString().lowercase()) }
+                    contactsviewModel.filtrarContactos(Constantes.id, fil)
+
+                }
             }
+
             override fun afterTextChanged(p0: Editable?) {
             }
 

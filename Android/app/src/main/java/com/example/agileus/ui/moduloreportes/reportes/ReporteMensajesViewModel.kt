@@ -28,8 +28,6 @@ class ReporteMensajesViewModel: ViewModel() {
 
     private lateinit var listaConsumida:ArrayList<Estadisticas>
     lateinit var listaHijosConsumida:ArrayList<UserMessageDetailReport>
-    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReport>>()
-
 
     init {
         lista = ReporteMensajesDao()
@@ -40,7 +38,7 @@ class ReporteMensajesViewModel: ViewModel() {
         cargaDatosExitosa.value = false
         cargaOperacionesEstadisticas.value = false
     }
-
+    var listaConsumidaAux = MutableLiveData<ArrayList<Estadisticas>>()
     @RequiresApi(Build.VERSION_CODES.O)
     fun devuelvelistaReporte(listener: ReportesListener, id: String){
         Log.d("Into", "devuelveListaReporte")
@@ -57,36 +55,41 @@ class ReporteMensajesViewModel: ViewModel() {
                     totales.value = lista.obtenerMensajesTotales()
                     leidos.value = lista.obtenerMensajesLeidos()
 
+                    listaConsumidaAux.value = listaConsumida
+
                     if(enviados.value!!.isNotEmpty() && recibidos.value!!.isNotEmpty()
                         && totales.value!!.isNotEmpty() && leidos.value!!.isNotEmpty()){
                         cargaDatosExitosa.value = true
                     }
                 }
 
+                //cargaOperacionesEstadisticas.value = !(cargaOperacionesEstadisticas.value)!!
+                //Log.d("RMVM Boolean", cargaOperacionesEstadisticas.value.toString())
             }catch (ex:Exception){
                 Log.e("Error de conexion MensajesVM", ex.toString())
             }
         }
     }
 
+    var listaEmpleadosAux = MutableLiveData<ArrayList<UserMessageDetailReport>>()
 
-    //funcion que devuelve una lista de empleados
     @RequiresApi(Build.VERSION_CODES.O)
-    fun devuelveListaEmpleados(idUser:String){ //recibe como parámetro el id del ususario actual
+    fun devuelveListaEmpleados(idUser:String){
         Log.d("Into", "devuelveListaEmpleados")
         try {
             viewModelScope.launch {
                 listaHijosConsumida =  withContext(Dispatchers.IO) {
-                    lista.obtenerListaSubContactos(idUser) //llama a la DAO para obtener la lista de empleados recibiendo el id del usuario actual
+                    lista.obtenerListaSubContactos(idUser)
                 }
                 if (listaHijosConsumida.isNotEmpty()){
-                    listaEmpleadosAux.value = listaHijosConsumida  //Si la consulta de datos es exitosa, la lista se almacena en nuestra variable mutable de tipo ArrayList
-                    cargaOperacionesEstadisticas.value = true //Indica que el consumo de datos fue exitoso
+                    listaEmpleadosAux.value = listaHijosConsumida
+                    //cargaOperacionesEstadisticas.value = true
                 }
             }
-        }catch (ex:Exception){ //manejo de excepciones
+        }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
-
+        //cargaOperacionesEstadisticas.value = !(cargaOperacionesEstadisticas.value)!!
     }
+
 }

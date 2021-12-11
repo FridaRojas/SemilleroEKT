@@ -47,6 +47,7 @@
         android:paddingTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/llMenuReportes"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -73,17 +74,25 @@
             android:id="@+id/txtRangoFechaReportes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rango de fechas"
             android:textSize="16dp"
             />
         <TextView
-            android:id="@+id/txtNombreReportes"
+            android:id="@+id/txtNombreReportes2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mi información"
             android:textSize="16dp"
             />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtNombreReportes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintStart_toStartOf="@id/llMenuReportes"
+        />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
@@ -93,7 +102,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintTop_toBottomOf="@id/txtNombreReportes"
         app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
@@ -105,7 +114,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintTop_toBottomOf="@id/txtNombreReportes"
         app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
@@ -170,8 +179,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -200,8 +209,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llSegundoLegend"
@@ -239,8 +248,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -267,8 +276,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -279,6 +288,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="50dp"
+        />
+
+
+    <ProgressBar
+        android:id="@+id/progressLoadingR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

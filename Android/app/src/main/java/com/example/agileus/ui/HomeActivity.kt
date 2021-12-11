@@ -2,7 +2,6 @@ package com.example.agileus.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //Ocultar navegación
         findViewById<BottomNavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
 

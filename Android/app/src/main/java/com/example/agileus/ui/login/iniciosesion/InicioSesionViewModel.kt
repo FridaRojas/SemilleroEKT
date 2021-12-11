@@ -86,5 +86,4 @@ class InicioSesionViewModel : ViewModel() {
     fun cerrarSesion(view: View) {
         preferenciasGlobal.cerrarSesion()
     }
-
 }
