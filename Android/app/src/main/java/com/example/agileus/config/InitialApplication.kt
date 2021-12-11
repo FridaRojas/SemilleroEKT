@@ -18,8 +18,6 @@ class InitialApplication : Application() {
         lateinit var webServiceGlobalTasksPersonas: TasksApi
        lateinit var webServiceGlobalTasksPrueba: TasksApi
         lateinit var webServiceGlobalReportes: ReportesApi
-        lateinit var webServiceGlobalReportesBroadCast: ReportesApi
-        lateinit var webServiceGlobalReportesTareas: ReportesApi
        //lateinit var webServiceGlobalTasksPrueba: TasksApi
 
         //SharedPreferences
@@ -44,8 +42,6 @@ class InitialApplication : Application() {
       //  webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
 
         webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
-        webServiceGlobalReportesBroadCast = ConfigRetrofit().getBroadCastReportes()
-        webServiceGlobalReportesTareas = ConfigRetrofit().getTareasporId()
 
         //SharedPreferences
         preferenciasGlobal = MySharedPreferences(applicationContext)
