@@ -29,7 +29,7 @@ class ReporteMensajesDao {
     lateinit var fecha_actual: ZonedDateTime
 
     var employeeList = ArrayList<Contacts>()
-    var stadisticEmployeesList = ArrayList<UserMessageDetailReport>()
+    //var stadisticEmployeesList = ArrayList<UserMessageDetailReport>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosMensajes(idBusqueda: String): ArrayList<Estadisticas> {
@@ -41,8 +41,8 @@ class ReporteMensajesDao {
         contador_mensajes_recibidos=messageSelectedStadistic.received
         contador_mensajes_totales=messageSelectedStadistic.total
         contador_mensajes_leidos=messageSelectedStadistic.read
-        recibidos_broadcast= messageSelectedStadistic.receivedBroadcast
         enviados_al_B = messageSelectedStadistic.sendBroadcast
+        recibidos_broadcast= messageSelectedStadistic.receivedBroadcast
 
         listaRecycler.add(Estadisticas("Enviados:",contador_mensajes_enviados.toString(),"Recibidos:",contador_mensajes_recibidos.toString(), R.drawable.ic_pie_chart))
         listaRecycler.add(Estadisticas("Enviados al Broadcast:",enviados_al_B.toString(),"Recibidos del Broadcast:",recibidos_broadcast.toString(), R.drawable.ic_bar_chart))
@@ -71,7 +71,7 @@ class ReporteMensajesDao {
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(Constantes.idUsuario, idBusqueda)
             val ResponseMensajes: Response<ResponseConversation> = callRespuesta.execute()
 
-            val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportesBroadCast.getDatosRespuestasBroadcast(Constantes.idUsuario, idBusqueda)
+            val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportes.getDatosRespuestasBroadcast(Constantes.idUsuario, idBusqueda)
             val ResponseMensajesBroadCast: Response<BroadcastByID> = callRespuestaBroadCast.execute()
 
             //Fechas por día, mes, año, custom y default
@@ -120,7 +120,7 @@ class ReporteMensajesDao {
                 try {
                     val objB = ResponseMensajesBroadCast.body()!!
                     Log.d("RMDao obj_B", objB.toString())
-                    lista_B = objB.data!!
+                    lista_B = objB.data
                     broadcastSize = lista_B.size
                 }catch (ex: java.lang.Exception){
                     Log.d("RMDao NoDATABroadcast", ex.toString())
@@ -189,6 +189,7 @@ class ReporteMensajesDao {
     
 @RequiresApi(Build.VERSION_CODES.O)
 fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> {
+    var stadisticEmployeesList = arrayListOf<UserMessageDetailReport>()
         try{
             Log.d("ListaSubConactsm", "id: ${idUser}")
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
@@ -212,13 +213,14 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> 
                     stadisticEmployeesList.forEach {
                         Log.d("LSubConactsDetailm", "id: ${it.id}, Nombre: ${it.name}, " +
                                 "send: ${it.send}, received: ${it.received}, read: ${it.read}, total: ${it.total}, " +
-                                "sendB: ${it.sendBroadcast}, receivedB: ${it.sendBroadcast}")
+                                "sendB: ${it.sendBroadcast}, receivedB: ${it.receivedBroadcast}")
                     }
                 }
 
                 Log.d("ListaSubConactsSIZEM", "SIZE: ${stadisticEmployeesList.size}")
                 }catch (ex: java.lang.Exception){
-                    Log.e("ERROR SubContactosM", "Response "+ex.toString())
+                    Log.e("RMDao, NoLowLevelUsers", "Response "+ex.toString())
+                    stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, "Mi información"))
 
                 }
             }else{
@@ -227,6 +229,7 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> 
 
         }catch (ex:Exception){
             Log.e("ERROR SubContactos", "Error al iniciar servicio")
+            stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, "Mi información"))
         }
         return stadisticEmployeesList
     }

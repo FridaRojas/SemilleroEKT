@@ -5,10 +5,13 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.transition.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -21,17 +24,19 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
-import com.example.agileus.config.InitialApplication
 import com.example.agileus.utils.Constantes.tipo_grafica
 import com.example.agileus.utils.Constantes.vista
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.utils.Constantes.empleadoUsuario
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
+import com.example.agileus.models.UserMessageDetailReport
 import com.example.agileus.providers.ReportesListener
-import com.example.agileus.ui.HomeActivity
-import com.example.agileus.ui.MainActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
+import com.example.agileus.utils.Constantes.GROUP_ID_REPORTES
+import com.example.agileus.utils.Constantes.fechaFinEstadisticas
+import com.example.agileus.utils.Constantes.fechaIniEstadisticas
+import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -41,14 +46,14 @@ import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
+import com.google.android.material.textfield.TextInputLayout
+import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 import javax.xml.datatype.DatatypeConstants.DAYS
-
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener {
@@ -71,6 +76,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private var porcentaje_recibidos:Float = 0.0f
     private var porcentaje_leidos:Float = 0.0f
 
+    private var fechaIniComp = Constantes.fechaIniEstadisticas
+    private var fechaFinComp = Constantes.fechaFinEstadisticas
+    private var userEstComp = Constantes.idUsuarioEstadisticas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,24 +104,27 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
 
-        reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list->
-            Constantes.empleadoUsuario = list
-            //Toast.makeText(context, "PE: ${list}", Toast.LENGTH_LONG).show()
-        })
-        reporteMensajesViewModel.cargaOperacionesEstadisticas.observe(viewLifecycleOwner, Observer{
-            //Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
-            //binding.txtRangoFechaReportes.isVisible = true
-            binding.txtRangoFechaReportes.setText("CargaCompleta")
+        //Primer Grafica al cargar la vista
+        reporteMensajesViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
+            empleadoUsuario = list
+            binding.progressLoadingR.visibility = View.GONE
+            binding.btnFiltroReportes.visibility = View.VISIBLE
+
+            if (idUsuarioEstadisticas == GROUP_ID_REPORTES && empleadoUsuario.size > 1){
+                idUsuarioEstadisticas = Constantes.empleadoUsuario[empleadoUsuario.size - 1].id
+                binding.txtNombreReportes.setText(empleadoUsuario[empleadoUsuario.size - 1].name)
+            }
+            Constantes.empleadoUsuario.forEach {
+                if (Constantes.idUsuarioEstadisticas == it.id){
+                    binding.txtNombreReportes.setText(it.name)
+                    Log.d("idUsuarioEstadisticas", it.id)
+                }
+            }
             cambiarGrafica(tipo_grafica)
-        } )
-
-        reporteMensajesViewModel.devuelveListaEmpleados(InitialApplication.preferenciasGlobal.recuperarIdSesion())
-
+        })
         binding.btnFiltroReportes.setOnClickListener {
-            reporteMensajesViewModel.listaEmpleadosAux.observe(activity as HomeActivity, { list ->
-                Constantes.empleadoUsuario = list
-            })
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
         }
@@ -196,7 +207,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend2.isVisible = true
 
 
-        Constantes.dataEmpleadoUsuario.forEach {
+        Constantes.empleadoUsuario.forEach {
             if (Constantes.idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)
@@ -213,6 +224,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+            //Toast.makeText(context, reporteMensajesViewModel.cargaDatosExitosa.value.toString(), Toast.LENGTH_SHORT).show()
 
             Constantes.dataEmpleadoUsuario.forEach {
                 if (Constantes.idUsuarioEstadisticas == it.id){
@@ -420,13 +432,38 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDateFilterSelected() {
-        cambiarGrafica(tipo_grafica)
-        //Toast.makeText(context, "Opcion:${MySharedPreferences.opcionFiltro}, userEST: ${MySharedPreferences.idUsuarioEstadisticas}, ini: ${MySharedPreferences.fechaIniEstadisticas}, fin: ${MySharedPreferences.fechaFinEstadisticas}", Toast.LENGTH_SHORT).show()
-    }
+        Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
+
+        if(idUsuarioEstadisticas == GROUP_ID_REPORTES){
+            reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
+            fechaIniComp = fechaIniEstadisticas
+            fechaFinComp = fechaFinEstadisticas
+            userEstComp = idUsuarioEstadisticas
+        }else{
+            //binding.progressLoadingR.visibility = View.VISIBLE
+            fechaIniComp = fechaIniEstadisticas
+            fechaFinComp = fechaFinEstadisticas
+            userEstComp = idUsuarioEstadisticas
+            cambiarGrafica(tipo_grafica)
+        }
+
+        /*
+        }else if (fechaIniComp != Constantes.fechaIniEstadisticas || fechaFinComp != Constantes.fechaFinEstadisticas ||
+                userEstComp != Constantes.idUsuarioEstadisticas ){
+            //binding.progressLoadingR.visibility = View.VISIBLE
+            fechaIniComp = fechaIniEstadisticas
+            fechaFinComp = fechaFinEstadisticas
+            userEstComp = idUsuarioEstadisticas
+            cambiarGrafica(tipo_grafica)
+        }else{
+            Toast.makeText(context, "Cargando", Toast.LENGTH_LONG).show()
+        }
+         */
+
+}
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun cambiarGrafica(valor: Int) {
-
         when (valor) {
 
             0 -> {

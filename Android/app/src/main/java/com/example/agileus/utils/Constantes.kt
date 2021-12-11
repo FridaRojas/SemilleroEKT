@@ -55,6 +55,7 @@ object Constantes {
    // val URL_BASE_TAREAS = "http://10.97.3.134:2021/api/"
    // var URL_BASE1 = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/"
  //   var URL_BASE2 = "https://us-central1-demoapirestbroadcast.cloudfunctions.net/app/"
+    val NAME_RECEPTOR = "NAME_RECEPTOR"
 
     val URL_Tasks_Personas="http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/user/findByBossId/"
 
@@ -92,6 +93,9 @@ object Constantes {
     //var idUsuario = "618e8743c613329636a769aa"
     var idUsuario =idUser
     var idUsuarioEstadisticas = idUsuario
+    val GROUP_ID_REPORTES ="TEAM_ID_CREATED_BY_MOD_REPORT"
+    var idUsuario = id
+    var idUsuarioEstadisticas = GROUP_ID_REPORTES
     var opcionFiltro = 0
     var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
     var fechaEstadisticas = Constantes.date.toString()

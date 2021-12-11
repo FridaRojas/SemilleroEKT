@@ -82,21 +82,12 @@ class ReporteTareasViewModel: ViewModel() {
                 listaHijosConsumida =  withContext(Dispatchers.IO) {
                     lista.obtenerListaSubContactos(idUser)
                 }
-                /*
-                listaHijosConsumida.forEach {
-                    Log.e("Hijos", it.nombre)
-                    MySharedPreferences.empleadoUsuario.add(it.id.toInt(), it.nombre)
-                }
-                 */
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida
                 }
                 listaEmpleadosAux.value?.forEach {
                     Log.e("Hijos", it.name)
                 }
-
-                Log.i("AuxList", "${listaEmpleadosAux.value}")
-                Log.i("sizeList", "${listaHijosConsumida.size}")
             }
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())

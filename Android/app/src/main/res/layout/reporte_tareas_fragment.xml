@@ -64,6 +64,7 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,17 +76,25 @@
             android:id="@+id/txtRangoFechaReportes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rango de fechas"
             android:textSize="16dp"
             />
         <TextView
-            android:id="@+id/txtNombreReportes"
+            android:id="@+id/txtNombreReportes2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mi información"
             android:textSize="16dp"
             />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtNombreReportes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintStart_toStartOf="@id/llMenuReportes"
+        />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
@@ -95,7 +104,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintTop_toBottomOf="@id/txtNombreReportes"
         app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
@@ -104,10 +113,10 @@
         android:layout_width="362sp"
         android:layout_height="238sp"
         android:layout_gravity="center"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintTop_toBottomOf="@id/txtNombreReportes"
         app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
@@ -138,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext1"
+                android:text="Pendientes"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -148,8 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -168,7 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext3"
+                android:text="Revisión"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -179,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llSegundoLegend"
@@ -206,7 +215,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext2"
+                android:text="Iniciadas"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -216,8 +225,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0"
+            android:paddingStart="15dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -227,14 +236,14 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:background="@color/colorGray"
+                android:background="@android:color/holo_orange_dark"
                 />
             <TextView
                 android:id="@+id/txtCuartoLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/legendtext4"
+                android:text="Terminadas"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -245,7 +254,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="15dp"
-            android:text="000" />
+            android:text="0" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -255,5 +264,16 @@
         app:layout_constraintTop_toBottomOf="@+id/llPrimerLegend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ProgressBar
+        android:id="@+id/progressLoadingR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFiltroReportes"
+        app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

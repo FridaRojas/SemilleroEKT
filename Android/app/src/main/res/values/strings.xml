@@ -75,11 +75,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
 
-
     <string name="legendtext1">Enviados</string>
     <string name="legendtext2">Recibidos</string>
     <string name="legendtext3">Totales</string>
     <string name="legendtext4">Leidos</string>
+    <string name="Month">Mes</string>
+    <string name="SaveOption">Guardar</string>
 
     <string-array name="months_array">
         <item>Enero</item>
