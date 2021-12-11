@@ -1,6 +1,4 @@
 package com.example.agileus.adapters
-
-
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View

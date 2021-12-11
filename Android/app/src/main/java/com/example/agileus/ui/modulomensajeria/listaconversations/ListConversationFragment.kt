@@ -68,6 +68,10 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
         binding.progressBarChats.isVisible = true
 
+        ChatsViewModel.flagChats.observe(viewLifecycleOwner,{
+            binding.progressBarChats.isVisible = false
+        })
+
         ChatsViewModel.adaptadorGrupos.observe(viewLifecycleOwner, {
             binding.recyclerListGroups.adapter = it
             binding.recyclerListGroups.layoutManager = LinearLayoutManager(activity)

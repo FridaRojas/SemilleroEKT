@@ -21,6 +21,8 @@ class ListConversationViewModel : ViewModel() {
     lateinit var listaConsumidaGrupos:ArrayList<Groups>
     lateinit var listadeChats:ArrayList<Chats>
     var chatsdeUsuario = MutableLiveData<ArrayList<Chats>>()
+    var flagChats = MutableLiveData<Boolean>()
+
 
     init {
         lista = MessageDao()
@@ -54,6 +56,8 @@ class ListConversationViewModel : ViewModel() {
                     if(listadeChats.isNotEmpty()){
                         adaptadorChats.postValue(ChatsAdapter(listadeChats as ArrayList<Chats>))
                         chatsdeUsuario.value = listadeChats!!
+                    }else{
+                        flagChats.value = true
                     }
                 }
             }
