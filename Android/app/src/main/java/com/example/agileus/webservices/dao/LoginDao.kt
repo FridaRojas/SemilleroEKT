@@ -2,6 +2,7 @@ package com.example.agileus.webservices.dao
 
 import android.util.Log
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.*
 import retrofit2.Call
 import com.example.agileus.models.LoginResponse
@@ -16,6 +17,10 @@ class LoginDao {
 
 
     fun iniciarSesion(usuario:Users): Boolean {
+
+        var STATUS: Boolean = false
+        //    val STATUS_BAD_REQUEST = "BAD_REQUEST"
+
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
         //var user:LoginResponse
@@ -51,6 +56,22 @@ class LoginDao {
                     guardarData.tokenAuth = mapa["tokenAuth"].toString()
                     almacenar.data = guardarData
                     status  = true
+
+                    preferenciasGlobal.guardarDatosInicioSesion(
+                        mapa["id"].toString(),
+                        mapa["correo"].toString(),
+                        mapa["numeroEmpleo"].toString(),
+                        mapa["nombre"].toString(),
+                        mapa["nombreRol"].toString(),
+                        mapa["mapa"].toString(),
+                        mapa["curp"].toString(),
+                        mapa["rfc"].toString(),
+                        mapa["tokenAuth"].toString(),
+                        mapa["idgrupo"].toString(),
+                        mapa["idsuperiorInmediato"].toString(),
+                        true
+                    )
+
                 }
                 else {
                     status = false
@@ -66,38 +87,43 @@ class LoginDao {
             //Log.d("status", status.toString())
             return status
     }
-                /*
-    suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
-        var listaUsers = ArrayList<DataPersons>()
-        lateinit var usersListResponse: UserBossResponse
 
-        val callRespuesta = InitialApplication.LoginServiceGlobal.getUsersByBoss(id)
+    suspend fun getUsersByBoss(id: String): ArrayList<Data> {
+        var listaUsers = ArrayList<Data>()
+        lateinit var usersListResponse: LoginResponse
+
+        val callRespuesta = InitialApplication.webServiceGlobalNivel.getUsersByBoss(id)
         var response = callRespuesta?.execute()
 
         try {
             if (response != null) {
+                Log.d("usuario", "${response.body()}")
+                Log.d("usuario", "${response.errorBody()}")
+                Log.d("usuario", "${response.code()}")
+
+
                 if (response.isSuccessful) {
                     //usersList = response.body()!!
                         var status = response.body()!!.status
                     var msj = response.body()!!.msj
-                    if (response.body()!!.status.equals("NOT_FOUND")) {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
-                        listaUsers =  emptyList<DataPersons>() as ArrayList<DataPersons>
+                    if (response.body()!!.status.equals("BAD_REQUEST")) {
+                        //usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
+                        listaUsers =  emptyList<Data>() as ArrayList<Data>
 
                     } else {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as ArrayList<DataPersons>)
-                        listaUsers = usersListResponse.data as ArrayList<DataPersons>
+                        usersListResponse = LoginResponse(status, msj, response.body()!!.data as ArrayList<Data>)
+                        listaUsers = usersListResponse.data as ArrayList<Data>
                     }
                 } else {
-                    listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                    listaUsers = emptyList<Data>() as ArrayList<Data>
                 }
             } else {
-                listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                listaUsers = emptyList<Data>() as ArrayList<Data>
             }
         } catch (e: Exception) {
             Log.e("error", e.toString())
         }
         return listaUsers
-    }*/
+    }
 }
 

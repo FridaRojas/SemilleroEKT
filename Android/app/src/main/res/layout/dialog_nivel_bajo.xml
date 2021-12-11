@@ -14,11 +14,11 @@
         <!-- Nombre de la Tarea -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtNombreTareaD"
+            style="@style/StyleTitleFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="Nombre de la Tarea"
-            style="@style/StyleTitleFragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,99 +26,99 @@
         <!-- Nombre de la Persona -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtNombrePersonaD"
+            style="@style/StyleTextFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="Nombre de la persona"
-            style="@style/StyleTextFragment"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD"/>
+            app:layout_constraintTop_toBottomOf="@+id/txtNombreTareaD" />
 
         <!-- Prioridad -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtPrioridadD"
+            style="@style/StyleTextGray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:layout_marginTop="@dimen/marginFormulario"
+            android:enabled="false"
             android:text="Prioridad"
-            style="@style/StyleTextGray"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtNombrePersonaD"/>
+            app:layout_constraintTop_toBottomOf="@+id/txtNombrePersonaD" />
 
         <!-- Nombre de la Status -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtEstatusD"
+            style="@style/StyleTextGray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:layout_marginTop="@dimen/marginFormulario"
+            android:enabled="false"
             android:text="Status"
-            style="@style/StyleTextGray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD"/>
+            app:layout_constraintTop_toBottomOf="@id/txtNombrePersonaD" />
 
         <!-- Descripción -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtDescripcionD"
+            style="@style/StyleTextFragment"
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:gravity="center_vertical"
             android:imeOptions="actionDone"
-            android:singleLine="false"
             android:inputType="textMultiLine"
             android:overScrollMode="always"
             android:scrollbarStyle="insideInset"
             android:scrollbars="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/marginFormulario"
+            android:singleLine="false"
             android:text="Descripción"
-            style="@style/StyleTextFragment"
-            app:layout_constraintTop_toBottomOf="@id/txtPrioridadD"/>
+            app:layout_constraintTop_toBottomOf="@id/txtPrioridadD" />
 
         <!-- FechaInicio -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtFechaInicioD"
+            style="@style/StyleTextGray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            style="@style/StyleTextGray"
             android:layout_marginTop="@dimen/marginFormulario"
-            android:text="Inicio: 16/01/2021"
             android:drawableLeft="@drawable/iconocalendario"
-            app:layout_constraintStart_toStartOf="parent"
+            android:enabled="false"
+            android:text="Inicio: 16/01/2021"
             app:layout_constraintEnd_toStartOf="@id/txtFechaFinD"
-            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
 
         <!-- FechaFin -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtFechaFinD"
+            style="@style/StyleTextGray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            style="@style/StyleTextGray"
             android:layout_marginTop="@dimen/marginFormulario"
-            android:text="Inicio: 16/01/2021"
             android:drawableLeft="@drawable/iconocalendario"
+            android:enabled="false"
+            android:text="Inicio: 16/01/2021"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/txtFechaInicioD"
-            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD"/>
+            app:layout_constraintTop_toBottomOf="@+id/txtDescripcionD" />
 
         <!-- Observaciones -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtObservacionesD"
+            style="@style/StyleTextFragment"
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:gravity="center_vertical"
             android:imeOptions="actionDone"
-            android:singleLine="false"
             android:inputType="textMultiLine"
             android:overScrollMode="always"
             android:scrollbarStyle="insideInset"
             android:scrollbars="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/marginFormulario"
+            android:singleLine="false"
             android:text="Observaciones"
-            style="@style/StyleTextFragment"
-            app:layout_constraintTop_toBottomOf="@id/txtFechaInicioD"/>
+            app:layout_constraintTop_toBottomOf="@id/txtFechaInicioD" />
 
         <!--
         <com.google.android.material.textview.MaterialTextView
@@ -143,20 +143,31 @@
             android:layout_marginTop="@dimen/marginFormulario"
             android:background="@drawable/rounded_bg"
             android:text="Iniciar Tarea"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnPdf"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtObservacionesD" />
 
         <ImageView
             android:id="@+id/btnPdf"
-            android:src="@drawable/pdf"
             android:layout_width="40dp"
             android:layout_height="50dp"
-            android:layout_marginTop="@dimen/marginFormulario"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/marginFormulario"
+            android:src="@drawable/pdf"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnCambiarEstadoD"
             app:layout_constraintTop_toBottomOf="@id/txtObservacionesD" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

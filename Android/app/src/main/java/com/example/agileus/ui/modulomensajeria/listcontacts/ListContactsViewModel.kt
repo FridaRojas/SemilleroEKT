@@ -22,8 +22,6 @@ class ListContactsViewModel : ViewModel() {
     lateinit var listaConsumida:ArrayList<Contacts>
     var contactos = MutableLiveData<ArrayList<Contacts>>()
 
-
-
     init {
         lista = MessageDao()
     }

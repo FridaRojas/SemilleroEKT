@@ -15,15 +15,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.databinding.FragmentHomeBinding
 import com.example.agileus.models.Chats
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.dialog.DialogoListen
 import com.example.agileus.ui.login.dialog.CerrarSesionDialog
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
-import com.example.agileus.utils.Constantes
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -54,26 +51,30 @@ class ListConversationFragment : Fragment(), DialogoListen {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("usuario pasado", "${InicioSesionFragment.idUser}")
+        var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+        Toast.makeText(activity, "$UserId", Toast.LENGTH_LONG).show()
 
-        ChatsViewModel.devuelveListaGrupos(Constantes.id)
-        ChatsViewModel.devuelveListaChats(Constantes.id)
+        ChatsViewModel.devuelveListaGrupos(UserId)
+        ChatsViewModel.devuelveListaChats(UserId)
 
         var background = object : Thread(){
             override fun run() {
                 while (true){
                     Log.i("chechar","checar")
-                    ChatsViewModel.devuelveListaChats(Constantes.id)
-                    sleep(10000)
+                    ChatsViewModel.devuelveListaChats(UserId)
+                    sleep(20000)
                 }
             }
         }.start()
+
+        binding.progressBarChats.isVisible = true
 
         ChatsViewModel.adaptadorGrupos.observe(viewLifecycleOwner, {
             binding.recyclerListGroups.adapter = it
             binding.recyclerListGroups.layoutManager = LinearLayoutManager(activity)
         })
         ChatsViewModel.adaptadorChats.observe(viewLifecycleOwner, {
+            binding.progressBarChats.isVisible = false
             binding.recyclerListChats.adapter = it
             binding.recyclerListChats.layoutManager = LinearLayoutManager(activity)
         })
@@ -81,6 +82,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
         binding.cerrarSesion.setOnClickListener {
             val newFragment = CerrarSesionDialog(this)
             activity?.supportFragmentManager?.let { it -> newFragment.show(it, "Destino") }
+            preferenciasGlobal.cerrarSesion()
         }
 
 
@@ -101,13 +103,13 @@ class ListConversationFragment : Fragment(), DialogoListen {
                     if (p0.isNullOrEmpty()) {
                         binding.recyclerListGroups.isVisible = true
                         binding.recyclerListGroups.isEnabled = true
-                        ChatsViewModel.devuelveListaChats(Constantes.id)
+                        ChatsViewModel.devuelveListaChats(UserId)
                     } else {
                         var filtrada =ChatsViewModel.listadeChats.filter {
                             it.nombreConversacionRecepto.lowercase()
                                 .contains(p0.toString().lowercase())
                         }
-                        ChatsViewModel.filtrarChats(Constantes.id, filtrada as ArrayList<Chats>)
+                        ChatsViewModel.filtrarChats(UserId, filtrada as ArrayList<Chats>)
                         binding.recyclerListGroups.isVisible = false
                         binding.recyclerListGroups.isEnabled = false
                 }

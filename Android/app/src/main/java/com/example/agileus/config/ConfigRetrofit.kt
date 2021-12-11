@@ -2,18 +2,13 @@ package com.example.agileus.config
 
 
 import com.example.agileus.utils.Constantes.URL_BASE1
-import com.example.agileus.webservices.apis.ReportesApi
-import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_REPORTES
-import com.example.agileus.webservices.apis.LoginApi
 import com.example.agileus.utils.Constantes.URL_BASE2
 import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
-import com.example.agileus.webservices.apis.BuzonApi2
-import com.example.agileus.webservices.apis.MessageApi
-import com.example.agileus.webservices.apis.TasksApi
+import com.example.agileus.webservices.apis.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -34,6 +29,7 @@ class ConfigRetrofit {
             .connectTimeout(tiempo, TimeUnit.SECONDS)
             .readTimeout(tiempo, TimeUnit.SECONDS)
             .writeTimeout(tiempo, TimeUnit.SECONDS)
+            .addInterceptor(MyInterceptor())
             .build()
         return okHttpClient
     }
@@ -41,7 +37,7 @@ class ConfigRetrofit {
     fun obtenerConfiguracionRetofitMessage(): MessageApi {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_MESSAGE)
-            .client(client)
+            .client(cliente(60))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return mRetrofit.create(MessageApi::class.java)
@@ -93,6 +89,16 @@ class ConfigRetrofit {
 //            .client(cliente(5))
             .build()
         return mRetrofit.create(LoginApi::class.java)
+    }
+
+    fun obtenerConfiguracionRetrofitNivel(): NivelApi {
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_BASE_TAREAS)
+            .addConverterFactory(GsonConverterFactory.create())
+//            .client(cliente(5))
+            .build()
+        return mRetrofit.create(NivelApi::class.java)
     }
 
     fun obtenerConfiguracionRetofitPersonasTasks(): TasksApi {
