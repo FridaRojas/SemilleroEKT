@@ -11,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground"
-        >
+        android:background="@color/colorBackground">
 
         <!-- Nombre de la Tarea -->
         <com.google.android.material.textview.MaterialTextView
@@ -130,6 +129,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Observaciones -->
@@ -261,6 +261,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btnCancelarTareaF" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

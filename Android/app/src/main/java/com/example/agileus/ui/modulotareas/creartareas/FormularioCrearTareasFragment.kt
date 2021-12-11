@@ -11,13 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import androidx.navigation.fragment.findNavController
+import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
 import com.example.agileus.models.DataTask
@@ -25,18 +25,19 @@ import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulomensajeria.conversation.UserConversationViewModel
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoConfirmOp
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
-import java.io.File
 
-class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
+class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , DialogoConfirmOpStatusListener{
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
 
@@ -58,10 +59,13 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     lateinit var idPersonaAsignada          : String
 
     var listaN = ArrayList<String>()
-    var idsuperiorInmediato : String = "618d9c26beec342d91d747d6"
+    var idsuperiorInmediato : String = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+    var nombreSesion        : String = InitialApplication.preferenciasGlobal.recuperarNombreSesion()
+    var grupoSesion         : String = InitialApplication.preferenciasGlobal.recuperarIdGrupoSesion()
     var fechaInicio         : String = ""
     var fechaFin            : String = ""
     var urlPost             : String = ""
+    var tituloTarea         : String = ""
     var anioInicio          : Int? = null
     var anioFin             : Int? = null
     var mesInicio           : Int? = null
@@ -100,12 +104,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 val data:Intent?=result.data
                 if(data!= null){
                     try{
-
                         var returnUri = data?.data!!
-                        val uriString = data.toString()
-                        val myFile = File(uriString).name
+                        //val uriString = data.toString()
+                        //val myFile = File(uriString).name
                         binding.btnAdjuntarArchivo.text= "Archivo seleccionado: ${data.data!!.lastPathSegment} "
-                        Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
+                     //   Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
                         e.printStackTrace()
@@ -113,7 +116,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                     }
                 }
             }else{
-                Toast.makeText(context,"No se selecciono archivo",Toast.LENGTH_LONG).show()
+                val newFragment = DialogoAceptar("No se selecciono archivo")
+                newFragment.show(
+                    (activity as HomeActivity).supportFragmentManager,
+                    "missiles"
+                )
             }
         }
         firebaseProvider.obs.observe(viewLifecycleOwner,{
@@ -126,7 +133,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
             nombrePersonaAsignada = (binding.spinnerPersonaAsignada.getEditText() as AutoCompleteTextView).text.toString()
             prioridadAsignada = (binding.spinnerPrioridad.getEditText() as AutoCompleteTextView).text.toString()
 
-            // Obtiene el numero de empleado de la persona seleccionada
+            // Obtiene el id de la persona seleccionada
             listaPersonas.forEach(){
                 if(nombrePersonaAsignada == it.nombre){
                     idPersonaAsignada= it.id
@@ -138,7 +145,12 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 binding.edtDescripcion.text.toString().isNullOrEmpty()||
                 listaPersonas.isNullOrEmpty()||
                     nombrePersonaAsignada.isNullOrEmpty()){
-                    Toast.makeText(activity as HomeActivity, "Faltan datos por agregar", Toast.LENGTH_SHORT).show()
+                val newFragment = DialogoAceptar("Faltan datos por agregar.")
+                newFragment.show(
+                    (activity as HomeActivity).supportFragmentManager,
+                    "missiles"
+                )
+
             }else{
                 // VALIDAR INICIO Y FIN FECHAS
                 if(anioInicio!!<=anioFin!!){
@@ -152,24 +164,30 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                             if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
                                 operacionIsert()
                             }else if(diaInicio!!>diaFin!!){
-                                Toast.makeText( context,
-                                    "Fecha de inicio no puede ser mayor a fecha de vencimiento",
-                                    Toast.LENGTH_SHORT).show()
+                                val newFragment = DialogoAceptar("Fecha de inicio no puede ser mayor a fecha de vencimiento.")
+                                newFragment.show(
+                                    (activity as HomeActivity).supportFragmentManager,
+                                    "missiles"
+                                )
                             }
                         }
 
                         if(mesInicio!!<mesFin!!){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
                             operacionIsert()
                         }else if (mesInicio!!>mesFin!!){
-                            Toast.makeText( context,
-                                "Fecha de inicio no puede ser mayor a fecha de vencimiento",
-                                Toast.LENGTH_SHORT).show()
+                            val newFragment = DialogoAceptar("Fecha de inicio no puede ser mayor a fecha de vencimiento.")
+                            newFragment.show(
+                                (activity as HomeActivity).supportFragmentManager,
+                                "missiles"
+                            )
                         }
                     }
                 }else{
-                    Toast.makeText( context,
-                        "Fecha de inicio no puede ser mayor a fecha de vencimiento",
-                        Toast.LENGTH_SHORT).show()
+                    val newFragment = DialogoAceptar("Fecha de inicio no puede ser mayor a fecha de vencimiento.")
+                    newFragment.show(
+                        (activity as HomeActivity).supportFragmentManager,
+                        "missiles"
+                    )
                 }
                 // VALIDAR INICIO Y FIN FECHAS
             }
@@ -193,32 +211,28 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
     // *** FUNCIONES ***
 
     fun operacionIsert(){
+
         val tarea: Tasks
-        val titulo      = binding.edtAgregaTitulo.text
         val descripcion = binding.edtDescripcion.text
+        tituloTarea = binding.edtAgregaTitulo.text.toString()
 
         tarea = Tasks(
-            // TODO: 08/12/2021  agregar id_grupo desde sharedpreferences id_grupo
-            "619696aa2ae47f99bde6e1e7",                  // id_grupo
+            grupoSesion,                  // id_grupo
             idsuperiorInmediato,
-            "Armando Manzanero",
+            nombreSesion,
             idPersonaAsignada,                  // Numero de empleado de la persona seleccionada
             nombrePersonaAsignada,              // Nombre de subordinado seleccionado
             fechaInicio,                        // Fecha Inicio
             fechaFin,                           // Fecha Fin
-            titulo.toString(),                  // Titulo de la tarea
+            tituloTarea,                        // Titulo de la tarea
             descripcion.toString(),             // Descripcion
             prioridadAsignada,                  // Prioridad
-            "pendiente",
-            urlPost                            // Url de archivo pdf subido a firebase
+            "pendiente",                  // Estatus
+            urlPost                             // Url de archivo pdf subido a firebase
         )
 
-        val newFragment = DialogoConfirmOp (tarea)
+        val newFragment = DialogoConfirmOp (tarea, idsuperiorInmediato, idPersonaAsignada, this)
         newFragment.show(parentFragmentManager, "Confirmacion")
-
-        //Volver al fragment anterior
-        val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
-        findNavController().navigate(action)
 
     }
     fun setUpUiAsignarTareas(){
@@ -242,7 +256,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
                 binding.textSpinPersona.threshold
 
             }else{
-                Toast.makeText(activity , "No se encontraron personas en el grupo", Toast.LENGTH_LONG).show()
+                val newFragment = DialogoAceptar("No se encontraron personas en el grupo")
+                newFragment.show(
+                    (activity as HomeActivity).supportFragmentManager,
+                    "missiles"
+                )
                 listaPersonas= emptyList<DataPersons>() as ArrayList<DataPersons>
             }
         })
@@ -283,6 +301,24 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener {
         fechaFin = fecha.text.toString()
         Log.e("Mensaje", "Fecha Fin $fechaFin")
 
+    }
+    override fun onOpSuccessful() {
+        val newFragment = DialogoAceptar("Tarea $tituloTarea creada")
+        newFragment.show(
+            (activity as HomeActivity).supportFragmentManager,
+            "missiles"
+        )
+        //Volver al fragment anterior
+        val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
+        findNavController().navigate(action)
+
+    }
+    override fun onOpFailure() {
+        val newFragment = DialogoAceptar("No se pudo crear la tarea")
+        newFragment.show(
+            (activity as HomeActivity).supportFragmentManager,
+            "missiles"
+        )
     }
 
     override fun onDestroyView() {

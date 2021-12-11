@@ -2,18 +2,12 @@ package com.example.agileus.config
 
 
 import com.example.agileus.utils.Constantes.URL_BASE1
-import com.example.agileus.webservices.apis.ReportesApi
-import com.example.agileus.webservices.apis.BuzonApi
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.URL_REPORTES
-import com.example.agileus.webservices.apis.LoginApi
 import com.example.agileus.utils.Constantes.URL_BASE2
-import com.example.agileus.utils.Constantes.URL_BASE3
 import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
 import com.example.agileus.utils.Constantes.URL_Tasks_Personas
-import com.example.agileus.webservices.apis.BuzonApi2
-import com.example.agileus.webservices.apis.MessageApi
-import com.example.agileus.webservices.apis.TasksApi
+import com.example.agileus.webservices.apis.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -29,6 +23,7 @@ class ConfigRetrofit {
 
     //val URL_LOGIN = Constantes.URL_LOGIN
     val URL_Login = Constantes.URL_Login
+
     fun cliente(tiempo: Long): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(tiempo, TimeUnit.SECONDS)
@@ -49,6 +44,7 @@ class ConfigRetrofit {
     }
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
+
         /*   var http = OkHttpClient().newBuilder().addInterceptor(
                Interceptor { chain ->
                    val requestBuilder: Request.Builder = chain.request().newBuilder()
@@ -96,6 +92,16 @@ class ConfigRetrofit {
         return mRetrofit.create(LoginApi::class.java)
     }
 
+    fun obtenerConfiguracionRetrofitNivel(): NivelApi {
+
+        var mRetrofit = Retrofit.Builder()
+            .baseUrl(URL_BASE_TAREAS)
+            .addConverterFactory(GsonConverterFactory.create())
+//            .client(cliente(5))
+            .build()
+        return mRetrofit.create(NivelApi::class.java)
+    }
+
     fun obtenerConfiguracionRetofitPersonasTasks(): TasksApi {
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_Tasks_Personas)
@@ -107,21 +113,15 @@ class ConfigRetrofit {
     }
 
 
-    fun obtenerConfiguracionRetofitBuzon(): BuzonApi {
-
-        var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE2)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(cliente(60))
-            .build()
-        return mRetrofit.create(BuzonApi::class.java)
-    }
 
     fun obtenerConfiguracionRetofitBuzon2(): BuzonApi2 {
 
+ //       http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/
         var mRetrofit = Retrofit.Builder()
-            .baseUrl("http://10.97.7.15:3040/api/")
+            .baseUrl("http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/")
             .addConverterFactory(GsonConverterFactory.create())
+  //          .client(client)
+            .client(cliente(60))
             .build()
         return mRetrofit.create(BuzonApi2::class.java)
     }
@@ -159,8 +159,5 @@ class ConfigRetrofit {
         return mRetrofit.create(ReportesApi::class.java)
 
     }
-
-
-
 
     }

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.agileus.R
 import com.example.agileus.models.MensajeBodyBroadcaster
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.BroadcasterListener
@@ -53,7 +54,7 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
-            "Buzon Recibidos Broadcast"
+            "Recibidos Broadcast"
 
 
 
@@ -63,26 +64,17 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
 
         if (control == 1) {
 
-            viewModel.getLista()
+            val lista=viewModel.getLista()
+
             viewModel.devuelvebuzon1()
 
             binding.fab.visibility = View.VISIBLE
                 binding.fab.setOnClickListener {
                 val newFragment =
-                    DialogoSenderBroadcast(this,listafiltrada) //Se le pasa el dialogolistener con This
+                    DialogoSenderBroadcast(this,lista) //Se le pasa el dialogolistener con This
                 activity?.supportFragmentManager?.let { it1 -> newFragment.show(it1, "Destino") }
             }
         }
-
-
-
-            viewModel.adaptador.observe(viewLifecycleOwner, {
-                binding.recyclerBuzon.adapter = it
-                binding.recyclerBuzon.layoutManager = LinearLayoutManager(activity)
-
-            })
-
-
 
         viewModel.adaptador.observe(viewLifecycleOwner, {
             binding.recyclerBuzon.adapter = it
@@ -110,6 +102,7 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 buzon.idReceptor= listaus[i].id
             }
         }
+        viewModel.postMensaje(buzon)
 
 //   var idreceptor=
   Log.d("body","${buzon.fechaCreacion}")
@@ -117,7 +110,6 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
   Log.d("body","${buzon.idEmisor}")
   Log.d("body","${buzon.texto}")
 
-        viewModel.postMensaje(buzon)
 
 
         viewModel.myResponse.observe(viewLifecycleOwner, Observer { response->
@@ -157,7 +149,7 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
                 progressBar.progress = counter
             }
             override fun onFinish() {
-                viewModel.devuelvebuzon1()
+//                viewModel.devuelvebuzon1()
             }
         }.start()
     }
@@ -167,6 +159,8 @@ class BuzonDetallesFragment: Fragment() , BroadcasterListener {
         super.onActivityCreated(savedInstanceState)
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
+        (activity as HomeActivity).ocultarBtnAtras()
+
 
     }
 }

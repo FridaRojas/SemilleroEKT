@@ -4,15 +4,22 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.databinding.ActivityHomeBinding
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragment
 
@@ -47,12 +54,9 @@ class HomeActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
 
-        //PreferenciasGlobal
-        if(InitialApplication.preferenciasGlobal.validaSesionIniciada()){
-            val fragmentInicio = ListConversationFragment()
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.navigation_home, fragmentInicio)
-            transaction.commit()
+
+        if(preferenciasGlobal.validaSesionIniciada()){
+            Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -69,11 +73,11 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun showBottomNav(nav_view:BottomNavigationView) {
+    private fun showBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.VISIBLE
     }
 
-    private fun hideBottomNav(nav_view:BottomNavigationView) {
+    private fun hideBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.GONE
     }
 
@@ -98,5 +102,11 @@ class HomeActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
- }
+
+    //Ocultar flecha atras del inicio de sesión
+    fun ocultarBtnAtras() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+}
 

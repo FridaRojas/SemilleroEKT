@@ -20,11 +20,21 @@ data class BuzonResp(
 )
 
 
-data class BuzonComunicados(
-    @SerializedName("id") val id: String,
-    @SerializedName("conversacionVisible") val conversacionVisible: Boolean,
-    @SerializedName("texto") val texto: String,
-    @SerializedName("nombreConversacionReceptor") val nombreConversacionReceptor: String,
-    @SerializedName("idreceptor") var idreceptor: String,
-    @SerializedName("idemisor") var idemisor: String,
+data class BuzonResp1(
+    val data: List<DataBuzon>,
+    val estatus: String,
+    val mensaje: String
+)
+
+data class DataBuzon(
+
+    @SerializedName ("id") var id: String,
+    @SerializedName ("idEmisor") var idEmisor: String,
+    @SerializedName ("descripcion") var descripcion: String,
+    @SerializedName ("idReceptor") var idReceptor: String,
+    @SerializedName ("nombreEmisor") var nombreEmisor:String,
+    @SerializedName ("asunto")    val asunto: String,
+    @SerializedName ("atendido") var atendido: Boolean,
+    @SerializedName ("idBroadcast")val idBroadcast: Any,
+    @SerializedName ("idGrupo")val idGrupo: String,
 )

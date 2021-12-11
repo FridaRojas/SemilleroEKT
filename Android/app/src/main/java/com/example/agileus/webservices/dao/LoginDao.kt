@@ -26,8 +26,8 @@ class LoginDao {
         //var user:LoginResponse
 
         if (responseDos.isSuccessful) {
-            Log.d("body",responseDos.body().toString())
-            Log.d("body",responseDos.body()?.status.toString())
+            //Log.d("body",responseDos.body().toString())
+            //Log.d("body",responseDos.body()?.status.toString())
             //Log.d("body",responseDos.body().data.toString())
 
             if (responseDos.body() != null) {
@@ -35,7 +35,6 @@ class LoginDao {
                 var guardarData:Data = Data()
 
                 if (almacenar.status == "ACCEPTED") {
-                    STATUS = true
                     var mapa:LinkedTreeMap<String,Any?> = responseDos.body()!!.data as LinkedTreeMap<String, Any?>
                     guardarData.id = mapa["id"].toString()
                     guardarData.idUser = mapa["idUser"].toString()
@@ -55,8 +54,8 @@ class LoginDao {
                     guardarData.idgrupo = mapa["idgrupo"].toString()
                     guardarData.idsuperiorInmediato = mapa["idsuperiorInmediato"].toString()
                     guardarData.tokenAuth = mapa["tokenAuth"].toString()
-
                     almacenar.data = guardarData
+                    status  = true
 
                     preferenciasGlobal.guardarDatosInicioSesion(
                         mapa["id"].toString(),
@@ -69,57 +68,57 @@ class LoginDao {
                         mapa["rfc"].toString(),
                         mapa["tokenAuth"].toString(),
                         mapa["idgrupo"].toString(),
-                        mapa["idsuperiorInmediato"].toString()
+                        mapa["idsuperiorInmediato"].toString(),
+                        true
                     )
 
                 }
-
                 else {
-                    STATUS = false
-
+                    status = false
                 }
             }
             else {
-                STATUS = false
-
+                status = false
             }
         }
         else{
-            STATUS = false
+            status = false
         }
-
-            status = STATUS
-
-            return STATUS
-
+            //Log.d("status", status.toString())
+            return status
     }
 
-    suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
-        var listaUsers = ArrayList<DataPersons>()
-        lateinit var usersListResponse: UserBossResponse
+    suspend fun getUsersByBoss(id: String): ArrayList<Data> {
+        var listaUsers = ArrayList<Data>()
+        lateinit var usersListResponse: LoginResponse
 
-        val callRespuesta = InitialApplication.LoginServiceGlobal.getUsersByBoss(id)
+        val callRespuesta = InitialApplication.webServiceGlobalNivel.getUsersByBoss(id)
         var response = callRespuesta?.execute()
 
         try {
             if (response != null) {
+                Log.d("usuario", "${response.body()}")
+                Log.d("usuario", "${response.errorBody()}")
+                Log.d("usuario", "${response.code()}")
+
+
                 if (response.isSuccessful) {
                     //usersList = response.body()!!
                         var status = response.body()!!.status
                     var msj = response.body()!!.msj
-                    if (response.body()!!.status.equals("NOT_FOUND")) {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
-                        listaUsers =  emptyList<DataPersons>() as ArrayList<DataPersons>
+                    if (response.body()!!.status.equals("BAD_REQUEST")) {
+                        //usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
+                        listaUsers =  emptyList<Data>() as ArrayList<Data>
 
                     } else {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as ArrayList<DataPersons>)
-                        listaUsers = usersListResponse.data as ArrayList<DataPersons>
+                        usersListResponse = LoginResponse(status, msj, response.body()!!.data as ArrayList<Data>)
+                        listaUsers = usersListResponse.data as ArrayList<Data>
                     }
                 } else {
-                    listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                    listaUsers = emptyList<Data>() as ArrayList<Data>
                 }
             } else {
-                listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                listaUsers = emptyList<Data>() as ArrayList<Data>
             }
         } catch (e: Exception) {
             Log.e("error", e.toString())

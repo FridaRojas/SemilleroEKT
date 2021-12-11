@@ -10,9 +10,8 @@ class MySharedPreferences(contexto: Context) {
         val SESSION_TOKEN = "TOKEN"
         val NIVEL_USER = "NIVEL_USER"
 
-        val CORREO_KEY = "CORREO_KEY"
-        val PASSWORD_KEY = "PASWORD_KEY"
-
+        val SESSION_KEY = "SESSION_KEY"
+        val NIVEL_HIJOS = "NIVEL_HIJOS"
         //Login
         val ID_SESSION = "ID_USER"
         val CORREO_SESSION = "CORREO_SESSION"
@@ -39,7 +38,7 @@ class MySharedPreferences(contexto: Context) {
         id : String,  correo: String, numEmpleado:String,
         nombre:String, nombreRol:String,
         telefono:String, curp:String, rfc:String, tokenAuth:String,
-        idGrupo:String, idSuperior:String
+        idGrupo:String, idSuperior:String, sessionKey:Boolean
     ){
         with(sharedPreferences.edit()) {
             putString(ID_SESSION, id)
@@ -53,12 +52,16 @@ class MySharedPreferences(contexto: Context) {
             putString(TOKEN_AUTH_KEY, tokenAuth)
             putString(ID_GRUPO_SESSION, idGrupo)
             putString(  ID_SUPERIOR_INMEDIATO, idSuperior)
+            putBoolean(SESSION_KEY, sessionKey)
             commit()
         }
     }
 
     fun recuperarNombreSesion() : String{
         return sharedPreferences.getString(NOMBRE_SESSION, "")!!
+    }
+    fun recuperarRol() : String{
+        return sharedPreferences.getString(NOMBRE_ROL_SESSION, "")!!
     }
     fun recuperarTokenAuth() : String{
         return sharedPreferences.getString(TOKEN_AUTH_KEY, "")!!
@@ -77,11 +80,11 @@ class MySharedPreferences(contexto: Context) {
     }
 
     fun validaSesionIniciada(): Boolean{
-        return sharedPreferences.getBoolean(SESSION_TOKEN, false)
+        return sharedPreferences.getBoolean(SESSION_KEY, false)
     }
 
     fun cerrarSesion(){
-        sharedPreferences.edit().clear()
+        sharedPreferences.edit().clear().commit()
     }
 
     //Token Notificaciones

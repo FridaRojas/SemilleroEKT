@@ -28,7 +28,7 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.agileus.ui.modulotareas.listatareas.TaskFragment"
         android:label="@string/title_tareas_fragment"
-        tools:layout="@layout/fragment_task" >
+        tools:layout="@layout/fragment_task">
         <action
             android:id="@+id/action_navigation_dashboard_to_formularioCrearTareasFragment"
             app:destination="@id/formularioCrearTareasFragment" />

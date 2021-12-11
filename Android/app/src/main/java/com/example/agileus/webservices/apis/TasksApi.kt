@@ -59,7 +59,7 @@ interface TasksApi {
     fun updateStatus(
         @Path("idTarea") idTarea: String,
         @Path("estatus") estatus: String
-    ): Call<String>
+    ): Call<DataTask>
 
     //Obtener las tareas que asigno el usuario por id, status
     //@GET("tareas/obtenerTareasQueAsignoPorIdYEstatus/{datos}")
