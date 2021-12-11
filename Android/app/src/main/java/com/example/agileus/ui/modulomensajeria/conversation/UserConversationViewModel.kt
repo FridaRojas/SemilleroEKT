@@ -20,7 +20,7 @@ class UserConversationViewModel : ViewModel() {
     lateinit var RespuestaMessage: MessageResponse
     var responseM = MutableLiveData<MessageResponse>()
     var actualizar = MutableLiveData<ArrayList<Conversation>>()
-    var bandera = false
+    var bandera = MutableLiveData<Boolean>()
 
     init {
         message = MessageDao()
@@ -38,7 +38,7 @@ class UserConversationViewModel : ViewModel() {
                         actualizar.value = listaConsumida
                     }
                     else{
-                        bandera = true
+                        bandera.value = true
 
                     }
                 }else{

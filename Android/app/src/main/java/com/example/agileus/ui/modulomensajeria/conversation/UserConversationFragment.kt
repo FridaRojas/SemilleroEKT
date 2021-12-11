@@ -148,9 +148,10 @@ class UserConversationFragment : Fragment() {
         })
 
         /////////
-        if(viewModel.bandera == true){
-            binding.progressConversation.isVisible = true
-        }
+        viewModel.bandera.observe(viewLifecycleOwner,{
+            binding.progressConversation.isVisible = false
+        })
+
 
         resultLauncherArchivo =registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if(result.resultCode== Activity.RESULT_OK){

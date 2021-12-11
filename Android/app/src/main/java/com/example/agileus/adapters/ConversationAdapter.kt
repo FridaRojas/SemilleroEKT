@@ -65,6 +65,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         lateinit var documento: TextView
         lateinit var myView :View
         lateinit var txtStatusLeido:TextView
+        lateinit var id_Emisor : TextView
         var context = view.context
 
         init {
@@ -73,11 +74,19 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
             FechaMsj = view.findViewById(R.id.txtFecha)
             myView = view.findViewById(R.id.idMsj)
             txtStatusLeido = view.findViewById(R.id.txtStatusLeido)
+            id_Emisor = view.findViewById(R.id.id_Emisor)
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
+            id_Emisor.text = conversacion.nombreConversacionReceptor
+
+            if(conversacion.idconversacion.length > 50){
+                id_Emisor.isVisible = true
+            }else{
+                id_Emisor.isVisible = false
+            }
 
             if(conversacion.statusLeido == true && conversacion.idemisor.equals(preferenciasGlobal.recuperarIdSesion())){
                 txtStatusLeido.isVisible = true

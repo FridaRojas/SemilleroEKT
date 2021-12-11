@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+
   <TextView
       android:id="@+id/id_Emisor"
       android:layout_width="wrap_content"
@@ -13,7 +14,7 @@
       android:text="Nombre del emisor"
       android:textColor="@color/black"
       android:textSize="@dimen/paddingGeneral"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
   </TextView>
   <TextView
@@ -22,11 +23,11 @@
       android:layout_height="wrap_content"
       android:text="Mensaje"
       android:background="@drawable/rounded_bg"
-      android:backgroundTint="@color/colorSecondary"
-      android:textColor="@color/white"
+      android:backgroundTint="@color/colorBackground"
+      android:textColor="@color/black"
       android:textSize="16sp"
       android:padding="16sp"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/id_Emisor">
   </TextView>
 
@@ -37,38 +38,36 @@
       android:text="Documento"
       android:drawableStart="@drawable/icon_file"
       android:background="@drawable/rounded_bg"
-      android:backgroundTint="@color/colorSecondary"
-      android:textColor="@color/white"
+      android:backgroundTint="@color/colorBackground"
+      android:textColor="@color/black"
       android:textSize="16sp"
       android:padding="16sp"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/msg"/>
+
 
   <TextView
       android:id="@+id/txtFecha"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="100dp"
+      android:layout_marginTop="4dp"
       android:text="Fecha"
       android:textColor="@color/black"
       android:textSize="10sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/txtArchivoadjunto"
-      android:layout_marginLeft="@dimen/margin_end_general"/>
-
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/txtArchivoadjunto" />
 
   <TextView
       android:id="@+id/txtStatusLeido"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginStart="100dp"
       android:text="Leído"
       android:textColor="@color/black"
       android:textSize="10sp"
-      app:layout_constraintEnd_toStartOf="@id/txtFecha"
-      android:layout_marginEnd="@dimen/margin_end_general"
-      app:layout_constraintTop_toBottomOf="@id/txtArchivoadjunto"/>
-
-
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/txtFecha"
+      app:layout_constraintTop_toBottomOf="@id/txtArchivoadjunto"
+      app:layout_constraintVertical_bias="1.0"
+      android:layout_marginStart="@dimen/paddingGeneral"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
