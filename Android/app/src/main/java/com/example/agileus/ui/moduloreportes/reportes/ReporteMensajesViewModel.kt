@@ -81,11 +81,12 @@ class ReporteMensajesViewModel: ViewModel() {
                 }
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida  //Si la consulta de datos es exitosa, la lista se almacena en nuestra variable mutable de tipo ArrayList
+                    cargaOperacionesEstadisticas.value = true //Indica que el consumo de datos fue exitoso
                 }
             }
         }catch (ex:Exception){ //manejo de excepciones
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
-        cargaOperacionesEstadisticas.value = true //Indica que el consumo de datos fue exitoso
+
     }
 }

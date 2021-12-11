@@ -91,6 +91,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         Toast.makeText(context, "COPE: ${reporteMensajesViewModel.cargaOperacionesEstadisticas.value}", Toast.LENGTH_LONG).show()
             binding.txtRangoFechaReportes.isVisible = true
             binding.txtRangoFechaReportes.setText("CargaCompleta")
+            cambiarGrafica(0)
         })
 
         reporteMensajesViewModel.devuelveListaEmpleados(Constantes.id)
@@ -116,11 +117,15 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
             when (vista) {
                 0 -> {
-                    cambiarGrafica(1)
+                    cambiarGrafica(2)
+                    //val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+                    //initBarChartDesgloseMensajes(sortedList)//inicializacion de la grafica de barras
                     vista=0
                 }
                 1 -> {
-                    cambiarGrafica(2)
+                    cambiarGrafica(3)
+                    //val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+                    //initBarChartDesgloseBroadcast(sortedList)//inicializacion de la grafica de barras
                     vista=1
                 }
             }
@@ -144,7 +149,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         }
 
-            cambiarGrafica(tipo_grafica)
+            //cambiarGrafica(tipo_grafica)
 }
 
     fun mostrarRecyclerView(){
@@ -191,9 +196,61 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    override fun cambiarGrafica(valor: Int) {
+
+        when (valor) {
+
+            0 -> {
+                mostrargraficaPie()
+                binding.pieChart.isVisible = true
+                binding.barChart.isVisible = false
+                vista = 0
+                tipo_grafica = 0
+            }
+            1 -> {
+                binding.pieChart.isVisible = false
+                binding.barChart.isVisible = true
+                val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+                initBarChartBroadcastGrupal(sortedList)//inicializacion de la grafica de barras
+                vista = 1
+                tipo_grafica = 1
+            }
+
+            2 -> {
+                binding.pieChart.isVisible = false
+                binding.barChart.isVisible = true
+                val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+                initBarChartDesgloseMensajes(sortedList)//inicializacion de la grafica de barras*/
+                vista = 1
+                tipo_grafica = 1
+            }
+
+
+            3 -> {
+                binding.pieChart.isVisible = false
+                binding.barChart.isVisible = true
+                val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+                initBarChartDesgloseBroadcast(sortedList)//inicializacion de la grafica de barras*/
+                vista = 1
+                tipo_grafica = 1
+            }
+
+            else->{
+
+                mostrargraficaPie()
+                binding.pieChart.isVisible = true
+                binding.barChart.isVisible = false
+                vista = 0
+                tipo_grafica = 0
+
+            }
+        }
+    }
+
+    /*@RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras(valor:Int) {
 
-        barChart = binding.barChart
+        /*barChart = binding.barChart
 
         binding.txtPrimerLegend.text = "Enviados"
         binding.txtSegundoLegend.text = "Recibidos"
@@ -202,16 +259,416 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend3.isVisible=false
         binding.colorlegend4.isVisible=false
         binding.txtDataTercerLegend.isVisible=false
-        binding.txtDataCuartoLegend.isVisible=false
+        binding.txtDataCuartoLegend.isVisible=false*/
 
         obtenerDatos()
         mostrarRecyclerView()
-
         val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
 
-        initBarChart(sortedList,valor)//inicializacion de la grafica de barras
+        /*empleadoUsuario.forEach {
+
+            Log.d("nombre",it.name)
+            Log.d("enviados",it.send.toString())
+            Log.d("recibidos",it.received.toString())
+            Log.d("recibidos",it.read.toString())
+            Log.d("enviados al Broadcast",it.sendBroadcast.toString())
+            Log.d("recibidos del Broadcast",it.receivedBroadcast.toString())
+        }*/
+
+
+        if(valor==1)
+        initBarChartDesgloseMensajes(sortedList)//inicializacion de la grafica de barras
+        if(valor==2)
+        initBarChartBroadcastGrupal(sortedList)//inicializacion de la grafica de barras
+        if(valor==3)
+        initBarChartDesgloseBroadcast(sortedList)//inicializacion de la grafica de barras
+
         // y se agregan los valores porcentuales para su visualización
+    }*/
+
+    private fun initBarChartBroadcastGrupal(listaUsuarios: ArrayList<UserMessageDetailReport>) {
+
+        barChart = binding.barChart
+
+        val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+        //var yValueGroup3 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+        var barDataSet3: BarDataSet
+
+        var contador=0
+
+            listaUsuarios.forEach {
+                if(it.name == "Mi equipo"){
+                    xAxisValues.add(it.name)
+                    contador += 1
+                    yValueGroup1.add((BarEntry(contador.toFloat(), it.sendBroadcast.toFloat())))
+                    yValueGroup2.add((BarEntry(contador.toFloat(), it.receivedBroadcast.toFloat())))
+                    //yValueGroup3.add((BarEntry(contador.toFloat(), it.read.toFloat())))
+                }
+            }
+
+        //xAxisValues.add("Usuario 1")
+        //xAxisValues.add("Usuario 2")
+        //xAxisValues.add("Usuario 3")
+        //xAxisValues.add("Usuario 4")
+
+
+        //yValueGroup1.add((BarEntry(1f, enviados)))
+        //yValueGroup2.add((BarEntry(1f, recibidos)))
+        //yValueGroup1.add((BarEntry(2f, enviados)))
+        //yValueGroup2.add((BarEntry(2f, recibidos)))
+        //yValueGroup1.add((BarEntry(3f, enviados)))
+        //yValueGroup2.add((BarEntry(3f, recibidos)))
+        //yValueGroup1.add((BarEntry(4f, enviados)))
+        //yValueGroup2.add((BarEntry(4f, recibidos)))
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        /*barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3.setColor(Color.YELLOW)
+        barDataSet3.setDrawIcons(false)
+        barDataSet3.setDrawValues(false)*/
+
+        //var barData = BarData(barDataSet1, barDataSet2, barDataSet3)
+
+        var barData = BarData(barDataSet1, barDataSet2)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.data = barData
+        barChartView.barData.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0f
+        barChartView.xAxis.axisMaximum = 2f
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.data.isHighlightEnabled = true
+        barChartView.invalidate()
+
+        //add animation
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.setLabelCount(contador)
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(2f)
+        barChartView.setVisibleXRangeMinimum(1f)
+        barChartView.isDragEnabled = true
+
+        //Y-axis
+        barChartView.axisRight.isEnabled = false
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.axisLeft
+        leftAxis.valueFormatter = LargeValueFormatter()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 1f
+        leftAxis.axisMinimum = 0f
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 2f)
+
     }
+
+    private fun initBarChartDesgloseMensajes(listaUsuarios: ArrayList<UserMessageDetailReport>) {
+
+        barChart = binding.barChart
+
+        val barChartView = binding.barChart
+
+        binding.colorlegend3.isVisible=true
+        binding.colorlegend4.isVisible=true
+        binding.txtDataTercerLegend.isVisible=true
+        binding.txtDataCuartoLegend.isVisible=true
+        binding.txtPrimerLegend.text = "Enviados"
+        binding.txtSegundoLegend.text = "Recibidos"
+        binding.txtTercerLegend.text = "Totales"
+        binding.txtCuartoLegend.text = "Leídos"
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+        var yValueGroup3 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+        var barDataSet3: BarDataSet
+
+        var contador=0
+
+
+            listaUsuarios.forEach {
+                if ((it.name != "Mi equipo") && (it.name != "Mi información")) {
+                    xAxisValues.add(it.name)
+                    contador += 1
+                    yValueGroup1.add((BarEntry(contador.toFloat(), it.send.toFloat())))
+                    yValueGroup2.add((BarEntry(contador.toFloat(), it.received.toFloat())))
+                    yValueGroup3.add((BarEntry(contador.toFloat(), it.read.toFloat())))
+                }
+            }
+
+
+        Log.d("contador",contador.toString())
+
+        //xAxisValues.add("Usuario 1")
+        //xAxisValues.add("Usuario 2")
+        //xAxisValues.add("Usuario 3")
+        //xAxisValues.add("Usuario 4")
+
+
+        //yValueGroup1.add((BarEntry(1f, enviados)))
+        //yValueGroup2.add((BarEntry(1f, recibidos)))
+        //yValueGroup1.add((BarEntry(2f, enviados)))
+        //yValueGroup2.add((BarEntry(2f, recibidos)))
+        //yValueGroup1.add((BarEntry(3f, enviados)))
+        //yValueGroup2.add((BarEntry(3f, recibidos)))
+        //yValueGroup1.add((BarEntry(4f, enviados)))
+        //yValueGroup2.add((BarEntry(4f, recibidos)))
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3.setColor(Color.YELLOW)
+        barDataSet3.setDrawIcons(false)
+        barDataSet3.setDrawValues(false)
+
+        var barData = BarData(barDataSet1, barDataSet2, barDataSet3)
+
+        //var barData = BarData(barDataSet1, barDataSet2)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.data = barData
+        barChartView.barData.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0f
+        barChartView.xAxis.axisMaximum = 2f
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.data.isHighlightEnabled = true
+        barChartView.invalidate()
+
+        //add animation
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.setLabelCount(contador)
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(2f)
+        barChartView.setVisibleXRangeMinimum(1f)
+        barChartView.isDragEnabled = true
+
+        //Y-axis
+        barChartView.axisRight.isEnabled = false
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.axisLeft
+        leftAxis.valueFormatter = LargeValueFormatter()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 1f
+        leftAxis.axisMinimum = 0f
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 2f)
+
+    }
+
+    private fun initBarChartDesgloseBroadcast(listaUsuarios: ArrayList<UserMessageDetailReport>) {
+
+        barChart = binding.barChart
+
+        val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+        var yValueGroup3 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+        var barDataSet3: BarDataSet
+
+        var contador=0
+
+
+            listaUsuarios.forEach {
+                if ((it.name != "Mi equipo") && (it.name != "Mi información")) {
+                    xAxisValues.add(it.name)
+                    contador += 1
+                    yValueGroup1.add((BarEntry(contador.toFloat(), it.sendBroadcast.toFloat())))
+                    yValueGroup2.add((BarEntry(contador.toFloat(), it.receivedBroadcast.toFloat())))
+                    //yValueGroup3.add((BarEntry(contador.toFloat(), it.read.toFloat())))
+                }
+            }
+
+
+        Log.d("contador",contador.toString())
+
+        //xAxisValues.add("Usuario 1")
+        //xAxisValues.add("Usuario 2")
+        //xAxisValues.add("Usuario 3")
+        //xAxisValues.add("Usuario 4")
+
+
+        //yValueGroup1.add((BarEntry(1f, enviados)))
+        //yValueGroup2.add((BarEntry(1f, recibidos)))
+        //yValueGroup1.add((BarEntry(2f, enviados)))
+        //yValueGroup2.add((BarEntry(2f, recibidos)))
+        //yValueGroup1.add((BarEntry(3f, enviados)))
+        //yValueGroup2.add((BarEntry(3f, recibidos)))
+        //yValueGroup1.add((BarEntry(4f, enviados)))
+        //yValueGroup2.add((BarEntry(4f, recibidos)))
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        /*barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3.setColor(Color.YELLOW)
+        barDataSet3.setDrawIcons(false)
+        barDataSet3.setDrawValues(false)*/
+
+        //var barData = BarData(barDataSet1, barDataSet2, barDataSet3)
+
+        var barData = BarData(barDataSet1, barDataSet2)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.data = barData
+        barChartView.barData.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0f
+        barChartView.xAxis.axisMaximum = 2f
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.data.isHighlightEnabled = true
+        barChartView.invalidate()
+
+        //add animation
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.setLabelCount(contador)
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(2f)
+        barChartView.setVisibleXRangeMinimum(1f)
+        barChartView.isDragEnabled = true
+
+        //Y-axis
+        barChartView.axisRight.isEnabled = false
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.axisLeft
+        leftAxis.valueFormatter = LargeValueFormatter()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 1f
+        leftAxis.axisMinimum = 0f
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 2f)
+
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
@@ -432,46 +889,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChartView.data = barData
         barChartView.setVisibleXRange(1f, 2f)
 
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun cambiarGrafica(valor: Int) {
-
-        when (valor) {
-
-            0 -> {
-                mostrargraficaPie()
-                binding.pieChart.isVisible = true
-                binding.barChart.isVisible = false
-                vista = 0
-                tipo_grafica = 0
-            }
-            1 -> {
-                mostrargraficaBarras(0)
-                binding.pieChart.isVisible = false
-                binding.barChart.isVisible = true
-                vista = 1
-                tipo_grafica = 1
-            }
-
-            2 -> {
-                mostrargraficaBarras(1)
-                binding.pieChart.isVisible = false
-                binding.barChart.isVisible = true
-                vista = 1
-                tipo_grafica = 1
-            }
-
-            else->{
-
-                mostrargraficaPie()
-                binding.pieChart.isVisible = true
-                binding.barChart.isVisible = false
-                vista = 0
-                tipo_grafica = 0
-
-            }
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
