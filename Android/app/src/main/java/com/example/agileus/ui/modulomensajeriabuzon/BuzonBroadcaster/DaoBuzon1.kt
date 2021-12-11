@@ -17,7 +17,7 @@ import retrofit2.Response
 class DaoBuzon1() {
 
     var token = InitialApplication.preferenciasGlobal.recuperarTokenAuth()
-    var idUser = InitialApplication.preferenciasGlobal.recuperarTokenAuth()
+    var idUser = InitialApplication.preferenciasGlobal.recuperarIdSesion()
 
 
 //    lateinit var listaBrd1: List<Chats1>

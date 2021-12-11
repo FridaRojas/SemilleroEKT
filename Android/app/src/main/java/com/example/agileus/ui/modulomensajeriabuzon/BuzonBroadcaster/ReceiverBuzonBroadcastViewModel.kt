@@ -62,7 +62,7 @@ class ReceiverBuzonBroadcastViewModel : ViewModel() {
         try {
              viewModelScope.launch {
                  var  listar= withContext(Dispatchers.IO) {
-                     lista1.recuperarMensajesBrd1(MySharedPreferences.ID_SESSION)
+                     lista1.recuperarMensajesBrd1(broadlist)
                 }
            Log.d("lista", listar.toString())
                 for (i in 0..listafiltrada.size - 1)
@@ -79,7 +79,7 @@ class ReceiverBuzonBroadcastViewModel : ViewModel() {
 //////////////vamos bien
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                lista1.recuperarEnviadosBrd(MySharedPreferences.ID_SESSION, sala)
+                lista1.recuperarEnviadosBrd(broadlist, sala)
             }
 
             memsajes2.forEach {
