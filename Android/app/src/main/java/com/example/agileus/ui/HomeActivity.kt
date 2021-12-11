@@ -4,24 +4,31 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.databinding.ActivityHomeBinding
+import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationFragment
 
 class HomeActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeBinding
+    lateinit var fragmentSeleccionado : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,24 +59,47 @@ class HomeActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
 
+
+        if(preferenciasGlobal.validaSesionIniciada()){
+            Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
+        }
+
+
         //Ocultar BottomNavigationBar en pantallas específicas
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.formularioCrearTareasFragment -> hideBottomNav(navView)
                 R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
+                R.id.listContactsFragment -> hideBottomNav(navView)
                 else -> showBottomNav(navView)
             }
         }
 
     }
 
-    private fun showBottomNav(nav_view:BottomNavigationView) {
+    private fun showBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.VISIBLE
     }
 
-    private fun hideBottomNav(nav_view:BottomNavigationView) {
+    private fun hideBottomNav(nav_view: BottomNavigationView) {
         nav_view.visibility = View.GONE
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(fragmentSeleccionado){
+            "crearTarea" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
+            }
+            "verDetalleTarea" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
+            }
+            "Contactos" -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_home)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     //Ocultar flecha atras del inicio de sesión
     fun ocultarBtnAtras() {

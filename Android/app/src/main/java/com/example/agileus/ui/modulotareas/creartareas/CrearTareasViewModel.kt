@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,10 +39,10 @@ class CrearTareasViewModel: ViewModel() {
         }
     }
 
-    fun  postTarea(t:Tasks){
+    fun  postTarea(t: Tasks,  listener: DialogoConfirmOpStatusListener){
         try {
             viewModelScope.launch {
-                postTarea.postTasks(t)
+                postTarea.postTasks(t, listener)
                 Log.e("Mensaje viewModel", "$t")
             }
         }

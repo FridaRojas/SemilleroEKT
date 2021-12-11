@@ -134,11 +134,11 @@ class MessageDao {
                     if(responseChats.data != null){
                         listaChats = responseChats.data
                     }else{
-
+                        Log.e("ErrorRecuperarListadeChats", "El data es nulo")
                     }
 
                 }else{
-
+                    Log.e("Error", "El data es nulo")
                 }
             }else{
 
@@ -151,9 +151,9 @@ class MessageDao {
         return listaChats
     }
 
-    suspend fun actualizarStatus(statusRead: StatusRead): MessageResponse {
+    suspend fun actualizarStatus(idUser:String,statusRead: StatusRead): MessageResponse {
         try{
-            var callRespuesta = InitialApplication.webServiceMessage.statusUpdate(statusRead)
+            var callRespuesta = InitialApplication.webServiceMessage.statusUpdate(statusRead,idUser)
             var ResponseDos: Response<MessageResponse> = callRespuesta.execute()
 
             if(ResponseDos.isSuccessful){

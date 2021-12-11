@@ -3,10 +3,8 @@ package com.example.agileus.ui.login.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.R
 
 
 class CerrarSesionDialog (val objeto : DialogoListen) : DialogFragment() {

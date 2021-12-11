@@ -10,8 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.databinding.ListContactsFragmentBinding
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
-import com.example.agileus.utils.Constantes
+import androidx.core.view.isVisible
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.ui.HomeActivity
 
 
 class ListContactsFragment : Fragment() {
@@ -38,40 +39,34 @@ class ListContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //    Toast.makeText(activity, "Usuario BRD", Toast.LENGTH_LONG).show()
-        //llamar a la barra de acción
-        //var actionBar = getSupportActionBar()
-        /*
-        var actionBar = getSupportActionBar()
+        var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+        binding.progressBarContacts.isVisible = true
 
-        // mostrar el botón de retroceso en la barra de acción
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false)
-        }
+        (activity as HomeActivity).fragmentSeleccionado = "Contactos"
 
-
-         */
-
-        Constantes.id=idUser
-
-        contactsviewModel.devuelveLista(Constantes.id)
+        contactsviewModel.devuelveLista(UserId)
 
 
         contactsviewModel.adaptador.observe(viewLifecycleOwner, {
+            binding.progressBarContacts.isVisible = false
             binding.recyclerListContacts.adapter = it
             binding.recyclerListContacts.layoutManager = LinearLayoutManager(activity)
         })
+
         binding.etSearchContact.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                contactsviewModel.devuelveLista(Constantes.id)
-                contactsviewModel.contactos.observe(viewLifecycleOwner,{
-                    var filtro = it.filter { it.nombre.lowercase().contains(p0.toString().lowercase()) }
-                    contactsviewModel.filtrarContactos(Constantes.id,filtro)
-                })
+                if(p0.isNullOrEmpty()){
+                    contactsviewModel.devuelveLista(UserId)
+                }else{
+                    var fil = contactsviewModel.listaConsumida.filter {  it.nombre.lowercase().contains(p0.toString().lowercase()) }
+                    contactsviewModel.filtrarContactos(UserId, fil)
+
+                }
             }
+
             override fun afterTextChanged(p0: Editable?) {
             }
 

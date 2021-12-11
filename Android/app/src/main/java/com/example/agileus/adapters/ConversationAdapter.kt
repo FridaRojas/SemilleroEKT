@@ -1,9 +1,8 @@
 package com.example.agileus.adapters
 
-import android.app.DownloadManager
-import android.content.Context
-import android.net.Uri
+
 import android.os.Build
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +11,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
-import com.example.agileus.utils.Constantes
-import java.io.File
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.time.Duration.Companion.hours
@@ -59,7 +57,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
 
     override fun getItemViewType(position: Int): Int {
         val usuario=dataSet[position]
-       if(Constantes.idUsuario.equals(usuario.idemisor)){
+       if(preferenciasGlobal.recuperarIdSesion().equals(usuario.idemisor)){
            return 1
         }else{
             return 2
@@ -86,16 +84,17 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
 
-            if(conversacion.statusLeido == true && conversacion.idemisor.equals(Constantes.idUsuario)){
+            if(conversacion.statusLeido == true && conversacion.idemisor.equals(preferenciasGlobal.recuperarIdSesion())){
                 txtStatusLeido.isVisible = true
             }
             else{
                 txtStatusLeido.isVisible = false
             }
 
-            val formatter = DateTimeFormatter.ISO_DATE_TIME
+           val formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
             val text: String = conversacion.fechaCreacion.format(formatter)
             val parsedDate = LocalDate.parse(text, formatter)
+
             FechaMsj.text = parsedDate.toString()
 
             if(conversacion.texto.equals("Documento")){
