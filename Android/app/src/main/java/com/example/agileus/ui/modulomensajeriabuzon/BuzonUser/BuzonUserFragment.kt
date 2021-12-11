@@ -5,9 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.BuzonUserFragmentBinding
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
 import java.util.*
 
@@ -34,21 +39,16 @@ class BuzonUserFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
-
         super.onViewCreated(view, savedInstanceState)
 
+        val space =InitialApplication.preferenciasGlobal.recuperarNombreSesion()
 
 
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title =
+            "Buzon de $space "
 
 
-        //  format3339()
-
-     //   Log.d("tiempo","$cal")
-
-
-
+        binding.mensajesrecibidos.isEnabled=false
 
         binding.mensajesrecibidos.setOnClickListener {
             BuzonFragment.control = 1
@@ -62,10 +62,15 @@ class BuzonUserFragment : Fragment() {
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as HomeActivity).ocultarBtnAtras()
+
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    //open fun format3339(allDay: Boolean): String!
+
 }
