@@ -65,7 +65,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         if(preferenciasGlobal.validaSesionIniciada()){
-            Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
         }
 
 

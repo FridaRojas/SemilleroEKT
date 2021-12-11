@@ -80,7 +80,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
 
 
 
-        Toast.makeText(activity, "$superior", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(activity, "$superior", Toast.LENGTH_SHORT).show()
 
         var nivelUsuario = preferenciasGlobal.recuperarNivelUsuario()
 

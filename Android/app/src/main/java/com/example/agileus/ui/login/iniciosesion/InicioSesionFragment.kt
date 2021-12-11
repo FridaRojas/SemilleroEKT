@@ -176,7 +176,7 @@ class InicioSesionFragment : Fragment(){
                         findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2)
 
                     var nombre = preferenciasGlobal.recuperarIdSesion()
-                    Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
 
 
                 }else{
