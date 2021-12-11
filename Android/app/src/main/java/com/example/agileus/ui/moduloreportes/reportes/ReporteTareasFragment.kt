@@ -102,7 +102,46 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             findNavController().navigate(action,  extras)
         }
 
-        //cambiarGrafica(tipo_grafica)
+        binding.barras.setOnClickListener {
+
+            when(vista) {
+
+                0 -> {
+
+                    binding.barras.isVisible=false
+                    binding.pie.isVisible=true
+                    //mostrargraficaBarras() //Aqui va la gráfica desglosada de mensajes
+                    binding.pieChart.isVisible = false
+                    binding.barChart.isVisible = true
+                    vista = 0
+                    tipo_grafica = 1
+
+                }
+
+                1 -> {
+
+                    binding.barras.isVisible=false
+                    binding.pie.isVisible=true
+                    cambiarGrafica(2)
+                    binding.pieChart.isVisible = false
+                    binding.barChart.isVisible = true
+                    vista = 1
+                    tipo_grafica = 1
+
+                }
+
+
+
+            }
+        }
+
+        binding.pie.setOnClickListener {
+            binding.barras.isVisible=true
+            binding.pie.isVisible=false
+            cambiarGrafica(0)
+        }
+
+
     }
 
 
@@ -335,21 +374,51 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun cambiarGrafica(valor:Int) {
-
+    override fun cambiarGrafica(valor: Int) {
         when (valor) {
-            1 -> {
-                mostrargraficaBarras()
-                binding.barChart.isVisible=true
-                binding.pieChart.isVisible=false
-                vista = 1
-                tipo_grafica=1
-            }else -> {
+
+            0 -> {
+
+                if(binding.pie.isVisible){
+                    binding.pie.isVisible=false
+                    binding.barras.isVisible=true
+                }
+
+
                 mostrargraficaPie()
-                binding.pieChart.isVisible=true
-                binding.barChart.isVisible=false
+                binding.pieChart.isVisible = true
+                binding.barChart.isVisible = false
                 vista = 0
-                tipo_grafica=0
+                tipo_grafica = 0
+            }
+            1 -> {
+
+                mostrargraficaBarras()//Broadcast grupal
+                binding.pieChart.isVisible = false
+                binding.barChart.isVisible = true
+                vista = 1
+                tipo_grafica = 1
+
+            }
+
+            2 -> {
+
+                mostrargraficaBarras()//Broadcast desglose
+                binding.pieChart.isVisible = false
+                binding.barChart.isVisible = true
+                vista = 1
+                tipo_grafica = 1
+
+            }
+
+            else->{
+
+                mostrargraficaPie()
+                binding.pieChart.isVisible = true
+                binding.barChart.isVisible = false
+                vista = 0
+                tipo_grafica = 0
+
             }
         }
     }

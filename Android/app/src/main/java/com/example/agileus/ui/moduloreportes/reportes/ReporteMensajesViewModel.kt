@@ -83,7 +83,7 @@ class ReporteMensajesViewModel: ViewModel() {
                 }
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida
-                    //cargaOperacionesEstadisticas.value = true
+                    cargaOperacionesEstadisticas.value = true
                 }
             }
         }catch (ex:Exception){

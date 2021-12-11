@@ -120,6 +120,28 @@
         app:layout_constraintBottom_toTopOf="@id/llPrimerLegend"
         />
 
+    <ImageView
+        android:id="@+id/barras"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:src="@drawable/ic_bar_chart_naranja"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
+        />
+
+    <ImageView
+        android:id="@+id/pie"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:src="@drawable/ic_pie_chart__naranja"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/llPrimerLegend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerLista"
+        />
+
     <LinearLayout
         android:id="@+id/llPrimerLegend"
         android:layout_width="wrap_content"
