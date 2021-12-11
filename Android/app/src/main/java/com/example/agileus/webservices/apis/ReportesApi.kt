@@ -7,8 +7,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ReportesApi {
-    @GET("tareas/obtenerTareasQueLeAsignaronPorId/{id}")        //Listo
-    fun getDatosReporteTareas(@Path("id") idBusqueda:String): Call<TaskListByID>
+    @GET("tareas/obtenerTareasQueLeAsignaronPorIdReportes/{idUser}/{idSearch}")        //Listo
+    fun getDatosReporteTareas(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<TaskListByID>
 
     @GET("mensajes/listarMensajesRecividos/{idUser}/{idSearch}")
     fun getDatosReporteMensajes(@Path("idUser") idUsuario:String, @Path("idSearch") idBusqueda:String): Call<ResponseConversation>

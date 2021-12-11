@@ -7,6 +7,7 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.*
+import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
@@ -34,14 +35,14 @@ class ReporteTareasDao {
 
     var employeeList = ArrayList<Contacts>()
     var lista = ArrayList<DatosTareas>()
-    var stadisticEmployeesList = ArrayList<UserTaskDetailReport>()
+    //var stadisticEmployeesList = ArrayList<UserTaskDetailReport>()
 
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun recuperardatosTareas(idBusqueda: String): ArrayList<Estadisticas> {
 
-        val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
+        //val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(Constantes.idUsuario, idBusqueda)
         // val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
         var listaRecycler= ArrayList<Estadisticas>()
 
@@ -82,7 +83,7 @@ class ReporteTareasDao {
             }
         }else{
             try {
-                val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(idBusqueda)
+                val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteTareas(Constantes.idUsuario, idBusqueda)
                 val ResponseTareas: Response<TaskListByID> = callRespuesta.execute()
 
                 if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
@@ -187,7 +188,7 @@ class ReporteTareasDao {
 
                 }
             }catch (ex: java.lang.Exception){
-                Log.d("RTDao Error al recuperar", "$nombreBusqueda")
+                Log.d("RTDao Error al recuperar", "$nombreBusqueda: $ex")
                 taskDetail = UserTaskDetailReport(
                     idBusqueda,
                     nombreBusqueda,
@@ -244,6 +245,7 @@ class ReporteTareasDao {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun obtenerListaSubContactos(idUser:String): ArrayList<UserTaskDetailReport> {
+        var stadisticEmployeesList = arrayListOf<UserTaskDetailReport>()
         try{
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
             var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
@@ -270,15 +272,17 @@ class ReporteTareasDao {
 
                    Log.d("ListaSubConactsSIZE", "SIZE: ${stadisticEmployeesList.size}")
                }catch (ex: java.lang.Exception){
-                   Log.e("ERROR SubContactosM", "Response "+ex.toString())
+                   Log.e("RTDao, NoLowLevelUsers", "Response "+ex.toString())
+                    stadisticEmployeesList.add(recoverUserTaskDetails(idUser, "Mi información"))
 
                }
             }else{
-                Log.e("ERROR SubContactosM", "Respuesta fallida:" + ResponseDos.code().toString())
+                Log.e("ERROR SubContactosT", "Respuesta fallida:" + ResponseDos.code().toString())
             }
 
         }catch (ex:Exception){
-            Log.e("ERROR SubContactosM", "Error al iniciar servicio")
+            Log.e("ERROR SubContactosT", "Error al iniciar servicio")
+            stadisticEmployeesList.add(recoverUserTaskDetails(idUser, "Mi información"))
         }
         return stadisticEmployeesList
     }

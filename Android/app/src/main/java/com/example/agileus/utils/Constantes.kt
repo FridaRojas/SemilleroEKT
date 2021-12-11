@@ -66,8 +66,9 @@ object Constantes {
     //val URL_Login = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"//"https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"           // "http://10.97.4.193:3040/"                                    // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
 
     //var idUsuario = "618e8743c613329636a769aa"
+    val GROUP_ID_REPORTES ="TEAM_ID_CREATED_BY_MOD_REPORT"
     var idUsuario = id
-    var idUsuarioEstadisticas = idUsuario
+    var idUsuarioEstadisticas = GROUP_ID_REPORTES
     var opcionFiltro = 0
     var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
     var fechaEstadisticas = Constantes.date.toString()
