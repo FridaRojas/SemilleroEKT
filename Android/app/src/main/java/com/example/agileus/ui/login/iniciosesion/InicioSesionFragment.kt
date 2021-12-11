@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.PatternsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,14 @@ import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel.Companion.userBoss
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
+import android.animation.PropertyValuesHolder
+
+import android.animation.ObjectAnimator
+
+import android.animation.Animator
+
+
+
 
 //, DialogoListen
 class InicioSesionFragment : Fragment(){
@@ -62,6 +71,11 @@ class InicioSesionFragment : Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //OCULTAR BOTÓN ATRÁS EN ONACTIVITYCREATED
+
+
+
+
+
         (activity as HomeActivity).ocultarBtnAtras()
 
         viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
@@ -92,7 +106,15 @@ class InicioSesionFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+        ////////////////
+//       binding.vista2.visibility = View.INVISIBLE
+
+
         viewModel.getUsersByBoss()
+        startTimeCounter1()
+
 
         /*if(preferenciasGlobal.validaSesionIniciada()){
             findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
@@ -256,4 +278,37 @@ class InicioSesionFragment : Fragment(){
             }
         }.start()
     }
+
+    fun startTimeCounter1() {
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
+        var counter=0
+        val progressBar = binding.Splash1
+        binding.vista1.visibility=View.INVISIBLE
+        progressBar.visibility=View.VISIBLE
+        object : CountDownTimer(3000, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+                counter++
+            }
+            override fun onFinish() {
+                val iconAnim: Animator = ObjectAnimator.ofPropertyValuesHolder(  progressBar,
+//                    PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0f, -view!!.height),
+                    PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
+                )
+                iconAnim.duration = 1500
+                iconAnim.start()
+//                progressBar.visibility=View.INVISIBLE
+                binding.vista1.visibility=View.VISIBLE
+                (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Inicio de Sesión"
+
+                //
+                //
+
+            }
+        }.start()
+    }
+
+
 }
+

@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.splash">
+
 
     <ImageView
-        android:orientation="vertical"
         android:id="@+id/Splash1"
+
         android:background="#1F1F1F1F"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:visibility="invisible"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="match_parent"
+        android:src="@drawable/logo"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
