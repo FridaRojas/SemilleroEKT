@@ -8,10 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.Message
-import com.example.agileus.ui.modulomensajeria.listacontactos.ConversationViewModel
-import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.modulotareas.creartareas.CrearTareasViewModel
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
