@@ -159,7 +159,7 @@ class InicioSesionFragment : Fragment(){
                 binding.btnLogin.isEnabled = true
                 Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
             }else{
-                val usuario = Users(correoSession, passwordSession, TOKEN_KEY)
+                val usuario = Users(correoSession, passwordSession, preferenciasGlobal.recuperarToken())
                 viewModel.recuperarLogueo(usuario)
                 sleep(1000)
 
