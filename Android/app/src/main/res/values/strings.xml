@@ -107,6 +107,7 @@
     <string name="nivelMedio">medio</string>
     <string name="nivelBajo">bajo</string>
     <string name="fragmentSeleccionadoCrearTarea">crearTarea</string>
+    <string name="correo">Correo Electrónico</string>
     <string name="fecha_mayor_menor">Fecha de inicio no puede ser mayor a fecha de vencimiento.</string>
     <string name="confirmar">Confirmar.</string>
 
