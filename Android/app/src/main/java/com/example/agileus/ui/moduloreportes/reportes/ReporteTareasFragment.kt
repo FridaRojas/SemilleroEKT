@@ -129,9 +129,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                     tipo_grafica = 1
 
                 }
-
-
-
             }
         }
 

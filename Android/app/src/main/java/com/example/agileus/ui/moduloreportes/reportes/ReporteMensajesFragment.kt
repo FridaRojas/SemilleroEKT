@@ -78,7 +78,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     private var fechaIniComp = Constantes.fechaIniEstadisticas
     private var fechaFinComp = Constantes.fechaFinEstadisticas
-    private var userEstComp = Constantes.idUsuarioEstadisticas
+    private var userEstComp = idUsuarioEstadisticas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,8 +116,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 idUsuarioEstadisticas = Constantes.empleadoUsuario[empleadoUsuario.size - 1].id
                 binding.txtNombreReportes.setText(empleadoUsuario[empleadoUsuario.size - 1].name)
             }
-            Constantes.empleadoUsuario.forEach {
-                if (Constantes.idUsuarioEstadisticas == it.id){
+            empleadoUsuario.forEach {
+                if (idUsuarioEstadisticas == it.id){
                     binding.txtNombreReportes.setText(it.name)
                     Log.d("idUsuarioEstadisticas", it.id)
                 }
@@ -144,7 +144,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
                     binding.barras.isVisible=false
                     binding.pie.isVisible=true
-                    //mostrargraficaBarras() //Aqui va la gráfica desglosada de mensajes
+                    mostrargraficaBarras(2) //Aqui va la gráfica desglosada de mensajes
                     binding.pieChart.isVisible = false
                     binding.barChart.isVisible = true
                     vista = 0
@@ -177,23 +177,22 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
 
 }
+
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun mostrargraficaBarras() {
+    private fun mostrargraficaBarras(valor:Int) {
 
         barChart = binding.barChart
-        binding.colorlegend1.isVisible = false
-        binding.colorlegend2.isVisible = false
 
-        Constantes.empleadoUsuario.forEach {
-            if (Constantes.idUsuarioEstadisticas == it.id){
+        empleadoUsuario.forEach {
+            if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)
             }
         }
         binding.txtRangoFechaReportes.isVisible=false
 
-
-        reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
@@ -203,59 +202,419 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
 
-            Constantes.empleadoUsuario.forEach {
-                if (Constantes.idUsuarioEstadisticas == it.id){
+            empleadoUsuario.forEach {
+                if (idUsuarioEstadisticas == it.id){
                     binding.txtNombreReportes.setText(it.name)
                     Log.d("idUsuarioEstadisticas", it.id)
                 }
             }
-
-
-            binding.txtDataPrimerLegend.text = ""
-
-            binding.txtDataSegundoLegend.text = ""
-
-            binding.txtPrimerLegend.text = ""
-
-            binding.txtSegundoLegend.text = ""
-
-            binding.txtTercerLegend.text = "Enviados"
-
-            binding.txtCuartoLegend.text = "Recibidos"
-
-            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-
-            binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
-
-
-            binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados.value.toString()
-            enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
-
-            binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
-            recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
-
-            initBarChart(enviados.toFloat(),recibidos.toFloat())//inicializacion de la grafica de barras
-        // y se agregan los valores porcentuales para su visualización
-
         })
+
+        //inicializacion de la grafica de barras y se agrega el objeto a desglosar para su visuzalización
+
+        val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+
+        if (valor==1){
+            graficabarrasBroadcastGrupal(sortedList)
+        }
+        if (valor==2){
+            graficabarrasDesgloseMensajes(sortedList)
+        }
+        if (valor==3){
+            graficabarrasDesgloseBroadcast(sortedList)
+        }
+
+    }
+
+    private fun graficabarrasBroadcastGrupal(listaUsuarios: ArrayList<UserMessageDetailReport>) {
+
+        binding.colorlegend1.isVisible = false
+
+        binding.colorlegend2.isVisible = false
+
+        binding.txtDataPrimerLegend.text = ""
+
+        binding.txtDataSegundoLegend.text = ""
+
+        binding.txtPrimerLegend.text = ""
+
+        binding.txtSegundoLegend.text = ""
+
+        binding.txtTercerLegend.text = "Enviados \nal Broadcast"
+
+        binding.txtCuartoLegend.text = "Recibidos \ndel Broadcast"
+
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+
+        binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+
+        binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados_B.value.toString()
+        enviados = reporteMensajesViewModel.enviados_B.value.toString().toInt()
+
+        binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos_B.value.toString()
+        recibidos = reporteMensajesViewModel.recibidos_B.value.toString().toInt()
+
+        val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+
+        var contador=0
+
+        listaUsuarios.forEach {
+            if(it.name == "Mi equipo"){
+                xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), it.sendBroadcast.toFloat())))
+                yValueGroup2.add((BarEntry(contador.toFloat(), it.receivedBroadcast.toFloat())))
+            }
+        }
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        var barData = BarData(barDataSet1, barDataSet2)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.setData(barData)
+        barChartView.getBarData().setBarWidth(barWidth)
+        barChartView.getXAxis().setAxisMinimum(0f)
+        barChartView.getXAxis().setAxisMaximum(2f)
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.getData().setHighlightEnabled(false)
+        barChartView.invalidate()
+
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.getXAxis()
+        xAxis.setGranularity(1f)
+        xAxis.setGranularityEnabled(true)
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
+        xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.setLabelCount(contador)
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(1f)
+        barChartView.setVisibleXRangeMinimum(1f)
+        barChartView.setDragEnabled(true)
+
+        //Y-axis
+        barChartView.getAxisRight().setEnabled(false)
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.getAxisLeft()
+        leftAxis.setValueFormatter(LargeValueFormatter())
+        leftAxis.setDrawGridLines(true)
+        leftAxis.setSpaceTop(1f)
+        leftAxis.setAxisMinimum(0f)
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 1f)
+
+    }
+
+    private fun graficabarrasDesgloseBroadcast(listaUsuarios: ArrayList<UserMessageDetailReport>) {
+
+        binding.colorlegend1.isVisible = false
+
+        binding.colorlegend2.isVisible = false
+
+        binding.txtDataPrimerLegend.text = ""
+
+        binding.txtDataSegundoLegend.text = ""
+
+        binding.txtPrimerLegend.text = ""
+
+        binding.txtSegundoLegend.text = ""
+
+        binding.txtTercerLegend.text = "Enviados \nal Broadcast"
+
+        binding.txtCuartoLegend.text = "Recibidos \ndel Broadcast"
+
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+
+        binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+
+        binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados_B.value.toString()
+        enviados = reporteMensajesViewModel.enviados_B.value.toString().toInt()
+
+        binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos_B.value.toString()
+        recibidos = reporteMensajesViewModel.recibidos_B.value.toString().toInt()
+
+        val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+
+        var contador=0
+
+        listaUsuarios.forEach {
+            if ((it.name != "Mi equipo") && (it.name != "Mi información")){
+                xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), it.sendBroadcast.toFloat())))
+                yValueGroup2.add((BarEntry(contador.toFloat(), it.receivedBroadcast.toFloat())))
+            }
+        }
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        var barData = BarData(barDataSet1, barDataSet2)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.setData(barData)
+        barChartView.getBarData().setBarWidth(barWidth)
+        barChartView.getXAxis().setAxisMinimum(0f)
+        barChartView.getXAxis().setAxisMaximum(2f)
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.getData().setHighlightEnabled(false)
+        barChartView.invalidate()
+
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.getXAxis()
+        xAxis.setGranularity(1f)
+        xAxis.setGranularityEnabled(true)
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
+        xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.setLabelCount(contador)
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(2f)
+        barChartView.setVisibleXRangeMinimum(2f)
+        barChartView.setDragEnabled(true)
+
+        //Y-axis
+        barChartView.getAxisRight().setEnabled(false)
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.getAxisLeft()
+        leftAxis.setValueFormatter(LargeValueFormatter())
+        leftAxis.setDrawGridLines(true)
+        leftAxis.setSpaceTop(1f)
+        leftAxis.setAxisMinimum(0f)
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 2f)
+
+
+    }
+
+    private fun graficabarrasDesgloseMensajes(listaUsuarios: ArrayList<UserMessageDetailReport>) {
+
+        binding.colorlegend1.isVisible = true
+        binding.colorlegend2.isVisible = true
+
+        binding.txtPrimerLegend.text = "Enviados"
+        binding.txtSegundoLegend.text = "Recibidos"
+        binding.txtTercerLegend.text = "Totales"
+        binding.txtCuartoLegend.text = "Leídos"
+
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
+
+        binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorGray))
+
+        binding.txtDataPrimerLegend.text = reporteMensajesViewModel.enviados.value.toString()
+        enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
+
+        binding.txtDataSegundoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
+        recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
+
+        binding.txtDataTercerLegend.text = reporteMensajesViewModel.totales.value.toString()
+        totales = reporteMensajesViewModel.totales.value.toString().toInt()
+
+        binding.txtDataCuartoLegend.text = reporteMensajesViewModel.leidos.value.toString()
+        leidos = reporteMensajesViewModel.leidos.value.toString().toInt()
+
+        val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+        var yValueGroup3 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+        var barDataSet3: BarDataSet
+
+        var contador=0
+
+        listaUsuarios.forEach {
+            if ((it.name != "Mi equipo") && (it.name != "Mi información")) {
+                xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), it.send.toFloat())))
+                yValueGroup2.add((BarEntry(contador.toFloat(), it.received.toFloat())))
+                yValueGroup3.add((BarEntry(contador.toFloat(), it.read.toFloat())))
+            }
+        }
+
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3.setColor(Color.YELLOW)
+        barDataSet3.setDrawIcons(false)
+        barDataSet3.setDrawValues(false)
+
+        var barData = BarData(barDataSet1, barDataSet2, barDataSet3)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.setData(barData)
+        barChartView.getBarData().setBarWidth(barWidth)
+        barChartView.getXAxis().setAxisMinimum(0f)
+        barChartView.getXAxis().setAxisMaximum(2f)
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.getData().setHighlightEnabled(false)
+        barChartView.invalidate()
+
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.getXAxis()
+        xAxis.setGranularity(1f)
+        xAxis.setGranularityEnabled(true)
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
+        xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.setLabelCount(contador)
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(2f)
+        barChartView.setVisibleXRangeMinimum(2f)
+        barChartView.setDragEnabled(true)
+
+        //Y-axis
+        barChartView.getAxisRight().setEnabled(false)
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.getAxisLeft()
+        leftAxis.setValueFormatter(LargeValueFormatter())
+        leftAxis.setDrawGridLines(true)
+        leftAxis.setSpaceTop(1f)
+        leftAxis.setAxisMinimum(0f)
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 2f)
+
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
         pieChart = binding.pieChart
+
         binding.colorlegend1.isVisible = true
         binding.colorlegend2.isVisible = true
 
 
-        Constantes.empleadoUsuario.forEach {
-            if (Constantes.idUsuarioEstadisticas == it.id){
+        empleadoUsuario.forEach {
+            if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)
             }
         }
 
         //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-        reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
@@ -267,7 +626,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             //Toast.makeText(context, reporteMensajesViewModel.cargaDatosExitosa.value.toString(), Toast.LENGTH_SHORT).show()
 
             Constantes.dataEmpleadoUsuario.forEach {
-                if (Constantes.idUsuarioEstadisticas == it.id){
+                if (idUsuarioEstadisticas == it.id){
                     binding.txtNombreReportes.setText(it.name)
                     Log.d("idUsuarioEstadisticas", it.id)
                 }
@@ -513,7 +872,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                     binding.barras.isVisible=true
                 }
 
-
                 mostrargraficaPie()
                 binding.pieChart.isVisible = true
                 binding.barChart.isVisible = false
@@ -522,7 +880,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             }
             1 -> {
 
-                mostrargraficaBarras()//Broadcast grupal
+                mostrargraficaBarras(1)//Broadcast grupal
                 binding.pieChart.isVisible = false
                 binding.barChart.isVisible = true
                 vista = 1
@@ -532,7 +890,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
             2 -> {
 
-                mostrargraficaBarras()//Broadcast desglose
+                mostrargraficaBarras(3)//Broadcast desglose
                 binding.pieChart.isVisible = false
                 binding.barChart.isVisible = true
                 vista = 1
