@@ -55,7 +55,6 @@
             android:text="Bienvenido"
             android:layout_marginBottom="20dp"
             android:textAlignment="center"
-            android:textColor="@color/black"
             android:textSize="@dimen/textsize"
             android:textStyle="bold"/>
 
@@ -165,6 +164,7 @@
             android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
             android:paddingVertical="@dimen/paddingGeneral"
             android:background="@drawable/rounded_bg"
+            style="@style/StyleButton"
             android:text="@string/login_login_button"
             app:layout_constraintTop_toBottomOf="@id/password"
             app:layout_constraintStart_toStartOf="parent"
