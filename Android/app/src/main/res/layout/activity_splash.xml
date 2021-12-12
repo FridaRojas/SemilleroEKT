@@ -3,17 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.splash">
+    android:background="#f7f7f7"
+    android:layout_height="match_parent">
 
 
     <ImageView
         android:id="@+id/Splash1"
-
-        android:background="#1F1F1F1F"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/logo"/>
+        android:background="#f7f7f7"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

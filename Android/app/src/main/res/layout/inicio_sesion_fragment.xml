@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.login.iniciosesion.InicioSesionFragment"
     android:orientation="vertical"
+    android:background="#f7f7f7"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_vertical_margin"
@@ -13,18 +14,17 @@
 
         <ImageView
             android:id="@+id/Splash1"
-            android:background="#1F1F1F1F"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:background="#f7f7f7"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/logo"
             android:visibility="invisible"
-            />
-
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <!-- Linear progress indicator -->
-
-
 
         <LinearLayout
             android:id="@+id/vista1"
@@ -151,4 +151,4 @@
 
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

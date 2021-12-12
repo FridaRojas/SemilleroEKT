@@ -297,10 +297,10 @@ class InicioSesionFragment : Fragment(){
 //                    PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0f, -view!!.height),
                     PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
                 )
-                iconAnim.duration = 1500
+                iconAnim.duration = 1300
                 iconAnim.start()
 //                progressBar.visibility=View.INVISIBLE
-                binding.vista1.visibility=View.VISIBLE
+                binding.vista1.visibility = View.VISIBLE
                 (activity as AppCompatActivity?)!!.supportActionBar!!.show()
                 (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Inicio de Sesión"
 
