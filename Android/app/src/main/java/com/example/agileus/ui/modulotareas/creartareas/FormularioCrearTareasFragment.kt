@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.example.agileus.R
@@ -29,13 +30,14 @@ import com.example.agileus.ui.modulotareas.dialogostareas.DialogoConfirmOp
 import com.example.agileus.ui.modulotareas.dialogostareas.EdtFecha
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoFechaListener
+import com.example.agileus.ui.modulotareas.listenerstareas.ProgressBarListener
 import com.example.agileus.utils.Constantes
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
 
-class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , DialogoConfirmOpStatusListener{
+class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , DialogoConfirmOpStatusListener,ProgressBarListener{
     private var _binding: FragmentFormularioCrearTareasBinding? = null
     private val binding get() = _binding!!
 
@@ -85,6 +87,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressTasks.isVisible=false
         listaPrioridades = resources.getStringArray(R.array.prioridad_array)          // spiner lista de prioridades archivo strings.xml
         asignarTareaViewModel = ViewModelProvider(this).get()                   // ViewModel
         conversationviewModel = ViewModelProvider(this).get()                   // ViewModel
@@ -230,7 +233,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
             urlPost                             // Url de archivo pdf subido a firebase
         )
 
-        val newFragment = DialogoConfirmOp (tarea, idsuperiorInmediato, idPersonaAsignada, this)
+        val newFragment = DialogoConfirmOp (tarea, idsuperiorInmediato, idPersonaAsignada, this,this)
         newFragment.show(parentFragmentManager, getString(R.string.confirmacionDialogo))
 
     }
@@ -301,7 +304,11 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
         Log.e(getString(R.string.logTareas), getString(R.string.fechaFinCrearTareas) + "$fechaFin")
 
     }
+    override fun onAceptSelected() {
+        binding.progressTasks.isVisible=true
+    }
     override fun onOpSuccessful() {
+        binding.progressTasks.isVisible=false
         val newFragment = DialogoAceptar(getString(R.string.tareaCreada)+" $tituloTarea")
         newFragment.show(
             (activity as HomeActivity).supportFragmentManager,
@@ -310,16 +317,15 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
         //Volver al fragment anterior
         val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
         findNavController().navigate(action)
-
     }
     override fun onOpFailure() {
+        binding.progressTasks.isVisible=false
         val newFragment = DialogoAceptar(getString(R.string.errorCrearTarea))
         newFragment.show(
             (activity as HomeActivity).supportFragmentManager,
             getString(R.string.logTareas)
         )
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
