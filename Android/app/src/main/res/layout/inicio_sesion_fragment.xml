@@ -6,22 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.login.iniciosesion.InicioSesionFragment"
     android:orientation="vertical"
-
   >
-
-        <ImageView
-            android:id="@+id/Splash1"
-            android:background="#1F1F1F1F"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_agil"
-            android:visibility="invisible"
-            />
-
-
-
-        <!-- Linear progress indicator -->
-
 
 
         <LinearLayout
