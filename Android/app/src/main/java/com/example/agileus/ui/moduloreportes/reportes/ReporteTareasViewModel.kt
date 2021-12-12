@@ -84,11 +84,12 @@ class ReporteTareasViewModel: ViewModel() {
                 }
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida
+                    cargaOperacionesEstadisticasTareas.value = true
                 }
             }
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())
         }
-        cargaOperacionesEstadisticasTareas.value = true
+
     }
 }

@@ -244,5 +244,10 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> 
         return contador_mensajes_leidos.toString()
     }
 
+    fun obtenerenviadosalBroadcast():String{
+        return enviados_al_B.toString()
+
+    }
+
 
 }
