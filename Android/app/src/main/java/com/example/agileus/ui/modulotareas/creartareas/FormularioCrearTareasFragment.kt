@@ -165,7 +165,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
                             if (diaInicio!!<=diaFin!!){             // Es un dia menor o igual del mismo mes
                                 operacionIsert()
                             }else if(diaInicio!!>diaFin!!){
-                                val newFragment = DialogoAceptar("Fecha de inicio no puede ser mayor a fecha de vencimiento.")
+                                val newFragment = DialogoAceptar(getString(R.string.fecha_mayor_menor))
                                 newFragment.show(
                                     (activity as HomeActivity).supportFragmentManager,
                                     getString(R.string.logTareas)
@@ -176,7 +176,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
                         if(mesInicio!!<mesFin!!){                   // Mes inicio es menor que mes fin. NO IMPORTA EL DIA
                             operacionIsert()
                         }else if (mesInicio!!>mesFin!!){
-                            val newFragment = DialogoAceptar("Fecha de inicio no puede ser mayor a fecha de vencimiento.")
+                            val newFragment = DialogoAceptar(getString(R.string.fecha_mayor_menor))
                             newFragment.show(
                                 (activity as HomeActivity).supportFragmentManager,
                                 getString(R.string.logTareas)
@@ -184,7 +184,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
                         }
                     }
                 }else{
-                    val newFragment = DialogoAceptar("Fecha de inicio no puede ser mayor a fecha de vencimiento.")
+                    val newFragment = DialogoAceptar(getString(R.string.fecha_mayor_menor))
                     newFragment.show(
                         (activity as HomeActivity).supportFragmentManager,
                         getString(R.string.logTareas)
