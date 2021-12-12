@@ -22,6 +22,7 @@ import com.example.agileus.utils.Constantes.vista
 import com.example.agileus.utils.Constantes.messageStadisticData
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.providers.ReportesListener
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.TEAM_ID_REPORTES
@@ -85,6 +86,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as HomeActivity).fragmentSeleccionado = getString(R.string.taskReportFragment)
+
         reporteMensajesViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
 
         //Primer Grafica al cargar la vista
