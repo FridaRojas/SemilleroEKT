@@ -141,6 +141,7 @@
                     app:errorEnabled="true"
                     app:errorIconDrawable="@null"
                     android:layout_marginTop="@dimen/marginFormulario"
+                    android:hint="Contraseña"
                     app:startIconDrawable="@drawable/vector_icon"
                     app:passwordToggleEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
