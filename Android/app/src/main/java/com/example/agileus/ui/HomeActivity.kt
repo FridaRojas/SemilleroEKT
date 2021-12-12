@@ -45,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
 
 
     //Token Notificaciones
-        val token = InitialApplication.preferenciasGlobal.recuperarToken()
+        val token = InitialApplication.preferenciasToken.recuperarToken()
         Log.d("token", token)
 
 
