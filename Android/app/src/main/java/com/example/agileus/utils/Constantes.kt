@@ -76,14 +76,21 @@ object Constantes {
         var minute = ""
         var time = ZonedDateTime.parse(fecha)
 
-        var hour = time.hour + 6
+        var hour = 0
+        if(time.hour <= 12){
+             hour = time.hour + 6
+        }else{
+            hour = time.hour - 6
+        }
+
+
 
         if(time.minute < 10){
             minute = "0"+time.minute.toString()
         }else{
             minute = time.minute.toString()
         }
-        return time.dayOfMonth.toString()+"-"+time.monthValue +"-"+time.year+"  " +hour.toString()+":" + minute
+        return time.dayOfMonth.toString()+"/"+time.monthValue +"/"+time.year+"  " +hour.toString()+":" + minute
 
     }
     //Login
