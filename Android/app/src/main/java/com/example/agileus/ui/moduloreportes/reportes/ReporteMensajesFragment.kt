@@ -19,7 +19,7 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.utils.Constantes.tipo_grafica
 import com.example.agileus.utils.Constantes.vista
-import com.example.agileus.utils.Constantes.empleadoUsuario
+import com.example.agileus.utils.Constantes.messageStadisticData
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
@@ -89,15 +89,15 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         //Primer Grafica al cargar la vista
         reporteMensajesViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
-            empleadoUsuario = list
+            messageStadisticData = list
             binding.progressLoadingR.visibility = View.GONE
             binding.btnFiltroReportes.visibility = View.VISIBLE
-            if (empleadoUsuario.size == 1){
+            if (messageStadisticData.size == 1){
                 idUsuarioEstadisticas = preferenciasGlobal.recuperarIdSesion()
                 binding.txtNombreReportes.setText(preferenciasGlobal.recuperarNombreSesion())
-            }else if (idUsuarioEstadisticas == TEAM_ID_REPORTES && empleadoUsuario.size > 1){
-                idUsuarioEstadisticas = empleadoUsuario[empleadoUsuario.size - 1].id
-                binding.txtNombreReportes.setText(empleadoUsuario[empleadoUsuario.size - 1].name)
+            }else if (idUsuarioEstadisticas == TEAM_ID_REPORTES && messageStadisticData.size > 1){
+                idUsuarioEstadisticas = messageStadisticData[messageStadisticData.size - 1].id
+                binding.txtNombreReportes.setText(messageStadisticData[messageStadisticData.size - 1].name)
             }
             setStadisticName()
             cambiarGrafica(tipo_grafica)
@@ -116,7 +116,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     }
 
     fun setStadisticName(){
-        empleadoUsuario.forEach {
+        messageStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)

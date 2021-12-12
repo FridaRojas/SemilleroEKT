@@ -7,23 +7,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
-import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
-import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
+import com.example.agileus.utils.Constantes.taskStadisticData
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
 import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
@@ -86,9 +83,17 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
 
         reporteTareasViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
-            Constantes.dataEmpleadoUsuario = list
+            taskStadisticData = list
             binding.progressLoadingR.visibility = View.GONE
             binding.btnFiltroReportes.visibility = View.VISIBLE
+            if (taskStadisticData.size == 1){
+                idUsuarioEstadisticas = preferenciasGlobal.recuperarIdSesion()
+                binding.txtNombreReportes.setText(preferenciasGlobal.recuperarNombreSesion())
+            }else if (idUsuarioEstadisticas == Constantes.TEAM_ID_REPORTES && taskStadisticData.size > 1){
+                idUsuarioEstadisticas = taskStadisticData[taskStadisticData.size - 1].id
+                binding.txtNombreReportes.setText(taskStadisticData[taskStadisticData.size - 1].name)
+            }
+            setStadisticName()
             cambiarGrafica(tipo_grafica)
         })
 
@@ -106,17 +111,19 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         //cambiarGrafica(tipo_grafica)
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun mostrargraficaPie() {
-        pieChart=binding.pieChart
-
-        dataEmpleadoUsuario.forEach {
+    fun setStadisticName(){
+        taskStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun mostrargraficaPie() {
+        pieChart=binding.pieChart
+        setStadisticName()
 
         binding.txtRangoFechaReportes.isVisible=false
         binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
@@ -173,13 +180,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private fun mostrargraficaBarras() {
 
         barChart=binding.barChart
-
-        dataEmpleadoUsuario.forEach {
-            if (idUsuarioEstadisticas == it.id){
-                binding.txtNombreReportes.setText(it.name)
-                Log.d("idUsuarioEstadisticas", it.id)
-            }
-        }
+        setStadisticName()
 
         //binding.txtRangoFechaReportes.isVisible=true
         //binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)

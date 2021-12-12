@@ -8,7 +8,7 @@ import com.example.agileus.config.InitialApplication.Companion.preferenciasGloba
 import com.example.agileus.models.*
 import com.example.agileus.models.response.ResponseConversation
 import com.example.agileus.utils.Constantes.TEAM_ID_REPORTES
-import com.example.agileus.utils.Constantes.empleadoUsuario
+import com.example.agileus.utils.Constantes.messageStadisticData
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
 import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
@@ -76,7 +76,7 @@ class ReporteMensajesDao {
             fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
             fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
             if (idBusqueda == TEAM_ID_REPORTES){
-                messageDetail = empleadoUsuario[empleadoUsuario.size-1]
+                messageDetail = messageStadisticData[messageStadisticData.size-1]
             }else if (ResponseMensajes.isSuccessful || ResponseMensajesBroadCast.isSuccessful) {
                 Log.d("messageORbroadcast", searchName)
                 try {
@@ -182,7 +182,6 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> 
                     }
                 }catch (ex: java.lang.Exception){
                     Log.e("RMDao, NoLowLevelUsers", "Response "+ex.toString())
-                    stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, "Mi información"))
 
                 }
             }else{

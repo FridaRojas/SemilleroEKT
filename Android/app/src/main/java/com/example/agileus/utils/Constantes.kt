@@ -115,17 +115,13 @@ object Constantes {
 
     val MIN_DATE_RANGE      = "1900-01-01T00:00:00.000+00:00"
     val MAX_DATE_RANGE      = "2100-01-01T00:00:00.000+00:00"
-    //var idUsuario = "618e8743c613329636a769aa"
-    var idUsuario =idUser
-    //var idUsuarioEstadisticas = idUsuario
     val TEAM_ID_REPORTES ="TEAM_ID_CREATED_BY_MOD_REPORT"
-    //var idUsuario = id
     var idUsuarioEstadisticas = TEAM_ID_REPORTES
     var id_broadcast="618d9c26beec342d91d747d6"
     var fechaIniEstadisticas = MIN_DATE_RANGE
     var fechaFinEstadisticas = MAX_DATE_RANGE
-    var empleadoUsuario = emptyList<UserMessageDetailReport>()
-    var dataEmpleadoUsuario = emptyList<UserTaskDetailReport>()
+    var messageStadisticData = emptyList<UserMessageDetailReport>()
+    var taskStadisticData = emptyList<UserTaskDetailReport>()
     var tipo_grafica:Int=0
     var vista:Int=0
 
