@@ -92,10 +92,10 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(fragmentSeleccionado){
-            "crearTarea" -> {
+            getString(R.string.fragmentSeleccionadoCrearTarea) -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
             }
-            "verDetalleTarea" -> {
+            getString(R.string.fragmentSeleccionadoDetallesTarea) -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
             }
             "Contactos" -> {
