@@ -93,6 +93,21 @@ object Constantes {
         return time.dayOfMonth.toString()+"/"+time.monthValue +"/"+time.year+"  " +hour.toString()+":" + minute
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun devuelveFechaDocumento():String{
+
+        var minute = ""
+        var time = ZonedDateTime.parse("${Constantes.date}$localTime")
+
+        if(time.minute < 10){
+            minute = "0"+time.minute.toString()
+        }else{
+            minute = time.minute.toString()
+        }
+        return time.dayOfMonth.toString()+"."+time.monthValue +"."+time.year+" at " +time.hour.toString()+":" + minute
+
+    }
     //Login
   //  val URL_LOGIN = "https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"
       val URL_Login = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                // "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/"            // "https://10.97.3.183:3040/"        // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/" //"http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"//"https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"           // "http://10.97.4.193:3040/"                                    // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"

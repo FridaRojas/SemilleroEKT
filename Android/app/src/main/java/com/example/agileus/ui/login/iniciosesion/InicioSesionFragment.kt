@@ -113,7 +113,6 @@ class InicioSesionFragment : Fragment(){
 
 
         viewModel.getUsersByBoss()
-        startTimeCounter1()
 
 
         /*if(preferenciasGlobal.validaSesionIniciada()){
@@ -277,39 +276,9 @@ class InicioSesionFragment : Fragment(){
                 binding.btnLogin.isEnabled=true
 
 
-            }
-        }.start()
-    }
-
-    fun startTimeCounter1() {
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
-        var counter=0
-        val progressBar = binding.Splash1
-        binding.vista1.visibility=View.INVISIBLE
-        progressBar.visibility=View.VISIBLE
-        object : CountDownTimer(3000, 100) {
-            override fun onTick(millisUntilFinished: Long) {
-                counter++
-            }
-            override fun onFinish() {
-                val iconAnim: Animator = ObjectAnimator.ofPropertyValuesHolder(  progressBar,
-//                    PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0f, -view!!.height),
-                    PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
-                )
-                iconAnim.duration = 1300
-                iconAnim.start()
-//                progressBar.visibility=View.INVISIBLE
-                binding.vista1.visibility = View.VISIBLE
-                (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Inicio de Sesión"
-
-                //
-                //
-
-            }
-        }.start()
-    }
+           }
+       }.start()
+   }
 
 
 }
