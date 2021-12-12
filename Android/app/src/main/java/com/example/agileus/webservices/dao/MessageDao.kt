@@ -30,7 +30,7 @@ class MessageDao {
                 listMensajes = emptyList<Conversation>() as ArrayList<Conversation>
             }
         }else{
-
+            listMensajes = emptyList<Conversation>() as ArrayList<Conversation>
         }
     }else{
 
@@ -50,7 +50,7 @@ class MessageDao {
             if(ResponseDos.isSuccessful){
                 respuesta = ResponseDos.body()!!
             }else{
-
+                Log.e("ErrorInsertarMensaje", "Error")
             }
 
         }catch (ex:Exception){

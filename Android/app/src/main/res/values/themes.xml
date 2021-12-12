@@ -86,7 +86,7 @@
         <item name="android:textStyle">normal</item>
         <item name="android:background">@drawable/rounded_bg</item>
         <item name="backgroundTint">@color/white</item>
-        <item name="android:drawableEnd">@drawable/iconobuscar</item>
+        <item name="android:drawableEnd">@drawable/lup</item>
         <item name="paddingStart">@dimen/paddingGeneral</item>
     </style>
 

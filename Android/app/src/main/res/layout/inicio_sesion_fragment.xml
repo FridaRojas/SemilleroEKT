@@ -6,9 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.login.iniciosesion.InicioSesionFragment"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/fragment_horizontal_margin"
-    android:paddingTop="@dimen/fragment_vertical_margin"
-    android:paddingRight="@dimen/fragment_vertical_margin"
+
   >
 
         <ImageView
@@ -16,7 +14,7 @@
             android:background="#1F1F1F1F"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo"
+            android:src="@drawable/logo_agil"
             android:visibility="invisible"
             />
 
