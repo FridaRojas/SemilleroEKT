@@ -20,6 +20,7 @@ class InitialApplication : Application() {
 
         //SharedPreferences
         lateinit var preferenciasGlobal: MySharedPreferences
+        lateinit var preferenciasToken: TokenSharedPreferences
 
         lateinit var LoginServiceGlobal : LoginApi
 
@@ -44,7 +45,7 @@ class InitialApplication : Application() {
 
         //SharedPreferences
         preferenciasGlobal = MySharedPreferences(applicationContext)
-
+        preferenciasToken = TokenSharedPreferences(applicationContext)
     }
 
 }

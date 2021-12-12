@@ -7,11 +7,10 @@ import com.example.agileus.models.Data
 class MySharedPreferences(contexto: Context) {
 
     companion object {
-        val SESSION_TOKEN = "TOKEN"
         val NIVEL_USER = "NIVEL_USER"
 
         val SESSION_KEY = "SESSION_KEY"
-        val NIVEL_HIJOS = "NIVEL_HIJOS"
+        val SESSION_STATUS = "SESSION_STATUS"
         //Login
         val ID_SESSION = "ID_USER"
         val CORREO_SESSION = "CORREO_SESSION"
@@ -20,7 +19,6 @@ class MySharedPreferences(contexto: Context) {
         val NUMERO_EMPLEADO = "NUMERO_EMPLEADO_SESSION"
         val NOMBRE_SESSION = "NOMBRE_SESSION"
         val NOMBRE_ROL_SESSION = "NOMBRE_ROL_SESSION"
-        val TOKEN_KEY = "TOKEN_KEY" /*Token notificaciones*/
         val TELEFONO_SESSION = "TELEFONO_SESION"
         val STATUS_ACTIVO = "STATUS_ACTIVO"
         val CURP_SESSION = "CURP_SESSION"
@@ -30,7 +28,7 @@ class MySharedPreferences(contexto: Context) {
         val ID_SUPERIOR_INMEDIATO = "ID_SUPERIOR_INMEDIATO"
     }
 
-    val sharedPreferences = contexto.getSharedPreferences(SESSION_TOKEN, Context.MODE_PRIVATE)
+    val sharedPreferences = contexto.getSharedPreferences(SESSION_KEY, Context.MODE_PRIVATE)
     private lateinit var editor: SharedPreferences.Editor
 
     //Inicio de Sesión
@@ -52,7 +50,7 @@ class MySharedPreferences(contexto: Context) {
             putString(TOKEN_AUTH_KEY, tokenAuth)
             putString(ID_GRUPO_SESSION, idGrupo)
             putString(  ID_SUPERIOR_INMEDIATO, idSuperior)
-            putBoolean(SESSION_KEY, sessionKey)
+            putBoolean(SESSION_STATUS, sessionKey)
             commit()
         }
     }
@@ -80,17 +78,14 @@ class MySharedPreferences(contexto: Context) {
     }
 
     fun validaSesionIniciada(): Boolean{
-        return sharedPreferences.getBoolean(SESSION_KEY, false)
+        return sharedPreferences.getBoolean(SESSION_STATUS, false)
     }
 
     fun cerrarSesion(){
         sharedPreferences.edit().clear().commit()
     }
 
-    //Token Notificaciones
-    fun recuperarToken(): String {
-        return sharedPreferences.getString(TOKEN_KEY, "")!!
-    }
+
 
 
     //todo guardar en sharedpreferences cuando el usuario inicie sesión

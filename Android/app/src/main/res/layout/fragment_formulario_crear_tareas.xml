@@ -152,6 +152,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <ProgressBar
+            android:id="@+id/progress_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/field_fecha_fin"
+            app:layout_constraintStart_toStartOf="@+id/field_fecha_fin"
+            app:layout_constraintTop_toTopOf="@+id/textTitulo">
+        </ProgressBar>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
