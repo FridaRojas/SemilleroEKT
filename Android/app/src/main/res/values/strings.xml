@@ -107,6 +107,7 @@
     <string name="nivelMedio">medio</string>
     <string name="nivelBajo">bajo</string>
     <string name="fragmentSeleccionadoCrearTarea">crearTarea</string>
+    <string name="correo">Correo Electrónico</string>
 
     <string-array name="months_array">
         <item>Enero</item>

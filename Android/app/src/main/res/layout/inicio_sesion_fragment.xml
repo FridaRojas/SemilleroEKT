@@ -57,13 +57,13 @@
                     android:id="@+id/textTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Número de Empleado"
+                    android:hint="@string/correo"
                     android:layout_marginTop="@dimen/marginFormulario"
                     android:layout_marginHorizontal="16dp"
                     android:padding="@dimen/margin_top_general"
                     app:startIconDrawable="@drawable/user_icon"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:startIconTint="@color/colorPrimary">
+                    app:startIconTint="@color/colorGray">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/email"
                             android:layout_width="match_parent"
@@ -131,7 +131,7 @@
                     app:startIconDrawable="@drawable/vector_icon"
                     app:passwordToggleEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:startIconTint="@color/colorPrimary">
+                    app:startIconTint="@color/colorGray">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password"
                             android:layout_width="match_parent"
@@ -152,6 +152,8 @@
             android:paddingVertical="@dimen/paddingGeneral"
             android:background="@drawable/rounded_bg"
             style="@style/StyleButton"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:text="@string/login_login_button"
             app:layout_constraintTop_toBottomOf="@id/password"
             app:layout_constraintStart_toStartOf="parent"
