@@ -70,21 +70,23 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private var recibidos: Int = 0
     private var totales: Int = 0
     private var leidos: Int = 0
+    private var enviados_B: Int = 0
+    private var recibidos_B: Int = 0
+
 
     //valores porcentuales de los datos de los mensajes para graficar
     private var porcentaje_enviados:Float = 0.0f
     private var porcentaje_recibidos:Float = 0.0f
     private var porcentaje_leidos:Float = 0.0f
 
-    private var fechaIniComp = Constantes.fechaIniEstadisticas
-    private var fechaFinComp = Constantes.fechaFinEstadisticas
+    private var fechaIniComp = fechaIniEstadisticas
+    private var fechaFinComp = fechaFinEstadisticas
     private var userEstComp = idUsuarioEstadisticas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,8 +124,29 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                     Log.d("idUsuarioEstadisticas", it.id)
                 }
             }
-            cambiarGrafica(tipo_grafica)
+
         })
+
+        reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+            //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
+
+            empleadoUsuario.forEach {
+                if (idUsuarioEstadisticas == it.id){
+                    binding.txtNombreReportes.setText(it.name)
+                    Log.d("idUsuarioEstadisticas", it.id)
+                }
+            }
+
+            enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
+            recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
+            totales = reporteMensajesViewModel.totales.value.toString().toInt()
+            leidos = reporteMensajesViewModel.leidos.value.toString().toInt()
+            enviados_B = reporteMensajesViewModel.enviados_B.value.toString().toInt()
+            recibidos_B = reporteMensajesViewModel.recibidos_B.value.toString().toInt()
+
+        })
+
+
         binding.btnFiltroReportes.setOnClickListener {
             val newFragment = FiltroReportesDialog(this)
             newFragment.show(requireActivity().supportFragmentManager, "Filtro de Reportes")
@@ -134,7 +157,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             val extras = FragmentNavigatorExtras(binding.btnReportesMensajes to "report_slide")
             findNavController().navigate(action, extras)
         }
-
 
         binding.barras.setOnClickListener {
 
@@ -165,7 +187,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 }
 
 
-
             }
         }
 
@@ -176,8 +197,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         }
 
 
+        cambiarGrafica(tipo_grafica)
 }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras(valor:Int) {
@@ -197,17 +218,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
-        })
-
-        reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-
-            empleadoUsuario.forEach {
-                if (idUsuarioEstadisticas == it.id){
-                    binding.txtNombreReportes.setText(it.name)
-                    Log.d("idUsuarioEstadisticas", it.id)
-                }
-            }
         })
 
         //inicializacion de la grafica de barras y se agrega el objeto a desglosar para su visuzalización
@@ -249,10 +259,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
 
         binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados_B.value.toString()
-        enviados = reporteMensajesViewModel.enviados_B.value.toString().toInt()
 
         binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos_B.value.toString()
-        recibidos = reporteMensajesViewModel.recibidos_B.value.toString().toInt()
+
 
         val barChartView = binding.barChart
 
@@ -366,14 +375,10 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.txtCuartoLegend.text = "Recibidos \ndel Broadcast"
 
         binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-
         binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
 
         binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados_B.value.toString()
-        enviados = reporteMensajesViewModel.enviados_B.value.toString().toInt()
-
         binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos_B.value.toString()
-        recibidos = reporteMensajesViewModel.recibidos_B.value.toString().toInt()
 
         val barChartView = binding.barChart
 
@@ -480,20 +485,12 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.txtCuartoLegend.text = "Leídos"
 
         binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
-
         binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorGray))
 
         binding.txtDataPrimerLegend.text = reporteMensajesViewModel.enviados.value.toString()
-        enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
-
         binding.txtDataSegundoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
-        recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
-
         binding.txtDataTercerLegend.text = reporteMensajesViewModel.totales.value.toString()
-        totales = reporteMensajesViewModel.totales.value.toString().toInt()
-
         binding.txtDataCuartoLegend.text = reporteMensajesViewModel.leidos.value.toString()
-        leidos = reporteMensajesViewModel.leidos.value.toString().toInt()
 
         val barChartView = binding.barChart
 
@@ -600,10 +597,32 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
+
         pieChart = binding.pieChart
 
         binding.colorlegend1.isVisible = true
         binding.colorlegend2.isVisible = true
+
+        binding.txtPrimerLegend.text = "Enviados"
+        binding.txtSegundoLegend.text = "Recibidos"
+        binding.txtTercerLegend.text = "Totales"
+        binding.txtCuartoLegend.text = "Leídos"
+
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
+        binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorGray))
+
+        binding.txtDataPrimerLegend.text = reporteMensajesViewModel.enviados.value.toString()
+        binding.txtDataSegundoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
+        binding.txtDataTercerLegend.text = reporteMensajesViewModel.totales.value.toString()
+        binding.txtDataCuartoLegend.text = reporteMensajesViewModel.leidos.value.toString()
+
+        porcentaje_enviados = obtenerPorcentajes(enviados, totales)
+        porcentaje_recibidos = obtenerPorcentajes(recibidos, totales)
+        porcentaje_leidos = obtenerPorcentajes(leidos, totales)
+
+        initPieChart()//inicializacion de la grafica de pie
+        //aquí se agregan los valores porcentuales para su visualización
+        setDataToPieChart(porcentaje_enviados, porcentaje_recibidos, porcentaje_leidos)
 
 
         empleadoUsuario.forEach {
@@ -613,17 +632,12 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             }
         }
 
-        //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
         reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
-
-        reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-            //Toast.makeText(context, reporteMensajesViewModel.cargaDatosExitosa.value.toString(), Toast.LENGTH_SHORT).show()
 
             Constantes.dataEmpleadoUsuario.forEach {
                 if (idUsuarioEstadisticas == it.id){
@@ -633,37 +647,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             }
 
             binding.txtRangoFechaReportes.isVisible=false
-
-            binding.txtPrimerLegend.text = "Enviados"
-            binding.txtSegundoLegend.text = "Recibidos"
-            binding.txtTercerLegend.text = "Totales"
-            binding.txtCuartoLegend.text = "Leídos"
-
-            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.white))
-
-            binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorGray))
-
-            binding.txtDataPrimerLegend.text = reporteMensajesViewModel.enviados.value.toString()
-            enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
-
-            binding.txtDataSegundoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
-            recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
-
-            binding.txtDataTercerLegend.text = reporteMensajesViewModel.totales.value.toString()
-            totales = reporteMensajesViewModel.totales.value.toString().toInt()
-
-            binding.txtDataCuartoLegend.text = reporteMensajesViewModel.leidos.value.toString()
-            leidos = reporteMensajesViewModel.leidos.value.toString().toInt()
-
-            porcentaje_enviados = obtenerPorcentajes(enviados, totales)
-            porcentaje_recibidos = obtenerPorcentajes(recibidos, totales)
-            porcentaje_leidos = obtenerPorcentajes(leidos, totales)
-
-            initPieChart()//inicializacion de la grafica de pie
-            //aquí se agregan los valores porcentuales para su visualización
-            setDataToPieChart(porcentaje_enviados, porcentaje_recibidos, porcentaje_leidos)
-
-        })
     }
 
     //funcion regla de 3 para obtener un porcentage proporcional
