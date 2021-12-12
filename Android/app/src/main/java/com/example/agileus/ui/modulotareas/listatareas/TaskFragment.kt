@@ -70,17 +70,19 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
 
         var superior = preferenciasGlobal.recuperarIdSuperiorInmediato()
 
-            if(superior.isNullOrEmpty()){
+            if(superior.isNullOrEmpty() || superior == ""){
                 preferenciasGlobal.guardarNivelUsuario("alto")
-            }else if(userBoss.equals("alto") && !superior.isNullOrEmpty()){
+            }else{
+                if(userBoss.equals("alto")){
                     preferenciasGlobal.guardarNivelUsuario("medio")
-                }else{
+                }else if(userBoss.equals("bajo")){
                     preferenciasGlobal.guardarNivelUsuario("bajo")
                 }
+            }
 
 
 
-        //Toast.makeText(activity, "$superior", Toast.LENGTH_SHORT).show()
+        Log.d("usuario", "$superior & $userBoss = ${preferenciasGlobal.recuperarNivelUsuario()}")
 
         var nivelUsuario = preferenciasGlobal.recuperarNivelUsuario()
 
