@@ -135,6 +135,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun setStadisticName(){
+        binding.txtNombreReportes.setText("")
         taskStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)

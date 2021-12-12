@@ -152,6 +152,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     }
 
     fun setStadisticName(){
+        binding.txtNombreReportes.setText("")
         messageStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
