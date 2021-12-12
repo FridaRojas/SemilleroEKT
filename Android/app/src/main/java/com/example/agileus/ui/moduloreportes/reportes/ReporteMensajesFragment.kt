@@ -138,6 +138,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 if (idUsuarioEstadisticas == it.id){
                     binding.txtNombreReportes.setText(it.name)
                     Log.d("idUsuarioEstadisticas", it.id)
+                    cambiarGrafica(tipo_grafica)
                 }
             }
 

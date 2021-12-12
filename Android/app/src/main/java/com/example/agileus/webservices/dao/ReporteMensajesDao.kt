@@ -159,39 +159,6 @@ class ReporteMensajesDao {
         return messageDetail
     }
 
-
-    fun obtenerMensajesEnviados():String{
-
-        return contador_mensajes_enviados.toString()
-    }
-
-    fun obtenerMensajesRecibidos():String{
-
-        return contador_mensajes_recibidos.toString()
-    }
-
-    fun obtenerMensajesTotales():String{
-
-        return contador_mensajes_totales.toString()
-    }
-
-    fun obtenerMensajesLeidos():String{
-
-        return contador_mensajes_leidos.toString()
-    }
-
-
-    fun obtenerenviadosalBroadcast():String{
-
-        return enviados_al_B.toString()
-
-    }
-
-    fun obtenerRecibidosdelBroadcast():String{
-
-        return recibidos_broadcast.toString()
-    }
-
     
 @RequiresApi(Build.VERSION_CODES.O)
 fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> {
@@ -277,6 +244,17 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> 
 
     fun obtenerMensajesLeidos():String{
         return contador_mensajes_leidos.toString()
+    }
+
+    fun obtenerenviadosalBroadcast():String{
+
+        return enviados_al_B.toString()
+
+    }
+
+    fun obtenerRecibidosdelBroadcast():String{
+
+        return recibidos_broadcast.toString()
     }
 
 

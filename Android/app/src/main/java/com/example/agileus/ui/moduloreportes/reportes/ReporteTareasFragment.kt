@@ -115,6 +115,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 binding.txtNombreReportes.setText(taskStadisticData[taskStadisticData.size - 1].name)
             }
             setStadisticName()
+
         })
 
         reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
