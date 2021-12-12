@@ -1,24 +1,16 @@
 package com.example.agileus.ui.moduloreportes.reportes
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.transition.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -27,14 +19,12 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.utils.Constantes.tipo_grafica
 import com.example.agileus.utils.Constantes.vista
-import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.utils.Constantes.empleadoUsuario
 import com.example.agileus.databinding.ReporteMensajesFragmentBinding
-import com.example.agileus.models.UserMessageDetailReport
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
-import com.example.agileus.utils.Constantes.GROUP_ID_REPORTES
+import com.example.agileus.utils.Constantes.TEAM_ID_REPORTES
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
 import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
@@ -43,18 +33,9 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
-import com.google.android.material.textfield.TextInputLayout
-import java.lang.Exception
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.time.temporal.ChronoUnit
-import javax.xml.datatype.DatatypeConstants.DAYS
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener {
@@ -86,7 +67,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -112,17 +92,14 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             empleadoUsuario = list
             binding.progressLoadingR.visibility = View.GONE
             binding.btnFiltroReportes.visibility = View.VISIBLE
-
-            if (idUsuarioEstadisticas == GROUP_ID_REPORTES && empleadoUsuario.size > 1){
-                idUsuarioEstadisticas = Constantes.empleadoUsuario[empleadoUsuario.size - 1].id
+            if (empleadoUsuario.size == 1){
+                idUsuarioEstadisticas = preferenciasGlobal.recuperarIdSesion()
+                binding.txtNombreReportes.setText(preferenciasGlobal.recuperarNombreSesion())
+            }else if (idUsuarioEstadisticas == TEAM_ID_REPORTES && empleadoUsuario.size > 1){
+                idUsuarioEstadisticas = empleadoUsuario[empleadoUsuario.size - 1].id
                 binding.txtNombreReportes.setText(empleadoUsuario[empleadoUsuario.size - 1].name)
             }
-            Constantes.empleadoUsuario.forEach {
-                if (Constantes.idUsuarioEstadisticas == it.id){
-                    binding.txtNombreReportes.setText(it.name)
-                    Log.d("idUsuarioEstadisticas", it.id)
-                }
-            }
+            setStadisticName()
             cambiarGrafica(tipo_grafica)
         })
         binding.btnFiltroReportes.setOnClickListener {
@@ -136,8 +113,17 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             findNavController().navigate(action, extras)
         }
 
-            //cambiarGrafica(tipo_grafica)
-}
+    }
+
+    fun setStadisticName(){
+        empleadoUsuario.forEach {
+            if (idUsuarioEstadisticas == it.id){
+                binding.txtNombreReportes.setText(it.name)
+                Log.d("idUsuarioEstadisticas", it.id)
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras() {
 
@@ -145,12 +131,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend1.isVisible = false
         binding.colorlegend2.isVisible = false
 
-        Constantes.empleadoUsuario.forEach {
-            if (Constantes.idUsuarioEstadisticas == it.id){
-                binding.txtNombreReportes.setText(it.name)
-                Log.d("idUsuarioEstadisticas", it.id)
-            }
-        }
+        setStadisticName()
         binding.txtRangoFechaReportes.isVisible=false
 
 
@@ -164,12 +145,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
 
-            Constantes.empleadoUsuario.forEach {
-                if (Constantes.idUsuarioEstadisticas == it.id){
-                    binding.txtNombreReportes.setText(it.name)
-                    Log.d("idUsuarioEstadisticas", it.id)
-                }
-            }
+            setStadisticName()
 
 
             binding.txtDataPrimerLegend.text = ""
@@ -207,13 +183,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         binding.colorlegend1.isVisible = true
         binding.colorlegend2.isVisible = true
 
-
-        Constantes.empleadoUsuario.forEach {
-            if (Constantes.idUsuarioEstadisticas == it.id){
-                binding.txtNombreReportes.setText(it.name)
-                Log.d("idUsuarioEstadisticas", it.id)
-            }
-        }
+        setStadisticName()
 
         //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
         reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
@@ -227,12 +197,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
             //Toast.makeText(context, reporteMensajesViewModel.cargaDatosExitosa.value.toString(), Toast.LENGTH_SHORT).show()
 
-            Constantes.dataEmpleadoUsuario.forEach {
-                if (Constantes.idUsuarioEstadisticas == it.id){
-                    binding.txtNombreReportes.setText(it.name)
-                    Log.d("idUsuarioEstadisticas", it.id)
-                }
-            }
+            setStadisticName()
 
             binding.txtRangoFechaReportes.isVisible=false
 
@@ -435,7 +400,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     override fun onDateFilterSelected() {
         Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
 
-        if(idUsuarioEstadisticas == GROUP_ID_REPORTES){
+        if(idUsuarioEstadisticas == TEAM_ID_REPORTES){
             reporteMensajesViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
             fechaIniComp = fechaIniEstadisticas
             fechaFinComp = fechaFinEstadisticas
