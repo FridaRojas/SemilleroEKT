@@ -48,7 +48,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private lateinit var pieChart: PieChart
     private lateinit var barChart: BarChart
 
-    //valores enteros de los datos de los mensajes
+    //valores enteros de los datos de las tareas
     private var terminadas: Int = 0
     private var pendientes: Int = 0
     private var iniciada: Int = 0
@@ -277,8 +277,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         val barChartView = binding.barChart
 
         val barWidth: Float = 0.15f //anchura de la barra
-        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
-        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+        val barSpace: Float = 0.10f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.5f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
 
@@ -295,8 +295,15 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             if(it.name == "Mi equipo"){
                 xAxisValues.add(it.name)
                 contador += 1
+
+                //Estos son los datos verdaderos
                 yValueGroup1.add((BarEntry(contador.toFloat(), it.onTime.toFloat())))
                 yValueGroup2.add((BarEntry(contador.toFloat(), it.outTime.toFloat())))
+
+                //Estos son datos de prueba
+                //yValueGroup1.add((BarEntry(contador.toFloat(), 3f)))
+                //yValueGroup2.add((BarEntry(contador.toFloat(), 6f)))
+                //Aquí terminan los datos de prueba
             }
         }
 
@@ -311,6 +318,16 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barDataSet2.setDrawValues(false)
 
         var barData = BarData(barDataSet1, barDataSet2)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         //remove legenda
         barChartView.legend.isEnabled = false
@@ -328,16 +345,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChartView.invalidate()
 
         barChart.animateY(1000)
-
-        val xAxis = barChartView.xAxis
-        xAxis.granularity = 1f
-        xAxis.isGranularityEnabled = true
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(true)
-        xAxis.textSize = 10f
-
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         barChartView.setTouchEnabled(true)
 
@@ -394,8 +401,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         val barChartView = binding.barChart
 
         val barWidth: Float = 0.15f //anchura de la barra
-        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
-        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+        val barSpace: Float = 0.10f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.5f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
 
@@ -409,12 +416,24 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         var contador=0
 
         listaUsuarios.forEach {
+
+            //Eston son los datos reales
             if ((it.name != "Mi equipo") && (it.name != "Mi información")){
                 xAxisValues.add(it.name)
                 contador += 1
                 yValueGroup1.add((BarEntry(contador.toFloat(), it.onTime.toFloat())))
                 yValueGroup2.add((BarEntry(contador.toFloat(), it.outTime.toFloat())))
             }
+
+            //Estos son datos de prueba
+
+            /*xAxisValues.add(it.name)
+            contador += 1
+            yValueGroup1.add((BarEntry(contador.toFloat(), 5f)))
+            yValueGroup2.add((BarEntry(contador.toFloat(), 4f)))*/
+
+            //Aquí terminan los datos de prueba
+
         }
 
         barDataSet1 = BarDataSet(yValueGroup1, "")
@@ -428,6 +447,16 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barDataSet2.setDrawValues(false)
 
         var barData = BarData(barDataSet1, barDataSet2)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         //remove legenda
         barChartView.legend.isEnabled = false
@@ -445,16 +474,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChartView.invalidate()
 
         barChart.animateY(1000)
-
-        val xAxis = barChartView.xAxis
-        xAxis.granularity = 1f
-        xAxis.isGranularityEnabled = true
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(true)
-        xAxis.textSize = 10f
-
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         barChartView.setTouchEnabled(true)
 
@@ -486,6 +505,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     private fun graficabarrasDesgloseTareas(listaUsuarios: ArrayList<UserTaskDetailReport>) {
 
+        val sortedList = ArrayList(listaUsuarios.sortedWith(compareBy { it.name }))
+
         binding.colorlegend1.isVisible=true
         binding.colorlegend2.isVisible=true
         binding.colorlegend3.isVisible=true
@@ -508,9 +529,9 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
                 val barChartView = binding.barChart
 
-        val barWidth: Float = 0.15f //anchura de la barra
-        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
-        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+        val barWidth: Float = 0.10f //anchura de la barra
+        val barSpace: Float = 0.05f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.4f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
 
@@ -527,7 +548,9 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         var contador=0
 
-        listaUsuarios.forEach {
+        sortedList.forEach {
+
+            //Estos son los datos verdaderos
             if ((it.name != "Mi equipo") && (it.name != "Mi información")) {
                 xAxisValues.add(it.name)
                 contador += 1
@@ -536,6 +559,17 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 yValueGroup3.add((BarEntry(contador.toFloat(), it.revision.toFloat())))
                 yValueGroup4.add((BarEntry(contador.toFloat(), it.finished.toFloat())))
             }
+
+            //Estos son datos de prueba
+                /*xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), 4f)))
+                yValueGroup2.add((BarEntry(contador.toFloat(), 5f)))
+                yValueGroup3.add((BarEntry(contador.toFloat(), 3f)))
+                yValueGroup4.add((BarEntry(contador.toFloat(), 8f)))*/
+
+            //Aquí terminan los datos de prueba
+
         }
 
 
@@ -549,18 +583,29 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barDataSet2.setDrawIcons(false)
         barDataSet2.setDrawValues(false)
 
-        barDataSet3 = BarDataSet(yValueGroup3, "#7F8182")
-        barDataSet3.color = Color.YELLOW
+
+        barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3.color = Color.parseColor("#7F8182")
         barDataSet3.setDrawIcons(false)
         barDataSet3.setDrawValues(false)
 
-        barDataSet4 = BarDataSet(yValueGroup4, "#ffff8800")
-        barDataSet4.color = Color.BLUE
+        barDataSet4 = BarDataSet(yValueGroup4, "")
+        barDataSet4.color = Color.parseColor("#ffff8800")
         barDataSet4.setDrawIcons(false)
         barDataSet4.setDrawValues(false)
 
 
         var barData = BarData(barDataSet1, barDataSet2, barDataSet3, barDataSet4)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         //remove legenda
         barChartView.legend.isEnabled = false
@@ -578,16 +623,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChartView.invalidate()
 
         barChart.animateY(1000)
-
-        val xAxis = barChartView.xAxis
-        xAxis.granularity = 1f
-        xAxis.isGranularityEnabled = true
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(true)
-        xAxis.textSize = 10f
-
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         barChartView.setTouchEnabled(true)
 

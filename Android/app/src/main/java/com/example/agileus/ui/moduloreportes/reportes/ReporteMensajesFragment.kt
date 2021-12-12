@@ -98,8 +98,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         reporteMensajesViewModel = ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
 
-        //MySharedPreferences.idUsuarioEstadisticas = MySharedPreferences.idUsuario
-
         return root
     }
 
@@ -263,8 +261,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         val barChartView = binding.barChart
 
         val barWidth: Float = 0.15f //anchura de la barra
-        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
-        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+        val barSpace: Float = 0.10f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.5f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
 
@@ -298,6 +296,16 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         var barData = BarData(barDataSet1, barDataSet2)
 
+        val xAxis = barChartView.getXAxis()
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
         //remove legenda
         barChartView.legend.isEnabled = false
         //remover etiqueta de descripción
@@ -314,16 +322,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChartView.invalidate()
 
         barChart.animateY(1000)
-
-        val xAxis = barChartView.getXAxis()
-        xAxis.granularity = 1f
-        xAxis.isGranularityEnabled = true
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(true)
-        xAxis.textSize = 10f
-
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         barChartView.setTouchEnabled(true)
 
@@ -381,8 +379,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         val barChartView = binding.barChart
 
         val barWidth: Float = 0.15f //anchura de la barra
-        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
-        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+        val barSpace: Float = 0.10f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.5f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
 
@@ -416,6 +414,16 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         var barData = BarData(barDataSet1, barDataSet2)
 
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
         //remove legenda
         barChartView.legend.isEnabled = false
         //remover etiqueta de descripción
@@ -432,16 +440,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChartView.invalidate()
 
         barChart.animateY(1000)
-
-        val xAxis = barChartView.xAxis
-        xAxis.granularity = 1f
-        xAxis.isGranularityEnabled = true
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(true)
-        xAxis.textSize = 10f
-
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         barChartView.setTouchEnabled(true)
 
@@ -493,9 +491,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         val barChartView = binding.barChart
 
-        val barWidth: Float = 0.15f //anchura de la barra
-        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
-        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+        val barWidth: Float = 0.12f //anchura de la barra
+        val barSpace: Float = 0.08f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.4f //espacio entre grupos de barras
 
         var xAxisValues = ArrayList<String>()
 
@@ -511,6 +509,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         var contador=0
 
         listaUsuarios.forEach {
+
+            //Estos son los datos de verdad
+
             if ((it.name != "Mi equipo") && (it.name != "Mi información")) {
                 xAxisValues.add(it.name)
                 contador += 1
@@ -518,6 +519,18 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 yValueGroup2.add((BarEntry(contador.toFloat(), it.received.toFloat())))
                 yValueGroup3.add((BarEntry(contador.toFloat(), it.read.toFloat())))
             }
+
+            //Estos son datos de prueba
+
+                /*xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), 7f)))
+                yValueGroup2.add((BarEntry(contador.toFloat(), 4f)))
+                yValueGroup3.add((BarEntry(contador.toFloat(), 5f)))*/
+
+            //Aquí terminan lños datos de prueba
+
+
         }
 
 
@@ -532,11 +545,20 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barDataSet2.setDrawValues(false)
 
         barDataSet3 = BarDataSet(yValueGroup3, "")
-        barDataSet3.color = Color.YELLOW
+        barDataSet3.color = Color.parseColor("#7F8182")
         barDataSet3.setDrawIcons(false)
         barDataSet3.setDrawValues(false)
 
         var barData = BarData(barDataSet1, barDataSet2, barDataSet3)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         //remove legenda
         barChartView.legend.isEnabled = false
@@ -555,15 +577,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         barChart.animateY(1000)
 
-        val xAxis = barChartView.xAxis
-        xAxis.granularity = 1f
-        xAxis.isGranularityEnabled = true
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(true)
-        xAxis.textSize = 10f
-
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
 
         barChartView.setTouchEnabled(true)
 
