@@ -9,17 +9,22 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.databinding.FragmentBuzonBinding
-import com.example.agileus.utils.Constantes.URL_BASE2
-import com.example.agileus.utils.Constantes.URL_BASE_TAREAS
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
+import com.example.agileus.utils.Constantes.broadlist
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class BuzonFragment : Fragment() {
+    var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+    var token= InitialApplication.preferenciasGlobal.recuperarTokenAuth()
 
-companion object{
+
+    companion object{
     var control=1
     var USERTYPE=""
 }
@@ -50,6 +55,13 @@ companion object{
         (activity as AppCompatActivity?)!!.supportActionBar!!.title =
             "Buzon Broadcast"
 
+        broadlist= UserId
+
+//        Log.d("tokenAuth", tokenAuth)
+  //      Log.d("User", idUsuario)
+    //    Log.d("User id", InicioSesionFragment.id)
+
+
 
         binding.mensajesrecibidos.setOnClickListener {
              control = 1
@@ -70,6 +82,7 @@ companion object{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity as HomeActivity).ocultarBtnAtras()
 
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false

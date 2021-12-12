@@ -22,8 +22,6 @@ class ListContactsViewModel : ViewModel() {
     lateinit var listaConsumida:ArrayList<Contacts>
     var contactos = MutableLiveData<ArrayList<Contacts>>()
 
-
-
     init {
         lista = MessageDao()
     }
@@ -36,10 +34,9 @@ class ListContactsViewModel : ViewModel() {
                 listaConsumida =  withContext(Dispatchers.IO) {
                     lista.recuperarListadeContactos(idUser)
                 }
-                Log.i("mensaje", "${listaConsumida.size}")
                 if (listaConsumida != null){
                     if(listaConsumida.isNotEmpty()){
-                        adaptador.postValue(ContactsAdapter(listaConsumida as ArrayList<Contacts>))
+                        adaptador.value = (ContactsAdapter(listaConsumida as ArrayList<Contacts>))
                         contactos.value = listaConsumida
                     }
                 }

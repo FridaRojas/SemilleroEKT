@@ -1,25 +1,52 @@
 package com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster
 
 import android.util.Log
-import com.example.agileus.adapters.BuzonAdapterResponse
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.models.*
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listafiltrada
+//import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaBrd1
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonDetallesViewModel.Companion.listaus
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.listaBrd1
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.mensajes
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastFragment.Companion.listas
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.memsajes2
+//import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.listaBrd1
+import com.example.agileus.utils.Constantes.broadlist
 import retrofit2.Response
 
-class DaoBuzon1 {
+class DaoBuzon1() {
+
+    var token = InitialApplication.preferenciasGlobal.recuperarTokenAuth()
+    var idUser = InitialApplication.preferenciasGlobal.recuperarIdSesion()
 
 
-    suspend fun recuperarListadeContactos(idUser: String): ArrayList<Contacts> {
+//    lateinit var listaBrd1: List<Chats1>
+
+    suspend fun recuperarListadeContactos(idUser: String): ArrayList<Datos> {
         listaus = ArrayList()
+        Log.d("tokenAuth", token)
         try {
-            val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getList(idUser)
-            val ResponseDos: Response<ArrayList<Contacts>> = callRespuesta.execute()
-              if (ResponseDos.isSuccessful) {
-                listaus = ResponseDos.body()!!
+            val callRespuesta =
+                InitialApplication.BroadcastServiceGlobalTasks2.getList(idUser,
+                    token
+                )
+            val ResponseDos: Response<Contacts1> = callRespuesta.execute()
+            if (ResponseDos.isSuccessful) {
+                val x = ResponseDos.body()!!
+//                  x.data
+                Log.d("resp", ResponseDos.body()!!.mensaje.toString())
+                Log.d("resp", ResponseDos.code().toString())
+                Log.d("resp", x.data.size.toString())
+
+                x.data.forEach {
+                    Log.d("usuarios", it.nombre)
+                    listaus.add(it)
+                }
+
+
+//                  listaus.forEach {
+                //                    Log.d("resp",it.nombre)
+                //              }
             } else {
                 Log.i("ERROR", ResponseDos.code().toString())
             }
@@ -30,13 +57,20 @@ class DaoBuzon1 {
         return listaus
     }
 
-    suspend fun recuperarMensajesBrd (idUser: String): ArrayList<BuzonResp> {
+
+    suspend fun recuperarMensajesBrd(idUser: String): ArrayList<DataBuzon> {
         listaBrd = ArrayList()
         try {
-            val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getbuzon(idUser)
-            val ResponseDos: Response<ArrayList<BuzonResp>> = callRespuesta.execute()
+            val callRespuesta =
+                InitialApplication.BroadcastServiceGlobalTasks2.getbuzon(idUser,
+                    token
+                )
+            val ResponseDos: Response<BuzonResp1> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
-                listaBrd = ResponseDos.body()!!
+                var x = ResponseDos.body()!!
+                x.data.forEach {
+                    listaBrd.add(it)
+                }
             } else {
                 Log.i("ERROR", ResponseDos.code().toString())
             }
@@ -47,13 +81,44 @@ class DaoBuzon1 {
         return listaBrd
     }
 
-    suspend fun recuperarMensajesBrd1 (idUser: String): ArrayList<Chats> {
-        listaBrd1 = ArrayList()
+    suspend fun recuperarMensajesBrd1(idUser: String): ArrayList<String> {
+
         try {
-            val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getmybuzon(idUser)
-            var ResponseDos: Response<ArrayList<Chats>> = callRespuesta.execute()
+            val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getmybuzon(
+                idUser,
+                token
+            )
+            var ResponseDos: Response<Chats1> = callRespuesta.execute()
             if (ResponseDos.isSuccessful) {
-                 listaBrd1 = ResponseDos.body()!!
+                var x = ResponseDos.body()!!
+                x.data.forEach {
+                    listafiltrada.add(it.idConversacion)
+                }
+            } else {
+                Log.i("ERROR", ResponseDos.code().toString())
+            }
+        } catch (ex: Exception) {
+            Log.i("ERROR", "${ex.toString()}")
+        }
+
+        return listafiltrada
+    }
+
+    suspend fun recuperarEnviadosBrd(idUser: String, sala: String) {
+
+       memsajes2 = ArrayList()
+        try {
+            Log.d("id recibido", idUser)
+            val callRespuesta =
+                InitialApplication.BroadcastServiceGlobalTasks2.getenviados(idUser, sala,
+                    token
+                )
+            var ResponseDos: Response<BuzonComunicados> = callRespuesta.execute()
+            if (ResponseDos.isSuccessful) {
+                var mensajes = ResponseDos.body()!!
+                mensajes.data.forEach {
+                    memsajes2.add(it)
+                }
             } else {
                 Log.i("ERROR", ResponseDos.code().toString())
             }
@@ -61,38 +126,20 @@ class DaoBuzon1 {
         } catch (ex: Exception) {
             Log.i("ERROR", "${ex.toString()}")
         }
-
-        return listaBrd1
-    }
-
-    suspend fun recuperarEnviadosBrd (idUser: String): ArrayList<BuzonComunicados> {
-        mensajes = ArrayList()
-        try {
-            val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getenviados(idUser)
-            var ResponseDos: Response<ArrayList<BuzonComunicados>> = callRespuesta.execute()
-            if (ResponseDos.isSuccessful) {
-                mensajes = ResponseDos.body()!!
-
-            } else {
-                Log.i("ERROR", ResponseDos.code().toString())
-            }
-
-        } catch (ex: Exception) {
-            Log.i("ERROR", "${ex.toString()}")
-        }
-
-        return mensajes
     }
 
 
-
-    suspend fun getcustompost(post: MensajeBodyBroadcaster):Response<MensajeBodyBroadcaster> {
-        return InitialApplication.BroadcastServiceGlobalTasks2.pushpost(post)
-    }
-    suspend fun getcustompush(post: MsgBodyUser):Response<MsgBodyUser> {
-        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(post)
+    suspend fun getcustompost(post: MensajeBodyBroadcaster): Response<MensajeBodyBroadcaster> {
+        return InitialApplication.BroadcastServiceGlobalTasks2.pushpost(post,
+            token
+        )
     }
 
-
+    suspend fun getcustompush(post: MsgBodyUser): Response<MsgBodyUser> {
+        return InitialApplication.BroadcastServiceGlobalTasks2.pushrequest(idUser,post,
+            token
+        )
+    }
 
 }
+

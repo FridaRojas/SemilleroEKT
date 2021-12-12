@@ -86,9 +86,6 @@ class ReporteTareasViewModel: ViewModel() {
                     listaEmpleadosAux.value = listaHijosConsumida
                     cargaOperacionesEstadisticasTareas.value = true
                 }
-                listaEmpleadosAux.value?.forEach {
-                    Log.e("Hijos", it.name)
-                }
             }
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())

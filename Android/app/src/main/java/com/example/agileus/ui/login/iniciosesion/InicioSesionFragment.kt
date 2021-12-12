@@ -1,47 +1,55 @@
 package com.example.agileus.ui.login.iniciosesion
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
+import android.os.SystemClock.sleep
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.PatternsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
+import com.example.agileus.models.Data
 import com.example.agileus.models.Users
+import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel.Companion.userBoss
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.regex.Pattern
-import com.example.agileus.ui.MainActivity
-import com.example.agileus.ui.login.dialog.CerrarSesionDialog
-import com.example.agileus.ui.login.dialog.DialogoListen
+import android.animation.PropertyValuesHolder
+
+import android.animation.ObjectAnimator
+
+import android.animation.Animator
+
+
+
 
 //, DialogoListen
 class InicioSesionFragment : Fragment(){
     private var _binding: InicioSesionFragmentBinding? = null
     private val binding get() = _binding!!
-    var trigger=0
+    var dataLogin = Data()
+    //var trigger=0
 
-    //commit
+    var idUsuario = ""
+    var correoSession = ""
+    var passwordSession = ""
 
     companion object {
-        var correoLogin : String=""
-        var passwordLogin : String=""
         var status:Boolean =false
-        var idUser:String = ""
-        var rol:String = ""
-        var idnombre:String = ""
-        var idGrupo:String = ""
-        var tokenAuth: String = ""
-
+       // var idUser:String = ""
     }
 
     private lateinit var viewModel: InicioSesionViewModel
@@ -62,87 +70,172 @@ class InicioSesionFragment : Fragment(){
     @SuppressLint("FragmentBackPressedCallback")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
+        //OCULTAR BOTÓN ATRÁS EN ONACTIVITYCREATED
 
-        //appBar: AppBar( title: Text("App Bar without Back Button"), automaticallyImplyLeading: false, ),
+
+
+
+
+        (activity as HomeActivity).ocultarBtnAtras()
+
+        viewModel = ViewModelProvider(this).get(InicioSesionViewModel::class.java)
 
         //AGREGADA para ocultar BottonNavigationView
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navBar.isVisible = false
 
-///////////////////////////////////////
+        /*
         binding.btnLogin.setOnClickListener { validate()
+        // observer se dispara cuando finalice el servicio
+        viewModel.inicioExitoso.observe(viewLifecycleOwner, {response ->
+            //Log.d("respuesta inicio ", viewModel.inicioExitoso.toString())
+            var x = response
+            if(x)
+            {
+                //Log.d("xdata",x.toString())
+             //   Toast.makeText(activity, "Inicio", Toast.LENGTH_SHORT).show()
+            }
+             else {
+                //Log.d("xdata",x.toString())
+            }
 
-        }
-
+            //}
+        })*/
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
+        ////////////////
+//       binding.vista2.visibility = View.INVISIBLE
+
+
+        viewModel.getUsersByBoss()
+
+
+        /*if(preferenciasGlobal.validaSesionIniciada()){
+            findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
+            Toast.makeText(activity, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
+        }*/
+
+
+
+        binding.btnLogin.setOnClickListener {
+
+            var progressBar = binding.progressLoading
+            progressBar.visibility=View.VISIBLE
+            binding.btnLogin.isEnabled=false
+
+            var rol = InitialApplication.preferenciasGlobal.recuperarRol()
+            // observer se dispara cuando finalice el servicio
+            viewModel.inicioExitoso.observe(viewLifecycleOwner, {response ->
+                //Log.d("respuesta inicio ", viewModel.inicioExitoso.toString())
+                var x = response
+                if(x)
+                {
+                    //Log.d("xdata",x.toString())
+                    //   Toast.makeText(activity, "Inicio", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    //Log.d("xdata",x.toString())
+                }
+
+                //}
+            })
+            viewModel.userByBossId.observe(viewLifecycleOwner, {response ->
+
+            })
+
+
+            //validate()
+            var result = arrayOf(validateEmail(), validatePassword())
+            correoSession = binding.email.text.toString()
+            passwordSession = binding.password.text.toString()
+
+            if(false in result){
+                progressBar.visibility = View.INVISIBLE
+                binding.btnLogin.isEnabled = true
+                Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
+            }else{
+                val usuario = Users(correoSession, passwordSession, TOKEN_KEY)
+                viewModel.recuperarLogueo(usuario)
+                sleep(1000)
+
+                if (status) {
+                    Log.d("Login", correoSession)
+                    Log.d("Login", passwordSession)
+                    Log.d("Login", idUsuario)
+                    //Toast.makeText(activity, "Inicio de sesion correcto", Toast.LENGTH_SHORT).show()
+
+                    if(rol!="BROADCAST")
+                    findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
+                    else
+                        findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2)
+
+                    var nombre = preferenciasGlobal.recuperarIdSesion()
+                    //Toast.makeText(activity, "$nombre", Toast.LENGTH_SHORT).show()
+
+
+                }else{
+                    startTimeCounter()
+                    Log.d("Login", "Usuario no encontrado")
+
+                }
+            }
+        }
+    }
+
+
+/*
     private fun validate() {
+
+        var progressBar = binding.progressLoading
+        progressBar.visibility=View.VISIBLE
+        binding.btnLogin.isEnabled=false
+
 
         var result = arrayOf(validateEmail(), validatePassword())
 
         if (false in result) {
             return
         }
-        val usuario = Users(correoLogin, passwordLogin, TOKEN_KEY)
+        val usuario = Users(password, passwordLogin, TOKEN_KEY)
         viewModel.recuperarLogueo(usuario)
-        binding.progressLoading.isVisible = true
 
+
+        sleep(1000)
 
         if (status) {
-            //Log.d("Login", correoLogin)
-            //Log.d("Login", passwordLogin)
-            //Log.d("Login", idUser)
-            trigger = 0
-            Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, "Usuario Encontrado", Toast.LENGTH_SHORT).show()
             if(correoLogin != "rogelioL@gmail.com")
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
-            else
-            {
+            else {
                 findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2) }
-        }
-
-        if (!status)
-        {
-            if(trigger == 0 )
-            {Toast.makeText(activity, "Presiona de Nuevo para Confirmar", Toast.LENGTH_SHORT).show()
+             }
+        else {
+            startTimeCounter()
             }
-            if (trigger >1 && !status) {
-                Toast.makeText(activity, "Usuario No Encontrado", Toast.LENGTH_SHORT).show()
 
-                if(trigger >3 )
-                {
-                    Toast.makeText(activity, "Demasiados Intentos Fallidos, Cerrando Applicación", Toast.LENGTH_LONG).show()
-                        //val newFragment = CerrarSesionDialog(this)
-                        //activity?.supportFragmentManager?.let { it -> newFragment.show(it, "Destino") }
-                    Handler().postDelayed({
-                        activity?.finish()
-                    }, 3000)
-
-                }
-
-            }
-            trigger++
-
-        }
-    }
+    }*/
 
     private fun validateEmail(): Boolean {
-        val correo = binding.username.text?.toString()
+        val correo = binding.email.text?.toString()
         return if (correo!!.isEmpty()) {
-            binding.username.error = "El campo no puede estar vacío"
+            binding.email.error = "El campo no puede estar vacío"
             false
         }
         else if (!PatternsCompat.EMAIL_ADDRESS.matcher(correo).matches()){
-            binding.username.error = "Por favor, ingresa un correo válido"
+            binding.email.error = "Por favor, ingresa un correo válido"
             false
         } else {
-            binding.username.error = null
-            correoLogin = correo
+            binding.email.error = null
+            correoSession = correo
             true
         }
     }
-    private fun validatePassword() : Boolean {
+     private fun validatePassword() : Boolean {
         val password = binding.password.text?.toString()
         // VALIDAR PASSWORD CON CARACTERES ESPECIALES
         val passwordRegex = Pattern.compile(
@@ -159,26 +252,34 @@ class InicioSesionFragment : Fragment(){
             binding.password.error = "El campo no puede estar vacío"
             false
         } else if (!passwordRegex.matcher(password).matches()) {
-            binding.password.error = "La contraseña es demasiado débil"
+            binding.password.error = "La contraseña es incorrecta"
             false
         } else {
             binding.password.error = null
-            passwordLogin = password
+            passwordSession = password
             true
         }
 
     }
+   //Barra de carga para inicio de login
+    fun startTimeCounter() {
+        var counter=0
+        val progressBar = binding.progressLoading
+        progressBar.visibility=View.VISIBLE
+        object : CountDownTimer(3000, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+                progressBar.setProgress(counter++)//counter++
+            }
+            override fun onFinish() {
+                Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+                progressBar.visibility=View.INVISIBLE
+                binding.btnLogin.isEnabled=true
 
-    /*override fun siDisparar(motivo: String) {
-        findNavController().navigate(R.id.inicioSesionFragment)
-        //Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
-    }
 
-    override fun noDisparar(motivo: String) {
-        Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
+           }
+       }.start()
+   }
 
-    }
 
-     */
-    ////////////////////////////////////
 }
+

@@ -27,5 +27,13 @@
         app:layout_constraintTop_toBottomOf="@id/et_search_contact"
         android:layout_marginTop="@dimen/paddingGeneral"
         android:layout_marginBottom="@dimen/paddingGeneral"/>
+    <ProgressBar
+        android:id="@+id/progress_bar_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/recyclerListContacts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/paddingGeneral"></ProgressBar>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

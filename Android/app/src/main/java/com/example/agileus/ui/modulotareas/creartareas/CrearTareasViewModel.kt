@@ -1,12 +1,16 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
+import android.provider.Settings.Global.getString
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.R
 import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.webservices.dao.TasksDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,11 +42,11 @@ class CrearTareasViewModel: ViewModel() {
         }
     }
 
-    fun  postTarea(t:Tasks){
+    fun  postTarea(t: Tasks,  listener: DialogoConfirmOpStatusListener){
         try {
             viewModelScope.launch {
-                postTarea.postTasks(t)
-                Log.e("Mensaje viewModel", "$t")
+                postTarea.postTasks(t, listener)
+                Log.e("logTareas", "$t")
             }
         }
         catch (ex: Exception) {

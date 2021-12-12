@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
-import com.example.agileus.models.BuzonResp
+import com.example.agileus.models.DataBuzon
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment.Companion.USERTYPE
 
-class BuzonAdapter(private var dataSet: ArrayList<BuzonResp>, var tipo: Int) :
+class BuzonAdapter(private var dataSet: ArrayList<DataBuzon>, var tipo: Int) :
     RecyclerView.Adapter<BuzonAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -49,12 +49,12 @@ class BuzonAdapter(private var dataSet: ArrayList<BuzonResp>, var tipo: Int) :
         if(tipo==2) {
 
             if (USERTYPE == "Broadcast") {
-                viewHolder.textView.text = "Mensaje enviado a :${buzon.idreceptor} "
+                viewHolder.textView.text = "Mensaje enviado a :${buzon.idReceptor} "
             }
-            if(buzon.idreceptor =="General"){
+            if(buzon.idReceptor =="General"){
                 viewHolder.textView.text = "Comunicado:    ${buzon.descripcion}"
             }
-            viewHolder.textView1.text = "idRec:    ${buzon.idreceptor}"
+            viewHolder.textView1.text = "idRec:    ${buzon.idReceptor}"
             viewHolder.textView2.text = ""
         }
     }

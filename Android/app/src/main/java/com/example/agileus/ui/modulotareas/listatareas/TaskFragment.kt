@@ -1,6 +1,7 @@
 package com.example.agileus.ui.modulotareas.listatareas
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,23 +21,28 @@ import com.example.agileus.databinding.FragmentTaskBinding
 import com.example.agileus.models.DataTask
 import com.example.agileus.models.StatusTasks
 import com.example.agileus.models.StatusTasks.Companion.lista
+import com.example.agileus.models.UserBossResponse
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel
+import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel.Companion.userBoss
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 import com.example.agileus.ui.modulotareas.dialogostareas.DialogoNivelBajo
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoValidarTarea
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskDialogListener
 import com.example.agileus.ui.modulotareas.listenerstareas.TaskListListener
+import com.example.agileus.ui.modulotareas.listenerstareas.dialogoConfirmarListener
 
 
-class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
+class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoConfirmarListener {
 
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
     lateinit var adaptadorStatus : StatusTasksAdapter
 
     private lateinit var taskViewModel: TaskViewModel
-    var nivelusuario = "medio"
+    //var nivelusuario = "medio"
     lateinit var listStatus : Array<String>
-
+    lateinit var list:Array<String>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,34 +59,53 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //recuperarNivelUsuario()
-        
+        recuperarNivelUsuario()
+         preferenciasGlobal.recuperarNivelUsuario()
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
+        list = resources.getStringArray(R.array.status_array)
+
+        //Toast.makeText(activity, userBoss, Toast.LENGTH_SHORT).show()
+
+        var superior = preferenciasGlobal.recuperarIdSuperiorInmediato()
+
+            if(superior.isNullOrEmpty() || superior == ""){
+                preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelAlto))
+            }else{
+                if(userBoss.equals(getString(R.string.nivelAlto))){
+                    preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelMedio))
+                }else if(userBoss.equals(getString(R.string.nivelBajo))){
+                    preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelBajo))
+                }
+            }
+
+
+
+        Log.d("usuario", "$superior & $userBoss = ${preferenciasGlobal.recuperarNivelUsuario()}")
+
+        var nivelUsuario = preferenciasGlobal.recuperarNivelUsuario()
 
         //Recycler Status
-        if(nivelusuario == "alto"){
+        if(nivelUsuario == getString(R.string.nivelAlto)){
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelAlto(), this)
-            taskViewModel.statusRecycler.value = "asignada"
+            taskViewModel.statusRecycler.value = list[4]
             binding.tituloTareas.text = getString(R.string.titleStatus5)
-        }else if( nivelusuario == "medio" ){
+        }else if( nivelUsuario == getString(R.string.nivelMedio) ){
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelMedio(), this)
-            taskViewModel.statusRecycler.value = "pendiente"
+            taskViewModel.statusRecycler.value = list[0]
         }else{
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelBajo(), this)
-            taskViewModel.statusRecycler.value = "pendiente"
+            taskViewModel.statusRecycler.value = list[0]
         }
 
 
-       // var adaptadorStatus = StatusTasksAdapter(listStatus, this)
+        // var adaptadorStatus = StatusTasksAdapter(listStatus, this)
         binding.recyclerStatusTareas.adapter = adaptadorStatus
         binding.recyclerStatusTareas.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        //var nivel = preferenciasGlobal.recuperarNivelUsuario()
         //compararNivel(nivel)
 
 
@@ -95,7 +120,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             it.findNavController().navigate(R.id.formularioCrearTareasFragment)
         }
         //Btn Crear tareas
-        if(nivelusuario == "alto" || nivelusuario == "medio"){
+        if(nivelUsuario == getString(R.string.nivelAlto) || nivelUsuario == getString(R.string.nivelMedio)){
             binding.btnCrearTarea.isVisible = true
             binding.btnCrearTarea.setOnClickListener {
                 it.findNavController().navigate(R.id.formularioCrearTareasFragment)
@@ -137,29 +162,36 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener {
             }
         }
 
-        //taskViewModel.statusRecycler.value = "Iniciada"
         taskViewModel.devolverListaPorStatus(this)
         binding.progressUno.visibility = View.GONE
-        //Toast.makeText(activity, "${taskViewModel.statusRecycler.value}", Toast.LENGTH_SHORT).show()
     }
 
 
-    /*
+
     fun recuperarNivelUsuario() {
         //Todo al iniciar sesion
-        if(InicioSesionViewModel.usersByBoss == true){
+        if(InicioSesionViewModel.userBoss == getString(R.string.nivelAlto)){
             // nivel alto / medio
-            preferenciasGlobal.guardarNivelUsuario("alto")
+            preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelAlto))
             //todo superior para saber si es nivel alto o medio
         }else{
-            preferenciasGlobal.guardarNivelUsuario("bajo")
+            preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelBajo))
             // nivel bajo
         }
-    }*/
-    
-    override fun abreDialogo(dataTask: DataTask) {
-        val newFragment = DialogoNivelBajo(this,dataTask)
-        newFragment.show((activity as HomeActivity).supportFragmentManager, "missiles")
     }
     
+    override fun abreDialogo(dataTask: DataTask) {
+        val newFragment2 =
+            DialogoNivelBajo(dataTask,this)
+        newFragment2.show((activity as HomeActivity).supportFragmentManager, getString(R.string.logTareas))
+    }
+
+    override fun abreDialogoConfirmar(mensaje: String) {
+        val dialogoAceptar = DialogoAceptar(mensaje)
+        dialogoAceptar.show(
+            (activity as HomeActivity).supportFragmentManager,
+            getString(R.string.dialogoAceptar)
+        )
+    }
+
 }

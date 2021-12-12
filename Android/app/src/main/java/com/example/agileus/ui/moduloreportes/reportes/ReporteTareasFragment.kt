@@ -1,7 +1,15 @@
 package com.example.agileus.ui.moduloreportes.reportes
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
+import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.Build
-import android.os.Bundle
+import android.net.Uri
+import android.os.*
+import android.provider.DocumentsContract
+import android.provider.MediaStore
+import android.text.format.DateFormat
 import android.transition.TransitionInflater
 import android.util.Half.toFloat
 import android.util.Log
@@ -10,21 +18,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agileus.BuildConfig
 import com.example.agileus.R
-import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
 import com.example.agileus.models.UserTaskDetailReport
 import com.example.agileus.providers.ReportesListener
+import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
-import com.example.agileus.utils.Constantes.dataEmpleadoUsuario
+import com.example.agileus.utils.Constantes.taskStadisticData
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
 import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
@@ -38,6 +48,12 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.net.URISyntaxException
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener  {
 
@@ -80,16 +96,25 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         return root
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
+        reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
 
         reporteTareasViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
-            Constantes.dataEmpleadoUsuario = list
+            taskStadisticData = list
             binding.progressLoadingR.visibility = View.GONE
             binding.btnFiltroReportes.visibility = View.VISIBLE
+            if (taskStadisticData.size == 1){
+                idUsuarioEstadisticas = preferenciasGlobal.recuperarIdSesion()
+                binding.txtNombreReportes.setText(preferenciasGlobal.recuperarNombreSesion())
+            }else if (idUsuarioEstadisticas == Constantes.TEAM_ID_REPORTES && taskStadisticData.size > 1){
+                idUsuarioEstadisticas = taskStadisticData[taskStadisticData.size - 1].id
+                binding.txtNombreReportes.setText(taskStadisticData[taskStadisticData.size - 1].name)
+            }
+            setStadisticName()
+            cambiarGrafica(tipo_grafica)
 
         })
 
@@ -104,6 +129,10 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             terminadas_fuera_de_tiempo = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
 
         })
+
+        binding.btnDownload.setOnClickListener {
+            tomarScreenShot(view)
+        }
 
         binding.btnFiltroReportes.setOnClickListener {
             val newFragment = FiltroReportesDialog(this)
@@ -159,6 +188,36 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    fun setStadisticName(){
+        taskStadisticData.forEach {
+            if (idUsuarioEstadisticas == it.id){
+                binding.txtNombreReportes.setText(it.name)
+                Log.d("idUsuarioEstadisticas", it.id)
+            }
+        }
+        if (binding.txtNombreReportes.text.isNullOrEmpty()){
+            idUsuarioEstadisticas = Constantes.TEAM_ID_REPORTES
+            reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun mostrargraficaPie() {
+        pieChart=binding.pieChart
+        setStadisticName()
+
+        binding.txtRangoFechaReportes.isVisible=false
+        binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
+
+        reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
+        reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
+            binding.RecyclerLista.adapter = it
+            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
+        })
+
+        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+            binding.colorlegend2.isVisible=true
+            binding.colorlegend4.isVisible=true
     private fun mostrargraficaPie() {
 
         pieChart=binding.pieChart
@@ -219,13 +278,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private fun mostrargraficaBarras(valor:Int) {
 
         barChart=binding.barChart
-
-        dataEmpleadoUsuario.forEach {
-            if (idUsuarioEstadisticas == it.id){
-                binding.txtNombreReportes.setText(it.name)
-                Log.d("idUsuarioEstadisticas", it.id)
-            }
-        }
+        setStadisticName()
 
         reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
@@ -781,6 +834,170 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
             }
         }
+        if(idUsuarioEstadisticas == "TEAM_ID_CREATED_BY_MOD_REPORT"){
+            reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
+        }else {
+            cambiarGrafica(tipo_grafica)
+        }
+
+    }
+
+
+
+
+    lateinit var pathImagen:String
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun tomarScreenShot(view:View){
+        var fecha =  Date()
+        var formato = DateFormat.format("yyyy-MM-dd_hh:mm:ss",fecha)
+
+
+        view.isDrawingCacheEnabled = true
+        val bitmap = Bitmap.createBitmap(view.getDrawingCache())
+        view.isDrawingCacheEnabled = false
+
+
+        if (Build.VERSION.SDK_INT >= 29) {
+            //SC take and save
+            var screeenReportUri = bitmap.saveImage(activity as HomeActivity)
+            val screeenReport = getPath(activity as HomeActivity, screeenReportUri!!).toString()
+            Log.e("RMF filePath", screeenReport)
+            Toast.makeText(context, "Información guardada en galeria", Toast.LENGTH_SHORT).show()
+        }else{
+            try{
+                val dirPath  = Environment.getExternalStorageDirectory().toString() + "/agileus"
+                val fileDir = File(dirPath)
+                if(!fileDir.exists()){
+                    val mkdir = fileDir.mkdir()
+                }
+                val path = "$dirPath/agileus-$formato.jpeg"
+                pathImagen = path
+
+                view.isDrawingCacheEnabled = true
+                val bitmap = Bitmap.createBitmap(view.getDrawingCache())
+                view.isDrawingCacheEnabled = false
+                val imageFile = File(path)
+                var fileOutputStream = FileOutputStream(imageFile)
+                val calidad = 100
+                bitmap.compress(Bitmap.CompressFormat.JPEG,calidad,fileOutputStream)
+                //val bytes =  ByteArrayOutputStream()
+                //fileOutputStream.write(bytes.toByteArray())
+                fileOutputStream.flush()
+                fileOutputStream.close()
+
+                binding.imgCaptura.setImageBitmap(bitmap)
+
+                val content = binding.imgCaptura as View
+                content.isDrawingCacheEnabled = true
+
+                val bitmapShare = content.drawingCache
+                val root = Environment.getExternalStorageDirectory()
+                val cachePath = File(root.absolutePath + "/AgileUs/report_${SystemClock.uptimeMillis()}")
+                try {
+                    cachePath.createNewFile()
+                    val ostream = FileOutputStream(cachePath)
+                    bitmapShare.compress(Bitmap.CompressFormat.JPEG, 100, ostream)
+                    ostream.close()
+                } catch (e: java.lang.Exception) {
+                    Log.e("Error mapa","Al crear bitmap")
+                    e.printStackTrace()
+                }
+                val imageUri = FileProvider.getUriForFile(
+                    Objects.requireNonNull(activity as HomeActivity),
+                    BuildConfig.APPLICATION_ID + ".provider", imageFile)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    var share =  Intent(Intent.ACTION_SEND)
+                    share.type = "image/*"
+                    share.putExtra(Intent.EXTRA_STREAM, imageUri)
+                    startActivity(Intent.createChooser(share,"Compartir captura"))
+                },2000)
+            }catch (e:Exception){
+                Log.e("Error Captura",e.message.toString())
+                e.printStackTrace()
+            }
+
+        }
+
+    }
+
+
+    @Throws(URISyntaxException::class)
+    fun getPath(context: Context, uri: Uri): String? {
+        var uri = uri
+        val needToCheckUri = Build.VERSION.SDK_INT >= 19
+        var selection: String? = null
+        var selectionArgs: Array<String>? = null
+        if (needToCheckUri && DocumentsContract.isDocumentUri(context.applicationContext, uri)) {
+
+            val docId = DocumentsContract.getDocumentId(uri)
+            val split = docId.split(":").toTypedArray()
+            val type = split[0]
+            if ("image" == type) {
+                uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            } else if ("video" == type) {
+                uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+            } else if ("audio" == type) {
+                uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
+            selection = "_id=?"
+            selectionArgs = arrayOf(split[1])
+        }
+        if ("content".equals(uri.scheme, ignoreCase = true)) {
+            val projection = arrayOf(MediaStore.Images.Media.DATA)
+            var cursor: Cursor? = null
+            try {
+                cursor =
+                    context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+                val column_index: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                if (cursor?.moveToFirst()!!) {
+                    return cursor.getString(column_index)
+                }
+            } catch (e: java.lang.Exception) {
+            }
+        } else if ("file".equals(uri.scheme, ignoreCase = true)) {
+            return uri.path
+        }
+        return null
+    }
+
+    fun Bitmap.saveImage(context: Context): Uri? {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/AgileUs")
+        values.put(MediaStore.Images.Media.IS_PENDING, true)
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "report_${SystemClock.uptimeMillis()}")
+
+        val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri != null) {
+            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
+            values.put(MediaStore.Images.Media.IS_PENDING, false)
+            context.contentResolver.update(uri, values, null, null)
+            Log.d("URI", values.toString())
+            return uri
+        }
+        return null
+    }
+
+
+    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

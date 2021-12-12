@@ -1,21 +1,15 @@
 package com.example.agileus.webservices.dao
 
+import android.util.Log
 import com.example.agileus.config.InitialApplication
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.*
 import retrofit2.Call
 import com.example.agileus.models.LoginResponse
 import com.example.agileus.models.Users
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idGrupo
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idUser
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.idnombre
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.rol
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.status
-import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment.Companion.tokenAuth
+import com.google.gson.internal.LinkedTreeMap
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
-import java.lang.Exception
-
 
 class LoginDao {
     val STATUS_ACCEPTED = "ACCEPTED"
@@ -29,72 +23,110 @@ class LoginDao {
 
         val callRespuesta = InitialApplication.LoginServiceGlobal.iniciarSesionLogin(usuario)
         var responseDos: Response<LoginResponse> = callRespuesta.execute()
+        //var user:LoginResponse
 
         if (responseDos.isSuccessful) {
+            //Log.d("body",responseDos.body().toString())
+            //Log.d("body",responseDos.body()?.status.toString())
+            //Log.d("body",responseDos.body().data.toString())
+
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
+                var guardarData:Data = Data()
+                Log.d("usuario", "Body: ${responseDos.body()}")
+
                 if (almacenar.status == "ACCEPTED") {
-                    STATUS = true
-//                    user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as Data)
-                    idUser = almacenar.data.id.toString()
-                    rol = almacenar.data.nombreRol.toString()
-                    idnombre = almacenar.data.nombre.toString()
-                }
-                if (almacenar.status == "BAD_REQUEST") {
-                    //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
-                    STATUS = false
-                    idUser = almacenar.data.id.toString()
-                    rol = almacenar.data.nombreRol.toString()
-                    idnombre = almacenar.data.nombre.toString()
-                    idGrupo = almacenar.data.idgrupo.toString()
-                    tokenAuth = almacenar.data.tokenAuth.toString()
+                    var mapa:LinkedTreeMap<String,Any?> = responseDos.body()!!.data as LinkedTreeMap<String, Any?>
+                    guardarData.id = mapa["id"].toString()
+                    guardarData.idUser = mapa["idUser"].toString()
+                    guardarData.correo = mapa["correo"].toString()
+                    guardarData.fechaInicio = mapa["fechaInicio"].toString()
+                    guardarData.fechaTermino = mapa["fechaTermino"].toString()
+                    guardarData.numeroEmpleado = mapa["numeroEmpleo"].toString()
+                    guardarData.nombre = mapa["nombre"].toString()
+                    guardarData.password = mapa["password"].toString()
+                    guardarData.nombreRol = mapa["nombreRol"].toString()
+                    guardarData.opcionales = mapa["opcionales"].toString()
+                    guardarData.token = mapa["token"].toString()
+                    guardarData.telefono = mapa["mapa"].toString()
+                    guardarData.statusActivo = mapa["statusActivo"].toString()
+                    guardarData.curp = mapa["curp"].toString()
+                    guardarData.rfc = mapa["rfc"].toString()
+                    guardarData.idgrupo = mapa["idgrupo"].toString()
+                    guardarData.idsuperiorInmediato = mapa["idsuperiorInmediato"].toString()
+                    guardarData.tokenAuth = mapa["tokenAuth"].toString()
+                    almacenar.data = guardarData
+                    status  = true
 
+                    Log.d("usuario", "Datos: ${mapa["fechaInicio"].toString()}")
+
+                    preferenciasGlobal.guardarDatosInicioSesion(
+                        mapa["id"].toString(),
+                        mapa["correo"].toString(),
+                        mapa["numeroEmpleo"].toString(),
+                        mapa["nombre"].toString(),
+                        mapa["nombreRol"].toString(),
+                        mapa["mapa"].toString(),
+                        mapa["curp"].toString(),
+                        mapa["rfc"].toString(),
+                        mapa["tokenAuth"].toString(),
+                        mapa["idgrupo"].toString(),
+                        mapa["idsuperiorInmediato"].toString(),
+                        true
+                    )
 
                 }
-                if (almacenar.status == "BAD_REQUEST") {
-                    //   user = LoginResponse(almacenar.status, almacenar.msj, almacenar.data as String)
-                    STATUS = false
-
+                else {
+                    status = false
                 }
-                status = STATUS
+            }
+            else {
+                status = false
             }
         }
-
-        return STATUS
-
+        else{
+            status = false
+        }
+            //Log.d("status", status.toString())
+            return status
     }
-                /*
-    suspend fun getUsersByBoss(id: String): ArrayList<DataPersons> {
-        var listaUsers = ArrayList<DataPersons>()
-        lateinit var usersListResponse: UserBossResponse
 
-        val callRespuesta = InitialApplication.LoginServiceGlobal.getUsersByBoss(id)
+    suspend fun getUsersByBoss(id: String): ArrayList<Data> {
+        var listaUsers = ArrayList<Data>()
+        lateinit var usersListResponse: LoginResponse
+
+        val callRespuesta = InitialApplication.webServiceGlobalNivel.getUsersByBoss(id)
         var response = callRespuesta?.execute()
 
         try {
             if (response != null) {
+                //Log.d("usuario", "Body: ${response.body()}")
+                //Log.d("usuario", "${response.errorBody()}")
+                //Log.d("usuario", "code: ${response.code()}")
+
+
                 if (response.isSuccessful) {
                     //usersList = response.body()!!
                         var status = response.body()!!.status
                     var msj = response.body()!!.msj
-                    if (response.body()!!.status.equals("NOT_FOUND")) {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
-                        listaUsers =  emptyList<DataPersons>() as ArrayList<DataPersons>
+                    if (response.body()!!.status.equals("BAD_REQUEST")) {
+                        //usersListResponse = UserBossResponse(status, msj, response.body()!!.data as String)
+                        listaUsers =  emptyList<Data>() as ArrayList<Data>
 
                     } else {
-                        usersListResponse = UserBossResponse(status, msj, response.body()!!.data as ArrayList<DataPersons>)
-                        listaUsers = usersListResponse.data as ArrayList<DataPersons>
+                        usersListResponse = LoginResponse(status, msj, response.body()!!.data as ArrayList<Data>)
+                        listaUsers = usersListResponse.data as ArrayList<Data>
                     }
                 } else {
-                    listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                    listaUsers = emptyList<Data>() as ArrayList<Data>
                 }
             } else {
-                listaUsers = emptyList<DataPersons>() as ArrayList<DataPersons>
+                listaUsers = emptyList<Data>() as ArrayList<Data>
             }
         } catch (e: Exception) {
             Log.e("error", e.toString())
         }
         return listaUsers
-    }*/
+    }
 }
 

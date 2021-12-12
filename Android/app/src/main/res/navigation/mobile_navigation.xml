@@ -19,13 +19,16 @@
         <action
             android:id="@+id/action_navigation_home_to_inicioSesionFragment"
             app:destination="@id/inicioSesionFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_userConversationFragment"
+            app:destination="@id/userConversationFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.agileus.ui.modulotareas.listatareas.TaskFragment"
         android:label="@string/title_tareas_fragment"
-        tools:layout="@layout/fragment_task" >
+        tools:layout="@layout/fragment_task">
         <action
             android:id="@+id/action_navigation_dashboard_to_formularioCrearTareasFragment"
             app:destination="@id/formularioCrearTareasFragment" />
@@ -48,6 +51,9 @@
         <action
             android:id="@+id/action_listContactsFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_listContactsFragment_to_userConversationFragment"
+            app:destination="@id/userConversationFragment" />
 
     </fragment>
 
@@ -131,7 +137,7 @@
     <fragment
         android:id="@+id/inicioSesionFragment"
         android:name="com.example.agileus.ui.login.iniciosesion.InicioSesionFragment"
-        android:label="Inicio de Sesión"
+        android:label="Agile Us"
         tools:layout="@layout/inicio_sesion_fragment" >
         <action
             android:id="@+id/action_inicioSesionFragment_to_navigation_home"
@@ -143,7 +149,25 @@
             app:destination="@id/buzonFragment" />
 
     </fragment>
-
+    <fragment
+        android:id="@+id/userConversationFragment"
+        android:name="com.example.agileus.ui.modulomensajeria.conversation.UserConversationFragment"
+        android:label="user_conversation_fragment"
+        tools:layout="@layout/user_conversation_fragment" >
+        <action
+            android:id="@+id/action_userConversationFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <argument
+            android:name="idConversationUser"
+            app:argType="string" />
+        <argument android:name="idreceptor"
+            app:argType="string" />
+        <argument android:name="namereceptor"
+            app:argType="string" />
+        <argument
+            android:name="banderaFragment"
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>

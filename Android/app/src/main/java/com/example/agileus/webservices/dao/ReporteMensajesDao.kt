@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
-import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.*
 import com.example.agileus.models.response.ResponseConversation
-import com.example.agileus.utils.Constantes
-import com.example.agileus.utils.Constantes.empleadoUsuario
+import com.example.agileus.utils.Constantes.TEAM_ID_REPORTES
+import com.example.agileus.utils.Constantes.messageStadisticData
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
 import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
@@ -51,7 +51,6 @@ class ReporteMensajesDao {
 
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun recoverUserMessageStadistic(idBusqueda: String, searchName: String): UserMessageDetailReport {
         var lista: ArrayList<Conversation>
@@ -68,43 +67,37 @@ class ReporteMensajesDao {
         var broadcastSize = 0
 
         try{
-            val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(Constantes.idUsuario, idBusqueda)
+            val callRespuesta = InitialApplication.webServiceGlobalReportes.getDatosReporteMensajes(preferenciasGlobal.recuperarIdSesion(), idBusqueda)
             val ResponseMensajes: Response<ResponseConversation> = callRespuesta.execute()
 
-            val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportes.getDatosRespuestasBroadcast(Constantes.idUsuario, idBusqueda)
+            val callRespuestaBroadCast = InitialApplication.webServiceGlobalReportes.getDatosRespuestasBroadcast(preferenciasGlobal.recuperarIdSesion(), idBusqueda)
             val ResponseMensajesBroadCast: Response<BroadcastByID> = callRespuestaBroadCast.execute()
 
             //Fechas por día, mes, año, custom y default
             fecha_inicio = ZonedDateTime.parse(fechaIniEstadisticas)
             fecha_fin = ZonedDateTime.parse(fechaFinEstadisticas)
-            if (idBusqueda == "TEAM_ID_CREATED_BY_MOD_REPORT"){
-                messageDetail = empleadoUsuario[empleadoUsuario.size-1]
+            if (idBusqueda == TEAM_ID_REPORTES){
+                messageDetail = messageStadisticData[messageStadisticData.size-1]
             }else if (ResponseMensajes.isSuccessful || ResponseMensajesBroadCast.isSuccessful) {
-                Log.d("messageORbroadcast", "Success")
+                Log.d("messageORbroadcast", searchName)
                 try {
                     val listaDS = ResponseMensajes.body()!!
                     lista = listaDS.data
+                    Log.d("MensajesConsumidos:", lista.size.toString())
                     lista.forEach {
 
                         fecha_actual = ZonedDateTime.parse(it.fechaEnviado)
                         if((fecha_actual.isEqual(fecha_inicio) || fecha_actual.isAfter(fecha_inicio)) &&
                             (fecha_actual.isBefore(fecha_fin))) {
-                            contador_m_totales = contador_m_totales + 1
+                            contador_m_totales += 1
 
                             if (id_usuario_actual == it.idemisor) {
-                                contador_m_enviados = contador_m_enviados + 1
+                                contador_m_enviados += 1
                             }else{
-                                contador_m_recibidos = contador_m_recibidos + 1
+                                contador_m_recibidos += 1
                             }
-                            /*
-
-                            if (id_usuario_actual == it.idreceptor){
-                                contador_m_recibidos = contador_m_recibidos + 1
-                            }
-                             */
-
                             if (it.statusLeido == true) {
-                                contador_m_leidos = contador_m_leidos + 1
+                                contador_m_leidos += 1
                             }
 
                             if (it.idemisor == id_broadcast) {
@@ -119,9 +112,9 @@ class ReporteMensajesDao {
                 //Mensajes enviados al Broadcast por Usuario
                 try {
                     val objB = ResponseMensajesBroadCast.body()!!
-                    Log.d("RMDao obj_B", objB.toString())
                     lista_B = objB.data
                     broadcastSize = lista_B.size
+                    Log.d("RMDao MeMensajesBroadcast", broadcastSize.toString())
                 }catch (ex: java.lang.Exception){
                     Log.d("RMDao NoDATABroadcast", ex.toString())
                 }
@@ -203,69 +196,62 @@ class ReporteMensajesDao {
 @RequiresApi(Build.VERSION_CODES.O)
 fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> {
     var stadisticEmployeesList = arrayListOf<UserMessageDetailReport>()
+
+    stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, preferenciasGlobal.recuperarNombreSesion()))
+
         try{
-            Log.d("ListaSubConactsm", "id: ${idUser}")
             val callRespuesta = InitialApplication.webServiceGlobalReportes.getListSubContacts( idUser)
             var ResponseDos:Response<EmployeeListByBossID> = callRespuesta.execute()
 
             if (ResponseDos.isSuccessful){
                 try{
-                val listaConsumida = ResponseDos.body()!!
-                employeeList = listaConsumida.dataEmployees
+                    val listaConsumida = ResponseDos.body()!!
+                    employeeList = listaConsumida.dataEmployees
 
-                stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, "Mi información"))
-
-                //Obtencion de estadisticas de los empleados
-                if(employeeList.isNotEmpty()){
-                    employeeList.forEach {
-                        stadisticEmployeesList.add(recoverUserMessageStadistic(it.id, it.nombre))
-                        Log.d("ListaSubConactsm", "id: ${it.id}")
-                        Log.d("ListaSubConactsm", "Nombre: ${it.nombre}")
+                    //Obtencion de estadisticas de los empleados
+                    if(employeeList.isNotEmpty()){
+                        employeeList.forEach {
+                            stadisticEmployeesList.add(recoverUserMessageStadistic(it.id, it.nombre))
+                        }
+                        stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
                     }
-                    stadisticEmployeesList.add(totalGroupEstadisticsBYBoss(stadisticEmployeesList))
-                    stadisticEmployeesList.forEach {
-                        Log.d("LSubConactsDetailm", "id: ${it.id}, Nombre: ${it.name}, " +
-                                "send: ${it.send}, received: ${it.received}, read: ${it.read}, total: ${it.total}, " +
-                                "sendB: ${it.sendBroadcast}, receivedB: ${it.receivedBroadcast}")
-                    }
-                }
-
-                Log.d("ListaSubConactsSIZEM", "SIZE: ${stadisticEmployeesList.size}")
                 }catch (ex: java.lang.Exception){
                     Log.e("RMDao, NoLowLevelUsers", "Response "+ex.toString())
-                    stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, "Mi información"))
 
                 }
             }else{
                 Log.e("RMDao SubContactos", "Respuesta fallida:" + ResponseDos.code().toString())
             }
-
         }catch (ex:Exception){
-            Log.e("ERROR SubContactos", "Error al iniciar servicio")
-            stadisticEmployeesList.add(recoverUserMessageStadistic(idUser, "Mi información"))
+            Log.e("SubContactos", "No SUBContacts / Error al iniciar servicio")
+        }
+        stadisticEmployeesList.forEach {
+            Log.d("LSubConactsDetailm", "id: ${it.id}, Nombre: ${it.name}, " +
+                    "send: ${it.send}, received: ${it.received}, read: ${it.read}, total: ${it.total}, " +
+                    "sendB: ${it.sendBroadcast}, receivedB: ${it.receivedBroadcast}")
         }
         return stadisticEmployeesList
     }
 
-
     fun totalGroupEstadisticsBYBoss(dataValues: ArrayList<UserMessageDetailReport>): UserMessageDetailReport{
-        var send: Int = 0
-        var received: Int = 0
-        var read: Int = 0
-        var total: Int = 0
-        var sendBroadcast: Int = 0
-        var receivedBroadcast: Int = 0
+        var send        = 0
+        var received    = 0
+        var read        = 0
+        var total       = 0
+        var sendBroadcast       = 0
+        var receivedBroadcast   = 0
 
         for (data in dataValues.slice(1..(dataValues.size - 1))){
-            Log.d("GROP", data.name)
-            send = send     + data.send
-            received    = received  + data.received
-            read        = read      + data.read
-            total       = total     + data.total
-            sendBroadcast   = sendBroadcast + data.sendBroadcast
+            send        += data.send
+            received    += data.received
+            read        += data.read
+            total       += data.total
+            sendBroadcast       += data.sendBroadcast
+            receivedBroadcast   += data.receivedBroadcast
         }
-        var groupStadistic = UserMessageDetailReport(
-            "TEAM_ID_CREATED_BY_MOD_REPORT",
+
+        return UserMessageDetailReport(
+            TEAM_ID_REPORTES,
             "Mi equipo",
             send,
             received,
@@ -274,10 +260,24 @@ fun obtenerListaSubContactos(idUser:String): ArrayList<UserMessageDetailReport> 
             sendBroadcast,
             receivedBroadcast
         )
-        return groupStadistic
 
     }
 
+    fun obtenerMensajesEnviados():String{
+        return contador_mensajes_enviados.toString()
+    }
+
+    fun obtenerMensajesRecibidos():String{
+        return contador_mensajes_recibidos.toString()
+    }
+
+    fun obtenerMensajesTotales():String{
+        return contador_mensajes_totales.toString()
+    }
+
+    fun obtenerMensajesLeidos():String{
+        return contador_mensajes_leidos.toString()
+    }
 
 
 }

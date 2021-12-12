@@ -7,29 +7,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.agileus.adapters.TasksAdapter
-import com.example.agileus.models.DataPersons
-import com.example.agileus.models.DataTask
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
+import com.example.agileus.models.*
 import com.example.agileus.webservices.dao.LoginDao
-import com.example.agileus.models.LoginResponse
-import com.example.agileus.models.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class InicioSesionViewModel : ViewModel() {
-    var list : LoginDao
-    var inicioExitoso = MutableLiveData<Boolean>()
 
     companion object{
-        var usersByBoss = false
-
+        var userBoss = ""
     }
 
-    val correo = preferenciasGlobal.recuperaNombre()
-    val password = preferenciasGlobal.recuperaPassword()
+
+    var list : LoginDao
+    var inicioExitoso = MutableLiveData<Boolean>()
+    var userByBossId = MutableLiveData<String>()
+    var listUsers = ArrayList<Data>()
+
     //shared
     //private var userList = mutableListOf<Users>()
     //var usuariosShared = MutableLiveData<List<Users>>()
@@ -37,10 +35,10 @@ class InicioSesionViewModel : ViewModel() {
 
     init {
         list = LoginDao()
+        userByBossId.value = "bajo"
     }
 
-
-// recuperarToken
+    // recuperarToken
     fun recuperarLogueo(users: Users): List<LoginResponse>{
         //Log.i("mensaje", "ver")
         try {
@@ -48,6 +46,7 @@ class InicioSesionViewModel : ViewModel() {
                 inicioExitoso.value = withContext(Dispatchers.IO){
                     list.iniciarSesion(users)
                 }!!
+
             }
 
             //Log.d("status","$status")
@@ -58,32 +57,30 @@ class InicioSesionViewModel : ViewModel() {
         return emptyList()
     }
 
-    /*
+
+
     fun getUsersByBoss() {
-        var listUsers = ArrayList<DataPersons>()
+        try{
+            viewModelScope.launch {
+                listUsers = withContext(Dispatchers.IO){
+                    list.getUsersByBoss(preferenciasGlobal.recuperarIdSesion())
+                }
+                if (!listUsers.isNullOrEmpty()) {
+                    Log.d("usuarios", "tam: ${listUsers.size}")
+                    if(listUsers.isNotEmpty()){
+                        userByBossId.value = "alto"
+                    }
+                }else{
+                    userByBossId.value = "bajo"
+                }
+                userBoss = userByBossId.value.toString()
 
-        viewModelScope.launch {
-            listUsers = withContext(Dispatchers.IO){
-                //true "Si tiene hijos" -> alto
-                list.getUsersByBoss("618d9c26beec342d91d747d6")
-
-                //false "No tiene hijos" -> bajo
-                //list.getUsersByBoss("61a83c49d036090b8e8db3c5")
-
+                Log.d("usuario", "Hijos: ${userByBossId.value}")
             }
-            if (listUsers != null) {
-                usersByBoss = !listUsers.isEmpty()
-            }else{
-                usersByBoss = false
-            }
+
+        }catch (ex : Exception) {
+            Log.e("usuario", ex.message.toString())
         }
-        if(listUsers.isEmpty()){
-            usersByBoss = false
-        }else{
-            usersByBoss = true
-        }
-    }*/
-    fun cerrarSesion(view: View) {
-        preferenciasGlobal.cerrarSesion()
     }
+
 }

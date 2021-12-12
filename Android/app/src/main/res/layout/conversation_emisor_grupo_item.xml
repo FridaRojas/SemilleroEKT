@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/idMsj"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+  <TextView
+      android:id="@+id/id_Emisor"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:text="Nombre del emisor"
+      android:textColor="@color/black"
+      android:textSize="@dimen/paddingGeneral"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+  </TextView>
+  <TextView
+      android:id="@+id/msg"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Mensaje"
+      android:background="@drawable/rounded_bg"
+      android:backgroundTint="@color/colorBackground"
+      android:textColor="@color/black"
+      android:textSize="16sp"
+      android:padding="16sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/id_Emisor">
+  </TextView>
+
+  <TextView
+      android:id="@+id/txtArchivoadjunto"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Documento"
+      android:drawableStart="@drawable/icon_file"
+      android:background="@drawable/rounded_bg"
+      android:backgroundTint="@color/colorBackground"
+      android:textColor="@color/black"
+      android:textSize="16sp"
+      android:padding="16sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/msg"/>
+
+
+  <TextView
+      android:id="@+id/txtFecha"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:text="Fecha"
+      android:textColor="@color/black"
+      android:textSize="10sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/txtArchivoadjunto" />
+
+  <TextView
+      android:id="@+id/txtStatusLeido"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="Leído"
+      android:textColor="@color/black"
+      android:textSize="10sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/txtFecha"
+      app:layout_constraintTop_toBottomOf="@id/txtArchivoadjunto"
+      app:layout_constraintVertical_bias="1.0"
+      android:layout_marginStart="@dimen/paddingGeneral"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

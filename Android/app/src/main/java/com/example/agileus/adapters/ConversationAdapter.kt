@@ -1,8 +1,4 @@
 package com.example.agileus.adapters
-
-import android.app.DownloadManager
-import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -12,18 +8,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agileus.R
+import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.Conversation
 import com.example.agileus.providers.DownloadProvider
 import com.example.agileus.utils.Constantes
-import java.io.File
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
-
 
 class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
@@ -59,7 +48,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
 
     override fun getItemViewType(position: Int): Int {
         val usuario=dataSet[position]
-       if(Constantes.id.equals(usuario.idemisor)){
+       if(preferenciasGlobal.recuperarIdSesion().equals(usuario.idemisor)){
            return 1
         }else{
             return 2
@@ -72,6 +61,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
         lateinit var documento: TextView
         lateinit var myView :View
         lateinit var txtStatusLeido:TextView
+        lateinit var id_Emisor : TextView
         var context = view.context
 
         init {
@@ -80,23 +70,33 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
             FechaMsj = view.findViewById(R.id.txtFecha)
             myView = view.findViewById(R.id.idMsj)
             txtStatusLeido = view.findViewById(R.id.txtStatusLeido)
+            id_Emisor = view.findViewById(R.id.id_Emisor)
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun enlazarItem(conversacion:Conversation){
             msg.text = conversacion.texto
+            id_Emisor.text = conversacion.nombreEmisor
+            txtStatusLeido.text = "Leído: "+ Constantes.devuelveFechaHora(conversacion.fechaLeido)
+            if(conversacion.idconversacion.length > 50){
+                if(!conversacion.idemisor.equals(preferenciasGlobal.recuperarIdSesion())){
+                    id_Emisor.isVisible = true
+                }else{
+                    id_Emisor.isVisible = false
+                }
 
-            if(conversacion.statusLeido == true && conversacion.idemisor.equals(Constantes.id)){
+            }else{
+                id_Emisor.isVisible = false
+            }
+
+            if(conversacion.statusLeido == true && conversacion.idemisor.equals(preferenciasGlobal.recuperarIdSesion())){
                 txtStatusLeido.isVisible = true
             }
             else{
                 txtStatusLeido.isVisible = false
             }
 
-            val formatter = DateTimeFormatter.ISO_DATE_TIME
-            val text: String = conversacion.fechaCreacion.format(formatter)
-            val parsedDate = LocalDate.parse(text, formatter)
-            FechaMsj.text = parsedDate.toString()
+            FechaMsj.text = "Enviado: "+Constantes.devuelveFechaHora(conversacion.fechaCreacion)
 
             if(conversacion.texto.equals("Documento")){
                 msg.isVisible = false
@@ -113,7 +113,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
             myView.setOnClickListener {
                 if(conversacion.texto.equals("Documento")){
                     var dowloadFile = DownloadProvider()
-                    dowloadFile.dowloadFile(context, "${conversacion.rutaDocumento}${conversacion.id}", conversacion.texto)
+                    dowloadFile.dowloadFile(context, "${conversacion.rutaDocumento}", "AgilUsDocument ${Constantes.devuelveFechaDocumento()}.")
                 }
 
             }
