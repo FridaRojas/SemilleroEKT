@@ -52,6 +52,14 @@ class ListConversationFragment : Fragment(), DialogoListen {
         super.onViewCreated(view, savedInstanceState)
 
         var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
+        var i = preferenciasGlobal.recuperarIdSesion()
+        var f= preferenciasGlobal.recuperarTokenAuth()
+
+        Toast.makeText(activity, "${i}", Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "${f}", Toast.LENGTH_LONG).show()
+Log.i("Mensaje","$i")
+        Log.i("Mensaje","$f")
+
 
         ChatsViewModel.devuelveListaGrupos(UserId)
         ChatsViewModel.devuelveListaChats(UserId)

@@ -36,6 +36,27 @@ class DialogoSenderUser(val listener: UserBuzonListener) : DialogFragment() {
                 .setPositiveButton(
                     "Aceptar"
                 ) { _, _ ->
+                    if(Asunto.text.isNullOrEmpty() || Mensaje.text.isNullOrEmpty()){
+                        Toast.makeText(
+                            activity,
+                            "Mensaje no enviado. Todos los campos deben ser llenados",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }else{
+                        if(Asunto.text.toString().length >  5 || Mensaje.text.toString().length > 10){
+                            listener.mensajeBroadcasting1(
+                                MsgBodyUser(Asunto.text.toString(), Mensaje.text.toString(), "")
+                            )
+                        }else{
+                            Toast.makeText(
+                                activity,
+                                "El asunto debe ser mayor a 5 caracteres y Mensaje mayor a 10",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    }
+                    /*
                     if (Asunto.toString().isEmpty() || Mensaje.toString().isEmpty()) {
                         Toast.makeText(
                             activity,
@@ -47,6 +68,8 @@ class DialogoSenderUser(val listener: UserBuzonListener) : DialogFragment() {
                             MsgBodyUser(Asunto.text.toString(), Mensaje.text.toString(), "")
                         )
                     }
+
+                     */
                 }
                 .setNegativeButton("Cancelar",
                     DialogInterface.OnClickListener { dialog, id ->
