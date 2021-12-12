@@ -137,7 +137,7 @@
     <fragment
         android:id="@+id/inicioSesionFragment"
         android:name="com.example.agileus.ui.login.iniciosesion.InicioSesionFragment"
-        android:label="Inicio de Sesión"
+        android:label="Agile Us"
         tools:layout="@layout/inicio_sesion_fragment" >
         <action
             android:id="@+id/action_inicioSesionFragment_to_navigation_home"
