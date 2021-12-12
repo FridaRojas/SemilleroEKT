@@ -534,7 +534,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 yValueGroup1.add((BarEntry(contador.toFloat(), it.pendings.toFloat())))
                 yValueGroup2.add((BarEntry(contador.toFloat(), it.started.toFloat())))
                 yValueGroup3.add((BarEntry(contador.toFloat(), it.revision.toFloat())))
-                yValueGroup3.add((BarEntry(contador.toFloat(), it.finished.toFloat())))
+                yValueGroup4.add((BarEntry(contador.toFloat(), it.finished.toFloat())))
             }
         }
 
@@ -549,12 +549,12 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barDataSet2.setDrawIcons(false)
         barDataSet2.setDrawValues(false)
 
-        barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3 = BarDataSet(yValueGroup3, "#7F8182")
         barDataSet3.color = Color.YELLOW
         barDataSet3.setDrawIcons(false)
         barDataSet3.setDrawValues(false)
 
-        barDataSet4 = BarDataSet(yValueGroup3, "")
+        barDataSet4 = BarDataSet(yValueGroup4, "#ffff8800")
         barDataSet4.color = Color.BLUE
         barDataSet4.setDrawIcons(false)
         barDataSet4.setDrawValues(false)
