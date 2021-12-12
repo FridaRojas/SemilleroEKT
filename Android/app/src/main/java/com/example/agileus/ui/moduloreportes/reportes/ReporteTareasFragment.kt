@@ -34,6 +34,7 @@ import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
+import com.example.agileus.utils.Constantes.TEAM_ID_REPORTES
 import com.example.agileus.utils.Constantes.taskStadisticData
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
@@ -114,8 +115,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 binding.txtNombreReportes.setText(taskStadisticData[taskStadisticData.size - 1].name)
             }
             setStadisticName()
-            cambiarGrafica(tipo_grafica)
-
         })
 
         reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
@@ -215,13 +214,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
 
-        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.colorlegend2.isVisible=true
-            binding.colorlegend4.isVisible=true
-    private fun mostrargraficaPie() {
-
-        pieChart=binding.pieChart
-
         binding.colorlegend1.isVisible=true
         binding.colorlegend2.isVisible=true
         binding.colorlegend3.isVisible=true
@@ -238,7 +230,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
 
 
-        dataEmpleadoUsuario.forEach {
+        taskStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)
@@ -289,7 +281,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         //inicializacion de la grafica de barras y se agrega el objeto a desglosar para su visuzalización
 
-        val sortedList = ArrayList(dataEmpleadoUsuario.sortedWith(compareBy { it.name }))
+        val sortedList = ArrayList(taskStadisticData.sortedWith(compareBy { it.name }))
 
         if (valor==1){
             graficabarrasTareasATiempoGrupal(sortedList)
@@ -774,12 +766,11 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     override fun onDateFilterSelected() {
         Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
 
-        if(idUsuarioEstadisticas == "TEAM_ID_CREATED_BY_MOD_REPORT"){
-            reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
+        if(idUsuarioEstadisticas == TEAM_ID_REPORTES){
+            reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
         }else {
             cambiarGrafica(tipo_grafica)
         }
-
     }
 
     override fun onDestroyView() {
@@ -841,8 +832,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         }
 
     }
-
-
 
 
     lateinit var pathImagen:String
@@ -991,13 +980,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 e.printStackTrace()
             }
         }
-    }
-
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

@@ -63,6 +63,7 @@ import android.database.Cursor
 import android.os.Environment
 
 import android.os.Build
+import com.example.agileus.models.UserMessageDetailReport
 import java.net.URI
 import java.net.URISyntaxException
 
@@ -133,7 +134,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 idUsuarioEstadisticas = messageStadisticData[messageStadisticData.size - 1].id
                 binding.txtNombreReportes.setText(messageStadisticData[messageStadisticData.size - 1].name)
             }
-            empleadoUsuario.forEach {
+            messageStadisticData.forEach {
                 if (idUsuarioEstadisticas == it.id){
                     binding.txtNombreReportes.setText(it.name)
                     Log.d("idUsuarioEstadisticas", it.id)
@@ -145,7 +146,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
 
-            empleadoUsuario.forEach {
+            messageStadisticData.forEach {
                 if (idUsuarioEstadisticas == it.id){
                     binding.txtNombreReportes.setText(it.name)
                     Log.d("idUsuarioEstadisticas", it.id)
@@ -160,7 +161,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             recibidos_B = reporteMensajesViewModel.recibidos_B.value.toString().toInt()
 
             setStadisticName()
-            cambiarGrafica(tipo_grafica)
         })
 
         binding.btnDownload.setOnClickListener {
@@ -177,9 +177,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             val extras = FragmentNavigatorExtras(binding.btnReportesMensajes to "report_slide")
             findNavController().navigate(action, extras)
         }
-    }
 
-        binding.barras.setOnClickListener {
+         binding.barras.setOnClickListener {
 
             when(vista) {
 
@@ -218,7 +217,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         }
 
         cambiarGrafica(tipo_grafica)
-}
+
+    }
+
 
     fun setStadisticName(){
         messageStadisticData.forEach {
@@ -239,7 +240,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         barChart = binding.barChart
 
         setStadisticName()
-        empleadoUsuario.forEach {
+        messageStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)
@@ -257,7 +258,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         //inicializacion de la grafica de barras y se agrega el objeto a desglosar para su visuzalización
 
-        val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+        val sortedList = ArrayList(messageStadisticData.sortedWith(compareBy { it.name }))
 
             setStadisticName()
         if (valor==1){
@@ -657,17 +658,12 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         setStadisticName()
 
-        //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-        reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
+        reporteMensajesViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
-
-        reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-            //Toast.makeText(context, reporteMensajesViewModel.cargaDatosExitosa.value.toString(), Toast.LENGTH_SHORT).show()
 
             setStadisticName()
 
@@ -695,7 +691,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         setDataToPieChart(porcentaje_enviados, porcentaje_recibidos, porcentaje_leidos)
 
 
-        empleadoUsuario.forEach {
+            messageStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
                 Log.d("idUsuarioEstadisticas", it.id)
@@ -709,7 +705,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
 
-            Constantes.dataEmpleadoUsuario.forEach {
+            messageStadisticData.forEach {
                 if (idUsuarioEstadisticas == it.id){
                     binding.txtNombreReportes.setText(it.name)
                     Log.d("idUsuarioEstadisticas", it.id)
@@ -717,7 +713,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             }
 
             binding.txtRangoFechaReportes.isVisible=false
-    }
+}
 
     //funcion regla de 3 para obtener un porcentage proporcional
     fun obtenerPorcentajes(dato_parcial: Int, dato_total: Int): Float {
