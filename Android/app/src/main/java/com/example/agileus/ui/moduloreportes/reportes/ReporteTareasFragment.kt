@@ -321,7 +321,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChartView.data = barData
         barChartView.barData.barWidth = barWidth
         barChartView.xAxis.axisMinimum = 0f
-        barChartView.xAxis.axisMaximum = 2f
+        barChartView.xAxis.axisMaximum = (0+barChartView.barData.getGroupWidth(groupSpace,barSpace) * contador) //mejora para el groupbarchart
         barChartView.groupBars(0f, groupSpace, barSpace)
         barChartView.setFitBars(true)
         barChartView.data.isHighlightEnabled = false
@@ -438,7 +438,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChartView.data = barData
         barChartView.barData.barWidth = barWidth
         barChartView.xAxis.axisMinimum = 0f
-        barChartView.xAxis.axisMaximum = 2f
+        barChartView.xAxis.axisMaximum = (0+barChartView.barData.getGroupWidth(groupSpace,barSpace) * contador) //mejora para el groupbarchart
         barChartView.groupBars(0f, groupSpace, barSpace)
         barChartView.setFitBars(true)
         barChartView.data.isHighlightEnabled = false
@@ -571,7 +571,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         barChartView.data = barData
         barChartView.barData.barWidth = barWidth
         barChartView.xAxis.axisMinimum = 0f
-        barChartView.xAxis.axisMaximum = 2f
+        barChartView.xAxis.axisMaximum = (0+barChartView.barData.getGroupWidth(groupSpace,barSpace) * contador) //mejora para el groupbarchart
         barChartView.groupBars(0f, groupSpace, barSpace)
         barChartView.setFitBars(true)
         barChartView.data.isHighlightEnabled = false
