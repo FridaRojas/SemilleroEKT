@@ -3,6 +3,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Half.toFloat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agileus.R
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.ReporteTareasFragmentBinding
+import com.example.agileus.models.UserTaskDetailReport
 import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
@@ -31,7 +33,10 @@ import com.example.agileus.utils.Constantes.vista
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 
 class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog.FiltroReportesDialogListener  {
@@ -50,6 +55,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private var revision: Int = 0
     private var totales: Int = 0
     private var leidas: Int = 0
+    private var terminadas_a_tiempo:Int=0
+    private var terminadas_fuera_de_tiempo:Int=0
 
     //valores porcentuales de los datos de los mensajes para graficar
     private var porcentaje_termidas:Float = 0.0f
@@ -57,11 +64,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private var porcentaje_iniciada:Float = 0.0f
     private var porcentaje_revision:Float = 0.0f
     private var porcentaje_leidas:Float = 0.0f
-
-    private var fechaIniComp = Constantes.fechaIniEstadisticas
-    private var fechaFinComp = Constantes.fechaFinEstadisticas
-    private var userEstComp = Constantes.idUsuarioEstadisticas
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +90,19 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             Constantes.dataEmpleadoUsuario = list
             binding.progressLoadingR.visibility = View.GONE
             binding.btnFiltroReportes.visibility = View.VISIBLE
-            cambiarGrafica(tipo_grafica)
+
+        })
+
+        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+
+            iniciada = reporteTareasViewModel.iniciadas.value.toString().toInt()
+            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
+            totales = reporteTareasViewModel.totales.value.toString().toInt()
+            pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
+            revision = reporteTareasViewModel.revision.value.toString().toInt()
+            terminadas_a_tiempo = reporteTareasViewModel.aTiempo.value.toString().toInt()
+            terminadas_fuera_de_tiempo = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
+
         })
 
         binding.btnFiltroReportes.setOnClickListener {
@@ -110,7 +124,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
                     binding.barras.isVisible=false
                     binding.pie.isVisible=true
-                    //mostrargraficaBarras() //Aqui va la gráfica desglosada de mensajes
+                    mostrargraficaBarras(2) //Aqui va la gráfica desglosada de tareas
                     binding.pieChart.isVisible = false
                     binding.barChart.isVisible = true
                     vista = 0
@@ -129,6 +143,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                     tipo_grafica = 1
 
                 }
+
+
             }
         }
 
@@ -138,13 +154,30 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             cambiarGrafica(0)
         }
 
+        cambiarGrafica(tipo_grafica)
 
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
+
         pieChart=binding.pieChart
+
+        binding.colorlegend1.isVisible=true
+        binding.colorlegend2.isVisible=true
+        binding.colorlegend3.isVisible=true
+        binding.colorlegend4.isVisible=true
+
+        binding.txtPrimerLegend.text="Pendientes"
+        binding.txtSegundoLegend.text="Iniciadas"
+        binding.txtTercerLegend.text="Revisión"
+        binding.txtCuartoLegend.text="Terminadas"
+
+        binding.colorlegend1.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+        binding.colorlegend2.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorGray))
+        binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
+
 
         dataEmpleadoUsuario.forEach {
             if (idUsuarioEstadisticas == it.id){
@@ -157,38 +190,17 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
 
         reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
+
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
             binding.RecyclerLista.adapter = it
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
 
-        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.colorlegend2.isVisible=true
-            binding.colorlegend4.isVisible=true
-
-            binding.txtPrimerLegend.text="Pendientes"
-            binding.txtSegundoLegend.text="Iniciadas"
-            binding.txtTercerLegend.text="Revisión"
-            binding.txtCuartoLegend.text="Terminadas"
-
-            binding.colorlegend1.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-            binding.colorlegend2.setBackgroundColor(resources.getColor(R.color.colorSecondary))
-            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorGray))
-            binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
-
-            pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
             binding.txtDataPrimerLegend.text = pendientes.toString()
-
-            iniciada = reporteTareasViewModel.iniciadas.value.toString().toInt()
             binding.txtDataSegundoLegend.text = iniciada.toString()
-
-            revision = reporteTareasViewModel.revision.value.toString().toInt()
             binding.txtDataTercerLegend.text = revision.toString()
-
-            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
             binding.txtDataCuartoLegend.text = terminadas.toString()
 
-            totales = reporteTareasViewModel.totales.value.toString().toInt()
             porcentaje_termidas = obtenerPorcentajes(terminadas, totales)
             porcentaje_pendientes = obtenerPorcentajes(pendientes, totales)
             porcentaje_leidas = obtenerPorcentajes(leidas, totales)
@@ -201,11 +213,10 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             //aquí se agregan los valores porcentuales para su visualización
             setDataToPieChart(porcentaje_pendientes, porcentaje_iniciada, porcentaje_revision, porcentaje_termidas)
 
-        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun mostrargraficaBarras() {
+    private fun mostrargraficaBarras(valor:Int) {
 
         barChart=binding.barChart
 
@@ -216,10 +227,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             }
         }
 
-        //binding.txtRangoFechaReportes.isVisible=true
-        //binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
-
-
         reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
 
         reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
@@ -227,31 +234,389 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
         })
 
-        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-            binding.txtPrimerLegend.text="Finalizadas a tiempo"
-            binding.txtDataPrimerLegend.text=""
+        //inicializacion de la grafica de barras y se agrega el objeto a desglosar para su visuzalización
 
-            binding.colorlegend2.isVisible = false
-            binding.txtSegundoLegend.text = reporteTareasViewModel.aTiempo.value.toString()
-            binding.txtDataSegundoLegend.text = ""
+        val sortedList = ArrayList(dataEmpleadoUsuario.sortedWith(compareBy { it.name }))
 
-            binding.txtTercerLegend.text="Finalizadas fuera de tiempo"
-            binding.txtDataTercerLegend.text=""
-            //binding.txtDataTercerLegend.text = reporteTareasViewModel.terminadas.value.toString()
-            //terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
-            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+        if (valor==1){
+            graficabarrasTareasATiempoGrupal(sortedList)
+        }
+        if (valor==2){
+            graficabarrasDesgloseTareas(sortedList)
+        }
+        if (valor==3){
+            graficabarrasDesgloseTareasATiempo(sortedList)
+        }
 
-            binding.txtDataCuartoLegend.text = ""
-            binding.colorlegend4.isVisible = false
-            binding.txtCuartoLegend.text = reporteTareasViewModel.fueraTiempo.value.toString()
-
-            pendientes = reporteTareasViewModel.aTiempo.value.toString().toInt()
-            terminadas = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
-            initBarChart(terminadas.toFloat(),pendientes.toFloat())//inicializacion de la grafica de barras
-            // y se agregan los valores porcentuales para su visualización
-
-        })
     }
+
+    private fun graficabarrasTareasATiempoGrupal(listaUsuarios: ArrayList<UserTaskDetailReport>) {
+
+        binding.txtPrimerLegend.text="Finalizadas a tiempo"
+
+        binding.txtTercerLegend.text="Finalizadas fuera de tiempo"
+
+        binding.txtSegundoLegend.text = reporteTareasViewModel.aTiempo.value.toString()
+
+        binding.txtCuartoLegend.text = reporteTareasViewModel.fueraTiempo.value.toString()
+
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+
+        binding.colorlegend2.isVisible = false
+
+        binding.colorlegend4.isVisible = false
+
+        binding.txtDataPrimerLegend.text=""
+
+        binding.txtDataSegundoLegend.text = ""
+
+        binding.txtDataTercerLegend.text=""
+
+        binding.txtDataCuartoLegend.text = ""
+
+        val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+
+        var contador=0
+
+        listaUsuarios.forEach {
+            if(it.name == "Mi equipo"){
+                xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), it.onTime.toFloat())))
+                yValueGroup2.add((BarEntry(contador.toFloat(), it.outTime.toFloat())))
+            }
+        }
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        var barData = BarData(barDataSet1, barDataSet2)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.data = barData
+        barChartView.barData.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0f
+        barChartView.xAxis.axisMaximum = 2f
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.data.isHighlightEnabled = false
+        barChartView.invalidate()
+
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.labelCount = contador
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(1f)
+        barChartView.setVisibleXRangeMinimum(1f)
+        barChartView.isDragEnabled = true
+
+        //Y-axis
+        barChartView.axisRight.isEnabled = false
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.axisLeft
+        leftAxis.valueFormatter = LargeValueFormatter()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 1f
+        leftAxis.axisMinimum = 0f
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 1f)
+
+    }
+
+    private fun graficabarrasDesgloseTareasATiempo(listaUsuarios: ArrayList<UserTaskDetailReport>) {
+
+        binding.txtPrimerLegend.text="Finalizadas a tiempo"
+
+        binding.txtTercerLegend.text="Finalizadas fuera de tiempo"
+
+        binding.txtSegundoLegend.text = reporteTareasViewModel.aTiempo.value.toString()
+
+        binding.txtCuartoLegend.text = reporteTareasViewModel.fueraTiempo.value.toString()
+
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+
+        binding.colorlegend2.isVisible = false
+
+        binding.colorlegend4.isVisible = false
+
+        binding.txtDataPrimerLegend.text=""
+
+        binding.txtDataSegundoLegend.text = ""
+
+        binding.txtDataTercerLegend.text=""
+
+        binding.txtDataCuartoLegend.text = ""
+
+        val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+
+        var contador=0
+
+        listaUsuarios.forEach {
+            if ((it.name != "Mi equipo") && (it.name != "Mi información")){
+                xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), it.onTime.toFloat())))
+                yValueGroup2.add((BarEntry(contador.toFloat(), it.outTime.toFloat())))
+            }
+        }
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.setColor(Color.parseColor("#66BB6A"))
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.setColor(Color.parseColor("#87D169"))
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        var barData = BarData(barDataSet1, barDataSet2)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.data = barData
+        barChartView.barData.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0f
+        barChartView.xAxis.axisMaximum = 2f
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.data.isHighlightEnabled = false
+        barChartView.invalidate()
+
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.labelCount = contador
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(1f)
+        barChartView.setVisibleXRangeMinimum(1f)
+        barChartView.isDragEnabled = true
+
+        //Y-axis
+        barChartView.axisRight.isEnabled = false
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.axisLeft
+        leftAxis.valueFormatter = LargeValueFormatter()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 1f
+        leftAxis.axisMinimum = 0f
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 1f)
+
+    }
+
+    private fun graficabarrasDesgloseTareas(listaUsuarios: ArrayList<UserTaskDetailReport>) {
+
+        binding.colorlegend1.isVisible=true
+        binding.colorlegend2.isVisible=true
+        binding.colorlegend3.isVisible=true
+        binding.colorlegend4.isVisible=true
+
+        binding.txtPrimerLegend.text="Pendientes"
+        binding.txtSegundoLegend.text="Iniciadas"
+        binding.txtTercerLegend.text="Revisión"
+        binding.txtCuartoLegend.text="Terminadas"
+
+        binding.colorlegend1.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+        binding.colorlegend2.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorGray))
+        binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
+
+        binding.txtDataPrimerLegend.text = pendientes.toString()
+        binding.txtDataSegundoLegend.text = iniciada.toString()
+        binding.txtDataTercerLegend.text = revision.toString()
+        binding.txtDataCuartoLegend.text = terminadas.toString()
+
+                val barChartView = binding.barChart
+
+        val barWidth: Float = 0.15f //anchura de la barra
+        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
+        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+
+        var xAxisValues = ArrayList<String>()
+
+        var yValueGroup1 = ArrayList<BarEntry>()
+        var yValueGroup2 = ArrayList<BarEntry>()
+        var yValueGroup3 = ArrayList<BarEntry>()
+        var yValueGroup4 = ArrayList<BarEntry>()
+
+        // draw the graph
+        var barDataSet1: BarDataSet
+        var barDataSet2: BarDataSet
+        var barDataSet3: BarDataSet
+        var barDataSet4: BarDataSet
+
+        var contador=0
+
+        listaUsuarios.forEach {
+            if ((it.name != "Mi equipo") && (it.name != "Mi información")) {
+                xAxisValues.add(it.name)
+                contador += 1
+                yValueGroup1.add((BarEntry(contador.toFloat(), it.pendings.toFloat())))
+                yValueGroup2.add((BarEntry(contador.toFloat(), it.started.toFloat())))
+                yValueGroup3.add((BarEntry(contador.toFloat(), it.revision.toFloat())))
+                yValueGroup3.add((BarEntry(contador.toFloat(), it.finished.toFloat())))
+            }
+        }
+
+
+        barDataSet1 = BarDataSet(yValueGroup1, "")
+        barDataSet1.color = Color.parseColor("#66BB6A")
+        barDataSet1.setDrawIcons(false)
+        barDataSet1.setDrawValues(false)
+
+        barDataSet2 = BarDataSet(yValueGroup2, "")
+        barDataSet2.color = Color.parseColor("#87D169")
+        barDataSet2.setDrawIcons(false)
+        barDataSet2.setDrawValues(false)
+
+        barDataSet3 = BarDataSet(yValueGroup3, "")
+        barDataSet3.color = Color.YELLOW
+        barDataSet3.setDrawIcons(false)
+        barDataSet3.setDrawValues(false)
+
+        barDataSet4 = BarDataSet(yValueGroup3, "")
+        barDataSet4.color = Color.BLUE
+        barDataSet4.setDrawIcons(false)
+        barDataSet4.setDrawValues(false)
+
+
+        var barData = BarData(barDataSet1, barDataSet2, barDataSet3, barDataSet4)
+
+        //remove legenda
+        barChartView.legend.isEnabled = false
+        //remover etiqueta de descripción
+        barChartView.description.isEnabled = false
+        barChartView.description.textSize = 0f
+        barData.setValueFormatter(LargeValueFormatter())
+        barChartView.data = barData
+        barChartView.barData.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0f
+        barChartView.xAxis.axisMaximum = 2f
+        barChartView.groupBars(0f, groupSpace, barSpace)
+        barChartView.setFitBars(true)
+        barChartView.data.isHighlightEnabled = false
+        barChartView.invalidate()
+
+        barChart.animateY(1000)
+
+        val xAxis = barChartView.xAxis
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(true)
+        xAxis.textSize = 10f
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
+
+        barChartView.setTouchEnabled(true)
+
+        xAxis.labelCount = contador
+        xAxis.mAxisMaximum = contador.toFloat()
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 1f
+        xAxis.spaceMax = 1f
+
+        barChartView.setVisibleXRangeMaximum(2f)
+        barChartView.setVisibleXRangeMinimum(2f)
+        barChartView.isDragEnabled = true
+
+        //Y-axis
+        barChartView.axisRight.isEnabled = false
+        barChartView.setScaleEnabled(true)
+
+        val leftAxis = barChartView.axisLeft
+        leftAxis.valueFormatter = LargeValueFormatter()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 1f
+        leftAxis.axisMinimum = 0f
+
+        barChartView.data = barData
+        barChartView.setVisibleXRange(1f, 2f)
+
+    }
+
 
     //funcion regla de 3 para obtener un porcentage proporcional
     fun obtenerPorcentajes(dato_parcial:Int, dato_total:Int):Float{
@@ -317,57 +682,21 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     }
 
-    private fun initBarChart(enviados:Float,recibidos:Float) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onDateFilterSelected() {
+        Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
 
-        val entries: ArrayList<BarEntry> = ArrayList()
-        entries.add(BarEntry(.5f, enviados))
-        entries.add(BarEntry(1.5f, recibidos))
+        if(idUsuarioEstadisticas == "TEAM_ID_CREATED_BY_MOD_REPORT"){
+            reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
+        }else {
+            cambiarGrafica(tipo_grafica)
+        }
 
-        val barDataSet = BarDataSet(entries, "")
-        //barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+    }
 
-        val colors: ArrayList<Int> = ArrayList()
-        colors.add(resources.getColor(R.color.colorPrimary))
-        colors.add(resources.getColor(R.color.colorSecondary))
-
-
-        val data = BarData(barDataSet)
-        barChart.data = data
-        data.setBarWidth(0.3f);//Reducir el ancho de las barras
-        barDataSet.colors = colors
-        data.setValueTextSize(0f)
-
-        //hide grid lines
-        barChart.axisLeft.setDrawGridLines(true)
-        barChart.xAxis.setDrawGridLines(true)
-        barChart.xAxis.setDrawAxisLine(true)
-        barChart.xAxis.isEnabled=false
-
-
-        //remove right y-axis
-        barChart.axisRight.isEnabled = false
-        barChart.axisLeft.isEnabled = true
-
-        //forzar a que la barra izquierda de la gráfica, muestre por valores enteros
-        barChart.axisLeft.setGranularity(1.0f);
-        barChart.axisLeft.setGranularityEnabled(true); // Required to enable granularity
-
-
-        barChart.setTouchEnabled(false)
-
-        //remove legend
-        barChart.legend.isEnabled = false
-        //remove description label
-        barChart.description.isEnabled = false
-
-
-        //add animation
-        barChart.animateY(1000)
-
-
-        //draw chart
-        barChart.invalidate()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -381,7 +710,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                     binding.barras.isVisible=true
                 }
 
-
                 mostrargraficaPie()
                 binding.pieChart.isVisible = true
                 binding.barChart.isVisible = false
@@ -390,7 +718,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             }
             1 -> {
 
-                mostrargraficaBarras()//Broadcast grupal
+                mostrargraficaBarras(1)//Tareas terminadas a tiempo grupal
                 binding.pieChart.isVisible = false
                 binding.barChart.isVisible = true
                 vista = 1
@@ -400,7 +728,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
             2 -> {
 
-                mostrargraficaBarras()//Broadcast desglose
+                mostrargraficaBarras(3)//Tareas terminadas a tiempo  desglosado
                 binding.pieChart.isVisible = false
                 binding.barChart.isVisible = true
                 vista = 1
@@ -418,23 +746,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
             }
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onDateFilterSelected() {
-        Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
-
-        if(idUsuarioEstadisticas == "TEAM_ID_CREATED_BY_MOD_REPORT"){
-            reporteTareasViewModel.devuelveListaEmpleados(Constantes.id)
-        }else {
-            cambiarGrafica(tipo_grafica)
-        }
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

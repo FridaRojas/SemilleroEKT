@@ -166,7 +166,7 @@
 
             <TextView
                 android:id="@+id/txtPrimerLegend"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Pendientes"
@@ -196,7 +196,7 @@
 
             <TextView
                 android:id="@+id/txtTercerLegend"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Revisión"
@@ -234,7 +234,7 @@
                 />
             <TextView
                 android:id="@+id/txtSegundoLegend"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Iniciadas"
@@ -262,7 +262,7 @@
                 />
             <TextView
                 android:id="@+id/txtCuartoLegend"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Terminadas"
