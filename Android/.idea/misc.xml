@@ -3,9 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_user_fragment.xml" value="0.2203125" />
+        <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/buzon_user_fragment.xml" value="0.2203125" />
+        <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/conversation_receptor_item.xml" value="0.2203125" />
         <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_detalle_nivel_alto.xml" value="0.264" />
         <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_formulario_crear_tareas.xml" value="0.2" />
+        <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_home.xml" value="0.2203125" />
         <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_task.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/CRCan/Desktop/semilleroekt/Android/app/src/main/res/layout/user_conversation_fragment.xml" value="0.18999073215940684" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/buzon_detalles_user_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/buzon_user_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Lenovo/Desktop/semilleroekt/Android/app/src/main/res/layout/fragment_formulario_crear_tareas.xml" value="0.36666666666666664" />
@@ -68,9 +73,7 @@
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/drawable/rounded_rm.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/activity_home.xml" value="0.4" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/activity_main.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/activity_splash.xml" value="0.3127035830618892" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/buzon_detalles_fragment.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/buzon_detalles_user_fragment.xml" value="0.23278985507246377" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/conversation_emisor_item.xml" value="0.15307971014492755" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/conversation_receptor_item.xml" value="0.15307971014492755" />
         <entry key="..\:/Users/breen/Documents/SemilleroGS/ProyectoSemillero/Android/app/src/main/res/layout/dialog_nivel_bajo.xml" value="0.264" />

@@ -14,8 +14,12 @@ import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.utils.Constantes
 import com.example.agileus.ui.modulomensajeria.conversation.UserConversationViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.ProgressBarListener
 
-class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String, val listener: DialogoConfirmOpStatusListener ) : DialogFragment(), DialogoConfirmOpStatusListener{
+class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String,
+                       val listener: DialogoConfirmOpStatusListener,
+                       val listenerProgress: ProgressBarListener )
+    : DialogFragment(), DialogoConfirmOpStatusListener{
 
     lateinit var conversationviewModel  : UserConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
@@ -33,6 +37,7 @@ class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String
                 .setPositiveButton("Aceptar",
                     DialogInterface.OnClickListener { dialog, id ->
                         asignarTareaViewModel.postTarea(tarea , this)
+                        listenerProgress.onAceptSelected()
                     })
                 .setNegativeButton("Cancelar",
                     DialogInterface.OnClickListener { dialog, id ->
