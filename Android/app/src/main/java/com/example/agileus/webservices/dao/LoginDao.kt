@@ -33,6 +33,7 @@ class LoginDao {
             if (responseDos.body() != null) {
                 val almacenar: LoginResponse = responseDos.body()!!
                 var guardarData:Data = Data()
+                Log.d("usuario", "Body: ${responseDos.body()}")
 
                 if (almacenar.status == "ACCEPTED") {
                     var mapa:LinkedTreeMap<String,Any?> = responseDos.body()!!.data as LinkedTreeMap<String, Any?>
@@ -56,6 +57,8 @@ class LoginDao {
                     guardarData.tokenAuth = mapa["tokenAuth"].toString()
                     almacenar.data = guardarData
                     status  = true
+
+                    Log.d("usuario", "Datos: ${mapa["fechaInicio"].toString()}")
 
                     preferenciasGlobal.guardarDatosInicioSesion(
                         mapa["id"].toString(),
@@ -97,9 +100,9 @@ class LoginDao {
 
         try {
             if (response != null) {
-                Log.d("usuario", "${response.body()}")
-                Log.d("usuario", "${response.errorBody()}")
-                Log.d("usuario", "${response.code()}")
+                //Log.d("usuario", "Body: ${response.body()}")
+                //Log.d("usuario", "${response.errorBody()}")
+                //Log.d("usuario", "code: ${response.code()}")
 
 
                 if (response.isSuccessful) {

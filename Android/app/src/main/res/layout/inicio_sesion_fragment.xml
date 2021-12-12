@@ -12,8 +12,10 @@
         <LinearLayout
             android:id="@+id/vista1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/paddingGeneral"
+            android:layout_marginTop="70dp">
 
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -37,19 +39,39 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
             android:text="Bienvenido"
+            android:layout_marginBottom="20dp"
             android:textAlignment="center"
             android:textSize="@dimen/textsize"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/paddingGeneral"
             android:layout_marginTop="@dimen/margin_top_general"
             android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
             android:text="Número de Empleado"
-            />
-        <com.google.android.material.textfield.TextInputLayout
+            />-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Número de Empleado"
+                    android:layout_marginTop="@dimen/marginFormulario"
+                    android:layout_marginHorizontal="16dp"
+                    android:padding="@dimen/margin_top_general"
+                    app:startIconDrawable="@drawable/user_icon"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconTint="@color/colorPrimary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:selectAllOnFocus="true"
+                            android:inputType="textEmailAddress"/>
+                </com.google.android.material.textfield.TextInputLayout>
+        <!--<com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -64,10 +86,10 @@
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
                     android:inputType="textEmailAddress"/>
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>-->
 
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/paddingGeneral"
@@ -95,18 +117,40 @@
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionDone"
                     android:selectAllOnFocus="true" />
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout> -->
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/fragment_vertical_margin"
+                    android:padding="@dimen/margin_top_general"
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@null"
+                    android:layout_marginTop="@dimen/marginFormulario"
+                    app:startIconDrawable="@drawable/vector_icon"
+                    app:passwordToggleEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconTint="@color/colorPrimary">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:imeActionLabel="@string/action_sign_in_short"
+                            android:imeOptions="actionDone"
+                            android:selectAllOnFocus="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <!--    -->
 
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_general"
+            android:layout_marginTop="@dimen/marginFormulario"
             android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
             android:paddingVertical="@dimen/paddingGeneral"
+            android:background="@drawable/rounded_bg"
+            style="@style/StyleButton"
             android:text="@string/login_login_button"
             app:layout_constraintTop_toBottomOf="@id/password"
             app:layout_constraintStart_toStartOf="parent"

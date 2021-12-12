@@ -81,6 +81,32 @@
     <string name="legendtext4">Leidos</string>
     <string name="Month">Mes</string>
     <string name="SaveOption">Guardar</string>
+    <string name="logtareas">MensajeTareas</string>
+    <string name="noarchivo">No se selecciono archivo</string>
+    <string name="logTareas">logTareas</string>
+    <string name="faltanDatosAgregar">Faltan datos por agregar.</string>
+    <string name="confirmacionDialogo">Confirmacion</string>
+    <string name="noencontraronpersonas">No se encontraron personas en el grupo</string>
+    <string name="fechaInicioCrearTareas">\"Fecha Inicio: \"</string>
+    <string name="fechaFinCrearTareas">"Fecha Fin: "</string>
+    <string name="tareaCreada">Tarea Creada</string>
+    <string name="errorCrearTarea">No se pudo crear la tarea</string>
+    <string name="DocumentosDetallesTarea">Documentos</string>
+    <string name="fragmentSeleccionadoDetallesTarea">verDetalleTarea</string>
+    <string name="dialogEditFecha">Edt fecha</string>
+    <string name="namepdfDownload">archivo</string>
+    <string name="descripcionnovacia">La descripcion no puede quedar vacia</string>
+    <string name="archivoseleccionado">Archivo seleccionado</string>
+    <string name="archivonoencontrado">Archivo no encontrado</string>
+    <string name="archivonoseleccionado">No se selecciono archivo</string>
+    <string name="prioridadtxt">\"Prioridad: \"</string>
+    <string name="TareaTerminada">Tarea Terminada</string>
+    <string name="tareaCancelada">Tarea Cancelada</string>
+    <string name="tareasCanceladas">Cancelado</string>
+    <string name="nivelAlto">alto</string>
+    <string name="nivelMedio">medio</string>
+    <string name="nivelBajo">bajo</string>
+    <string name="fragmentSeleccionadoCrearTarea">crearTarea</string>
 
     <string-array name="months_array">
         <item>Enero</item>

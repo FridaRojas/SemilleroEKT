@@ -113,6 +113,8 @@ class InicioSesionFragment : Fragment(){
 
 
         viewModel.getUsersByBoss()
+        startTimeCounter1()
+
 
         /*if(preferenciasGlobal.validaSesionIniciada()){
             findNavController().navigate(R.id.action_inicioSesionFragment_to_navigation_home)
@@ -262,18 +264,17 @@ class InicioSesionFragment : Fragment(){
     }
    //Barra de carga para inicio de login
     fun startTimeCounter() {
-       var counter = 0
-       val progressBar = binding.progressLoading
-       progressBar.visibility = View.VISIBLE
-       object : CountDownTimer(3000, 100) {
-           override fun onTick(millisUntilFinished: Long) {
-               progressBar.setProgress(counter++)//counter++
-           }
-
-           override fun onFinish() {
-               Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
-               progressBar.visibility = View.INVISIBLE
-               binding.btnLogin.isEnabled = true
+        var counter=0
+        val progressBar = binding.progressLoading
+        progressBar.visibility=View.VISIBLE
+        object : CountDownTimer(3000, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+                progressBar.setProgress(counter++)//counter++
+            }
+            override fun onFinish() {
+                Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+                progressBar.visibility=View.INVISIBLE
+                binding.btnLogin.isEnabled=true
 
 
            }

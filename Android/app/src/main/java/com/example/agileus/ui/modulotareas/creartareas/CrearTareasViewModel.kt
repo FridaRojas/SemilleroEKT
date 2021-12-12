@@ -1,9 +1,12 @@
 package com.example.agileus.ui.modulotareas.creartareas
 
+import android.provider.Settings.Global.getString
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.R
 import com.example.agileus.models.DataPersons
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulomensajeria.listaconversations.ListConversationViewModel
@@ -43,7 +46,7 @@ class CrearTareasViewModel: ViewModel() {
         try {
             viewModelScope.launch {
                 postTarea.postTasks(t, listener)
-                Log.e("Mensaje viewModel", "$t")
+                Log.e("logTareas", "$t")
             }
         }
         catch (ex: Exception) {

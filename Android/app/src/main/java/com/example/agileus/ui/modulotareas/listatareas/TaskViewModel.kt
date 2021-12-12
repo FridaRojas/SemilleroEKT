@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.agileus.R
 import com.example.agileus.adapters.TasksAdapter
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
 import com.example.agileus.models.DataTask
@@ -32,6 +33,7 @@ class TaskViewModel() : ViewModel() {
     }
 
     fun devolverListaPorStatus(listener: TaskListListener){
+
         status = statusRecycler.value.toString()
         viewModelScope.launch {
             listaTask = withContext(Dispatchers.IO){
