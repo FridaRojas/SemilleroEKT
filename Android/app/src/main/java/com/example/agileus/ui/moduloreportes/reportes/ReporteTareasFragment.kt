@@ -34,6 +34,7 @@ import com.example.agileus.providers.ReportesListener
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
+import com.example.agileus.utils.Constantes.TEAM_ID_REPORTES
 import com.example.agileus.utils.Constantes.taskStadisticData
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
@@ -119,7 +120,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         })
 
         reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-
             iniciada = reporteTareasViewModel.iniciadas.value.toString().toInt()
             terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
             totales = reporteTareasViewModel.totales.value.toString().toInt()
@@ -186,6 +186,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun setStadisticName(){
+        binding.txtNombreReportes.setText("")
         taskStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
@@ -263,7 +264,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         //inicializacion de la grafica de barras y se agrega el objeto a desglosar para su visuzalización
 
-        val sortedList = ArrayList(dataEmpleadoUsuario.sortedWith(compareBy { it.name }))
+        val sortedList = ArrayList(taskStadisticData.sortedWith(compareBy { it.name }))
 
         if (valor==1){
             graficabarrasTareasATiempoGrupal(sortedList)
@@ -748,30 +749,21 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     override fun onDateFilterSelected() {
         Log.d("DateTASKFilter",  "User: ${idUsuarioEstadisticas}, iniCustom: ${fechaIniEstadisticas}, fecha: ${fechaFinEstadisticas}")
 
-        if(idUsuarioEstadisticas == "TEAM_ID_CREATED_BY_MOD_REPORT"){
+        if(idUsuarioEstadisticas == TEAM_ID_REPORTES){
             reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
         }else {
             cambiarGrafica(tipo_grafica)
         }
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun cambiarGrafica(valor: Int) {
         when (valor) {
-
             0 -> {
-
                 if(binding.pie.isVisible){
                     binding.pie.isVisible=false
                     binding.barras.isVisible=true
                 }
-
                 mostrargraficaPie()
                 binding.pieChart.isVisible = true
                 binding.barChart.isVisible = false
@@ -779,199 +771,180 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 tipo_grafica = 0
             }
             1 -> {
-
                 mostrargraficaBarras(1)//Tareas terminadas a tiempo grupal
                 binding.pieChart.isVisible = false
                 binding.barChart.isVisible = true
                 vista = 1
                 tipo_grafica = 1
-
             }
-
             2 -> {
-
                 mostrargraficaBarras(3)//Tareas terminadas a tiempo  desglosado
                 binding.pieChart.isVisible = false
                 binding.barChart.isVisible = true
                 vista = 1
                 tipo_grafica = 1
-
             }
-
             else->{
-
                 mostrargraficaPie()
                 binding.pieChart.isVisible = true
                 binding.barChart.isVisible = false
                 vista = 0
                 tipo_grafica = 0
-
             }
         }
     }
 
+    lateinit var pathImagen:String
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun tomarScreenShot(view:View){
+        var fecha =  Date()
+        var formato = DateFormat.format("yyyy-MM-dd_hh:mm:ss",fecha)
 
 
+        view.isDrawingCacheEnabled = true
+        val bitmap = Bitmap.createBitmap(view.getDrawingCache())
+        view.isDrawingCacheEnabled = false
 
 
-lateinit var pathImagen:String
-@RequiresApi(Build.VERSION_CODES.Q)
-fun tomarScreenShot(view:View){
-    var fecha =  Date()
-    var formato = DateFormat.format("yyyy-MM-dd_hh:mm:ss",fecha)
+        if (Build.VERSION.SDK_INT >= 29) {
+            //SC take and save
+            var screeenReportUri = bitmap.saveImage(activity as HomeActivity)
+            val screeenReport = getPath(activity as HomeActivity, screeenReportUri!!).toString()
+            Log.e("RMF filePath", screeenReport)
+            Toast.makeText(context, "Información guardada en galeria", Toast.LENGTH_SHORT).show()
+        }else{
+            try{
+                val dirPath  = Environment.getExternalStorageDirectory().toString() + "/agileus"
+                val fileDir = File(dirPath)
+                if(!fileDir.exists()){
+                    val mkdir = fileDir.mkdir()
+                }
+                val path = "$dirPath/agileus-$formato.jpeg"
+                pathImagen = path
 
+                view.isDrawingCacheEnabled = true
+                val bitmap = Bitmap.createBitmap(view.getDrawingCache())
+                view.isDrawingCacheEnabled = false
+                val imageFile = File(path)
+                var fileOutputStream = FileOutputStream(imageFile)
+                val calidad = 100
+                bitmap.compress(Bitmap.CompressFormat.JPEG,calidad,fileOutputStream)
+                //val bytes =  ByteArrayOutputStream()
+                //fileOutputStream.write(bytes.toByteArray())
+                fileOutputStream.flush()
+                fileOutputStream.close()
 
-    view.isDrawingCacheEnabled = true
-    val bitmap = Bitmap.createBitmap(view.getDrawingCache())
-    view.isDrawingCacheEnabled = false
+                binding.imgCaptura.setImageBitmap(bitmap)
 
+                val content = binding.imgCaptura as View
+                content.isDrawingCacheEnabled = true
 
-    if (Build.VERSION.SDK_INT >= 29) {
-        //SC take and save
-        var screeenReportUri = bitmap.saveImage(activity as HomeActivity)
-        val screeenReport = getPath(activity as HomeActivity, screeenReportUri!!).toString()
-        Log.e("RMF filePath", screeenReport)
-        Toast.makeText(context, "Información guardada en galeria", Toast.LENGTH_SHORT).show()
-    }else{
-        try{
-            val dirPath  = Environment.getExternalStorageDirectory().toString() + "/agileus"
-            val fileDir = File(dirPath)
-            if(!fileDir.exists()){
-                val mkdir = fileDir.mkdir()
-            }
-            val path = "$dirPath/agileus-$formato.jpeg"
-            pathImagen = path
+                val bitmapShare = content.drawingCache
+                val root = Environment.getExternalStorageDirectory()
+                val cachePath = File(root.absolutePath + "/AgileUs/report_${SystemClock.uptimeMillis()}")
+                try {
+                    cachePath.createNewFile()
+                    val ostream = FileOutputStream(cachePath)
+                    bitmapShare.compress(Bitmap.CompressFormat.JPEG, 100, ostream)
+                    ostream.close()
+                } catch (e: java.lang.Exception) {
+                    Log.e("Error mapa","Al crear bitmap")
+                    e.printStackTrace()
+                }
+                val imageUri = FileProvider.getUriForFile(
+                    Objects.requireNonNull(activity as HomeActivity),
+                    BuildConfig.APPLICATION_ID + ".provider", imageFile)
 
-            view.isDrawingCacheEnabled = true
-            val bitmap = Bitmap.createBitmap(view.getDrawingCache())
-            view.isDrawingCacheEnabled = false
-            val imageFile = File(path)
-            var fileOutputStream = FileOutputStream(imageFile)
-            val calidad = 100
-            bitmap.compress(Bitmap.CompressFormat.JPEG,calidad,fileOutputStream)
-            //val bytes =  ByteArrayOutputStream()
-            //fileOutputStream.write(bytes.toByteArray())
-            fileOutputStream.flush()
-            fileOutputStream.close()
-
-            binding.imgCaptura.setImageBitmap(bitmap)
-
-            val content = binding.imgCaptura as View
-            content.isDrawingCacheEnabled = true
-
-            val bitmapShare = content.drawingCache
-            val root = Environment.getExternalStorageDirectory()
-            val cachePath = File(root.absolutePath + "/AgileUs/report_${SystemClock.uptimeMillis()}")
-            try {
-                cachePath.createNewFile()
-                val ostream = FileOutputStream(cachePath)
-                bitmapShare.compress(Bitmap.CompressFormat.JPEG, 100, ostream)
-                ostream.close()
-            } catch (e: java.lang.Exception) {
-                Log.e("Error mapa","Al crear bitmap")
+                Handler(Looper.getMainLooper()).postDelayed({
+                    var share =  Intent(Intent.ACTION_SEND)
+                    share.type = "image/*"
+                    share.putExtra(Intent.EXTRA_STREAM, imageUri)
+                    startActivity(Intent.createChooser(share,"Compartir captura"))
+                },2000)
+            }catch (e:Exception){
+                Log.e("Error Captura",e.message.toString())
                 e.printStackTrace()
             }
-            val imageUri = FileProvider.getUriForFile(
-                Objects.requireNonNull(activity as HomeActivity),
-                BuildConfig.APPLICATION_ID + ".provider", imageFile)
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                var share =  Intent(Intent.ACTION_SEND)
-                share.type = "image/*"
-                share.putExtra(Intent.EXTRA_STREAM, imageUri)
-                startActivity(Intent.createChooser(share,"Compartir captura"))
-            },2000)
-        }catch (e:Exception){
-            Log.e("Error Captura",e.message.toString())
-            e.printStackTrace()
         }
 
     }
 
-}
 
+    @Throws(URISyntaxException::class)
+    fun getPath(context: Context, uri: Uri): String? {
+        var uri = uri
+        val needToCheckUri = Build.VERSION.SDK_INT >= 19
+        var selection: String? = null
+        var selectionArgs: Array<String>? = null
+        if (needToCheckUri && DocumentsContract.isDocumentUri(context.applicationContext, uri)) {
 
-@Throws(URISyntaxException::class)
-fun getPath(context: Context, uri: Uri): String? {
-    var uri = uri
-    val needToCheckUri = Build.VERSION.SDK_INT >= 19
-    var selection: String? = null
-    var selectionArgs: Array<String>? = null
-    if (needToCheckUri && DocumentsContract.isDocumentUri(context.applicationContext, uri)) {
-
-        val docId = DocumentsContract.getDocumentId(uri)
-        val split = docId.split(":").toTypedArray()
-        val type = split[0]
-        if ("image" == type) {
-            uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        } else if ("video" == type) {
-            uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-        } else if ("audio" == type) {
-            uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        }
-        selection = "_id=?"
-        selectionArgs = arrayOf(split[1])
-    }
-    if ("content".equals(uri.scheme, ignoreCase = true)) {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        var cursor: Cursor? = null
-        try {
-            cursor =
-                context.contentResolver.query(uri, projection, selection, selectionArgs, null)
-            val column_index: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            if (cursor?.moveToFirst()!!) {
-                return cursor.getString(column_index)
+            val docId = DocumentsContract.getDocumentId(uri)
+            val split = docId.split(":").toTypedArray()
+            val type = split[0]
+            if ("image" == type) {
+                uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            } else if ("video" == type) {
+                uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+            } else if ("audio" == type) {
+                uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             }
-        } catch (e: java.lang.Exception) {
+            selection = "_id=?"
+            selectionArgs = arrayOf(split[1])
         }
-    } else if ("file".equals(uri.scheme, ignoreCase = true)) {
-        return uri.path
+        if ("content".equals(uri.scheme, ignoreCase = true)) {
+            val projection = arrayOf(MediaStore.Images.Media.DATA)
+            var cursor: Cursor? = null
+            try {
+                cursor =
+                    context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+                val column_index: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                if (cursor?.moveToFirst()!!) {
+                    return cursor.getString(column_index)
+                }
+            } catch (e: java.lang.Exception) {
+            }
+        } else if ("file".equals(uri.scheme, ignoreCase = true)) {
+            return uri.path
+        }
+        return null
     }
-    return null
-}
 
-fun Bitmap.saveImage(context: Context): Uri? {
-    val values = ContentValues()
-    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-    values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
-    values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-    values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/AgileUs")
-    values.put(MediaStore.Images.Media.IS_PENDING, true)
-    values.put(MediaStore.Images.Media.DISPLAY_NAME, "report_${SystemClock.uptimeMillis()}")
+    fun Bitmap.saveImage(context: Context): Uri? {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/AgileUs")
+        values.put(MediaStore.Images.Media.IS_PENDING, true)
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "report_${SystemClock.uptimeMillis()}")
 
-    val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-    if (uri != null) {
-        saveImageToStream(this, context.contentResolver.openOutputStream(uri))
-        values.put(MediaStore.Images.Media.IS_PENDING, false)
-        context.contentResolver.update(uri, values, null, null)
-        Log.d("URI", values.toString())
-        return uri
+        val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri != null) {
+            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
+            values.put(MediaStore.Images.Media.IS_PENDING, false)
+            context.contentResolver.update(uri, values, null, null)
+            Log.d("URI", values.toString())
+            return uri
+        }
+        return null
     }
-    return null
-}
 
 
-fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
-    if (outputStream != null) {
-        try {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
+    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
-}
 
 
-
-override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-}
-
-
-
-
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

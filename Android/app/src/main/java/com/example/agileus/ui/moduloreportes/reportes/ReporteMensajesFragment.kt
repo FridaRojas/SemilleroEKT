@@ -63,6 +63,7 @@ import android.database.Cursor
 import android.os.Environment
 
 import android.os.Build
+import com.example.agileus.models.UserMessageDetailReport
 import java.net.URI
 import java.net.URISyntaxException
 
@@ -84,7 +85,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     private var leidos: Int = 0
     private var enviados_B: Int = 0
     private var recibidos_B: Int = 0
-
 
     //valores porcentuales de los datos de los mensajes para graficar
     private var porcentaje_enviados:Float = 0.0f
@@ -118,7 +118,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as HomeActivity).fragmentSeleccionado = getString(R.string.taskReportFragment)
-
         reporteMensajesViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
 
         //Primer Grafica al cargar la vista
@@ -139,21 +138,13 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         reporteMensajesViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
             //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
-
-            empleadoUsuario.forEach {
-                if (idUsuarioEstadisticas == it.id){
-                    binding.txtNombreReportes.setText(it.name)
-                    Log.d("idUsuarioEstadisticas", it.id)
-                }
-            }
-
+            setStadisticName()
             enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
             recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
             totales = reporteMensajesViewModel.totales.value.toString().toInt()
             leidos = reporteMensajesViewModel.leidos.value.toString().toInt()
             enviados_B = reporteMensajesViewModel.enviados_B.value.toString().toInt()
             recibidos_B = reporteMensajesViewModel.recibidos_B.value.toString().toInt()
-
         })
 
         binding.btnDownload.setOnClickListener {
@@ -171,13 +162,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             findNavController().navigate(action, extras)
         }
 
-
         binding.barras.setOnClickListener {
-
             when(vista) {
-
                 0 -> {
-
                     binding.barras.isVisible=false
                     binding.pie.isVisible=true
                     mostrargraficaBarras(2) //Aqui va la gráfica desglosada de mensajes
@@ -185,11 +172,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                     binding.barChart.isVisible = true
                     vista = 0
                     tipo_grafica = 1
-
                 }
-
                 1 -> {
-
                     binding.barras.isVisible=false
                     binding.pie.isVisible=true
                     cambiarGrafica(2)
@@ -197,10 +181,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                     binding.barChart.isVisible = true
                     vista = 1
                     tipo_grafica = 1
-
                 }
-
-
             }
         }
 
@@ -212,6 +193,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     }
     fun setStadisticName(){
+        binding.txtNombreReportes.setText("")
         messageStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
                 binding.txtNombreReportes.setText(it.name)
@@ -223,12 +205,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             reporteMensajesViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
         }
     }
-
-
-
-
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaBarras(valor:Int) {
@@ -247,7 +223,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
         //inicializacion de la grafica de barras y se agrega el objeto a desglosar para su visuzalización
 
-        val sortedList = ArrayList(empleadoUsuario.sortedWith(compareBy { it.name }))
+        val sortedList = ArrayList(messageStadisticData.sortedWith(compareBy { it.name }))
 
         if (valor==1){
             graficabarrasBroadcastGrupal(sortedList)
