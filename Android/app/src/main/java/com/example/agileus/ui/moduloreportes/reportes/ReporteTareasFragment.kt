@@ -499,7 +499,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         leftAxis.axisMinimum = 0f
 
         barChartView.data = barData
-        barChartView.setVisibleXRange(1f, 1f)
+        barChartView.setVisibleXRange(1f, 2f)
 
     }
 
