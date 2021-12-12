@@ -113,7 +113,7 @@ class ConversationAdapter(private var dataSet: ArrayList<Conversation>) :
             myView.setOnClickListener {
                 if(conversacion.texto.equals("Documento")){
                     var dowloadFile = DownloadProvider()
-                    dowloadFile.dowloadFile(context, "${conversacion.rutaDocumento}${conversacion.id}", conversacion.texto)
+                    dowloadFile.dowloadFile(context, "${conversacion.rutaDocumento}", "AgilUsDocument ${Constantes.devuelveFechaDocumento()}.")
                 }
 
             }

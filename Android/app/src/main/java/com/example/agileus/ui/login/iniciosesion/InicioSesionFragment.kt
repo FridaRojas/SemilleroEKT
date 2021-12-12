@@ -113,7 +113,6 @@ class InicioSesionFragment : Fragment(){
 
 
         viewModel.getUsersByBoss()
-        startTimeCounter1()
 
 
         /*if(preferenciasGlobal.validaSesionIniciada()){
