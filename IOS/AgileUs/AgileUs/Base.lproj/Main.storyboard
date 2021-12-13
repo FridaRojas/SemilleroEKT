@@ -49,6 +49,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Buzón" image="tray.and.arrow.down" catalog="system" id="YYV-Cs-uXZ"/>
+                    <navigationItem key="navigationItem" id="c9o-HJ-nJR"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="Gzl-Fl-Vgd" kind="show" identifier="buzon_a_mensajes_enviados" id="XKC-OT-YHm"/>
@@ -93,6 +94,9 @@
                                 <buttonConfiguration key="configuration" style="plain">
                                     <backgroundConfiguration key="background" image="broadcast_nuevo_btn"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="Cerrar_Mensajes_Enviados:" destination="X7b-6N-5lr" eventType="touchUpInside" id="Yu9-2x-U6v"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTZ-7A-8QZ">
                                 <rect key="frame" x="310" y="720" width="43" height="41"/>
@@ -152,6 +156,9 @@
                                 <buttonConfiguration key="configuration" style="plain">
                                     <backgroundConfiguration key="background" image="broadcast_nuevo_btn"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="Cerrar_Mensajes_Enviados:" destination="Gzl-Fl-Vgd" eventType="touchUpInside" id="0tg-s8-dgM"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MC3-0B-Thz">
                                 <rect key="frame" x="310" y="720" width="43" height="41"/>

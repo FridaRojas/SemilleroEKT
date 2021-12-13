@@ -7,15 +7,6 @@
 
 import UIKit
 
-/*struct Enviar_Broadcast: Codable
-{
-    let timestamp: Any,
-    let status: Any,
-    let error: Any,
-    let path: Any,
-
-}*/
-
 class Modal_Mensajes_Enviados: UIViewController
 {
 

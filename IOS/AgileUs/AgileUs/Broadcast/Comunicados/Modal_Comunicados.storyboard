@@ -58,6 +58,10 @@
                                     <action selector="Enviar_Comunicado:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="pCh-Hp-yeY"/>
                                 </connections>
                             </button>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9XJ-7Q-dF8">
+                                <rect key="frame" x="1" y="686" width="414" height="176"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </pickerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -69,7 +73,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-649" y="81"/>
+            <point key="canvasLocation" x="-649.27536231884062" y="80.357142857142847"/>
         </scene>
     </scenes>
     <resources>
