@@ -122,7 +122,6 @@ object Constantes {
     var fechaFinEstadisticas = MAX_DATE_RANGE
     var messageStadisticData = emptyList<UserMessageDetailReport>()
     var taskStadisticData = emptyList<UserTaskDetailReport>()
-    var tipo_grafica:Int=0
     var vista:Int=0
 
 }

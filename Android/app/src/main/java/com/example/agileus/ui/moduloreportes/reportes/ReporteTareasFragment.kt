@@ -11,7 +11,6 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.text.format.DateFormat
 import android.transition.TransitionInflater
-import android.util.Half.toFloat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,11 +34,10 @@ import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.moduloreportes.dialogs.FiltroReportesDialog
 import com.example.agileus.utils.Constantes
 import com.example.agileus.utils.Constantes.TEAM_ID_REPORTES
-import com.example.agileus.utils.Constantes.taskStadisticData
 import com.example.agileus.utils.Constantes.fechaFinEstadisticas
 import com.example.agileus.utils.Constantes.fechaIniEstadisticas
 import com.example.agileus.utils.Constantes.idUsuarioEstadisticas
-import com.example.agileus.utils.Constantes.tipo_grafica
+import com.example.agileus.utils.Constantes.taskStadisticData
 import com.example.agileus.utils.Constantes.vista
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
@@ -74,6 +72,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     private var leidas: Int = 0
     private var terminadas_a_tiempo:Int=0
     private var terminadas_fuera_de_tiempo:Int=0
+    var tipo_grafica:Int=0
 
     //valores porcentuales de los datos de los mensajes para graficar
     private var porcentaje_termidas:Float = 0.0f
@@ -93,15 +92,21 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
     ): View? {
         reporteTareasViewModel = ViewModelProvider(this).get(ReporteTareasViewModel::class.java)
         _binding = ReporteTareasFragmentBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        return root
-    }
-    @RequiresApi(Build.VERSION_CODES.Q)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
+
+        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
+
+            iniciada = reporteTareasViewModel.iniciadas.value.toString().toInt()
+            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
+            totales = reporteTareasViewModel.totales.value.toString().toInt()
+            pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
+            revision = reporteTareasViewModel.revision.value.toString().toInt()
+            terminadas_a_tiempo = reporteTareasViewModel.aTiempo.value.toString().toInt()
+            terminadas_fuera_de_tiempo = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
+
+        })
+
 
         reporteTareasViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
             taskStadisticData = list
@@ -118,17 +123,14 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         })
 
-        reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
 
-            iniciada = reporteTareasViewModel.iniciadas.value.toString().toInt()
-            terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
-            totales = reporteTareasViewModel.totales.value.toString().toInt()
-            pendientes = reporteTareasViewModel.pendientes.value.toString().toInt()
-            revision = reporteTareasViewModel.revision.value.toString().toInt()
-            terminadas_a_tiempo = reporteTareasViewModel.aTiempo.value.toString().toInt()
-            terminadas_fuera_de_tiempo = reporteTareasViewModel.fueraTiempo.value.toString().toInt()
 
-        })
+        val root: View = binding.root
+        return root
+    }
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.btnDownload.setOnClickListener {
             tomarScreenShot(view)
@@ -183,7 +185,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             cambiarGrafica(0)
         }
 
-        cambiarGrafica(tipo_grafica)
+        cambiarGrafica(0)
 
     }
 
@@ -230,7 +232,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         binding.colorlegend2.setBackgroundColor(resources.getColor(R.color.colorSecondary))
         binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorGray))
         binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
-
 
         taskStadisticData.forEach {
             if (idUsuarioEstadisticas == it.id){
