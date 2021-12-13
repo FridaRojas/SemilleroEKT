@@ -8,6 +8,19 @@
 import UIKit
 
 extension UIViewController {
+        
+    /*
+     Funcion para compatir captura de pantalla
+     */
+    func compartir_pantalla() {
+        let bounds = UIScreen.main.bounds
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+        self.view.drawHierarchy(in: bounds, afterScreenUpdates: false)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        let activityViewController = UIActivityViewController(activityItems: [img!], applicationActivities: nil)
+        self.present(activityViewController, animated: true, completion: nil)
+    }
     
     /*
      Función que toma el valor hexadecimal de color para obtener su valor en RGB*/

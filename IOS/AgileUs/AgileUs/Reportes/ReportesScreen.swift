@@ -1,3 +1,4 @@
+
 //
 //  ViewController.swift
 //  ejemploCharts
@@ -1036,5 +1037,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         }
     }
-
+    
+    @IBAction func btnCaptura(_ sender: Any) {
+        compartir_pantalla()
+    }
+    
 }
