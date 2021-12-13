@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
+		16A48082313B165AF634D854 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
 		4912A080276060280066AE1B /* BroadcastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4912A07F276060280066AE1B /* BroadcastModel.swift */; };
 		4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EADD274D5B5200FA0380 /* Funciones_Date.swift */; };
 		4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */; };
@@ -68,6 +68,7 @@
 		D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */; };
 		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
 		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
+    D4EDE7492747174E00197CB1 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		D4EAA625276689C70091B5FC /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA624276689C70091B5FC /* UserModel.swift */; };
 		D4EAA627276689E80091B5FC /* UserRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA626276689E80091B5FC /* UserRequestModel.swift */; };
 		D4EAA62927668A170091B5FC /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA62827668A170091B5FC /* ResponseModel.swift */; };
@@ -120,6 +121,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		24F3BDE3CCE6B65D10FB39FD /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
+		279D06B35AFC3550B5122B92 /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4912A07F276060280066AE1B /* BroadcastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastModel.swift; sourceTree = "<group>"; };
 		4916EADD274D5B5200FA0380 /* Funciones_Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Date.swift; sourceTree = "<group>"; };
 		4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdaptadorServicios.swift; sourceTree = "<group>"; };
@@ -140,10 +143,10 @@
 		494E58932759A02B00F85AF6 /* UsuariosModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsuariosModel.swift; sourceTree = "<group>"; };
 		4992644C2755925B007BBAD6 /* ItemMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemMenu.swift; sourceTree = "<group>"; };
 		4992644D2755925B007BBAD6 /* ItemMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemMenu.xib; sourceTree = "<group>"; };
-		4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs_AgileUsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.release.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.release.xcconfig"; sourceTree = "<group>"; };
+		5FE7CA9A426B8B3A1CD9DE68 /* Pods-AgileUsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.release.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.release.xcconfig"; sourceTree = "<group>"; };
 		7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BC586FBD761774A43D3C98E /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
 		AE1D0AC0274EED9A00D3792B /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		AE1D0AC2274EEEED00D3792B /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		AE1D0AC4274EF0B000D3792B /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
@@ -161,8 +164,8 @@
 		AEA60AA2274D97530087E417 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		AEB4BFD8275854BA000526F6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		AEF5ADB427548E2800AAC104 /* DataPersonas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersonas.swift; sourceTree = "<group>"; };
-		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
-		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
+		B650FBE8A05B1FC1410645A4 /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
+		BEA899D09AC9DDEEE668CD2B /* Pods-AgileUsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C12B3D1427519D1F00ABDD09 /* Tareas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tareas.swift; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C910568E2750145700CA5A89 /* Help_String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help_String.swift; sourceTree = "<group>"; };
@@ -232,7 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */,
+				16A48082313B165AF634D854 /* Pods_AgileUs.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +258,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2099744BB4E258B82AE7AD15 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B650FBE8A05B1FC1410645A4 /* Pods-AgileUs.debug.xcconfig */,
+				9BC586FBD761774A43D3C98E /* Pods-AgileUs.release.xcconfig */,
+				279D06B35AFC3550B5122B92 /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */,
+				24F3BDE3CCE6B65D10FB39FD /* Pods-AgileUs-AgileUsUITests.release.xcconfig */,
+				BEA899D09AC9DDEEE668CD2B /* Pods-AgileUsTests.debug.xcconfig */,
+				5FE7CA9A426B8B3A1CD9DE68 /* Pods-AgileUsTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		4916EAE4275005AB00FA0380 /* Adaptador */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,19 +340,6 @@
 				4912A07F276060280066AE1B /* BroadcastModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		52D2981BB9146F534D2E2D08 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */,
-				B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */,
-				E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */,
-				D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */,
-				4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */,
-				6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		AE43C319275595AE0035A514 /* VisorPDF */ = {
@@ -416,9 +420,9 @@
 				D4E69C8D2746BD83002121E4 /* AgileUsTests */,
 				D4E69C972746BD83002121E4 /* AgileUsUITests */,
 				D4E69C752746BD81002121E4 /* Products */,
-				52D2981BB9146F534D2E2D08 /* Pods */,
 				DD4994C3FA25C34E3D104F72 /* Frameworks */,
 				DF5A495C2763BEB40002D43A /* Recovered References */,
+				2099744BB4E258B82AE7AD15 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1010,12 +1014,12 @@
 				AE43C31B275595FC0035A514 /* VisorPDF.swift in Sources */,
 				AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */,
 				C94CC350276106D50091B856 /* InfoTareas.swift in Sources */,
-				D4EDE7492747174E00197CB1 /* (null) in Sources */,
+				D4EDE7492747174E00197CB1 /* BuildFile in Sources */,
 				4916EAEB27502D6100FA0380 /* Funciones_Charts.swift in Sources */,
 				4916EAED27503C1000FA0380 /* Mensajes.swift in Sources */,
 				DF37A4622763C86600DD83B8 /* TextField_Extension.swift in Sources */,
 				E47AAA1427569C7E00B1A213 /* mensajes_Enviados.swift in Sources */,
-				D4EDE7492747174E00197CB1 /* (null) in Sources */,
+				D4EDE7492747174E00197CB1 /* BuildFile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1189,7 +1193,7 @@
 		};
 		D4E69C9F2746BD83002121E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */;
+			baseConfigurationReference = B650FBE8A05B1FC1410645A4 /* Pods-AgileUs.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1222,7 +1226,7 @@
 		};
 		D4E69CA02746BD83002121E4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */;
+			baseConfigurationReference = 9BC586FBD761774A43D3C98E /* Pods-AgileUs.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1255,7 +1259,7 @@
 		};
 		D4E69CA22746BD83002121E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */;
+			baseConfigurationReference = BEA899D09AC9DDEEE668CD2B /* Pods-AgileUsTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1280,7 +1284,7 @@
 		};
 		D4E69CA32746BD83002121E4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */;
+			baseConfigurationReference = 5FE7CA9A426B8B3A1CD9DE68 /* Pods-AgileUsTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1305,7 +1309,7 @@
 		};
 		D4E69CA52746BD83002121E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */;
+			baseConfigurationReference = 279D06B35AFC3550B5122B92 /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1328,7 +1332,7 @@
 		};
 		D4E69CA62746BD83002121E4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */;
+			baseConfigurationReference = 24F3BDE3CCE6B65D10FB39FD /* Pods-AgileUs-AgileUsUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

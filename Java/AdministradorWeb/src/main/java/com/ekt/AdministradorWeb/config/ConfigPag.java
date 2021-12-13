@@ -423,7 +423,7 @@ public class ConfigPag {
                     redirectAttrs
                             .addFlashAttribute("status", "success")
                             .addFlashAttribute("mensaje", "Usuario eliminado correctamente");
-                    return "redirect:/editarGrupo?idGrupo=" + user.getIDGrupo();
+                    return "redirect:/editarGrupo/?idGrupo=" + user.getIDGrupo();
                 }
             }
         }else return "redirect:/login";

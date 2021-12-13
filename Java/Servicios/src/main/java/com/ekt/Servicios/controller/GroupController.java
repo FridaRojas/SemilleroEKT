@@ -96,12 +96,16 @@ public class GroupController {
      * @param id es un string del id a buscar
      * @return data=Group en caso de exito
      */
+    @CrossOrigin(origins = {"*"})
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscar(@PathVariable String id) {
+
         try {
             if (groupService.buscarPorId(id).isPresent()) {
+                System.out.println("Encontrado");
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Grupo encontrado", groupService.buscarPorId(id)));
             } else {
+                System.out.println("NO encontrado");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Error grupo no existente", null));
             }
         }catch (MongoSocketException e) {
@@ -269,7 +273,7 @@ public class GroupController {
      * Busca todos los grupos
      * @return data=ArrayList<Group> en caso de exito
      */
-    @CrossOrigin(origins = {"*"})
+
     @GetMapping("/buscarTodo")
     public Response buscarTodo() {
         try {

@@ -24,7 +24,7 @@ async function pruebas() {
     }
 
     let req = await
-        fetch("http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/grupo/buscar/"+valor, requestOptions)
+        fetch("http://localhost:3040/api/grupo/buscar/"+valor, requestOptions)
     let grupo = await req.json()
 
 
