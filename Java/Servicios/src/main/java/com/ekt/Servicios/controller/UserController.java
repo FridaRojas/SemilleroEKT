@@ -5,17 +5,16 @@ import com.ekt.Servicios.entity.BodyUpdateBoss;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.repository.UserRepository;
+import com.ekt.Servicios.service.GeneralService;
 import com.ekt.Servicios.service.GroupServiceImpl;
 import com.ekt.Servicios.service.UserService;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mongodb.MongoException;
+import com.mongodb.MongoSocketException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -33,57 +32,77 @@ public class UserController {
 
     @PostMapping("/create")//*
     public ResponseEntity<?> create(@Validated @RequestBody User user){
-        System.out.println(user.getNombre()+"  "+user.getRFC());
         try {
             if (user.getCorreo()==null || user.getFechaInicio()==null || user.getFechaTermino()==null || user.getNumeroEmpleado()==null || user.getNombre()==null || user.getPassword()==null || user.getNombreRol()==null || user.getIDGrupo()==null || user.getToken()==null || user.getTelefono()==null || user.getIDSuperiorInmediato()==null || user.getStatusActivo()==null || user.getCurp()==null || user.getRFC()==null){
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",null));
             }else{
                 boolean us= userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
                 if (us){
-                    System.out.println("ya existe");
-                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario existente",null));
                 }else {
-                    String psw= userService.cifrar(user.getPassword());
+                    String psw= GeneralService.cifrar(user.getPassword());
                     user.setPassword(psw);
                     user.setTokenAuth("");
                     userService.save(user);
-                    System.out.println("creado");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario Creado",user));
+                    return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario Creado",user));
                 }
             }
-        }catch (Exception e){
-            System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
 
     }
 
+
+
+    /**
+     * Busca a todos los usuarios existentes
+     * @return Objeto Respuesta que contiene un HttpStatus, un mensaje y una lista de usuarios
+     **/
     @GetMapping("/findAll")//*
     public ResponseEntity<?> findAll(){
         try{
-            if (userService.findAll()!=null){
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Lista de usuarios encontrada",userService.findAll()));
+            Iterable<User> listaUsuarios= userService.findAll();
+            if (listaUsuarios!=null){
+                return ResponseEntity.ok(new Response(HttpStatus.OK,"Lista de usuarios encontrada",listaUsuarios));
             }else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al buscar los datos",""));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error al buscar los datos",null));
             }
-        }catch (Exception e){
-            System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
-    @GetMapping("/find/{id}")//*
+
+    /**
+     * Busca a un usuario por id
+     * @param id
+     * @return Objeto Respuesta que contiene un HttpStatus, un mensaje y un Objeto Usuario
+     */
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable String id){
-        //return userService.findById(id);
+        Optional<User> user;
         try{
-            if(userService.findById(id).isPresent()){
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED,"Usuario encontrado",userService.findById(id)));
+            user= userService.findById(id);
+            if(user.isPresent()){
+                return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario encontrado",user));
             }else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",""));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Error usuario no existente",null));
             }
-        }catch (Exception e){
-            System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
@@ -91,21 +110,16 @@ public class UserController {
     public ResponseEntity<?> userValidate(@RequestBody User infAcceso){
         try{
             if (infAcceso.getPassword()==null || infAcceso.getCorreo()==null || infAcceso.getToken()==null){
-                System.out.println("Error en las llaves");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
             }else{
-                String psw=userService.cifrar(infAcceso.getPassword());
+                String psw=GeneralService.cifrar(infAcceso.getPassword());
                 Optional<User> user=userService.userValidate(infAcceso.getCorreo(),psw);
                 if (user.isPresent()){
-                    System.out.println(user.get().getStatusActivo());
                     if(user.get().getStatusActivo().equals("true")){
-                        System.out.println("Login: Usuario encontrado");
                         user.get().setToken(infAcceso.getToken());
                         user.get().setTokenAuth(userService.guardarTokenAuth(user.get().getID()).get());
                         userService.save(user.get());
                         groupService.actualizaUsuario(user.get());
-
-
                         user.get().setFechaInicio(null);
                         user.get().setFechaTermino(null);
                         user.get().setPassword(null);
@@ -122,16 +136,26 @@ public class UserController {
 
                     }
                 }else{
-                System.out.println("Login: Usuario no encontrado");
                 return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"Usuario no encontrado",""));
                 }
             }
-        }catch (Exception e){
-            System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
+    /**
+     * Metodo que cambia el statusActivo de un usuario, no lo borra de la BD
+     * -busca que el usuario exista
+     * -cambia el statusActivo a false
+     * -cambia nombreRol,idGrupo,idSuperiorInmediato a un string vacio
+     * @param id es el id del usuario a borrar
+     * @return Response data="" en caso de exito
+     */
     @DeleteMapping(value="/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable String id){
         try{
@@ -145,65 +169,71 @@ public class UserController {
                     userService.save(usr);
                     return ResponseEntity.ok(new Response(HttpStatus.OK,"Usuario eliminado correctamente",""));
                 }
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",null));
             }else{
-                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST,"No se puede borrar",null));
             }
-        }catch(Exception e){
-            System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Usuario no encontrado",""));
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
         //userService.deleteById(id);
 
     }
 
+    //actualiza el id del superior inmediato de un usuario.
     @PutMapping("/updateIdBoss")//*
     public ResponseEntity<?> updateIdBoss(@RequestBody BodyUpdateBoss updateBoss){
-
         try {
+            //si no se rebició información no hace alguna acción
             if (updateBoss.getIDUsuarios()==null || updateBoss.getIDSuperiores()==null){
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",null));
             }else{
                 String[] idUser = updateBoss.getIDUsuarios();
                 String[] idBoss = updateBoss.getIDSuperiores();
+                //actualiza el id del superior inmediato de cada usuario recibido
                 for (int i = 0; i < idUser.length; i++) {
                     userService.updateIdBoss(idUser[i], idBoss[i]);
                     groupService.actualizaIdSuperior(idUser[i], idBoss[i]);
                 }
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Actualizacion de superior inmediato lista", ""));
             }
-
-        }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,e.getMessage(),""));
+        //Manejo de excepciones
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
+    //Actualiza información general del usuario
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody User userUpdate){
-
         try {
+            //busca al usuario a actualizar
             Optional<User> user = userService.findById(userUpdate.getID());
-
             if(!user.isPresent()) {
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró al usuario", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se encontró al usuario", null));
             }else {
+                //Valida que la información recibida de correo, RFC, CURP, y número de empleado sean únicos en la base de datos
+                //de lo contrario no actualiza.
                 if(!user.get().getCorreo().equals(userUpdate.getCorreo()) && userService.buscaCorreoUsuario(userUpdate.getCorreo())){
-                    System.out.println("1");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", ""));
-                }else
-                    if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(userUpdate.getCurp())){
-                    System.out.println("2");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Correo no válido", null));
+                }else if(!user.get().getCurp().equals(userUpdate.getCurp()) && userService.buscaCURPUsuario(userUpdate.getCurp())){
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "CURP no válido", null));
                 }else if(!user.get().getRFC().equals(userUpdate.getRFC()) && userService.buscaRFCUsuario(userUpdate.getRFC())){
-                    System.out.println("3");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "RFC no válido", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "RFC no válido", null));
                 }else if(!user.get().getNumeroEmpleado().equals(userUpdate.getNumeroEmpleado()) && userService.buscaNoEmpleadoUsuario(userUpdate.getNumeroEmpleado())){
-                    System.out.println("4");
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Número de empleado no válido", null));
                 }else{
-                        if (!userUpdate.getPassword().equals(user.get().getPassword())){
-                            String pwd=userService.cifrar(userUpdate.getPassword());
+                    //si la contraseña es diferente la cifra y la guarda
+                    if (!userUpdate.getPassword().equals(user.get().getPassword())){
+                            String pwd=GeneralService.cifrar(userUpdate.getPassword());
                             userUpdate.setPassword(pwd);
                         }
                         //si tien grupo actualizamos informacion personal
@@ -214,19 +244,27 @@ public class UserController {
                     return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuario actualizado correctamente", userService.actualizaUsuario(userUpdate)));
                 }
             }
-        }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, e.toString(), ""));
+        //Manejo de excepciones
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
 
     }
 
+    //Actualiza el rol de un usuario que pertenece a un grupo
     @PutMapping("/updateRol")
     public ResponseEntity<?> updateRol(@RequestBody BodyAddUserGroup bodyGroup){
+        //se usan variables auxiliares
         boolean bandera = false;
         String idSuperior;
         String idGrupo;
         String nombreRol;
         try {
+            //busca al usuario a actualizar y valida si la información es diferente a la que ya tiene para actualizar
             Optional<User> user = userService.findById(bodyGroup.getIdUsuario());
             if(user.isPresent()) {
                 if (bodyGroup.getIdSuperior() != null && !bodyGroup.getIdSuperior().equals(user.get().getIDSuperiorInmediato())) {
@@ -251,16 +289,22 @@ public class UserController {
                     userService.actualizaRol(user.get(), idSuperior, idGrupo, nombreRol);
                     return ResponseEntity.ok(new Response(HttpStatus.OK, "Rol actualizado con éxito", ""));
                 } else {
-                    return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "No se aceptan los cambios", ""));
+                    return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se aceptan los cambios", null));
                 }
             }else{
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontró usuario", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se encontró usuario", null));
             }
-        }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "Error desconocido", ""));
+        //manejo de excepciones
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
+    //Busca a todos los subordinados de un usuario.
     @GetMapping("/findByBossId/{id}")
     public ResponseEntity<?> findByBossId(@PathVariable String id){
         try {
@@ -269,10 +313,15 @@ public class UserController {
                 return ResponseEntity.ok(new Response(HttpStatus.OK, "Usuarios encontrados", users));
             }
             else {
-                return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, "No se encontraron usuarios", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "No se encontraron usuarios", ""));
             }
-        }catch (Exception e){
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_ACCEPTABLE, "Error desconocido", ""));
+        //Manejo de excepciones
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
@@ -280,20 +329,21 @@ public class UserController {
     public ResponseEntity<?> existUser(@RequestBody User user){
         try {
             if (user.getCorreo() == null || user.getCurp() == null || user.getRFC() == null || user.getNumeroEmpleado() == null) {
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
             } else {
                 boolean us = userService.findUsersByUniqueData(user.getCorreo(), user.getCurp(), user.getRFC(), user.getNumeroEmpleado());
                 if (us) {
-                    System.out.println("El usuario existe");
-                    return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "El usuario existe", "true"));
+                    return ResponseEntity.ok(new Response(HttpStatus.OK, "El usuario existe", "true"));
                 } else {
                     return ResponseEntity.ok(new Response(HttpStatus.BAD_REQUEST, "Usuario no encontrado", "false"));
                 }
             }
-        }catch (Exception e){
-            System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
@@ -301,75 +351,47 @@ public class UserController {
     public ResponseEntity reasigna(@RequestBody BodyUpdateBoss body){
         try {
             if (body.getIDUsuarios() == null || body.getIDSuperiores() == null) {
-                System.out.println("Error en las llaves");
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", ""));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
             } else {
                 String[] Usuarios = body.getIDUsuarios();
                 String[] Superiores = body.getIDSuperiores();
 
                 for (int i = 0; i < Usuarios.length; i++) {
-                    System.out.println("Empleado:" + Usuarios[i] + "  Superior:" + Superiores[i]);
                 }
                 userService.reasignaSuperiores(Usuarios, Superiores);
-                return ResponseEntity.ok(new Response(HttpStatus.ACCEPTED, "Superiores Modificados", ""));
+                return ResponseEntity.ok(new Response(HttpStatus.OK, "Superiores Modificados", ""));
 
             }
-        }catch (Exception e){
-            System.err.println("Error: "+e);
-            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND,"Error Inesperado",""));
-        }
-
-    }
-
-    @GetMapping("/buscarFamilia/{id}")
-    public Response findFamily(@PathVariable String id){
-        System.out.println(id);
-        ArrayList<User> listaUsuarios=new ArrayList<>();
-
-        /*
-        -verificar que existe el id
-        -buscar al padre
-        -buscar hermanos
-        -buscarhijos
-        -buscar hijos de hijos hasta el infinito
-
-         */
-        try {
-            User tempUser=new User();
-            //verificar que existe el id
-            if(userService.findById(id).isPresent()){
-                tempUser=userService.findById(id).get();
-                //buscar al padre
-                if (tempUser.getIDSuperiorInmediato().length()>5){
-                    if (userService.findById(tempUser.getIDSuperiorInmediato()).isPresent()){
-                        listaUsuarios.add(userService.findById(tempUser.getIDSuperiorInmediato()).get());
-                    }
-                }
-                return new Response(HttpStatus.OK,"hasta aqui solo esta el papa",listaUsuarios);
-
-            }else{
-                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+id+" no existe","");
-            }
-        }catch (Exception e){
-            System.err.println("Excepcion: "+e);
-            return new Response(HttpStatus.NOT_FOUND,"Error en la consulta","");
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new Response(HttpStatus.NOT_FOUND, e.getMessage(), null));
         }
     }
 
+
+    /**
+     * Busca un usuario filtrando el parametro recibido en los atributos correo, nombre,
+     * numeroEmpleado, nombreRol, rfc. Filtrando a los usuarios que tengan el statusActivo=true
+     * @param parametro es el string a buscar
+     * @return data=ArrayList<User> en caso de exito
+     */
     @GetMapping("/busquedaUsuario/{parametro}")
-    public Response busquedaUsuario(@PathVariable String parametro) {
+    public ResponseEntity<?> busquedaUsuario(@PathVariable String parametro) {
         try {
             if (parametro==null){
-                return new Response(HttpStatus.BAD_REQUEST,"",null);
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"",null));
             }else{
                 if (userService.busquedaUsuario(parametro).isPresent()){
-                    return new Response(HttpStatus.OK, "Usuario(s) encontrado(s)",userService.busquedaUsuario(parametro).get());
+                    return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "Usuario(s) encontrado(s)",userService.busquedaUsuario(parametro).get()));
                 }else{
-                    return new Response(HttpStatus.OK, "Usuario(s) no encontrado(s)",userService.busquedaUsuario(parametro).get());
+                    return ResponseEntity.status(HttpStatus.OK).body( new Response(HttpStatus.OK, "Usuario(s) no encontrado(s)",userService.busquedaUsuario(parametro).get()));
                 }
             }
         }catch (Exception e){
-            return new Response(HttpStatus.NOT_FOUND,"",null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"",null));
         }
     }
 
@@ -379,18 +401,19 @@ public class UserController {
             if (userService.findById(idUser).isPresent()){
                 User usr = userService.findById(idUser).get();
                 usr.setTokenAuth("");
+                groupService.actualizaUsuario(usr);
                 User tmp=userService.save(usr);
                 if (tmp.getTokenAuth().length()==0){
                     return new Response(HttpStatus.OK,"Deslogeado correctamente","");
                 }
                 else{
-                    return  new Response(HttpStatus.BAD_REQUEST,"Error al deslogear","");
+                    return  new Response(HttpStatus.BAD_REQUEST,"Error al deslogear",null);
                 }
             }else{
-                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+idUser+" no existe","");
+                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+idUser+" no existe",null);
             }
         }catch (Exception e){
-            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",e);
+            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",null);
         }
     }
 

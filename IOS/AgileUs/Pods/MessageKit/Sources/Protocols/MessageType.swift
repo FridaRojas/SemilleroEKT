@@ -40,6 +40,6 @@ public protocol MessageType {
     /// The kind of message and its underlying kind.
     var kind: MessageKind { get }
     
-    var documento: String {get}
+    var documento: String { get }
 
 }

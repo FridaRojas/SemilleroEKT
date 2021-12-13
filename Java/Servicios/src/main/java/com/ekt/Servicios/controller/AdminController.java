@@ -4,6 +4,7 @@ import com.ekt.Servicios.entity.Admin;
 import com.ekt.Servicios.entity.Response;
 import com.ekt.Servicios.entity.User;
 import com.ekt.Servicios.service.AdminService;
+import com.ekt.Servicios.service.GeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,9 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE,"Error en las llaves",""));
         }else{
             System.out.println(infAcceso.getCorreo()+"   "+infAcceso.getPassword());
-            Optional<Admin> admin=adminService.adminValidate(infAcceso.getCorreo(),infAcceso.getPassword());
+            String pwd=GeneralService.cifrar(infAcceso.getPassword());
+
+            Optional<Admin> admin=adminService.adminValidate(infAcceso.getCorreo(),pwd);
             if (admin.isPresent()){
                 System.out.println("Login: Administrador encontrado");
 

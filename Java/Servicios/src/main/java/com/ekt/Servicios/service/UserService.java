@@ -34,5 +34,5 @@ public interface UserService {
 
     Optional<ArrayList<User>> busquedaUsuario(String parametro);
     Optional<String> guardarTokenAuth(String id);
-    String cifrar(String pass);
+
 }

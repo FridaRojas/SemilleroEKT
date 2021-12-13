@@ -7,7 +7,7 @@ public interface MensajesService {
 
 	Mensajes crearMensaje(Mensajes mensajes);
 	Iterable<Mensajes> verConversacion(String idConversacion);
-	Optional<Mensajes> actualizarVisible(String id);
+	public void notificacion2(String title, String asunto, String token);
 
 	Optional<Mensajes> buscarMensaje(String idMensaje);
 	Mensajes save(Mensajes mensaje);

@@ -22,9 +22,9 @@
 <div  class="wrapper">
     <!-- Menu Lateral -->
     <nav id="sidebar">
-        <div class="sidebar-header" >
-            <svg class="bi me-2" width="16" height="16" >
-                <img src="/assets/LogoAgileUs.png" height="80" width="65">
+
+        <div class="sidebar-header" style="text-align: center">
+                <img src="../assets/LogoAgileUs.png" height="80" width="65">
             </svg>
             </h3>
         </div>
@@ -32,13 +32,18 @@
         <ul class="list-unstyled components">
             <p></p>
             <li class="nav-item">
-                <a href="/findAllUsuarios">Usuarios</a>
+                <a th:href="@{/findAllUsuarios}">Usuarios</a>
             </li>
             <li class="nav-item">
-                <a href="/buscarTodosGrupos">Organigramas</a>
+                <a th:href="@{/buscarTodosGrupos}">Organigramas</a>
             </li>
         </ul>
 
+        <div class="sidebar-footer" style="text-align: center; position:fixed; bottom: 0; padding: 2% 2% ">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-danger" style="background-color: transparent">Cerrar Sesion</button>
+            </form>
+        </div>
     </nav>
 
     <!-- Page Content Holder -->

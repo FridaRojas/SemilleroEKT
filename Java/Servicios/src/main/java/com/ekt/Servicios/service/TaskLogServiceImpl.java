@@ -3,7 +3,9 @@ package com.ekt.Servicios.service;
 import com.ekt.Servicios.entity.TaskLog;
 import com.ekt.Servicios.repository.TaskLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TaskLogServiceImpl implements TaskLogService{
     @Autowired
     TaskLogRepository bitacoraRepository;
