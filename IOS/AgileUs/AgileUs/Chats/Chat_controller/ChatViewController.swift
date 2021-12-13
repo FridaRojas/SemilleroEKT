@@ -73,12 +73,12 @@ class ChatViewController:
     var fecha_mensaje = ""
     var urlFile: URL?
     var status_leido = Bool()
+    var servicioContacto = 0
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         //inicializamos las clases
-        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
@@ -86,15 +86,11 @@ class ChatViewController:
         aligne_messageItem()
         configureMessageInputBar()
         showNavBar()
-        //print(Datos_chats)
-        //print(Datos_contacto)
     }
   
     override func viewDidAppear(_ animated: Bool) {
-        DispatchQueue.global(qos: .background).async {
-            self.carga_mensajes()
 
-        }
+            self.carga_mensajes()
         showNavBar()
     }
     
@@ -122,9 +118,10 @@ class ChatViewController:
         var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
         self.messagesCollectionView.reloadData()
-
+        self.status_leido = false
         DispatchQueue.main.async {
             self.messagesCollectionView.scrollToItem(at: IndexPath(row:0, section: self.messages.count - 1 ),at: .top, animated: false)
+        
         }
         var receptor = ""
         if Datos_chats != nil
@@ -211,9 +208,10 @@ class ChatViewController:
                     if documentoURL != nil
                     {
                         UIApplication.shared.openURL(documentoURL!)
+                    }else{
+                        alerta_mensajes(title: "Alerta", Mensaje: "Este no es un Documento")
                     }
-                    simpleAlertMessage(title: "Aviso", message:"Esto no es un Documento. :)")
-                }
+        }
     }
     //funcion para modificar el avatar de la conversacion
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
@@ -259,15 +257,19 @@ class ChatViewController:
     //funcion para mostrar los mensajes apartir del dia en que se carga la conversacion
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         if let lastDisplayedSentDate = lastDisplayedSentDate, Calendar.current.isDate(lastDisplayedSentDate, inSameDayAs: message.sentDate) { return nil}
-                lastDisplayedSentDate = message.sentDate
-                return NSAttributedString(
+        let string = self.fecha_mensaje
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yy"
+         
+        lastDisplayedSentDate = message.sentDate
+        return NSAttributedString(
                         string: MessageKitDateFormatter.shared.string(from: message.sentDate),attributes: [
                             NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
                             NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.1176470588, green: 0.4470588235, blue: 0.8, alpha: 1)])
     }
    //funcion para poner fecha de envio del mensaje
     func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        let dateString = self.fecha_mensaje
+        let dateString = HelpString.formatDate(date: self.fecha_mensaje)
         return NSAttributedString(string: dateString , attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
     }
   
@@ -327,37 +329,63 @@ class ChatViewController:
     func carga_mensajes()
     {
         var servicio = ""
+       
+        
         if Datos_chats != nil
         {
             
              let dato_chat = Datos_chats as! [Any]
-            //print("chaaaaaa\(dato_chat[1])")
-             //servicio = server + "mensajes/verConversacion/\(userID)_\(dato_chat[2])"
             servicio = server + "mensajes/verConversacion/\(userID)/\(dato_chat[1])"
-            //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(userID)_\(dato_chat[2])"
-            //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(dato_chat[1])"
         }else{
             let dato_contacto = Datos_contacto as! [Any]
-            //servicio = server + "mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
             servicio = server + "mensajes/verConversacion/\(userID)/\(dato_contacto[1])_\(userID)"
-            servicio = server + "mensajes/verConversacion/\(userID)/\(userID)_\(dato_contacto[1])"
-            //servicio = "http://10.97.7.15:3040/api/mensajes/verConversacion/\(userID)_\(dato_contacto[1])"
+            if servicioContacto == 1
+            {
+                servicio = server + "mensajes/verConversacion/\(userID)/\(userID)_\(dato_contacto[1])"
+            }
+            
         }
         let url = URL(string: servicio)
         let requeste = NSMutableURLRequest(url: url! as URL)
         requeste.httpMethod = "GET";
         requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
-        
+        print(servicio)
         URLSession.shared.dataTask(with: requeste as! URLRequest)
         {data,response,error in
+            if let data = data {
+                
+               print( String(data: data, encoding: .utf8))
+            }
+            
             do
             {
-                
-                if data == nil
-                {
-                    self.simpleAlertMessage(title: "Aviso", message: "Aun no ha Iniciado conversacion")
-                }
                 let resp = try JSONDecoder().decode(Datas_Chats.self, from: data!)
+                if resp.data!.count == 0
+                {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.carga_mensajes()
+                        self.servicioContacto = 1
+                        self.messagesCollectionView.reloadData()
+                    }
+                }
+                if resp.data == nil
+                                {
+                    UserDefaults.standard.setValue(String(), forKey: "userID")
+                    UserDefaults.standard.setValue(String(), forKey: "userName")
+                    UserDefaults.standard.setValue(String(), forKey: "email")
+                    UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+                    UserDefaults.standard.setValue(false, forKey: "isLogged")
+                    UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+                    UserDefaults.standard.setValue(String(), forKey: "idGrupo")
+                    
+                                    DispatchQueue.main.async {
+                                        let vt = LoginScreen()
+                                        self.simpleAlertMessage(title: "AgileUs", message: "Tu sesión ha expirado")
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
+                                     
+                }else
+                {
                 self.usuarios = resp.data!
                 DispatchQueue.main.async
                 {
@@ -377,9 +405,7 @@ class ChatViewController:
                                 self.messages.append(Message(sender: self.currentUser,messageId: "\(item.id)",sentDate: item.fechaCreacion,kind: .text("\(item.texto)"),documento:item.rutaDocumento))
                             }
                             self.status_leido = item.statusLeido as! Bool
-                            print(item.statusLeido)
-                            print(item.id)
-                            print(self.Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo"))
+                            self.fecha_mensaje = item.fechaEnviado
                         }else{
                             if item.rutaDocumento != ""
                             {
@@ -408,6 +434,7 @@ class ChatViewController:
                     }
                     self.messagesCollectionView.reloadData()
                     self.ultimo_mensaje()
+                }
                 }
             }
             catch{print("Servidor Abajooooo\(error)")}

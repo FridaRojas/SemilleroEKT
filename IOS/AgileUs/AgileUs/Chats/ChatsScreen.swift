@@ -55,16 +55,16 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
         tabla_chats.dataSource = self
         tabla_chats.register(lista_chats.nib(), forCellReuseIdentifier: lista_chats.identificador)
         Servicio_web_grupos()
-        Servicio_web_conversaciones()
-        print("\(Datas_Conversaciones.self)")
-        print(userID)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
+        {
+            self.Servicio_web_conversaciones()
+        }
+        print("Este es un toke: \(tokenAuth) ")
     }
     override func viewDidAppear(_ animated: Bool) {
 
         showNavBar()
-
         hideNavBar()
-        addLogoutButton()
 
     }
 
@@ -108,33 +108,49 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     func Servicio_web_grupos()
     {
         let servicio_grupos = server + "mensajes/listaGrupos/\(userID)"
-        //let servicio_grupos = "http://10.97.7.15:3040/api/mensajes/listaGrupos/\(userID)"
         let url = URL(string: servicio_grupos)
         let requeste = NSMutableURLRequest(url: url! as URL)
         requeste.httpMethod = "GET";
         requeste.setValue("\(tokenAuth)", forHTTPHeaderField: "tokenAuth")
-        
         URLSession.shared.dataTask(with: requeste as! URLRequest)
         {data,response,error in
+            
             do
             {
                 
                 let resp = try JSONDecoder().decode(Datas_Grupos.self, from: data!)
                // print(String(data: dataSuccess, encoding: .utf8))
-                self.grupos = resp.data!
-                DispatchQueue.main.async
+                if resp.data == nil
+                                {
+                    UserDefaults.standard.setValue(String(), forKey: "userID")
+                    UserDefaults.standard.setValue(String(), forKey: "userName")
+                    UserDefaults.standard.setValue(String(), forKey: "email")
+                    UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+                    UserDefaults.standard.setValue(false, forKey: "isLogged")
+                    UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+                    UserDefaults.standard.setValue(String(), forKey: "idGrupo")
+                    
+                                    DispatchQueue.main.async {
+                                        let vt = LoginScreen()
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
+                                     
+                }else
                 {
-                    var cadena = String()
-                    var contador = 1
-                    for item in self.grupos
+                    self.grupos = resp.data!
+                    DispatchQueue.main.async
                     {
-                        self.otrodatos.append([contador,item.idConversacion,item.idReceptor,item.nombreConversacionRecepto,"grupo"])
-                        contador = contador + 1
-                    }
+                        var cadena = String()
+                        var contador = 1
+                        for item in self.grupos
+                        {
+                            self.otrodatos.append([contador,item.idConversacion,item.idReceptor,item.nombreConversacionRecepto,"grupo"])
+                            contador = contador + 1
+                        }
                     self.tabla_chats.reloadData()
 
+                    }
                 }
-
             }
             catch{print("Errorrrrrr\(error)")}
         }.resume()
@@ -159,19 +175,39 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
             do
             {
                 let resp = try JSONDecoder().decode(Datas_Conversaciones.self, from: data!)
-                self.conversaciones = resp.data!
-                DispatchQueue.main.async
+                
+                if resp.data == nil
+                                {
+                    UserDefaults.standard.setValue(String(), forKey: "userID")
+                    UserDefaults.standard.setValue(String(), forKey: "userName")
+                    UserDefaults.standard.setValue(String(), forKey: "email")
+                    UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+                    UserDefaults.standard.setValue(false, forKey: "isLogged")
+                    UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+                    UserDefaults.standard.setValue(String(), forKey: "idGrupo")
+                    
+                                    DispatchQueue.main.async {
+                                        let vt = LoginScreen()
+                                        self.simpleAlertMessage(title: "AgileUs", message: "Tu sesión ha expirado")
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
+                                     
+                }else
                 {
-                    var cadena = String()
-                    var contador = -1
-                    for item in self.conversaciones
+                
+                    self.conversaciones = resp.data!
+                    DispatchQueue.main.async
                     {
-                        self.otrodatos.append([contador,item.idConversacion,item.idReceptor,item.nombreConversacionRecepto,item.nombreRol])
-                        contador = contador + 1
-                    }
+                        var cadena = String()
+                        var contador = -1
+                        for item in self.conversaciones
+                        {
+                            self.otrodatos.append([contador,item.idConversacion,item.idReceptor,item.nombreConversacionRecepto,item.nombreRol])
+                            contador = contador + 1
+                        }
                     self.tabla_chats.reloadData()
+                    }
                 }
-
             }
             catch{print("Error\(error)")}
         }.resume()
@@ -195,7 +231,17 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     }
 
 
-
+    func cerrar_cesion()
+    {
+        UserDefaults.standard.setValue(String(), forKey: "userID")
+        UserDefaults.standard.setValue(String(), forKey: "userName")
+        UserDefaults.standard.setValue(String(), forKey: "email")
+        UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+        UserDefaults.standard.setValue(false, forKey: "isLogged")
+        navigationController?.popViewController(animated: true)
+        UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+        UserDefaults.standard.setValue(String(), forKey: "idGrupo")
+    }
 
 
 

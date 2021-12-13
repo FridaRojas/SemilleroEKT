@@ -17,6 +17,8 @@ func Obtener_valor_fecha(fecha: Date, stilo: String) -> String
     }
     return formatter.string(from: fecha)
 }
+
+
 func Obtener_fecha(fecha: String, stilo: String) -> Date
 {
     let formatter = DateFormatter()

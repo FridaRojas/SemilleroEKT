@@ -79,20 +79,39 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
             do
             {
                 let resp =  try JSONDecoder().decode(Datas_Contactos.self, from: data!)
-                self.contactos = resp.data!
                 
-                DispatchQueue.main.async
+                if resp.data == nil
+                                {
+                    UserDefaults.standard.setValue(String(), forKey: "userID")
+                    UserDefaults.standard.setValue(String(), forKey: "userName")
+                    UserDefaults.standard.setValue(String(), forKey: "email")
+                    UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+                    UserDefaults.standard.setValue(false, forKey: "isLogged")
+                    UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+                    UserDefaults.standard.setValue(String(), forKey: "idGrupo")
+                    
+                                    DispatchQueue.main.async {
+                                        let vt = LoginScreen()
+                                        self.simpleAlertMessage(title: "AgileUs", message: "Tu sesión ha expirado")
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
+                                     
+                }else
                 {
-                    var cadena = String()
-                    var contador = 1
-                    for item in self.contactos
+                
+                    self.contactos = resp.data!
+                    DispatchQueue.main.async
                     {
-                        self.otroscontactos.append([contador,item.id,item.idgrupo,item.nombre,item.nombreRol])
-                        contador = contador + 1
+                        var cadena = String()
+                        var contador = 1
+                        for item in self.contactos
+                        {
+                            self.otroscontactos.append([contador,item.id,item.idgrupo,item.nombre,item.nombreRol])
+                            contador = contador + 1
+                        }
+                        self.tabla_contactos.reloadData()
                     }
-                    self.tabla_contactos.reloadData()
                 }
-
             }
             catch{print("Error")}
         }.resume()
