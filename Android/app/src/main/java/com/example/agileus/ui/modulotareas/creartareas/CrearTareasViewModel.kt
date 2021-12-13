@@ -46,7 +46,6 @@ class CrearTareasViewModel: ViewModel() {
         try {
             viewModelScope.launch {
                 postTarea.postTasks(t, listener)
-                Log.e("logTareas", "$t")
             }
         }
         catch (ex: Exception) {
