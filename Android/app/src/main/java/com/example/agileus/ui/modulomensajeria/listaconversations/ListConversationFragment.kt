@@ -41,10 +41,6 @@ class ListConversationFragment : Fragment(), DialogoListen {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //AGREGADA
-      //  val navBar: BottomNavigationView = (activity as HomeActivity).findViewById(R.id.nav_view)
-        //navBar.isVisible = true
-
         return root
     }
 
@@ -52,14 +48,6 @@ class ListConversationFragment : Fragment(), DialogoListen {
         super.onViewCreated(view, savedInstanceState)
 
         var UserId = InitialApplication.preferenciasGlobal.recuperarIdSesion()
-        var i = preferenciasGlobal.recuperarIdSesion()
-        var f= preferenciasGlobal.recuperarTokenAuth()
-
-        Toast.makeText(activity, "${i}", Toast.LENGTH_LONG).show()
-        Toast.makeText(activity, "${f}", Toast.LENGTH_LONG).show()
-Log.i("Mensaje","$i")
-        Log.i("Mensaje","$f")
-
 
         ChatsViewModel.devuelveListaGrupos(UserId)
         ChatsViewModel.devuelveListaChats(UserId)

@@ -20,8 +20,6 @@ class ConfigRetrofit {
 
     private var client = OkHttpClient.Builder().addInterceptor(MyInterceptor()).build()
 
-
-    //val URL_LOGIN = Constantes.URL_LOGIN
     val URL_Login = Constantes.URL_Login
 
     fun cliente(tiempo: Long): OkHttpClient {
@@ -45,13 +43,6 @@ class ConfigRetrofit {
 
     fun obtenerConfiguracionRetofitTasks(): TasksApi {
 
-        /*   var http = OkHttpClient().newBuilder().addInterceptor(
-               Interceptor { chain ->
-                   val requestBuilder: Request.Builder = chain.request().newBuilder()
-                   requestBuilder.header("token_sesion", "12345")
-                   chain.proceed(requestBuilder.build())
-               }).build()*/
-
         var mRetrofit = Retrofit.Builder()
             .baseUrl(URL_BASE_TAREAS)
             // .client(clientBuilder.build())
@@ -61,25 +52,6 @@ class ConfigRetrofit {
 
         return mRetrofit.create(TasksApi::class.java)
     }
-
-    /*fun obtenerConfiguracionRetofitTasksPrueba(): TasksApi {
-
-
-        *//*var http = OkHttpClient().newBuilder().addInterceptor(
-            Interceptor { chain ->
-                val requestBuilder: Request.Builder = chain.request().newBuilder()
-                requestBuilder.header("token_sesion", "12345")
-                chain.proceed(requestBuilder.build())
-            }).build()*//*
-
-        var mRetrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE_TAREAS)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        return mRetrofit.create(TasksApi::class.java)
-    }*/
 
 
     fun obtenerConfiguracionRetofitLogin(): LoginApi {
