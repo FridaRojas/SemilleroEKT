@@ -33,7 +33,8 @@ class BuzonDetallesUserViewModel : ViewModel() {
 
 var listaf =ArrayList<String>()
 //        Log.d("usuario act",)
-            viewModelScope.launch {
+
+        viewModelScope.launch {
                  listaf=withContext(Dispatchers.IO) {
                     lista.recuperarMensajesBrd1(UserId)
                 }

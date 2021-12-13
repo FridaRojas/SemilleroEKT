@@ -33,7 +33,7 @@ class BuzonAdapterResponse(private var dataSet: ArrayList<Datas>, var tipo: Int)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item_buzon, viewGroup, false)
+            .inflate(R.layout.item_buzon1, viewGroup, false)
 
         return ViewHolder(view)
     }

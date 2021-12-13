@@ -83,6 +83,11 @@ class DaoBuzon1() {
     }
 
     suspend fun recuperarMensajesBrd1(idUser: String): ArrayList<String> {
+        listafiltrada.clear()
+        memsajes2.clear()
+        Log.d("tamaño",memsajes2.size.toString())
+        Log.d("tamaño 2", listafiltrada.size.toString())
+
 
         try {
             val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getmybuzon(
@@ -107,7 +112,7 @@ class DaoBuzon1() {
 
     suspend fun recuperarEnviadosBrd(idUser: String, sala: String) {
 
-       memsajes2 = ArrayList()
+
         try {
             Log.d("id recibido", idUser)
             val callRespuesta =
