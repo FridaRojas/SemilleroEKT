@@ -175,7 +175,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         setStadisticName()
         binding.txtRangoFechaReportes.isVisible=false
 
-
         reporteMensajesViewModel.devuelvelistaReporte(this, Constantes.idUsuarioEstadisticas)
 
         reporteMensajesViewModel.adaptador.observe(viewLifecycleOwner, {
@@ -187,7 +186,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             //binding.txtNombreReportes.setText(Constantes.idUsuarioEstadisticas)
 
             setStadisticName()
-
 
             binding.txtDataPrimerLegend.text = ""
 
@@ -206,11 +204,11 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             binding.colorlegend4.setBackgroundColor(resources.getColor(R.color.colorSecondary))
 
 
-            binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviados.value.toString()
-            enviados = reporteMensajesViewModel.enviados.value.toString().toInt()
+            binding.txtDataTercerLegend.text = reporteMensajesViewModel.enviadosB.value.toString()
+            enviados = reporteMensajesViewModel.enviadosB.value.toString().toInt()
 
-            binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidos.value.toString()
-            recibidos = reporteMensajesViewModel.recibidos.value.toString().toInt()
+            binding.txtDataCuartoLegend.text = reporteMensajesViewModel.recibidosB.value.toString()
+            recibidos = reporteMensajesViewModel.recibidosB.value.toString().toInt()
 
             initBarChart(enviados.toFloat(),recibidos.toFloat())//inicializacion de la grafica de barras
         // y se agregan los valores porcentuales para su visualización
@@ -336,101 +334,59 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
 
     }
 
-    private fun initBarChart(enviados: Float, recibidos: Float) {
+    private fun initBarChart(enviados:Float,recibidos:Float) {
 
-        val barChartView = binding.barChart
+        val entries: ArrayList<BarEntry> = ArrayList()
+        entries.add(BarEntry(.5f, enviados))
+        entries.add(BarEntry(1.5f, recibidos))
 
-        val barWidth: Float = 0.15f //anchura de la barra
-        val barSpace: Float = 0.07f // espacio entre las barras agrupadas
-        val groupSpace: Float = 0.56f //espacio entre grupos de barras
+        val barDataSet = BarDataSet(entries, "")
+        //barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
 
-        var xAxisValues = ArrayList<String>()
-        xAxisValues.add("Usuario 1")
-        xAxisValues.add("Usuario 2")
-        xAxisValues.add("Usuario 3")
-        xAxisValues.add("Usuario 4")
+        val colors: ArrayList<Int> = ArrayList()
+        colors.add(resources.getColor(R.color.colorPrimary))
+        colors.add(resources.getColor(R.color.colorSecondary))
 
-        var yValueGroup1 = ArrayList<BarEntry>()
-        var yValueGroup2 = ArrayList<BarEntry>()
 
-        // draw the graph
-        var barDataSet1: BarDataSet
-        var barDataSet2: BarDataSet
+        val data = BarData(barDataSet)
+        barChart.data = data
+        data.setBarWidth(0.3f);//Reducir el ancho de las barras
+        barDataSet.colors = colors
+        data.setValueTextSize(0f)
 
-        yValueGroup1.add((BarEntry(1f, enviados)))
-        yValueGroup2.add((BarEntry(1f, recibidos)))
-        yValueGroup1.add((BarEntry(2f, enviados)))
-        yValueGroup2.add((BarEntry(2f, recibidos)))
-        yValueGroup1.add((BarEntry(3f, enviados)))
-        yValueGroup2.add((BarEntry(3f, recibidos)))
-        yValueGroup1.add((BarEntry(4f, enviados)))
-        yValueGroup2.add((BarEntry(4f, recibidos)))
+        //hide grid lines
+        barChart.axisLeft.setDrawGridLines(true)
+        barChart.xAxis.setDrawGridLines(true)
+        barChart.xAxis.setDrawAxisLine(true)
+        barChart.xAxis.isEnabled=false
 
-        barDataSet1 = BarDataSet(yValueGroup1, "")
-        //barDataSet1.setColors(R.color.colorPrimary)
-        barDataSet1.setColor(Color.parseColor("#66BB6A"))
-        barDataSet1.setDrawIcons(false)
-        barDataSet1.setDrawValues(false)
 
-        barDataSet2 = BarDataSet(yValueGroup2, "")
-        barDataSet2.setColor(Color.parseColor("#87D169"))
-        barDataSet2.setDrawIcons(false)
-        barDataSet2.setDrawValues(false)
+        //remove right y-axis
+        barChart.axisRight.isEnabled = false
+        barChart.axisLeft.isEnabled = true
 
-        var barData = BarData(barDataSet1, barDataSet2)
+        //forzar a que la barra izquierda de la gráfica, muestre por valores enteros
+        barChart.axisLeft.setGranularity(1.0f);
+        barChart.axisLeft.setGranularityEnabled(true); // Required to enable granularity
 
-        //remove legenda
-        barChartView.legend.isEnabled = false
-        //remover etiqueta de descripción
-        barChartView.description.isEnabled = false
-        barChartView.description.textSize = 0f
-        barData.setValueFormatter(LargeValueFormatter())
-        barChartView.setData(barData)
-        barChartView.getBarData().setBarWidth(barWidth)
-        barChartView.getXAxis().setAxisMinimum(0f)
-        barChartView.getXAxis().setAxisMaximum(2f)
-        barChartView.groupBars(0f, groupSpace, barSpace)
-        barChartView.setFitBars(true)
-        barChartView.getData().setHighlightEnabled(false)
-        barChartView.invalidate()
 
-        val xAxis = barChartView.getXAxis()
-        xAxis.setGranularity(1f)
-        xAxis.setGranularityEnabled(true)
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setDrawGridLines(false)
-        xAxis.textSize = 10f
+        barChart.setTouchEnabled(false)
 
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
-        xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
+        //remove legend
+        barChart.legend.isEnabled = false
+        //remove description label
+        barChart.description.isEnabled = false
 
-        barChartView.setTouchEnabled(true)
 
-        xAxis.setLabelCount(4)
-        xAxis.mAxisMaximum = 4f
-        xAxis.setCenterAxisLabels(true)
-        xAxis.setAvoidFirstLastClipping(true)
-        xAxis.spaceMin = 1f
-        xAxis.spaceMax = 1f
+        //add animation
+        barChart.animateY(1000)
 
-        barChartView.setVisibleXRangeMaximum(3f)
-        barChartView.setVisibleXRangeMinimum(3f)
-        barChartView.setDragEnabled(true)
 
-        //Y-axis
-        barChartView.getAxisRight().setEnabled(false)
-        barChartView.setScaleEnabled(true)
-
-        val leftAxis = barChartView.getAxisLeft()
-        leftAxis.setValueFormatter(LargeValueFormatter())
-        leftAxis.setDrawGridLines(false)
-        leftAxis.setSpaceTop(1f)
-        leftAxis.setAxisMinimum(0f)
-
-        barChartView.data = barData
-        barChartView.setVisibleXRange(1f, 3f)
+        //draw chart
+        barChart.invalidate()
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -583,7 +539,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                     Log.e("Error mapa","Al crear bitmap")
                     e.printStackTrace()
                 }
-                val imageUri = FileProvider.getUriForFile(Objects.requireNonNull(activity as HomeActivity),
+                val imageUri = FileProvider.getUriForFile(activity as HomeActivity,
                     BuildConfig.APPLICATION_ID + ".provider", imageFile)
 
                 Handler(Looper.getMainLooper()).postDelayed({

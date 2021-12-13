@@ -22,6 +22,8 @@ class ReporteMensajesViewModel: ViewModel() {
     var recibidos = MutableLiveData<String>()
     var totales = MutableLiveData<String>()
     var leidos = MutableLiveData<String>()
+    var recibidosB = MutableLiveData<String>()
+    var enviadosB = MutableLiveData<String>()
     var lista : ReporteMensajesDao
     var cargaDatosExitosa = MutableLiveData<Boolean>()
     var cargaOperacionesEstadisticas = MutableLiveData<Boolean>()
@@ -35,6 +37,8 @@ class ReporteMensajesViewModel: ViewModel() {
         recibidos.value =  "0"
         totales.value =  "0"
         leidos.value =  "0"
+        recibidosB.value =  "0"
+        enviadosB.value =  "0"
         cargaDatosExitosa.value = false
         cargaOperacionesEstadisticas.value = false
     }
@@ -54,6 +58,8 @@ class ReporteMensajesViewModel: ViewModel() {
                     recibidos.value = lista.obtenerMensajesRecibidos()
                     totales.value = lista.obtenerMensajesTotales()
                     leidos.value = lista.obtenerMensajesLeidos()
+                    recibidosB.value = lista.obtenerRecibidosBroadcast()
+                    enviadosB.value = lista.obtenerEnviadosBroadcast()
 
                     listaConsumidaAux.value = listaConsumida
 
