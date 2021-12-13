@@ -69,7 +69,6 @@ open class LinkPreviewMessageCell: TextMessageCell {
                                                sentDate: message.sentDate,
                                                kind: linkItem.textKind,
                                                documento: message.documento)
-        
         super.configure(with: dummyMessage, at: indexPath, and: messagesCollectionView)
 
         linkPreviewView.titleLabel.text = linkItem.title
