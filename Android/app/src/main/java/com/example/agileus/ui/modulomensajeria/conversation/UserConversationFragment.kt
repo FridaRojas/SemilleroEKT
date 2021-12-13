@@ -38,7 +38,6 @@ class UserConversationFragment : Fragment() {
     lateinit var resultLauncherArchivo: ActivityResultLauncher<Intent>
     lateinit var firebaseProvider : FirebaseProvider
 
-
     private lateinit var viewModel: UserConversationViewModel
 
     override fun onCreateView(
@@ -56,7 +55,6 @@ class UserConversationFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
     }
 

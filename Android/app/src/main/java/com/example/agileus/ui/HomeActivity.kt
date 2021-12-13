@@ -32,6 +32,7 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeBinding
     lateinit var fragmentSeleccionado: String
+     lateinit var navView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,29 +46,27 @@ class HomeActivity : AppCompatActivity() {
 
 
     //Token Notificaciones
-        val token = InitialApplication.preferenciasGlobal.recuperarToken()
+        val token = InitialApplication.preferenciasToken.recuperarToken()
         Log.d("token", token)
 
 
         //Navegación
-        val navView: BottomNavigationView = binding.navView
+        navView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.reporteMensajesFragment
             )
         )
+        if(preferenciasGlobal.validaSesionIniciada()){
+            navController.navigate(R.id.navigation_home)
+            navView.visibility = View.VISIBLE
+        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         findViewById<BottomNavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
-
-
-        if(preferenciasGlobal.validaSesionIniciada()){
-           // Toast.makeText(applicationContext, "${preferenciasGlobal.validaSesionIniciada()}", Toast.LENGTH_SHORT).show()
-        }
-
 
         //Ocultar BottomNavigationBar en pantallas específicas
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -92,10 +91,10 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(fragmentSeleccionado){
-            "crearTarea" -> {
+            getString(R.string.fragmentSeleccionadoCrearTarea) -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
             }
-            "verDetalleTarea" -> {
+            getString(R.string.fragmentSeleccionadoDetallesTarea) -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.navigation_dashboard)
             }
             "Contactos" -> {
@@ -106,6 +105,9 @@ class HomeActivity : AppCompatActivity() {
             }
             R.string.contacts_name.toString() -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.listContactsFragment)
+            }
+            getString(R.string.taskReportFragment) -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.reporteMensajesFragment)
             }
         }
         return super.onOptionsItemSelected(item)

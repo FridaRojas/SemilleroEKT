@@ -13,7 +13,7 @@
         android:background="#1F1F1F1F"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo_agil"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

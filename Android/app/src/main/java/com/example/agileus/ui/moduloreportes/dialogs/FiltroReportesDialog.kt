@@ -14,10 +14,8 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.example.agileus.R
 import com.example.agileus.R.*
-import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.DialogFiltroReportesBinding
 import com.example.agileus.utils.Constantes
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -87,7 +85,7 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
             txtTitulo.setText("Filtrar")
 
             try {
-                Constantes.empleadoUsuario.forEach {
+                Constantes.messageStadisticData.forEach {
                     if (Constantes.idUsuarioEstadisticas == it.id){
                         txtUsuario.setText(it.name)
                         Log.d("idUsuarioEstadisticas", it.id)
@@ -349,13 +347,13 @@ class FiltroReportesDialog(val listener: FiltroReportesDialogListener): DialogFr
     override fun onUserSelected(user: Int) {
 
 
-        if(Constantes.dataEmpleadoUsuario.size == 0){
-            txtUsuario.setText(Constantes.empleadoUsuario[user].name)
-            userIdSelected = Constantes.empleadoUsuario[user].id
+        if(Constantes.taskStadisticData.size == 0){
+            txtUsuario.setText(Constantes.messageStadisticData[user].name)
+            userIdSelected = Constantes.messageStadisticData[user].id
         }else{
 
-            txtUsuario.setText(Constantes.dataEmpleadoUsuario[user].name)
-            userIdSelected = Constantes.dataEmpleadoUsuario[user].id
+            txtUsuario.setText(Constantes.taskStadisticData[user].name)
+            userIdSelected = Constantes.taskStadisticData[user].id
         }
 
         /*

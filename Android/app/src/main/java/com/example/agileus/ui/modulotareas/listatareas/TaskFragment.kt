@@ -42,7 +42,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
     private lateinit var taskViewModel: TaskViewModel
     //var nivelusuario = "medio"
     lateinit var listStatus : Array<String>
-
+    lateinit var list:Array<String>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,42 +59,44 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         recuperarNivelUsuario()
-        preferenciasGlobal.recuperarNivelUsuario()
-
+         preferenciasGlobal.recuperarNivelUsuario()
         (activity as HomeActivity?)?.getActionBar()?.setTitle("Hola StackOverflow en Español")
 
         listStatus = resources.getStringArray(R.array.statusRecycler_array)
+        list = resources.getStringArray(R.array.status_array)
+
         //Toast.makeText(activity, userBoss, Toast.LENGTH_SHORT).show()
 
         var superior = preferenciasGlobal.recuperarIdSuperiorInmediato()
 
-            if(superior.isNullOrEmpty()){
-                preferenciasGlobal.guardarNivelUsuario("alto")
-            }else if(userBoss.equals("alto") && !superior.isNullOrEmpty()){
-                    preferenciasGlobal.guardarNivelUsuario("medio")
-                }else{
-                    preferenciasGlobal.guardarNivelUsuario("bajo")
+            if(superior.isNullOrEmpty() || superior == ""){
+                preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelAlto))
+            }else{
+                if(userBoss.equals(getString(R.string.nivelAlto))){
+                    preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelMedio))
+                }else if(userBoss.equals(getString(R.string.nivelBajo))){
+                    preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelBajo))
                 }
+            }
 
 
 
-        //Toast.makeText(activity, "$superior", Toast.LENGTH_SHORT).show()
+        Log.d("usuario", "$superior & $userBoss = ${preferenciasGlobal.recuperarNivelUsuario()}")
 
         var nivelUsuario = preferenciasGlobal.recuperarNivelUsuario()
 
         //Recycler Status
-        if(nivelUsuario == "alto"){
+        if(nivelUsuario == getString(R.string.nivelAlto)){
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelAlto(), this)
-            taskViewModel.statusRecycler.value = "asignada"
+            taskViewModel.statusRecycler.value = list[4]
             binding.tituloTareas.text = getString(R.string.titleStatus5)
-        }else if( nivelUsuario == "medio" ){
+        }else if( nivelUsuario == getString(R.string.nivelMedio) ){
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelMedio(), this)
-            taskViewModel.statusRecycler.value = "pendiente"
+            taskViewModel.statusRecycler.value = list[0]
         }else{
             adaptadorStatus = StatusTasksAdapter(StatusTasks.obtenerListaNivelBajo(), this)
-            taskViewModel.statusRecycler.value = "pendiente"
+            taskViewModel.statusRecycler.value = list[0]
         }
 
 
@@ -118,7 +120,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
             it.findNavController().navigate(R.id.formularioCrearTareasFragment)
         }
         //Btn Crear tareas
-        if(nivelUsuario == "alto" || nivelUsuario == "medio"){
+        if(nivelUsuario == getString(R.string.nivelAlto) || nivelUsuario == getString(R.string.nivelMedio)){
             binding.btnCrearTarea.isVisible = true
             binding.btnCrearTarea.setOnClickListener {
                 it.findNavController().navigate(R.id.formularioCrearTareasFragment)
@@ -168,12 +170,12 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
 
     fun recuperarNivelUsuario() {
         //Todo al iniciar sesion
-        if(InicioSesionViewModel.userBoss == "alto"){
+        if(InicioSesionViewModel.userBoss == getString(R.string.nivelAlto)){
             // nivel alto / medio
-            preferenciasGlobal.guardarNivelUsuario("alto")
+            preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelAlto))
             //todo superior para saber si es nivel alto o medio
         }else{
-            preferenciasGlobal.guardarNivelUsuario("bajo")
+            preferenciasGlobal.guardarNivelUsuario(getString(R.string.nivelBajo))
             // nivel bajo
         }
     }
@@ -181,7 +183,7 @@ class TaskFragment : Fragment(), TaskDialogListener, TaskListListener, dialogoCo
     override fun abreDialogo(dataTask: DataTask) {
         val newFragment2 =
             DialogoNivelBajo(dataTask,this)
-        newFragment2.show((activity as HomeActivity).supportFragmentManager, "missiles")
+        newFragment2.show((activity as HomeActivity).supportFragmentManager, getString(R.string.logTareas))
     }
 
     override fun abreDialogoConfirmar(mensaje: String) {

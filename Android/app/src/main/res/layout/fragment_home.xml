@@ -12,8 +12,6 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/height_search"
         android:background="@drawable/rounded_bg"
-        android:backgroundTint="@color/white"
-        android:drawableEnd="@drawable/iconobuscar"
         app:layout_constraintEnd_toStartOf="@id/imgBroadcast"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -81,6 +79,7 @@
         android:layout_marginBottom="70dp"
         android:layout_marginEnd="@dimen/paddingGeneral"
         android:src="@drawable/iconoagregar"
+        app:tint="@color/white"
         />
 
     <ProgressBar

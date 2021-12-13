@@ -20,6 +20,7 @@ class InitialApplication : Application() {
 
         //SharedPreferences
         lateinit var preferenciasGlobal: MySharedPreferences
+        lateinit var preferenciasToken: TokenSharedPreferences
 
         lateinit var LoginServiceGlobal : LoginApi
 
@@ -29,22 +30,15 @@ class InitialApplication : Application() {
         super.onCreate()
         webServiceMessage = ConfigRetrofit().obtenerConfiguracionRetofitMessage()
         webServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitTasks()
-//        BroadcastServiceGlobalTasks=ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
-
         LoginServiceGlobal=ConfigRetrofit().obtenerConfiguracionRetofitLogin()
-
         BroadcastServiceGlobalTasks2=ConfigRetrofit().obtenerConfiguracionRetofitBuzon2()
-
-  //      BroadcastServiceGlobalTasks = ConfigRetrofit().obtenerConfiguracionRetofitBuzon()
         webServiceGlobalTasksPersonas = ConfigRetrofit().obtenerConfiguracionRetofitPersonasTasks()
-      //  webServiceGlobalTasksPrueba = ConfigRetrofit().obtenerConfiguracionRetofitTasksPrueba()
-
         webServiceGlobalReportes = ConfigRetrofit().getConfigReportes()
         webServiceGlobalNivel = ConfigRetrofit().obtenerConfiguracionRetrofitNivel()
 
         //SharedPreferences
         preferenciasGlobal = MySharedPreferences(applicationContext)
-
+        preferenciasToken = TokenSharedPreferences(applicationContext)
     }
 
 }

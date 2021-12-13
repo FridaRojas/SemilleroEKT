@@ -2,7 +2,6 @@ package com.example.agileus.utils
 
 
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.agileus.models.UserMessageDetailReport
 import com.example.agileus.models.UserTaskDetailReport
@@ -76,14 +75,36 @@ object Constantes {
         var minute = ""
         var time = ZonedDateTime.parse(fecha)
 
-        var hour = time.hour + 6
+        var hour = 0
+        if(time.hour <= 12){
+             hour = time.hour + 6
+        }else{
+            hour = time.hour - 6
+        }
+
+
 
         if(time.minute < 10){
             minute = "0"+time.minute.toString()
         }else{
             minute = time.minute.toString()
         }
-        return time.dayOfMonth.toString()+"-"+time.monthValue +"-"+time.year+"  " +hour.toString()+":" + minute
+        return time.dayOfMonth.toString()+"/"+time.monthValue +"/"+time.year+"  " +hour.toString()+":" + minute
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun devuelveFechaDocumento():String{
+
+        var minute = ""
+        var time = ZonedDateTime.parse("${Constantes.date}$localTime")
+
+        if(time.minute < 10){
+            minute = "0"+time.minute.toString()
+        }else{
+            minute = time.minute.toString()
+        }
+        return time.dayOfMonth.toString()+"."+time.monthValue +"."+time.year+" at " +time.hour.toString()+":" + minute
 
     }
     //Login
@@ -92,20 +113,15 @@ object Constantes {
     //val URL_Login = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"//"https://firebasestorage.googleapis.com/v0/b/pruebas-eqipo-admin.appspot.com/o/"           // "http://10.97.4.193:3040/"                                    // "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/"                    // "http://10.97.6.83:3040"                       // "http://18.218.7.148:3040"                                                                                 // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
    // val URL_Login = "http://3.144.86.49:8080/Servicios-0.0.1-SNAPSHOT/api/"                                                                               // "http://10.97.2.198:3040"                    //"https://10.97.6.83"       //"http://10.97.2.202:3040"
 
-    //var idUsuario = "618e8743c613329636a769aa"
-    var idUsuario =idUser
-    //var idUsuarioEstadisticas = idUsuario
-    val GROUP_ID_REPORTES ="TEAM_ID_CREATED_BY_MOD_REPORT"
-    //var idUsuario = id
-    var idUsuarioEstadisticas = GROUP_ID_REPORTES
-    var opcionFiltro = 0
-    var fechaIniCustomEstadisticas = "1970-01-01T00:00:00.000+00:00"
-    var fechaEstadisticas = Constantes.date.toString()
+    val MIN_DATE_RANGE      = "1900-01-01T00:00:00.000+00:00"
+    val MAX_DATE_RANGE      = "2100-01-01T00:00:00.000+00:00"
+    val TEAM_ID_REPORTES ="TEAM_ID_CREATED_BY_MOD_REPORT"
+    var idUsuarioEstadisticas = TEAM_ID_REPORTES
     var id_broadcast="618d9c26beec342d91d747d6"
-    var fechaIniEstadisticas = "1900-01-01T00:00:00.000+00:00"
-    var fechaFinEstadisticas = "2100-01-01T00:00:00.000+00:00"
-    var empleadoUsuario = emptyList<UserMessageDetailReport>()
-    var dataEmpleadoUsuario = emptyList<UserTaskDetailReport>()
+    var fechaIniEstadisticas = MIN_DATE_RANGE
+    var fechaFinEstadisticas = MAX_DATE_RANGE
+    var messageStadisticData = emptyList<UserMessageDetailReport>()
+    var taskStadisticData = emptyList<UserTaskDetailReport>()
     var tipo_grafica:Int=0
     var vista:Int=0
 

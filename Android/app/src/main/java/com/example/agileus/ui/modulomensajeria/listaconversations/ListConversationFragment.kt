@@ -41,10 +41,6 @@ class ListConversationFragment : Fragment(), DialogoListen {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //AGREGADA
-        val navBar: BottomNavigationView = (activity as HomeActivity).findViewById(R.id.nav_view)
-        navBar.isVisible = true
-
         return root
     }
 
@@ -59,12 +55,14 @@ class ListConversationFragment : Fragment(), DialogoListen {
         var background = object : Thread(){
             override fun run() {
                 while (true){
-                    Log.i("chechar","checar")
                     ChatsViewModel.devuelveListaChats(UserId)
                     sleep(20000)
                 }
             }
         }.start()
+
+
+        (activity as HomeActivity).navView.visibility = View.VISIBLE
 
         binding.progressBarChats.isVisible = true
 
@@ -140,7 +138,5 @@ class ListConversationFragment : Fragment(), DialogoListen {
 
     override fun noDisparar(motivo: String) {
         Toast.makeText(activity, motivo, Toast.LENGTH_SHORT).show()
-
-
     }
 }
