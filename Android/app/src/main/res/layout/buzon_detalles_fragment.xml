@@ -78,7 +78,8 @@
         android:layout_margin="16dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/mensaje_nuevo"
-        android:src="@drawable/broadcast_btn" />
+        android:src="@drawable/broadcast_btn"
+        app:tint="@color/white"/>
 
 
 
