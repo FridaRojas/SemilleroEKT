@@ -17,19 +17,17 @@ import com.example.agileus.utils.Constantes
 import com.example.agileus.ui.modulomensajeria.conversation.UserConversationViewModel
 import com.example.agileus.ui.modulotareas.listenerstareas.ProgressBarListener
 
-class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String,
+class DialogoConfirmOp(var tarea: Tasks,
                        val listener: DialogoConfirmOpStatusListener,
                        val listenerProgress: ProgressBarListener )
     : DialogFragment(), DialogoConfirmOpStatusListener{
 
-    lateinit var conversationviewModel  : UserConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
             asignarTareaViewModel = ViewModelProvider(this).get()                   // ViewModel
-            conversationviewModel = ViewModelProvider(this).get()
 
             val builder = AlertDialog.Builder(it)
 
@@ -49,12 +47,6 @@ class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String
     }
 
     override fun onOpSuccessful() {
-        // Enviar tarea al chat del receptor
-        val mensajeTareas = Message(idEmisor,idRecep,"",
-            "Se asigno la tarea: ${tarea.titulo} a ${tarea.nombreReceptor}",
-            Constantes.finalDate)
-        conversationviewModel.mandarMensaje(idEmisor,idRecep,mensajeTareas)
-        Log.d("mensaje Tareas","$mensajeTareas")
         listener.onOpSuccessful()
     }
 
