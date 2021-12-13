@@ -93,10 +93,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         reporteTareasViewModel = ViewModelProvider(this).get(ReporteTareasViewModel::class.java)
         _binding = ReporteTareasFragmentBinding.inflate(inflater, container, false)
 
-        reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
-
         reporteTareasViewModel.cargaDatosExitosa.observe(viewLifecycleOwner, {
-
             iniciada = reporteTareasViewModel.iniciadas.value.toString().toInt()
             terminadas = reporteTareasViewModel.terminadas.value.toString().toInt()
             totales = reporteTareasViewModel.totales.value.toString().toInt()
@@ -107,6 +104,16 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
         })
 
+
+        val root: View = binding.root
+        return root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
 
         reporteTareasViewModel.listaEmpleadosAux.observe(viewLifecycleOwner, { list->
             taskStadisticData = list
@@ -120,17 +127,7 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
                 binding.txtNombreReportes.setText(taskStadisticData[taskStadisticData.size - 1].name)
             }
             setStadisticName()
-
         })
-
-
-
-        val root: View = binding.root
-        return root
-    }
-    @RequiresApi(Build.VERSION_CODES.Q)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.btnDownload.setOnClickListener {
             tomarScreenShot(view)
@@ -165,8 +162,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
                 1 -> {
 
-                    binding.barras.isVisible=false
-                    binding.pie.isVisible=true
+                    //binding.barras.isVisible=false
+                    //binding.pie.isVisible=true
                     cambiarGrafica(2)
                     binding.pieChart.isVisible = false
                     binding.barChart.isVisible = true
@@ -185,9 +182,10 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             cambiarGrafica(0)
         }
 
-        cambiarGrafica(0)
+        cambiarGrafica(tipo_grafica)
 
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun setStadisticName(){
@@ -199,68 +197,49 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             }
         }
         if (binding.txtNombreReportes.text.isNullOrEmpty()){
-            idUsuarioEstadisticas = Constantes.TEAM_ID_REPORTES
+            idUsuarioEstadisticas = TEAM_ID_REPORTES
             reporteTareasViewModel.devuelveListaEmpleados(preferenciasGlobal.recuperarIdSesion())
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun mostrargraficaPie() {
+
         pieChart=binding.pieChart
-        setStadisticName()
+
 
         binding.txtRangoFechaReportes.isVisible=false
         binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
 
-        reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
-        reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.RecyclerLista.adapter = it
-            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
-        })
+        reporteTareasViewModel.adaptador.observe(viewLifecycleOwner, {
+                binding.RecyclerLista.adapter = it
+                binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
+            })
 
-        binding.colorlegend1.isVisible=true
-        binding.colorlegend2.isVisible=true
-        binding.colorlegend3.isVisible=true
-        binding.colorlegend4.isVisible=true
+            setStadisticName()
 
-        binding.txtPrimerLegend.text="Pendientes"
-        binding.txtSegundoLegend.text="Iniciadas"
-        binding.txtTercerLegend.text="Revisión"
-        binding.txtCuartoLegend.text="Terminadas"
+            binding.colorlegend1.isVisible = true
+            binding.colorlegend2.isVisible = true
+            binding.colorlegend3.isVisible = true
+            binding.colorlegend4.isVisible = true
 
-        binding.colorlegend1.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-        binding.colorlegend2.setBackgroundColor(resources.getColor(R.color.colorSecondary))
-        binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorGray))
-        binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
+            binding.txtPrimerLegend.text = "Pendientes"
+            binding.txtSegundoLegend.text = "Iniciadas"
+            binding.txtTercerLegend.text = "Revisión"
+            binding.txtCuartoLegend.text = "Terminadas"
 
-        taskStadisticData.forEach {
-            if (idUsuarioEstadisticas == it.id){
-                binding.txtNombreReportes.setText(it.name)
-                Log.d("idUsuarioEstadisticas", it.id)
-            }
-        }
+            binding.colorlegend1.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+            binding.colorlegend2.setBackgroundColor(resources.getColor(R.color.colorSecondary))
+            binding.colorlegend3.setBackgroundColor(resources.getColor(R.color.colorGray))
+            binding.colorlegend4.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
 
-        binding.txtRangoFechaReportes.isVisible=false
-        binding.txtRangoFechaReportes.setText(fechaIniEstadisticas + " " + fechaFinEstadisticas)
-
-        reporteTareasViewModel.devuelvelistaReporte(this, idUsuarioEstadisticas)
-
-        reporteTareasViewModel.adaptador.observe(viewLifecycleOwner,{
-            binding.RecyclerLista.adapter = it
-            binding.RecyclerLista.layoutManager = LinearLayoutManager(activity)
-        })
-
-            binding.txtDataPrimerLegend.text = pendientes.toString()
-            binding.txtDataSegundoLegend.text = iniciada.toString()
-            binding.txtDataTercerLegend.text = revision.toString()
-            binding.txtDataCuartoLegend.text = terminadas.toString()
+            binding.txtDataPrimerLegend.text = reporteTareasViewModel.pendientes.value.toString()
+            binding.txtDataSegundoLegend.text = reporteTareasViewModel.iniciadas.value.toString()
+            binding.txtDataTercerLegend.text = reporteTareasViewModel.revision.value.toString()
+            binding.txtDataCuartoLegend.text = reporteTareasViewModel.terminadas.value.toString()
 
             porcentaje_termidas = obtenerPorcentajes(terminadas, totales)
             porcentaje_pendientes = obtenerPorcentajes(pendientes, totales)
-            porcentaje_leidas = obtenerPorcentajes(leidas, totales)
-
-            porcentaje_revision = obtenerPorcentajes(revision, totales)
-            porcentaje_iniciada = obtenerPorcentajes(iniciada, totales)
             porcentaje_leidas = obtenerPorcentajes(leidas, totales)
 
             initPieChart()//inicializacion de la grafica de pie
@@ -800,6 +779,8 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             }
             1 -> {
 
+                binding.pie.isVisible = false
+                binding.barras.isVisible = true
                 mostrargraficaBarras(1)//Tareas terminadas a tiempo grupal
                 binding.pieChart.isVisible = false
                 binding.barChart.isVisible = true
