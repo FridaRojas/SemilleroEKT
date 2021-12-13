@@ -36,6 +36,7 @@ class InicioSesionViewModel : ViewModel() {
     init {
         list = LoginDao()
         userByBossId.value = "bajo"
+        //getUsersByBoss()
     }
 
     // recuperarToken
