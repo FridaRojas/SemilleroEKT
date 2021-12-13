@@ -15,25 +15,17 @@ var arrMensajes: ObjetoMensajes?
 //var arrBroadcast: [Broadcast]?
 
 var arrBroadcast: ObjetoBroadcast?
-var idRecpt = String()
 
 class MensajesService {
     
     var webServiceMessage: ((_ arrDatosTareas:[Any]) -> Void)?
     var webServiceBroad: ((_ arrDatosBroad:[Any]) -> Void)?
     
-    var serviceMessage = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/mensajes/listarMensajesRecividos/"
-    //let serviceMessage = "https://firebasestorage.googleapis.com/v0/b/uber-test-c9f54.appspot.com/o/mensajes_nuevo.json?alt=media&token=eadcb762-992e-493c-8ee7-50e4c3a93ce2"
-    //let serviceBroad = "http://10.97.7.227:3040/api/broadCast//mostrarMensajesporID/618b05c12d3d1d235de0ade0"
-    var serviceBroad = "http://ec2-3-144-86-49.us-east-2.compute.amazonaws.com:8080/Servicios-0.0.1-SNAPSHOT/api/broadCast//mostrarMensajesporID/"
-    
-    
-    
     func webServiceMensajes(idUsuario: String) {
-        let service = true
-        serviceMessage = "\(serviceMessage)\(userID)/\(idUsuario)"
-        let url = URL(string: serviceMessage)
+        let service = "\(server)mensajes/listarMensajesRecividos/\(userID)/\(idUsuario)"
+        let url = URL(string: service)
         var request = URLRequest(url: url!)
+        
         request.setValue(tokenAuth, forHTTPHeaderField: "tokenAuth")
     
         //Gernerar manejo de excepciones
@@ -49,11 +41,13 @@ class MensajesService {
                     arrMensajes = try JSONDecoder().decode(ObjetoMensajes.self, from: informacion!)
                     DispatchQueue.main.async {
                         
-                        if service == true {
+                        if arrMensajes!.estatus == "200"{
                             self.webServiceMessage?(arrMensajes!.data)
+                        }else{
+                            print(arrMensajes!.estatus)
+                            print(arrMensajes!.mensaje)
                         }
                     }
-                    
                 }catch let error {
                     print(error)
                     print("Error al leer el archivo Mensajes")
@@ -64,8 +58,7 @@ class MensajesService {
     }
     
     func webServiceBroadcast(idUsuario: String) {
-        let service = true
-        serviceBroad = "\(serviceBroad)\(userID)/\(idUsuario)"
+        let serviceBroad = "\(server)broadCast//mostrarMensajesporID/\(userID)/\(idUsuario)"
         let url = URL(string: serviceBroad)
         
         //let request = NSMutableURLRequest(url: url! as URL)
@@ -89,9 +82,15 @@ class MensajesService {
                     arrBroadcast = try JSONDecoder().decode(ObjetoBroadcast.self, from: info!)
                     
                     DispatchQueue.main.async {
-                        if service == true {
+                        
+                        if arrBroadcast!.estatus == "200"{
                             self.webServiceBroad?(arrBroadcast!.data)
+                        }else{
+                            print(arrBroadcast!.estatus)
+                            print(arrBroadcast!.mensaje)
                         }
+                            
+                        
                     }
                 
                 } catch {
@@ -102,10 +101,11 @@ class MensajesService {
     }
     
     func webServiceMensajesPorIdSup(idUsuario: String) {
-        let service = true
-        serviceMessage = "\(serviceMessage)\(idUsuario)"
-        let url = URL(string: serviceMessage)
+        
+        let service = "\(server)mensajes/listarMensajesRecividos/\(userID)/\(idUsuario)"
+        let url = URL(string: service)
     
+        print("webServiceMensajesPorIdSup")
         //Gernerar manejo de excepciones
         URLSession.shared.dataTask(with: url!){
             
@@ -119,13 +119,16 @@ class MensajesService {
                     arrMensajes = try JSONDecoder().decode(ObjetoMensajes.self, from: informacion!)
                     DispatchQueue.main.async {
                         
-                        if service == true {
+                        if arrMensajes!.estatus == "200" {
                             self.webServiceMessage?(arrMensajes!.data)
+                        }else{
+                            print(arrMensajes!.estatus)
+                            print(arrMensajes!.mensaje)
                         }
                     }
                     
                 }catch{
-                    print("Error al leer el archivo Mensajes")
+                    print("Error al leer el archivo Mensajes webServiceMensajesPorIdSup")
                 }
             }
         }.resume()

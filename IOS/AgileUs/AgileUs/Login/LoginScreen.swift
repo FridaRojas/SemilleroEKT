@@ -36,7 +36,7 @@ class LoginScreen: UIViewController {
 
         txtPassword.addBackgroundColorAndTextColor(backgroundColor: UIColor(red: 245.0/255, green: 245.0/255, blue: 245.0/255, alpha: 1.0), textColor: UIColor(red: 156.0/255, green: 158.0/255, blue: 159.0/255, alpha: 1.0))
         txtPassword.roundCorners(cornerRadius: 20.0)
-        txtPassword.addIcon(image: UIImage(named: "vector_icon")!, direction: "Left")
+        txtPassword.addIcon(image: UIImage(named: "Vector_icon")!, direction: "Left")
         let visibilityButton = txtPassword.addButton(iconImage: UIImage(named: "visibility_off")!)
         visibilityButton.addTarget(self, action: #selector(showHideText), for: .touchUpInside)
     }
