@@ -1,6 +1,0 @@
-framework module Pods_AgileUs_AgileUsUITests {
-  umbrella header "Pods-AgileUs-AgileUsUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}

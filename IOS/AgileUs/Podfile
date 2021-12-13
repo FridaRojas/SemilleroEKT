@@ -8,7 +8,12 @@ target 'AgileUs' do
   # Pods for AgileUs
     pod 'MessageKit', '~> 3.3.0'
     pod 'InputBarAccessoryView', '5.1.0'
-
+    pod 'Firebase/Analytics'
+    pod 'Firebase/Auth'
+    pod 'Firebase/Firestore'
+    pod 'Firebase/Storage'
+    pod 'Firebase/Messaging'
+    pod 'Charts'    
 
   target 'AgileUsTests' do
     inherit! :search_paths
