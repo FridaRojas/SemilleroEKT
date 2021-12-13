@@ -599,17 +599,9 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         var selection: String? = null
         var selectionArgs: Array<String>? = null
         if (needToCheckUri && DocumentsContract.isDocumentUri(context.applicationContext, uri)) {
-
             val docId = DocumentsContract.getDocumentId(uri)
             val split = docId.split(":").toTypedArray()
-            val type = split[0]
-            if ("image" == type) {
-                uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            } else if ("video" == type) {
-                uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            } else if ("audio" == type) {
-                uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            }
+            uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             selection = "_id=?"
             selectionArgs = arrayOf(split[1])
         }

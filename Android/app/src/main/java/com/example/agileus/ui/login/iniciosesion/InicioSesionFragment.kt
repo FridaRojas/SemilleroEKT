@@ -82,7 +82,7 @@ class InicioSesionFragment : Fragment(){
 
         //AGREGADA para ocultar BottonNavigationView
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-        navBar.isVisible = false
+        //navBar.isVisible = false
 
         /*
         binding.btnLogin.setOnClickListener { validate()

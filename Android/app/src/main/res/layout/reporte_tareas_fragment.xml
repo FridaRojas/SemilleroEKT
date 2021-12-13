@@ -288,7 +288,7 @@
         android:id="@+id/btnDownload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_download"
+        android:src="@drawable/ic_share"
         app:tint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/llSegundoLegend"
         app:layout_constraintEnd_toEndOf="parent" />
