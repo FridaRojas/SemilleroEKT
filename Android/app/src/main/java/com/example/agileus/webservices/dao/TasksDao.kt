@@ -190,7 +190,6 @@ class TasksDao {
             if (Response != null) {
                 if (Response.isSuccessful) {
                     listaGrupoRecuperada = Response.body()!!
-                    //Log.d("Mensaje", "listaGrupoRecuperada: ${listaGrupoRecuperada.status} ")
                     if (listaGrupoRecuperada.data != null) {
                         listaPersonsDatos = listaGrupoRecuperada.data
                     } else {

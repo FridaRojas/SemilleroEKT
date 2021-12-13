@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
-import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.example.agileus.databinding.InicioSesionFragmentBinding
 import com.example.agileus.models.Data
 import com.example.agileus.models.Users
@@ -32,8 +31,8 @@ import android.animation.PropertyValuesHolder
 import android.animation.ObjectAnimator
 
 import android.animation.Animator
-
-
+import android.os.Looper
+import com.example.agileus.config.InitialApplication.Companion.preferenciasToken
 
 
 //, DialogoListen
@@ -63,6 +62,7 @@ class InicioSesionFragment : Fragment(){
         _binding = InicioSesionFragmentBinding.inflate(inflater, container, false)
 
         val view: View = binding.root
+        //viewModel.getUsersByBoss()
 
         return view
     }
@@ -107,12 +107,10 @@ class InicioSesionFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
 
-
         ////////////////
 //       binding.vista2.visibility = View.INVISIBLE
-
-
         viewModel.getUsersByBoss()
+
 
 
         /*if(preferenciasGlobal.validaSesionIniciada()){
@@ -135,6 +133,8 @@ class InicioSesionFragment : Fragment(){
                 var x = response
                 if(x)
                 {
+                   // viewModel.getUsersByBoss()
+
                     //Log.d("xdata",x.toString())
                     //   Toast.makeText(activity, "Inicio", Toast.LENGTH_SHORT).show()
                 }
@@ -159,9 +159,11 @@ class InicioSesionFragment : Fragment(){
                 binding.btnLogin.isEnabled = true
                 Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
             }else{
-                val usuario = Users(correoSession, passwordSession, TOKEN_KEY)
+                val usuario = Users(correoSession, passwordSession, preferenciasToken.recuperarToken())
                 viewModel.recuperarLogueo(usuario)
                 sleep(1000)
+
+                //Handler(Looper.getMainLooper()).postDelayed({viewModel.getUsersByBoss()},2000)
 
                 if (status) {
                     Log.d("Login", correoSession)

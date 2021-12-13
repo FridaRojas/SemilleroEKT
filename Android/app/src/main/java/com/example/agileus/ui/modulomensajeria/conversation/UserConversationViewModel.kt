@@ -1,5 +1,6 @@
 package com.example.agileus.ui.modulomensajeria.conversation
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,7 +47,7 @@ class UserConversationViewModel : ViewModel() {
                 }
             }
         } catch (ex: Exception) {
-            //Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+            Log.e(UserConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 
@@ -61,7 +62,7 @@ class UserConversationViewModel : ViewModel() {
                 responseM.value = RespuestaMessage
             }
         }catch (ex:Exception){
-           // Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+           Log.e(UserConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 
@@ -74,7 +75,7 @@ class UserConversationViewModel : ViewModel() {
                 responseM.value = RespuestaMessage
             }
         }catch (ex:Exception){
-           // Log.e(ListConversationViewModel::class.simpleName.toString(), ex.message.toString())
+            Log.e(UserConversationViewModel::class.simpleName.toString(), ex.message.toString())
         }
     }
 

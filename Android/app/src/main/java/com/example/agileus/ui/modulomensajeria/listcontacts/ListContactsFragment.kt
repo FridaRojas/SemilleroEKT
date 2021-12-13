@@ -26,8 +26,6 @@ class ListContactsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         contactsviewModel = ViewModelProvider(this).get(ListContactsViewModel::class.java)
 
         _binding = ListContactsFragmentBinding.inflate(inflater, container, false)
@@ -45,7 +43,6 @@ class ListContactsFragment : Fragment() {
         (activity as HomeActivity).fragmentSeleccionado = "Contactos"
 
         contactsviewModel.devuelveLista(UserId)
-
 
         contactsviewModel.adaptador.observe(viewLifecycleOwner, {
             binding.progressBarContacts.isVisible = false
