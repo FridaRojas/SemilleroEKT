@@ -22,7 +22,6 @@ class ReporteMensajesDao {
     private var contador_mensajes_recibidos:Int = 0
     private var contador_mensajes_leidos:Int=0
     private var contador_mensajes_totales:Int=0
-    private var recibidos_broadcast:Int=0
     private var enviados_al_B:Int=0
     private var recibidos_broadcast:Int=0
     private lateinit var fecha_inicio: ZonedDateTime
