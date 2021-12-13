@@ -13,9 +13,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fondomessage"
-        android:layout_marginTop="@dimen/margin_bottom_recycler"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="@dimen/margin_bottom_recycler"
-        android:padding="@dimen/paddingGeneral"
+        android:paddingStart="@dimen/paddingGeneral"
+        android:paddingEnd="@dimen/paddingGeneral"
+        android:paddingTop="@dimen/paddingRecyclerConversation"
         />
 
     <View

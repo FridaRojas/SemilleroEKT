@@ -33,6 +33,7 @@ import android.animation.ObjectAnimator
 import android.animation.Animator
 import android.os.Looper
 import com.example.agileus.config.InitialApplication.Companion.preferenciasToken
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
 
 
 //, DialogoListen
@@ -82,7 +83,7 @@ class InicioSesionFragment : Fragment(){
 
         //AGREGADA para ocultar BottonNavigationView
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-        navBar.isVisible = false
+        //navBar.isVisible = false
 
         /*
         binding.btnLogin.setOnClickListener { validate()
@@ -157,7 +158,10 @@ class InicioSesionFragment : Fragment(){
             if(false in result){
                 progressBar.visibility = View.INVISIBLE
                 binding.btnLogin.isEnabled = true
-                Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
+                val newFragment = DialogoAceptar("Contraseña y/o Correo no válido")
+                newFragment.show(
+                    (activity as HomeActivity).supportFragmentManager,"logSesion")
             }else{
                 val usuario = Users(correoSession, passwordSession, preferenciasToken.recuperarToken())
                 viewModel.recuperarLogueo(usuario)
@@ -166,6 +170,9 @@ class InicioSesionFragment : Fragment(){
                 //Handler(Looper.getMainLooper()).postDelayed({viewModel.getUsersByBoss()},2000)
 
                 if (status) {
+                    val newFragment = DialogoAceptar("Inicio exitoso")
+                    newFragment.show(
+                        (activity as HomeActivity).supportFragmentManager,"logSesion")
                     Log.d("Login", correoSession)
                     Log.d("Login", passwordSession)
                     Log.d("Login", idUsuario)
@@ -225,12 +232,12 @@ class InicioSesionFragment : Fragment(){
     private fun validateEmail(): Boolean {
         val correo = binding.email.text?.toString()
         return if (correo!!.isEmpty()) {
-            binding.email.error = "El campo no puede estar vacío"
-            false
+            //binding.email.error = "El campo no puede estar vacío"
+              false
         }
         else if (!PatternsCompat.EMAIL_ADDRESS.matcher(correo).matches()){
-            binding.email.error = "Por favor, ingresa un correo válido"
-            false
+            //binding.email.error = "Por favor, ingresa un correo válido"
+             false
         } else {
             binding.email.error = null
             correoSession = correo
@@ -251,11 +258,11 @@ class InicioSesionFragment : Fragment(){
                     "$"      // cierre
         )
         return if (password!!.isEmpty()) {
-            binding.password.error = "El campo no puede estar vacío"
-            false
+            //binding.password.error = "El campo no puede estar vacío"
+           false
         } else if (!passwordRegex.matcher(password).matches()) {
-            binding.password.error = "La contraseña es incorrecta"
-            false
+            //binding.password.error = "La contraseña es incorrecta"
+             false
         } else {
             binding.password.error = null
             passwordSession = password
@@ -273,7 +280,10 @@ class InicioSesionFragment : Fragment(){
                 progressBar.setProgress(counter++)//counter++
             }
             override fun onFinish() {
-                Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(activity, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+                val newFragment = DialogoAceptar("Contraseña y/o Correo no válido")
+                newFragment.show(
+                    (activity as HomeActivity).supportFragmentManager,"logSesion")
                 progressBar.visibility=View.INVISIBLE
                 binding.btnLogin.isEnabled=true
 
