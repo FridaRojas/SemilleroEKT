@@ -105,6 +105,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidAppear(_ animated: Bool) {
         ejecucionServicios()
         configuracion_cantidades()
+        optionstAB.selectedSegmentIndex = 0
+        configuracion_etiquetasPieMensajes()
+        ocultar_etiquetas(tipo: false)
     }
 
 
@@ -253,6 +256,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                         configura_label_usuario(nombre: "Mi equipo")
 
                         if let lista_usuarios = (arrUsuarios as? [Usuario]) {
+                           
                             usuarios_cantidades = [Any]()
                             usuarios_cantidades_broad = [Any]()
                             for i in lista_usuarios {
@@ -280,6 +284,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func serviciosUsuariosPorFecha(filtros: [String]) {
         if let lista_usuarios = (arrUsuarios as? [Usuario]){
+            usuarios_cantidades = [Any]()
+            usuarios_cantidades_broad = [Any]()
+            
             for i in lista_usuarios {
                 serviciosMensajesPorLiderFiltrado(filtros: filtros, idUsuario: i.id, nombre: i.nombre)
 
