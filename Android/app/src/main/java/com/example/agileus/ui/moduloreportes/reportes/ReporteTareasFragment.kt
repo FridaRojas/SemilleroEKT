@@ -486,8 +486,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
 
     }
 
-
-    @Throws(URISyntaxException::class)
     fun getPath(context: Context, uri: Uri): String? {
         var uri = uri
         val needToCheckUri = Build.VERSION.SDK_INT >= 19
@@ -538,7 +536,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         return null
     }
 
-
     fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
         if (outputStream != null) {
             try {
@@ -549,8 +546,6 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             }
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:backgroundTint="@color/white"
         android:background="@drawable/rounded_rm"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -289,7 +288,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_share"
-        app:tint="@color/white"
+        app:tint="@color/design_default_color_on_primary"
         app:layout_constraintBottom_toTopOf="@+id/llSegundoLegend"
         app:layout_constraintEnd_toEndOf="parent" />
 
