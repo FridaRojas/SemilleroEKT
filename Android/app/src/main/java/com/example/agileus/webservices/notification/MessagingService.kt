@@ -1,8 +1,6 @@
 package com.example.agileus.webservices.notification
 
 import android.util.Log
-import com.example.agileus.config.InitialApplication.Companion.preferenciasGlobal
-import com.example.agileus.config.MySharedPreferences.Companion.TOKEN_KEY
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 

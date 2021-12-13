@@ -41,10 +41,6 @@ class ListConversationFragment : Fragment(), DialogoListen {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //AGREGADA
-      //  val navBar: BottomNavigationView = (activity as HomeActivity).findViewById(R.id.nav_view)
-        //navBar.isVisible = true
-
         return root
     }
 

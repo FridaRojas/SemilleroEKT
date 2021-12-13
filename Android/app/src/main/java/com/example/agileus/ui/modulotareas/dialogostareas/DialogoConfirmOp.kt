@@ -8,14 +8,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import com.example.agileus.R
 import com.example.agileus.models.Message
 import com.example.agileus.ui.modulotareas.creartareas.CrearTareasViewModel
 import com.example.agileus.models.Tasks
 import com.example.agileus.ui.modulotareas.listenerstareas.DialogoConfirmOpStatusListener
 import com.example.agileus.utils.Constantes
 import com.example.agileus.ui.modulomensajeria.conversation.UserConversationViewModel
+import com.example.agileus.ui.modulotareas.listenerstareas.ProgressBarListener
 
-class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String, val listener: DialogoConfirmOpStatusListener ) : DialogFragment(), DialogoConfirmOpStatusListener{
+class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String,
+                       val listener: DialogoConfirmOpStatusListener,
+                       val listenerProgress: ProgressBarListener )
+    : DialogFragment(), DialogoConfirmOpStatusListener{
 
     lateinit var conversationviewModel  : UserConversationViewModel         // ViewModel
     lateinit var asignarTareaViewModel  : CrearTareasViewModel          // ViewModel
@@ -28,13 +33,14 @@ class DialogoConfirmOp(var tarea: Tasks, var idEmisor:String, var idRecep:String
 
             val builder = AlertDialog.Builder(it)
 
-            builder.setMessage("Confirmar")
+            builder.setMessage(getString(R.string.confirmar))
                 // Add action buttons
-                .setPositiveButton("Aceptar",
+                .setPositiveButton(getString(R.string.respAceptar),
                     DialogInterface.OnClickListener { dialog, id ->
                         asignarTareaViewModel.postTarea(tarea , this)
+                        listenerProgress.onAceptSelected()
                     })
-                .setNegativeButton("Cancelar",
+                .setNegativeButton(getString(R.string.respCancelar),
                     DialogInterface.OnClickListener { dialog, id ->
 
                     })
