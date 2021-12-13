@@ -85,9 +85,6 @@ class ReporteTareasViewModel: ViewModel() {
                 if (listaHijosConsumida.isNotEmpty()){
                     listaEmpleadosAux.value = listaHijosConsumida
                 }
-                listaEmpleadosAux.value?.forEach {
-                    Log.e("Hijos", it.name)
-                }
             }
         }catch (ex:Exception){
             Log.e(ReporteMensajesViewModel::class.simpleName.toString(), ex.message.toString())

@@ -107,6 +107,9 @@ class HomeActivity : AppCompatActivity() {
             R.string.contacts_name.toString() -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.listContactsFragment)
             }
+            getString(R.string.taskReportFragment) -> {
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_home).navigate(R.id.reporteMensajesFragment)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
