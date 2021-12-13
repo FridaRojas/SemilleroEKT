@@ -39,27 +39,31 @@ class HierarchyLevelService
 
                 do{
                     let hierarchyData = try JSONDecoder().decode(ResponseHierarchy.self, from: data)
-                    context.tokenValidator(status: hierarchyData.status, message: hierarchyData.status)
+                    //context.tokenValidator(status: hierarchyData.status, message: hierarchyData.status)
                     DispatchQueue.main.async {
+                        print("idSuperiorInmediato: \(idsuperiorInmediato)")
                         switch hierarchyData.status{
                             case "OK":
                                 if let idSuperiorInmediato = idsuperiorInmediato {
-                                    if !idsuperiorInmediato!.isEmpty{
+                                    
+                                    if idSuperiorInmediato.isEmpty{
                                         hierarchyLevel = 1
                                     } else {
                                         hierarchyLevel = 2
                                     }
+                                    
                                 } else {
-                                    hierarchyLevel = 2
+                                    hierarchyLevel = 1
                                 }
                                 break
-                            case "NOT_FOUND":
+                            case "BAD_REQUEST":
                                     hierarchyLevel = 3
                                 break
                             default:
                                 break
                         }
                         UserDefaults.standard.setValue(hierarchyLevel, forKey: "hierarchyLevel")
+                        print("hierarchyLevel: \(hierarchyLevel)")
                     }
                 }catch let error_S
                 {

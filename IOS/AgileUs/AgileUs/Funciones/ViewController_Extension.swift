@@ -88,16 +88,15 @@ extension UIViewController{
     }
     
     //Validar si el token ha expirado, en caso de que si cerrar sesion
-    func tokenValidator(status: String?, message: String?){
-        if let status = status, status == "404" {
-            cleanLocalVariables()
-            return
-        }
-        if let message = message, message == "Token invalido" {
-            cleanLocalVariables()
-            return
-        }
+    func tokenValidator(variable: Any?, context: ChatsScreen){
         
+        guard let variable = variable else
+        {
+            print("DEBERIA CERRAR SESION")
+            cleanLocalVariables(context: context)
+            return
+        }
+        print("I HERE TODO OK")
     }
     
     //Borrar variables locales
@@ -112,5 +111,22 @@ extension UIViewController{
         UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
         UserDefaults.standard.setValue(String(), forKey: "idGrupo")
         navigationController?.popViewController(animated: true)
+        //navigationController?.popViewController(animated: true)
+    }
+    
+    func cleanLocalVariables(context: ChatsScreen){
+        UserDefaults.standard.setValue(String(), forKey: "userID")
+        UserDefaults.standard.setValue(String(), forKey: "userName")
+        UserDefaults.standard.setValue(String(), forKey: "email")
+        UserDefaults.standard.setValue(String(), forKey: "employeeNumber")
+        UserDefaults.standard.setValue(String(), forKey: "rolName")
+        UserDefaults.standard.setValue(String(), forKey: "hierarchyLevel")
+        UserDefaults.standard.setValue(false, forKey: "isLogged")
+        UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
+        UserDefaults.standard.setValue(String(), forKey: "idGrupo")
+        DispatchQueue.main.async
+        {
+            context.navigationController?.popViewController(animated: true)
+        }
     }
 }
