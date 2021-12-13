@@ -53,8 +53,8 @@ class ListaGrafica: UITableViewCell {
             lblRecibidos.isHidden = true
             lblTiempo.text = "Mensajes de broadcast"
         }else if tipo == "pieT"{
-            txtTitulo.text = "Terminadas"
-            lblRecibidos.text = "Pendientes"
+            txtTitulo.text = "Pendientes"
+            lblRecibidos.text = "Iniciadas"
             lblTiempo.isHidden = true
         }else if tipo == "barT"{
             lblTiempo.text = "Tareas Culminadas a tiempo"

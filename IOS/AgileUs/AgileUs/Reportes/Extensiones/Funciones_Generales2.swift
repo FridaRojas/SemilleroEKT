@@ -106,12 +106,17 @@ extension UIViewController {
         
         for i in mensaje {
             
-            if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
-                recibidos += 1
+
+            if i.idreceptor.contains(idUsuario) {
+                if i.idemisor != idUsuario {
+                    recibidos += 1
+                }
             }
             
-            if i.idreceptor == idUsuario && i.statusLeido == true {
-                leidos += 1
+            if i.idreceptor.contains(idUsuario) && i.statusLeido == true {
+                if i.idemisor != idUsuario {
+                    leidos += 1
+                }
             }
             
             if i.idemisor == idUsuario && i.statusEnviado == true {
@@ -119,6 +124,8 @@ extension UIViewController {
             }
             
         }
+        
+        print("esdkjfbvhsdfb------- \(enviados) \(recibidos) \(leidos)")
         
         return [enviados, recibidos, leidos]
         
@@ -132,12 +139,16 @@ extension UIViewController {
         
         for i in mensaje {
             
-            if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
-                recibidos += 1
+            if i.idreceptor.contains(idUsuario) {
+                if i.idemisor != idUsuario {
+                    recibidos += 1
+                }
             }
             
-            if i.idreceptor == idUsuario && i.statusLeido == true {
-                leidos += 1
+            if i.idreceptor.contains(idUsuario) && i.statusLeido == true {
+                if i.idemisor != idUsuario {
+                    leidos += 1
+                }
             }
             
             if i.idemisor == idUsuario && i.statusEnviado == true {
@@ -157,12 +168,16 @@ extension UIViewController {
         
         for i in mensaje {
             
-            if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
-                recibidos += 1
+            if i.idreceptor.contains(idUsuario) {
+                if i.idemisor != idUsuario {
+                    recibidos += 1
+                }
             }
             
-            if i.idreceptor == idUsuario && i.statusLeido == true {
-                leidos += 1
+            if i.idreceptor.contains(idUsuario) && i.statusLeido == true {
+                if i.idemisor != idUsuario {
+                    leidos += 1
+                }
             }
             
             if i.idemisor == idUsuario && i.statusEnviado == true {
@@ -234,12 +249,16 @@ extension UIViewController {
             let fechaEnv = "\(i.fechaEnviado)".prefix(10)
             fechaEnviado = Date().convertir_string_servicio_a_fecha(fecha: String(fechaEnv))
             if fechaEnviado! >= fechaInicial && fechaEnviado! <= fechaFinal {
-                if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
-                    recibidos += 1
+                if i.idreceptor.contains(idUsuario) {
+                    if i.idemisor != idUsuario {
+                        recibidos += 1
+                    }
                 }
                 
-                if i.idreceptor == idUsuario && i.statusLeido == true {
-                    leidos += 1
+                if i.idreceptor.contains(idUsuario) && i.statusLeido == true {
+                    if i.idemisor != idUsuario {
+                        leidos += 1
+                    }
                 }
                 
                 if i.idemisor == idUsuario && i.statusEnviado == true {
@@ -264,12 +283,16 @@ extension UIViewController {
             let fechaEnv = "\(i.fechaEnviado)".prefix(10)
             fechaEnviado = Date().convertir_string_servicio_a_fecha(fecha: String(fechaEnv))
             if fechaEnviado! >= fechaInicial && fechaEnviado! <= fechaFinal {
-                if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
-                    recibidos += 1
+                if i.idreceptor.contains(idUsuario) {
+                    if i.idemisor != idUsuario {
+                        recibidos += 1
+                    }
                 }
                 
-                if i.idreceptor == idUsuario && i.statusLeido == true {
-                    leidos += 1
+                if i.idreceptor.contains(idUsuario) && i.statusLeido == true {
+                    if i.idemisor != idUsuario {
+                        leidos += 1
+                    }
                 }
                 
                 if i.idemisor == idUsuario && i.statusEnviado == true {
@@ -300,12 +323,16 @@ extension UIViewController {
             let fechaEnv = "\(i.fechaEnviado)".prefix(10)
             fechaEnviado = Date().convertir_string_servicio_a_fecha(fecha: String(fechaEnv))
             if fechaEnviado! >= fechaInicial && fechaEnviado! <= fechaFinal {
-                if i.idreceptor == idUsuario || i.idreceptor.contains(idUsuario) {
-                    recibidos += 1
+                if i.idreceptor.contains(idUsuario) {
+                    if i.idemisor != idUsuario {
+                        recibidos += 1
+                    }
                 }
                 
-                if i.idreceptor == idUsuario && i.statusLeido == true {
-                    leidos += 1
+                if i.idreceptor.contains(idUsuario) && i.statusLeido == true {
+                    if i.idemisor != idUsuario {
+                        leidos += 1
+                    }
                 }
                 
                 if i.idemisor == idUsuario && i.statusEnviado == true {

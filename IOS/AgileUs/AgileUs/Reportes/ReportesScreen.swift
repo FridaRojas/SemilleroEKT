@@ -134,9 +134,9 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //Validar si el usuario no cuenta con subordinados
        
-        serviciosUsuarios()
+        //serviciosUsuarios()
         
-        //animacion_espera()
+        animacion_espera()
         //serviciosMensajes(idUsuario: userID)
         //serviciosTareas(idUsuario: userID)
         //serviciosBroadcast(idUsuario: userID)
@@ -181,7 +181,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func animationDidStart(_ anim: CAAnimation) {
         //configurar_pdf_visro()
-        //serviciosUsuarios()
+        serviciosUsuarios()
     }
 
 
@@ -191,6 +191,10 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                 [self] (Datos) -> Void in
             mensajes = Datos
             cantidad_mensajes = cantidadDeMensajes(mensaje: mensajes! as! [Mensajes], idUsuario: idUsuario)
+            
+            shapeLayer.removeAllAnimations()
+            view.isUserInteractionEnabled = true
+            
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
     }
@@ -203,8 +207,8 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
 
             usuarios_cantidades.append(cantidadDeMensajesUsuario(mensaje: mensajes! as! [Mensajes], idUsuario: idUsuario, nombre: nombre))
 
-            //shapeLayer.removeAllAnimations()
-            //view.isUserInteractionEnabled = true
+            shapeLayer.removeAllAnimations()
+            view.isUserInteractionEnabled = true
             llenar_pie_chart(mensajes: cantidad_mensajes)
         }
     }
@@ -254,7 +258,6 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                             for i in lista_usuarios {
                                 serviciosMensajesPorLider(idUsuario: i.id, nombre: i.nombre)
                                 serviciosBroadcastPorLider(idUsuario: i.id, nombre: i.nombre)
-
                                 serviciosTareasLider(nombre: i.nombre, idReceptor:i.id)
 
                             }
@@ -908,6 +911,7 @@ class ReportesScreen: UIViewController, UITableViewDelegate, UITableViewDataSour
                     serviciosUsuarios()
                     esconderBoton(SiNo: false)
                 } else {
+                    configuracion_cantidades()
                     esconderBoton(SiNo: true)
                     serviciosMensajes(idUsuario: Filtro[0] as! String)
                     serviciosTareas(idUsuario: Filtro[0] as! String)
