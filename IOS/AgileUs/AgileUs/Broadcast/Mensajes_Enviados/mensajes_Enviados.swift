@@ -7,11 +7,11 @@
 
 import UIKit
 
-var arrListaMensajes = [Any]()
+
 
 class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
-    let controlador_modal1 = Adaptador_Modals()
+    let controlador_modal1 = Adaptador_Modal()
     var lista_mensajes = [Mensajes_Broacast]()
     //var usuarios = [Any]()
     
@@ -46,15 +46,21 @@ class mensajes_Enviados: UIViewController, UITableViewDelegate, UITableViewDataS
     
     @IBAction func Enviar_Mensaje(_ sender: Any)
     {
-        /*let Modal_Mensajes = controlador_modal1.crear_modal_mensajes_enviados(Accion_Confirmacion_Completion: {[self](Datos) -> Void in
+        let Modal_Mensajes = controlador_modal1.crear_modal_mensajes_enviados(Accion_Confirmacion_Completion: {[self](DatosModal) -> Void in
             
-            var asunto = [Datos] as! Any
-            var mensaje = [Datos] as! Any
+            var asunto = [DatosModal] as! Any
+            var mensaje = [DatosModal] as! Any
         
             self.dismiss(animated: true, completion: nil)
             
         })
-        present(Modal_Mensajes, animated: true)*/
+        present(Modal_Mensajes, animated: true)
+    }
+    
+    
+    @IBAction func Cerrar_Mensajes_Enviados(_ sender: Any)
+    {
+        navigationController?.popViewController(animated: true)
     }
     
     func consumir_mensajes_enviados()
