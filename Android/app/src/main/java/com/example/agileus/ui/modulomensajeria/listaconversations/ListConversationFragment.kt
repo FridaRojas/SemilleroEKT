@@ -21,6 +21,7 @@ import com.example.agileus.models.Chats
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.dialog.DialogoListen
 import com.example.agileus.ui.login.dialog.CerrarSesionDialog
+import com.example.agileus.ui.login.iniciosesion.InicioSesionViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -29,6 +30,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
     private lateinit var ChatsViewModel: ListConversationViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var loginViewModel: InicioSesionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,10 +39,11 @@ class ListConversationFragment : Fragment(), DialogoListen {
     ): View? {
         ChatsViewModel =
             ViewModelProvider(this).get(ListConversationViewModel::class.java)
-
+        loginViewModel =
+            ViewModelProvider(this).get(InicioSesionViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        loginViewModel.getUsersByBoss()
         return root
     }
 
@@ -52,6 +55,8 @@ class ListConversationFragment : Fragment(), DialogoListen {
         ChatsViewModel.devuelveListaGrupos(UserId)
         ChatsViewModel.devuelveListaChats(UserId)
 
+
+
         var background = object : Thread(){
             override fun run() {
                 while (true){
@@ -62,7 +67,7 @@ class ListConversationFragment : Fragment(), DialogoListen {
         }.start()
 
 
-        (activity as HomeActivity).navView.visibility = View.VISIBLE
+        //(activity as HomeActivity).navView.visibility = View.VISIBLE
 
         binding.progressBarChats.isVisible = true
 

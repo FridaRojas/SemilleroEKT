@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.databinding.FragmentFormularioCrearTareasBinding
 import com.example.agileus.models.DataPersons
+import com.example.agileus.models.Message
 import com.example.agileus.models.Tasks
 import com.example.agileus.providers.FirebaseProvider
 import com.example.agileus.ui.HomeActivity
@@ -106,10 +107,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
                 if(data!= null){
                     try{
                         var returnUri = data?.data!!
-                        //val uriString = data.toString()
-                        //val myFile = File(uriString).name
                         binding.btnAdjuntarArchivo.text = "Archivo seleccionado: ${data.data!!.lastPathSegment} "
-                     //   Log.d("mensaje","PDF: ${data.data!!.lastPathSegment}")
                         firebaseProvider.subirPdfFirebase(returnUri, Constantes.referenciaTareas, "tarea$idsuperiorInmediato${(0..999).random()}")
                     }catch (e: FileNotFoundException){
                         e.printStackTrace()
@@ -233,7 +231,7 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
             urlPost                             // Url de archivo pdf subido a firebase
         )
 
-        val newFragment = DialogoConfirmOp (tarea, idsuperiorInmediato, idPersonaAsignada, this,this)
+        val newFragment = DialogoConfirmOp (tarea, this,this)
         newFragment.show(parentFragmentManager, getString(R.string.confirmacionDialogo))
 
     }
@@ -314,6 +312,18 @@ class FormularioCrearTareasFragment : Fragment(), DialogoFechaListener , Dialogo
             (activity as HomeActivity).supportFragmentManager,
             getString(R.string.logTareas)
         )
+
+        // Enviar tarea al chat del receptor
+        try {
+            val mensajeTareas = Message(
+                idsuperiorInmediato,idPersonaAsignada,
+                " ",
+                "Se asigno la tarea: ${tituloTarea} a ${nombrePersonaAsignada}",
+                Constantes.finalDate)
+            conversationviewModel.mandarMensaje(idsuperiorInmediato,idPersonaAsignada, mensajeTareas)
+        } catch (ex: Exception) {
+        }
+
         //Volver al fragment anterior
         val action = FormularioCrearTareasFragmentDirections.actionFormularioCrearTareasFragmentToNavigationDashboard()
         findNavController().navigate(action)

@@ -74,7 +74,6 @@ class LoginDao {
                         mapa["idsuperiorInmediato"].toString(),
                         true
                     )
-
                 }
                 else {
                     status = false
@@ -100,7 +99,7 @@ class LoginDao {
 
         try {
             if (response != null) {
-                //Log.d("usuario", "Body: ${response.body()}")
+                Log.d("usuario", "Body: ${response.body()}")
                 //Log.d("usuario", "${response.errorBody()}")
                 //Log.d("usuario", "code: ${response.code()}")
 

@@ -75,6 +75,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.detalleNivelAltoFragment -> hideBottomNav(navView)
                 R.id.listContactsFragment -> hideBottomNav(navView)
                 R.id.userConversationFragment -> hideBottomNav(navView)
+                R.id.inicioSesionFragment -> hideBottomNav(navView)
                 else -> showBottomNav(navView)
             }
         }
