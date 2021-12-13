@@ -154,7 +154,7 @@ public class GroupController {
     }
 
     @DeleteMapping("/borrarUsuarioDeGrupo")//*
-    public ResponseEntity deleteUserFromgroup(@RequestBody BodyAddUserGroup body) {
+    public ResponseEntity<?> deleteUserFromgroup(@RequestBody BodyAddUserGroup body) {
         try {
             if (body.getIdGrupo() == null || body.getIdUsuario() == null) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(HttpStatus.NOT_ACCEPTABLE, "Error en las llaves", null));
@@ -225,6 +225,10 @@ public class GroupController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "El grupo no existe", null));
             }
 
+        }  catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "Error en la consulta", e));
         }
@@ -243,13 +247,17 @@ public class GroupController {
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Nombre no encontrado", null));
             }
+        }  catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND, "Error en la consulta", null));
         }
     }
 
     @PostMapping("/crearGrupo/{nombre}")
-    public Response crearGrupo(@PathVariable String nombre) {
+    public ResponseEntity<?> crearGrupo(@PathVariable String nombre) {
         try {
             nombre = nombre.toUpperCase();
             if (!groupService.buscarPorNombre(nombre).isPresent()) {
@@ -258,12 +266,16 @@ public class GroupController {
                 group.setNombre(nombre);
                 group.setUsuarios(new User[0]);
                 groupService.guardar(group);
-                return new Response(HttpStatus.OK, "Grupo " + nombre + " creado", "");
+                return ResponseEntity.status(HttpStatus.OK).body( new Response(HttpStatus.OK, "Grupo " + nombre + " creado", ""));
             } else {
-                return new Response(HttpStatus.BAD_REQUEST, "Grupo " + nombre + " ya existe", null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST, "Grupo " + nombre + " ya existe", null));
             }
+        }  catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            return new Response(HttpStatus.NOT_FOUND, "Error en la consulta: " + e, null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND, "Error en la consulta: " + e, null));
         }
         //return new Response();
     }
@@ -275,12 +287,16 @@ public class GroupController {
      */
 
     @GetMapping("/buscarTodo")
-    public Response buscarTodo() {
+    public ResponseEntity<?> buscarTodo() {
         try {
             Iterable<Group> grupos = groupService.buscarTodo();
-            return new Response(HttpStatus.OK, "Grupos existentes", grupos);
+            return ResponseEntity.status(HttpStatus.OK).body( new Response(HttpStatus.OK, "Grupos existentes", grupos));
+        }  catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
         } catch (Exception e) {
-            return new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body( new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e));
         }
     }
 
@@ -313,7 +329,11 @@ public class GroupController {
             Iterable<Group> grupos = groupService.buscarTodo(PageRequest.of(pagina, tamaño));
             return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK, "Grupos existentes", grupos));
 
-        } catch (Exception e) {
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        }  catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND, "Error al hacer la consulta", e));
         }
     }

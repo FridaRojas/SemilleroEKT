@@ -388,13 +388,23 @@ public class UserController {
                     return ResponseEntity.status(HttpStatus.OK).body( new Response(HttpStatus.OK, "Usuario(s) no encontrado(s)",userService.busquedaUsuario(parametro).get()));
                 }
             }
-        }catch (Exception e){
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"",null));
         }
     }
 
+
+    /**
+     * Elimina el tocken de autenticacion
+     * @param idUser id usuario cuyo token se va a eliminar eliminar
+     * @return
+     */
     @PostMapping("/logout/{idUser}")
-    public Response logout(@PathVariable String idUser){
+    public ResponseEntity<?> logout(@PathVariable String idUser){
         try{
             if (userService.findById(idUser).isPresent()){
                 User usr = userService.findById(idUser).get();
@@ -402,16 +412,20 @@ public class UserController {
                 groupService.actualizaUsuario(usr);
                 User tmp=userService.save(usr);
                 if (tmp.getTokenAuth().length()==0){
-                    return new Response(HttpStatus.OK,"Deslogeado correctamente","");
+                    return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK,"Deslogeado correctamente",""));
                 }
                 else{
-                    return  new Response(HttpStatus.BAD_REQUEST,"Error al deslogear",null);
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( new Response(HttpStatus.BAD_REQUEST,"Error al deslogear",null));
                 }
             }else{
-                return new Response(HttpStatus.BAD_REQUEST,"Usuario "+idUser+" no existe",null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(HttpStatus.BAD_REQUEST,"Usuario "+idUser+" no existe",null));
             }
-        }catch (Exception e){
-            return new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",null);
+        } catch (MongoSocketException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (MongoException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(HttpStatus.NOT_FOUND,"Error al hacer la consulta",null));
         }
     }
 
