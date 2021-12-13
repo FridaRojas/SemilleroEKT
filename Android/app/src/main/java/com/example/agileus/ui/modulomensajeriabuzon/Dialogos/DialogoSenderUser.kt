@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.agileus.models.Buzon
 import com.example.agileus.R
 import com.example.agileus.models.MsgBodyUser
-import com.example.agileus.ui.modulomensajeriabuzon.BuzonUser.BuzonDetallesUserFragment
 import com.example.agileus.ui.modulomensajeriabuzon.Listeners.UserBuzonListener
 import com.google.android.material.textfield.TextInputEditText
 
