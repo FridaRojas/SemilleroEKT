@@ -168,7 +168,7 @@ class InicioSesionFragment : Fragment(){
                     Log.d("Login", idUsuario)
                     //Toast.makeText(activity, "Inicio de sesion correcto", Toast.LENGTH_SHORT).show()
                     sleep(1000)
-                    if(rol!="BROADCAST")
+                    if(rol != "BROADCAST")
                     findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
                     else
                         findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2)
