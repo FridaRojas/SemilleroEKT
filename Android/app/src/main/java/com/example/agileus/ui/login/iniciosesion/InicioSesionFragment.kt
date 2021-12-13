@@ -105,7 +105,6 @@ class InicioSesionFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
 
-
         ////////////////
 //       binding.vista2.visibility = View.INVISIBLE
 

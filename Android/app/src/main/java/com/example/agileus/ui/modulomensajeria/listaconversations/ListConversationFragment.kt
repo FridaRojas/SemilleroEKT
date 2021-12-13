@@ -61,6 +61,9 @@ class ListConversationFragment : Fragment(), DialogoListen {
             }
         }.start()
 
+
+        (activity as HomeActivity).navView.visibility = View.VISIBLE
+
         binding.progressBarChats.isVisible = true
 
         ChatsViewModel.flagChats.observe(viewLifecycleOwner,{
