@@ -7,8 +7,13 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+<<<<<<< HEAD
 .IOS/AgileUs/Podfile.lock
 .IOS/AgileUs/Pods
+=======
+IOS/AgileUs/Podfile.lock
+IOS/AgileUs/Pods
+>>>>>>> 23f51a8b5cb03a7e16dcc0ed3ae8f483301836bc
 # Icon must end with two \r
 Icon
 

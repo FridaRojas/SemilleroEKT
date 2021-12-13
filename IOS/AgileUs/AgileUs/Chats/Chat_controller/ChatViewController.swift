@@ -196,8 +196,6 @@ class ChatViewController:
         auto_scroll()
     }
     
-    
-    
     func didTapMessage(in cell: MessageCollectionViewCell) {
         if let indexPath = messagesCollectionView.indexPath(for: cell),
                     let messagesDataSource = messagesCollectionView.messagesDataSource {

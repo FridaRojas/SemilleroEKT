@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
+		16A48082313B165AF634D854 /* Pods_AgileUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */; };
 		4912A080276060280066AE1B /* BroadcastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4912A07F276060280066AE1B /* BroadcastModel.swift */; };
 		4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EADD274D5B5200FA0380 /* Funciones_Date.swift */; };
 		4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */; };
@@ -68,6 +68,13 @@
 		D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */; };
 		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
 		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
+    D4EDE7492747174E00197CB1 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		D4EAA625276689C70091B5FC /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA624276689C70091B5FC /* UserModel.swift */; };
+		D4EAA627276689E80091B5FC /* UserRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA626276689E80091B5FC /* UserRequestModel.swift */; };
+		D4EAA62927668A170091B5FC /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA62827668A170091B5FC /* ResponseModel.swift */; };
+		D4EAA62B27668A340091B5FC /* ResponseHierarchyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA62A27668A340091B5FC /* ResponseHierarchyModel.swift */; };
+		D4EAA631276692870091B5FC /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA630276692870091B5FC /* LoginService.swift */; };
+		D4EAA6332766929F0091B5FC /* HierarchyLevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA6322766929F0091B5FC /* HierarchyLevelService.swift */; };
 		D4EDE7492747174E00197CB1 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		DF37A4602763C83800DD83B8 /* Button_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37A45F2763C83800DD83B8 /* Button_Extension.swift */; };
 		DF37A4622763C86600DD83B8 /* TextField_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37A4612763C86600DD83B8 /* TextField_Extension.swift */; };
@@ -91,6 +98,9 @@
 		E47AAA1527569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E47AAA1227569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard */; };
 		E4821A0F275FBC0E001AEC19 /* Celda_Comunicados.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4821A0D275FBC0E001AEC19 /* Celda_Comunicados.swift */; };
 		E4821A10275FBC0E001AEC19 /* Celda_Comunicados.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */; };
+		E4A43A7C276420D200CDFDF4 /* Adaptadores_Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A43A7B276420D100CDFDF4 /* Adaptadores_Web.swift */; };
+		E4A43A7E2764299700CDFDF4 /* servicios_broadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A43A7D2764299700CDFDF4 /* servicios_broadcast.swift */; };
+		E4A43A8127643F9600CDFDF4 /* Modelos_Broadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A43A8027643F9600CDFDF4 /* Modelos_Broadcast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +121,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		24F3BDE3CCE6B65D10FB39FD /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
+		279D06B35AFC3550B5122B92 /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4912A07F276060280066AE1B /* BroadcastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastModel.swift; sourceTree = "<group>"; };
 		4916EADD274D5B5200FA0380 /* Funciones_Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones_Date.swift; sourceTree = "<group>"; };
 		4916EAE6275005CA00FA0380 /* AdaptadorServicios.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdaptadorServicios.swift; sourceTree = "<group>"; };
@@ -131,10 +143,10 @@
 		494E58932759A02B00F85AF6 /* UsuariosModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsuariosModel.swift; sourceTree = "<group>"; };
 		4992644C2755925B007BBAD6 /* ItemMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemMenu.swift; sourceTree = "<group>"; };
 		4992644D2755925B007BBAD6 /* ItemMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemMenu.xib; sourceTree = "<group>"; };
-		4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54C3BF788D5C1143CD6F57AE /* Pods_AgileUs_AgileUsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs_AgileUsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.release.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.release.xcconfig"; sourceTree = "<group>"; };
+		5FE7CA9A426B8B3A1CD9DE68 /* Pods-AgileUsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.release.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.release.xcconfig"; sourceTree = "<group>"; };
 		7B7112448A6421A63B42E462 /* Pods_AgileUs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BC586FBD761774A43D3C98E /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
 		AE1D0AC0274EED9A00D3792B /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		AE1D0AC2274EEEED00D3792B /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		AE1D0AC4274EF0B000D3792B /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
@@ -152,8 +164,8 @@
 		AEA60AA2274D97530087E417 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		AEB4BFD8275854BA000526F6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		AEF5ADB427548E2800AAC104 /* DataPersonas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersonas.swift; sourceTree = "<group>"; };
-		B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
-		B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.release.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.release.xcconfig"; sourceTree = "<group>"; };
+		B650FBE8A05B1FC1410645A4 /* Pods-AgileUs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs/Pods-AgileUs.debug.xcconfig"; sourceTree = "<group>"; };
+		BEA899D09AC9DDEEE668CD2B /* Pods-AgileUsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUsTests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUsTests/Pods-AgileUsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C12B3D1427519D1F00ABDD09 /* Tareas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tareas.swift; sourceTree = "<group>"; };
 		C619E3845E5A6CAE36811AC4 /* Pods_AgileUsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileUsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C910568E2750145700CA5A89 /* Help_String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help_String.swift; sourceTree = "<group>"; };
@@ -181,6 +193,12 @@
 		D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportesScreen.swift; sourceTree = "<group>"; };
 		D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TareasScreen.swift; sourceTree = "<group>"; };
 		D4E69CB12746CCEF002121E4 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		D4EAA624276689C70091B5FC /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		D4EAA626276689E80091B5FC /* UserRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequestModel.swift; sourceTree = "<group>"; };
+		D4EAA62827668A170091B5FC /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
+		D4EAA62A27668A340091B5FC /* ResponseHierarchyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHierarchyModel.swift; sourceTree = "<group>"; };
+		D4EAA630276692870091B5FC /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		D4EAA6322766929F0091B5FC /* HierarchyLevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchyLevelService.swift; sourceTree = "<group>"; };
 		D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DF37A45F2763C83800DD83B8 /* Button_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button_Extension.swift; sourceTree = "<group>"; };
 		DF37A4612763C86600DD83B8 /* TextField_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField_Extension.swift; sourceTree = "<group>"; };
@@ -206,6 +224,9 @@
 		E47AAA1227569C7E00B1A213 /* Modal_Mensajes_Enviados.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Modal_Mensajes_Enviados.storyboard; sourceTree = "<group>"; };
 		E4821A0D275FBC0E001AEC19 /* Celda_Comunicados.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Celda_Comunicados.swift; sourceTree = "<group>"; };
 		E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Celda_Comunicados.xib; sourceTree = "<group>"; };
+		E4A43A7B276420D100CDFDF4 /* Adaptadores_Web.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adaptadores_Web.swift; sourceTree = "<group>"; };
+		E4A43A7D2764299700CDFDF4 /* servicios_broadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = servicios_broadcast.swift; sourceTree = "<group>"; };
+		E4A43A8027643F9600CDFDF4 /* Modelos_Broadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modelos_Broadcast.swift; sourceTree = "<group>"; };
 		E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.debug.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -214,7 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36C5D4D65469BC625C1B80B0 /* Pods_AgileUs.framework in Frameworks */,
+				16A48082313B165AF634D854 /* Pods_AgileUs.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +258,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2099744BB4E258B82AE7AD15 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B650FBE8A05B1FC1410645A4 /* Pods-AgileUs.debug.xcconfig */,
+				9BC586FBD761774A43D3C98E /* Pods-AgileUs.release.xcconfig */,
+				279D06B35AFC3550B5122B92 /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */,
+				24F3BDE3CCE6B65D10FB39FD /* Pods-AgileUs-AgileUsUITests.release.xcconfig */,
+				BEA899D09AC9DDEEE668CD2B /* Pods-AgileUsTests.debug.xcconfig */,
+				5FE7CA9A426B8B3A1CD9DE68 /* Pods-AgileUsTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		4916EAE4275005AB00FA0380 /* Adaptador */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,19 +340,6 @@
 				4912A07F276060280066AE1B /* BroadcastModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		52D2981BB9146F534D2E2D08 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */,
-				B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */,
-				E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */,
-				D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */,
-				4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */,
-				6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		AE43C319275595AE0035A514 /* VisorPDF */ = {
@@ -398,9 +420,9 @@
 				D4E69C8D2746BD83002121E4 /* AgileUsTests */,
 				D4E69C972746BD83002121E4 /* AgileUsUITests */,
 				D4E69C752746BD81002121E4 /* Products */,
-				52D2981BB9146F534D2E2D08 /* Pods */,
 				DD4994C3FA25C34E3D104F72 /* Frameworks */,
 				DF5A495C2763BEB40002D43A /* Recovered References */,
+				2099744BB4E258B82AE7AD15 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -501,9 +523,31 @@
 		D4E69CB02746CCCE002121E4 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				D4EAA62C27668A790091B5FC /* Services */,
+				D4EAA623276689650091B5FC /* Models */,
 				D4E69CB12746CCEF002121E4 /* LoginScreen.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		D4EAA623276689650091B5FC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D4EAA624276689C70091B5FC /* UserModel.swift */,
+				D4EAA626276689E80091B5FC /* UserRequestModel.swift */,
+				D4EAA62827668A170091B5FC /* ResponseModel.swift */,
+				D4EAA62A27668A340091B5FC /* ResponseHierarchyModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D4EAA62C27668A790091B5FC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D4EAA630276692870091B5FC /* LoginService.swift */,
+				D4EAA6322766929F0091B5FC /* HierarchyLevelService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		DD4994C3FA25C34E3D104F72 /* Frameworks */ = {
@@ -588,6 +632,8 @@
 		E45EE8892759532D000989A3 /* Broadcast */ = {
 			isa = PBXGroup;
 			children = (
+				E4A43A7F27643F7900CDFDF4 /* Modelos */,
+				E4A43A7A27641F9400CDFDF4 /* Servicios_web */,
 				E47AAA002756993300B1A213 /* Adaptador_Modal.swift */,
 				E47AA9FE27568CFD00B1A213 /* Modulo_Broadcast.swift */,
 				E47AAA0327569A3000B1A213 /* Mensajes_Enviados */,
@@ -625,6 +671,23 @@
 				E4821A0E275FBC0E001AEC19 /* Celda_Comunicados.xib */,
 			);
 			path = Lista_Comunicados;
+			sourceTree = "<group>";
+		};
+		E4A43A7A27641F9400CDFDF4 /* Servicios_web */ = {
+			isa = PBXGroup;
+			children = (
+				E4A43A7D2764299700CDFDF4 /* servicios_broadcast.swift */,
+				E4A43A7B276420D100CDFDF4 /* Adaptadores_Web.swift */,
+			);
+			path = Servicios_web;
+			sourceTree = "<group>";
+		};
+		E4A43A7F27643F7900CDFDF4 /* Modelos */ = {
+			isa = PBXGroup;
+			children = (
+				E4A43A8027643F9600CDFDF4 /* Modelos_Broadcast.swift */,
+			);
+			path = Modelos;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -883,6 +946,7 @@
 				49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */,
 				4992644E2755925B007BBAD6 /* ItemMenu.swift in Sources */,
 				4912A080276060280066AE1B /* BroadcastModel.swift in Sources */,
+				D4EAA62927668A170091B5FC /* ResponseModel.swift in Sources */,
 				494E58922759A00700F85AF6 /* MensajesModel.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				491DF30C27552B6D000BFF52 /* List.swift in Sources */,
@@ -909,10 +973,13 @@
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
 				4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */,
 				494E589027599FCC00F85AF6 /* TareasModel.swift in Sources */,
+				D4EAA62B27668A340091B5FC /* ResponseHierarchyModel.swift in Sources */,
 				4916EAE9275005DF00FA0380 /* Usuarios.swift in Sources */,
 				C12B3D1527519D1F00ABDD09 /* Tareas.swift in Sources */,
+				D4EAA625276689C70091B5FC /* UserModel.swift in Sources */,
 				4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */,
 				49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */,
+				D4EAA627276689E80091B5FC /* UserRequestModel.swift in Sources */,
 				4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */,
 				DFC33DD4274C54FF00E8DB7D /* lista_chats.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
@@ -923,9 +990,12 @@
 				DF89B86827517DBA000E8DAE /* lista_contactos.swift in Sources */,
 				E47AA9FF27568CFD00B1A213 /* Modulo_Broadcast.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
+				E4A43A7E2764299700CDFDF4 /* servicios_broadcast.swift in Sources */,
 				E47AAA012756993300B1A213 /* Adaptador_Modal.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
+				D4EAA6332766929F0091B5FC /* HierarchyLevelService.swift in Sources */,
 				AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */,
+				E4A43A8127643F9600CDFDF4 /* Modelos_Broadcast.swift in Sources */,
 				AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */,
 				AEA60AA3274D97530087E417 /* Strings.swift in Sources */,
 				AE4C5A312750391E0095B907 /* CustomVisualEffectView.swift in Sources */,
@@ -935,19 +1005,21 @@
 				AEA60A9D274C5D120087E417 /* Ext_UITextView.swift in Sources */,
 				AE4918EA27570828000162AA /* Ext_Generales.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
+				D4EAA631276692870091B5FC /* LoginService.swift in Sources */,
 				491DF31127552F61000BFF52 /* Pantalla_Tareas.swift in Sources */,
 				AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */,
 				AE1D0AC1274EED9A00D3792B /* PickerView.swift in Sources */,
 				AEB4BFD9275854BA000526F6 /* Message.swift in Sources */,
+				E4A43A7C276420D200CDFDF4 /* Adaptadores_Web.swift in Sources */,
 				AE43C31B275595FC0035A514 /* VisorPDF.swift in Sources */,
 				AEA60A9E274C5D120087E417 /* Ext_Button.swift in Sources */,
 				C94CC350276106D50091B856 /* InfoTareas.swift in Sources */,
-				D4EDE7492747174E00197CB1 /* (null) in Sources */,
+				D4EDE7492747174E00197CB1 /* BuildFile in Sources */,
 				4916EAEB27502D6100FA0380 /* Funciones_Charts.swift in Sources */,
 				4916EAED27503C1000FA0380 /* Mensajes.swift in Sources */,
 				DF37A4622763C86600DD83B8 /* TextField_Extension.swift in Sources */,
 				E47AAA1427569C7E00B1A213 /* mensajes_Enviados.swift in Sources */,
-				D4EDE7492747174E00197CB1 /* (null) in Sources */,
+				D4EDE7492747174E00197CB1 /* BuildFile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1121,7 +1193,7 @@
 		};
 		D4E69C9F2746BD83002121E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0094805905A5E1854B8077D /* Pods-AgileUs.debug.xcconfig */;
+			baseConfigurationReference = B650FBE8A05B1FC1410645A4 /* Pods-AgileUs.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1154,7 +1226,7 @@
 		};
 		D4E69CA02746BD83002121E4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0331605FA3974F4880E14A7 /* Pods-AgileUs.release.xcconfig */;
+			baseConfigurationReference = 9BC586FBD761774A43D3C98E /* Pods-AgileUs.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1187,7 +1259,7 @@
 		};
 		D4E69CA22746BD83002121E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A7ABA7D644E19215600BBF0 /* Pods-AgileUsTests.debug.xcconfig */;
+			baseConfigurationReference = BEA899D09AC9DDEEE668CD2B /* Pods-AgileUsTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1212,7 +1284,7 @@
 		};
 		D4E69CA32746BD83002121E4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6FE8B0957A9227C7D665EE22 /* Pods-AgileUsTests.release.xcconfig */;
+			baseConfigurationReference = 5FE7CA9A426B8B3A1CD9DE68 /* Pods-AgileUsTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1237,7 +1309,7 @@
 		};
 		D4E69CA52746BD83002121E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7F9D0E8F4EEF095A3FDC4EC /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */;
+			baseConfigurationReference = 279D06B35AFC3550B5122B92 /* Pods-AgileUs-AgileUsUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1260,7 +1332,7 @@
 		};
 		D4E69CA62746BD83002121E4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */;
+			baseConfigurationReference = 24F3BDE3CCE6B65D10FB39FD /* Pods-AgileUs-AgileUsUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

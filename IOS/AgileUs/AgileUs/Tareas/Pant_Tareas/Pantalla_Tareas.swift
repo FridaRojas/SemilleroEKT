@@ -57,6 +57,7 @@ class Pantalla_Tareas: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addLogoutButton()
         ValidarNivelUser()
         //llamar a mi boton
         botonflotante.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
