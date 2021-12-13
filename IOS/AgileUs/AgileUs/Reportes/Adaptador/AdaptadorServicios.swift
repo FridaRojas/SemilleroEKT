@@ -17,10 +17,10 @@ class AdaptadorServicios{
     }
     
     
-    func servicioWebTareasAdapterByBoss(idUsuario:String, token:String, webServiceSub: @escaping (_ Datos: [Any]) -> Void){
+    func servicioWebTareasAdapterByBoss(idReceptor:String, webServiceSub: @escaping (_ Datos: [Any]) -> Void){
         let claseSubordinados = TareasService()
         claseSubordinados.webServiceUsuariosTask = webServiceSub
-        claseSubordinados.webServiceTareasPorLider(idUser: idUsuario, token: token)
+        claseSubordinados.webServiceTareasPorLider(idReceptor: idReceptor)
         
     }
     func servicioWebMensajesAdapter(idUsuario: String, webServiceMensajes: @escaping (_ Datos: [Any]) -> Void){
@@ -35,10 +35,10 @@ class AdaptadorServicios{
         claseMensajes.webServiceBroadcast(idUsuario: idUsuario)
     }
     
-    func servicioWebTareasAdapter(idUsuario: String, token: String, webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
+    func servicioWebTareasAdapter(idUsuario: String, webServiceTareas: @escaping (_ Datos: [Any]) -> Void){
         let claseTareas = TareasService()
         claseTareas.webServiceTask = webServiceTareas
-        claseTareas.webServiceTareas(idUsuario: idUsuario, token: token)
+        claseTareas.webServiceTareas(idUsuario: idUsuario)
     }
     
 

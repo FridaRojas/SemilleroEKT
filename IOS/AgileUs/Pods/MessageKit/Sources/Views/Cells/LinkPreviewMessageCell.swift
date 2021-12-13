@@ -67,9 +67,7 @@ open class LinkPreviewMessageCell: TextMessageCell {
         let dummyMessage = ConcreteMessageType(sender: message.sender,
                                                messageId: message.messageId,
                                                sentDate: message.sentDate,
-                                               kind: linkItem.textKind,
-                                               documento: message.documento)
-        
+                                               kind: linkItem.textKind, documento: message.documento)
         super.configure(with: dummyMessage, at: indexPath, and: messagesCollectionView)
 
         linkPreviewView.titleLabel.text = linkItem.title

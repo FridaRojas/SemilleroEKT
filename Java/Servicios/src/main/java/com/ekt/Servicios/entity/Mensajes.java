@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Document(collection = "Mensajes")
 public class Mensajes {
@@ -22,18 +23,25 @@ public class Mensajes {
     private boolean statusRutaDocumento;
     
     private String nombreConversacionReceptor;
-    private String nombreConversacionEmisor;
+    private String nombreEmisor;
     
     private Date fechaCreacion;
     private boolean statusCreado;
     
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date fechaEnviado;
     private boolean statusEnviado;
     
     private Date fechaLeido;
     private boolean statusLeido;
-
-    public String getRutaDocumento() {
+    
+    public String getNombreEmisor() {
+		return nombreEmisor;
+	}
+	public void setNombreEmisor(String nombreEmisor) {
+		this.nombreEmisor = nombreEmisor;
+	}
+	public String getRutaDocumento() {
 		return rutaDocumento;
 	}
 	public void setRutaDocumento(String rutaDocumento) {

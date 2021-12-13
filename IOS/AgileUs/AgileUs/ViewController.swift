@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){ //
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){ //
             self.performSegue(withIdentifier: "Splash_To_Login", sender: nil)
         }
     }

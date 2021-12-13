@@ -105,7 +105,7 @@ final class Api {
                                 print(data)
                                 do {
                                     
-                                    Api.shared.sendMessage(message: "", title: (newTask?.titulo)!, person: (newTask?.nombre_receptor)!)
+                                    Api.shared.sendMessage(message: "", title: (newTask?.titulo)!, person: (newTask?.nombre_receptor)!, idReceptor: (newTask?.id_receptor)!)
                                     var task: TaskResponse
                                     
                                     task = try JSONDecoder().decode(TaskResponse.self, from: data)
@@ -191,7 +191,7 @@ final class Api {
                 if let data = data {
                     print(data)
                     do {
-                        Api.shared.sendMessage(message: "", title: task.titulo!, person: task.nombre_receptor!)
+                        Api.shared.sendMessage(message: "", title: task.titulo!, person: task.nombre_receptor!, idReceptor: (task.id_receptor)!)
 
                         var task: TaskResponse
                         task = try JSONDecoder().decode(TaskResponse.self, from: data)
@@ -541,7 +541,7 @@ final class Api {
         task.resume()
     }
     
-    func sendMessage(message: String, title: String, person: String) {
+    func sendMessage(message: String, title: String, person: String, idReceptor: String) {
         
         let session = URLSession.shared
         let url = URL(string: "\(server)mensajes/crearMensaje")!
@@ -552,7 +552,7 @@ final class Api {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        var messageS = MessageTask(idEmisor: "618e8743c613329636a769aa", idReceptor: "618e878ec613329636a769ab", texto: "Se asigno la tarea \(title) a la persona: \(person)", rutaDocumento: "", fechaCreacion: "\(dateFormatter.string(from: date))")
+        var messageS = MessageTask(idEmisor: "\(userID)", idReceptor: "\(idReceptor)", texto: "Se asigno la tarea \(title) a la persona: \(person)", rutaDocumento: "", fechaCreacion: "\(dateFormatter.string(from: date))")
         
         
         request.httpMethod = "POST"
