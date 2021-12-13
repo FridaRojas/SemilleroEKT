@@ -68,6 +68,12 @@
 		D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */; };
 		D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */; };
 		D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E69CB12746CCEF002121E4 /* LoginScreen.swift */; };
+		D4EAA625276689C70091B5FC /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA624276689C70091B5FC /* UserModel.swift */; };
+		D4EAA627276689E80091B5FC /* UserRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA626276689E80091B5FC /* UserRequestModel.swift */; };
+		D4EAA62927668A170091B5FC /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA62827668A170091B5FC /* ResponseModel.swift */; };
+		D4EAA62B27668A340091B5FC /* ResponseHierarchyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA62A27668A340091B5FC /* ResponseHierarchyModel.swift */; };
+		D4EAA631276692870091B5FC /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA630276692870091B5FC /* LoginService.swift */; };
+		D4EAA6332766929F0091B5FC /* HierarchyLevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAA6322766929F0091B5FC /* HierarchyLevelService.swift */; };
 		D4EDE7492747174E00197CB1 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		DF37A4602763C83800DD83B8 /* Button_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37A45F2763C83800DD83B8 /* Button_Extension.swift */; };
 		DF37A4622763C86600DD83B8 /* TextField_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37A4612763C86600DD83B8 /* TextField_Extension.swift */; };
@@ -181,6 +187,12 @@
 		D4E69CAC2746C29A002121E4 /* ReportesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportesScreen.swift; sourceTree = "<group>"; };
 		D4E69CAE2746C2AC002121E4 /* TareasScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TareasScreen.swift; sourceTree = "<group>"; };
 		D4E69CB12746CCEF002121E4 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		D4EAA624276689C70091B5FC /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		D4EAA626276689E80091B5FC /* UserRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequestModel.swift; sourceTree = "<group>"; };
+		D4EAA62827668A170091B5FC /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
+		D4EAA62A27668A340091B5FC /* ResponseHierarchyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHierarchyModel.swift; sourceTree = "<group>"; };
+		D4EAA630276692870091B5FC /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		D4EAA6322766929F0091B5FC /* HierarchyLevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchyLevelService.swift; sourceTree = "<group>"; };
 		D8C1318FCB36EC85856E8E69 /* Pods-AgileUs-AgileUsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileUs-AgileUsUITests.release.xcconfig"; path = "Target Support Files/Pods-AgileUs-AgileUsUITests/Pods-AgileUs-AgileUsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DF37A45F2763C83800DD83B8 /* Button_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button_Extension.swift; sourceTree = "<group>"; };
 		DF37A4612763C86600DD83B8 /* TextField_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField_Extension.swift; sourceTree = "<group>"; };
@@ -501,9 +513,31 @@
 		D4E69CB02746CCCE002121E4 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				D4EAA62C27668A790091B5FC /* Services */,
+				D4EAA623276689650091B5FC /* Models */,
 				D4E69CB12746CCEF002121E4 /* LoginScreen.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		D4EAA623276689650091B5FC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D4EAA624276689C70091B5FC /* UserModel.swift */,
+				D4EAA626276689E80091B5FC /* UserRequestModel.swift */,
+				D4EAA62827668A170091B5FC /* ResponseModel.swift */,
+				D4EAA62A27668A340091B5FC /* ResponseHierarchyModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D4EAA62C27668A790091B5FC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D4EAA630276692870091B5FC /* LoginService.swift */,
+				D4EAA6322766929F0091B5FC /* HierarchyLevelService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		DD4994C3FA25C34E3D104F72 /* Frameworks */ = {
@@ -883,6 +917,7 @@
 				49257002274C18120014A8B4 /* Adaptador_Modals.swift in Sources */,
 				4992644E2755925B007BBAD6 /* ItemMenu.swift in Sources */,
 				4912A080276060280066AE1B /* BroadcastModel.swift in Sources */,
+				D4EAA62927668A170091B5FC /* ResponseModel.swift in Sources */,
 				494E58922759A00700F85AF6 /* MensajesModel.swift in Sources */,
 				D4E69CAF2746C2AC002121E4 /* TareasScreen.swift in Sources */,
 				491DF30C27552B6D000BFF52 /* List.swift in Sources */,
@@ -909,10 +944,13 @@
 				D4E69CAD2746C29A002121E4 /* ReportesScreen.swift in Sources */,
 				4916EADE274D5B5200FA0380 /* Funciones_Date.swift in Sources */,
 				494E589027599FCC00F85AF6 /* TareasModel.swift in Sources */,
+				D4EAA62B27668A340091B5FC /* ResponseHierarchyModel.swift in Sources */,
 				4916EAE9275005DF00FA0380 /* Usuarios.swift in Sources */,
 				C12B3D1527519D1F00ABDD09 /* Tareas.swift in Sources */,
+				D4EAA625276689C70091B5FC /* UserModel.swift in Sources */,
 				4925700B274C1AF20014A8B4 /* ListaGrafica.swift in Sources */,
 				49257007274C1A0F0014A8B4 /* FiltroModalController.swift in Sources */,
+				D4EAA627276689E80091B5FC /* UserRequestModel.swift in Sources */,
 				4916EAE7275005CA00FA0380 /* AdaptadorServicios.swift in Sources */,
 				DFC33DD4274C54FF00E8DB7D /* lista_chats.swift in Sources */,
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
@@ -925,6 +963,7 @@
 				D4E69CB22746CCEF002121E4 /* LoginScreen.swift in Sources */,
 				E47AAA012756993300B1A213 /* Adaptador_Modal.swift in Sources */,
 				D4E69C7A2746BD81002121E4 /* SceneDelegate.swift in Sources */,
+				D4EAA6332766929F0091B5FC /* HierarchyLevelService.swift in Sources */,
 				AE1D0AC5274EF0B000D3792B /* DatePicker.swift in Sources */,
 				AE1D0AC3274EEEED00D3792B /* Keyboard.swift in Sources */,
 				AEA60AA3274D97530087E417 /* Strings.swift in Sources */,
@@ -935,6 +974,7 @@
 				AEA60A9D274C5D120087E417 /* Ext_UITextView.swift in Sources */,
 				AE4918EA27570828000162AA /* Ext_Generales.swift in Sources */,
 				D4E69CAB2746C288002121E4 /* ChatsScreen.swift in Sources */,
+				D4EAA631276692870091B5FC /* LoginService.swift in Sources */,
 				491DF31127552F61000BFF52 /* Pantalla_Tareas.swift in Sources */,
 				AEA60A9C274C5D120087E417 /* Ext_UITextField.swift in Sources */,
 				AE1D0AC1274EED9A00D3792B /* PickerView.swift in Sources */,

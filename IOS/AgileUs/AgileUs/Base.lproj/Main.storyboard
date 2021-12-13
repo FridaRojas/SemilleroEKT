@@ -185,14 +185,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ex6-yx-uvM">
-                                <rect key="frame" x="149" y="433" width="117" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Splash Screen"/>
-                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_logo" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-GA-cId">
-                                <rect key="frame" x="149" y="384" width="115" height="128"/>
+                                <rect key="frame" x="138" y="358" width="115" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -221,7 +215,7 @@
                                 <rect key="frame" x="44" y="274" width="327" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" textContentType="email"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3iD-Eq-3jX">
                                 <rect key="frame" x="44" y="377" width="327" height="53"/>
@@ -266,7 +260,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="dvm-v9-8Mb"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="R2m-Pf-exC"/>
                     <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" id="qSr-fF-6NL">
@@ -370,17 +364,6 @@
                                     <segue destination="ec7-vz-nec" kind="show" id="M3L-q8-JIc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qDB-Kn-f03">
-                                <rect key="frame" x="365" y="92" width="24" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="">
-                                    <backgroundConfiguration key="background" image="black_logout_icon"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="cerrarSesion:" destination="Srt-5x-2vk" eventType="touchUpInside" id="yaO-65-z8D"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="                                                                          Mis Chats" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0VU-0I-oJh">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -391,7 +374,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gt2-Yf-Tt1"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Mensajes" image="message" catalog="system" id="l5m-6a-CuI"/>
                     <connections>
@@ -1320,13 +1303,12 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="CTn-di-tSd"/>
+        <segue reference="MsL-cW-dAo"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Agregar_btn" width="49" height="49"/>
         <image name="Broadcast_btn" width="45" height="45"/>
         <image name="Broadcast_nuevo_btn" width="30" height="30"/>
-        <image name="black_logout_icon" width="512" height="512"/>
         <image name="broadcast_nuevo_btn" width="30" height="30"/>
         <image name="buzon_bckgrnd" width="374" height="796"/>
         <image name="cmcds_bckgrnd" width="375" height="794"/>

@@ -84,6 +84,24 @@ extension UIViewController{
     
     @objc func logOut(sender: UIButton!) {
         print("CERRAR SESION")
+        cleanLocalVariables()
+    }
+    
+    //Validar si el token ha expirado, en caso de que si cerrar sesion
+    func tokenValidator(status: String?, message: String?){
+        if let status = status, status == "404" {
+            cleanLocalVariables()
+            return
+        }
+        if let message = message, message == "Token invalido" {
+            cleanLocalVariables()
+            return
+        }
+        
+    }
+    
+    //Borrar variables locales
+    func cleanLocalVariables(){
         UserDefaults.standard.setValue(String(), forKey: "userID")
         UserDefaults.standard.setValue(String(), forKey: "userName")
         UserDefaults.standard.setValue(String(), forKey: "email")
@@ -93,7 +111,6 @@ extension UIViewController{
         UserDefaults.standard.setValue(false, forKey: "isLogged")
         UserDefaults.standard.setValue(String(), forKey: "tokenAuth")
         UserDefaults.standard.setValue(String(), forKey: "idGrupo")
-        
         navigationController?.popViewController(animated: true)
     }
 }
