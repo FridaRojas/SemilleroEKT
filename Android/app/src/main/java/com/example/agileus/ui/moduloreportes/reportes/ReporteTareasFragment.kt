@@ -811,7 +811,18 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
             var screeenReportUri = bitmap.saveImage(activity as HomeActivity)
             val screeenReport = getPath(activity as HomeActivity, screeenReportUri!!).toString()
             Log.e("RMF filePath", screeenReport)
-            Toast.makeText(context, "Información guardada en galeria", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Compartiendo...", Toast.LENGTH_SHORT).show()
+
+            val imageFile = File(screeenReport)
+            val imageUri = FileProvider.getUriForFile(activity as HomeActivity,
+                BuildConfig.APPLICATION_ID + ".provider", imageFile)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                var share =  Intent(Intent.ACTION_SEND)
+                share.type = "image/*"
+                share.putExtra(Intent.EXTRA_STREAM, imageUri)
+                startActivity(Intent.createChooser(share,"Compartir captura"))
+            },500)
         }else{
             try{
                 val dirPath  = Environment.getExternalStorageDirectory().toString() + "/agileus"
@@ -878,17 +889,9 @@ class ReporteTareasFragment : Fragment(), ReportesListener, FiltroReportesDialog
         var selection: String? = null
         var selectionArgs: Array<String>? = null
         if (needToCheckUri && DocumentsContract.isDocumentUri(context.applicationContext, uri)) {
-
             val docId = DocumentsContract.getDocumentId(uri)
             val split = docId.split(":").toTypedArray()
-            val type = split[0]
-            if ("image" == type) {
-                uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            } else if ("video" == type) {
-                uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            } else if ("audio" == type) {
-                uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            }
+            uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             selection = "_id=?"
             selectionArgs = arrayOf(split[1])
         }
