@@ -25,8 +25,11 @@ interface BuzonApi2 {
 
 
     //------------------------------------------------------------------------------------------------------//
-     @GET("mensajes/listarConversaciones/{iduser}")
+       @GET("mensajes/listarConversaciones/{iduser}")
        fun getmybuzon(@Path ("iduser") idUser:String,@Header ("tokenAuth") token: String):Call<Chats1> ///getbuzon enviados
+
+       @PUT("/actualizarAtendido/{miID}/{miIDmensaje}")
+       fun Actulizarestado(@Path ("miID") miID:String,@Path ("IDmensaje") miIDmensaje:String ,@Header ("tokenAuth") token: String):Call<MensajeBodyBroadcaster> ///getbuzon enviados
 
 
     //  @GET("broadCast/mostrarMensajesporID/61ad370537670e5060dc060e/{id}"}

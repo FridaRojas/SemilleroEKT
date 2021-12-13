@@ -24,6 +24,4 @@ interface LoginApi {
 
     @GET("user/findByBossId/{id}")
     fun getUsersByBoss(@Path("id") datos: String): Call<UserBossResponse>?
-
-
 }

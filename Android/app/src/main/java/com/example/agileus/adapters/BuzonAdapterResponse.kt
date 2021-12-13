@@ -22,10 +22,10 @@ class BuzonAdapterResponse(private var dataSet: ArrayList<Datas>, var tipo: Int)
 
         init {
             // Define click listener for the ViewHolder's View.
-            textView = view.findViewById(R.id.dueño)
+            textView =  view.findViewById(R.id.dueño)
             textView1 = view.findViewById(R.id.msgcontenido)
             textView2 = view.findViewById(R.id.status)
-            textview3 =view.findViewById(R.id.DetalleActividad)
+            textview3 = view.findViewById(R.id.DetalleActividad)
         }
     }
 

@@ -45,13 +45,15 @@ var listaf =ArrayList<String>()
 
     suspend fun getEnviados(sala: String) {
 
-
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 lista.recuperarEnviadosBrd(UserId, sala)
             }
 
+            //memsajes2
+
             memsajes2.forEach {
+//                if(it.idemisor )
                 it.idemisor="Broadcast"
                 it.idreceptor=name
             }
@@ -61,6 +63,7 @@ var listaf =ArrayList<String>()
 
 
     fun postRequest(mypost: MsgBodyUser) {
+
         viewModelScope.launch {
             val response: Response<MsgBodyUser> = lista.getcustompush(mypost)
             myResponse1.value = response
