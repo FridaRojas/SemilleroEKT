@@ -109,6 +109,7 @@
     <string name="fragmentSeleccionadoCrearTarea">crearTarea</string>
     <string name="fecha_mayor_menor">Fecha de inicio no puede ser mayor a fecha de vencimiento.</string>
     <string name="confirmar">Confirmar.</string>
+    <string name="nohayconexioninternet">No hay conexion a internet</string>
 
     <string-array name="months_array">
         <item>Enero</item>

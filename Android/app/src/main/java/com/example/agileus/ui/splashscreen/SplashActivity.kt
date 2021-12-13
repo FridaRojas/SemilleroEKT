@@ -7,23 +7,44 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import com.example.agileus.R
 import com.example.agileus.ui.HomeActivity
+import com.example.agileus.ui.MainActivity
+import com.example.agileus.ui.modulotareas.dialogostareas.DialogoAceptar
+import com.example.agileus.webservices.NetworkConnection
+import java.util.*
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash2)
 
-        hideSystemUI()
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this, androidx.lifecycle.Observer { isConnected->
 
-        val intent = Intent(applicationContext, HomeActivity::class.java)
+            if (isConnected){
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(intent)
-            finish()
+                hideSystemUI()
 
-        },3000)
+                val intent = Intent(applicationContext, HomeActivity::class.java)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    startActivity(intent)
+                    finish()
+
+                },3000)
+            }
+            else{
+                val newFragment = DialogoAceptar(getString(R.string.nohayconexioninternet))
+                newFragment.show(
+                    (this).supportFragmentManager,
+                    getString(R.string.logTareas)
+                )
+            }
+        })
+
+
 
     }
 
