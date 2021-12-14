@@ -106,7 +106,7 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         val root: View = binding.root
 
         reporteMensajesViewModel = ViewModelProvider(this).get(ReporteMensajesViewModel::class.java)
-        solicitarPermisos()
+        solicitarPermisosEscrituraLectura()
 
         //MySharedPreferences.idUsuarioEstadisticas = MySharedPreferences.idUsuario
 
@@ -458,10 +458,8 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         }
     }
 
-
     lateinit var pathImagen:String
-
-    fun solicitarPermisos(){
+    fun solicitarPermisosEscrituraLectura(){
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -476,30 +474,38 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             }
             }
         }
-
         locationPermissionRequest.launch(arrayOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE))
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun tomarScreenShot(view:View){
         var fecha =  Date()
         var formato = DateFormat.format("yyyy-MM-dd_hh:mm:ss",fecha)
 
-
         view.isDrawingCacheEnabled = true
         val bitmap = Bitmap.createBitmap(view.getDrawingCache())
         view.isDrawingCacheEnabled = false
-
 
         if (Build.VERSION.SDK_INT >= 29) {
             //SC take and save
             var screeenReportUri = bitmap.saveImage(activity as HomeActivity)
             val screeenReport = getPath(activity as HomeActivity, screeenReportUri!!).toString()
             Log.e("RMF filePath", screeenReport)
-            Toast.makeText(context, "Información guardada en galeria", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Compartiendo...", Toast.LENGTH_SHORT).show()
+
+            val imageFile = File(screeenReport)
+            val imageUri = FileProvider.getUriForFile(activity as HomeActivity,
+                BuildConfig.APPLICATION_ID + ".provider", imageFile)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                var share =  Intent(Intent.ACTION_SEND)
+                share.type = "image/*"
+                share.putExtra(Intent.EXTRA_STREAM, imageUri)
+                startActivity(Intent.createChooser(share,"Compartir captura"))
+            },500)
+
         }else{
             try{
                 val dirPath  = Environment.getExternalStorageDirectory().toString() + "/agileus"
@@ -517,8 +523,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 var fileOutputStream = FileOutputStream(imageFile)
                 val calidad = 100
                 bitmap.compress(Bitmap.CompressFormat.JPEG,calidad,fileOutputStream)
-                //val bytes =  ByteArrayOutputStream()
-                //fileOutputStream.write(bytes.toByteArray())
                 fileOutputStream.flush()
                 fileOutputStream.close()
 
@@ -552,11 +556,41 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
                 Log.e("Error Captura",e.message.toString())
                 e.printStackTrace()
             }
-
         }
-
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun Bitmap.saveImage(context: Context): Uri? {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/AgileUs")
+        values.put(MediaStore.Images.Media.IS_PENDING, true)
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "report_${SystemClock.uptimeMillis()}")
+
+        val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri != null) {
+            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
+            values.put(MediaStore.Images.Media.IS_PENDING, false)
+            context.contentResolver.update(uri, values, null, null)
+            Log.d("Uri?", values.toString())
+            return uri
+        }
+        return null
+    }
+
+
+    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     @Throws(URISyntaxException::class)
     fun getPath(context: Context, uri: Uri): String? {
@@ -565,19 +599,11 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
         var selection: String? = null
         var selectionArgs: Array<String>? = null
         if (needToCheckUri && DocumentsContract.isDocumentUri(context.applicationContext, uri)) {
-
-                val docId = DocumentsContract.getDocumentId(uri)
-                val split = docId.split(":").toTypedArray()
-                val type = split[0]
-                if ("image" == type) {
-                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                } else if ("video" == type) {
-                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                } else if ("audio" == type) {
-                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                }
-                selection = "_id=?"
-                selectionArgs = arrayOf(split[1])
+            val docId = DocumentsContract.getDocumentId(uri)
+            val split = docId.split(":").toTypedArray()
+            uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            selection = "_id=?"
+            selectionArgs = arrayOf(split[1])
         }
         if ("content".equals(uri.scheme, ignoreCase = true)) {
             val projection = arrayOf(MediaStore.Images.Media.DATA)
@@ -595,38 +621,6 @@ class ReporteMensajesFragment : Fragment(), ReportesListener, FiltroReportesDial
             return uri.path
         }
         return null
-    }
-
-    fun Bitmap.saveImage(context: Context): Uri? {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/AgileUs")
-        values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "report_${SystemClock.uptimeMillis()}")
-
-        val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        if (uri != null) {
-            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
-            values.put(MediaStore.Images.Media.IS_PENDING, false)
-            context.contentResolver.update(uri, values, null, null)
-            Log.d("URI", values.toString())
-            return uri
-        }
-        return null
-    }
-
-
-    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
-        if (outputStream != null) {
-            try {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                outputStream.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
     }
 
 }
