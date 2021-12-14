@@ -89,9 +89,9 @@ class ChatViewController:
     }
   
     override func viewDidAppear(_ animated: Bool) {
-
-            self.carga_mensajes()
-        showNavBar()
+        self.carga_mensajes()
+        self.messagesCollectionView.reloadData()
+      //showNavBar()
     }
     
     
@@ -107,22 +107,10 @@ class ChatViewController:
     {return messages.count}
     //funcion para asignar eventos al bton de enviar mensaje y campo de texto
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-       
         mensaje = inputBar.inputTextView.text
-        messages.append(Message(sender: currentUser,
-                                     messageId: "1",
-                                     sentDate: Date(),
-                                     kind: .text("\(mensaje)"),
-                                     documento: ""
-                               ))
         var fecha = Obtener_valor_fecha(fecha: Date(), stilo: "Fecha_mongo")
         inputBar.inputTextView.text = ""
-        self.messagesCollectionView.reloadData()
         self.status_leido = false
-        DispatchQueue.main.async {
-            self.messagesCollectionView.scrollToItem(at: IndexPath(row:0, section: self.messages.count - 1 ),at: .top, animated: false)
-        
-        }
         var receptor = ""
         if Datos_chats != nil
         {
@@ -138,6 +126,16 @@ class ChatViewController:
         } else {
             create_json(id_emisor: userID, id_receptor: receptor, mensaje: mensaje, rutaDocumento: "", fecha: fecha){
                 (exito) in
+                DispatchQueue.main.async {
+                    self.messages.append(Message(sender: self.currentUser,
+                                                  messageId: "1",
+                                                  sentDate: Date(),
+                                                 kind: .text("\(self.mensaje)"),
+                                                  documento: ""
+                                            ))
+                    self.messagesCollectionView.reloadData()
+                    self.messagesCollectionView.scrollToItem(at: IndexPath(row:0, section: self.messages.count - 1 ),at: .top, animated: false)
+                }
                
             }fallido:{ fallido in
                 self.simpleAlertMessage(title: "Atencion", message: "Verifica tu Conexion a internet")
@@ -253,24 +251,26 @@ class ChatViewController:
     }
    
     //funcion para mostrar los mensajes apartir del dia en que se carga la conversacion
+   
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         if let lastDisplayedSentDate = lastDisplayedSentDate, Calendar.current.isDate(lastDisplayedSentDate, inSameDayAs: message.sentDate) { return nil}
         let string = self.fecha_mensaje
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yy"
-         
+        navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
         lastDisplayedSentDate = message.sentDate
         return NSAttributedString(
                         string: MessageKitDateFormatter.shared.string(from: message.sentDate),attributes: [
                             NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
                             NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.1176470588, green: 0.4470588235, blue: 0.8, alpha: 1)])
     }
+
    //funcion para poner fecha de envio del mensaje
     func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         let dateString = HelpString.formatDate(date: self.fecha_mensaje)
+        navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
         return NSAttributedString(string: dateString , attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
     }
-  
     //funcion para  dar tamaño a la fecha de conversacion
     func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
             if (indexPath.item) % 4 == 0 {

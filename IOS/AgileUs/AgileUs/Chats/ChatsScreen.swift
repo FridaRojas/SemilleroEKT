@@ -63,9 +63,9 @@ class ChatsScreen: UIViewController,UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        showNavBar()
+        navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
         hideNavBar()
-
+        addLogoutButton()
     }
 
     @IBAction func cerrarSesion(_ sender: UIButton) {

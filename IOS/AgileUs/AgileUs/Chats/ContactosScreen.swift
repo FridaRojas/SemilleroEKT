@@ -62,6 +62,7 @@ class ContactosScreen: UIViewController,UITableViewDelegate, UITableViewDataSour
         Servicio_web_contactos()
     }
     override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barTintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
         showNavBar()
     }
     
