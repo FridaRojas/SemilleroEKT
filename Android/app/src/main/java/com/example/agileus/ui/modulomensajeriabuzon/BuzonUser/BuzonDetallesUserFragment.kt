@@ -83,10 +83,7 @@ class BuzonDetallesUserFragment : Fragment() , UserBuzonListener {
     override fun mensajeBroadcasting1(buzon: MsgBodyUser) {
 
            buzon.idEmisor= InitialApplication.preferenciasGlobal.recuperarIdSesion()
-
-
-
-        viewModel.postRequest(buzon)
+           viewModel.postRequest(buzon)
 
 
             Handler().postDelayed({

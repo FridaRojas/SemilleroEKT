@@ -36,6 +36,7 @@ class InicioSesionViewModel : ViewModel() {
     init {
         list = LoginDao()
         userByBossId.value = "bajo"
+        //getUsersByBoss()
     }
 
     // recuperarToken
@@ -65,8 +66,8 @@ class InicioSesionViewModel : ViewModel() {
                 listUsers = withContext(Dispatchers.IO){
                     list.getUsersByBoss(preferenciasGlobal.recuperarIdSesion())
                 }
-                if (!listUsers.isNullOrEmpty()) {
-                    Log.d("usuarios", "tam: ${listUsers.size}")
+                if (listUsers.isNullOrEmpty()) {
+                    Log.d("usuarios", "${listUsers.size}")
                     if(listUsers.isNotEmpty()){
                         userByBossId.value = "alto"
                     }

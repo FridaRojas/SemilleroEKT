@@ -70,6 +70,7 @@ class DaoBuzon1() {
                 var x = ResponseDos.body()!!
                 x.data.forEach {
                     listaBrd.add(it)
+                    Log.d("atendido",it.atendido.toString())
                 }
             } else {
                 Log.i("ERROR", ResponseDos.code().toString())
@@ -82,6 +83,11 @@ class DaoBuzon1() {
     }
 
     suspend fun recuperarMensajesBrd1(idUser: String): ArrayList<String> {
+        listafiltrada.clear()
+        memsajes2.clear()
+        Log.d("tamaño",memsajes2.size.toString())
+        Log.d("tamaño 2", listafiltrada.size.toString())
+
 
         try {
             val callRespuesta = InitialApplication.BroadcastServiceGlobalTasks2.getmybuzon(
@@ -106,7 +112,7 @@ class DaoBuzon1() {
 
     suspend fun recuperarEnviadosBrd(idUser: String, sala: String) {
 
-       memsajes2 = ArrayList()
+
         try {
             Log.d("id recibido", idUser)
             val callRespuesta =
@@ -117,7 +123,8 @@ class DaoBuzon1() {
             if (ResponseDos.isSuccessful) {
                 var mensajes = ResponseDos.body()!!
                 mensajes.data.forEach {
-                    memsajes2.add(it)
+                    if(it.idemisor == "61b0eae21e484f08fcbf594e")
+                      memsajes2.add(it)
                 }
             } else {
                 Log.i("ERROR", ResponseDos.code().toString())

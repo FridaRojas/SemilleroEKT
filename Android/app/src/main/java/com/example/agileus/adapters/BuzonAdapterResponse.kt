@@ -22,10 +22,10 @@ class BuzonAdapterResponse(private var dataSet: ArrayList<Datas>, var tipo: Int)
 
         init {
             // Define click listener for the ViewHolder's View.
-            textView = view.findViewById(R.id.dueño)
+            textView =  view.findViewById(R.id.dueño)
             textView1 = view.findViewById(R.id.msgcontenido)
             textView2 = view.findViewById(R.id.status)
-            textview3 =view.findViewById(R.id.DetalleActividad)
+            textview3 = view.findViewById(R.id.DetalleActividad)
         }
     }
 
@@ -33,7 +33,7 @@ class BuzonAdapterResponse(private var dataSet: ArrayList<Datas>, var tipo: Int)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item_buzon, viewGroup, false)
+            .inflate(R.layout.item_buzon1, viewGroup, false)
 
         return ViewHolder(view)
     }

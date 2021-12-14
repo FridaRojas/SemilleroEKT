@@ -31,7 +31,7 @@ import android.animation.PropertyValuesHolder
 import android.animation.ObjectAnimator
 
 import android.animation.Animator
-import com.example.agileus.config.InitialApplication.Companion.preferenciasToken
+import com.example.agileus.config.TokenSharedPreferences.Companion.TOKEN_KEY
 
 
 //, DialogoListen
@@ -111,6 +111,7 @@ class InicioSesionFragment : Fragment(){
 
 
         viewModel.getUsersByBoss()
+        startTimeCounter1()
 
 
         /*if(preferenciasGlobal.validaSesionIniciada()){
@@ -157,7 +158,7 @@ class InicioSesionFragment : Fragment(){
                 binding.btnLogin.isEnabled = true
                 Toast.makeText(activity, "Correo y/o contraseña incorrecta", Toast.LENGTH_SHORT).show()
             }else{
-                val usuario = Users(correoSession, passwordSession, preferenciasToken.recuperarToken())
+                val usuario = Users(correoSession, passwordSession, TOKEN_KEY)
                 viewModel.recuperarLogueo(usuario)
                 sleep(1000)
 
@@ -166,8 +167,8 @@ class InicioSesionFragment : Fragment(){
                     Log.d("Login", passwordSession)
                     Log.d("Login", idUsuario)
                     //Toast.makeText(activity, "Inicio de sesion correcto", Toast.LENGTH_SHORT).show()
-
-                    if(rol!="BROADCAST")
+                    sleep(1000)
+                    if(rol != "BROADCAST")
                     findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_navigation_home)
                     else
                         findNavController().navigate(com.example.agileus.R.id.action_inicioSesionFragment_to_buzonFragment2)
@@ -274,9 +275,39 @@ class InicioSesionFragment : Fragment(){
                 binding.btnLogin.isEnabled=true
 
 
-           }
-       }.start()
-   }
+            }
+        }.start()
+    }
+
+    fun startTimeCounter1() {
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
+        var counter=0
+        val progressBar = binding.Splash1
+        binding.vista1.visibility=View.INVISIBLE
+        progressBar.visibility=View.VISIBLE
+        object : CountDownTimer(3000, 100) {
+            override fun onTick(millisUntilFinished: Long) {
+                counter++
+            }
+            override fun onFinish() {
+                val iconAnim: Animator = ObjectAnimator.ofPropertyValuesHolder(  progressBar,
+//                    PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0f, -view!!.height),
+                    PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
+                )
+                iconAnim.duration = 1500
+                iconAnim.start()
+//                progressBar.visibility=View.INVISIBLE
+                binding.vista1.visibility=View.VISIBLE
+                (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Inicio de Sesión"
+
+                //
+                //
+
+            }
+        }.start()
+    }
 
 
 }

@@ -11,9 +11,11 @@ import com.example.agileus.R
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
 import com.example.agileus.databinding.BuzonUserFragmentBinding
+import com.example.agileus.models.Datas
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
 import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.BuzonFragment
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.memsajes2
 import java.util.*
 
 
@@ -50,6 +52,8 @@ class BuzonUserFragment : Fragment() {
 
         binding.mensajesrecibidos.isEnabled=false
 
+
+        memsajes2.clear()
         binding.mensajesrecibidos.setOnClickListener {
             BuzonFragment.control = 1
             findNavController().navigate(R.id.action_buzonUserFragment_to_buzonDetallesUserFragment)

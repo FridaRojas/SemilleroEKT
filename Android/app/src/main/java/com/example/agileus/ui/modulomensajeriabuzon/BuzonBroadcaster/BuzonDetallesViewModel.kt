@@ -117,6 +117,14 @@ class BuzonDetallesViewModel : ViewModel() {
 
         fun postMensaje(mypost: MensajeBodyBroadcaster) {
             try {
+
+                Log.d("cuerpo mensaje",mypost.idEmisor.toString())
+                Log.d("cuerpo mensaje",mypost.fechaCreacion.toString())
+                Log.d("cuerpo mensaje",mypost.idReceptor.toString())
+
+
+
+
                 viewModelScope.launch {
                     val response: Response<MensajeBodyBroadcaster> = lista1.getcustompost(mypost)
                     myResponse.value = response

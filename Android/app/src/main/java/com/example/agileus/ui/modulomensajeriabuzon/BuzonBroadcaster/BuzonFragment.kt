@@ -13,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.agileus.config.InitialApplication
 import com.example.agileus.config.MySharedPreferences
+import com.example.agileus.models.Datas
 import com.example.agileus.ui.HomeActivity
 import com.example.agileus.ui.login.iniciosesion.InicioSesionFragment
+import com.example.agileus.ui.modulomensajeriabuzon.BuzonBroadcaster.ReceiverBuzonBroadcastViewModel.Companion.memsajes2
 import com.example.agileus.utils.Constantes.broadlist
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -60,7 +62,6 @@ class BuzonFragment : Fragment() {
 //        Log.d("tokenAuth", tokenAuth)
   //      Log.d("User", idUsuario)
     //    Log.d("User id", InicioSesionFragment.id)
-
 
 
         binding.mensajesrecibidos.setOnClickListener {

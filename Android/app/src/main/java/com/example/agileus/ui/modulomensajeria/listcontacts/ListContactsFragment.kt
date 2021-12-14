@@ -45,6 +45,7 @@ class ListContactsFragment : Fragment() {
         contactsviewModel.devuelveLista(UserId)
 
         contactsviewModel.adaptador.observe(viewLifecycleOwner, {
+
             binding.progressBarContacts.isVisible = false
             binding.recyclerListContacts.adapter = it
             binding.recyclerListContacts.layoutManager = LinearLayoutManager(activity)
